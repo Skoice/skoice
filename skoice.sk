@@ -1,0 +1,302 @@
+# Copyright 2020  Clément Raynaud (carlodrift)
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+import:
+	ch.njol.skript.Skript
+	java.io.BufferedReader
+	java.io.InputStreamReader
+	java.net.URL
+
+function skoiceConnectMessage() :: text:
+	return "&eSkoice &8• &aConnected to proximity voice chat!"
+
+function skoiceDisconnectMessage() :: text:
+	return "&eSkoice &8• &cDisconnected from proximity voice chat!"
+
+function skoiceLinkMessage(channel: string) :: text:
+	return "Your accounts have been successfully linked. You can now connect to voice channel %{_channel}% to start proximity voice chat."
+
+function skoiceOutdatedMessage(version: string) :: text:
+	return "You are currently running an outdated version of Skoice! Download version %{_version}% here: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861"
+
+function skoiceServiceMessage(message: string, error: boolean):
+	if {_error} is false:
+		send "[Skoice] %{_message}%" to console
+		set {_color} to "&a"
+	else:
+		Skript.error({_message})
+		set {_color} to "&c"
+	send formatted "&eSkoice &8• %{_color}%%{_message}%" to all players where [player input has permission "skript.admin"]
+
+command /skoice [<text>]:
+	executable by: players
+	trigger:
+		if arg-1 is "link":
+			if yaml node "links.%uuid of player%" from "data" doesn't have value:
+				loop yaml node keys "codes" from "temp":
+					yaml value "codes.%loop-value%" from "temp" is uuid of player
+					set {_code} to loop-value
+					stop loop
+				if {_code} is not set:
+					set {_code} to "%random integer between 100000 and 999999%"
+					while true = true:
+						set {_codes::*} to yaml node keys "codes" from "temp"
+						if {_codes::*} contains {_code}:
+							set {_code} to "%random integer between 100000 and 999999%"
+							wait 1 tick
+						else:
+							stop loop
+					set yaml value "codes.%{_code}%" from "temp" to uuid of player
+				set {_bot} to "Skoice" parsed as bot
+				set {_botID} to {_bot}.getSelfUser().getId()
+				set {_serverName} to discord name of server with id yaml value "server" from "config"
+				send formatted "&eSkoice &8• &aTo complete the link, send the following code to &o%discord name of user with id {_botID}%##%discriminator of user with id {_botID}%&r&a on the Discord server (%{_serverName}%): &l%{_code}%"
+			else:
+				set {_account} to yaml value "links.%uuid of player%" from "data"
+				set {_account} to "%{_account}%"
+				send formatted "&eSkoice &8• &cYou've already linked your account to Discord (%discord name of user with id {_account}%##%discriminator of user with id {_account}%). Use /skoice unlink to cancel."
+			stop		
+		if arg-1 is "unlink":
+			if yaml node "links.%uuid of player%" from "data" has value:
+				set {_account} to yaml value "links.%uuid of player%" from "data"
+				clear yaml value "links.%{_account}%" from "data"
+				clear yaml value "links.%uuid of player%" from "data"
+				save yaml "data"
+				send "&eSkoice &8• &aYour accounts are no longer linked."
+			else:
+				send "&eSkoice &8• &cYou didn't link your account to Discord."
+			stop
+		send "%nl%&eSkoice &8• &aCopyright 2020 : Clément Raynaud (carlodrift)%nl%"
+		send "&a&l/skoice link&r &a: Link your Minecraft account to Discord. Required to start proximity voice chat."
+		send "&a&l/skoice unlink&r &a: Unlink your Minecraft and Discord accounts.%nl%"
+
+on skript start:
+	while yaml node "ready" from "temp" doesn't have value:
+		wait 1 second
+	loop yaml node keys "channels" from "data":
+		set {_channelID} to yaml value "channels.%loop-value%" from "data"
+		clear yaml value "channels.%loop-value%" from "data"
+		delete discord entity channel with id "%{_channelID}%" with "Skoice"
+	save yaml "data"
+
+on script load:
+	load yaml "plugins/Skoice/config.yml"
+	load yaml "plugins/Skoice/data/data.yml"
+	load yaml "plugins/Skoice/data/temp.yml"
+	set header of "config" to "Skoice's general settings. Read the installation instructions for more details."
+	set yaml value "token" from "config" to "" if yaml node "token" from "config" doesn't have value
+	set yaml value "server" from "config" to "" if yaml node "server" from "config" doesn't have value
+	set yaml value "main-channel" from "config" to "" if yaml node "main-channel" from "config" doesn't have value
+	if yaml node "radius" from "config" doesn't have value:
+		set {_continue} to true
+	else if yaml value "radius" from "config" is not a number:
+		set {_continue} to true
+	if {_continue} is true:
+		set yaml value "radius" from "config" to 32
+		clear {_continue}
+	set yaml value "push-to-talk" from "config" to false if yaml node "push-to-talk" from "config" doesn't have value
+	set comment of yaml node "token" from "config" to "The token of the Discord bot. This field has to be filled to enable Skoice."
+	set comment of yaml node "server" from "config" to "The ID of the Discord server in which the Discord bot will operate. This field has to be filled to enable Skoice."
+	set comment of yaml node "main-channel" from "config" to "The ID of the main voice channel in which players will connect and will be, in a future update, when no one is around. This field has to be filled to enable Skoice."
+	set comment of yaml node "radius" from "config" to "The radius in which a group of players has to be to start voice chatting."
+	set comment of yaml node "push-to-talk" from "config" to "Whether or not players must press a key (X by default) to talk. This key must be configured by each player in their Discord settings."
+	save yaml "config"
+	set header of "data" to "Do not modify this file manually."
+	save yaml "data"
+	skoiceServiceMessage("Configuration reloaded!", false)
+
+on script load:
+	clear yaml value "ready" from "temp"
+	clear yaml value "outdated" from "temp"
+	set {_br} to new BufferedReader(new InputStreamReader(new URL("https://pastebin.com/raw/bv1nzBPA").openStream()))
+	if {_br} is set:
+		set {_version} to first element of ...{_br}.lines()
+		set {_outdated} to true if "%{_version}%" is not "1.0-alpha4"
+	{_br}.close()
+	if {_outdated} is true:
+		Skript.error(skoiceOutdatedMessage({_version}))
+		set yaml value "outdated" from "temp" to {_version}
+	loop "token", "server" and "main-channel":
+		yaml value "%loop-value%" from "config" is ""
+		Skript.error("You have to set the value ""%loop-value%"" in the Skoice configuration (plugins/Skoice/config.yml). Read the installation instructions for more details.")
+		set {_continue} to false
+	{_continue} is not false
+	clear {_continue}
+	connect to yaml value "token" from "config" with name "Skoice"
+	if last vixio error contains "token is wrong":
+		skoiceServiceMessage("Unable to connect to the bot. You may have incorrectly set the value ""token"" in the Skoice configuration. Read the installation instructions for more details.", true)
+	else:
+		set {_bot} to "Skoice" parsed as bot
+		set {_botID} to {_bot}.getSelfUser().getId()
+		skoiceServiceMessage("Bot (%discord name of user with id {_botID}%##%discriminator of user with id {_botID}%) logged in!", false)
+		mark "Skoice" as playing "Skoice: Proximity Voice Chat"
+		if user with id {_botID} in guild with id yaml value "server" from "config" has permission administrator:
+			loop "server" and "main-channel":
+				set {_id} to yaml value "%loop-value%" from "config"
+				set {_discordEntity} to guild with id "%{_id}%" if "%loop-value%" is "server", else channel with id "%{_id}%"
+				if discord name of {_discordEntity} is not set:
+					set {_type} to loop-value if "%loop-value%" is "server", else "channel"
+					skoiceServiceMessage("Cannot reach the Discord %{_type}% specified in the Skoice configuration. Check the accuracy of the ""%loop-value%"" value and make sure the bot is on the server.", true)
+					set {_continue} to false
+				clear {_discordEntity}
+			{_continue} is not false
+			set {_serverName} to discord name of guild with id yaml value "server" from "config"
+			set {_channelName} to discord name of channel with id yaml value "main-channel" from "config"
+			skoiceServiceMessage("Server (%{_serverName}%) and main channel (%{_channelName}%) reached!", false)
+			set yaml value "ready" from "temp" to true
+			skoiceServiceMessage("Ready to operate!", false)
+		else:
+			skoiceServiceMessage("You must grant ADMINISTRATOR permission to the bot, otherwise it won't be able to operate.", true)
+
+on join:
+	player has permission "skript.admin"
+	send formatted "&eSkoice &8• &cSkoice isn't ready to operate yet. Reload the script (/skript reload %script%) for further details." if yaml node "ready" from "temp" doesn't have value
+	set {_outdated} to yaml value "outdated" from "temp"
+	send formatted "&eSkoice &8• &c%skoiceOutdatedMessage({_outdated})%" if {_outdated} is set
+
+# This algorithm is not definitive and is expected to change drastically. It will be much more advanced and powerful in future versions.
+every 2 seconds:
+	yaml value "ready" from "temp" is true
+	clear yaml value "groups" from "temp"
+	set {_radius} to yaml value "radius" from "config"
+	set {_count} to 1
+	loop all players where [yaml node "links.%uuid of player input%" from "data" has value]:
+		set {_userID} to yaml value "links.%uuid of loop-player%" from "data"
+		set {_currentChannel} to current voice channel of user with id "%{_userID}%" in guild with id yaml value "server" from "config"
+		set {_channels::*} to yaml node keys "channels" from "data"
+		set {_mainChannel} to yaml value "main-channel" from "config"
+		if {_channels::*} contains discord name of {_currentChannel}:
+			set {_continue} to true
+		else if discord id of {_currentChannel} is "%{_mainChannel}%":
+			set {_continue} to true
+		{_continue} is true
+		clear {_continue}
+		clear {_userID}, {_currentChannel} and {_channels::*}
+		loop all players in radius {_radius} around loop-player:
+			if yaml list "groups.index" from "temp" doesn't contain uuid of loop-player-2:
+				yaml node "links.%uuid of loop-player-2%" from "data" has value
+				set {_userID} to yaml value "links.%uuid of loop-player-2%" from "data"
+				set {_currentChannel} to current voice channel of user with id "%{_userID}%" in guild with id yaml value "server" from "config"
+				set {_channels::*} to yaml node keys "channels" from "data"
+				if {_channels::*} contains discord name of {_currentChannel}:
+					set {_continue} to true
+				else if discord id of {_currentChannel} is "%{_mainChannel}%":
+					set {_continue} to true
+				{_continue} is true
+				clear {_continue}
+				loop-player-1 and loop-player-2 can see loop-player-1 and loop-player-2
+				if gamemode of loop-player-1 is spectator:
+					set {_continue} to true if gamemode of loop-player-2 is spectator
+				else:
+					set {_continue} to true if gamemode of loop-player-2 is not spectator
+				{_continue} is true
+				clear {_continue}
+				add uuid of loop-player-2 to yaml list "groups.%{_count}%" from "temp"
+				add uuid of loop-player-2 to yaml list "groups.index" from "temp"
+			loop all players in radius {_radius} around loop-player-2:
+				distance between loop-player-1 and loop-player-3 > {_radius}
+				distance between loop-player-1 and loop-player-2 > distance between loop-player-2 and loop-player-3
+				yaml list "groups.%{_count}%" from "temp" contains uuid of loop-player-2
+				remove uuid of loop-player-2 from yaml list "groups.%{_count}%" from "temp"
+				remove uuid of loop-player-2 from yaml list "groups.index" from "temp"
+		loop yaml list "groups.%{_count}%" from "temp":
+			loop yaml list "groups.%{_count}%" from "temp":
+				loop-value-2 is not loop-value-1 or loop-value-3
+				loop-value-3 is not loop-value-1
+				distance between loop-value-2 and loop-value-3 > {_radius}
+				if distance between loop-value-1 and loop-value-2 < distance between loop-value-1 and loop-value-3:
+					remove loop-value-3 from yaml list "groups.%{_count}%" from "temp"
+					remove loop-value-3 from yaml list "groups.index" from "temp"
+				else:
+					remove loop-value-2 from yaml list "groups.%{_count}%" from "temp"
+					remove loop-value-2 from yaml list "groups.index" from "temp"
+		add 1 to {_count}
+	loop yaml node keys "groups" from "temp":
+		loop-value is not "index"
+		set {_channels::*} to yaml node keys "channels" from "data"
+		if {_channels::*} doesn't contain "skoice-%loop-value%":
+			create voice channel:
+				set name of channel to "skoice-%loop-value%"
+			create last made channel in guild with id yaml value "server" from "config" with "Skoice" and store it in {_channel}
+			if yaml value "push-to-talk" from "config" is true:
+				deny public role of guild with id yaml value "server" from "config" permission view channel and voice use vad in {_channel} with "Skoice"
+			else:
+				deny public role of guild with id yaml value "server" from "config" permission view channel in {_channel} with "Skoice"
+			set yaml value "channels.skoice-%loop-value%" from "data" to discord id of {_channel}
+			save yaml "data"
+		loop yaml list "groups.%loop-value%" from "temp":
+			set {_userID} to yaml value "links.%loop-value-2%" from "data"
+			set {_channelID} to yaml value "channels.skoice-%loop-value-1%" from "data"
+			current voice channel of user with id "%{_userID}%" in guild with id yaml value "server" from "config" is not voice channel with id "%{_channelID}%"
+			move user with id "%{_userID}%" in guild with id yaml value "server" from "config" to channel with id "%{_channelID}%" with "Skoice"
+
+on private message receive seen by "Skoice":
+	loop yaml node keys "codes" from "temp":
+		loop-value is content of event-message
+		if yaml node "links.%discord id of event-user%" from "data" doesn't have value:
+			set {_uuid} to yaml value "codes.%loop-value%" from "temp"
+			clear yaml value "codes.%loop-value%" from "temp"
+			set yaml value "links.%{_uuid}%" from "data" to discord id of event-user
+			set yaml value "links.%discord id of event-user%" from "data" to {_uuid}
+			save yaml "data"
+			set {_channelName} to discord name of channel with id yaml value "main-channel" from "config"
+			set {_channelChat} to "&o%{_channelName}%&r&a"
+			send formatted "&eSkoice &8• &a%skoiceLinkMessage({_channelChat})%" to {_uuid} parsed as a player
+			set {_channelDiscord} to "`%{_channelName}%`"
+			reply with skoiceLinkMessage({_channelDiscord})
+			stop
+		else:
+			reply with "Your Discord account is already linked to a Minecraft account."
+			stop
+	reply with "The entered code is invalid, check its accuracy with the `/skoice link` in-game command."
+
+on member switch channel seen by "Skoice":
+	discord id of event-guild is yaml value "server" from "config"
+	set {_skoiceChannels::*} to yaml node keys "channels" from "data"
+	if {_skoiceChannels::*} contains discord name of old channel:
+		amount of discord members of old channel is 0
+		clear yaml value "channels.%discord name of old channel%" from "data"
+		delete discord entity old channel
+		save yaml "data"
+	if discord id of old channel is yaml value "main-channel" from "config":
+		set {_left} to true if {_skoiceChannels::*} doesn't contain discord name of new channel
+	else if {_skoiceChannels::*} contains discord name of old channel:
+		discord id of new channel is not yaml value "main-channel" from "config"
+		set {_left} to true if {_skoiceChannels::*} doesn't contain discord name of new channel
+	else if discord id of new channel is yaml value "main-channel" from "config":
+		set {_joined} to true
+	set {_player} to yaml value "links.%discord id of event-user%" from "data" parsed as a player
+	if {_left} is true:
+		send skoiceDisconnectMessage() to {_player}
+	else if {_joined} is true:
+		send skoiceConnectMessage() to {_player}
+
+on user leave voice seen by "Skoice":
+	discord id of event-guild is yaml value "server" from "config"
+	set {_skoiceChannels::*} to yaml node keys "channels" from "data"
+	if {_skoiceChannels::*} contains discord name of event-channel:
+		clear yaml value "channels.%discord name of event-channel%" from "data"
+		delete discord entity event-channel if amount of discord members of event-channel is 0
+		save yaml "data"
+		set {_left} to true
+	set {_left} to true if discord id of event-channel is yaml value "main-channel" from "config"
+	{_left} is true
+	set {_player} to yaml value "links.%discord id of event-user%" from "data" parsed as a player
+	send skoiceDisconnectMessage() to {_player}
+
+on user join voice seen by "Skoice":
+	discord id of event-channel is yaml value "main-channel" from "config"
+	set {_player} to yaml value "links.%discord id of event-user%" from "data" parsed as a player
+	send skoiceConnectMessage() to {_player}
