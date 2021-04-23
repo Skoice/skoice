@@ -25,10 +25,8 @@ https://youtu.be/gV-QU7ovG4M
 
 ## Which Minecraft versions?
 
-<ul>
-<li>Minecraft Java from 1.8 to 1.16.5 included</li>
-<li>Minecraft Bedrock using [GeyserMC](https://geysermc.org/)</li>
-</ul>
+- Minecraft Java from 1.8 to 1.16.5 included
+- Minecraft Bedrock using [GeyserMC](https://geysermc.org/)
 
 ## How to support me?
 
