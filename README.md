@@ -23,6 +23,13 @@ You can also watch this video tutorial in English:
 
 https://youtu.be/gV-QU7ovG4M
 
+## Which Minecraft versions?
+
+<ul>
+<li>Minecraft Java from 1.8 to 1.16.5 included</li>
+<li>Minecraft Bedrock using [GeyserMC](https://geysermc.org/)</li>
+</ul>
+
 ## How to support me?
 
 Rating this resource at 5 stars on Spigot will help me a lot. Feel free to do so if you use Skoice!
