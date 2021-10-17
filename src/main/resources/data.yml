@@ -1,19 +1,9 @@
 # Bot Token
 #   -Required
-# Guild ID ( Server ID )
-#   -Required
 # Main Voice Channel ID
-#   -Required
-# Radius
 #   -Required
 # category ID
 #   -Required
-# player has to be online
-#   - Optional
-#   - Force players to be verified, and on discord to play
 token: ""
-guildID: ""
 mainVoiceChannelID: ""
-radius: 25
 categoryID: ""
-forcePlayersOnline: false

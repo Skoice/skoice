@@ -1,4 +1,5 @@
 // Copyright 2020, 2021 Clément "carlodrift" Raynaud, rowisabeast
+// Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
 
 // This file is part of Skoice.
 
@@ -13,19 +14,19 @@
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+// along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 
 
 package net.clementraynaud.api;
 
-import net.clementraynaud.Bot;
+import net.clementraynaud.VoiceModule;
 import net.clementraynaud.Skoice;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
 public class PlaceHolderAPI extends PlaceholderExpansion {
-    private final Bot plugin;
-    public PlaceHolderAPI(Bot plugin){
+    private final VoiceModule plugin;
+    public PlaceHolderAPI(VoiceModule plugin){
         this.plugin = plugin;
     }
 
@@ -50,9 +51,9 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
     public String onPlaceholderRequest(Player P1, String identifier){
         if(P1 == null) return null;
 
-        if(identifier.equalsIgnoreCase("isPlayerInVC")){
-            return plugin.isPlayerInVC(P1.getUniqueId()).toString();
-        }
+//        if(identifier.equalsIgnoreCase("isPlayerInVC")){
+//            return plugin.isPlayerInVC(P1.getUniqueId()).toString();
+//        }
 
         return null;
     }

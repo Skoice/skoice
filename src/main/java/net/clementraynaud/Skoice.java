@@ -1,4 +1,5 @@
 // Copyright 2020, 2021 Clément "carlodrift" Raynaud, rowisabeast
+// Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
 
 // This file is part of Skoice.
 
@@ -13,14 +14,11 @@
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+// along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 
 
 package net.clementraynaud;
 
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -35,7 +33,12 @@ public final class Skoice extends JavaPlugin {
 
     public FileConfiguration playerData;
     public File data;
-    private Bot bot;
+
+    public VoiceModule getVoiceModule() {
+        return bot;
+    }
+
+    private VoiceModule bot;
 
     boolean botReady = false;
 
@@ -48,8 +51,6 @@ public final class Skoice extends JavaPlugin {
         getLogger().info("Plugin enabled!");
         if(playerData.getString("token").equals("")){
             getLogger().severe(ChatColor.RED + "No bot token, edit the data.yml to add token");
-        } else if(playerData.getString("guildID").equals("")){
-            getLogger().severe(ChatColor.RED + "No bot guildID, edit the data.yml to add guildID");
         } else if(playerData.getString("mainVoiceChannelID").equals("")){
             getLogger().severe(ChatColor.RED + "No bot mainVoiceChannelID, edit the data.yml to add mainVoiceChannelID");
         } else {
@@ -60,7 +61,8 @@ public final class Skoice extends JavaPlugin {
 
 
             botReady = true;
-            bot = new Bot(this);
+//            bot = new Bot(this);
+            bot = new VoiceModule(this);
             // getServer().getPluginManager().registerEvents();
         }
         if(!botReady){
@@ -84,31 +86,32 @@ public final class Skoice extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        bot.shutdown();
         // Plugin shutdown logic
-        if(botReady){
-            getLogger().info("Moving all Discord Members to MainVoiceChannel, And Deleting All Skoice Created Voice Channels");
-            VoiceChannel MainVC = bot.jda.getVoiceChannelById(playerData.getString("mainVoiceChannelID"));
-            for(VoiceChannel createdVC : bot.createdVoiceChannels){
-                for(Member meminvc : createdVC.getMembers()){
-                    try {
-                        getLogger().info("Moving "+meminvc.getNickname()+" to "+MainVC.getName());
-                        bot.jda.getGuilds().get(0).moveVoiceMember(meminvc, MainVC).complete(true);
-                    } catch (RateLimitedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                try {
-                    getLogger().info("Deleting Voice Channel '"+createdVC.getName()+"'");
-                    createdVC.delete().complete(true);
-                } catch (RateLimitedException e) {
-                    e.printStackTrace();
-                }
-            }
-            bot.jda.shutdownNow();
-        }else{
-            getLogger().severe(ChatColor.RED + "Discord Bot didn't start correctly, The error should be above. Please Contact us if you believe this is a bug");
-        }
+//        if(botReady){
+//            getLogger().info("Moving all Discord Members to MainVoiceChannel, And Deleting All Skoice Created Voice Channels");
+//            VoiceChannel MainVC = bot.jda.getVoiceChannelById(playerData.getString("mainVoiceChannelID"));
+//            for(VoiceChannel createdVC : bot.createdVoiceChannels){
+//                for(Member meminvc : createdVC.getMembers()){
+//                    try {
+//                        getLogger().info("Moving "+meminvc.getNickname()+" to "+MainVC.getName());
+//                        bot.jda.getGuilds().get(0).moveVoiceMember(meminvc, MainVC).complete(true);
+//                    } catch (RateLimitedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                try {
+//                    getLogger().info("Deleting Voice Channel '"+createdVC.getName()+"'");
+//                    createdVC.delete().complete(true);
+//                } catch (RateLimitedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            bot.jda.shutdownNow();
+//        }else{
+//            getLogger().severe(ChatColor.RED + "Discord Bot didn't start correctly, The error should be above. Please Contact us if you believe this is a bug");
+//        }
 
-        getLogger().info("Plugin disabled!");
+//        getLogger().info("Plugin disabled!");
     }
 }

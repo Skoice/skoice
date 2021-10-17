@@ -1,4 +1,5 @@
 // Copyright 2020, 2021 Clément "carlodrift" Raynaud, rowisabeast
+// Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
 
 // This file is part of Skoice.
 
@@ -13,7 +14,7 @@
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+// along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 
 
 package net.clementraynaud.api;
