@@ -4,6 +4,15 @@
 #   -Required
 # category ID
 #   -Required
+# distance
+#   -type : Required
 token: ""
 mainVoiceChannelID: ""
 categoryID: ""
+distance:
+  type: "default" # default/custom/radius
+  custom:
+    verticalStrength: 40 # The distance in the Y direction
+    horizontalStrength: 80 # The distance in the X direction
+    falloff: 5 # A medium in the distances
+  radius: 50

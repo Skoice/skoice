@@ -59,7 +59,9 @@ public class Skoice extends JavaPlugin {
             getLogger().severe(ChatColor.RED + "No bot token, edit the data.yml to add token");
         } else if(playerData.getString("mainVoiceChannelID").equals("")){
             getLogger().severe(ChatColor.RED + "No bot mainVoiceChannelID, edit the data.yml to add mainVoiceChannelID");
-        } else {
+        } else if(playerData.getString("distance").equals("")) {
+            getLogger().severe(ChatColor.RED + "No distance config found, make sure you add the 'distance' from data https://github.com/carlodrift/skoice/blob/dev/src/main/resources/data.yml");
+        }else {
 
             // Check if newest version
 

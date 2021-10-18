@@ -491,22 +491,31 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
     }
 
     public static double verticalDistance(Location location1, Location location2) {
+        if(getDistanceType().equals("radius")) return location1.distance(location2);
         return Math.sqrt(NumberConversions.square(location1.getY() - location2.getY()));
     }
 
     public static double horizontalDistance(Location location1, Location location2) {
+        if(getDistanceType().equals("radius")) return location1.distance(location2);
         return Math.sqrt(NumberConversions.square(location1.getX() - location2.getX()) + NumberConversions.square(location1.getZ() - location2.getZ()));
     }
 
+    public static String getDistanceType(){
+        return plugin.playerData.getString("distance.type");
+    }
+
     public static double getVerticalStrength() {
+        if(getDistanceType().equals("custom")) return plugin.playerData.getInt("distance.custom.verticalStrength");
         return 40;
     }
 
     public static double getHorizontalStrength() {
+        if(getDistanceType().equals("custom")) return plugin.playerData.getInt("distance.custom.horizontalStrength");
         return 80;
     }
 
     public static double getFalloff() {
+        if(getDistanceType().equals("custom")) return plugin.playerData.getInt("distance.custom.falloff");
         return 5;
     }
 
