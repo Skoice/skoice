@@ -75,7 +75,6 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
     private final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
     private final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
 
-
     public static JDA jda;
     private static Skoice plugin;
     public HashMap<UUID,String>uuidCodeMap;

@@ -19,17 +19,23 @@
 
 package net.clementraynaud;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import net.dv8tion.jda.api.events.ShutdownEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.concurrent.*;
 
-public final class Skoice extends JavaPlugin {
+public class Skoice extends JavaPlugin {
 
     public FileConfiguration playerData;
     public File data;
@@ -86,7 +92,34 @@ public final class Skoice extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        bot.shutdown();
+        final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("Skoice - Shutdown").build();
+        final ExecutorService executor = Executors.newSingleThreadExecutor(threadFactory);
+        try {
+            executor.invokeAll(Collections.singletonList(() -> {
+                bot.shutdown();
+                if (bot.jda != null) bot.jda.getEventManager().getRegisteredListeners().forEach(listener -> bot.jda.getEventManager().unregister(listener));
+                if (bot.jda != null) {
+                    CompletableFuture<Void> shutdownTask = new CompletableFuture<>();
+                    bot.jda.addEventListener(new ListenerAdapter() {
+                        @Override
+                        public void onShutdown(@NotNull ShutdownEvent event) {
+                            shutdownTask.complete(null);
+                        }
+                    });
+                    bot.jda.shutdownNow();
+                    bot.jda = null;
+                    try {
+                        shutdownTask.get(5, TimeUnit.SECONDS);
+                    } catch (TimeoutException e) {
+                        getLogger().warning("JDA took too long to shut down, skipping");
+                    }
+                }
+
+                return null;
+            }), 15, TimeUnit.SECONDS);
+        }catch(InterruptedException e){}
+        executor.shutdownNow();
+    }
         // Plugin shutdown logic
 //        if(botReady){
 //            getLogger().info("Moving all Discord Members to MainVoiceChannel, And Deleting All Skoice Created Voice Channels");
@@ -114,4 +147,3 @@ public final class Skoice extends JavaPlugin {
 
 //        getLogger().info("Plugin disabled!");
     }
-}
