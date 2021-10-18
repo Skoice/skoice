@@ -482,7 +482,9 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
     public static UUID getUniqueId(Member member) {
 //        return plugin.getAccountLinkManager().getUuid(member.getId());
 //        return guild.getMemberById(plugin.playerData.getString("Data."+u));
-        return UUID.fromString(plugin.playerData.getString("Data."+member.getId()));
+        String id = plugin.playerData.getString("Data."+member.getId());
+//        return UUID.fromString(plugin.playerData.getString("Data."+member.getId()));
+        return id != null ? UUID.fromString(plugin.playerData.getString("Data."+member.getId())) : null;
     }
 
     public static double verticalDistance(Location location1, Location location2) {
