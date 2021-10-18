@@ -20,6 +20,7 @@
 package net.clementraynaud;
 
 import lombok.Getter;
+import net.clementraynaud.api.PlaceHolderAPI;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -136,6 +137,9 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
                         // temporarily add it as a network so it can be emptied and deleted
                         networks.add(new net.clementraynaud.Network(channel.getId()));
                     });
+        }
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new PlaceHolderAPI(this).register();
         }
     }
 
@@ -538,7 +542,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
                 event.getChannel().sendMessage("This player is already linked to another discord account").queue();
                 return;
             }
-            String randomcode = new Random().nextInt(800000)+200000+"PL"; //6581446AA
+            String randomcode = new Random().nextInt(800000)+200000+"SK"; //6581446AA
             uuidCodeMap.put(target.getUniqueId(),randomcode);
             uuidIdMap.put(target.getUniqueId(),event.getAuthor().getId());
 
