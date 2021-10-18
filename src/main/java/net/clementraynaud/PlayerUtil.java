@@ -34,10 +34,9 @@ public class PlayerUtil {
 
     /**
      * Method return type-safe version of Bukkit::getOnlinePlayers
-     * @param filterVanishedPlayers whether or not to filter out vanished players
      * @return {@code ArrayList} containing online players
      */
-    public static List<Player> getOnlinePlayers(boolean filterVanishedPlayers) {
+    public static List<Player> getOnlinePlayers() {
         List<Player> onlinePlayers = new ArrayList<>();
 
         try {
@@ -53,12 +52,6 @@ public class PlayerUtil {
 //            error(e);
         }
 
-        if (!filterVanishedPlayers) {
-            return onlinePlayers;
-        } else {
-            return onlinePlayers.stream()
-//                    .filter(player -> !isVanished(player))
-                    .collect(Collectors.toList());
-        }
+        return onlinePlayers;
     }
 }

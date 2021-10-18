@@ -192,7 +192,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
             // remove networks that have no voice channel
             networks.removeIf(network -> network.getChannel() == null && network.isInitialized());
 
-            Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers(false).stream()
+            Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers().stream()
                     .filter(player -> !player.isDead())
                     .collect(Collectors.toSet());
 
