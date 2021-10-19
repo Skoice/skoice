@@ -58,6 +58,9 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         if(identifier.equalsIgnoreCase("getMutedUsers")){
             return plugin.getMutedUsers().toString();
         }
+        if(identifier.equalsIgnoreCase("getNetworks")) {
+            return plugin.getNetworks().toString();
+        }
 
         return null;
     }
