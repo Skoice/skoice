@@ -121,31 +121,7 @@ public class Skoice extends JavaPlugin {
             }), 15, TimeUnit.SECONDS);
         }catch(InterruptedException e){}
         executor.shutdownNow();
+        getLogger().info("Plugin disabled!");
     }
-        // Plugin shutdown logic
-//        if(botReady){
-//            getLogger().info("Moving all Discord Members to MainVoiceChannel, And Deleting All Skoice Created Voice Channels");
-//            VoiceChannel MainVC = bot.jda.getVoiceChannelById(playerData.getString("mainVoiceChannelID"));
-//            for(VoiceChannel createdVC : bot.createdVoiceChannels){
-//                for(Member meminvc : createdVC.getMembers()){
-//                    try {
-//                        getLogger().info("Moving "+meminvc.getNickname()+" to "+MainVC.getName());
-//                        bot.jda.getGuilds().get(0).moveVoiceMember(meminvc, MainVC).complete(true);
-//                    } catch (RateLimitedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                try {
-//                    getLogger().info("Deleting Voice Channel '"+createdVC.getName()+"'");
-//                    createdVC.delete().complete(true);
-//                } catch (RateLimitedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            bot.jda.shutdownNow();
-//        }else{
-//            getLogger().severe(ChatColor.RED + "Discord Bot didn't start correctly, The error should be above. Please Contact us if you believe this is a bug");
-//        }
 
-//        getLogger().info("Plugin disabled!");
-    }
+}
