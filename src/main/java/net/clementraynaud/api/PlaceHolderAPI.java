@@ -55,6 +55,10 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
 //            return plugin.isPlayerInVC(P1.getUniqueId()).toString();
 //        }
 
+        if(identifier.equalsIgnoreCase("getMutedUsers")){
+            return plugin.getMutedUsers().toString();
+        }
+
         return null;
     }
 }
