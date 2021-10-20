@@ -6,6 +6,8 @@
 #   -Required
 # distance
 #   -type : Required
+# checkVersion
+#   -Optional
 token: ""
 mainVoiceChannelID: ""
 categoryID: ""
@@ -16,3 +18,5 @@ distance:
     horizontalStrength: 80 # The distance in the X direction
     falloff: 5 # A medium in the distances
   radius: 50
+checkVersion:
+  atStartup: true

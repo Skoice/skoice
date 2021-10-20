@@ -69,16 +69,20 @@ public class Skoice extends JavaPlugin {
             getLogger().severe(ChatColor.RED + "No bot token, edit the data.yml to add token");
         } else if(playerData.getString("mainVoiceChannelID").equals("")){
             getLogger().severe(ChatColor.RED + "No bot mainVoiceChannelID, edit the data.yml to add mainVoiceChannelID");
-        } else if(playerData.getString("distance").equals("")) {
+        } else if(playerData.getString("distance")==null) {
             getLogger().severe(ChatColor.RED + "No distance config found, make sure you add the 'distance' from data https://github.com/carlodrift/skoice/blob/dev/src/main/resources/data.yml");
-        }else {
+        }else if(playerData.getString("checkVersion")==null) {
+            getLogger().severe(ChatColor.RED + "No checkVersion config found, make sure you add the 'checkVersion' from data https://github.com/carlodrift/skoice/blob/dev/src/main/resources/data.yml");
+        }else{
 
             // Check if newest version
 
             //Check/get scoreboard
 
             //Check Version
-            checkVersion();
+            if(playerData.getBoolean("checkVersion.atStartup")) {
+                checkVersion();
+            }
 
             botReady = true;
 //            bot = new Bot(this);
@@ -105,6 +109,7 @@ public class Skoice extends JavaPlugin {
     }
 
     public void checkVersion(){
+        getLogger().info(ChatColor.YELLOW+"Checking Version Now!");
         try{
             Skoice nsk = this;
             String skoiceFileVersion = nsk.getDescription().getVersion();
@@ -123,6 +128,8 @@ public class Skoice extends JavaPlugin {
             }else if (nw < 0){
                 getLogger().warning((Object)ChatColor.RED + "You are using an unreleased version!");
                 getLogger().warning("Latest version: " + (Object)ChatColor.GREEN + spigotVersion + (Object)ChatColor.YELLOW + ". You are on version: " + (Object)ChatColor.RED + skoiceFileVersion + (Object)ChatColor.YELLOW + ".");
+            }else{
+                getLogger().info(ChatColor.GREEN+"Looks like your using the latest version!");
             }
         }catch (IOException e){
             //getLogger().severe("Unable to check for updates. Error: " + e.getMessage());
@@ -144,6 +151,8 @@ public class Skoice extends JavaPlugin {
                 }else if (nw < 0){
                     getLogger().warning((Object)ChatColor.RED + "You are using an unreleased version!");
                     getLogger().warning("Latest version: " + (Object)ChatColor.GREEN + spigotVersion + (Object)ChatColor.YELLOW + ". You are on version: " + (Object)ChatColor.RED + skoiceFileVersion + (Object)ChatColor.YELLOW + ".");
+                }else{
+                    getLogger().info(ChatColor.GREEN+"Looks like your using the latest version!");
                 }
             }catch (IOException ioException){
                 getLogger().severe("Unable to check for updates. Error: " + ioException.getMessage());
