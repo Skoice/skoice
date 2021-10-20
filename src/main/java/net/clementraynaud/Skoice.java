@@ -26,7 +26,6 @@ import com.google.gson.stream.JsonReader;
 import net.dv8tion.jda.api.events.ShutdownEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -126,7 +125,29 @@ public class Skoice extends JavaPlugin {
                 getLogger().warning("Latest version: " + (Object)ChatColor.GREEN + spigotVersion + (Object)ChatColor.YELLOW + ". You are on version: " + (Object)ChatColor.RED + skoiceFileVersion + (Object)ChatColor.YELLOW + ".");
             }
         }catch (IOException e){
-            getLogger().severe("Unable to check for updates. Error: " + e.getMessage());
+            //getLogger().severe("Unable to check for updates. Error: " + e.getMessage());
+            try{
+                Skoice nsk = this;
+                String skoiceFileVersion = nsk.getDescription().getVersion();
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection)new URL("http://home.plimbocraft.com/skoice-two/php/newestVersion.php").openConnection();
+                httpURLConnection.setRequestMethod("GET");
+
+                JsonObject jsonObject = new JsonParser().parse(new JsonReader((Reader)new InputStreamReader(httpURLConnection.getInputStream()))).getAsJsonObject();
+                String spigotVersion =  jsonObject.get("current_version").getAsString();
+
+                int nw = isUpdateAvailable(spigotVersion, skoiceFileVersion);
+                if(nw>0){
+                    getLogger().warning((Object)ChatColor.RED + "You are using an outdated version!");
+                    getLogger().warning("Latest version: " + (Object)ChatColor.GREEN + spigotVersion + (Object)ChatColor.YELLOW + ". You are on version: " + (Object)ChatColor.RED + skoiceFileVersion + (Object)ChatColor.YELLOW + ".");
+                    getLogger().warning("Update here: " + (Object)ChatColor.AQUA + "http://home.plimbocraft.com/skoice-two/php/latest.php");
+                }else if (nw < 0){
+                    getLogger().warning((Object)ChatColor.RED + "You are using an unreleased version!");
+                    getLogger().warning("Latest version: " + (Object)ChatColor.GREEN + spigotVersion + (Object)ChatColor.YELLOW + ". You are on version: " + (Object)ChatColor.RED + skoiceFileVersion + (Object)ChatColor.YELLOW + ".");
+                }
+            }catch (IOException ioException){
+                getLogger().severe("Unable to check for updates. Error: " + ioException.getMessage());
+            }
         }
     }
 
