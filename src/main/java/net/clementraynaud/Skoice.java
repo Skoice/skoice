@@ -161,10 +161,8 @@ public class Skoice extends JavaPlugin {
         int[] arrn2 = Arrays.stream(string.replaceAll("[^0-9.]", "").split(Pattern.quote("."))).mapToInt(Integer::parseInt).toArray();
         if (arrn2.length > (arrn = Arrays.stream(string2.replaceAll("[^0-9.]", "").split(Pattern.quote("."))).mapToInt(Integer::parseInt).toArray()).length) {
             arrn = Arrays.copyOf(arrn, arrn2.length);
-            getLogger().info(arrn.toString());
         } else if (arrn.length > arrn2.length) {
             arrn2 = Arrays.copyOf(arrn2, arrn.length);
-            getLogger().info(arrn2.toString());
         }
         int n = 0;
         for (int i = 0; i < arrn2.length; ++i) {
@@ -176,7 +174,6 @@ public class Skoice extends JavaPlugin {
             n = -1;
             break;
         }
-        getLogger().info("HI: "+n);
         return n;
     }
 
