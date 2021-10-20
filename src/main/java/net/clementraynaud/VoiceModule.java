@@ -103,7 +103,8 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
         }catch (LoginException | InterruptedException e){
             plugin.getLogger().severe("JDA ERROR: "+ Arrays.toString(e.getStackTrace()));
         }
-        plugin.getCommand("verify").setExecutor(this);
+        plugin.getCommand("link").setExecutor(this);
+        plugin.getCommand("unlink").setExecutor(this);
         if (true) {
             jda.addEventListener(this);
             Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -553,12 +554,12 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
             uuidIdMap.put(target.getUniqueId(),event.getAuthor().getId());
 
             event.getAuthor().openPrivateChannel().complete().sendMessage("Hey! Your verification has been generated!\n" +
-                    "Use this command in game: ``/verify "+randomcode+"``").queue();
+                    "Use this command in game: ``/link "+randomcode+"``").queue();
         }
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) { //  /verify randomcodeAA
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) { //  /verify randomcodeSK
         if(!(sender instanceof Player)){
             sender.sendMessage("§cOnly players can execute this command!");
             return true;
@@ -567,46 +568,63 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
         //if(cmd.getName().equalsIgnoreCase("ping")){
         //    player.sendMessage("Pong!");
         //}
-        String dasd = plugin.playerData.getString("Data."+player.getUniqueId());
-        if(dasd!=null){
-            player.sendMessage("§cSorry! You are already verified!");
+        if(cmd.getName().equalsIgnoreCase("unlink")){
+            String getMemberIDfromFile = plugin.playerData.getString("Data." + player.getUniqueId());
+            if(getMemberIDfromFile==null){
+                player.sendMessage("§cYou are not currently linked!");
+                return true;
+            }
+            String diID = plugin.playerData.getString("Data."+player.getUniqueId());
+            plugin.playerData.set("Data."+player.getUniqueId(), null);
+            plugin.playerData.set("Data."+diID, null);
+            try {
+                plugin.playerData.save(plugin.data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return true;
-        }
-        if(!uuidCodeMap.containsKey(player.getUniqueId())){
-            player.sendMessage("§cNot pending verification process!");
-            return true;
-        }
-        if(args.length!=1){
-            player.sendMessage("§cUsage: /verify [code]");
-            return true;
-        }
-        String actualcode = uuidCodeMap.get(player.getUniqueId());
-        if(!actualcode.equals(args[0])){
-            player.sendMessage("§cCode is not valid! Check again!");
-            return true;
-        }
-        String discordid = uuidIdMap.get(player.getUniqueId());
-        Member target = getGuild().getMemberById(discordid);
-        if(target==null){
+        }else if(cmd.getName().equalsIgnoreCase("link")) {
+            String dasd = plugin.playerData.getString("Data." + player.getUniqueId());
+            if (dasd != null) {
+                player.sendMessage("§cSorry! You are already linked!");
+                return true;
+            }
+            if (!uuidCodeMap.containsKey(player.getUniqueId())) {
+                player.sendMessage("§cNot pending linking process!");
+                return true;
+            }
+            if (args.length != 1) {
+                player.sendMessage("§cUsage: /link [code]");
+                return true;
+            }
+            String actualcode = uuidCodeMap.get(player.getUniqueId());
+            if (!actualcode.equals(args[0])) {
+                player.sendMessage("§cCode is not valid! Check again!");
+                return true;
+            }
+            String discordid = uuidIdMap.get(player.getUniqueId());
+            Member target = getGuild().getMemberById(discordid);
+            if (target == null) {
+                uuidCodeMap.remove(player.getUniqueId());
+                uuidIdMap.remove(player.getUniqueId());
+                player.sendMessage("§cError! It seems that you left our Discord server!");
+                return true;
+            }
+            plugin.playerData.set("Data." + player.getUniqueId(), discordid);
+            plugin.playerData.set("Data." + discordid, player.getUniqueId().toString());
+            try {
+                plugin.playerData.save(plugin.data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             uuidCodeMap.remove(player.getUniqueId());
             uuidIdMap.remove(player.getUniqueId());
-            player.sendMessage("§cError! It seems that you left our Discord server!");
-            return true;
-        }
-        plugin.playerData.set("Data."+ player.getUniqueId(),discordid);
-        plugin.playerData.set("Data."+discordid,player.getUniqueId().toString());
-        try {
-            plugin.playerData.save(plugin.data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        uuidCodeMap.remove(player.getUniqueId());
-        uuidIdMap.remove(player.getUniqueId());
 //        verifiedmembers.add(player.getUniqueId());
 
 
-        target.getUser().openPrivateChannel().complete().sendMessage(":white_check_mark: **|** Verification successfully, you have linked your account with Mc account: "+player.getName()).queue();
-        player.sendMessage("§aYou have been verified correctly! You linked your account with member: "+target.getUser().getName()+"#"+target.getUser().getDiscriminator());
+            target.getUser().openPrivateChannel().complete().sendMessage(":white_check_mark: **|** Verification successfully, you have linked your account with Mc account: " + player.getName()).queue();
+            player.sendMessage("§aYou have been linked correctly! You linked your account with member: " + target.getUser().getName() + "#" + target.getUser().getDiscriminator());
+        }
         return true;
     }
 

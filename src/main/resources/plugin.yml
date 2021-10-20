@@ -34,6 +34,9 @@ authors:
 website: ${project.url}
 
 commands:
-  verify:
-    usage: /verify [code]
-    description: Command to verify
+  link:
+    usage: /link [code]
+    description: Command to link in MC
+  unlink:
+    usage: /unlink
+    description: will unlink player who uses the command, if they are linked
