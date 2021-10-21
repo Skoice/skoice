@@ -21,5 +21,5 @@ distance:
 checkVersion:
   atStartup: true
   periodically:
-    enabled: false
+    enabled: true
     delay: 144000 # 2 hours ## use https://mapmaking.fr/tick/ to get tick
