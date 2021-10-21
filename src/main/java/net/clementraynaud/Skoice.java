@@ -74,21 +74,13 @@ public class Skoice extends JavaPlugin {
         }else if(playerData.getString("checkVersion")==null) {
             getLogger().severe(ChatColor.RED + "No checkVersion config found, make sure you add the 'checkVersion' from data https://github.com/carlodrift/skoice/blob/dev/src/main/resources/data.yml");
         }else{
-
-            // Check if newest version
-
-            //Check/get scoreboard
-
             //Check Version
             if(playerData.getBoolean("checkVersion.atStartup")) {
                 getLogger().info(ChatColor.YELLOW+"Checking Version Now!");
                 checkVersion();
             }
-
             botReady = true;
-//            bot = new Bot(this);
             bot = new VoiceModule(this);
-            // getServer().getPluginManager().registerEvents();
         }
         if(!botReady){
             onDisable();
@@ -110,7 +102,6 @@ public class Skoice extends JavaPlugin {
     }
     public Boolean ifHome = false;
     public void checkVersion(){
-        //getLogger().info(ChatColor.YELLOW+"Checking Version Now!");
         if(!ifHome) {
             try {
                 Skoice nsk = this;

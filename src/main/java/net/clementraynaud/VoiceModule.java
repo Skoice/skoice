@@ -129,6 +129,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
             }
         }else{
             plugin.onDisable();
+            return;
         }
 
         Category category = jda.getCategoryById(plugin.playerData.getString("categoryID"));
