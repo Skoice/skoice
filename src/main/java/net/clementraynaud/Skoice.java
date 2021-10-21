@@ -81,6 +81,7 @@ public class Skoice extends JavaPlugin {
 
             //Check Version
             if(playerData.getBoolean("checkVersion.atStartup")) {
+                getLogger().info(ChatColor.YELLOW+"Checking Version Now!");
                 checkVersion();
             }
 
@@ -107,32 +108,37 @@ public class Skoice extends JavaPlugin {
             e.printStackTrace();
         }
     }
-
+    public Boolean ifHome = false;
     public void checkVersion(){
-        getLogger().info(ChatColor.YELLOW+"Checking Version Now!");
-        try{
-            Skoice nsk = this;
-            String skoiceFileVersion = nsk.getDescription().getVersion();
+        //getLogger().info(ChatColor.YELLOW+"Checking Version Now!");
+        if(!ifHome) {
+            try {
+                Skoice nsk = this;
+                String skoiceFileVersion = nsk.getDescription().getVersion();
 
-            HttpsURLConnection httpsURLConnection = (HttpsURLConnection)new URL("https://plimbocraft.com/skoice-two/php/newestVersion.php").openConnection();
-            httpsURLConnection.setRequestMethod("GET");
+                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://plimbocraft.com/skoice-two/php/newestVersion.php").openConnection();
+                httpsURLConnection.setRequestMethod("GET");
 
-            JsonObject jsonObject = new JsonParser().parse(new JsonReader((Reader)new InputStreamReader(httpsURLConnection.getInputStream()))).getAsJsonObject();
-            String spigotVersion =  jsonObject.get("current_version").getAsString();
+                JsonObject jsonObject = new JsonParser().parse(new JsonReader((Reader) new InputStreamReader(httpsURLConnection.getInputStream()))).getAsJsonObject();
+                String spigotVersion = jsonObject.get("current_version").getAsString();
 
-            int nw = isUpdateAvailable(spigotVersion, skoiceFileVersion);
-            if(nw>0){
-                getLogger().warning((Object)ChatColor.RED + "You are using an outdated version!");
-                getLogger().warning("Latest version: " + (Object)ChatColor.GREEN + spigotVersion + (Object)ChatColor.YELLOW + ". You are on version: " + (Object)ChatColor.RED + skoiceFileVersion + (Object)ChatColor.YELLOW + ".");
-                getLogger().warning("Update here: " + (Object)ChatColor.AQUA + "http://home.plimbocraft.com/skoice-two/php/latest.php");
-            }else if (nw < 0){
-                getLogger().warning((Object)ChatColor.RED + "You are using an unreleased version!");
-                getLogger().warning("Latest version: " + (Object)ChatColor.GREEN + spigotVersion + (Object)ChatColor.YELLOW + ". You are on version: " + (Object)ChatColor.RED + skoiceFileVersion + (Object)ChatColor.YELLOW + ".");
-            }else{
-                getLogger().info(ChatColor.GREEN+"Looks like your using the latest version!");
+                int nw = isUpdateAvailable(spigotVersion, skoiceFileVersion);
+                if (nw > 0) {
+                    getLogger().warning((Object) ChatColor.RED + "You are using an outdated version!");
+                    getLogger().warning("Latest version: " + (Object) ChatColor.GREEN + spigotVersion + (Object) ChatColor.YELLOW + ". You are on version: " + (Object) ChatColor.RED + skoiceFileVersion + (Object) ChatColor.YELLOW + ".");
+                    getLogger().warning("Update here: " + (Object) ChatColor.AQUA + "http://home.plimbocraft.com/skoice-two/php/latest.php");
+                } else if (nw < 0) {
+                    getLogger().warning((Object) ChatColor.RED + "You are using an unreleased version!");
+                    getLogger().warning("Latest version: " + (Object) ChatColor.GREEN + spigotVersion + (Object) ChatColor.YELLOW + ". You are on version: " + (Object) ChatColor.RED + skoiceFileVersion + (Object) ChatColor.YELLOW + ".");
+                }
+                //getLogger().info(ChatColor.GREEN+"Looks like your using the latest version!");
+
+            } catch (IOException e) {
+                //getLogger().severe("Unable to check for updates. Error: " + e.getMessage());
+                ifHome = true;
+                checkVersion();
             }
-        }catch (IOException e){
-            //getLogger().severe("Unable to check for updates. Error: " + e.getMessage());
+        }else{
             try{
                 Skoice nsk = this;
                 String skoiceFileVersion = nsk.getDescription().getVersion();
@@ -151,18 +157,20 @@ public class Skoice extends JavaPlugin {
                 }else if (nw < 0){
                     getLogger().warning((Object)ChatColor.RED + "You are using an unreleased version!");
                     getLogger().warning("Latest version: " + (Object)ChatColor.GREEN + spigotVersion + (Object)ChatColor.YELLOW + ". You are on version: " + (Object)ChatColor.RED + skoiceFileVersion + (Object)ChatColor.YELLOW + ".");
-                }else{
-                    getLogger().info(ChatColor.GREEN+"Looks like your using the latest version!");
                 }
+                //getLogger().info(ChatColor.GREEN+"Looks like your using the latest version!");
+
             }catch (IOException ioException){
-                getLogger().severe("Unable to check for updates. Error: " + ioException.getMessage());
+                //getLogger().severe("Unable to check for updates. Error: " + ioException.getMessage());
+                ifHome = false;
             }
         }
+
     }
 
     // Will add autoUpdater
 
-    public int isUpdateAvailable(String string, String string2) {
+    public static int isUpdateAvailable(String string, String string2) {
         int[] arrn;
         if (string == null || string2 == null) {
             return 0;

@@ -116,6 +116,17 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
                     ),
                     0
             );
+            if(plugin.playerData.getBoolean("checkVersion.peridioicaly.enabled")){
+                Bukkit.getScheduler().runTaskLater(plugin, () ->
+                        Bukkit.getScheduler().runTaskTimerAsynchronously(
+                                plugin,
+                                plugin::checkVersion,
+                                plugin.playerData.getInt("checkVersion.peridioicaly.delay"), // Delay before first run
+                                plugin.playerData.getInt("checkVersion.peridioicaly.delay") // Delay between every run
+                        ),
+                        0
+                );
+            }
         }
 
         Category category = jda.getCategoryById(plugin.playerData.getString("categoryID"));

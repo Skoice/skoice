@@ -20,3 +20,6 @@ distance:
   radius: 50
 checkVersion:
   atStartup: true
+  peridioicaly:
+    enabled: false
+    delay: 144000 # 2 hours ## use https://mapmaking.fr/tick/ to get tick
