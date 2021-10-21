@@ -8,6 +8,8 @@
 #   -type : Required
 # checkVersion
 #   -Optional
+#   -atStartup # runs checkVersion at the start of Skoice
+#   -periodically # if enabled, runs every X ticks
 token: ""
 mainVoiceChannelID: ""
 categoryID: ""
