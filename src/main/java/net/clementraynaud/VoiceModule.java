@@ -104,7 +104,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
         }
         plugin.getCommand("link").setExecutor(this);
         plugin.getCommand("unlink").setExecutor(this);
-        if (true) {
+        if (jda!=null) {
             jda.addEventListener(this);
             Bukkit.getPluginManager().registerEvents(this, plugin);
             Bukkit.getScheduler().runTaskLater(plugin, () ->
@@ -127,6 +127,8 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
                         0
                 );
             }
+        }else{
+            plugin.onDisable();
         }
 
         Category category = jda.getCategoryById(plugin.playerData.getString("categoryID"));
@@ -230,7 +232,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
                 boolean isLobby = playerChannel.getId().equals(getLobbyChannel().getId());
                 if (!isLobby && (playerChannel.getParent() == null || !playerChannel.getParent().getId().equals(getCategory().getId()))) {
 //                    .debug(Debug.VOICE, "Player " + player.getName() + " was not in the voice lobby or category");
-
+                    //member.mute(false).queue();
                     // cancel existing moves if they changed to a different channel
                     Pair<String, CompletableFuture<Void>> pair = awaitingMoves.get(member.getId());
                     if (pair != null) pair.getRight().cancel(false);
@@ -454,6 +456,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
         }
         for (net.clementraynaud.Network network : networks) {
             for (Member member : network.getChannel().getMembers()) {
+                member.mute(false).queue();
                 member.getGuild().moveVoiceMember(member, getLobbyChannel()).queue();
             }
             network.getChannel().delete().queue();
