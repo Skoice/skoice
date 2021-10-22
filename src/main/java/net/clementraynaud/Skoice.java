@@ -20,6 +20,7 @@
 package net.clementraynaud;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import net.clementraynaud.main.Main;
 import net.dv8tion.jda.api.events.ShutdownEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bstats.bukkit.Metrics;
@@ -42,11 +43,11 @@ public class Skoice extends JavaPlugin {
     public FileConfiguration playerData;
     public File data;
 
-    public VoiceModule getVoiceModule() {
-        return bot;
+    public Main getVoiceModule() {
+        return main;
     }
 
-    private VoiceModule bot;
+    private Main main;
 
     boolean botReady = false;
 
@@ -72,7 +73,7 @@ public class Skoice extends JavaPlugin {
                 checkVersion();
             }
             botReady = true;
-            bot = new VoiceModule(this);
+            main = new Main(this);
         }
         if(!botReady){
             onDisable();
@@ -146,18 +147,18 @@ public class Skoice extends JavaPlugin {
         final ExecutorService executor = Executors.newSingleThreadExecutor(threadFactory);
         try {
             executor.invokeAll(Collections.singletonList(() -> {
-                bot.shutdown();
-                if (bot.jda != null) bot.jda.getEventManager().getRegisteredListeners().forEach(listener -> bot.jda.getEventManager().unregister(listener));
-                if (bot.jda != null) {
+                main.shutdown();
+                if (main.jda != null) main.jda.getEventManager().getRegisteredListeners().forEach(listener -> main.jda.getEventManager().unregister(listener));
+                if (main.jda != null) {
                     CompletableFuture<Void> shutdownTask = new CompletableFuture<>();
-                    bot.jda.addEventListener(new ListenerAdapter() {
+                    main.jda.addEventListener(new ListenerAdapter() {
                         @Override
                         public void onShutdown(@NotNull ShutdownEvent event) {
                             shutdownTask.complete(null);
                         }
                     });
-                    bot.jda.shutdownNow();
-                    bot.jda = null;
+                    main.jda.shutdownNow();
+                    main.jda = null;
                     try {
                         shutdownTask.get(5, TimeUnit.SECONDS);
                     } catch (TimeoutException e) {

@@ -17,7 +17,7 @@
 // along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 
 
-package net.clementraynaud;
+package net.clementraynaud.main;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -42,18 +42,18 @@ public class Network {
 
 //        debug(Debug.VOICE, "Network being made for " + players);
 
-        List<Permission> allowedPermissions = VoiceModule.isVoiceActivationAllowed()
+        List<Permission> allowedPermissions = Main.isVoiceActivationAllowed()
                 ? Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD)
                 : Collections.singletonList(Permission.VOICE_SPEAK);
 
-        VoiceModule.getCategory().createVoiceChannel(UUID.randomUUID().toString())
+        Main.getCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(
-                        VoiceModule.getGuild().getPublicRole(),
+                        Main.getGuild().getPublicRole(),
                         allowedPermissions,
                         Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT)
                 )
                 .addPermissionOverride(
-                        VoiceModule.getGuild().getSelfMember(),
+                        Main.getGuild().getSelfMember(),
                         Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS),
                         Collections.emptyList()
                 )
@@ -62,7 +62,7 @@ public class Network {
                     initialized = true;
                 }, e -> {
 //                    error("Failed to create network for " + players + ": " + e.getMessage());
-                    VoiceModule.get().getNetworks().remove(this);
+                    Main.get().getNetworks().remove(this);
                 });
     }
 
@@ -82,50 +82,26 @@ public class Network {
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> VoiceModule.verticalDistance(p.getLocation(), player.getLocation()) <= VoiceModule.getVerticalStrength()
-                        && VoiceModule.horizontalDistance(p.getLocation(), player.getLocation()) <= VoiceModule.getHorizontalStrength());
+                .anyMatch(p -> Main.verticalDistance(p.getLocation(), player.getLocation()) <= Main.getVerticalStrength()
+                        && Main.horizontalDistance(p.getLocation(), player.getLocation()) <= Main.getHorizontalStrength());
     }
 
     /**
      * @return true if the player is within the network strength and should be connected
      */
     public boolean isPlayerInRangeToStayConnected(Player player) {
-        double falloff = VoiceModule.getFalloff();
+        double falloff = Main.getFalloff();
         return players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> VoiceModule.verticalDistance(p.getLocation(), player.getLocation()) <= VoiceModule.getVerticalStrength() + falloff
-                        && VoiceModule.horizontalDistance(p.getLocation(), player.getLocation()) <= VoiceModule.getHorizontalStrength() + falloff);
-    }
-
-    /**
-     * @return true if the player is within the falloff range <strong>but not the strength range</strong>
-     */
-    public boolean isPlayerInsideFalloffZone(Player player) {
-        double falloff = VoiceModule.getFalloff();
-        double horizontalStrength = VoiceModule.getHorizontalStrength();
-        double verticalStrength = VoiceModule.getHorizontalStrength();
-        return players.stream()
-                .map(Bukkit::getPlayer)
-                .filter(Objects::nonNull)
-                .filter(p -> !p.equals(player))
-                .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> {
-                    double vertical = VoiceModule.verticalDistance(p.getLocation(), player.getLocation());
-                    double horizontal = VoiceModule.horizontalDistance(p.getLocation(), player.getLocation());
-                    return vertical > verticalStrength && vertical <= verticalStrength + falloff
-                            && horizontal > horizontal && horizontal <= horizontalStrength + falloff;
-                });
+                .anyMatch(p -> Main.verticalDistance(p.getLocation(), player.getLocation()) <= Main.getVerticalStrength() + falloff
+                        && Main.horizontalDistance(p.getLocation(), player.getLocation()) <= Main.getHorizontalStrength() + falloff);
     }
 
     public void clear() {
         players.clear();
-    }
-
-    public void add(Player player) {
-        players.add(player.getUniqueId());
     }
 
     public void add(UUID uuid) {
@@ -158,7 +134,7 @@ public class Network {
 
     public VoiceChannel getChannel() {
         if (channel == null || channel.isEmpty()) return null;
-        return VoiceModule.getGuild().getVoiceChannelById(channel);
+        return Main.getGuild().getVoiceChannelById(channel);
     }
 
     public boolean isInitialized() {
