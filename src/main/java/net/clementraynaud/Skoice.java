@@ -68,9 +68,8 @@ public class Skoice extends JavaPlugin {
         }else{
             //Check Version
             if(playerData.getBoolean("checkVersion.atStartup")) {
-                //getLogger().info(ChatColor.YELLOW+"Checking Version Now!");
-                //checkVersion();
-                // CheckVersion isn't for Spigot yet, i'll add this in a bit
+                getLogger().info(ChatColor.YELLOW+"Checking Version Now!");
+                checkVersion();
             }
             botReady = true;
             bot = new VoiceModule(this);
@@ -94,7 +93,6 @@ public class Skoice extends JavaPlugin {
         }
     }
     public void checkVersion(){
-            return;
             try {
                 Skoice nsk = this;
                 String skoiceFileVersion = "v" + nsk.getDescription().getVersion();
