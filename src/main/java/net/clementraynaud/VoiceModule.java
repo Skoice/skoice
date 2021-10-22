@@ -76,6 +76,8 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
     private static Skoice plugin;
     public HashMap<UUID,String>uuidCodeMap;
     public HashMap<UUID,String>uuidIdMap;
+    public HashMap<UUID,String>uuidCodeMap2;
+    public HashMap<UUID,String >uuidIdMap2;
 
     public VoiceModule(Skoice plugin) {
         uuidCodeMap = new HashMap<>();
@@ -569,6 +571,13 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
 
             event.getAuthor().openPrivateChannel().complete().sendMessage("Hey! Your verification has been generated!\n" +
                     "Use this command in game: ``/link "+randomcode+"``").queue();
+        } else if(args[0].equalsIgnoreCase("*dlink")){
+            // If Member uses `*dlink` command to link another account
+            String playerIDFromData = plugin.playerData.getString("Data."+event.getAuthor().getId());
+            if(playerIDFromData==null){
+                // Member is trying to link another dicord account, even tho they don't have a main link
+                event.getChannel().sendMessage(":x: **|** You don't have a normal link, use `*link` instead");
+            }
         }
     }
 
