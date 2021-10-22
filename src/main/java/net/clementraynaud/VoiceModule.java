@@ -20,7 +20,6 @@
 package net.clementraynaud;
 
 import lombok.Getter;
-import net.clementraynaud.api.PlaceHolderAPI;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -47,7 +46,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
 
@@ -152,7 +154,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
                     });
         }
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
-            new PlaceHolderAPI(this).register();
+//            new PlaceHolderAPI(this).register();
         }
     }
 
