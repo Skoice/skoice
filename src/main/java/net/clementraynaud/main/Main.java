@@ -17,9 +17,10 @@
 // along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 
 
-package net.clementraynaud;
+package net.clementraynaud.main;
 
 import lombok.Getter;
+import net.clementraynaud.Skoice;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -39,6 +40,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -55,13 +57,14 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-public class VoiceModule extends ListenerAdapter implements CommandExecutor, Listener {
+public class Main extends ListenerAdapter implements CommandExecutor, Listener {
 
     private static final List<Permission> LOBBY_REQUIRED_PERMISSIONS = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
     private static final List<Permission> CATEGORY_REQUIRED_PERMISSIONS = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS, Permission.MANAGE_PERMISSIONS, Permission.MANAGE_CHANNEL);
@@ -69,7 +72,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
     private final ReentrantLock lock = new ReentrantLock();
     private Set<UUID> dirtyPlayers = new HashSet<>();
     @Getter
-    private final Set<net.clementraynaud.Network> networks = ConcurrentHashMap.newKeySet();
+    private final Set<Network> networks = ConcurrentHashMap.newKeySet();
     @Getter
     private final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
     private final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
@@ -78,10 +81,8 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
     private static Skoice plugin;
     public HashMap<UUID,String>uuidCodeMap;
     public HashMap<UUID,String>uuidIdMap;
-    public HashMap<UUID,String>uuidCodeMap2;
-    public HashMap<UUID,String >uuidIdMap2;
 
-    public VoiceModule(Skoice plugin) {
+    public Main(Skoice plugin) {
         uuidCodeMap = new HashMap<>();
         uuidIdMap = new HashMap<>();
         this.plugin = plugin;
@@ -150,7 +151,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
                     })
                     .forEach(channel -> {
                         // temporarily add it as a network so it can be emptied and deleted
-                        networks.add(new net.clementraynaud.Network(channel.getId()));
+                        networks.add(new Network(channel.getId()));
                     });
         }
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
@@ -211,7 +212,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
             // remove networks that have no voice channel
             networks.removeIf(network -> network.getChannel() == null && network.isInitialized());
 
-            Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers().stream()
+            Set<Player> alivePlayers = getOnlinePlayers().stream()
                     .filter(player -> !player.isDead())
                     .collect(Collectors.toSet());
 
@@ -290,13 +291,13 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
                     }
 
                     playersWithinRange.add(uuid);
-                    networks.add(new net.clementraynaud.Network(playersWithinRange));
+                    networks.add(new Network(playersWithinRange));
                 }
             }
 
             // handle moving players between channels
             Set<Member> members = new HashSet<>(lobbyChannel.getMembers());
-            for (net.clementraynaud.Network network : getNetworks()) {
+            for (Network network : getNetworks()) {
                 VoiceChannel voiceChannel = network.getChannel();
                 if (voiceChannel == null) continue;
                 members.addAll(voiceChannel.getMembers());
@@ -306,7 +307,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
                 UUID uuid = getUniqueId(member);
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
 
-                net.clementraynaud.Network playerNetwork = uuid != null ? networks.stream()
+                Network playerNetwork = uuid != null ? networks.stream()
                         .filter(n -> n.contains(uuid))
                         .findAny().orElse(null) : null;
 
@@ -341,7 +342,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
             }
 
             // delete empty networks
-            for (net.clementraynaud.Network network : new HashSet<>(networks)) {
+            for (Network network : new HashSet<>(networks)) {
                 if (!network.isEmpty()) continue;
 
                 VoiceChannel voiceChannel = network.getChannel();
@@ -439,7 +440,6 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
         }
         boolean isLobby = channel.getId().equals(getLobbyChannel().getId());
         if (isLobby && !member.getVoiceState().isGuildMuted()) {
-            if (!true) return;
             PermissionOverride override = channel.getPermissionOverride(channel.getGuild().getPublicRole());
             if (override != null && override.getDenied().contains(Permission.VOICE_SPEAK)
                     && member.hasPermission(channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
@@ -459,7 +459,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
         for (Pair<String, CompletableFuture<Void>> value : awaitingMoves.values()) {
             value.getRight().cancel(true);
         }
-        for (net.clementraynaud.Network network : networks) {
+        for (Network network : networks) {
             for (Member member : network.getChannel().getMembers()) {
                 member.mute(false).queue();
                 member.getGuild().moveVoiceMember(member, getLobbyChannel()).queue();
@@ -470,7 +470,7 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
         this.networks.clear();
     }
 
-    public static VoiceModule get() {
+    public static Main get() {
         return plugin.getVoiceModule();
     }
 
@@ -658,5 +658,28 @@ public class VoiceModule extends ListenerAdapter implements CommandExecutor, Lis
         // remove VC in player left
         uuidCodeMap.remove(e.getPlayer().getUniqueId());
         uuidIdMap.remove(e.getPlayer().getUniqueId());
+    }
+
+    /**
+     * Method return type-safe version of Bukkit::getOnlinePlayers
+     * @return {@code ArrayList} containing online players
+     */
+    public static List<Player> getOnlinePlayers() {
+        List<Player> onlinePlayers = new ArrayList<>();
+
+        try {
+            Method onlinePlayerMethod = Server.class.getMethod("getOnlinePlayers");
+            if (onlinePlayerMethod.getReturnType().equals(Collection.class)) {
+                for (Object o : ((Collection<?>) onlinePlayerMethod.invoke(Bukkit.getServer()))) {
+                    onlinePlayers.add((Player) o);
+                }
+            } else {
+                Collections.addAll(onlinePlayers, ((Player[]) onlinePlayerMethod.invoke(Bukkit.getServer())));
+            }
+        } catch (Exception e) {
+//            error(e);
+        }
+
+        return onlinePlayers;
     }
 }
