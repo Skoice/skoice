@@ -20,9 +20,6 @@
 package net.clementraynaud;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 import net.dv8tion.jda.api.events.ShutdownEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bstats.bukkit.Metrics;
@@ -33,12 +30,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
+import java.io.*;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
@@ -100,62 +92,24 @@ public class Skoice extends JavaPlugin {
             e.printStackTrace();
         }
     }
-    public Boolean ifHome = false;
     public void checkVersion(){
-        if(!ifHome) {
             try {
                 Skoice nsk = this;
-                String skoiceFileVersion = nsk.getDescription().getVersion();
+                String skoiceFileVersion = "v" + nsk.getDescription().getVersion();
 
-                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://plimbocraft.com/skoice-two/php/newestVersion.php").openConnection();
-                httpsURLConnection.setRequestMethod("GET");
-
-                JsonObject jsonObject = new JsonParser().parse(new JsonReader((Reader) new InputStreamReader(httpsURLConnection.getInputStream()))).getAsJsonObject();
-                String spigotVersion = jsonObject.get("current_version").getAsString();
-
-                int nw = isUpdateAvailable(spigotVersion, skoiceFileVersion);
-                if (nw > 0) {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL("https://raw.githubusercontent.com/carlodrift/skoice/main/version").openStream()));
+                String spigotVersion = bufferedReader.readLine();
+                if (!skoiceFileVersion.equals(spigotVersion)) {
                     getLogger().warning((Object) ChatColor.RED + "You are using an outdated version!");
-                    getLogger().warning("Latest version: " + (Object) ChatColor.GREEN + spigotVersion + (Object) ChatColor.YELLOW + ". You are on version: " + (Object) ChatColor.RED + skoiceFileVersion + (Object) ChatColor.YELLOW + ".");
-                    getLogger().warning("Update here: " + (Object) ChatColor.AQUA + "http://home.plimbocraft.com/skoice-two/php/latest.php");
-                } else if (nw < 0) {
-                    getLogger().warning((Object) ChatColor.RED + "You are using an unreleased version!");
-                    getLogger().warning("Latest version: " + (Object) ChatColor.GREEN + spigotVersion + (Object) ChatColor.YELLOW + ". You are on version: " + (Object) ChatColor.RED + skoiceFileVersion + (Object) ChatColor.YELLOW + ".");
+                    getLogger().warning("Latest version: " + (Object) ChatColor.GREEN + spigotVersion + (Object) ChatColor.YELLOW + ". You are on version: " + ChatColor.RED + skoiceFileVersion + (Object) ChatColor.YELLOW + ".");
+                    getLogger().warning("Update here: " + (Object) ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/");
                 }
                 //getLogger().info(ChatColor.GREEN+"Looks like your using the latest version!");
 
             } catch (IOException e) {
                 //getLogger().severe("Unable to check for updates. Error: " + e.getMessage());
-                ifHome = true;
-                checkVersion();
+//                checkVersion();
             }
-        }else{
-            try{
-                Skoice nsk = this;
-                String skoiceFileVersion = nsk.getDescription().getVersion();
-
-                HttpURLConnection httpURLConnection = (HttpURLConnection)new URL("http://home.plimbocraft.com/skoice-two/php/newestVersion.php").openConnection();
-                httpURLConnection.setRequestMethod("GET");
-
-                JsonObject jsonObject = new JsonParser().parse(new JsonReader((Reader)new InputStreamReader(httpURLConnection.getInputStream()))).getAsJsonObject();
-                String spigotVersion =  jsonObject.get("current_version").getAsString();
-
-                int nw = isUpdateAvailable(spigotVersion, skoiceFileVersion);
-                if(nw>0){
-                    getLogger().warning((Object)ChatColor.RED + "You are using an outdated version!");
-                    getLogger().warning("Latest version: " + (Object)ChatColor.GREEN + spigotVersion + (Object)ChatColor.YELLOW + ". You are on version: " + (Object)ChatColor.RED + skoiceFileVersion + (Object)ChatColor.YELLOW + ".");
-                    getLogger().warning("Update here: " + (Object)ChatColor.AQUA + "http://home.plimbocraft.com/skoice-two/php/latest.php");
-                }else if (nw < 0){
-                    getLogger().warning((Object)ChatColor.RED + "You are using an unreleased version!");
-                    getLogger().warning("Latest version: " + (Object)ChatColor.GREEN + spigotVersion + (Object)ChatColor.YELLOW + ". You are on version: " + (Object)ChatColor.RED + skoiceFileVersion + (Object)ChatColor.YELLOW + ".");
-                }
-                //getLogger().info(ChatColor.GREEN+"Looks like your using the latest version!");
-
-            }catch (IOException ioException){
-                //getLogger().severe("Unable to check for updates. Error: " + ioException.getMessage());
-                ifHome = false;
-            }
-        }
 
     }
 
