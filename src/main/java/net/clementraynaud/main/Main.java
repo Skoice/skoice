@@ -19,7 +19,6 @@
 
 package net.clementraynaud.main;
 
-import lombok.Getter;
 import net.clementraynaud.Skoice;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -71,9 +70,16 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
 
     private final ReentrantLock lock = new ReentrantLock();
     private Set<UUID> dirtyPlayers = new HashSet<>();
-    @Getter
+
+    public Set<Network> getNetworks() {
+        return networks;
+    }
+
+    public Set<String> getMutedUsers() {
+        return mutedUsers;
+    }
+
     private final Set<Network> networks = ConcurrentHashMap.newKeySet();
-    @Getter
     private final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
     private final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
 
