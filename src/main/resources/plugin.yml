@@ -28,8 +28,8 @@ description: Proximity Voice Chat in Minecraft using Discord!
 api-version: 1.13
 
 authors:
-  - rowisabeast
   - carlodrift
+  - rowisabeast
 
 website: ${project.url}
 
