@@ -1,0 +1,366 @@
+package com.mikesantos.MsAutoUpdater;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+public class AutoUpdate {
+
+        private Plugin plugin;
+        private String urlVersionCheck;
+        private String urlDownload;
+        private String currentVersion;
+
+        private boolean autoDownload;
+        private boolean autoShutdown;
+        private boolean broadcast;
+
+        private String BroadCastMessage = "§3[AutoUpdater] §bRestarting server for update!";
+
+        public AutoUpdate(Plugin plugin, String UrlVersion, String UrlDownload) {
+                this(plugin, UrlVersion, UrlDownload, true, true, true);
+        }
+
+        public AutoUpdate(Plugin plugin, String UrlVersion, String UrlDownload, boolean AutoDownload,
+                        boolean AutoShutdown, boolean Broadcast) {
+                this.plugin = plugin;
+                this.urlVersionCheck = UrlVersion;
+                this.urlDownload = UrlDownload;
+                this.currentVersion = plugin.getDescription().getVersion();
+                this.autoDownload = AutoDownload;
+                this.autoShutdown = AutoShutdown;
+                this.broadcast = Broadcast;
+                start();
+        }
+
+        private void start() {
+                Thread th = new Thread((Runnable) new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                                String v = null;
+                                try {
+                                        v = getText(urlVersionCheck);
+                                } catch (Exception e) {
+                                        plugin.getLogger().info("Failed to get Version!!!");
+                                        plugin.getLogger().info("---------- Stack Trace ----------");
+                                        e.printStackTrace();
+                                        plugin.getLogger().info("---------- Stack Trace ----------");
+                                }
+                                if (!v.equalsIgnoreCase(currentVersion)) {
+                                        plugin.getLogger().info("New update is Avaliable...");
+                                        if(autoDownload)
+                                                startDownload();
+                                }
+                        }
+                }.runTaskTimerAsynchronously(plugin, 0L, 200L));
+                th.setName("Update Check");
+                th.start();
+        }
+
+        private boolean startDownload() {
+                try {
+                        URL download = new URL(this.urlDownload);
+                        BufferedInputStream in = null;
+                        FileOutputStream fout = null;
+                        try {
+                                plugin.getLogger().info("Trying to download from: " + download.toString());
+                                in = new BufferedInputStream(download.openStream());
+                                fout = new FileOutputStream("plugins" + System.getProperty("file.separator") + plugin.getName() + ".jar");
+
+                                final byte data[] = new byte[1024];
+                                int count;
+                                while ((count = in.read(data, 0, 1024)) != -1) {
+                                        fout.write(data, 0, count);
+                                }
+                        }catch (Exception e){
+                                plugin.getLogger().info("Failed to Download new Version!!!");
+                                plugin.getLogger().info("---------- Stack Trace ----------");
+                                e.printStackTrace();
+                                plugin.getLogger().info("---------- Stack Trace ----------");
+                                return false;
+                        } finally {
+                                if (in != null) {
+                                        in.close();
+                                }
+                                if (fout != null) {
+                                        fout.close();
+                                }
+                        }
+                        plugin.getLogger().info("Succesfully downloaded update: " + download.getFile().toString());
+                        if(this.broadcast){
+                                Bukkit.broadcastMessage(this.BroadCastMessage);
+                        }
+                        if(this.autoShutdown){
+                                Bukkit.shutdown();
+                        }
+                        return true;
+                } catch (IOException e) {
+                        plugin.getLogger().info("Failed to Download new Version!!!");
+                        plugin.getLogger().info("---------- Stack Trace ----------");
+                        e.printStackTrace();
+                        plugin.getLogger().info("---------- Stack Trace ----------");
+                        return false;
+                }
+        }
+
+        private String getText(String url) throws Exception {
+                URL website = new URL(url);
+                URLConnection connection = website.openConnection();
+                connection.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                }
+                in.close();
+                return response.toString();
+        }
+}
+
+// From https://pastebin.com/40eckvUM
+// From https://www.spigotmc.org/threads/autoupdate.142375/#post-1509199
+
+package de.stealthcoders.spu;
+
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.logging.Level;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.bukkit.plugin.java.JavaPlugin;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+/**
+ *
+ * @author Benjamin | Bentipa
+ * @version 1.0 Created on 03.04.2015
+ *
+ */
+public class SpigotPluginUpdater {
+
+    public static final String VERSION = "SPU 2.0 by stealth-coders";
+
+    private URL url;
+    private final JavaPlugin plugin;
+    private final String pluginurl;
+
+    private boolean canceled = false;
+
+    /**
+     * Create a new SpigotPluginUpdate to check and update your plugin
+     *
+     * @param plugin - your plugin
+     * @param pluginurl - the url to your plugin.html on your webserver
+     */
+    public SpigotPluginUpdater(JavaPlugin plugin, String pluginurl) {
+        try {
+            url = new URL(pluginurl);
+        } catch (MalformedURLException e) {
+            canceled = true;
+            plugin.getLogger().log(Level.WARNING, "Error: Bad URL while checking {0} !", plugin.getName());
+        }
+        this.plugin = plugin;
+        this.pluginurl = pluginurl;
+    }
+
+    private String version = "";
+    private String downloadURL = "";
+    private String changeLog = "";
+
+    private boolean out = true;
+
+    /**
+     * Enable a console output if new Version is availible
+     */
+    public void enableOut() {
+        out = true;
+    }
+
+    /**
+     * Disable a console output if new Version is availible
+     */
+    public void disableOut() {
+        out = false;
+    }
+
+    /**
+     * Check for a new Update
+     *
+     * @return if new update is availible
+     */
+    public boolean needsUpdate() {
+        if (canceled) {
+            return false;
+        }
+        try {
+            URLConnection con = url.openConnection();
+            InputStream _in = con.getInputStream();
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(_in);
+
+            Node nod = doc.getElementsByTagName("item").item(0);
+            NodeList children = nod.getChildNodes();
+
+            version = children.item(1).getTextContent();
+            downloadURL = children.item(3).getTextContent();
+            changeLog = children.item(5).getTextContent();
+            if (newVersionAvailiable(plugin.getDescription().getVersion(), version.replaceAll("[a-zA-z ]", ""))) {
+                if (out) {
+                    plugin.getLogger().log(Level.INFO, " New Version found: {0}", version.replaceAll("[a-zA-z ]", ""));
+                    plugin.getLogger().log(Level.INFO, " Download it here: {0}", downloadURL);
+                    plugin.getLogger().log(Level.INFO, " Changelog: {0}", changeLog);
+                }
+
+                return true;
+            }
+
+        } catch (IOException | SAXException | ParserConfigurationException e) {
+            plugin.getLogger().log(Level.WARNING, "Error in checking update for ''{0}''!", plugin.getName());
+            plugin.getLogger().log(Level.WARNING, "Error: ", e);
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if there is a new Version
+     *
+     * @param oldv
+     * @param newv
+     * @return if it is newer
+     */
+    public boolean newVersionAvailiable(String oldv, String newv) {
+        if (oldv != null && newv != null) {
+            oldv = oldv.replace('.', '_');
+            newv = newv.replace('.', '_');
+            if (oldv.split("_").length != 0 && oldv.split("_").length != 1 && newv.split("_").length != 0 && newv.split("_").length != 1) {
+
+                int vnum = Integer.valueOf(oldv.split("_")[0]);
+                int vsec = Integer.valueOf(oldv.split("_")[1]);
+
+                int newvnum = Integer.valueOf(newv.split("_")[0]);
+                int newvsec = Integer.valueOf(newv.split("_")[1]);
+                if (newvnum > vnum) {
+                    return true;
+                }
+
+                if (newvnum == vnum) {
+                    if (newvsec > vsec) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Executes the Update and trys to install it
+     */
+    public void update() {
+        try {
+            URL download = new URL(getFolder(pluginurl) + downloadURL);
+
+            BufferedInputStream in = null;
+            FileOutputStream fout = null;
+            try {
+                if (out) {
+                    plugin.getLogger().log(Level.INFO, "Trying to download from: {0}{1}", new Object[]{getFolder(pluginurl), downloadURL});
+                }
+                in = new BufferedInputStream(download.openStream());
+                fout = new FileOutputStream("plugins/" + downloadURL);
+
+                final byte data[] = new byte[1024];
+                int count;
+                while ((count = in.read(data, 0, 1024)) != -1) {
+                    fout.write(data, 0, count);
+                }
+            } finally {
+                if (in != null) {
+                    in.close();
+                }
+                if (fout != null) {
+                    fout.close();
+                }
+            }
+
+            if (out) {
+                plugin.getLogger().log(Level.INFO, "Succesfully downloaded file: {0}", downloadURL);
+                plugin.getLogger().log(Level.INFO, "To install the new features you have to restart your server!");
+            }
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.WARNING, "Unable to download update!", e);
+        }
+    }
+
+    /**
+     * Executes the Update and trys to install it But uses an external link for
+     * downloading the File
+     */
+    public void externalUpdate() {
+        try {
+            URL download = new URL(downloadURL);
+
+            BufferedInputStream in = null;
+            FileOutputStream fout = null;
+            try {
+                if (out) {
+                    plugin.getLogger().log(Level.INFO, "Trying to download {0} ..", downloadURL);
+                }
+                in = new BufferedInputStream(download.openStream());
+                fout = new FileOutputStream("plugins/" + plugin.getName());
+
+                final byte data[] = new byte[1024];
+                int count;
+                while ((count = in.read(data, 0, 1024)) != -1) {
+                    fout.write(data, 0, count);
+                }
+            } finally {
+                if (in != null) {
+                    in.close();
+                }
+                if (fout != null) {
+                    fout.close();
+                }
+            }
+
+            if (out) {
+                plugin.getLogger().log(Level.INFO, "Succesfully downloaded file {0} !", downloadURL);
+                plugin.getLogger().log(Level.INFO, "To install the new features you have to restart your server!");
+            }
+        } catch (IOException e) {
+
+        }
+    }
+
+    private String getFolder(String s) {
+        return s.substring(0, s.lastIndexOf("/") + 1);
+    }
+}
+
+From https://www.spigotmc.org/resources/authors/bentipa.48835/
+From https://www.spigotmc.org/resources/api-pluginupdater-with-website.5578/
+From http://www.stealth-coders.de/download/SpigotPluginUpdater.java
+
+https://www.baeldung.com/java-download-file
+
+Or have Main Skoice run download ( real skoice code ), so that is can delete
+use and reupload if needed
+
