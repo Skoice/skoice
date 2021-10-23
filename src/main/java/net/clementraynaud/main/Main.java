@@ -632,7 +632,7 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
             if (target == null) {
                 uuidCodeMap.remove(player.getUniqueId());
                 uuidIdMap.remove(player.getUniqueId());
-                player.sendMessage("§cError! It seems that you left our Discord server!");
+                player.sendMessage("§cError! It seems that you left our Discord server! If not, try to join a voice channel and try again.");
                 return true;
             }
             plugin.playerData.set("Data." + player.getUniqueId(), discordid);
