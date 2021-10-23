@@ -96,16 +96,10 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
             jda = JDABuilder.createDefault(plugin.playerData.getString("token"))
                     .setActivity(Activity.listening("*link"))
                     .enableIntents(GatewayIntent.GUILD_VOICE_STATES,
-                            GatewayIntent.GUILD_MEMBERS,
-                            GatewayIntent.GUILD_PRESENCES,
                             GatewayIntent.GUILD_MESSAGES)
                     .enableCache(CacheFlag.VOICE_STATE,
-                            CacheFlag.CLIENT_STATUS,
-                            CacheFlag.MEMBER_OVERRIDES,
-                            CacheFlag.ACTIVITY,
-                            CacheFlag.ONLINE_STATUS)
-                    .setChunkingFilter(ChunkingFilter.ALL)
-                    .setMemberCachePolicy(MemberCachePolicy.ALL)
+                            CacheFlag.MEMBER_OVERRIDES)
+                    .setMemberCachePolicy(MemberCachePolicy.VOICE)
                     .setAutoReconnect(true)
                     .build()
                     .awaitReady();
