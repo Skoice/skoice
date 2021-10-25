@@ -1,27 +1,15 @@
-# Bot Token
-#   -Required
-# Main Voice Channel ID
-#   -Required
-# category ID
-#   -Required
-# distance
-#   -type : Required
-# checkVersion
-#   -Optional
-#   -atStartup # runs checkVersion at the start of Skoice
-#   -periodically # if enabled, runs every X ticks
 token: ""
 mainVoiceChannelID: ""
 categoryID: ""
 distance:
-  type: "default" # default/custom/radius
-  custom:
-    verticalStrength: 40 # The distance in the Y direction
-    horizontalStrength: 80 # The distance in the X direction
-    falloff: 5 # A medium in the distances
-  radius: 50
+  # Maximum distance between players in order to be connected
+  verticalStrength: 40
+  horizontalStrength: 80
+  # Once a player has joined a network, they can be
+  # strength + falloff blocks away before being disconnected
+  falloff: 5
 checkVersion:
   atStartup: true
   periodically:
     enabled: true
-    delay: 144000 # 2 hours ## use https://mapmaking.fr/tick/ to get tick
+    delay: 144000

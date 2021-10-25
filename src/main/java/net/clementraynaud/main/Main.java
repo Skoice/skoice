@@ -31,7 +31,6 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
@@ -73,10 +72,6 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
 
     public Set<Network> getNetworks() {
         return networks;
-    }
-
-    public Set<String> getMutedUsers() {
-        return mutedUsers;
     }
 
     private final Set<Network> networks = ConcurrentHashMap.newKeySet();
@@ -507,32 +502,23 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
     }
 
     public static double verticalDistance(Location location1, Location location2) {
-        if(getDistanceType().equals("radius")) return location1.distance(location2);
         return Math.sqrt(NumberConversions.square(location1.getY() - location2.getY()));
     }
 
     public static double horizontalDistance(Location location1, Location location2) {
-        if(getDistanceType().equals("radius")) return location1.distance(location2);
         return Math.sqrt(NumberConversions.square(location1.getX() - location2.getX()) + NumberConversions.square(location1.getZ() - location2.getZ()));
     }
 
-    public static String getDistanceType(){
-        return plugin.playerData.getString("distance.type");
-    }
-
     public static double getVerticalStrength() {
-        if(getDistanceType().equals("custom")) return plugin.playerData.getInt("distance.custom.verticalStrength");
-        return 40;
+        return plugin.playerData.getInt("distance.custom.verticalStrength");
     }
 
     public static double getHorizontalStrength() {
-        if(getDistanceType().equals("custom")) return plugin.playerData.getInt("distance.custom.horizontalStrength");
-        return 80;
+        return plugin.playerData.getInt("distance.custom.horizontalStrength");
     }
 
     public static double getFalloff() {
-        if(getDistanceType().equals("custom")) return plugin.playerData.getInt("distance.custom.falloff");
-        return 5;
+        return plugin.playerData.getInt("distance.custom.falloff");
     }
 
     public static boolean isVoiceActivationAllowed() {
