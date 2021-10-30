@@ -470,7 +470,7 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
     }
 
     public static Guild getGuild() {
-        return getCategory().getGuild();
+        return getLobbyChannel().getGuild();
     }
 
     public static Category getCategory() {
