@@ -30,6 +30,7 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -593,42 +594,50 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) { //  /verify randomcodeSK
         if (!(sender instanceof Player)) {
-            sender.sendMessage("§cOnly players can execute this command!");
+            sender.sendMessage("§dSkoice §8• §7This command is §conly executable §7by players.");
             return true;
         }
         Player player = (Player) sender;
         if (cmd.getName().equalsIgnoreCase("unlink")) {
-            String getMemberIDfromFile = plugin.playerData.getString("Data." + player.getUniqueId());
-            if (getMemberIDfromFile == null) {
-                player.sendMessage("§cYou are not currently linked!");
+            String userID = plugin.playerData.getString("Data." + player.getUniqueId());
+            if (userID == null) {
+                player.sendMessage("§dSkoice §8• §7You have §cnot linked your Minecraft account §7to Discord. Type \"§e/link§7\" on our Discord server to link it.");
                 return true;
             }
-            String diID = plugin.playerData.getString("Data." + player.getUniqueId());
             plugin.playerData.set("Data." + player.getUniqueId(), null);
-            plugin.playerData.set("Data." + diID, null);
+            plugin.playerData.set("Data." + userID, null);
             try {
                 plugin.playerData.save(plugin.data);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            try {
+                getGuild().retrieveMemberById(userID).complete().getUser().openPrivateChannel().complete()
+                        .sendMessageEmbeds(new EmbedBuilder().setTitle("Linking Process")
+                                .addField("Account Unlinked", "Your Discord account has been unlinked from Minecraft.", false)
+                                .setColor(Color.GREEN).build()).queue();
+            } catch (ErrorResponseException e) {
+                plugin.getLogger().warning("A player attempted to unlink but his Discord account was not found.");
+            }
+            player.sendMessage("§dSkoice §8• §7You have §aunlinked your Minecraft account §7from Discord.");
             return true;
         } else if (cmd.getName().equalsIgnoreCase("link")) {
             String dasd = plugin.playerData.getString("Data." + player.getUniqueId());
             if (dasd != null) {
-                player.sendMessage("§cSorry! You are already linked!");
+                player.sendMessage("§dSkoice §8• §7You have §calready linked your Minecraft account §7to Discord. Type \"§e/unlink§7\" to unlink it.");
                 return true;
             }
             if (!uuidCodeMap.containsKey(player.getUniqueId())) {
-                player.sendMessage("§cNot pending linking process!");
+                player.sendMessage("§dSkoice §8• §7There is §cno pending linking process §7for your Minecraft account. Type \"§e/link§7\" on our Discord server to link it.");
                 return true;
             }
-            if (args.length != 1) {
-                player.sendMessage("§cUsage: /link [code]");
+            if (args.length < 1) {
+                player.sendMessage("§dSkoice §8• §7You have §cnot provided the code §7that was sent to you on Discord.");
                 return true;
             }
-            String actualcode = uuidCodeMap.get(player.getUniqueId());
-            if (!actualcode.equals(args[0])) {
-                player.sendMessage("§cCode is not valid! Check again!");
+            String actualCode = uuidCodeMap.get(player.getUniqueId());
+            if (!actualCode.equals(args[0])) {
+                player.sendMessage("§dSkoice §8• §7The provided code is §cinvalid§7.");
                 return true;
             }
             String discordid = uuidIdMap.get(player.getUniqueId());
@@ -650,9 +659,10 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
             uuidIdMap.remove(player.getUniqueId());
 //        verifiedmembers.add(player.getUniqueId());
 
-
-            target.getUser().openPrivateChannel().complete().sendMessage(":white_check_mark: **|** Verification successfully, you have linked your account with Mc account: " + player.getName()).queue();
-            player.sendMessage("§aYou have been linked correctly! You linked your account with member: " + target.getUser().getName() + "#" + target.getUser().getDiscriminator());
+            target.getUser().openPrivateChannel().complete().sendMessageEmbeds(new EmbedBuilder().setTitle("Linking Process")
+                            .addField("Account Linked", "Your Discord account has been linked to Minecraft.", false)
+                            .setColor(Color.GREEN).build()).queue();
+            player.sendMessage("§dSkoice §8• §7You have §alinked your Minecraft account §7to Discord.");
         }
         return true;
     }
