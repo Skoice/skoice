@@ -20,6 +20,7 @@
 package net.clementraynaud.main;
 
 import net.clementraynaud.Skoice;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -28,8 +29,9 @@ import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
@@ -54,9 +56,11 @@ import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
+import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
@@ -89,7 +93,7 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
         this.plugin = plugin;
         try {
             jda = JDABuilder.createDefault(plugin.playerData.getString("token"))
-                    .setActivity(Activity.listening("*link"))
+                    .setActivity(Activity.listening("/link"))
                     .enableIntents(GatewayIntent.GUILD_VOICE_STATES,
                             GatewayIntent.GUILD_MESSAGES)
                     .enableCache(CacheFlag.VOICE_STATE,
@@ -101,6 +105,11 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
             plugin.getLogger().info("JDA is running!");
         } catch (LoginException | InterruptedException e) {
             plugin.getLogger().severe("JDA ERROR: " + Arrays.toString(e.getStackTrace()));
+        }
+        if (Main.getGuild().retrieveCommands().complete().size() < 2) {
+            Main.getGuild().upsertCommand("link", "Link your Discord account to Minecraft.")
+                    .addOption(OptionType.STRING, "minecraft_username", "The username of the Minecraft account you want to link.", true).queue();
+            Main.getGuild().upsertCommand("unlink", "Unlink your Discord account from Minecraft.").queue();
         }
         plugin.getCommand("link").setExecutor(this);
         plugin.getCommand("unlink").setExecutor(this);
@@ -527,39 +536,57 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
     }
 
     @Override
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if (event.getAuthor().isBot() || event.isWebhookMessage()) return;
-        String[] args = event.getMessage().getContentRaw().split(" ");
-        if (args[0].equalsIgnoreCase("*link")) {
-            String saddsa = plugin.playerData.getString("Data." + event.getAuthor().getId());
+    public void onSlashCommand(SlashCommandEvent event) {
+        EmbedBuilder embed = new EmbedBuilder().setTitle("Linking Process");
+        String saddsa = plugin.playerData.getString("Data." + event.getUser().getId());
+        if (event.getName().equals("link")) {
             if (saddsa != null) {
-                event.getChannel().sendMessage("This discord account is already linked to a player!").queue();
+                event.replyEmbeds(embed.addField("Error", "Your Discord account is already linked to Minecraft.\nType `/unlink` to unlink it.", false)
+                                .setColor(Color.RED).build())
+                        .setEphemeral(true).queue();
                 return;
             }
-            if (uuidIdMap.containsValue(event.getAuthor().getId())) {
-                event.getChannel().sendMessage(":x: **|** Error! " + event.getAuthor().getAsMention() + ", you already have a code generated!").queue();
-                return;
-            }
-            if (args.length != 2) {
-                event.getChannel().sendMessage(":x: **|** Error! You need to specify a player!").queue();
-                return;
-            }
-            Player target = Bukkit.getPlayer(args[1]);
+            Player target = Bukkit.getPlayer(event.getOption("minecraft_username").getAsString());
             if (target == null) {
-                event.getChannel().sendMessage(":x: **|** Error! The player is not online!").queue();
+                event.replyEmbeds(embed.addField("Error", "The specified Minecraft account is not online.", false)
+                                .setColor(Color.RED).build())
+                        .setEphemeral(true).queue();
                 return;
             }
             String das = plugin.playerData.getString("Data." + target.getUniqueId());
             if (das != null) {
-                event.getChannel().sendMessage("This player is already linked to another discord account").queue();
+                event.replyEmbeds(embed.addField("Error", "The specified Minecraft account is already linked to Discord.", false)
+                                .setColor(Color.RED).build())
+                        .setEphemeral(true).queue();
                 return;
             }
-            String randomcode = new Random().nextInt(800000) + 200000 + "SK"; //6581446AA
-            uuidCodeMap.put(target.getUniqueId(), randomcode);
-            uuidIdMap.put(target.getUniqueId(), event.getAuthor().getId());
-
-            event.getAuthor().openPrivateChannel().complete().sendMessage("Hey! Your verification has been generated!\n" +
-                    "Use this command in game: ``/link " + randomcode + "``").queue();
+            if (uuidIdMap.containsValue(event.getUser().getId())) {
+                uuidCodeMap.remove(target.getUniqueId());
+                uuidIdMap.remove(target.getUniqueId());
+            }
+            String randomCode = new Random().nextInt(800000) + 200000 + "SK";
+            uuidCodeMap.put(target.getUniqueId(), randomCode);
+            uuidIdMap.put(target.getUniqueId(), event.getUser().getId());
+            event.replyEmbeds(embed.addField("Verification Code", "Type `/link " + randomCode + "` in game to complete the process.", false)
+                            .setColor(Color.GREEN).build())
+                    .setEphemeral(true).queue();
+        } else if (event.getName().equals("unlink")) {
+            if (saddsa == null) {
+                event.replyEmbeds(embed.addField("Error", "Your Discord account is not linked to Minecraft.\nType `/link` to link it.", false)
+                                .setColor(Color.RED).build())
+                        .setEphemeral(true).queue();
+            } else {
+                plugin.playerData.set("Data." + event.getUser().getId(), null);
+                plugin.playerData.set("Data." + saddsa, null);
+                try {
+                    plugin.playerData.save(plugin.data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                event.replyEmbeds(embed.addField("Account Unlinked", "Your Discord account has been unlinked from Minecraft.", false)
+                                .setColor(Color.GREEN).build())
+                        .setEphemeral(true).queue();
+            }
         }
     }
 
@@ -570,9 +597,6 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
             return true;
         }
         Player player = (Player) sender;
-        //if(cmd.getName().equalsIgnoreCase("ping")){
-        //    player.sendMessage("Pong!");
-        //}
         if (cmd.getName().equalsIgnoreCase("unlink")) {
             String getMemberIDfromFile = plugin.playerData.getString("Data." + player.getUniqueId());
             if (getMemberIDfromFile == null) {
