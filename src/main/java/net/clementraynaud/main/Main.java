@@ -80,8 +80,8 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
 
     public static JDA jda;
     private static Skoice plugin;
-    public HashMap<UUID,String>uuidCodeMap;
-    public HashMap<UUID,String>uuidIdMap;
+    public HashMap<UUID, String> uuidCodeMap;
+    public HashMap<UUID, String> uuidIdMap;
 
     public Main(Skoice plugin) {
         uuidCodeMap = new HashMap<>();
@@ -99,35 +99,35 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
                     .build()
                     .awaitReady();
             plugin.getLogger().info("JDA is running!");
-        }catch (LoginException | InterruptedException e){
-            plugin.getLogger().severe("JDA ERROR: "+ Arrays.toString(e.getStackTrace()));
+        } catch (LoginException | InterruptedException e) {
+            plugin.getLogger().severe("JDA ERROR: " + Arrays.toString(e.getStackTrace()));
         }
         plugin.getCommand("link").setExecutor(this);
         plugin.getCommand("unlink").setExecutor(this);
-        if (jda!=null) {
+        if (jda != null) {
             jda.addEventListener(this);
             Bukkit.getPluginManager().registerEvents(this, plugin);
             Bukkit.getScheduler().runTaskLater(plugin, () ->
-                    Bukkit.getScheduler().runTaskTimerAsynchronously(
-                            plugin,
-                            this::tick,
-                            0,
-                            5
-                    ),
+                            Bukkit.getScheduler().runTaskTimerAsynchronously(
+                                    plugin,
+                                    this::tick,
+                                    0,
+                                    5
+                            ),
                     0
             );
-            if(plugin.playerData.getBoolean("checkVersion.periodically.enabled")){
+            if (plugin.playerData.getBoolean("checkVersion.periodically.enabled")) {
                 Bukkit.getScheduler().runTaskLater(plugin, () ->
-                        Bukkit.getScheduler().runTaskTimerAsynchronously(
-                                plugin,
-                                plugin::checkVersion,
-                                plugin.playerData.getInt("checkVersion.periodically.delay"), // Delay before first run
-                                plugin.playerData.getInt("checkVersion.periodically.delay") // Delay between every run
-                        ),
+                                Bukkit.getScheduler().runTaskTimerAsynchronously(
+                                        plugin,
+                                        plugin::checkVersion,
+                                        plugin.playerData.getInt("checkVersion.periodically.delay"), // Delay before first run
+                                        plugin.playerData.getInt("checkVersion.periodically.delay") // Delay between every run
+                                ),
                         0
                 );
             }
-        }else{
+        } else {
             plugin.onDisable();
             return;
         }
@@ -149,7 +149,7 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
                         networks.add(new Network(channel.getId()));
                     });
         }
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 //            new PlaceHolderAPI(this).register();
         }
     }
@@ -408,7 +408,8 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
         checkMutedUser(event.getChannelJoined(), event.getMember());
-        if (event.getChannelLeft().getParent() == null || !event.getChannelLeft().getParent().equals(getCategory())) return;
+        if (event.getChannelLeft().getParent() == null || !event.getChannelLeft().getParent().equals(getCategory()))
+            return;
 
         UUID uuid = getUniqueId(event.getMember());
         if (uuid == null) return;
@@ -488,7 +489,7 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
     }
 
     public static Member getMember(UUID player) {
-        String discordId = plugin.playerData.getString("Data."+player);
+        String discordId = plugin.playerData.getString("Data." + player);
         return discordId != null ? getGuild().getMemberById(discordId) : null;
 //        String discordId = plugin.getAccountLinkManager().getDiscordId(player);
     }
@@ -496,9 +497,9 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
     public static UUID getUniqueId(Member member) {
 //        return plugin.getAccountLinkManager().getUuid(member.getId());
 //        return guild.getMemberById(plugin.playerData.getString("Data."+u));
-        String id = plugin.playerData.getString("Data."+member.getId());
+        String id = plugin.playerData.getString("Data." + member.getId());
 //        return UUID.fromString(plugin.playerData.getString("Data."+member.getId()));
-        return id != null ? UUID.fromString(plugin.playerData.getString("Data."+member.getId())) : null;
+        return id != null ? UUID.fromString(plugin.playerData.getString("Data." + member.getId())) : null;
     }
 
     public static double verticalDistance(Location location1, Location location2) {
@@ -526,52 +527,45 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
     }
 
     @Override
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event){
-        if(event.getAuthor().isBot()||event.isWebhookMessage())return;
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+        if (event.getAuthor().isBot() || event.isWebhookMessage()) return;
         String[] args = event.getMessage().getContentRaw().split(" ");
-        if(args[0].equalsIgnoreCase("*link")){
-            String saddsa = plugin.playerData.getString("Data."+event.getAuthor().getId());
-            if(saddsa!=null){
+        if (args[0].equalsIgnoreCase("*link")) {
+            String saddsa = plugin.playerData.getString("Data." + event.getAuthor().getId());
+            if (saddsa != null) {
                 event.getChannel().sendMessage("This discord account is already linked to a player!").queue();
                 return;
             }
-            if(uuidIdMap.containsValue(event.getAuthor().getId())){
-                event.getChannel().sendMessage(":x: **|** Error! "+event.getAuthor().getAsMention()+", you already have a code generated!").queue();
+            if (uuidIdMap.containsValue(event.getAuthor().getId())) {
+                event.getChannel().sendMessage(":x: **|** Error! " + event.getAuthor().getAsMention() + ", you already have a code generated!").queue();
                 return;
             }
-            if(args.length!=2){
+            if (args.length != 2) {
                 event.getChannel().sendMessage(":x: **|** Error! You need to specify a player!").queue();
                 return;
             }
             Player target = Bukkit.getPlayer(args[1]);
-            if(target==null){
+            if (target == null) {
                 event.getChannel().sendMessage(":x: **|** Error! The player is not online!").queue();
                 return;
             }
-            String das = plugin.playerData.getString("Data."+target.getUniqueId());
-            if(das!=null){
+            String das = plugin.playerData.getString("Data." + target.getUniqueId());
+            if (das != null) {
                 event.getChannel().sendMessage("This player is already linked to another discord account").queue();
                 return;
             }
-            String randomcode = new Random().nextInt(800000)+200000+"SK"; //6581446AA
-            uuidCodeMap.put(target.getUniqueId(),randomcode);
-            uuidIdMap.put(target.getUniqueId(),event.getAuthor().getId());
+            String randomcode = new Random().nextInt(800000) + 200000 + "SK"; //6581446AA
+            uuidCodeMap.put(target.getUniqueId(), randomcode);
+            uuidIdMap.put(target.getUniqueId(), event.getAuthor().getId());
 
             event.getAuthor().openPrivateChannel().complete().sendMessage("Hey! Your verification has been generated!\n" +
-                    "Use this command in game: ``/link "+randomcode+"``").queue();
-        } else if(args[0].equalsIgnoreCase("*dlink")){
-            // If Member uses `*dlink` command to link another account
-            String playerIDFromData = plugin.playerData.getString("Data."+event.getAuthor().getId());
-            if(playerIDFromData==null){
-                // Member is trying to link another dicord account, even tho they don't have a main link
-                event.getChannel().sendMessage(":x: **|** You don't have a normal link, use `*link` instead");
-            }
+                    "Use this command in game: ``/link " + randomcode + "``").queue();
         }
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) { //  /verify randomcodeSK
-        if(!(sender instanceof Player)){
+        if (!(sender instanceof Player)) {
             sender.sendMessage("§cOnly players can execute this command!");
             return true;
         }
@@ -579,22 +573,22 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
         //if(cmd.getName().equalsIgnoreCase("ping")){
         //    player.sendMessage("Pong!");
         //}
-        if(cmd.getName().equalsIgnoreCase("unlink")){
+        if (cmd.getName().equalsIgnoreCase("unlink")) {
             String getMemberIDfromFile = plugin.playerData.getString("Data." + player.getUniqueId());
-            if(getMemberIDfromFile==null){
+            if (getMemberIDfromFile == null) {
                 player.sendMessage("§cYou are not currently linked!");
                 return true;
             }
-            String diID = plugin.playerData.getString("Data."+player.getUniqueId());
-            plugin.playerData.set("Data."+player.getUniqueId(), null);
-            plugin.playerData.set("Data."+diID, null);
+            String diID = plugin.playerData.getString("Data." + player.getUniqueId());
+            plugin.playerData.set("Data." + player.getUniqueId(), null);
+            plugin.playerData.set("Data." + diID, null);
             try {
                 plugin.playerData.save(plugin.data);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return true;
-        }else if(cmd.getName().equalsIgnoreCase("link")) {
+        } else if (cmd.getName().equalsIgnoreCase("link")) {
             String dasd = plugin.playerData.getString("Data." + player.getUniqueId());
             if (dasd != null) {
                 player.sendMessage("§cSorry! You are already linked!");
@@ -648,6 +642,7 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
 
     /**
      * Method return type-safe version of Bukkit::getOnlinePlayers
+     *
      * @return {@code ArrayList} containing online players
      */
     public static List<Player> getOnlinePlayers() {

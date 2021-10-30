@@ -58,61 +58,62 @@ public class Skoice extends JavaPlugin {
         getConfig().options().copyDefaults();
         createConfig();
         getLogger().info("Plugin enabled!");
-        if(playerData.getString("token").equals("") || playerData.getString("token") == null){
+        if (playerData.getString("token").equals("") || playerData.getString("token") == null) {
             getLogger().severe(ChatColor.RED + "No bot token, edit the data.yml to add token");
-        } else if(playerData.getString("mainVoiceChannelID").equals("") || playerData.getString("mainVoiceChannelID") == null){
+        } else if (playerData.getString("mainVoiceChannelID").equals("") || playerData.getString("mainVoiceChannelID") == null) {
             getLogger().severe(ChatColor.RED + "No bot mainVoiceChannelID, edit the data.yml to add mainVoiceChannelID");
-        } else if(playerData.getString("categoryID").equals("") || playerData.getString("categoryID")==null){
+        } else if (playerData.getString("categoryID").equals("") || playerData.getString("categoryID") == null) {
             getLogger().severe(ChatColor.RED + "No bot categoryID, edit the data.yml to add categoryID");
-        } else if(playerData.getString("distance")==null) {
+        } else if (playerData.getString("distance") == null) {
             getLogger().severe(ChatColor.RED + "No distance config found, make sure you add the 'distance' from data https://github.com/carlodrift/skoice/blob/dev/src/main/resources/data.yml");
-        }else if(playerData.getString("checkVersion")==null) {
+        } else if (playerData.getString("checkVersion") == null) {
             getLogger().severe(ChatColor.RED + "No checkVersion config found, make sure you add the 'checkVersion' from data https://github.com/carlodrift/skoice/blob/dev/src/main/resources/data.yml");
-        }else{
+        } else {
             //Check Version
-            if(playerData.getBoolean("checkVersion.atStartup")) {
-                getLogger().info(ChatColor.YELLOW+"Checking Version Now!");
+            if (playerData.getBoolean("checkVersion.atStartup")) {
+                getLogger().info(ChatColor.YELLOW + "Checking Version Now!");
                 checkVersion();
             }
             botReady = true;
             main = new Main(this);
         }
-        if(!botReady){
+        if (!botReady) {
             onDisable();
         }
     }
 
-    private void createConfig(){
+    private void createConfig() {
         data = new File(getDataFolder() + File.separator + "data.yml");
-        if(!data.exists()){
+        if (!data.exists()) {
             getLogger().info(ChatColor.LIGHT_PURPLE + "Creating file data.yml");
             this.saveResource("data.yml", false);
         }
         playerData = new YamlConfiguration();
         try {
             playerData.load(data);
-        } catch (IOException | InvalidConfigurationException e){
+        } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
     }
-    public void checkVersion(){
-            try {
-                Skoice nsk = this;
-                String skoiceFileVersion = "v" + nsk.getDescription().getVersion();
 
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL("https://raw.githubusercontent.com/carlodrift/skoice/main/version").openStream()));
-                String spigotVersion = bufferedReader.readLine();
-                if (!skoiceFileVersion.equals(spigotVersion)) {
-                    getLogger().warning((Object) ChatColor.RED + "You are using an outdated version!");
-                    getLogger().warning("Latest version: " + (Object) ChatColor.GREEN + spigotVersion + (Object) ChatColor.YELLOW + ". You are on version: " + ChatColor.RED + skoiceFileVersion + (Object) ChatColor.YELLOW + ".");
-                    getLogger().warning("Update here: " + (Object) ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/");
-                }
-                //getLogger().info(ChatColor.GREEN+"Looks like your using the latest version!");
+    public void checkVersion() {
+        try {
+            Skoice nsk = this;
+            String skoiceFileVersion = "v" + nsk.getDescription().getVersion();
 
-            } catch (IOException e) {
-                //getLogger().severe("Unable to check for updates. Error: " + e.getMessage());
-//                checkVersion();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL("https://raw.githubusercontent.com/carlodrift/skoice/main/version").openStream()));
+            String spigotVersion = bufferedReader.readLine();
+            if (!skoiceFileVersion.equals(spigotVersion)) {
+                getLogger().warning((Object) ChatColor.RED + "You are using an outdated version!");
+                getLogger().warning("Latest version: " + (Object) ChatColor.GREEN + spigotVersion + (Object) ChatColor.YELLOW + ". You are on version: " + ChatColor.RED + skoiceFileVersion + (Object) ChatColor.YELLOW + ".");
+                getLogger().warning("Update here: " + (Object) ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/");
             }
+            //getLogger().info(ChatColor.GREEN+"Looks like your using the latest version!");
+
+        } catch (IOException e) {
+            //getLogger().severe("Unable to check for updates. Error: " + e.getMessage());
+//                checkVersion();
+        }
 
     }
 
@@ -150,7 +151,8 @@ public class Skoice extends JavaPlugin {
         try {
             executor.invokeAll(Collections.singletonList(() -> {
                 main.shutdown();
-                if (main.jda != null) main.jda.getEventManager().getRegisteredListeners().forEach(listener -> main.jda.getEventManager().unregister(listener));
+                if (main.jda != null)
+                    main.jda.getEventManager().getRegisteredListeners().forEach(listener -> main.jda.getEventManager().unregister(listener));
                 if (main.jda != null) {
                     CompletableFuture<Void> shutdownTask = new CompletableFuture<>();
                     main.jda.addEventListener(new ListenerAdapter() {
@@ -170,7 +172,8 @@ public class Skoice extends JavaPlugin {
 
                 return null;
             }), 15, TimeUnit.SECONDS);
-        }catch(InterruptedException e){}
+        } catch (InterruptedException e) {
+        }
         executor.shutdownNow();
         getLogger().info("Plugin disabled!");
     }
