@@ -5,8 +5,7 @@ distance:
   # Maximum distance between players in order to be connected
   verticalStrength: 40
   horizontalStrength: 80
-  # Once a player has joined a network, they can be
-  # strength + falloff blocks away before being disconnected
+  # Once a player has joined a network, they can be strength + falloff blocks away before being disconnected
   falloff: 5
 checkVersion:
   atStartup: true
