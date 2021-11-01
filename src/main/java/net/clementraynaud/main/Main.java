@@ -75,6 +75,8 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
     private final ReentrantLock lock = new ReentrantLock();
     private Set<UUID> dirtyPlayers = new HashSet<>();
 
+    private Boolean ifPlayerHasToBeInVC = false;
+
     public Set<Network> getNetworks() {
         return networks;
     }
@@ -136,6 +138,9 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
                                 ),
                         0
                 );
+            }
+            if(plugin.playerData.getBoolean("forcePlayerInChannel.force")){
+                ifPlayerHasToBeInVC = true;
             }
         } else {
             plugin.onDisable();
@@ -365,6 +370,30 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
+        // ifPlayerHasToBeInVC
+        if(ifPlayerHasToBeInVC){
+            String GuildLink = plugin.playerData.getString("forcePlayerInChannel.link");
+            String pm = plugin.playerData.getString("Data."+event.getPlayer().getUniqueId());
+            if(pm==null) {
+                event.getPlayer().kickPlayer("You aren't linked in the Discord Server, please join here! " + GuildLink);
+                return;
+            }
+            Member gm = getMember(UUID.fromString(pm));
+            if(gm==null) {
+                event.getPlayer().kickPlayer("You aren't in the Discord Server, please join here! " + GuildLink);
+                return;
+            }
+            if(gm.getVoiceState() == null || gm.getVoiceState().getChannel() == null) {
+                event.getPlayer().kickPlayer("You aren't in a VC in "+getGuild().getName()+", please join "+getLobbyChannel().createInvite());
+                return;
+            }
+            boolean isLobby = gm.getId().equals(getLobbyChannel().getId());
+            VoiceChannel pvc = gm.getVoiceState().getChannel();
+            if(!isLobby && (pvc.getParent()==null || !pvc.getParent().getId().equals(getCategory().getId()))){
+                event.getPlayer().kickPlayer("You aren't in "+getLobbyChannel().getName()+", please join "+ getLobbyChannel().createInvite());
+                return;
+            }
+        }
         markDirty(event.getPlayer());
     }
 
