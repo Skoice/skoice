@@ -566,7 +566,11 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
                 // Member is trying to link another dicord account, even tho they don't have a main link
                 event.getChannel().sendMessage(":x: **|** You don't have a normal link, use `*link` instead");
             }
-        }
+		// Deletes link
+        } else if(args[0].equalsIgnore("*dellink")) {
+            uuidCodeMap.remove(target.getUniqueId());
+            uuidIdMap.remove(target.getUniqueId());
+		}
     }
 
     @Override
