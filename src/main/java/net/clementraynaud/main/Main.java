@@ -529,6 +529,8 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event){
         if(event.getAuthor().isBot()||event.isWebhookMessage())return;
         String[] args = event.getMessage().getContentRaw().split(" ");
+		Player target = Bukkit.getPlayer(args[1]);
+		
         if(args[0].equalsIgnoreCase("*link")){
             String saddsa = plugin.playerData.getString("Data."+event.getAuthor().getId());
             if(saddsa!=null){
@@ -543,7 +545,6 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
                 event.getChannel().sendMessage(":x: **|** Error! You need to specify a player!").queue();
                 return;
             }
-            Player target = Bukkit.getPlayer(args[1]);
             if(target==null){
                 event.getChannel().sendMessage(":x: **|** Error! The player is not online!").queue();
                 return;
