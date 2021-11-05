@@ -103,7 +103,9 @@ public class Skoice extends JavaPlugin {
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL("https://raw.githubusercontent.com/carlodrift/skoice/main/version").openStream()));
             String spigotVersion = bufferedReader.readLine();
-            if (!skoiceFileVersion.equals(spigotVersion)) {
+
+            int nm = isUpdateAvailable(skoiceFileVersion, spigotVersion);
+            if (nm>0) {
                 getLogger().warning((Object) ChatColor.RED + "You are using an outdated version!");
                 getLogger().warning("Latest version: " + (Object) ChatColor.GREEN + spigotVersion + (Object) ChatColor.YELLOW + ". You are on version: " + ChatColor.RED + skoiceFileVersion + (Object) ChatColor.YELLOW + ".");
                 getLogger().warning("Update here: " + (Object) ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/");
@@ -113,6 +115,7 @@ public class Skoice extends JavaPlugin {
         } catch (IOException e) {
             //getLogger().severe("Unable to check for updates. Error: " + e.getMessage());
 //                checkVersion();
+            getLogger().warning("Had a error checking the version:\n"+e.getStackTrace()+"\nGoing to continue anyway");
         }
 
     }
