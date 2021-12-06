@@ -529,6 +529,8 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event){
         if(event.getAuthor().isBot()||event.isWebhookMessage())return;
         String[] args = event.getMessage().getContentRaw().split(" ");
+		Player target = Bukkit.getPlayer(args[1]);
+		
         if(args[0].equalsIgnoreCase("*link")){
             String saddsa = plugin.playerData.getString("Data."+event.getAuthor().getId());
             if(saddsa!=null){
@@ -543,7 +545,6 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
                 event.getChannel().sendMessage(":x: **|** Error! You need to specify a player!").queue();
                 return;
             }
-            Player target = Bukkit.getPlayer(args[1]);
             if(target==null){
                 event.getChannel().sendMessage(":x: **|** Error! The player is not online!").queue();
                 return;
@@ -566,7 +567,11 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
                 // Member is trying to link another dicord account, even tho they don't have a main link
                 event.getChannel().sendMessage(":x: **|** You don't have a normal link, use `*link` instead");
             }
-        }
+		// Deletes link
+        } else if(args[0].equalsIgnore("*dellink")) {
+            uuidCodeMap.remove(target.getUniqueId());
+            uuidIdMap.remove(target.getUniqueId());
+		}
     }
 
     @Override
