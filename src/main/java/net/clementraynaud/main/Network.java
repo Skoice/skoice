@@ -66,6 +66,9 @@ public class Network {
                 });
     }
 
+    /**
+     * Combines two networks
+     */
     public Network engulf(Network network) {
 //        debug(Debug.VOICE, "Network " + this + " is engulfing " + network);
         players.addAll(network.players);

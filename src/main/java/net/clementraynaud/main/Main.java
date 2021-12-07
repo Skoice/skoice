@@ -450,6 +450,9 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
         }
     }
 
+    /**
+     * Clears all data and moves all members to the lobby discord voice channel
+     */
     public void shutdown() {
         for (Pair<String, CompletableFuture<Void>> value : awaitingMoves.values()) {
             value.getRight().cancel(true);
@@ -497,12 +500,11 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
 //        return plugin.getAccountLinkManager().getUuid(member.getId());
 //        return guild.getMemberById(plugin.playerData.getString("Data."+u));
         String id = plugin.playerData.getString("Data."+member.getId());
-//        return UUID.fromString(plugin.playerData.getString("Data."+member.getId()));
         return id != null ? UUID.fromString(plugin.playerData.getString("Data."+member.getId())) : null;
     }
 
     public static double verticalDistance(Location location1, Location location2) {
-        return Math.sqrt(NumberConversions.square(location1.getY() - location2.getY()));
+        return Math.abs(location1.getY() - location2.getY());
     }
 
     public static double horizontalDistance(Location location1, Location location2) {
@@ -530,26 +532,35 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
         if(event.getAuthor().isBot()||event.isWebhookMessage())return;
         String[] args = event.getMessage().getContentRaw().split(" ");
         if(args[0].equalsIgnoreCase("*link")){
-            String saddsa = plugin.playerData.getString("Data."+event.getAuthor().getId());
-            if(saddsa!=null){
+            // Already linked to a minecraft account
+            String discordPlayerData = plugin.playerData.getString("Data."+event.getAuthor().getId());
+            if(discordPlayerData!=null){
                 event.getChannel().sendMessage("This discord account is already linked to a player!").queue();
                 return;
             }
+
+            // Already generated a code
             if(uuidIdMap.containsValue(event.getAuthor().getId())){
                 event.getChannel().sendMessage(":x: **|** Error! "+event.getAuthor().getAsMention()+", you already have a code generated!").queue();
                 return;
             }
+
+            // Didn't specify a player
             if(args.length!=2){
                 event.getChannel().sendMessage(":x: **|** Error! You need to specify a player!").queue();
                 return;
             }
+
+            // Player isn't online
             Player target = Bukkit.getPlayer(args[1]);
             if(target==null){
                 event.getChannel().sendMessage(":x: **|** Error! The player is not online!").queue();
                 return;
             }
-            String das = plugin.playerData.getString("Data."+target.getUniqueId());
-            if(das!=null){
+
+            // Already linked to a discord account
+            String minecraftPlayerData = plugin.playerData.getString("Data."+target.getUniqueId());
+            if(minecraftPlayerData!=null){
                 event.getChannel().sendMessage("This player is already linked to another discord account").queue();
                 return;
             }
@@ -576,9 +587,6 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
             return true;
         }
         Player player = (Player) sender;
-        //if(cmd.getName().equalsIgnoreCase("ping")){
-        //    player.sendMessage("Pong!");
-        //}
         if(cmd.getName().equalsIgnoreCase("unlink")){
             String getMemberIDfromFile = plugin.playerData.getString("Data." + player.getUniqueId());
             if(getMemberIDfromFile==null){
@@ -595,24 +603,33 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
             }
             return true;
         }else if(cmd.getName().equalsIgnoreCase("link")) {
-            String dasd = plugin.playerData.getString("Data." + player.getUniqueId());
-            if (dasd != null) {
+            // Already linked to a discord account
+            String pData = plugin.playerData.getString("Data." + player.getUniqueId());
+            if (pData != null) {
                 player.sendMessage("§cSorry! You are already linked!");
                 return true;
             }
+
+            // Didn't link via discord first
             if (!uuidCodeMap.containsKey(player.getUniqueId())) {
                 player.sendMessage("§cNot pending linking process!");
                 return true;
             }
+
+            // Didn't give linking code
             if (args.length != 1) {
                 player.sendMessage("§cUsage: /link [code]");
                 return true;
             }
+            
+            // Code isn't the correct one
             String actualcode = uuidCodeMap.get(player.getUniqueId());
             if (!actualcode.equals(args[0])) {
                 player.sendMessage("§cCode is not valid! Check again!");
                 return true;
             }
+
+            // Player is not in the guild
             String discordid = uuidIdMap.get(player.getUniqueId());
             Member target = getGuild().getMemberById(discordid);
             if (target == null) {
@@ -630,8 +647,6 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
             }
             uuidCodeMap.remove(player.getUniqueId());
             uuidIdMap.remove(player.getUniqueId());
-//        verifiedmembers.add(player.getUniqueId());
-
 
             target.getUser().openPrivateChannel().complete().sendMessage(":white_check_mark: **|** Verification successfully, you have linked your account with Mc account: " + player.getName()).queue();
             player.sendMessage("§aYou have been linked correctly! You linked your account with member: " + target.getUser().getName() + "#" + target.getUser().getDiscriminator());
@@ -639,7 +654,10 @@ public class Main extends ListenerAdapter implements CommandExecutor, Listener {
         return true;
     }
 
-    @EventHandler //This is to remove the player from all lists and maps when he leaves the server.
+    /**
+     * This is to remove the player from all lists and maps when they leave the server.
+     */
+    @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         // remove VC in player left
         uuidCodeMap.remove(e.getPlayer().getUniqueId());
