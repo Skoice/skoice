@@ -1,4 +1,4 @@
-// Copyright 2020, 2021 Clément "carlodrift" Raynaud, rowisabeast
+// Copyright 2020, 2021 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
 // Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
 
 // This file is part of Skoice.
@@ -17,7 +17,7 @@
 // along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 
 
-package net.clementraynaud.main;
+package net.clementraynaud.system;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -25,6 +25,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+
+import static net.clementraynaud.system.ChannelManagement.*;
+import static net.clementraynaud.system.DistanceCalculation.*;
+import static net.clementraynaud.util.DataGetters.*;
 
 public class Network {
 
@@ -42,18 +46,18 @@ public class Network {
 
 //        debug(Debug.VOICE, "Network being made for " + players);
 
-        List<Permission> allowedPermissions = Main.isVoiceActivationAllowed()
+        List<Permission> allowedPermissions = isVoiceActivationAllowed()
                 ? Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD)
                 : Collections.singletonList(Permission.VOICE_SPEAK);
 
-        Main.getCategory().createVoiceChannel(UUID.randomUUID().toString())
+        getDedicatedCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(
-                        Main.getGuild().getPublicRole(),
+                        getGuild().getPublicRole(),
                         allowedPermissions,
                         Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT)
                 )
                 .addPermissionOverride(
-                        Main.getGuild().getSelfMember(),
+                        getGuild().getSelfMember(),
                         Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS),
                         Collections.emptyList()
                 )
@@ -62,8 +66,12 @@ public class Network {
                     initialized = true;
                 }, e -> {
 //                    error("Failed to create network for " + players + ": " + e.getMessage());
-                    Main.get().getNetworks().remove(this);
+                    getNetworks().remove(this);
                 });
+    }
+
+    public static boolean isVoiceActivationAllowed() {
+        return true;
     }
 
     public Network engulf(Network network) {
@@ -82,22 +90,22 @@ public class Network {
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> Main.verticalDistance(p.getLocation(), player.getLocation()) <= Main.getVerticalStrength()
-                        && Main.horizontalDistance(p.getLocation(), player.getLocation()) <= Main.getHorizontalStrength());
+                .anyMatch(p -> verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalStrength()
+                        && horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalStrength());
     }
 
     /**
      * @return true if the player is within the network strength and should be connected
      */
     public boolean isPlayerInRangeToStayConnected(Player player) {
-        double falloff = Main.getFalloff();
+        double falloff = getFalloff();
         return players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> Main.verticalDistance(p.getLocation(), player.getLocation()) <= Main.getVerticalStrength() + falloff
-                        && Main.horizontalDistance(p.getLocation(), player.getLocation()) <= Main.getHorizontalStrength() + falloff);
+                .anyMatch(p -> verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalStrength() + falloff
+                        && horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalStrength() + falloff);
     }
 
     public void clear() {
@@ -134,7 +142,7 @@ public class Network {
 
     public VoiceChannel getChannel() {
         if (channel == null || channel.isEmpty()) return null;
-        return Main.getGuild().getVoiceChannelById(channel);
+        return getGuild().getVoiceChannelById(channel);
     }
 
     public boolean isInitialized() {

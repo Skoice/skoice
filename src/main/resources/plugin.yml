@@ -1,4 +1,4 @@
-# Copyright 2020, 2021 Clément "carlodrift" Raynaud, rowisabeast
+# Copyright 2020, 2021 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
 # Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
 #
 # This file is part of Skoice.
@@ -29,14 +29,22 @@ api-version: 1.13
 
 authors:
   - carlodrift
-  - rowisabeast
+  - Lucas_Cdry
 
 website: ${project.url}
 
 commands:
   link:
     usage: /link [code]
-    description: Command to link in MC
+    description: Command to link in Minecraft.
   unlink:
     usage: /unlink
-    description: will unlink player who uses the command, if they are linked
+    description: Will unlink the player who uses the command, if they are linked.
+  configure:
+    usage: /configure
+    default: op
+    description: Allows operators to configure their bot.
+  token:
+    usage: /token [token]
+    default: op
+    description: Allows operators to register their bot.
