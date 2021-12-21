@@ -20,7 +20,6 @@
 package net.clementraynaud;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import net.clementraynaud.configuration.discord.MessageManagement;
 import net.clementraynaud.configuration.minecraft.IncorrectConfigurationAlert;
 import net.clementraynaud.configuration.minecraft.Instructions;
 import net.clementraynaud.configuration.minecraft.TokenRetrieval;

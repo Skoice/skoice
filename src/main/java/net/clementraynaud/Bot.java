@@ -70,8 +70,12 @@ public class Bot extends ListenerAdapter {
     public void connectBot(CommandSender sender) {
         initializeDiscordIDCodeMap();
         initializeDiscordIDDistanceMap();
+        byte[] base64TokenBytes = Base64.getDecoder().decode(getPlugin().getPlayerData().getString("token"));
+        for (int i = 0; i < base64TokenBytes.length; i++) {
+            base64TokenBytes[i]--;
+        }
         try {
-            setJda(JDABuilder.createDefault(getPlugin().getPlayerData().getString("token"))
+            setJda(JDABuilder.createDefault(new String(base64TokenBytes))
                     .enableIntents(GatewayIntent.GUILD_MEMBERS)
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
                     .build()

@@ -24,6 +24,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Base64;
+
 import static net.clementraynaud.Bot.*;
 import static net.clementraynaud.Skoice.getBot;
 import static net.clementraynaud.Skoice.getPlugin;
@@ -44,7 +46,12 @@ public class TokenRetrieval implements CommandExecutor {
             sender.sendMessage("§dSkoice §8• §7You have §cnot provided a valid token§7.");
             return true;
         }
-        getPlugin().getPlayerData().set("token", args[0]);
+        byte[] tokenBytes = args[0].getBytes();
+        for (int i = 0; i < tokenBytes.length; i++) {
+            tokenBytes[i]++;
+        }
+        String base64Token = Base64.getEncoder().encodeToString(tokenBytes);
+        getPlugin().getPlayerData().set("token", base64Token);
         saveConfigurationFile();
         if (getJda() == null) {
             getBot().connectBot(sender);
