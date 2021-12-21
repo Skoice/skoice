@@ -12,10 +12,3 @@ checkVersion:
   periodically:
     enabled: true
     delay: 720000
-forcePlayerInChannel:
-  # false: player doesn't need to be in the discord VC
-  # true: player has to be in VC to join
-  force: false
-  # link to discord server | Tells the player to join the discord server
-  #
-  link: ""
