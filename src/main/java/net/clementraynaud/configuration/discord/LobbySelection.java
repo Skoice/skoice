@@ -38,27 +38,26 @@ import java.util.List;
 
 import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.util.DataGetters.getLobby;
-import static net.clementraynaud.util.SaveConfigurationFile.saveConfigurationFile;
 
 public class LobbySelection extends ListenerAdapter {
 
     @Override
     public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
-        if (event.getChannel().getId().equals(getPlugin().getPlayerData().getString("lobbyID"))) {
+        if (event.getChannel().getId().equals(getPlugin().getConfigFile().getString("lobby-id"))) {
             deleteLobby(event.getGuild());
         }
     }
 
     @Override
     public void onVoiceChannelUpdateParent(VoiceChannelUpdateParentEvent event) {
-        if (event.getChannel().getId().equals(getPlugin().getPlayerData().getString("lobbyID"))) {
+        if (event.getChannel().getId().equals(getPlugin().getConfigFile().getString("lobby-id"))) {
             deleteLobby(event.getGuild());
         }
     }
 
     private static void deleteLobby(Guild guild) {
-        getPlugin().getPlayerData().set("lobbyID", "");
-        saveConfigurationFile();
+        getPlugin().getConfigFile().set("lobby-id", null);
+        getPlugin().saveConfig();
         getPlugin().updateConfigurationStatus(false);
         guild.retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE)
                 .complete().get(0).getUser().openPrivateChannel().complete()
@@ -101,7 +100,7 @@ public class LobbySelection extends ListenerAdapter {
             }
             actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(getPlugin().getPlayerData().getString("lobbyID"))).build()));
+                    .setDefaultValues(Collections.singleton(getPlugin().getConfigFile().getString("lobby-id"))).build()));
             actionRows.add(ActionRow.of(Button.secondary("settings", "← Back"),
                     Button.primary("lobby", "⟳ Refresh"),
                     Button.danger("close", "Close").withEmoji(Emoji.fromUnicode("U+2716"))));

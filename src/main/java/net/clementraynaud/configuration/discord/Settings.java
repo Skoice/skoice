@@ -33,14 +33,16 @@ import java.awt.*;
 import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.configuration.discord.LobbySelection.getLobbySelectionMessage;
 import static net.clementraynaud.configuration.discord.ModeSelection.getModeSelectionMessage;
+import static net.clementraynaud.util.DataGetters.getHorizontalRadius;
+import static net.clementraynaud.util.DataGetters.getVerticalRadius;
 
 public class Settings {
 
     public static Message getConfigurationMessage(Guild guild) {
-        if (getPlugin().getPlayerData().getString("lobbyID").equals("")) {
+        if (getPlugin().getConfigFile().getString("lobby-id") == null) {
             return getLobbySelectionMessage(guild);
-        } else if (getPlugin().getPlayerData().getString("distance.verticalStrength").equals("")
-                || getPlugin().getPlayerData().getString("distance.horizontalStrength").equals("")) {
+        } else if (getVerticalRadius() == 0
+                || getHorizontalRadius() == 0) {
             return getModeSelectionMessage(false);
         } else {
             return getSettingsMessage();

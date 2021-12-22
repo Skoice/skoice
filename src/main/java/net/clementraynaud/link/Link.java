@@ -37,7 +37,6 @@ import static net.clementraynaud.Bot.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.util.DataGetters.getGuild;
 import static net.clementraynaud.util.DataGetters.getKeyFromValue;
-import static net.clementraynaud.util.SaveConfigurationFile.saveConfigurationFile;
 
 public class Link extends ListenerAdapter implements CommandExecutor {
 
@@ -57,7 +56,7 @@ public class Link extends ListenerAdapter implements CommandExecutor {
                         .setEphemeral(true).queue();
                 return;
             }
-            boolean isLinked = getPlugin().getPlayerData().contains("Data." + event.getUser().getId());
+            boolean isLinked = getPlugin().getConfigFile().contains("link." + event.getUser().getId());
             if (isLinked) {
                 event.replyEmbeds(embed.addField(":warning: Error", "Your Discord account is already linked to Minecraft.\nType `/unlink` to unlink it.", false)
                                 .setColor(Color.RED).build())
@@ -87,7 +86,7 @@ public class Link extends ListenerAdapter implements CommandExecutor {
             player.sendMessage("§dSkoice §8• §7Skoice is §cnot configured correctly§7.");
             return true;
         }
-        boolean isLinked = getPlugin().getPlayerData().contains("Data." + player.getUniqueId());
+        boolean isLinked = getPlugin().getConfigFile().contains("link." + player.getUniqueId());
         if (isLinked) {
             player.sendMessage("§dSkoice §8• §7You have §calready linked your Minecraft account §7to Discord. Type \"§e/unlink§7\" to unlink it.");
             return true;
@@ -108,9 +107,9 @@ public class Link extends ListenerAdapter implements CommandExecutor {
         if (member == null) {
             return true;
         }
-        getPlugin().getPlayerData().set("Data." + player.getUniqueId(), discordID);
-        getPlugin().getPlayerData().set("Data." + discordID, player.getUniqueId().toString());
-        saveConfigurationFile();
+        getPlugin().getConfigFile().set("link." + player.getUniqueId(), discordID);
+        getPlugin().getConfigFile().set("link." + discordID, player.getUniqueId().toString());
+        getPlugin().saveConfig();
         discordIDCodeMap.values().remove(args[0]);
         member.getUser().openPrivateChannel().complete().sendMessageEmbeds(new EmbedBuilder().setTitle(":link: Linking Process")
                 .addField(":heavy_check_mark: Account Linked", "Your Discord account has been linked to Minecraft.", false)

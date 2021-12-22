@@ -29,7 +29,6 @@ import java.util.Base64;
 import static net.clementraynaud.Bot.*;
 import static net.clementraynaud.Skoice.getBot;
 import static net.clementraynaud.Skoice.getPlugin;
-import static net.clementraynaud.util.SaveConfigurationFile.saveConfigurationFile;
 
 public class TokenRetrieval implements CommandExecutor {
 
@@ -51,11 +50,10 @@ public class TokenRetrieval implements CommandExecutor {
             tokenBytes[i]++;
         }
         String base64Token = Base64.getEncoder().encodeToString(tokenBytes);
-        getPlugin().getPlayerData().set("token", base64Token);
-        saveConfigurationFile();
+        getPlugin().getConfigFile().set("token", base64Token);
+        getPlugin().saveConfig();
         if (getJda() == null) {
             getBot().connectBot(sender);
-            getPlugin().updateConfigurationStatus(false);
         } else {
             sender.sendMessage("§dSkoice §8• §7A bot is §calready connected§7. Restart your Minecraft server to apply the new token.");
         }

@@ -27,9 +27,9 @@ import static net.clementraynaud.util.DataGetters.*;
 public class GuildChecker {
 
     public boolean isGuildSelected(Guild guild) {
-        if (getPlugin().getPlayerData().getString("lobbyID").equals("")
-                && getPlugin().getPlayerData().getString("distance.verticalStrength").equals("")
-                && getPlugin().getPlayerData().getString("distance.horizontalStrength").equals("")) {
+        if (getPlugin().getConfigFile().getString("lobby-id") == null
+                && getVerticalRadius() == 0
+                && getHorizontalRadius() == 0) {
             return true;
         }
         if (getGuild() == guild) {

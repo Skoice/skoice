@@ -23,7 +23,6 @@ import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -46,7 +45,7 @@ public class DataGetters {
     }
 
     public static UUID getMinecraftID(Member member) {
-        String minecraftID = getPlugin().getPlayerData().getString("Data." + member.getId());
+        String minecraftID = getPlugin().getConfigFile().getString("link." + member.getId());
         return minecraftID != null ? UUID.fromString(minecraftID) : null;
     }
 
@@ -58,8 +57,8 @@ public class DataGetters {
 
     public static VoiceChannel getLobby() {
         if (getJda() == null) return null;
-        String lobbyID = getPlugin().getPlayerData().getString("lobbyID");
-        if (StringUtils.isBlank(lobbyID)) return null;
+        String lobbyID = getPlugin().getConfigFile().getString("lobby-id");
+        if (lobbyID == null) return null;
         VoiceChannel lobby = getJda().getVoiceChannelById(lobbyID);
         if (lobby == null) return  null;
         if (lobby.getParent() == null) return null;
@@ -74,7 +73,7 @@ public class DataGetters {
     }
 
     public static Member getMember(UUID player) {
-        String discordID = getPlugin().getPlayerData().getString("Data." + player);
+        String discordID = getPlugin().getConfigFile().getString("link." + player);
         Guild guild = getGuild();
         if (guild == null) return null;
         return discordID != null ? guild.getMemberById(discordID) : null;
@@ -102,15 +101,11 @@ public class DataGetters {
         return onlinePlayers;
     }
 
-    public static double getVerticalStrength() {
-        return getPlugin().getPlayerData().getInt("distance.verticalStrength");
+    public static int getVerticalRadius() {
+        return getPlugin().getConfigFile().getInt("radius.vertical");
     }
 
-    public static double getHorizontalStrength() {
-        return getPlugin().getPlayerData().getInt("distance.horizontalStrength");
-    }
-
-    public static double getFalloff() {
-        return getPlugin().getPlayerData().getDouble("distance.falloff") / 2;
+    public static int getHorizontalRadius() {
+        return getPlugin().getConfigFile().getInt("radius.horizontal");
     }
 }

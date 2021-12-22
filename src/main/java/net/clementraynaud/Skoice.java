@@ -36,9 +36,7 @@ import net.dv8tion.jda.internal.utils.tuple.Pair;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -51,13 +49,12 @@ import java.util.concurrent.*;
 import static net.clementraynaud.Bot.*;
 import static net.clementraynaud.configuration.discord.MessageManagement.*;
 import static net.clementraynaud.system.ChannelManagement.networks;
-import static net.clementraynaud.util.DataGetters.getLobby;
+import static net.clementraynaud.util.DataGetters.*;
 
 public class Skoice extends JavaPlugin {
 
     private static Skoice plugin;
-    private FileConfiguration playerData;
-    private File data;
+    private final FileConfiguration configFile = getConfig();
     private static Bot bot;
     private boolean isTokenSet = true;
     private boolean isBotConfigured = false;
@@ -74,12 +71,8 @@ public class Skoice extends JavaPlugin {
         return plugin;
     }
 
-    public FileConfiguration getPlayerData() {
-        return playerData;
-    }
-
-    public File getData() {
-        return data;
+    public FileConfiguration getConfigFile() {
+        return configFile;
     }
 
     public static Bot getBot() {
@@ -97,13 +90,10 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onEnable() {
         new Metrics(this, 11380);
-        getConfig().options().copyDefaults();
-        createConfig();
+        saveDefaultConfig();
         getLogger().info(ChatColor.YELLOW + "Plugin enabled!");
-        if (playerData.getBoolean("checkVersion.atStartup")) {
-            getLogger().info(ChatColor.YELLOW + "Checking version now.");
-            checkVersion();
-        }
+        getLogger().info(ChatColor.YELLOW + "Checking version now.");
+        checkVersion();
         setPlugin(this);
         updateConfigurationStatus(true);
         setBot(new Bot());
@@ -111,20 +101,6 @@ public class Skoice extends JavaPlugin {
         plugin.getCommand("token").setExecutor(new TokenRetrieval());
         plugin.getCommand("link").setExecutor(new Link());
         plugin.getCommand("unlink").setExecutor(new Unlink());
-    }
-
-    private void createConfig() {
-        data = new File(getDataFolder() + File.separator + "data.yml");
-        if (!data.exists()) {
-            getLogger().info(ChatColor.LIGHT_PURPLE + "Creating file data.yml");
-            this.saveResource("data.yml", false);
-        }
-        playerData = new YamlConfiguration();
-        try {
-            playerData.load(data);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
     }
 
     public void checkVersion() {
@@ -145,16 +121,17 @@ public class Skoice extends JavaPlugin {
 
     public void updateConfigurationStatus(boolean startup) {
         boolean oldBotConfigured = isBotConfigured;
-        if (playerData.getString("token").equals("")) {
+        if (configFile.getString("token") == null) {
             getLogger().warning(ChatColor.RED + "No bot token detected, join your Minecraft server to set up Skoice.");
             isTokenSet = false;
             isBotConfigured = false;
-        } else if (playerData.getString("lobbyID").equals("")) {
+        } else if (configFile.getString("lobby-id") == null) {
             if (getJda() != null) {
                 getLogger().warning(ChatColor.RED + "No main voice channel detected, type \"/configure\" on your Discord server to set up Skoice.");
             }
             isBotConfigured = false;
-        } else if (playerData.getString("distance.verticalStrength").equals("") || playerData.getString("distance.horizontalStrength").equals("")) {
+        } else if (getVerticalRadius() == 0
+                || getHorizontalRadius() == 0) {
             if (getJda() != null) {
                 getLogger().warning(ChatColor.RED + "Maximum distances not set, type \"/configure\" on your Discord server to set up Skoice.");
             }

@@ -34,8 +34,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static net.clementraynaud.Skoice.getPlugin;
-import static net.clementraynaud.util.DataGetters.getHorizontalStrength;
-import static net.clementraynaud.util.DataGetters.getVerticalStrength;
+import static net.clementraynaud.util.DataGetters.getHorizontalRadius;
+import static net.clementraynaud.util.DataGetters.getVerticalRadius;
 
 public class ModeSelection {
 
@@ -60,14 +60,14 @@ public class ModeSelection {
         if (getPlugin().isBotConfigured()) {
             embed.addField(":pencil2: Customize", "Set distances according to your personal preferences.", true);
             String defaultValue;
-            if (getPlugin().getPlayerData().getInt("distance.horizontalStrength") == 80
-                    && getPlugin().getPlayerData().getInt("distance.verticalStrength") == 40
+            if (getHorizontalRadius() == 80
+                    && getVerticalRadius() == 40
                     && !customize) {
                 defaultValue = "vanilla-mode";
                 modes.add(SelectOption.of("Customize", "customize")
                         .withDescription("Set distances from 1 to 1000 blocks.").withEmoji(Emoji.fromUnicode("U+270F")));
-            } else if (getPlugin().getPlayerData().getInt("distance.horizontalStrength") == 40
-                    && getPlugin().getPlayerData().getInt("distance.verticalStrength") == 20
+            } else if (getHorizontalRadius() == 40
+                    && getVerticalRadius() == 20
                     && !customize) {
                 defaultValue = "minigame-mode";
                 modes.add(SelectOption.of("Customize", "customize")
@@ -75,7 +75,7 @@ public class ModeSelection {
             } else {
                 defaultValue = "customize";
                 modes.add(SelectOption.of("Customize", "customize")
-                        .withDescription("Horizontal Radius: " + (int) getHorizontalStrength() + " blocks — Vertical Radius: " + (int) getVerticalStrength() + " blocks").withEmoji(Emoji.fromUnicode("U+270F")));
+                        .withDescription("Horizontal Radius: " + (int) getHorizontalRadius() + " blocks — Vertical Radius: " + (int) getVerticalRadius() + " blocks").withEmoji(Emoji.fromUnicode("U+270F")));
                 buttons.add(Button.primary("horizontal-radius", "Horizontal Radius").withEmoji(Emoji.fromUnicode("U+2194")));
                 buttons.add(Button.primary("vertical-radius", "Vertical Radius").withEmoji(Emoji.fromUnicode("U+2195")));
             }

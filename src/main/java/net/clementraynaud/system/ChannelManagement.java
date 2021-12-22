@@ -155,7 +155,7 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
                             network.remove(player.getUniqueId());
                             if (network.size() == 1) network.clear();
                         });
-                if (getPlugin().getConfig().getBoolean("actionBarAlert")) {
+                if (getPlugin().getConfigFile().getBoolean("action-bar-alert")) {
                     try {
                         networks.stream()
                                 .filter(network -> network.contains(player.getUniqueId()))
@@ -173,8 +173,8 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
                         .filter(p -> networks.stream().noneMatch(network -> network.contains(p)))
                         .filter(p -> !p.equals(player))
                         .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                        .filter(p -> horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalStrength()
-                                && verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalStrength())
+                        .filter(p -> horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius()
+                                && verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius())
                         .filter(p -> {
                             Member m = getMember(p.getUniqueId());
                             return m != null && m.getVoiceState() != null

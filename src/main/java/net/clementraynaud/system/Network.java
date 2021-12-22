@@ -34,6 +34,8 @@ import static net.clementraynaud.util.DataGetters.*;
 
 public class Network {
 
+    private static final double FALLOFF = 2.5;
+
     private final Set<UUID> players;
     private String channel;
     private boolean initialized = false;
@@ -85,7 +87,7 @@ public class Network {
 
 
     public boolean isGameModeEligible(Player player) {
-        if (getPlugin().getPlayerData().getBoolean("spectatorsIncluded")) {
+        if (getPlugin().getConfigFile().getBoolean("spectators-included")) {
             return true;
         }
         return player.getGameMode() != GameMode.SPECTATOR;
@@ -102,23 +104,22 @@ public class Network {
                 .filter(p -> !p.equals(player))
                 .filter(this::isGameModeEligible)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalStrength()
-                        && horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalStrength());
+                .anyMatch(p -> verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius()
+                        && horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius());
     }
 
     /**
      * @return true if the player is within the network strength and should be connected
      */
     public boolean isPlayerInRangeToStayConnected(Player player) {
-        double falloff = getFalloff();
         return players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
                 .filter(this::isGameModeEligible)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalStrength() + falloff
-                        && horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalStrength() + falloff);
+                .anyMatch(p -> verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius() + FALLOFF
+                        && horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius() + FALLOFF);
     }
 
     public void clear() {

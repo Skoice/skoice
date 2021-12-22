@@ -36,7 +36,6 @@ import java.util.UUID;
 
 import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.util.DataGetters.getGuild;
-import static net.clementraynaud.util.SaveConfigurationFile.saveConfigurationFile;
 
 public class Unlink extends ListenerAdapter implements CommandExecutor {
 
@@ -44,7 +43,7 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
     public void onSlashCommand(SlashCommandEvent event) {
         if (event.getName().equals("unlink")) {
             EmbedBuilder embed = new EmbedBuilder().setTitle(":link: Linking Process");
-            String minecraftID = getPlugin().getPlayerData().getString("Data." + event.getUser().getId());
+            String minecraftID = getPlugin().getConfigFile().getString("Data." + event.getUser().getId());
             if (minecraftID == null) {
                 event.replyEmbeds(embed.addField(":warning: Error", "Your Discord account is not linked to Minecraft.\nType `/link` to link it.", false)
                                 .setColor(Color.RED).build())
@@ -69,7 +68,7 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
-        String discordID = getPlugin().getPlayerData().getString("Data." + player.getUniqueId());
+        String discordID = getPlugin().getConfigFile().getString("Data." + player.getUniqueId());
         if (discordID == null) {
             player.sendMessage("§dSkoice §8• §7You have §cnot linked your Minecraft account §7to Discord. Type \"§e/link§7\" on our Discord server to link it.");
             return true;
@@ -88,8 +87,8 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
     }
 
     private void unlinkUser(String discordID, String minecraftID) {
-        getPlugin().getPlayerData().set("Data." + minecraftID, null);
-        getPlugin().getPlayerData().set("Data." + discordID, null);
-        saveConfigurationFile();
+        getPlugin().getConfigFile().set("link." + minecraftID, null);
+        getPlugin().getConfigFile().set("link." + discordID, null);
+        getPlugin().saveConfig();
     }
 }

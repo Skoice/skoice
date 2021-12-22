@@ -34,7 +34,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -47,9 +46,10 @@ import static net.clementraynaud.configuration.discord.MessageManagement.initial
 import static net.clementraynaud.link.Link.*;
 import static net.clementraynaud.system.ChannelManagement.networks;
 import static net.clementraynaud.util.DataGetters.*;
-import static net.clementraynaud.util.SaveConfigurationFile.saveConfigurationFile;
 
 public class Bot extends ListenerAdapter {
+
+    private static final int TICKS_BETWEEN_VERSION_CHECKING = 720000;
 
     private static JDA jda;
 
@@ -70,7 +70,7 @@ public class Bot extends ListenerAdapter {
     public void connectBot(CommandSender sender) {
         initializeDiscordIDCodeMap();
         initializeDiscordIDDistanceMap();
-        byte[] base64TokenBytes = Base64.getDecoder().decode(getPlugin().getPlayerData().getString("token"));
+        byte[] base64TokenBytes = Base64.getDecoder().decode(getPlugin().getConfigFile().getString("token"));
         for (int i = 0; i < base64TokenBytes.length; i++) {
             base64TokenBytes[i]--;
         }
@@ -82,9 +82,10 @@ public class Bot extends ListenerAdapter {
                     .awaitReady());
             getPlugin().getLogger().info("Your Discord bot is connected!");
             if (sender != null) {
-                if (getPlugin().getPlayerData().getString("lobbyID").equals("")
-                        || getPlugin().getPlayerData().getString("distance.verticalStrength").equals("")
-                        || getPlugin().getPlayerData().getString("distance.horizontalStrength").equals("")) {
+                getPlugin().updateConfigurationStatus(false);
+                if (getPlugin().getConfigFile().getString("lobby-id") == null
+                        || getVerticalRadius() == 0
+                        || getHorizontalRadius() == 0) {
                     sender.sendMessage("§dSkoice §8• §7Your bot is §anow connected§7. Type \"§e/configure§7\" on your Discord server to set it up.");
                 } else {
                     sender.sendMessage("§dSkoice §8• §7Your bot is §anow connected§7.");
@@ -95,8 +96,8 @@ public class Bot extends ListenerAdapter {
                 getPlugin().getLogger().severe("Your Discord bot could not connect. To update the token, type \"/token\" followed by the new token.");
             } else {
                 sender.sendMessage("§dSkoice §8• §7The connection §cfailed§7. Try again with a valid token.");
-                getPlugin().getPlayerData().set("token", "");
-                saveConfigurationFile();
+                getPlugin().getConfigFile().set("token", null);
+                getPlugin().saveConfig();
             }
             getPlugin().updateConfigurationStatus(false);
         }
@@ -126,18 +127,16 @@ public class Bot extends ListenerAdapter {
                             ),
                     0
             );
-            if (getPlugin().getPlayerData().getBoolean("checkVersion.periodically.enabled")) {
-                Bukkit.getScheduler().runTaskLater(getPlugin(), () ->
-                                Bukkit.getScheduler().runTaskTimerAsynchronously(
-                                        getPlugin(),
-                                        getPlugin()::checkVersion,
-                                        getPlugin().getPlayerData().getInt("checkVersion.periodically.delay"), // Delay before first run
-                                        getPlugin().getPlayerData().getInt("checkVersion.periodically.delay") // Delay between every run
-                                ),
-                        0
-                );
-            }
-            if (!getPlugin().getPlayerData().getString("lobbyID").equals("")) {
+            Bukkit.getScheduler().runTaskLater(getPlugin(), () ->
+                            Bukkit.getScheduler().runTaskTimerAsynchronously(
+                                    getPlugin(),
+                                    getPlugin()::checkVersion,
+                                    TICKS_BETWEEN_VERSION_CHECKING, // Delay before first run
+                                    TICKS_BETWEEN_VERSION_CHECKING // Delay between every run
+                            ),
+                    0
+            );
+            if (getPlugin().getConfigFile().getString("lobby-id") != null) {
                 Category category = getDedicatedCategory();
                 if (category != null) {
                     category.getVoiceChannels().stream()
@@ -160,9 +159,9 @@ public class Bot extends ListenerAdapter {
     }
 
     private void checkForValidLobby() {
-        if (getLobby() == null && !StringUtils.isBlank(getPlugin().getPlayerData().getString("lobbyID"))) {
-            getPlugin().getPlayerData().set("lobbyID", "");
-            saveConfigurationFile();
+        if (getLobby() == null && getPlugin().getConfigFile().getString("lobby-id") != null) {
+            getPlugin().getConfigFile().set("lobby-id", null);
+            getPlugin().saveConfig();
             getPlugin().updateConfigurationStatus(false);
         }
     }
