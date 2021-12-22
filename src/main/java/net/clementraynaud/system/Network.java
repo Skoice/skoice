@@ -86,14 +86,6 @@ public class Network {
     }
 
 
-    public boolean isGameModeEligible(Player player) {
-        if (getPlugin().getConfigFile().getBoolean("spectators-included")) {
-            return true;
-        }
-        return player.getGameMode() != GameMode.SPECTATOR;
-    }
-
-
     /**
      * @return true if the player is within the network strength or falloff ranges
      */
@@ -102,7 +94,6 @@ public class Network {
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
-                .filter(this::isGameModeEligible)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
                 .anyMatch(p -> verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius()
                         && horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius());
@@ -116,7 +107,6 @@ public class Network {
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
-                .filter(this::isGameModeEligible)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
                 .anyMatch(p -> verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius() + FALLOFF
                         && horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius() + FALLOFF);
