@@ -155,16 +155,18 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
                             network.remove(player.getUniqueId());
                             if (network.size() == 1) network.clear();
                         });
-                try {
-                    networks.stream()
-                            .filter(network -> network.contains(player.getUniqueId()))
-                            .filter(network -> network.isPlayerInRangeToStayConnected(player))
-                            .filter(network -> !network.isPlayerInRangeToBeAdded(player))
-                            .forEach(network -> {
-                                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§c⚠ §7You are §cmoving away §7and are soon to be §cdisconnected §7from your current channel."));
-                            });
+                if (getPlugin().getConfig().getBoolean("actionBarAlert")) {
+                    try {
+                        networks.stream()
+                                .filter(network -> network.contains(player.getUniqueId()))
+                                .filter(network -> network.isPlayerInRangeToStayConnected(player))
+                                .filter(network -> !network.isPlayerInRangeToBeAdded(player))
+                                .forEach(network -> {
+                                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§c⚠ §7You are §cmoving away §7and are soon to be §cdisconnected §7from your current channel."));
+                                });
+                    } catch (NoSuchMethodError ignored) {
+                    }
                 }
-                catch (NoSuchMethodError ignored){}
 
                 // create networks if two players are within activation distance
                 Set<UUID> playersWithinRange = alivePlayers.stream()

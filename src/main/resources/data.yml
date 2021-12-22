@@ -3,6 +3,7 @@
 token: ""
 lobbyID: ""
 spectatorsIncluded: false
+actionBarAlert: true
 distance:
   verticalStrength: ""
   horizontalStrength: ""
