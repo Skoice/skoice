@@ -83,12 +83,10 @@ public class Bot extends ListenerAdapter {
             getPlugin().getLogger().info("Your Discord bot is connected!");
             if (sender != null) {
                 getPlugin().updateConfigurationStatus(false);
-                if (getPlugin().getConfigFile().getString("lobby-id") == null
-                        || getVerticalRadius() == 0
-                        || getHorizontalRadius() == 0) {
-                    sender.sendMessage("§dSkoice §8• §7Your bot is §anow connected§7. Type \"§e/configure§7\" on your Discord server to set it up.");
-                } else {
+                if (getPlugin().isBotConfigured()) {
                     sender.sendMessage("§dSkoice §8• §7Your bot is §anow connected§7.");
+                } else {
+                    sender.sendMessage("§dSkoice §8• §7Your bot is §anow connected§7. Type \"§e/configure§7\" on your Discord server to set it up.");
                 }
             }
         } catch (LoginException | InterruptedException e) {

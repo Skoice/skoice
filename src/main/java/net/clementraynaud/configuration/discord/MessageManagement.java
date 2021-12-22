@@ -39,6 +39,7 @@ import static net.clementraynaud.Bot.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.configuration.discord.DistanceConfiguration.getHorizontalRadiusConfigurationMessage;
 import static net.clementraynaud.configuration.discord.DistanceConfiguration.getVerticalRadiusConfigurationMessage;
+import static net.clementraynaud.configuration.discord.LanguageSelection.getLanguageSelectionMessage;
 import static net.clementraynaud.configuration.discord.LobbySelection.getLobbySelectionMessage;
 import static net.clementraynaud.configuration.discord.ModeSelection.getModeSelectionMessage;
 import static net.clementraynaud.configuration.discord.ServerMigration.getServerMigrationMessage;
@@ -150,6 +151,13 @@ public class MessageManagement extends ListenerAdapter {
                             event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                         }
                         break;
+                    case "language":
+                        if (getPlugin().isBotConfigured()) {
+                            event.editMessage(getLanguageSelectionMessage()).queue();
+                        } else {
+                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        }
+                        break;
                     case "mode":
                         discordIDDistanceMap.remove(member.getId());
                         if (getPlugin().isBotConfigured()) {
@@ -196,6 +204,11 @@ public class MessageManagement extends ListenerAdapter {
                     getPlugin().getConfigFile().set("server-id", event.getSelectedOptions().get(0).getValue());
                     getPlugin().saveConfig();
                     event.editMessage(getServerMigrationMessage()).queue();
+                } else if (componentID.equals("languages")) {
+                    getPlugin().getConfigFile().set("language", event.getSelectedOptions().get(0).getValue());
+                    getPlugin().saveConfig();
+                    getPlugin().updateConfigurationStatus(false);
+                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                 } else if (componentID.equals("voice-channels")) {
                     Guild guild = event.getGuild();
                     if (guild != null) {

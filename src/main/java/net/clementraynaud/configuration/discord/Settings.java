@@ -31,15 +31,17 @@ import net.dv8tion.jda.api.interactions.components.Button;
 import java.awt.*;
 
 import static net.clementraynaud.Skoice.getPlugin;
+import static net.clementraynaud.configuration.discord.LanguageSelection.getLanguageSelectionMessage;
 import static net.clementraynaud.configuration.discord.LobbySelection.getLobbySelectionMessage;
 import static net.clementraynaud.configuration.discord.ModeSelection.getModeSelectionMessage;
-import static net.clementraynaud.util.DataGetters.getHorizontalRadius;
-import static net.clementraynaud.util.DataGetters.getVerticalRadius;
+import static net.clementraynaud.util.DataGetters.*;
 
 public class Settings {
 
     public static Message getConfigurationMessage(Guild guild) {
-        if (getPlugin().getConfigFile().getString("lobby-id") == null) {
+        if (getLanguage() == null) {
+            return getLanguageSelectionMessage();
+        } else if (getPlugin().getConfigFile().getString("lobby-id") == null) {
             return getLobbySelectionMessage(guild);
         } else if (getVerticalRadius() == 0
                 || getHorizontalRadius() == 0) {
@@ -60,6 +62,7 @@ public class Settings {
                 .setActionRows(ActionRow.of(Button.primary("server", "Server").withEmoji(Emoji.fromUnicode("U+1F5C4")).asDisabled(),
                         Button.primary("lobby", "Lobby").withEmoji(Emoji.fromUnicode("U+1F509")),
                         Button.secondary("advanced-settings", "Advanced Settings").withEmoji(Emoji.fromUnicode("U+1F527")),
+                        Button.secondary("language", "Language").withEmoji(Emoji.fromUnicode("U+1F310")),
                         Button.danger("close", "Close").withEmoji(Emoji.fromUnicode("U+2716")))).build();
     }
 

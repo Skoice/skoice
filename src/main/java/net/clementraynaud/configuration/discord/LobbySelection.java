@@ -89,15 +89,10 @@ public class LobbySelection extends ListenerAdapter {
         }
         EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: Configuration")
                 .setColor(Color.ORANGE)
+                .addField(":sound: Lobby", "This is the channel players have to join in order to use the proximity voice chat.", false)
                 .setFooter("The voice channel must be in a category.");
         List<ActionRow> actionRows = new ArrayList<>();
         if (getPlugin().isBotConfigured()) {
-            VoiceChannel lobby = getLobby();
-            if (lobby != null) {
-                embed.addField(":sound: Lobby", "This is the channel players have to join in order to use the proximity voice chat.\nSelected: " + lobby.getName(), false);
-            } else {
-                embed.addField(":sound: Lobby", "This is the channel players have to join in order to use the proximity voice chat.", false);
-            }
             actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")
                     .addOptions(options)
                     .setDefaultValues(Collections.singleton(getPlugin().getConfigFile().getString("lobby-id"))).build()));
@@ -105,7 +100,6 @@ public class LobbySelection extends ListenerAdapter {
                     Button.primary("lobby", "⟳ Refresh"),
                     Button.danger("close", "Close").withEmoji(Emoji.fromUnicode("U+2716"))));
         } else {
-            embed.addField(":sound: Lobby", "This is the channel players have to join in order to use the proximity voice chat.", false);
             actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")
                     .setPlaceholder("Select a Voice Channel")
                     .addOptions(options).build()));

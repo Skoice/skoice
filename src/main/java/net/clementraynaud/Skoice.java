@@ -28,6 +28,7 @@ import net.clementraynaud.link.Unlink;
 import net.clementraynaud.system.ChannelManagement;
 import net.clementraynaud.system.MarkPlayersDirty;
 import net.clementraynaud.system.Network;
+import net.clementraynaud.util.Lang;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.ShutdownEvent;
@@ -122,19 +123,18 @@ public class Skoice extends JavaPlugin {
     public void updateConfigurationStatus(boolean startup) {
         boolean oldBotConfigured = isBotConfigured;
         if (configFile.getString("token") == null) {
-            getLogger().warning(ChatColor.RED + "No bot token detected, join your Minecraft server to set up Skoice.");
+            getLogger().warning(Lang.ConsoleMessage.NO_TOKEN.print());
             isTokenSet = false;
             isBotConfigured = false;
+        } else if (getLanguage() == null) {
+            getLogger().warning(Lang.ConsoleMessage.NO_LANGUAGE.print());
+            isBotConfigured = false;
         } else if (configFile.getString("lobby-id") == null) {
-            if (getJda() != null) {
-                getLogger().warning(ChatColor.RED + "No main voice channel detected, type \"/configure\" on your Discord server to set up Skoice.");
-            }
+            getLogger().warning(Lang.ConsoleMessage.NO_LOBBY_ID.print());
             isBotConfigured = false;
         } else if (getVerticalRadius() == 0
                 || getHorizontalRadius() == 0) {
-            if (getJda() != null) {
-                getLogger().warning(ChatColor.RED + "Maximum distances not set, type \"/configure\" on your Discord server to set up Skoice.");
-            }
+            getLogger().warning(Lang.ConsoleMessage.NO_DISTANCES.print());
             isBotConfigured = false;
         } else {
             isBotConfigured = true;

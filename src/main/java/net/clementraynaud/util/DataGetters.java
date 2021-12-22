@@ -72,6 +72,10 @@ public class DataGetters {
         return lobby.getParent();
     }
 
+    public static String getLanguage() {
+        return getPlugin().getConfigFile().getString("language");
+    }
+
     public static Member getMember(UUID player) {
         String discordID = getPlugin().getConfigFile().getString("link." + player);
         Guild guild = getGuild();
