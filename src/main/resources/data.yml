@@ -2,6 +2,7 @@
 
 token: ""
 lobbyID: ""
+spectatorsIncluded: false
 distance:
   verticalStrength: ""
   horizontalStrength: ""

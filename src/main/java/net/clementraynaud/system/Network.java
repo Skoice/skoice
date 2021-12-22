@@ -22,10 +22,12 @@ package net.clementraynaud.system;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
+import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.system.ChannelManagement.*;
 import static net.clementraynaud.system.DistanceCalculation.*;
 import static net.clementraynaud.util.DataGetters.*;
@@ -81,6 +83,15 @@ public class Network {
         return this;
     }
 
+
+    public boolean isGameModeEligible(Player player) {
+        if (getPlugin().getPlayerData().getBoolean("spectatorsIncluded")) {
+            return true;
+        }
+        return player.getGameMode() != GameMode.SPECTATOR;
+    }
+
+
     /**
      * @return true if the player is within the network strength or falloff ranges
      */
@@ -89,6 +100,7 @@ public class Network {
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
+                .filter(this::isGameModeEligible)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
                 .anyMatch(p -> verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalStrength()
                         && horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalStrength());
@@ -103,6 +115,7 @@ public class Network {
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
+                .filter(this::isGameModeEligible)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
                 .anyMatch(p -> verticalDistance(p.getLocation(), player.getLocation()) <= getVerticalStrength() + falloff
                         && horizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalStrength() + falloff);
