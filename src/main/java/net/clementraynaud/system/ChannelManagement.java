@@ -26,6 +26,8 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -153,6 +155,17 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
                             network.remove(player.getUniqueId());
                             if (network.size() == 1) network.clear();
                         });
+                try {
+                    networks.stream()
+                            .filter(network -> network.contains(player.getUniqueId()))
+                            .filter(network -> network.isPlayerInRangeToStayConnected(player))
+                            .filter(network -> !network.isPlayerInRangeToBeAdded(player))
+                            .forEach(network -> {
+                                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§c⚠ §7You are §cmoving away §7and are soon to be §cdisconnected §7from your current channel."));
+                            });
+                }
+                catch (NoSuchMethodError ignored){}
+
                 // create networks if two players are within activation distance
                 Set<UUID> playersWithinRange = alivePlayers.stream()
                         .filter(p -> networks.stream().noneMatch(network -> network.contains(p)))
