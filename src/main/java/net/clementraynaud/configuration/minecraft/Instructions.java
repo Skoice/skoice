@@ -28,6 +28,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import static net.clementraynaud.Bot.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
 
 public class Instructions implements CommandExecutor {
@@ -40,7 +41,7 @@ public class Instructions implements CommandExecutor {
         }
         Player player = (Player) sender;
         if (player.isOp()) {
-            if (getPlugin().isTokenSet()) {
+            if (getPlugin().isTokenSet() && getJda() != null) {
                 if (getPlugin().isBotConfigured()) {
                     player.sendMessage("§dSkoice §8• §7You have §calready configured Skoice§7. Type \"§e/configure§7\" on your Discord server to update the settings.");
                 } else {

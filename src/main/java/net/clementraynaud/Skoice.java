@@ -45,7 +45,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.*;
 
@@ -140,7 +139,7 @@ public class Skoice extends JavaPlugin {
                 getLogger().info(ChatColor.GREEN + "You are using the latest version!");
             }
         } catch (IOException e) {
-            getLogger().warning("An error occurred while checking the version:\n" + Arrays.toString(e.getStackTrace()) + "\nGoing to continue anyway.");
+            getLogger().warning("An error occurred while checking the version.");
         }
     }
 
@@ -151,10 +150,14 @@ public class Skoice extends JavaPlugin {
             isTokenSet = false;
             isBotConfigured = false;
         } else if (playerData.getString("lobbyID").equals("")) {
-            getLogger().warning(ChatColor.RED + "No main voice channel detected, type \"/configure\" on your Discord server to set up Skoice.");
+            if (getJda() != null) {
+                getLogger().warning(ChatColor.RED + "No main voice channel detected, type \"/configure\" on your Discord server to set up Skoice.");
+            }
             isBotConfigured = false;
         } else if (playerData.getString("distance.verticalStrength").equals("") || playerData.getString("distance.horizontalStrength").equals("")) {
-            getLogger().warning(ChatColor.RED + "Maximum distances not set, type \"/configure\" on your Discord server to set up Skoice.");
+            if (getJda() != null) {
+                getLogger().warning(ChatColor.RED + "Maximum distances not set, type \"/configure\" on your Discord server to set up Skoice.");
+            }
             isBotConfigured = false;
         } else {
             isBotConfigured = true;
@@ -164,23 +167,18 @@ public class Skoice extends JavaPlugin {
 
     private void updateListeners(boolean startup, boolean oldBotConfigured) {
         if (startup) {
+            Bukkit.getPluginManager().registerEvents(new IncorrectConfigurationAlert(), plugin);
             if (isBotConfigured) {
                 Bukkit.getPluginManager().registerEvents(new MarkPlayersDirty(), plugin);
                 Bukkit.getPluginManager().registerEvents(new ChannelManagement(), plugin);
-            } else {
-                Bukkit.getPluginManager().registerEvents(new IncorrectConfigurationAlert(), plugin);
             }
-        } else if (!oldBotConfigured && isBotConfigured) {
-            HandlerList.unregisterAll(new IncorrectConfigurationAlert());
+        } else if (!oldBotConfigured && isBotConfigured && getJda() != null) {
             Bukkit.getPluginManager().registerEvents(new MarkPlayersDirty(), plugin);
             Bukkit.getPluginManager().registerEvents(new ChannelManagement(), plugin);
-            if (getJda() != null) {
-                getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
-                getJda().getPresence().setActivity(Activity.listening("/link"));
-            }
+            getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
+            getJda().getPresence().setActivity(Activity.listening("/link"));
         } else if (oldBotConfigured && !isBotConfigured) {
             deleteConfigurationMessage();
-            Bukkit.getPluginManager().registerEvents(new IncorrectConfigurationAlert(), plugin);
             HandlerList.unregisterAll(new MarkPlayersDirty());
             HandlerList.unregisterAll(new ChannelManagement());
             if (getJda() != null) {
@@ -212,7 +210,7 @@ public class Skoice extends JavaPlugin {
                     try {
                         shutdownTask.get(5, TimeUnit.SECONDS);
                     } catch (TimeoutException e) {
-                        getLogger().warning("JDA took too long to shut down, skipping.");
+                        getLogger().warning("Your Discord bot took too long to shut down.");
                     }
                 }
                 return null;

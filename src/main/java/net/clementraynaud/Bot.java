@@ -80,7 +80,7 @@ public class Bot extends ListenerAdapter {
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
                     .build()
                     .awaitReady());
-            getPlugin().getLogger().info("JDA is running!");
+            getPlugin().getLogger().info("Your Discord bot is connected!");
             if (sender != null) {
                 if (getPlugin().getPlayerData().getString("lobbyID").equals("")
                         || getPlugin().getPlayerData().getString("distance.verticalStrength").equals("")
@@ -91,10 +91,14 @@ public class Bot extends ListenerAdapter {
                 }
             }
         } catch (LoginException | InterruptedException e) {
-            getPlugin().getLogger().severe("JDA ERROR: " + Arrays.toString(e.getStackTrace()));
-            if (sender != null) {
+            if (sender == null) {
+                getPlugin().getLogger().severe("Your Discord bot could not connect. To update the token, type \"/token\" followed by the new token.");
+            } else {
                 sender.sendMessage("§dSkoice §8• §7The connection §cfailed§7. Try again with a valid token.");
+                getPlugin().getPlayerData().set("token", "");
+                saveConfigurationFile();
             }
+            getPlugin().updateConfigurationStatus(false);
         }
         if (jda != null) {
             deleteConfigurationMessage();
