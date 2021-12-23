@@ -56,6 +56,7 @@ public class Network {
         List<Permission> publicRemovedPermissions = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
         if (getPlugin().getConfig().getBoolean("show-channels")) {
             publicRemovedPermissions.remove(Permission.VIEW_CHANNEL);
+            publicRemovedPermissions.add(Permission.VOICE_CONNECT);
         }
         getDedicatedCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(
