@@ -33,7 +33,7 @@ public class LanguageSelection {
                 .addField(":globe_with_meridians: Language", "This is the language that will be used to display messages.", false);
         List<SelectOption> options = new ArrayList<>();
         options.add(SelectOption.of("English", "EN")
-                .withDescription("This language is selected by default.").withEmoji(Emoji.fromUnicode("U+1F1ECU+1F1E7")));
+                .withDescription("This option is selected by default.").withEmoji(Emoji.fromUnicode("U+1F1ECU+1F1E7")));
         options.add(SelectOption.of("Français", "FR")
                 .withEmoji(Emoji.fromUnicode("U+1F1EBU+1F1F7")));
         List<ActionRow> actionRows = new ArrayList<>();

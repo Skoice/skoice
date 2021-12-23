@@ -26,10 +26,12 @@ import net.clementraynaud.link.Unlink;
 import net.clementraynaud.system.ChannelManagement;
 import net.clementraynaud.system.MarkPlayersDirty;
 import net.clementraynaud.system.Network;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -38,6 +40,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import javax.security.auth.login.LoginException;
+import java.awt.*;
 import java.util.*;
 
 import static net.clementraynaud.Skoice.getPlugin;
@@ -102,6 +105,7 @@ public class Bot extends ListenerAdapter {
         if (jda != null) {
             deleteConfigurationMessage();
             checkForValidLobby();
+            checkForUnlinkedUsersInLobby();
             jda.getGuilds().forEach(guild -> {
                 if (guild.retrieveCommands().complete().size() < 3) {
                     guild.upsertCommand("configure", "Configure Skoice.").queue();
@@ -164,6 +168,27 @@ public class Bot extends ListenerAdapter {
         }
     }
 
+    private void checkForUnlinkedUsersInLobby() {
+        VoiceChannel lobby = getLobby();
+        if (lobby != null) {
+            for (Member member : lobby.getMembers()) {
+                UUID minecraftID = getMinecraftID(member);
+                if (minecraftID == null) {
+                    EmbedBuilder embed = new EmbedBuilder().setTitle(":link: Linking Process")
+                            .setColor(Color.RED);
+                    Guild guild = getGuild();
+                    if (guild != null) {
+                        embed.addField(":warning: Error", "Your Discord account is not linked to Minecraft.\nType `/link` on \"" + guild.getName() + "\" to link it.", false);
+                    } else {
+                        embed.addField(":warning: Error", "Your Discord account is not linked to Minecraft.\nType `/link` on our Discord server to link it.", false);
+                    }
+                    member.getUser().openPrivateChannel().complete()
+                            .sendMessageEmbeds(embed.build()).queue();
+                }
+            }
+        }
+    }
+
     @Override
     public void onGuildJoin(GuildJoinEvent event) {
         Guild guild = event.getGuild();
@@ -172,6 +197,15 @@ public class Bot extends ListenerAdapter {
             guild.upsertCommand("link", "Link your Discord account to Minecraft.")
                     .addOption(OptionType.STRING, "minecraft_username", "The username of the Minecraft account you want to link.", true).queue();
             guild.upsertCommand("unlink", "Unlink your Discord account from Minecraft.").queue();
+        }
+    }
+
+    @Override
+    public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
+        if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
+            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(":no_entry: Illegal Interaction")
+                    .addField(":warning: Error", "You can only interact with the bot on a Discord server.", false)
+                    .setColor(Color.RED).build()).queue();
         }
     }
 }
