@@ -32,6 +32,8 @@ import net.clementraynaud.util.Lang;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.ShutdownEvent;
+import net.dv8tion.jda.api.exceptions.ContextException;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 import org.bstats.bukkit.Metrics;
@@ -171,6 +173,17 @@ public class Skoice extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        for (Pair<String, CompletableFuture<Void>> value : ChannelManagement.awaitingMoves.values()) {
+            value.getRight().cancel(true);
+        }
+        for (Network network : networks) {
+            for (Member member : network.getChannel().getMembers()) {
+                member.mute(false).queue();
+            }
+            network.getChannel().delete().queue();
+            network.clear();
+        }
+        networks.clear();
         getJda().shutdown();
         getLogger().info(ChatColor.YELLOW + "Plugin disabled!");
     }
