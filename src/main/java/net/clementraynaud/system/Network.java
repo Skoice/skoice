@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
+import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.system.ChannelManagement.getNetworks;
 import static net.clementraynaud.system.DistanceCalculation.horizontalDistance;
 import static net.clementraynaud.system.DistanceCalculation.verticalDistance;
@@ -52,12 +53,15 @@ public class Network {
         List<Permission> allowedPermissions = isVoiceActivationAllowed()
                 ? Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD)
                 : Collections.singletonList(Permission.VOICE_SPEAK);
-
+        List<Permission> publicRemovedPermissions = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
+        if (getPlugin().getConfig().getBoolean("show-channels")) {
+            publicRemovedPermissions.remove(Permission.VIEW_CHANNEL);
+        }
         getDedicatedCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(
                         getGuild().getPublicRole(),
                         allowedPermissions,
-                        Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT)
+                        publicRemovedPermissions
                 )
                 .addPermissionOverride(
                         getGuild().getSelfMember(),
