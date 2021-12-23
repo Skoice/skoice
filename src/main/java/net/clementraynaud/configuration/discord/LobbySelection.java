@@ -41,20 +41,6 @@ import static net.clementraynaud.Skoice.getPlugin;
 
 public class LobbySelection extends ListenerAdapter {
 
-    @Override
-    public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
-        if (event.getChannel().getId().equals(getPlugin().getConfigFile().getString("lobby-id"))) {
-            deleteLobby(event.getGuild());
-        }
-    }
-
-    @Override
-    public void onVoiceChannelUpdateParent(VoiceChannelUpdateParentEvent event) {
-        if (event.getChannel().getId().equals(getPlugin().getConfigFile().getString("lobby-id"))) {
-            deleteLobby(event.getGuild());
-        }
-    }
-
     private static void deleteLobby(Guild guild) {
         getPlugin().getConfigFile().set("lobby-id", null);
         getPlugin().saveConfig();
@@ -66,7 +52,8 @@ public class LobbySelection extends ListenerAdapter {
                         .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: Configuration")
                                 .addField(":warning: Incomplete Configuration", "You have either moved or deleted the lobby.\nType `/configure` on your Discord server to complete the configuration and use Skoice.", false)
                                 .setColor(Color.RED).build()).queue();
-            } catch (ErrorResponseException e) {}
+            } catch (ErrorResponseException e) {
+            }
         }
     }
 
@@ -79,7 +66,7 @@ public class LobbySelection extends ListenerAdapter {
         List<SelectOption> options = new ArrayList<>();
         int optionIndex = 0;
         while (optionIndex < 23 && voiceChannels.size() > optionIndex) {
-            if (voiceChannels.get(optionIndex).getParent() != null){
+            if (voiceChannels.get(optionIndex).getParent() != null) {
                 options.add(SelectOption.of(voiceChannels.get(optionIndex).getName(), voiceChannels.get(optionIndex).getId())
                         .withDescription(categories.get(optionIndex).getName()).withEmoji(Emoji.fromUnicode("U+1F509")));
             }
@@ -110,5 +97,19 @@ public class LobbySelection extends ListenerAdapter {
                     Button.secondary("close", "Configure Later").withEmoji(Emoji.fromUnicode("U+1F552"))));
         }
         return new MessageBuilder().setEmbeds(embed.build()).setActionRows(actionRows).build();
+    }
+
+    @Override
+    public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
+        if (event.getChannel().getId().equals(getPlugin().getConfigFile().getString("lobby-id"))) {
+            deleteLobby(event.getGuild());
+        }
+    }
+
+    @Override
+    public void onVoiceChannelUpdateParent(VoiceChannelUpdateParentEvent event) {
+        if (event.getChannel().getId().equals(getPlugin().getConfigFile().getString("lobby-id"))) {
+            deleteLobby(event.getGuild());
+        }
     }
 }

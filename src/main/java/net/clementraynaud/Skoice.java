@@ -19,7 +19,6 @@
 
 package net.clementraynaud;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.clementraynaud.configuration.minecraft.IncorrectConfigurationAlert;
 import net.clementraynaud.configuration.minecraft.Instructions;
 import net.clementraynaud.configuration.minecraft.TokenRetrieval;
@@ -31,10 +30,6 @@ import net.clementraynaud.system.Network;
 import net.clementraynaud.util.Lang;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.ShutdownEvent;
-import net.dv8tion.jda.api.exceptions.ContextException;
-import net.dv8tion.jda.api.exceptions.ErrorResponseException;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -42,44 +37,44 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Collections;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
 
-import static net.clementraynaud.Bot.*;
-import static net.clementraynaud.configuration.discord.MessageManagement.*;
+import static net.clementraynaud.Bot.getJda;
+import static net.clementraynaud.configuration.discord.MessageManagement.deleteConfigurationMessage;
 import static net.clementraynaud.system.ChannelManagement.networks;
 import static net.clementraynaud.util.DataGetters.*;
 
 public class Skoice extends JavaPlugin {
 
     private static Skoice plugin;
-    private final FileConfiguration configFile = getConfig();
     private static Bot bot;
+    private final FileConfiguration configFile = getConfig();
     private boolean isTokenSet = true;
     private boolean isBotConfigured = false;
 
+    public static Skoice getPlugin() {
+        return plugin;
+    }
+
     public static void setPlugin(Skoice plugin) {
         Skoice.plugin = plugin;
+    }
+
+    public static Bot getBot() {
+        return bot;
     }
 
     public static void setBot(Bot bot) {
         Skoice.bot = bot;
     }
 
-    public static Skoice getPlugin() {
-        return plugin;
-    }
-
     public FileConfiguration getConfigFile() {
         return configFile;
-    }
-
-    public static Bot getBot() {
-        return bot;
     }
 
     public boolean isTokenSet() {
@@ -96,8 +91,8 @@ public class Skoice extends JavaPlugin {
         saveDefaultConfig();
         if (!configFile.contains("action-bar-alert")) {
             configFile.set("action-bar-alert", true);
+            saveConfig();
         }
-        saveConfig();
         getLogger().info(ChatColor.YELLOW + "Plugin enabled!");
         getLogger().info(ChatColor.YELLOW + "Checking version now.");
         checkVersion();

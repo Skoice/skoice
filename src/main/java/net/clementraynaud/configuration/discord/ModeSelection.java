@@ -39,6 +39,9 @@ import static net.clementraynaud.util.DataGetters.getVerticalRadius;
 
 public class ModeSelection {
 
+    private ModeSelection() {
+    }
+
     public static Message getModeSelectionMessage(boolean customize) {
         EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: Configuration")
                 .setColor(Color.ORANGE);
@@ -75,7 +78,7 @@ public class ModeSelection {
             } else {
                 defaultValue = "customize";
                 modes.add(SelectOption.of("Customize", "customize")
-                        .withDescription("Horizontal Radius: " + (int) getHorizontalRadius() + " blocks — Vertical Radius: " + (int) getVerticalRadius() + " blocks").withEmoji(Emoji.fromUnicode("U+270F")));
+                        .withDescription("Horizontal Radius: " + getHorizontalRadius() + " blocks — Vertical Radius: " + getVerticalRadius() + " blocks").withEmoji(Emoji.fromUnicode("U+270F")));
                 buttons.add(Button.primary("horizontal-radius", "Horizontal Radius").withEmoji(Emoji.fromUnicode("U+2194")));
                 buttons.add(Button.primary("vertical-radius", "Vertical Radius").withEmoji(Emoji.fromUnicode("U+2195")));
             }

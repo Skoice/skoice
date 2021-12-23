@@ -20,7 +20,6 @@
 package net.clementraynaud.system;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -39,9 +38,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.system.ChannelManagement.refreshMutedUsers;
-import static net.clementraynaud.util.DataGetters.*;
+import static net.clementraynaud.util.DataGetters.getLobby;
+import static net.clementraynaud.util.DataGetters.getMinecraftID;
 
 public class MarkPlayersDirty extends ListenerAdapter implements Listener {
 
@@ -49,6 +48,10 @@ public class MarkPlayersDirty extends ListenerAdapter implements Listener {
 
     public static Set<UUID> getDirtyPlayers() {
         return dirtyPlayers;
+    }
+
+    public static void clearDirtyPlayers() {
+        dirtyPlayers = new HashSet<>();
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -80,7 +83,8 @@ public class MarkPlayersDirty extends ListenerAdapter implements Listener {
                         .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: Linking Process")
                                 .addField(":warning: Error", "Your Discord account is not linked to Minecraft.\nType `/link` on \"" + event.getGuild().getName() + "\" to link it.", false)
                                 .setColor(Color.RED).build()).queue();
-            } catch (ErrorResponseException e) {}
+            } catch (ErrorResponseException ignored) {
+            }
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(minecraftID);
             if (player.isOnline())
@@ -90,9 +94,5 @@ public class MarkPlayersDirty extends ListenerAdapter implements Listener {
 
     public void markDirty(Player player) {
         dirtyPlayers.add(player.getUniqueId());
-    }
-
-    public static void clearDirtyPlayers() {
-        dirtyPlayers = new HashSet<>();
     }
 }

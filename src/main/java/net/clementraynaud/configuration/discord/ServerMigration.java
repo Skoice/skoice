@@ -38,6 +38,9 @@ import static net.clementraynaud.util.DataGetters.getGuild;
 
 public class ServerMigration {
 
+    private ServerMigration() {
+    }
+
     public static Message getServerMigrationMessage() {
         List<Guild> servers = new ArrayList<>(getJda().getGuilds());
         List<SelectOption> options = new ArrayList<>();

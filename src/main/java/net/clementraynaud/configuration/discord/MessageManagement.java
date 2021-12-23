@@ -21,7 +21,10 @@ package net.clementraynaud.configuration.discord;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -32,7 +35,10 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static net.clementraynaud.Bot.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
@@ -47,12 +53,31 @@ import static net.clementraynaud.configuration.discord.Settings.*;
 
 public class MessageManagement extends ListenerAdapter {
 
-    private boolean configureCommandCooldown = false;
-
     private static Map<String, String> discordIDDistanceMap;
+    private boolean configureCommandCooldown = false;
 
     public static void initializeDiscordIDDistanceMap() {
         discordIDDistanceMap = new HashMap<>();
+    }
+
+    public static void deleteConfigurationMessage() {
+        if (getPlugin().getConfigFile().contains("temp.guild-id")
+                && getPlugin().getConfigFile().contains("temp.text-channel-id")
+                && getPlugin().getConfigFile().contains("temp.message-id")) {
+            try {
+                Guild guild = getJda().getGuildById(getPlugin().getConfigFile().getString("temp.guild-id"));
+                if (guild != null) {
+                    TextChannel textChannel = guild.getTextChannelById(getPlugin().getConfigFile().getString("temp.text-channel-id"));
+                    if (textChannel != null) {
+                        textChannel.retrieveMessageById(getPlugin().getConfigFile().getString("temp.message-id"))
+                                .complete().delete().queue(success -> {
+                                }, failure -> {
+                                });
+                    }
+                }
+            } catch (ErrorResponseException | NullPointerException e) {
+            }
+        }
     }
 
     @Override
@@ -280,25 +305,6 @@ public class MessageManagement extends ListenerAdapter {
             }
         } else {
             event.replyEmbeds(getAccessDeniedEmbed()).setEphemeral(true).queue();
-        }
-    }
-
-    public static void deleteConfigurationMessage() {
-        if (getPlugin().getConfigFile().contains("temp.guild-id")
-                && getPlugin().getConfigFile().contains("temp.text-channel-id")
-                && getPlugin().getConfigFile().contains("temp.message-id")) {
-            try {
-                Guild guild = getJda().getGuildById(getPlugin().getConfigFile().getString("temp.guild-id"));
-                if (guild != null) {
-                    TextChannel textChannel = guild.getTextChannelById(getPlugin().getConfigFile().getString("temp.text-channel-id"));
-                    if (textChannel != null) {
-                        textChannel.retrieveMessageById(getPlugin().getConfigFile().getString("temp.message-id"))
-                                .complete().delete().queue(success -> {
-                                }, failure -> {
-                                });
-                    }
-                }
-            } catch (ErrorResponseException | NullPointerException e) {}
         }
     }
 }

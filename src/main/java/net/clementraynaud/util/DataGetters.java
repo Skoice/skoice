@@ -35,6 +35,9 @@ import static net.clementraynaud.Skoice.getPlugin;
 
 public class DataGetters {
 
+    private DataGetters() {
+    }
+
     public static String getKeyFromValue(Map<String, String> map, String value) {
         for (Map.Entry<String, String> entry : map.entrySet()) {
             if (Objects.equals(value, entry.getValue())) {
@@ -60,7 +63,7 @@ public class DataGetters {
         String lobbyID = getPlugin().getConfigFile().getString("lobby-id");
         if (lobbyID == null) return null;
         VoiceChannel lobby = getJda().getVoiceChannelById(lobbyID);
-        if (lobby == null) return  null;
+        if (lobby == null) return null;
         if (lobby.getParent() == null) return null;
         return lobby;
     }
@@ -99,7 +102,8 @@ public class DataGetters {
             } else {
                 Collections.addAll(onlinePlayers, ((Player[]) onlinePlayerMethod.invoke(Bukkit.getServer())));
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         return onlinePlayers;
     }
 

@@ -44,19 +44,20 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 import static net.clementraynaud.Skoice.getPlugin;
-import static net.clementraynaud.system.DistanceCalculation.*;
-import static net.clementraynaud.system.MarkPlayersDirty.*;
+import static net.clementraynaud.system.DistanceCalculation.horizontalDistance;
+import static net.clementraynaud.system.DistanceCalculation.verticalDistance;
+import static net.clementraynaud.system.MarkPlayersDirty.clearDirtyPlayers;
+import static net.clementraynaud.system.MarkPlayersDirty.getDirtyPlayers;
 import static net.clementraynaud.util.DataGetters.*;
 
 public class ChannelManagement extends ListenerAdapter implements Listener {
 
-    private static final List<Permission> LOBBY_REQUIRED_PERMISSIONS = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
-    private static final List<Permission> CATEGORY_REQUIRED_PERMISSIONS = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS, Permission.MANAGE_PERMISSIONS, Permission.MANAGE_CHANNEL);
-
-    private static final ReentrantLock lock = new ReentrantLock();
-    private static final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
     public static final Set<Network> networks = ConcurrentHashMap.newKeySet();
     public static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
+    private static final List<Permission> LOBBY_REQUIRED_PERMISSIONS = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
+    private static final List<Permission> CATEGORY_REQUIRED_PERMISSIONS = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS, Permission.MANAGE_PERMISSIONS, Permission.MANAGE_CHANNEL);
+    private static final ReentrantLock lock = new ReentrantLock();
+    private static final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
 
     public static Set<Network> getNetworks() {
         return networks;
@@ -99,7 +100,7 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
             if (stop) {
                 return;
             }
-            PermissionOverride mainVoiceChannelPublicRoleOverride= lobby.getPermissionOverride(publicRole);
+            PermissionOverride mainVoiceChannelPublicRoleOverride = lobby.getPermissionOverride(publicRole);
             if (mainVoiceChannelPublicRoleOverride == null) {
                 lobby.createPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
             } else if (!mainVoiceChannelPublicRoleOverride.getDenied().contains(Permission.VOICE_SPEAK)) {
@@ -161,9 +162,7 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
                                 .filter(network -> network.contains(player.getUniqueId()))
                                 .filter(network -> network.isPlayerInRangeToStayConnected(player))
                                 .filter(network -> !network.isPlayerInRangeToBeAdded(player))
-                                .forEach(network -> {
-                                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§c⚠ §7You are §cmoving away §7and are soon to be §cdisconnected §7from your current channel."));
-                                });
+                                .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§c⚠ §7You are §cmoving away §7and are soon to be §cdisconnected §7from your current channel.")));
                     } catch (NoSuchMethodError ignored) {
                     }
                 }
@@ -246,6 +245,25 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
         }
     }
 
+    public static void refreshMutedUsers(VoiceChannel channel, Member member) {
+        if (channel == null || member.getVoiceState() == null || getLobby() == null || getDedicatedCategory() == null) {
+            return;
+        }
+        boolean isLobby = channel.getId().equals(getLobby().getId());
+        if (isLobby && !member.getVoiceState().isGuildMuted()) {
+            PermissionOverride override = channel.getPermissionOverride(channel.getGuild().getPublicRole());
+            if (override != null && override.getDenied().contains(Permission.VOICE_SPEAK)
+                    && member.hasPermission(channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
+                    && channel.getGuild().getSelfMember().hasPermission(channel, Permission.VOICE_MUTE_OTHERS)
+                    && channel.getGuild().getSelfMember().hasPermission(getDedicatedCategory(), Permission.VOICE_MOVE_OTHERS)) {
+                member.mute(true).queue();
+                mutedUsers.add(member.getId());
+            }
+        } else if (!isLobby && mutedUsers.remove(member.getId())) {
+            member.mute(false).queue();
+        }
+    }
+
     @Override
     public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
         if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(getDedicatedCategory()) &&
@@ -284,29 +302,8 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> {
-            networks.stream()
-                    .filter(network -> network.contains(event.getPlayer().getUniqueId()))
-                    .forEach(network -> network.remove(event.getPlayer().getUniqueId()));
-        });
-    }
-
-    public static void refreshMutedUsers(VoiceChannel channel, Member member) {
-        if (channel == null || member.getVoiceState() == null || getLobby() == null || getDedicatedCategory() == null) {
-            return;
-        }
-        boolean isLobby = channel.getId().equals(getLobby().getId());
-        if (isLobby && !member.getVoiceState().isGuildMuted()) {
-            PermissionOverride override = channel.getPermissionOverride(channel.getGuild().getPublicRole());
-            if (override != null && override.getDenied().contains(Permission.VOICE_SPEAK)
-                    && member.hasPermission(channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
-                    && channel.getGuild().getSelfMember().hasPermission(channel, Permission.VOICE_MUTE_OTHERS)
-                    && channel.getGuild().getSelfMember().hasPermission(getDedicatedCategory(), Permission.VOICE_MOVE_OTHERS)) {
-                member.mute(true).queue();
-                mutedUsers.add(member.getId());
-            }
-        } else if (!isLobby && mutedUsers.remove(member.getId())) {
-            member.mute(false).queue();
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> networks.stream()
+                .filter(network -> network.contains(event.getPlayer().getUniqueId()))
+                .forEach(network -> network.remove(event.getPlayer().getUniqueId())));
     }
 }

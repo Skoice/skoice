@@ -79,7 +79,8 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
                     .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: Linking Process")
                             .addField(":heavy_check_mark: Account Unlinked", "Your Discord account has been unlinked from Minecraft.", false)
                             .setColor(Color.GREEN).build()).queue();
-        } catch (ErrorResponseException e) {}
+        } catch (ErrorResponseException ignored) {
+        }
         player.sendMessage("§dSkoice §8• §7You have §aunlinked your Minecraft account §7from Discord.");
         return true;
     }

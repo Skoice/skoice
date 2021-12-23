@@ -38,6 +38,9 @@ import static net.clementraynaud.util.DataGetters.*;
 
 public class Settings {
 
+    private Settings() {
+    }
+
     public static Message getConfigurationMessage(Guild guild) {
         if (getLanguage() == null) {
             return getLanguageSelectionMessage();

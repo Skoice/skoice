@@ -42,12 +42,13 @@ import org.bukkit.command.CommandSender;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
-import java.util.*;
+import java.util.Base64;
+import java.util.UUID;
 
 import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.configuration.discord.MessageManagement.deleteConfigurationMessage;
 import static net.clementraynaud.configuration.discord.MessageManagement.initializeDiscordIDDistanceMap;
-import static net.clementraynaud.link.Link.*;
+import static net.clementraynaud.link.Link.initializeDiscordIDCodeMap;
 import static net.clementraynaud.system.ChannelManagement.networks;
 import static net.clementraynaud.util.DataGetters.*;
 
@@ -57,18 +58,18 @@ public class Bot extends ListenerAdapter {
 
     private static JDA jda;
 
-    public static void setJda(JDA jda) {
-        Bot.jda = jda;
+    public Bot() {
+        if (getPlugin().isTokenSet()) {
+            connectBot(null);
+        }
     }
 
     public static JDA getJda() {
         return jda;
     }
 
-    public Bot() {
-        if (getPlugin().isTokenSet()) {
-            connectBot(null);
-        }
+    public static void setJda(JDA jda) {
+        Bot.jda = jda;
     }
 
     public void connectBot(CommandSender sender) {
@@ -186,7 +187,8 @@ public class Bot extends ListenerAdapter {
                     try {
                         member.getUser().openPrivateChannel().complete()
                                 .sendMessageEmbeds(embed.build()).queue();
-                    } catch (ErrorResponseException e) {}
+                    } catch (ErrorResponseException e) {
+                    }
                 }
             }
         }

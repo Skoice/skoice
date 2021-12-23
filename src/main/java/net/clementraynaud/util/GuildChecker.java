@@ -32,9 +32,6 @@ public class GuildChecker {
                 && getHorizontalRadius() == 0) {
             return true;
         }
-        if (getGuild() == guild) {
-            return true;
-        }
-        return false;
+        return getGuild() == guild;
     }
 }

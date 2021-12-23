@@ -22,14 +22,13 @@ package net.clementraynaud.system;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
-import static net.clementraynaud.Skoice.getPlugin;
-import static net.clementraynaud.system.ChannelManagement.*;
-import static net.clementraynaud.system.DistanceCalculation.*;
+import static net.clementraynaud.system.ChannelManagement.getNetworks;
+import static net.clementraynaud.system.DistanceCalculation.horizontalDistance;
+import static net.clementraynaud.system.DistanceCalculation.verticalDistance;
 import static net.clementraynaud.util.DataGetters.*;
 
 public class Network {

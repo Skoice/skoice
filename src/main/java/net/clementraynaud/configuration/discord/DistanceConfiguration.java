@@ -33,11 +33,14 @@ import static net.clementraynaud.util.DataGetters.getVerticalRadius;
 
 public class DistanceConfiguration {
 
+    private DistanceConfiguration() {
+    }
+
     public static Message getHorizontalRadiusConfigurationMessage() {
         EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: Configuration")
                 .setColor(Color.ORANGE)
                 .addField(":left_right_arrow: Horizontal Radius", "This is the maximum horizontal distance between players.", false)
-                .addField(":keyboard: Enter a Value", "This setting is currently set to " + (int) getHorizontalRadius() + " blocks.\nThe value must be between 1 and 1000.", false);
+                .addField(":keyboard: Enter a Value", "This setting is currently set to " + getHorizontalRadius() + " blocks.\nThe value must be between 1 and 1000.", false);
         return new MessageBuilder().setEmbeds(embed.build())
                 .setActionRows(ActionRow.of(Button.secondary("mode", "← Back"),
                         Button.danger("close", "Close").withEmoji(Emoji.fromUnicode("U+2716")))).build();
@@ -47,7 +50,7 @@ public class DistanceConfiguration {
         EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: Configuration")
                 .setColor(Color.ORANGE)
                 .addField(":arrow_up_down: Vertical Radius", "This is the maximum vertical distance between players.", false)
-                .addField(":keyboard: Enter a Value", "This setting is currently set to " + (int) getVerticalRadius() + " blocks.\nThe value must be between 1 and 1000.", false);
+                .addField(":keyboard: Enter a Value", "This setting is currently set to " + getVerticalRadius() + " blocks.\nThe value must be between 1 and 1000.", false);
         return new MessageBuilder().setEmbeds(embed.build())
                 .setActionRows(ActionRow.of(Button.secondary("mode", "← Back"),
                         Button.danger("close", "Close").withEmoji(Emoji.fromUnicode("U+2716")))).build();

@@ -24,6 +24,9 @@ import org.bukkit.util.NumberConversions;
 
 public class DistanceCalculation {
 
+    private DistanceCalculation() {
+    }
+
     public static double verticalDistance(Location location1, Location location2) {
         return Math.abs(location1.getY() - location2.getY());
     }

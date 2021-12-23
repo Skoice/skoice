@@ -32,7 +32,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static net.clementraynaud.Bot.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
@@ -117,7 +118,8 @@ public class Link extends ListenerAdapter implements CommandExecutor {
                     .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: Linking Process")
                             .addField(":heavy_check_mark: Account Linked", "Your Discord account has been linked to Minecraft.", false)
                             .setColor(Color.GREEN).build()).queue();
-        } catch (ErrorResponseException e) {}
+        } catch (ErrorResponseException ignored) {
+        }
         player.sendMessage("§dSkoice §8• §7You have §alinked your Minecraft account §7to Discord.");
         return true;
     }
