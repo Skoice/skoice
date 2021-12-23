@@ -28,6 +28,7 @@ import net.clementraynaud.system.ChannelManagement;
 import net.clementraynaud.system.MarkPlayersDirty;
 import net.clementraynaud.system.Network;
 import net.clementraynaud.util.Lang;
+import net.clementraynaud.util.UpdateChecker;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
@@ -38,10 +39,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 
 import static net.clementraynaud.Bot.getJda;
@@ -98,8 +95,6 @@ public class Skoice extends JavaPlugin {
             saveConfig();
         }
         getLogger().info(ChatColor.YELLOW + "Plugin enabled!");
-        getLogger().info(ChatColor.YELLOW + "Checking version now.");
-        checkVersion();
         setPlugin(this);
         updateConfigurationStatus(true);
         setBot(new Bot());
@@ -107,22 +102,17 @@ public class Skoice extends JavaPlugin {
         plugin.getCommand("token").setExecutor(new TokenRetrieval());
         plugin.getCommand("link").setExecutor(new Link());
         plugin.getCommand("unlink").setExecutor(new Unlink());
+        checkVersion();
     }
 
     public void checkVersion() {
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL("https://raw.githubusercontent.com/carlodrift/skoice/main/version").openStream()))) {
-            String runningVersion = "v" + this.getDescription().getVersion();
-            String latestVersion = bufferedReader.readLine();
-            if (!runningVersion.equals(latestVersion)) {
+        new UpdateChecker(this, 82861).getVersion(version -> {
+            if (!this.getDescription().getVersion().equals(version)) {
                 getLogger().warning(ChatColor.RED + "You are using an outdated version!");
-                getLogger().warning("Latest version: " + ChatColor.GREEN + latestVersion + ChatColor.YELLOW + ". You are on version: " + ChatColor.RED + runningVersion + ChatColor.YELLOW + ".");
+                getLogger().warning("Latest version: " + ChatColor.GREEN + version + ChatColor.YELLOW + ". You are on version: " + ChatColor.RED + this.getDescription().getVersion() + ChatColor.YELLOW + ".");
                 getLogger().warning("Update here: " + ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/");
-            } else {
-                getLogger().info(ChatColor.GREEN + "You are using the latest version!");
             }
-        } catch (IOException e) {
-            getLogger().warning("An error occurred while checking the version.");
-        }
+        });
     }
 
     public void updateConfigurationStatus(boolean startup) {
