@@ -57,7 +57,8 @@ public class Settings {
                 .addField(":file_cabinet: Server", "The Discord server where Skoice is active.", true)
                 .addField(":sound: Lobby", "The channel players have to join to use the proximity voice chat.", true)
                 .addField(":wrench: Advanced Settings", "Customize the distances used by Skoice and manage other parameters.", true)
-                .addField(":screwdriver: Troubleshooting", "Having issues? [Join our Discord server!](https://discord.gg/h3Tgccc)", false);
+                .addField(":globe_with_meridians: Language", "The language used to display messages.", true)
+                .addField(":screwdriver: Troubleshooting", "Having issues? [Join our Discord server!](https://discord.gg/h3Tgccc)", true);
         return new MessageBuilder().setEmbeds(embed.build())
                 .setActionRows(ActionRow.of(Button.primary("server", "Server").withEmoji(Emoji.fromUnicode("U+1F5C4")).asDisabled(),
                         Button.primary("lobby", "Lobby").withEmoji(Emoji.fromUnicode("U+1F509")),
@@ -80,6 +81,12 @@ public class Settings {
     public static MessageEmbed getAccessDeniedEmbed() {
         return new EmbedBuilder().setTitle(":no_entry: Access Denied")
                 .addField(":warning: Error", "You do not have the required permission to execute this action.", false)
+                .setColor(Color.RED).build();
+    }
+
+    public static MessageEmbed getTooManyInteractionsEmbed() {
+        return new EmbedBuilder().setTitle(":no_entry: Too Many Interactions")
+                .addField(":warning: Error", "You are sending commands too fast.", false)
                 .setColor(Color.RED).build();
     }
 }

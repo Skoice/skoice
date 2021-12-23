@@ -32,8 +32,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static net.clementraynaud.Bot.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
@@ -46,6 +45,8 @@ import static net.clementraynaud.configuration.discord.ServerMigration.getServer
 import static net.clementraynaud.configuration.discord.Settings.*;
 
 public class MessageManagement extends ListenerAdapter {
+
+    private boolean configureCommandCooldown = false;
 
     private static Map<String, String> discordIDDistanceMap;
 
@@ -95,10 +96,22 @@ public class MessageManagement extends ListenerAdapter {
         if (event.getName().equals("configure")) {
             Member member = event.getMember();
             if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-                if (getPlugin().getConfigFile().contains("temp")) {
-                    deleteConfigurationMessage();
+                if (configureCommandCooldown) {
+                    event.replyEmbeds(getTooManyInteractionsEmbed()).setEphemeral(true).queue();
+                } else {
+                    if (getPlugin().getConfigFile().contains("temp")) {
+                        deleteConfigurationMessage();
+                    }
+                    event.reply(getConfigurationMessage(event.getGuild())).queue();
+                    configureCommandCooldown = true;
+                    new Timer().schedule(new TimerTask() {
+
+                        @Override
+                        public void run() {
+                            configureCommandCooldown = false;
+                        }
+                    }, 5000);
                 }
-                event.reply(getConfigurationMessage(event.getGuild())).queue();
             } else {
                 event.replyEmbeds(getAccessDeniedEmbed()).setEphemeral(true).queue();
             }

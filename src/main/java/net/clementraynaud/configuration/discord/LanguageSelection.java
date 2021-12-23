@@ -2,10 +2,8 @@ package net.clementraynaud.configuration.discord;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.Button;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
@@ -19,13 +17,6 @@ import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.util.DataGetters.getLanguage;
 
 public class LanguageSelection {
-
-    private static final Map<String, String> LANGUAGE;
-    static {
-        LANGUAGE = new HashMap<>();
-        LANGUAGE.put("EN", "English");
-        LANGUAGE.put("FR", "Français");
-    }
 
     public static Message getLanguageSelectionMessage() {
         EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: Configuration")
