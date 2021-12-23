@@ -93,8 +93,7 @@ public class LobbySelection extends ListenerAdapter {
         }
         EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: Configuration")
                 .setColor(Color.ORANGE)
-                .addField(":sound: Lobby", "This is the channel players have to join in order to use the proximity voice chat.", false)
-                .setFooter("The voice channel must be in a category.");
+                .addField(":sound: Lobby", "This is the channel players have to join in order to use the proximity voice chat. It must be in a category.", false);
         List<ActionRow> actionRows = new ArrayList<>();
         if (getPlugin().isBotConfigured()) {
             actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")

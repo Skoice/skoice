@@ -92,6 +92,10 @@ public class Skoice extends JavaPlugin {
     public void onEnable() {
         new Metrics(this, 11380);
         saveDefaultConfig();
+        if (!configFile.contains("action-bar-alert")) {
+            configFile.set("action-bar-alert", true);
+        }
+        saveConfig();
         getLogger().info(ChatColor.YELLOW + "Plugin enabled!");
         getLogger().info(ChatColor.YELLOW + "Checking version now.");
         checkVersion();

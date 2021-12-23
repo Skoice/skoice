@@ -155,7 +155,7 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
                             network.remove(player.getUniqueId());
                             if (network.size() == 1) network.clear();
                         });
-                if (getPlugin().getConfigFile().getBoolean("action-bar-alert")) {
+                if (getActionBarAlert()) {
                     try {
                         networks.stream()
                                 .filter(network -> network.contains(player.getUniqueId()))

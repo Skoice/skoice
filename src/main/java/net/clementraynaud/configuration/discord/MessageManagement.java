@@ -36,6 +36,7 @@ import java.util.*;
 
 import static net.clementraynaud.Bot.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
+import static net.clementraynaud.configuration.discord.ActionBarAlertConfiguration.getActionBarAlertConfigurationMessage;
 import static net.clementraynaud.configuration.discord.DistanceConfiguration.getHorizontalRadiusConfigurationMessage;
 import static net.clementraynaud.configuration.discord.DistanceConfiguration.getVerticalRadiusConfigurationMessage;
 import static net.clementraynaud.configuration.discord.LanguageSelection.getLanguageSelectionMessage;
@@ -158,16 +159,16 @@ public class MessageManagement extends ListenerAdapter {
                             event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                         }
                         break;
-                    case "advanced-settings":
+                    case "language":
                         if (getPlugin().isBotConfigured()) {
-                            event.editMessage(getAdvancedSettingsMessage()).queue();
+                            event.editMessage(getLanguageSelectionMessage()).queue();
                         } else {
                             event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                         }
                         break;
-                    case "language":
+                    case "advanced-settings":
                         if (getPlugin().isBotConfigured()) {
-                            event.editMessage(getLanguageSelectionMessage()).queue();
+                            event.editMessage(getAdvancedSettingsMessage()).queue();
                         } else {
                             event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                         }
@@ -192,6 +193,13 @@ public class MessageManagement extends ListenerAdapter {
                         if (getPlugin().isBotConfigured()) {
                             discordIDDistanceMap.put(member.getId(), "vertical");
                             event.editMessage(getVerticalRadiusConfigurationMessage()).queue();
+                        } else {
+                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        }
+                        break;
+                    case "action-bar-alert":
+                        if (getPlugin().isBotConfigured()) {
+                            event.editMessage(getActionBarAlertConfigurationMessage()).queue();
                         } else {
                             event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                         }
@@ -260,6 +268,14 @@ public class MessageManagement extends ListenerAdapter {
                     } else if (event.getSelectedOptions().get(0).getValue().equals("customize")) {
                         event.editMessage(getModeSelectionMessage(true)).queue();
                     }
+                } else if (componentID.equals("action-bar-alert")) {
+                    if (event.getSelectedOptions().get(0).getValue().equals("true")) {
+                        getPlugin().getConfigFile().set("action-bar-alert", true);
+                    } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
+                        getPlugin().getConfigFile().set("action-bar-alert", false);
+                    }
+                    getPlugin().saveConfig();
+                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                 }
             }
         } else {

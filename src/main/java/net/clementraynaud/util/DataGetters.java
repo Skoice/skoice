@@ -99,9 +99,7 @@ public class DataGetters {
             } else {
                 Collections.addAll(onlinePlayers, ((Player[]) onlinePlayerMethod.invoke(Bukkit.getServer())));
             }
-        } catch (Exception e) {
-//            error(e);
-        }
+        } catch (Exception e) {}
         return onlinePlayers;
     }
 
@@ -111,5 +109,12 @@ public class DataGetters {
 
     public static int getHorizontalRadius() {
         return getPlugin().getConfigFile().getInt("radius.horizontal");
+    }
+
+    public static boolean getActionBarAlert() {
+        if (!getPlugin().getConfigFile().contains("action-bar-alert")) {
+            getPlugin().getConfigFile().set("action-bar-alert", true);
+        }
+        return getPlugin().getConfigFile().getBoolean("action-bar-alert");
     }
 }
