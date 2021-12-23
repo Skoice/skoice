@@ -93,6 +93,10 @@ public class Skoice extends JavaPlugin {
             configFile.set("action-bar-alert", true);
             saveConfig();
         }
+        if (!configFile.contains("channel-visibility")) {
+            configFile.set("channel-visibility", false);
+            saveConfig();
+        }
         getLogger().info(ChatColor.YELLOW + "Plugin enabled!");
         getLogger().info(ChatColor.YELLOW + "Checking version now.");
         checkVersion();

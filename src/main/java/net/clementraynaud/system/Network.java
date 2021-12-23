@@ -20,6 +20,7 @@
 package net.clementraynaud.system;
 
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -47,13 +48,10 @@ public class Network {
 
     public Network(Set<UUID> players) {
         this.players = players;
-
-//        debug(Debug.VOICE, "Network being made for " + players);
-
         List<Permission> allowedPermissions = isVoiceActivationAllowed()
                 ? Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD)
                 : Collections.singletonList(Permission.VOICE_SPEAK);
-        List<Permission> deniedPermissions = getPlugin().getConfig().getBoolean("show-channels")
+        List<Permission> deniedPermissions = getPlugin().getConfig().getBoolean("channel-visibility")
                 ? Arrays.asList(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS)
                 : Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
         getDedicatedCategory().createVoiceChannel(UUID.randomUUID().toString())
@@ -70,10 +68,7 @@ public class Network {
                 .queue(channel -> {
                     this.channel = channel.getId();
                     initialized = true;
-                }, e -> {
-//                    error("Failed to create network for " + players + ": " + e.getMessage());
-                    getNetworks().remove(this);
-                });
+                }, e -> getNetworks().remove(this));
     }
 
     public static boolean isVoiceActivationAllowed() {
@@ -81,7 +76,6 @@ public class Network {
     }
 
     public Network engulf(Network network) {
-//        debug(Debug.VOICE, "Network " + this + " is engulfing " + network);
         players.addAll(network.players);
         network.players.clear();
         return this;
@@ -148,7 +142,11 @@ public class Network {
 
     public VoiceChannel getChannel() {
         if (channel == null || channel.isEmpty()) return null;
-        return getGuild().getVoiceChannelById(channel);
+        Guild guild = getGuild();
+        if (guild != null) {
+            return guild.getVoiceChannelById(channel);
+        }
+        return null;
     }
 
     public boolean isInitialized() {

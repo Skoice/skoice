@@ -75,11 +75,13 @@ public class Settings {
                 .setColor(Color.ORANGE)
                 .addField(":wrench: Advanced Settings", "Here you can customize the distances used by Skoice and manage other parameters.", false)
                 .addField(":video_game: Mode", "Choose a mode or customize the distances.", true)
-                .addField(":exclamation: Action Bar Alert", "Toggle the alert sent to players who are moving away and are soon to be disconnected from their current voice channel.", false);
+                .addField(":exclamation: Action Bar Alert", "Toggle the alert sent to players who are moving away and are soon to be disconnected from their current voice channel.", true)
+                .addField(":mag: Channel Visibility", "Toggle the visibility of the temporary channels created by Skoice.", true);
         return new MessageBuilder().setEmbeds(embed.build())
                 .setActionRows(ActionRow.of(Button.secondary("settings", "← Back"),
                         Button.primary("mode", "Mode").withEmoji(Emoji.fromUnicode("U+1F3AE")),
                         Button.primary("action-bar-alert", "Action Bar Alert").withEmoji(Emoji.fromUnicode("U+2757")),
+                        Button.primary("channel-visibility", "Channel Visibility").withEmoji(Emoji.fromUnicode("U+1F50D")),
                         Button.danger("close", "Close").withEmoji(Emoji.fromUnicode("U+2716")))).build();
     }
 

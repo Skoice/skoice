@@ -121,4 +121,11 @@ public class DataGetters {
         }
         return getPlugin().getConfigFile().getBoolean("action-bar-alert");
     }
+
+    public static boolean getChannelVisibility() {
+        if (!getPlugin().getConfigFile().contains("channel-visibility")) {
+            getPlugin().getConfigFile().set("channel-visibility", false);
+        }
+        return getPlugin().getConfigFile().getBoolean("channel-visibility");
+    }
 }

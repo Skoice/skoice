@@ -50,6 +50,7 @@ import static net.clementraynaud.configuration.discord.LobbySelection.getLobbySe
 import static net.clementraynaud.configuration.discord.ModeSelection.getModeSelectionMessage;
 import static net.clementraynaud.configuration.discord.ServerMigration.getServerMigrationMessage;
 import static net.clementraynaud.configuration.discord.Settings.*;
+import static net.clementraynaud.configuration.discord.ChannelVisiblityConfiguration.getChannelVisibilityConfigurationMessage;
 
 public class MessageManagement extends ListenerAdapter {
 
@@ -229,6 +230,13 @@ public class MessageManagement extends ListenerAdapter {
                             event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                         }
                         break;
+                    case "channel-visibility":
+                        if (getPlugin().isBotConfigured()) {
+                            event.editMessage(getChannelVisibilityConfigurationMessage()).queue();
+                        } else {
+                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        }
+                        break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + buttonID);
                 }
@@ -298,6 +306,14 @@ public class MessageManagement extends ListenerAdapter {
                         getPlugin().getConfigFile().set("action-bar-alert", true);
                     } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
                         getPlugin().getConfigFile().set("action-bar-alert", false);
+                    }
+                    getPlugin().saveConfig();
+                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                } else if (componentID.equals("channel-visibility")) {
+                    if (event.getSelectedOptions().get(0).getValue().equals("true")) {
+                        getPlugin().getConfigFile().set("channel-visibility", true);
+                    } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
+                        getPlugin().getConfigFile().set("channel-visibility", false);
                     }
                     getPlugin().saveConfig();
                     event.editMessage(getConfigurationMessage(event.getGuild())).queue();
