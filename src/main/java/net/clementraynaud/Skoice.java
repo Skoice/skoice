@@ -171,49 +171,8 @@ public class Skoice extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("Skoice - Shutdown").build();
-        final ExecutorService executor = Executors.newSingleThreadExecutor(threadFactory);
-        try {
-            executor.invokeAll(Collections.singletonList(() -> {
-                shutdown();
-                if (getJda() != null)
-                    getJda().getEventManager().getRegisteredListeners().forEach(listener -> getJda().getEventManager().unregister(listener));
-                if (getJda() != null) {
-                    CompletableFuture<Void> shutdownTask = new CompletableFuture<>();
-                    getJda().addEventListener(new ListenerAdapter() {
-                        @Override
-                        public void onShutdown(@NotNull ShutdownEvent event) {
-                            shutdownTask.complete(null);
-                        }
-                    });
-                    getJda().shutdownNow();
-                    setJda(null);
-                    try {
-                        shutdownTask.get(5, TimeUnit.SECONDS);
-                    } catch (TimeoutException e) {
-                        getLogger().warning("Your Discord bot took too long to shut down.");
-                    }
-                }
-                return null;
-            }), 15, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-        }
-        executor.shutdownNow();
+        getJda().shutdown();
         getLogger().info(ChatColor.YELLOW + "Plugin disabled!");
     }
 
-    private void shutdown() {
-        for (Pair<String, CompletableFuture<Void>> value : ChannelManagement.awaitingMoves.values()) {
-            value.getRight().cancel(true);
-        }
-        for (Network network : networks) {
-            for (Member member : network.getChannel().getMembers()) {
-                member.mute(false).queue();
-                member.getGuild().moveVoiceMember(member, getLobby()).queue();
-            }
-            network.getChannel().delete().queue();
-            network.clear();
-        }
-        networks.clear();
-    }
 }
