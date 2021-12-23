@@ -25,8 +25,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.system.ChannelManagement.getNetworks;
@@ -55,18 +53,14 @@ public class Network {
         List<Permission> allowedPermissions = isVoiceActivationAllowed()
                 ? Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD)
                 : Collections.singletonList(Permission.VOICE_SPEAK);
-        List<Permission> publicRemovedPermissions = new ArrayList<>();
-        publicRemovedPermissions.add(Permission.VIEW_CHANNEL);
-        publicRemovedPermissions.add(Permission.VOICE_MOVE_OTHERS);
-        if (getPlugin().getConfig().getBoolean("show-channels")) {
-            publicRemovedPermissions.remove(Permission.VIEW_CHANNEL);
-            publicRemovedPermissions.add(Permission.VOICE_CONNECT);
-        }
+        List<Permission> deniedPermissions = getPlugin().getConfig().getBoolean("show-channels")
+                ? Arrays.asList(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS)
+                : Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
         getDedicatedCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(
                         getGuild().getPublicRole(),
                         allowedPermissions,
-                        publicRemovedPermissions
+                        deniedPermissions
                 )
                 .addPermissionOverride(
                         getGuild().getSelfMember(),
