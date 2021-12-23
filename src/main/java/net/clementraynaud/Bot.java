@@ -32,6 +32,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -182,8 +183,10 @@ public class Bot extends ListenerAdapter {
                     } else {
                         embed.addField(":warning: Error", "Your Discord account is not linked to Minecraft.\nType `/link` on our Discord server to link it.", false);
                     }
-                    member.getUser().openPrivateChannel().complete()
-                            .sendMessageEmbeds(embed.build()).queue();
+                    try {
+                        member.getUser().openPrivateChannel().complete()
+                                .sendMessageEmbeds(embed.build()).queue();
+                    } catch (ErrorResponseException e) {}
                 }
             }
         }

@@ -25,6 +25,7 @@ import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
 import net.dv8tion.jda.api.events.channel.voice.update.VoiceChannelUpdateParentEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.Button;
@@ -37,7 +38,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static net.clementraynaud.Skoice.getPlugin;
-import static net.clementraynaud.util.DataGetters.getLobby;
 
 public class LobbySelection extends ListenerAdapter {
 
@@ -59,11 +59,15 @@ public class LobbySelection extends ListenerAdapter {
         getPlugin().getConfigFile().set("lobby-id", null);
         getPlugin().saveConfig();
         getPlugin().updateConfigurationStatus(false);
-        guild.retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE)
-                .complete().get(0).getUser().openPrivateChannel().complete()
-                .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: Configuration")
-                        .addField(":warning: Incomplete Configuration", "You have either moved or deleted the lobby.\nType `/configure` on your Discord server to complete the configuration and use Skoice.", false)
-                        .setColor(Color.RED).build()).queue();
+        User user = guild.retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
+        if (user != null) {
+            try {
+                user.openPrivateChannel().complete()
+                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: Configuration")
+                                .addField(":warning: Incomplete Configuration", "You have either moved or deleted the lobby.\nType `/configure` on your Discord server to complete the configuration and use Skoice.", false)
+                                .setColor(Color.RED).build()).queue();
+            } catch (ErrorResponseException e) {}
+        }
     }
 
     public static Message getLobbySelectionMessage(Guild guild) {

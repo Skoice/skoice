@@ -22,6 +22,7 @@ package net.clementraynaud.system;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -38,6 +39,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.system.ChannelManagement.refreshMutedUsers;
 import static net.clementraynaud.util.DataGetters.*;
 
@@ -73,15 +75,17 @@ public class MarkPlayersDirty extends ListenerAdapter implements Listener {
         if (!event.getChannelJoined().equals(getLobby())) return;
         UUID minecraftID = getMinecraftID(event.getMember());
         if (minecraftID == null) {
-            event.getMember().getUser().openPrivateChannel().complete()
-                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: Linking Process")
-                            .addField(":warning: Error", "Your Discord account is not linked to Minecraft.\nType `/link` on \"" + event.getGuild().getName() + "\" to link it.", false)
-                            .setColor(Color.RED).build()).queue();
-            return;
+            try {
+                event.getMember().getUser().openPrivateChannel().complete()
+                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: Linking Process")
+                                .addField(":warning: Error", "Your Discord account is not linked to Minecraft.\nType `/link` on \"" + event.getGuild().getName() + "\" to link it.", false)
+                                .setColor(Color.RED).build()).queue();
+            } catch (ErrorResponseException e) {}
+        } else {
+            OfflinePlayer player = Bukkit.getOfflinePlayer(minecraftID);
+            if (player.isOnline())
+                markDirty(player.getPlayer());
         }
-        OfflinePlayer player = Bukkit.getOfflinePlayer(minecraftID);
-        if (player.isOnline())
-            markDirty(player.getPlayer());
     }
 
     public void markDirty(Player player) {

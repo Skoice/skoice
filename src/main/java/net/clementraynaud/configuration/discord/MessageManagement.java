@@ -65,6 +65,7 @@ public class MessageManagement extends ListenerAdapter {
                 getPlugin().saveConfig();
             }
         } else if (discordIDDistanceMap.containsKey(event.getAuthor().getId())
+                && event.getMessage().getContentRaw().length() <= 4
                 && event.getMessage().getContentRaw().matches("[0-9]+")) {
             int value = Integer.parseInt(event.getMessage().getContentRaw());
             if (value >= 1 && value <= 1000) {
@@ -281,9 +282,7 @@ public class MessageManagement extends ListenerAdapter {
                                 });
                     }
                 }
-            } catch (ErrorResponseException | NullPointerException e) {
-                getPlugin().getLogger().warning("A Discord message could not be deleted.");
-            }
+            } catch (ErrorResponseException | NullPointerException e) {}
         }
     }
 }

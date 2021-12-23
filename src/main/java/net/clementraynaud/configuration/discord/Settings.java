@@ -86,7 +86,7 @@ public class Settings {
 
     public static MessageEmbed getTooManyInteractionsEmbed() {
         return new EmbedBuilder().setTitle(":no_entry: Too Many Interactions")
-                .addField(":warning: Error", "You are sending commands too fast.", false)
+                .addField(":warning: Error", "You are executing commands too fast.", false)
                 .setColor(Color.RED).build();
     }
 }

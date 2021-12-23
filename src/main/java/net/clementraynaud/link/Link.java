@@ -22,6 +22,7 @@ package net.clementraynaud.link;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bukkit.command.Command;
@@ -111,10 +112,12 @@ public class Link extends ListenerAdapter implements CommandExecutor {
         getPlugin().getConfigFile().set("link." + discordID, player.getUniqueId().toString());
         getPlugin().saveConfig();
         discordIDCodeMap.values().remove(args[0]);
-        member.getUser().openPrivateChannel().complete()
-                .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: Linking Process")
-                        .addField(":heavy_check_mark: Account Linked", "Your Discord account has been linked to Minecraft.", false)
-                        .setColor(Color.GREEN).build()).queue();
+        try {
+            member.getUser().openPrivateChannel().complete()
+                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: Linking Process")
+                            .addField(":heavy_check_mark: Account Linked", "Your Discord account has been linked to Minecraft.", false)
+                            .setColor(Color.GREEN).build()).queue();
+        } catch (ErrorResponseException e) {}
         player.sendMessage("§dSkoice §8• §7You have §alinked your Minecraft account §7to Discord.");
         return true;
     }
