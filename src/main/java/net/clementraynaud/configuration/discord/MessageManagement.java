@@ -76,7 +76,7 @@ public class MessageManagement extends ListenerAdapter {
                                 });
                     }
                 }
-            } catch (ErrorResponseException | NullPointerException e) {
+            } catch (ErrorResponseException | NullPointerException ignored) {
             }
         }
     }

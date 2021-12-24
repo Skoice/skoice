@@ -20,6 +20,7 @@
 package net.clementraynaud.link;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
@@ -37,8 +38,7 @@ import java.util.Map;
 
 import static net.clementraynaud.bot.Connection.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
-import static net.clementraynaud.util.DataGetters.getGuild;
-import static net.clementraynaud.util.DataGetters.getKeyFromValue;
+import static net.clementraynaud.util.DataGetters.*;
 
 public class Link extends ListenerAdapter implements CommandExecutor {
 
@@ -121,6 +121,10 @@ public class Link extends ListenerAdapter implements CommandExecutor {
         } catch (ErrorResponseException ignored) {
         }
         player.sendMessage("§dSkoice §8• §7You have §alinked your Minecraft account §7to Discord.");
+        GuildVoiceState voiceState = member.getVoiceState();
+        if (voiceState != null && voiceState.getChannel().equals(getLobby())) {
+            player.sendMessage("§dSkoice §8• §7You are §anow connected §7to the proximity voice chat.");
+        }
         return true;
     }
 }

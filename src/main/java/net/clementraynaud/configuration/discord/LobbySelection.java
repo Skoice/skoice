@@ -52,7 +52,7 @@ public class LobbySelection extends ListenerAdapter {
                         .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: Configuration")
                                 .addField(":warning: Incomplete Configuration", "You have either moved or deleted the lobby.\nType `/configure` on your Discord server to complete the configuration and use Skoice.", false)
                                 .setColor(Color.RED).build()).queue();
-            } catch (ErrorResponseException e) {
+            } catch (ErrorResponseException ignored) {
             }
         }
     }

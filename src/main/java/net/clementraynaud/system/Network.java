@@ -81,7 +81,6 @@ public class Network {
         return this;
     }
 
-
     /**
      * @return true if the player is within the network strength or falloff ranges
      */

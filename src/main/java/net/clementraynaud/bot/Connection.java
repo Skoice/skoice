@@ -178,7 +178,7 @@ public class Connection extends ListenerAdapter {
                     try {
                         member.getUser().openPrivateChannel().complete()
                                 .sendMessageEmbeds(embed.build()).queue();
-                    } catch (ErrorResponseException e) {
+                    } catch (ErrorResponseException ignored) {
                     }
                 }
             }

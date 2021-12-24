@@ -102,7 +102,7 @@ public class DataGetters {
             } else {
                 Collections.addAll(onlinePlayers, ((Player[]) onlinePlayerMethod.invoke(Bukkit.getServer())));
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return onlinePlayers;
     }

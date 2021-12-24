@@ -19,7 +19,11 @@
 
 package net.clementraynaud.link;
 
+import net.clementraynaud.system.ChannelManagement;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -35,7 +39,9 @@ import java.awt.*;
 import java.util.UUID;
 
 import static net.clementraynaud.Skoice.getPlugin;
+import static net.clementraynaud.system.ChannelManagement.getNetworks;
 import static net.clementraynaud.util.DataGetters.getGuild;
+import static net.clementraynaud.util.DataGetters.getLobby;
 
 public class Unlink extends ListenerAdapter implements CommandExecutor {
 
@@ -56,6 +62,10 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
                 if (player.isOnline()) {
                     player.getPlayer().sendMessage("§dSkoice §8• §7You have §aunlinked your Minecraft account §7from Discord.");
+                    GuildVoiceState voiceState = event.getMember().getVoiceState();
+                    if (voiceState != null && voiceState.getChannel().equals(getLobby())) {
+                        player.getPlayer().sendMessage("§dSkoice §8• §7You are §cnow disconnected §7from the proximity voice chat.");
+                    }
                 }
             }
         }
@@ -74,11 +84,17 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
             return true;
         }
         unlinkUser(discordID, player.getUniqueId().toString());
+        Member member;
         try {
-            getGuild().retrieveMemberById(discordID).complete().getUser().openPrivateChannel().complete()
+            member = getGuild().retrieveMemberById(discordID).complete();
+            member.getUser().openPrivateChannel().complete()
                     .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: Linking Process")
                             .addField(":heavy_check_mark: Account Unlinked", "Your Discord account has been unlinked from Minecraft.", false)
                             .setColor(Color.GREEN).build()).queue();
+            GuildVoiceState voiceState = member.getVoiceState();
+            if (voiceState != null && (voiceState.getChannel().equals(getLobby()) || getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceState.getChannel())))) {
+                player.sendMessage("§dSkoice §8• §7You are §cnow disconnected §7from the proximity voice chat.");
+            }
         } catch (ErrorResponseException ignored) {
         }
         player.sendMessage("§dSkoice §8• §7You have §aunlinked your Minecraft account §7from Discord.");

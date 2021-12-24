@@ -292,6 +292,9 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
             networks.stream()
                     .filter(network -> network.contains(player.getPlayer()))
                     .forEach(network -> network.remove(player.getPlayer()));
+            if (event.getChannelLeft().equals(getLobby()) || networks.stream().anyMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
+                player.getPlayer().sendMessage("§dSkoice §8• §7You are §cnow disconnected §7from the proximity voice chat.");
+            }
         }
     }
 

@@ -20,6 +20,9 @@
 package net.clementraynaud.system;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -39,8 +42,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static net.clementraynaud.system.ChannelManagement.refreshMutedUsers;
-import static net.clementraynaud.util.DataGetters.getLobby;
-import static net.clementraynaud.util.DataGetters.getMinecraftID;
+import static net.clementraynaud.util.DataGetters.*;
 
 public class MarkPlayersDirty extends ListenerAdapter implements Listener {
 
@@ -58,6 +60,13 @@ public class MarkPlayersDirty extends ListenerAdapter implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         markDirty(player);
+        Member member = getMember(player.getUniqueId());
+        if (member != null) {
+            GuildVoiceState voiceState = member.getVoiceState();
+            if (voiceState != null && voiceState.getChannel().equals(getLobby())) {
+                player.sendMessage("§dSkoice §8• §7You are §anow connected §7to the proximity voice chat.");
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -87,8 +96,10 @@ public class MarkPlayersDirty extends ListenerAdapter implements Listener {
             }
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(minecraftID);
-            if (player.isOnline())
+            if (player.isOnline()) {
                 markDirty(player.getPlayer());
+                player.getPlayer().sendMessage("§dSkoice §8• §7You are §anow connected §7to the proximity voice chat.");
+            }
         }
     }
 
