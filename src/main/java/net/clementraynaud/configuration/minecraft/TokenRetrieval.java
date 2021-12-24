@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Base64;
 
-import static net.clementraynaud.Bot.getJda;
+import static net.clementraynaud.bot.Connection.getJda;
 import static net.clementraynaud.Skoice.getBot;
 import static net.clementraynaud.Skoice.getPlugin;
 

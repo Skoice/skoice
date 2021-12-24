@@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static net.clementraynaud.Bot.getJda;
+import static net.clementraynaud.bot.Connection.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
 
 public class DataGetters {

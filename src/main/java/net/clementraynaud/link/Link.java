@@ -35,7 +35,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.clementraynaud.Bot.getJda;
+import static net.clementraynaud.bot.Connection.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.util.DataGetters.getGuild;
 import static net.clementraynaud.util.DataGetters.getKeyFromValue;

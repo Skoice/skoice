@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static net.clementraynaud.Bot.getJda;
+import static net.clementraynaud.bot.Connection.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.configuration.discord.ActionBarAlertConfiguration.getActionBarAlertConfigurationMessage;
 import static net.clementraynaud.configuration.discord.DistanceConfiguration.getHorizontalRadiusConfigurationMessage;

@@ -28,7 +28,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static net.clementraynaud.Bot.getJda;
+import static net.clementraynaud.bot.Connection.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
 
 public class Instructions implements CommandExecutor {
@@ -50,8 +50,8 @@ public class Instructions implements CommandExecutor {
             } else {
                 try {
                     TextComponent tutorialPage = new TextComponent("§bpage");
-                    tutorialPage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§8☀ §bOpen in web browser: §7https://github.com/carlodrift/skoice/wiki/Tutorial").create()));
-                    tutorialPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/carlodrift/skoice/wiki/Tutorial"));
+                    tutorialPage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§8☀ §bOpen in web browser: §7https://github.com/carlodrift/skoice/wiki").create()));
+                    tutorialPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/carlodrift/skoice/wiki"));
                     TextComponent tokenCommand = new TextComponent("§bhere");
                     tokenCommand.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§8☀ §bShortcut: §7/token").create()));
                     tokenCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/token "));
@@ -61,7 +61,7 @@ public class Instructions implements CommandExecutor {
                             .append(tokenCommand)
                             .append("§7.\n§8• §7Once done, type \"§e/configure§7\" on your Discord server to go to the next step.\n").event((HoverEvent) null).create());
                 } catch (NoSuchMethodError e) {
-                    player.sendMessage(" \n§dSkoice §8• §7Configuration (§fBot Creation§7)\n \n§8• §7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: §bhttps://github.com/carlodrift/skoice/wiki/Tutorial§7.\n§8• §7When you have retrieved its token, type \"§e/token§7\" followed by the token.\n§8• §7Once done, type \"§e/configure§7\" on your Discord server to go to the next step.\n ");
+                    player.sendMessage(" \n§dSkoice §8• §7Configuration (§fBot Creation§7)\n \n§8• §7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: §bhttps://github.com/carlodrift/skoice/wiki§7.\n§8• §7When you have retrieved its token, type \"§e/token§7\" followed by the token.\n§8• §7Once done, type \"§e/configure§7\" on your Discord server to go to the next step.\n ");
                 }
             }
         }

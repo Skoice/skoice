@@ -19,6 +19,7 @@
 
 package net.clementraynaud;
 
+import net.clementraynaud.bot.Connection;
 import net.clementraynaud.configuration.minecraft.IncorrectConfigurationAlert;
 import net.clementraynaud.configuration.minecraft.Instructions;
 import net.clementraynaud.configuration.minecraft.TokenRetrieval;
@@ -41,7 +42,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.clementraynaud.Bot.getJda;
+import static net.clementraynaud.bot.Connection.getJda;
 import static net.clementraynaud.configuration.discord.MessageManagement.deleteConfigurationMessage;
 import static net.clementraynaud.system.ChannelManagement.networks;
 import static net.clementraynaud.util.DataGetters.*;
@@ -49,7 +50,7 @@ import static net.clementraynaud.util.DataGetters.*;
 public class Skoice extends JavaPlugin {
 
     private static Skoice plugin;
-    private static Bot bot;
+    private static Connection bot;
     private final FileConfiguration configFile = getConfig();
     private boolean isTokenSet = true;
     private boolean isBotConfigured = false;
@@ -62,11 +63,11 @@ public class Skoice extends JavaPlugin {
         Skoice.plugin = plugin;
     }
 
-    public static Bot getBot() {
+    public static Connection getBot() {
         return bot;
     }
 
-    public static void setBot(Bot bot) {
+    public static void setBot(Connection bot) {
         Skoice.bot = bot;
     }
 
@@ -97,7 +98,7 @@ public class Skoice extends JavaPlugin {
         getLogger().info(ChatColor.YELLOW + "Plugin enabled!");
         setPlugin(this);
         updateConfigurationStatus(true);
-        setBot(new Bot());
+        setBot(new Connection());
         plugin.getCommand("configure").setExecutor(new Instructions());
         plugin.getCommand("token").setExecutor(new TokenRetrieval());
         plugin.getCommand("link").setExecutor(new Link());
@@ -162,19 +163,20 @@ public class Skoice extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (Pair<String, CompletableFuture<Void>> value : ChannelManagement.awaitingMoves.values()) {
-            value.getRight().cancel(true);
-        }
-        for (Network network : networks) {
-            for (Member member : network.getChannel().getMembers()) {
-                member.mute(false).queue();
+        if (getJda() != null) {
+            for (Pair<String, CompletableFuture<Void>> value : ChannelManagement.awaitingMoves.values()) {
+                value.getRight().cancel(true);
             }
-            network.getChannel().delete().queue();
-            network.clear();
+            for (Network network : networks) {
+                for (Member member : network.getChannel().getMembers()) {
+                    member.mute(false).queue();
+                }
+                network.getChannel().delete().queue();
+                network.clear();
+            }
+            networks.clear();
+            getJda().shutdown();
+            getLogger().info(ChatColor.YELLOW + "Plugin disabled!");
         }
-        networks.clear();
-        getJda().shutdown();
-        getLogger().info(ChatColor.YELLOW + "Plugin disabled!");
     }
-
 }

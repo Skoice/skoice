@@ -17,7 +17,7 @@
 // along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 
 
-package net.clementraynaud;
+package net.clementraynaud.bot;
 
 import net.clementraynaud.configuration.discord.LobbySelection;
 import net.clementraynaud.configuration.discord.MessageManagement;
@@ -30,17 +30,14 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import javax.security.auth.login.LoginException;
 import java.awt.*;
 import java.util.Base64;
 import java.util.UUID;
@@ -52,13 +49,13 @@ import static net.clementraynaud.link.Link.initializeDiscordIDCodeMap;
 import static net.clementraynaud.system.ChannelManagement.networks;
 import static net.clementraynaud.util.DataGetters.*;
 
-public class Bot extends ListenerAdapter {
+public class Connection extends ListenerAdapter {
 
     private static final int TICKS_BETWEEN_VERSION_CHECKING = 720000;
 
     private static JDA jda;
 
-    public Bot() {
+    public Connection() {
         if (getPlugin().isTokenSet()) {
             connectBot(null);
         }
@@ -69,7 +66,7 @@ public class Bot extends ListenerAdapter {
     }
 
     public static void setJda(JDA jda) {
-        Bot.jda = jda;
+        Connection.jda = jda;
     }
 
     public void connectBot(CommandSender sender) {
@@ -94,7 +91,7 @@ public class Bot extends ListenerAdapter {
                     sender.sendMessage("§dSkoice §8• §7Your bot is §anow connected§7. Type \"§e/configure§7\" on your Discord server to set it up.");
                 }
             }
-        } catch (LoginException | InterruptedException e) {
+        } catch (Exception e) {
             if (sender == null) {
                 getPlugin().getLogger().severe("Your Discord bot could not connect. To update the token, type \"/token\" followed by the new token.");
             } else {
@@ -108,14 +105,8 @@ public class Bot extends ListenerAdapter {
             deleteConfigurationMessage();
             checkForValidLobby();
             checkForUnlinkedUsersInLobby();
-            jda.getGuilds().forEach(guild -> {
-                if (guild.retrieveCommands().complete().size() < 3) {
-                    guild.upsertCommand("configure", "Configure Skoice.").queue();
-                    guild.upsertCommand("link", "Link your Discord account to Minecraft.").queue();
-                    guild.upsertCommand("unlink", "Unlink your Discord account from Minecraft.").queue();
-                }
-            });
-            jda.addEventListener(this, new LobbySelection(), new MessageManagement(), new Link(), new Unlink());
+            jda.getGuilds().forEach(CommandRegistration::registerCommands);
+            jda.addEventListener(this, new CommandRegistration(), new InviteCommand(), new LobbySelection(), new MessageManagement(), new Link(), new Unlink());
             if (getPlugin().isBotConfigured()) {
                 jda.addEventListener(new ChannelManagement(), new MarkPlayersDirty());
                 getJda().getPresence().setActivity(Activity.listening("/link"));
@@ -191,17 +182,6 @@ public class Bot extends ListenerAdapter {
                     }
                 }
             }
-        }
-    }
-
-    @Override
-    public void onGuildJoin(GuildJoinEvent event) {
-        Guild guild = event.getGuild();
-        if (guild.retrieveCommands().complete().size() < 3) {
-            guild.upsertCommand("configure", "Configure Skoice.").queue();
-            guild.upsertCommand("link", "Link your Discord account to Minecraft.")
-                    .addOption(OptionType.STRING, "minecraft_username", "The username of the Minecraft account you want to link.", true).queue();
-            guild.upsertCommand("unlink", "Unlink your Discord account from Minecraft.").queue();
         }
     }
 

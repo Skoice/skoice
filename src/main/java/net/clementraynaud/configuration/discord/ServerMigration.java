@@ -33,7 +33,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.clementraynaud.Bot.getJda;
+import static net.clementraynaud.bot.Connection.getJda;
 import static net.clementraynaud.util.DataGetters.getGuild;
 
 public class ServerMigration {
