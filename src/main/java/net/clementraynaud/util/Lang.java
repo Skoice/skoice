@@ -29,20 +29,40 @@ public class Lang {
 
     public enum ConsoleMessage {
 
-        NO_TOKEN(new HashMap<String, String>() {{
-            put("EN", "§cToken not set, join your Minecraft server to set up Skoice.");
-            put("FR", "§cToken non défini, rejoignez votre serveur Minecraft pour configurer Skoice.");
+        PLUGIN_ENABLED_INFO(new HashMap<String, String>() {{
+            put("EN", "Plugin enabled!");
+            put("FR", "Plugin activé !");
         }}),
-        NO_LANGUAGE(new HashMap<String, String>() {{
-            put("EN", "§cLanguage not set, type \"/configure\" on your Discord server to set up Skoice.");
+        PLUGIN_DISABLED_INFO(new HashMap<String, String>() {{
+            put("EN", "Plugin disabled!");
+            put("FR", "Plugin désactivé !");
         }}),
-        NO_LOBBY_ID(new HashMap<String, String>() {{
-            put("EN", "§cLobby not set, type \"/configure\" on your Discord server to set up Skoice.");
-            put("FR", "§cSalon vocal principal non défini, tapez \"/configure\" sur votre serveur Discord pour configurer Skoice.");
+        OUTDATED_VERSION_WARNING(new HashMap<String, String>() {{
+            put("EN", "§eYou are using an outdated version ({runningVersion}). Download the latest version ({latestVersion}) here: §bhttps://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/§e.");
+            put("FR", "§eVous utilisez une version obsolète ({runningVersion}). Téléchargez la dernière version ({latestVersion}) ici : §bhttps://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/§e.");
         }}),
-        NO_DISTANCES(new HashMap<String, String>() {{
-            put("EN", "§cRadius not set, join your Minecraft server to set up Skoice.");
-            put("FR", "§cRayons non définis, tapez \"/configure\" sur votre serveur Discord pour configurer Skoice.");
+        NO_TOKEN_WARNING(new HashMap<String, String>() {{
+            put("EN", "§eToken not set, join your Minecraft server to set up Skoice.");
+            put("FR", "§eToken non défini, rejoignez votre serveur Minecraft pour configurer Skoice.");
+        }}),
+        NO_LANGUAGE_WARNING(new HashMap<String, String>() {{
+            put("EN", "§eLanguage not set, type \"/configure\" on your Discord server to set up Skoice.");
+        }}),
+        MULTIPLE_GUILDS_WARNING(new HashMap<String, String>() {{
+            put("EN", "§eYour bot is on multiple Discord servers, type \"/configure\" on your Discord server to choose one.");
+            put("FR", "§eVotre bot est sur plusieurs serveurs Discord, tapez \"/configure\" sur votre serveur Discord pour en choisir un.");
+        }}),
+        NO_LOBBY_ID_WARNING(new HashMap<String, String>() {{
+            put("EN", "§eLobby not set, type \"/configure\" on your Discord server to set up Skoice.");
+            put("FR", "§eSalon vocal principal non défini, tapez \"/configure\" sur votre serveur Discord pour configurer Skoice.");
+        }}),
+        NO_DISTANCES_WARNING(new HashMap<String, String>() {{
+            put("EN", "§eRadius not set, join your Minecraft server to set up Skoice.");
+            put("FR", "§eRayons non définis, tapez \"/configure\" sur votre serveur Discord pour configurer Skoice.");
+        }}),
+        MISSING_ACCESS_ERROR(new HashMap<String, String>() {{
+            put("EN", "§cYou did not grant your bot the permission to register commands on your Discord server (\"applications.commands\").");
+            put("FR", "§cVous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord (\"applications.commands\").");
         }});
 
         private final Map<String, String> languageMessageMap;
