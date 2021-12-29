@@ -64,8 +64,11 @@ public class MarkPlayersDirty extends ListenerAdapter implements Listener {
         Member member = getMember(player.getUniqueId());
         if (member != null) {
             GuildVoiceState voiceState = member.getVoiceState();
-            if (voiceState != null && voiceState.getChannel().equals(getLobby())) {
-                player.sendMessage("§dSkoice §8• §7You are §anow connected §7to the proximity voice chat.");
+            if (voiceState != null) {
+                VoiceChannel voiceChannel = voiceState.getChannel();
+                if (voiceChannel != null && voiceChannel.equals(getLobby())) {
+                    player.sendMessage("§dSkoice §8• §7You are §anow connected §7to the proximity voice chat.");
+                }
             }
         }
     }

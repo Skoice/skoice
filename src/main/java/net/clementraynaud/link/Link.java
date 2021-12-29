@@ -23,6 +23,7 @@ package net.clementraynaud.link;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -123,8 +124,11 @@ public class Link extends ListenerAdapter implements CommandExecutor {
         }
         player.sendMessage("§dSkoice §8• §7You have §alinked your Minecraft account §7to Discord.");
         GuildVoiceState voiceState = member.getVoiceState();
-        if (voiceState != null && voiceState.getChannel().equals(getLobby())) {
-            player.sendMessage("§dSkoice §8• §7You are §anow connected §7to the proximity voice chat.");
+        if (voiceState != null) {
+            VoiceChannel voiceChannel = voiceState.getChannel();
+            if (voiceChannel != null && voiceChannel.equals(getLobby())) {
+                player.sendMessage("§dSkoice §8• §7You are §anow connected §7to the proximity voice chat.");
+            }
         }
         return true;
     }

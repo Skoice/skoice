@@ -23,6 +23,7 @@ package net.clementraynaud.link;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -62,8 +63,11 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
                 if (player.isOnline()) {
                     player.getPlayer().sendMessage("§dSkoice §8• §7You have §aunlinked your Minecraft account §7from Discord.");
                     GuildVoiceState voiceState = event.getMember().getVoiceState();
-                    if (voiceState != null && voiceState.getChannel().equals(getLobby())) {
-                        player.getPlayer().sendMessage("§dSkoice §8• §7You are §cnow disconnected §7from the proximity voice chat.");
+                    if (voiceState != null) {
+                        VoiceChannel voiceChannel = voiceState.getChannel();
+                        if (voiceChannel != null && voiceChannel.equals(getLobby())) {
+                            player.getPlayer().sendMessage("§dSkoice §8• §7You are §cnow disconnected §7from the proximity voice chat.");
+                        }
                     }
                 }
             }
@@ -91,8 +95,11 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
                             .addField(":heavy_check_mark: Account Unlinked", "Your Discord account has been unlinked from Minecraft.", false)
                             .setColor(Color.GREEN).build()).queue();
             GuildVoiceState voiceState = member.getVoiceState();
-            if (voiceState != null && (voiceState.getChannel().equals(getLobby()) || getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceState.getChannel())))) {
-                player.sendMessage("§dSkoice §8• §7You are §cnow disconnected §7from the proximity voice chat.");
+            if (voiceState != null) {
+                VoiceChannel voiceChannel = voiceState.getChannel();
+                if (voiceChannel != null && voiceChannel.equals(getLobby()) || getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
+                    player.sendMessage("§dSkoice §8• §7You are §cnow disconnected §7from the proximity voice chat.");
+                }
             }
         } catch (ErrorResponseException ignored) {
         }
