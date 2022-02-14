@@ -33,13 +33,12 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+import java.util.List;
 
 import static net.clementraynaud.bot.Connection.getJda;
 import static net.clementraynaud.Skoice.getPlugin;
@@ -49,7 +48,6 @@ import static net.clementraynaud.configuration.discord.DistanceConfiguration.get
 import static net.clementraynaud.configuration.discord.LanguageSelection.getLanguageSelectionMessage;
 import static net.clementraynaud.configuration.discord.LobbySelection.getLobbySelectionMessage;
 import static net.clementraynaud.configuration.discord.ModeSelection.getModeSelectionMessage;
-import static net.clementraynaud.configuration.discord.ServerMigration.getServerMigrationMessage;
 import static net.clementraynaud.configuration.discord.Settings.*;
 import static net.clementraynaud.configuration.discord.ChannelVisiblityConfiguration.getChannelVisibilityConfigurationMessage;
 
@@ -172,13 +170,6 @@ public class MessageManagement extends ListenerAdapter {
                                     .setEphemeral(true).queue();
                         }
                         break;
-                    case "server":
-                        if (getPlugin().isBotConfigured()) {
-                            event.editMessage(getServerMigrationMessage()).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
-                        break;
                     case "lobby":
                         if (getPlugin().isBotConfigured()) {
                             event.editMessage(getLobbySelectionMessage(event.getGuild())).queue();
@@ -257,9 +248,16 @@ public class MessageManagement extends ListenerAdapter {
                 String componentID = event.getComponentId();
                 if (componentID.equals("servers")
                         && getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
-                    getPlugin().getConfigFile().set("server-id", event.getSelectedOptions().get(0).getValue());
-                    getPlugin().saveConfig();
-                    event.editMessage(getServerMigrationMessage()).queue();
+                    for (SelectOption server : event.getComponent().getOptions()) {
+                        if (!event.getGuild().getId().equals(server.getValue())
+                                && getJda().getGuilds().contains(getJda().getGuildById(server.getValue()))) {
+                            try {
+                                getJda().getGuildById(server.getValue()).leave().queue();
+                            } catch (ErrorResponseException ignored) {
+                            }
+                        }
+                    }
+                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                 } else if (componentID.equals("languages")) {
                     getPlugin().getConfigFile().set("language", event.getSelectedOptions().get(0).getValue());
                     getPlugin().saveConfig();

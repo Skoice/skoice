@@ -36,7 +36,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -46,7 +45,6 @@ import java.util.concurrent.CompletableFuture;
 import static net.clementraynaud.bot.Connection.getJda;
 import static net.clementraynaud.configuration.discord.MessageManagement.deleteConfigurationMessage;
 import static net.clementraynaud.system.ChannelManagement.networks;
-import static net.clementraynaud.util.DataGetters.*;
 
 public class Skoice extends JavaPlugin {
 
@@ -110,28 +108,28 @@ public class Skoice extends JavaPlugin {
     public void checkVersion() {
         new UpdateChecker(this, 82861).getVersion(version -> {
             if (!this.getDescription().getVersion().equals(version)) {
-                getLogger().warning(ChatColor.RED + "You are using an outdated version!");
-                getLogger().warning("Latest version: " + ChatColor.GREEN + version + ChatColor.YELLOW + ". You are on version: " + ChatColor.RED + this.getDescription().getVersion() + ChatColor.YELLOW + ".");
-                getLogger().warning("Update here: " + ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/");
+                getLogger().warning(Lang.Console.OUTDATED_VERSION_WARNING.print()
+                        .replace("{runningVersion}", this.getDescription().getVersion())
+                        .replace("{latestVersion}", version));
             }
         });
     }
 
     public void updateConfigurationStatus(boolean startup) {
         boolean oldBotConfigured = isBotConfigured;
-        if (configFile.getString("token") == null) {
-            getLogger().warning(Lang.ConsoleMessage.NO_TOKEN.print());
+        if (!configFile.contains("token")) {
+            getLogger().warning(Lang.Console.NO_TOKEN_WARNING.print());
             isTokenSet = false;
             isBotConfigured = false;
-        } else if (getLanguage() == null) {
-            getLogger().warning(Lang.ConsoleMessage.NO_LANGUAGE.print());
+        } else if (!configFile.contains("language")) {
+            getLogger().warning(Lang.Console.NO_LANGUAGE_WARNING.print());
             isBotConfigured = false;
-        } else if (configFile.getString("lobby-id") == null) {
-            getLogger().warning(Lang.ConsoleMessage.NO_LOBBY_ID.print());
+        } else if (!configFile.contains("lobby-id")) {
+            getLogger().warning(Lang.Console.NO_LOBBY_ID_WARNING.print());
             isBotConfigured = false;
-        } else if (getVerticalRadius() == 0
-                || getHorizontalRadius() == 0) {
-            getLogger().warning(Lang.ConsoleMessage.NO_DISTANCES.print());
+        } else if (!configFile.contains("radius.horizontal")
+                || !configFile.contains("radius.vertical")) {
+            getLogger().warning(Lang.Console.NO_DISTANCES_WARNING.print());
             isBotConfigured = false;
         } else {
             isBotConfigured = true;
@@ -146,7 +144,7 @@ public class Skoice extends JavaPlugin {
                 Bukkit.getPluginManager().registerEvents(new MarkPlayersDirty(), plugin);
                 Bukkit.getPluginManager().registerEvents(new ChannelManagement(), plugin);
             }
-        } else if (!oldBotConfigured && isBotConfigured && getJda() != null) {
+        } else if (!oldBotConfigured && isBotConfigured && getJda() != null && getBot().isGuildUnique()) {
             Bukkit.getPluginManager().registerEvents(new MarkPlayersDirty(), plugin);
             Bukkit.getPluginManager().registerEvents(new ChannelManagement(), plugin);
             getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
@@ -176,8 +174,11 @@ public class Skoice extends JavaPlugin {
                 network.clear();
             }
             networks.clear();
-            getJda().shutdown();
-            getLogger().info(ChatColor.YELLOW + "Plugin disabled!");
+            try {
+                getJda().shutdown();
+            } catch (NoClassDefFoundError ignored) {
+            }
+            getLogger().info(Lang.Console.PLUGIN_DISABLED_INFO.print());
         }
     }
 }

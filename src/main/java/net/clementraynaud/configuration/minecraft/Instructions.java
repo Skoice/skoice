@@ -20,10 +20,12 @@
 
 package net.clementraynaud.configuration.minecraft;
 
+import net.clementraynaud.util.Lang;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -37,24 +39,24 @@ public class Instructions implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command cmd, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("§dSkoice §8• §7This command is §conly executable §7by players.");
+            sender.sendMessage(Lang.Minecraft.ILLEGAL_EXECUTOR.print());
             return true;
         }
         Player player = (Player) sender;
         if (player.isOp()) {
             if (getPlugin().isTokenSet() && getJda() != null) {
                 if (getPlugin().isBotConfigured()) {
-                    player.sendMessage("§dSkoice §8• §7You have §calready configured Skoice§7. Type \"§e/configure§7\" on your Discord server to update the settings.");
+                    player.sendMessage(Lang.Minecraft.ALREADY_CONFIGURED.print());
                 } else {
-                    player.sendMessage("§dSkoice §8• §7Your bot is §cnot configured correctly§7. Type \"§e/configure§7\" on your Discord server to set it up.");
+                    player.sendMessage(Lang.Minecraft.NOT_CONFIGURED_CORRECTLY_DISCORD.print());
                 }
             } else {
                 try {
                     TextComponent tutorialPage = new TextComponent("§bpage");
-                    tutorialPage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§8☀ §bOpen in web browser: §7https://github.com/carlodrift/skoice/wiki").create()));
+                    tutorialPage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§8☀ §bOpen in web browser: §7https://github.com/carlodrift/skoice/wiki")));
                     tutorialPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/carlodrift/skoice/wiki"));
                     TextComponent tokenCommand = new TextComponent("§bhere");
-                    tokenCommand.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§8☀ §bShortcut: §7/token").create()));
+                    tokenCommand.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§8☀ §bShortcut: §7/token")));
                     tokenCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/token "));
                     player.spigot().sendMessage(new ComponentBuilder("\n§dSkoice §8• §7Configuration (§fBot Creation§7)\n\n§8• §7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this ")
                             .append(tutorialPage)
@@ -62,7 +64,7 @@ public class Instructions implements CommandExecutor {
                             .append(tokenCommand)
                             .append("§7.\n§8• §7Once done, type \"§e/configure§7\" on your Discord server to go to the next step.\n").event((HoverEvent) null).create());
                 } catch (NoSuchMethodError e) {
-                    player.sendMessage(" \n§dSkoice §8• §7Configuration (§fBot Creation§7)\n \n§8• §7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: §bhttps://github.com/carlodrift/skoice/wiki§7.\n§8• §7When you have retrieved its token, type \"§e/token§7\" followed by the token.\n§8• §7Once done, type \"§e/configure§7\" on your Discord server to go to the next step.\n ");
+                    player.sendMessage(Lang.Minecraft.BOT_CREATION_LINK.print());
                 }
             }
         }

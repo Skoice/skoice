@@ -20,6 +20,7 @@
 
 package net.clementraynaud.configuration.minecraft;
 
+import net.clementraynaud.util.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -39,11 +40,11 @@ public class TokenRetrieval implements CommandExecutor {
             return true;
         }
         if (args.length < 1) {
-            sender.sendMessage("§dSkoice §8• §7You have §cnot provided a token§7.");
+            sender.sendMessage(Lang.Minecraft.NO_TOKEN.print());
             return true;
         }
         if (args[0].length() != 59 || !args[0].matches("[a-zA-Z0-9_.]+")) {
-            sender.sendMessage("§dSkoice §8• §7You have §cnot provided a valid token§7.");
+            sender.sendMessage(Lang.Minecraft.INVALID_TOKEN.print());
             return true;
         }
         byte[] tokenBytes = args[0].getBytes();
@@ -56,7 +57,7 @@ public class TokenRetrieval implements CommandExecutor {
         if (getJda() == null) {
             getBot().connectBot(sender);
         } else {
-            sender.sendMessage("§dSkoice §8• §7A bot is §calready connected§7. Restart your Minecraft server to apply the new token.");
+            sender.sendMessage(Lang.Minecraft.ALREADY_CONNECTED.print());
         }
         return true;
     }

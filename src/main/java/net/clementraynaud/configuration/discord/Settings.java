@@ -31,11 +31,12 @@ import net.dv8tion.jda.api.interactions.components.Button;
 
 import java.awt.*;
 
+import static net.clementraynaud.Skoice.getBot;
 import static net.clementraynaud.Skoice.getPlugin;
 import static net.clementraynaud.configuration.discord.LanguageSelection.getLanguageSelectionMessage;
 import static net.clementraynaud.configuration.discord.LobbySelection.getLobbySelectionMessage;
 import static net.clementraynaud.configuration.discord.ModeSelection.getModeSelectionMessage;
-import static net.clementraynaud.util.DataGetters.*;
+import static net.clementraynaud.configuration.discord.ServerSelection.getServerSelectionMessage;
 
 public class Settings {
 
@@ -43,12 +44,14 @@ public class Settings {
     }
 
     public static Message getConfigurationMessage(Guild guild) {
-        if (getLanguage() == null) {
+        if (!getPlugin().getConfigFile().contains("language")) {
             return getLanguageSelectionMessage();
-        } else if (getPlugin().getConfigFile().getString("lobby-id") == null) {
+        } else if (!getBot().isGuildUnique()) {
+            return getServerSelectionMessage();
+        } else if (!getPlugin().getConfigFile().contains("lobby-id")) {
             return getLobbySelectionMessage(guild);
-        } else if (getVerticalRadius() == 0
-                || getHorizontalRadius() == 0) {
+        } else if (!getPlugin().getConfigFile().contains("radius.horizontal")
+                || !getPlugin().getConfigFile().contains("radius.vertical")) {
             return getModeSelectionMessage(false);
         } else {
             return getSettingsMessage();
@@ -58,13 +61,13 @@ public class Settings {
     private static Message getSettingsMessage() {
         EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: Configuration")
                 .setColor(Color.ORANGE)
-                .addField(":file_cabinet: Server", "The Discord server where Skoice is active.", true)
                 .addField(":sound: Lobby", "The channel players have to join to use the proximity voice chat.", true)
-                .addField(":wrench: Advanced Settings", "Customize the distances used by Skoice and manage other parameters.", true)
+                .addField(":video_game: Mode", "Choose a mode or customize the distances.", true)
+                .addField(":wrench: Advanced Settings", "Manage other parameters.", true)
                 .addField(":globe_with_meridians: Language", "The language used to display messages.", true)
                 .addField(":screwdriver: Troubleshooting", "Having issues? [Join our Discord server!](https://discord.gg/h3Tgccc)", true);
         return new MessageBuilder().setEmbeds(embed.build())
-                .setActionRows(ActionRow.of(Button.primary("server", "Server").withEmoji(Emoji.fromUnicode("U+1F5C4")).asDisabled(),
+                .setActionRows(ActionRow.of(Button.primary("mode", "Mode").withEmoji(Emoji.fromUnicode("U+1F3AE")),
                         Button.primary("lobby", "Lobby").withEmoji(Emoji.fromUnicode("U+1F509")),
                         Button.secondary("advanced-settings", "Advanced Settings").withEmoji(Emoji.fromUnicode("U+1F527")),
                         Button.secondary("language", "Language").withEmoji(Emoji.fromUnicode("U+1F310")),
@@ -74,13 +77,11 @@ public class Settings {
     public static Message getAdvancedSettingsMessage() {
         EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: Configuration")
                 .setColor(Color.ORANGE)
-                .addField(":wrench: Advanced Settings", "Here you can customize the distances used by Skoice and manage other parameters.", false)
-                .addField(":video_game: Mode", "Choose a mode or customize the distances.", true)
+                .addField(":wrench: Advanced Settings", "Here you can manage other parameters.", false)
                 .addField(":exclamation: Action Bar Alert", "Toggle the alert sent to players who are moving away and are soon to be disconnected from their current voice channel.", true)
                 .addField(":mag: Channel Visibility", "Toggle the visibility of the temporary channels created by Skoice.", true);
         return new MessageBuilder().setEmbeds(embed.build())
                 .setActionRows(ActionRow.of(Button.secondary("settings", "← Back"),
-                        Button.primary("mode", "Mode").withEmoji(Emoji.fromUnicode("U+1F3AE")),
                         Button.primary("action-bar-alert", "Action Bar Alert").withEmoji(Emoji.fromUnicode("U+2757")),
                         Button.primary("channel-visibility", "Channel Visibility").withEmoji(Emoji.fromUnicode("U+1F50D")),
                         Button.danger("close", "Close").withEmoji(Emoji.fromUnicode("U+2716")))).build();

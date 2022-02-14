@@ -27,7 +27,7 @@ import static net.clementraynaud.Skoice.getPlugin;
 
 public class Lang {
 
-    public enum ConsoleMessage {
+    public enum Console {
 
         PLUGIN_ENABLED_INFO(new HashMap<String, String>() {{
             put("EN", "Plugin enabled!");
@@ -67,7 +67,74 @@ public class Lang {
 
         private final Map<String, String> languageMessageMap;
 
-        ConsoleMessage(Map<String, String> languageMessageMap) {
+        Console(Map<String, String> languageMessageMap) {
+            this.languageMessageMap = languageMessageMap;
+        }
+
+        public String print() {
+            return languageMessageMap.getOrDefault(getPlugin().getConfigFile().getString("language"), languageMessageMap.get("EN"));
+        }
+    }
+
+    public enum Discord {
+
+        private final Map<String, String> languageMessageMap;
+
+        Discord(Map<String, String> languageMessageMap) {
+            this.languageMessageMap = languageMessageMap;
+        }
+
+        public String print() {
+            return languageMessageMap.getOrDefault(getPlugin().getConfigFile().getString("language"), languageMessageMap.get("EN"));
+        }
+    }
+
+    public enum Minecraft {
+
+        ILLEGAL_EXECUTOR(new HashMap<String, String>() {{
+            put("EN", "§dSkoice §8• §7This command is §conly executable §7by players.");
+            put("FR", "§dSkoice §8• §7Cette commande est §cseulement exécutable §7par les joueurs.");
+        }}),
+        NOT_CONFIGURED_CORRECTLY_INTERACTIVE(new HashMap<String, String>() {{
+            put("EN", "?");
+            put("FR", "?");
+        }}),
+        NOT_CONFIGURED_CORRECTLY_COMMAND(new HashMap<String, String>() {{
+            put("EN", "§dSkoice §8• §7Skoice is §cnot configured correctly§7. Type \"§e/configure§7\" to set it up.");
+            put("FR", "§dSkoice §8• §7Skoice n'est §cpas configuré correctement§7. Tapez \"§e/configure§7\" pour le configurer.");
+        }}),
+        NOT_CONFIGURED_CORRECTLY_DISCORD(new HashMap<String, String>() {{
+            put("EN", "§dSkoice §8• §7Skoice is §cnot configured correctly§7. Type \"§e/configure§7\" on your Discord server to set it up.");
+            put("FR", "§dSkoice §8• §7Skoice n'est §cpas configuré correctement§7. Tapez \"§e/configure§7\" sur votre serveur Discord pour le configurer.");
+        }}),
+        BOT_CREATION_INTERACTIVE(new HashMap<String, String>() {{
+            put("EN", "?");
+            put("FR", "?");
+        }}),
+        BOT_CREATION_LINK(new HashMap<String, String>() {{
+            put("EN", " \n§dSkoice §8• §7Configuration (§fBot Creation§7)\n \n§8• §7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: §bhttps://github.com/carlodrift/skoice/wiki§7.\n§8• §7When you have retrieved its token, type \"§e/token§7\" followed by the token.\n§8• §7Once done, type \"§e/configure§7\" on your Discord server to go to the next step.\n ");
+            put("FR", " \n§dSkoice §8• §7Configuration (§fCréation du bot§7)\n \n§8• §7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Merci de suivre les instructions sur cette page: §bhttps://github.com/carlodrift/skoice/wiki§7.\n§8• §7Une fois son token récupéré, tapez \"§e/token§7\" suivi du token.\n§8• §7Une fois fait, tapez \"§e/configure§7\" sur votre serveur Discord pour passer à l'étape suivante.\n ");
+        }}),
+        ALREADY_CONFIGURED(new HashMap<String, String>() {{
+            put("EN", "§dSkoice §8• §7Skoice is §calready configured§7. Type \"§e/configure§7\" on your Discord server to update its settings.");
+            put("FR", "§dSkoice §8• §7Skoice est §cdéjà configuré§7. Tapez \"§e/configure§7\" sur votre serveur Discord pour mettre à jour ses paramètres.");
+        }}),
+        NO_TOKEN(new HashMap<String, String>() {{
+            put("EN", "§dSkoice §8• §7You have §cnot provided a token§7.");
+            put("FR", "§dSkoice §8• §7Vous n'avez §cpas fourni de token§7.");
+        }}),
+        INVALID_TOKEN(new HashMap<String, String>() {{
+            put("EN", "§dSkoice §8• §7You have §cnot provided a valid token§7.");
+            put("FR", "§dSkoice §8• §7Vous n'avez §cpas fourni de token valide§7.");
+        }}),
+        ALREADY_CONNECTED(new HashMap<String, String>() {{
+            put("EN", "§dSkoice §8• §7A bot is §calready connected§7. Restart your Minecraft server to apply the new token.");
+            put("FR", "§dSkoice §8• §7Un bot is §cdéjà connecté§7. Redémarrez votre serveur Minecraft pour appliquer le nouveau token.");
+        }});
+
+        private final Map<String, String> languageMessageMap;
+
+        Minecraft(Map<String, String> languageMessageMap) {
             this.languageMessageMap = languageMessageMap;
         }
 

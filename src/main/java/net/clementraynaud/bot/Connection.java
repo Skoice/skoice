@@ -27,10 +27,13 @@ import net.clementraynaud.link.Unlink;
 import net.clementraynaud.system.ChannelManagement;
 import net.clementraynaud.system.MarkPlayersDirty;
 import net.clementraynaud.system.Network;
+import net.clementraynaud.util.Lang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -38,7 +41,9 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
+import javax.security.auth.login.LoginException;
 import java.awt.*;
 import java.util.Base64;
 import java.util.UUID;
@@ -55,6 +60,12 @@ public class Connection extends ListenerAdapter {
     private static final int TICKS_BETWEEN_VERSION_CHECKING = 720000;
 
     private static JDA jda;
+
+    private boolean isGuildUnique;
+
+    public boolean isGuildUnique() {
+        return isGuildUnique;
+    }
 
     public Connection() {
         if (getPlugin().isTokenSet()) {
@@ -92,7 +103,7 @@ public class Connection extends ListenerAdapter {
                     sender.sendMessage("§dSkoice §8• §7Your bot is §anow connected§7. Type \"§e/configure§7\" on your Discord server to set it up.");
                 }
             }
-        } catch (Exception e) {
+        } catch (LoginException e) {
             if (sender == null) {
                 getPlugin().getLogger().severe("Your Discord bot could not connect. To update the token, type \"/token\" followed by the new token.");
             } else {
@@ -101,9 +112,16 @@ public class Connection extends ListenerAdapter {
                 getPlugin().saveConfig();
             }
             getPlugin().updateConfigurationStatus(false);
+        } catch (IllegalStateException e) {
+
+        } catch (ErrorResponseException e) {
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         if (jda != null) {
             deleteConfigurationMessage();
+            updateGuildUniquenessStatus();
             checkForValidLobby();
             checkForUnlinkedUsersInLobby();
             jda.getGuilds().forEach(CommandRegistration::registerCommands);
@@ -154,8 +172,15 @@ public class Connection extends ListenerAdapter {
         }
     }
 
+    public void updateGuildUniquenessStatus() {
+        isGuildUnique = getJda().getGuilds().size() == 1;
+        if (!isGuildUnique) {
+            getPlugin().getLogger().warning(Lang.Console.MULTIPLE_GUILDS_WARNING.print());
+        }
+    }
+
     private void checkForValidLobby() {
-        if (getLobby() == null && getPlugin().getConfigFile().getString("lobby-id") != null) {
+        if (getLobby() == null && getPlugin().getConfigFile().contains("lobby-id")) {
             getPlugin().getConfigFile().set("lobby-id", null);
             getPlugin().saveConfig();
             getPlugin().updateConfigurationStatus(false);
@@ -193,5 +218,15 @@ public class Connection extends ListenerAdapter {
                     .addField(":warning: Error", "You can only interact with the bot on a Discord server.", false)
                     .setColor(Color.RED).build()).queue();
         }
+    }
+
+    @Override
+    public void onGuildJoin(@NotNull GuildJoinEvent event) {
+        updateGuildUniquenessStatus();
+    }
+
+    @Override
+    public void onGuildLeave(@NotNull GuildLeaveEvent event) {
+        updateGuildUniquenessStatus();
     }
 }

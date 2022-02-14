@@ -49,7 +49,7 @@ public class ModeSelection {
         List<Button> buttons = new ArrayList<>();
         if (getPlugin().isBotConfigured()) {
             embed.addField(":video_game: Mode", "Let us choose the best settings for your personal use of Skoice. You can also customize the distances.", false);
-            buttons.add(Button.secondary("advanced-settings", "← Back"));
+            buttons.add(Button.secondary("settings", "← Back"));
         } else {
             embed.addField(":video_game: Mode", "Let us choose the best settings for your personal use of Skoice. You will still be able to customize the distances later.", false);
         }

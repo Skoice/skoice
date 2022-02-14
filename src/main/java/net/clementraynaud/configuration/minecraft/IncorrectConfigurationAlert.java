@@ -20,10 +20,12 @@
 
 package net.clementraynaud.configuration.minecraft;
 
+import net.clementraynaud.util.Lang;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -42,16 +44,16 @@ public class IncorrectConfigurationAlert implements Listener {
             if (!getPlugin().isTokenSet() || getJda() == null) {
                 try {
                     TextComponent configureCommand = new TextComponent("§bhere");
-                    configureCommand.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§8☀ §bExecute: §7/configure").create()));
+                    configureCommand.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§8☀ §bExecute: §7/configure")));
                     configureCommand.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/configure"));
                     player.spigot().sendMessage(new ComponentBuilder("§dSkoice §8• §7Skoice is §cnot configured correctly§7. Click ")
                             .append(configureCommand)
                             .append(" §7to set it up.").event((HoverEvent) null).create());
                 } catch (NoSuchMethodError e) {
-                    player.sendMessage("§dSkoice §8• §7Skoice is §cnot configured correctly§7. Type \"§e/configure§7\" to set it up.");
+                    player.sendMessage(Lang.Minecraft.NOT_CONFIGURED_CORRECTLY_COMMAND.print());
                 }
             } else if (!getPlugin().isBotConfigured()) {
-                player.sendMessage("§dSkoice §8• §7Skoice is §cnot configured correctly§7. Type \"§e/configure§7\" on your Discord server to set it up.");
+                player.sendMessage(Lang.Minecraft.NOT_CONFIGURED_CORRECTLY_DISCORD.print());
             }
         }
     }

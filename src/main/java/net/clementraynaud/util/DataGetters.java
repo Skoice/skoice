@@ -87,11 +87,6 @@ public class DataGetters {
         return discordID != null ? guild.getMemberById(discordID) : null;
     }
 
-    /**
-     * Method return type-safe version of Bukkit::getOnlinePlayers
-     *
-     * @return {@code ArrayList} containing online players
-     */
     public static List<Player> getOnlinePlayers() {
         List<Player> onlinePlayers = new ArrayList<>();
         try {

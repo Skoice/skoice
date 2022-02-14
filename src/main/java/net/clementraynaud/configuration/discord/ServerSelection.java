@@ -35,19 +35,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static net.clementraynaud.bot.Connection.getJda;
-import static net.clementraynaud.util.DataGetters.getGuild;
 
-public class ServerMigration {
+public class ServerSelection {
 
-    private ServerMigration() {
+    private ServerSelection() {
     }
 
-    public static Message getServerMigrationMessage() {
+    public static Message getServerSelectionMessage() {
         List<Guild> servers = new ArrayList<>(getJda().getGuilds());
         List<SelectOption> options = new ArrayList<>();
         int optionIndex = 0;
         while (optionIndex < 24 && servers.size() > optionIndex) {
-            options.add(SelectOption.of(servers.get(optionIndex).getName(), servers.get(optionIndex).getId()));
+            options.add(SelectOption.of(servers.get(optionIndex).getName(), servers.get(optionIndex).getId())
+                    .withEmoji(Emoji.fromUnicode("U+1F5C4")));
             optionIndex++;
         }
         if (options.size() == 24) {
@@ -57,13 +57,12 @@ public class ServerMigration {
         actionRows.add(ActionRow.of(SelectionMenu.create("servers")
                 .setPlaceholder("Select a Server")
                 .addOptions(options)
-                .setMinValues(1).setMaxValues(1).build()));
-        actionRows.add(ActionRow.of(Button.secondary("settings", "← Back"),
-                Button.primary("server", "⟳ Refresh"),
-                Button.danger("close", "Close").withEmoji(Emoji.fromUnicode("U+2716"))));
+                .build()));
+        actionRows.add(ActionRow.of(Button.primary("settings", "⟳ Refresh"),
+                Button.secondary("close", "Configure Later").withEmoji(Emoji.fromUnicode("U+2716"))));
         EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: Configuration")
                 .setColor(Color.ORANGE)
-                .addField(":file_cabinet: Server Migration", "This is the Discord server where Skoice is active.\nSelected: " + getGuild().getName(), false);
+                .addField(":file_cabinet: Server Selection", "In order to work properly, your bot cannot be present on multiple Discord servers. Please select the server where you want the proximity voice chat to be active. Your bot will automatically leave the other ones.", false);
         return new MessageBuilder().setEmbeds(embed.build()).setActionRows(actionRows).build();
     }
 }
