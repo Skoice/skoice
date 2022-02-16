@@ -30,8 +30,8 @@ import static net.clementraynaud.skoice.Skoice.getPlugin;
 
 public enum Console {
     PLUGIN_ENABLED_INFO(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Plugin activé.",
-            Lang.FR, "Plugin enabled."))),
+            Lang.EN, "Plugin enabled.",
+            Lang.FR, "Plugin activé."))),
 
     PLUGIN_DISABLED_INFO(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Plugin disabled.",
@@ -88,6 +88,7 @@ public enum Console {
 
     @Override
     public String toString() {
-        return messages.getOrDefault(Lang.valueOf(getPlugin().getConfigFile().getString("language")), messages.get(Lang.EN));
+        String language = getPlugin().getConfigFile().getString("language");
+        return messages.getOrDefault(language == null ? Lang.EN : Lang.valueOf(language), messages.get(Lang.EN));
     }
 }
