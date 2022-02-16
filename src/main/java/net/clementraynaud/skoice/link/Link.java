@@ -20,7 +20,6 @@
 
 package net.clementraynaud.skoice.link;
 
-import net.clementraynaud.skoice.bot.Connection;
 import net.clementraynaud.skoice.util.Lang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
@@ -41,6 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.bot.Connection.*;
 import static net.clementraynaud.skoice.util.DataGetters.*;
 
 public class Link extends ListenerAdapter implements CommandExecutor {
@@ -88,7 +88,7 @@ public class Link extends ListenerAdapter implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
-        if (!getPlugin().isBotReady() || Connection.getJda() == null) {
+        if (!getPlugin().isBotReady() || getJda() == null) {
             player.sendMessage(Lang.Minecraft.INCOMPLETE_CONFIGURATION.print());
             return true;
         }

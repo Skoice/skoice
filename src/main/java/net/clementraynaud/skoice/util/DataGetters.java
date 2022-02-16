@@ -20,7 +20,6 @@
 
 package net.clementraynaud.skoice.util;
 
-import net.clementraynaud.skoice.bot.Connection;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -33,6 +32,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.bot.Connection.*;
 
 public class DataGetters {
 
@@ -60,17 +60,17 @@ public class DataGetters {
     }
 
     public static VoiceChannel getLobby() {
-        if (Connection.getJda() == null) return null;
+        if (getJda() == null) return null;
         String lobbyID = getPlugin().getConfigFile().getString("lobby-id");
         if (lobbyID == null) return null;
-        VoiceChannel lobby = Connection.getJda().getVoiceChannelById(lobbyID);
+        VoiceChannel lobby = getJda().getVoiceChannelById(lobbyID);
         if (lobby == null) return null;
         if (lobby.getParent() == null) return null;
         return lobby;
     }
 
     public static Category getDedicatedCategory() {
-        if (Connection.getJda() == null) return null;
+        if (getJda() == null) return null;
         VoiceChannel lobby = getLobby();
         if (lobby == null) return null;
         return lobby.getParent();

@@ -20,7 +20,6 @@
 
 package net.clementraynaud.skoice.configuration.discord;
 
-import net.clementraynaud.skoice.bot.Connection;
 import net.clementraynaud.skoice.util.Lang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
@@ -36,13 +35,15 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.clementraynaud.skoice.bot.Connection.*;
+
 public class ServerSelection {
 
     private ServerSelection() {
     }
 
     public static Message getServerSelectionMessage() {
-        List<Guild> servers = new ArrayList<>(Connection.getJda().getGuilds());
+        List<Guild> servers = new ArrayList<>(getJda().getGuilds());
         List<SelectOption> options = new ArrayList<>();
         int optionIndex = 0;
         while (optionIndex < 24 && servers.size() > optionIndex) {

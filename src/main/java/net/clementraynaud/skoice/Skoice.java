@@ -43,6 +43,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.CompletableFuture;
 
+import static net.clementraynaud.skoice.bot.Connection.*;
+
 public class Skoice extends JavaPlugin {
 
     private static Skoice plugin;
@@ -134,7 +136,7 @@ public class Skoice extends JavaPlugin {
             isTokenSet = false;
             isBotReady = false;
             getLogger().warning(Lang.Console.NO_TOKEN_WARNING.print());
-        } else if (Connection.getJda() == null) {
+        } else if (getJda() == null) {
             isBotReady = false;
         } else if (!configFile.contains("language")) {
             isBotReady = false;
@@ -160,21 +162,21 @@ public class Skoice extends JavaPlugin {
             if (isBotReady) {
                 Bukkit.getPluginManager().registerEvents(new MarkPlayersDirty(), plugin);
                 Bukkit.getPluginManager().registerEvents(new ChannelManagement(), plugin);
-                Connection.getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
-                Connection.getJda().getPresence().setActivity(Activity.listening("/link"));
+                getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
+                getJda().getPresence().setActivity(Activity.listening("/link"));
                 getLogger().info("STARTUP IG");
             } else {
                 Bukkit.getPluginManager().registerEvents(new IncorrectConfigurationAlert(), plugin);
-                if (Connection.getJda() != null)
-                    Connection.getJda().getPresence().setActivity(Activity.listening("/configure"));
+                if (getJda() != null)
+                    getJda().getPresence().setActivity(Activity.listening("/configure"));
                 getLogger().info("STARTUP CONFIG");
             }
         } else if (!wasBotReady && isBotReady) {
             HandlerList.unregisterAll(new IncorrectConfigurationAlert());
             Bukkit.getPluginManager().registerEvents(new MarkPlayersDirty(), plugin);
             Bukkit.getPluginManager().registerEvents(new ChannelManagement(), plugin);
-            Connection.getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
-            Connection.getJda().getPresence().setActivity(Activity.listening("/link"));
+            getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
+            getJda().getPresence().setActivity(Activity.listening("/link"));
             getLogger().info(Lang.Console.CONFIGURATION_COMPLETE_INFO.print());
             getLogger().info("IG");
         } else if (wasBotReady && !isBotReady) {
@@ -182,9 +184,9 @@ public class Skoice extends JavaPlugin {
             HandlerList.unregisterAll(new MarkPlayersDirty());
             HandlerList.unregisterAll(new ChannelManagement());
             Bukkit.getPluginManager().registerEvents(new IncorrectConfigurationAlert(), plugin);
-            if (Connection.getJda() != null) {
-                Connection.getJda().removeEventListener(new ChannelManagement(), new MarkPlayersDirty());
-                Connection.getJda().getPresence().setActivity(Activity.listening("/configure"));
+            if (getJda() != null) {
+                getJda().removeEventListener(new ChannelManagement(), new MarkPlayersDirty());
+                getJda().getPresence().setActivity(Activity.listening("/configure"));
             }
             getLogger().info("CONFIG");
         }
@@ -192,7 +194,7 @@ public class Skoice extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (Connection.getJda() != null) {
+        if (getJda() != null) {
             for (Pair<String, CompletableFuture<Void>> value : ChannelManagement.awaitingMoves.values()) {
                 value.getRight().cancel(true);
             }
@@ -205,7 +207,7 @@ public class Skoice extends JavaPlugin {
             }
             ChannelManagement.networks.clear();
             try {
-                Connection.getJda().shutdown();
+                getJda().shutdown();
             } catch (NoClassDefFoundError ignored) {
             }
             getLogger().info(Lang.Console.PLUGIN_DISABLED_INFO.print());

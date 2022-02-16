@@ -20,7 +20,6 @@
 
 package net.clementraynaud.skoice.configuration.discord;
 
-import net.clementraynaud.skoice.bot.Connection;
 import net.clementraynaud.skoice.util.Lang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -42,11 +41,13 @@ import java.awt.*;
 import java.util.*;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.bot.Connection.*;
 import static net.clementraynaud.skoice.configuration.discord.ActionBarAlertConfiguration.getActionBarAlertConfigurationMessage;
 import static net.clementraynaud.skoice.configuration.discord.DistanceConfiguration.getHorizontalRadiusConfigurationMessage;
 import static net.clementraynaud.skoice.configuration.discord.DistanceConfiguration.getVerticalRadiusConfigurationMessage;
 import static net.clementraynaud.skoice.configuration.discord.LanguageSelection.getLanguageSelectionMessage;
 import static net.clementraynaud.skoice.configuration.discord.LobbySelection.getLobbySelectionMessage;
+import static net.clementraynaud.skoice.configuration.discord.ModeSelection.*;
 import static net.clementraynaud.skoice.configuration.discord.Settings.*;
 import static net.clementraynaud.skoice.configuration.discord.ChannelVisibilityConfiguration.getChannelVisibilityConfigurationMessage;
 
@@ -64,7 +65,7 @@ public class MessageManagement extends ListenerAdapter {
                 && getPlugin().getConfigFile().contains("temp.text-channel-id")
                 && getPlugin().getConfigFile().contains("temp.message-id")) {
             try {
-                Guild guild = Connection.getJda().getGuildById(getPlugin().getConfigFile().getString("temp.guild-id"));
+                Guild guild = getJda().getGuildById(getPlugin().getConfigFile().getString("temp.guild-id"));
                 if (guild != null) {
                     TextChannel textChannel = guild.getTextChannelById(getPlugin().getConfigFile().getString("temp.text-channel-id"));
                     if (textChannel != null) {
@@ -193,7 +194,7 @@ public class MessageManagement extends ListenerAdapter {
                     case "mode":
                         discordIDDistanceMap.remove(member.getId());
                         if (getPlugin().isBotReady()) {
-                            event.editMessage(ModeSelection.getModeSelectionMessage(false)).queue();
+                            event.editMessage(getModeSelectionMessage(false)).queue();
                         } else {
                             event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                         }
@@ -246,12 +247,12 @@ public class MessageManagement extends ListenerAdapter {
                     && event.getSelectedOptions() != null) {
                 String componentID = event.getComponentId();
                 if (componentID.equals("servers")
-                        && Connection.getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
+                        && getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
                     for (SelectOption server : event.getComponent().getOptions()) {
                         if (!event.getGuild().getId().equals(server.getValue())
-                                && Connection.getJda().getGuilds().contains(Connection.getJda().getGuildById(server.getValue()))) {
+                                && getJda().getGuilds().contains(getJda().getGuildById(server.getValue()))) {
                             try {
-                                Connection.getJda().getGuildById(server.getValue()).leave().queue(success -> event.editMessage(getConfigurationMessage(event.getGuild())).queue());
+                                getJda().getGuildById(server.getValue()).leave().queue(success -> event.editMessage(getConfigurationMessage(event.getGuild())).queue());
                             } catch (ErrorResponseException ignored) {
                             }
                         }
@@ -296,7 +297,7 @@ public class MessageManagement extends ListenerAdapter {
                         getPlugin().updateConfigurationStatus(false);
                         event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                     } else if (event.getSelectedOptions().get(0).getValue().equals("customize")) {
-                        event.editMessage(ModeSelection.getModeSelectionMessage(true)).queue();
+                        event.editMessage(getModeSelectionMessage(true)).queue();
                     }
                 } else if (componentID.equals("action-bar-alert")) {
                     if (event.getSelectedOptions().get(0).getValue().equals("true")) {

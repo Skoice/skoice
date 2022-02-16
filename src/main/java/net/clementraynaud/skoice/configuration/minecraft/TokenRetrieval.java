@@ -20,7 +20,6 @@
 
 package net.clementraynaud.skoice.configuration.minecraft;
 
-import net.clementraynaud.skoice.bot.Connection;
 import net.clementraynaud.skoice.util.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,6 +30,7 @@ import java.util.Base64;
 
 import static net.clementraynaud.skoice.Skoice.getBot;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.bot.Connection.*;
 
 public class TokenRetrieval implements CommandExecutor {
 
@@ -55,7 +55,7 @@ public class TokenRetrieval implements CommandExecutor {
         getPlugin().getConfigFile().set("token", base64Token);
         getPlugin().saveConfig();
         getPlugin().setTokenBoolean(true);
-        if (Connection.getJda() == null) {
+        if (getJda() == null) {
             getBot().connectBot(false, sender);
         } else {
             sender.sendMessage(Lang.Minecraft.BOT_ALREADY_CONNECTED.print());

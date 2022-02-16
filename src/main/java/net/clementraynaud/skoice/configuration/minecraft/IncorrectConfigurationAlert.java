@@ -20,7 +20,6 @@
 
 package net.clementraynaud.skoice.configuration.minecraft;
 
-import net.clementraynaud.skoice.bot.Connection;
 import net.clementraynaud.skoice.util.Lang;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -34,6 +33,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.bot.Connection.*;
 
 public class IncorrectConfigurationAlert implements Listener {
 
@@ -41,7 +41,7 @@ public class IncorrectConfigurationAlert implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.isOp()) {
-            if (!getPlugin().isTokenSet() || Connection.getJda() == null) {
+            if (!getPlugin().isTokenSet() || getJda() == null) {
                 try {
                     TextComponent configureCommand = new TextComponent("§bhere");
                     configureCommand.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§8☀ §bExecute: §7/configure")));

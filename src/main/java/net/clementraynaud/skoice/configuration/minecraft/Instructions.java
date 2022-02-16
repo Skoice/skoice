@@ -20,7 +20,6 @@
 
 package net.clementraynaud.skoice.configuration.minecraft;
 
-import net.clementraynaud.skoice.bot.Connection;
 import net.clementraynaud.skoice.util.Lang;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -33,6 +32,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.bot.Connection.*;
 
 public class Instructions implements CommandExecutor {
 
@@ -44,7 +44,7 @@ public class Instructions implements CommandExecutor {
         }
         Player player = (Player) sender;
         if (player.isOp()) {
-            if (getPlugin().isTokenSet() && Connection.getJda() != null) {
+            if (getPlugin().isTokenSet() && getJda() != null) {
                 if (getPlugin().isBotReady()) {
                     player.sendMessage(Lang.Minecraft.ALREADY_CONFIGURED.print());
                 } else {
