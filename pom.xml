@@ -36,7 +36,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>net.clementraynaud.Skoice</shadedPattern>
+                            <shadedPattern>net.clementraynaud.skoice.Skoice</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
