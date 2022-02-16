@@ -164,12 +164,10 @@ public class Skoice extends JavaPlugin {
                 Bukkit.getPluginManager().registerEvents(new ChannelManagement(), plugin);
                 getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
                 getJda().getPresence().setActivity(Activity.listening("/link"));
-                getLogger().info("STARTUP IG");
             } else {
                 Bukkit.getPluginManager().registerEvents(new IncorrectConfigurationAlert(), plugin);
                 if (getJda() != null)
                     getJda().getPresence().setActivity(Activity.listening("/configure"));
-                getLogger().info("STARTUP CONFIG");
             }
         } else if (!wasBotReady && isBotReady) {
             HandlerList.unregisterAll(new IncorrectConfigurationAlert());
@@ -178,7 +176,6 @@ public class Skoice extends JavaPlugin {
             getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
             getJda().getPresence().setActivity(Activity.listening("/link"));
             getLogger().info(Lang.Console.CONFIGURATION_COMPLETE_INFO.print());
-            getLogger().info("IG");
         } else if (wasBotReady && !isBotReady) {
             MessageManagement.deleteConfigurationMessage();
             HandlerList.unregisterAll(new MarkPlayersDirty());
@@ -188,7 +185,6 @@ public class Skoice extends JavaPlugin {
                 getJda().removeEventListener(new ChannelManagement(), new MarkPlayersDirty());
                 getJda().getPresence().setActivity(Activity.listening("/configure"));
             }
-            getLogger().info("CONFIG");
         }
     }
 
