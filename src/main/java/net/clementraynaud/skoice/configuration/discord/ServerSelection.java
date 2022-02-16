@@ -60,11 +60,11 @@ public class ServerSelection {
                 .setPlaceholder(Discord.SERVER_SELECT_MENU_PLACEHOLDER.toString())
                 .addOptions(options)
                 .build()));
-        actionRows.add(ActionRow.of(Button.primary("settings", "⟳ " + Discord.REFRESH_BUTTON_LABEL.toString()),
+        actionRows.add(ActionRow.of(Button.primary("settings", "⟳ " + Discord.REFRESH_BUTTON_LABEL),
                 Button.secondary("close", Discord.CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+1F552"))));
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
                 .setColor(Color.ORANGE)
-                .addField(":file_cabinet: " + Discord.SERVER_EMBED_TITLE.toString(), Discord.SERVER_EMBED_DESCRIPTION.toString(), false);
+                .addField(":file_cabinet: " + Discord.SERVER_EMBED_TITLE, Discord.SERVER_EMBED_DESCRIPTION.toString(), false);
         return new MessageBuilder().setEmbeds(embed.build()).setActionRows(actionRows).build();
     }
 }

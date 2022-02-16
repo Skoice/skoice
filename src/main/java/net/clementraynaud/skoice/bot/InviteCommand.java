@@ -32,9 +32,9 @@ public class InviteCommand extends ListenerAdapter {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if (event.getName().equals("invite")) {
-            EmbedBuilder embed = new EmbedBuilder().setTitle(":envelope: " + Discord.GET_THE_PROXIMITY_VOICE_CHAT_EMBED_TITLE.toString())
-                    .addField(":inbox_tray: " + Discord.DOWNLOAD_SKOICE_FIELD_TITLE.toString(), Discord.DOWNLOAD_SKOICE_FIELD_DESRIPTION.toString(), false)
-                    .addField(":screwdriver: " + Discord.TROUBLESHOOTING_FIELD_TITLE.toString(), Discord.TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), false)
+            EmbedBuilder embed = new EmbedBuilder().setTitle(":envelope: " + Discord.GET_THE_PROXIMITY_VOICE_CHAT_EMBED_TITLE)
+                    .addField(":inbox_tray: " + Discord.DOWNLOAD_SKOICE_FIELD_TITLE, Discord.DOWNLOAD_SKOICE_FIELD_DESRIPTION.toString(), false)
+                    .addField(":screwdriver: " + Discord.TROUBLESHOOTING_FIELD_TITLE, Discord.TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), false)
                     .setColor(Color.ORANGE);
             event.replyEmbeds(embed.build()).setEphemeral(true).queue();
         }

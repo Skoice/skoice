@@ -50,15 +50,15 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if (event.getName().equals("unlink")) {
-            EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE.toString());
+            EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE);
             String minecraftID = getPlugin().getConfigFile().getString("link." + event.getUser().getId());
             if (minecraftID == null) {
-                event.replyEmbeds(embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_NOT_LINKED_FIELD_DESCRIPTION.toString(), false)
+                event.replyEmbeds(embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE, Discord.ACCOUNT_NOT_LINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
                         .setEphemeral(true).queue();
             } else {
                 unlinkUser(event.getUser().getId(), minecraftID);
-                event.replyEmbeds(embed.addField(":heavy_check_mark: " + Discord.ACCOUNT_UNLINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.toString(), false)
+                event.replyEmbeds(embed.addField(":heavy_check_mark: " + Discord.ACCOUNT_UNLINKED_FIELD_TITLE, Discord.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.GREEN).build())
                         .setEphemeral(true).queue();
                 OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
@@ -93,8 +93,8 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
         try {
             member = getGuild().retrieveMemberById(discordID).complete();
             member.getUser().openPrivateChannel().complete()
-                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE.toString())
-                            .addField(":heavy_check_mark: " + Discord.ACCOUNT_UNLINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.toString(), false)
+                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE)
+                            .addField(":heavy_check_mark: " + Discord.ACCOUNT_UNLINKED_FIELD_TITLE, Discord.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.toString(), false)
                             .setColor(Color.GREEN).build()).queue(success -> {
                     }, failure -> {
                     });

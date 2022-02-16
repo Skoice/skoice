@@ -50,8 +50,8 @@ public class LobbySelection extends ListenerAdapter {
         if (user != null) {
             try {
                 user.openPrivateChannel().complete()
-                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
-                                .addField(":warning: " + Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE.toString(), Discord.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_ALTERNATIVE_DESCRIPTION.toString(), false)
+                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
+                                .addField(":warning: " + Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE, Discord.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_ALTERNATIVE_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build()).queue(success -> {
                         }, failure -> {
                         });
@@ -81,22 +81,22 @@ public class LobbySelection extends ListenerAdapter {
             options.add(SelectOption.of(Discord.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.toString(), "refresh")
                     .withDescription(Discord.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+26A0")));
         }
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
                 .setColor(Color.ORANGE)
-                .addField(":sound: " + Discord.LOBBY_EMBED_TITLE.toString(), Discord.LOBBY_EMBED_ALTERNATIVE_DESCRIPTION.toString(), false);
+                .addField(":sound: " + Discord.LOBBY_EMBED_TITLE, Discord.LOBBY_EMBED_ALTERNATIVE_DESCRIPTION.toString(), false);
         List<ActionRow> actionRows = new ArrayList<>();
         if (Skoice.getPlugin().isBotReady()) {
             actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")
                     .addOptions(options)
                     .setDefaultValues(Collections.singleton(Skoice.getPlugin().getConfigFile().getString("lobby-id"))).build()));
-            actionRows.add(ActionRow.of(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL.toString()),
-                    Button.primary("lobby", "⟳ " + Discord.REFRESH_BUTTON_LABEL.toString()),
+            actionRows.add(ActionRow.of(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL),
+                    Button.primary("lobby", "⟳ " + Discord.REFRESH_BUTTON_LABEL),
                     Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716"))));
         } else {
             actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")
                     .setPlaceholder(Discord.LOBBY_SELECT_MENU_PLACEHOLDER.toString())
                     .addOptions(options).build()));
-            actionRows.add(ActionRow.of(Button.primary("settings", "⟳ " + Discord.REFRESH_BUTTON_LABEL.toString()),
+            actionRows.add(ActionRow.of(Button.primary("settings", "⟳ " + Discord.REFRESH_BUTTON_LABEL),
                     Button.secondary("close", Discord.CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+1F552"))));
         }
         return new MessageBuilder().setEmbeds(embed.build()).setActionRows(actionRows).build();

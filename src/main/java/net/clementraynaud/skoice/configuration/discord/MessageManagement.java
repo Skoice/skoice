@@ -168,8 +168,8 @@ public class MessageManagement extends ListenerAdapter {
                         getPlugin().saveConfig();
                         if (!getPlugin().isBotReady()) {
                             event.replyEmbeds(new EmbedBuilder()
-                                            .setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
-                                            .addField(":warning: " + Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE.toString(), Discord.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.toString(), false)
+                                            .setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
+                                            .addField(":warning: " + Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE, Discord.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.toString(), false)
                                             .setColor(Color.RED).build())
                                     .setEphemeral(true).queue();
                         }

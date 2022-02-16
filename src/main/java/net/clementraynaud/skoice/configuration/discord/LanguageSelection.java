@@ -44,9 +44,9 @@ public class LanguageSelection {
     }
 
     public static Message getLanguageSelectionMessage() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
                 .setColor(Color.ORANGE)
-                .addField(":globe_with_meridians: " + Discord.LANGUAGE_EMBED_TITLE.toString(), Discord.LANGUAGE_EMBED_DESCRIPTION.toString(), false);
+                .addField(":globe_with_meridians: " + Discord.LANGUAGE_EMBED_TITLE, Discord.LANGUAGE_EMBED_DESCRIPTION.toString(), false);
         List<SelectOption> options = new ArrayList<>();
         options.add(SelectOption.of("English", "EN")
                 .withDescription(Discord.DEFAULT_SELECT_OPTION_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+1F1ECU+1F1E7")));
@@ -57,7 +57,7 @@ public class LanguageSelection {
             actionRows.add(ActionRow.of(SelectionMenu.create("languages")
                     .addOptions(options)
                     .setDefaultValues(Collections.singleton(getLanguage())).build()));
-            actionRows.add(ActionRow.of(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL.toString()),
+            actionRows.add(ActionRow.of(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL),
                     Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716"))));
         } else {
             actionRows.add(ActionRow.of(SelectionMenu.create("languages")

@@ -179,13 +179,13 @@ public class Connection extends ListenerAdapter {
             for (Member member : lobby.getMembers()) {
                 UUID minecraftID = getMinecraftID(member);
                 if (minecraftID == null) {
-                    EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE.toString())
+                    EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE)
                             .setColor(Color.RED);
                     Guild guild = getGuild();
                     if (guild != null) {
-                        embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", guild.getName()), false);
+                        embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE, Discord.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", guild.getName()), false);
                     } else {
-                        embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_NOT_LINKED_FIELD_GENERIC_ALTERNATIVE_DESCRIPTION.toString(), false);
+                        embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE, Discord.ACCOUNT_NOT_LINKED_FIELD_GENERIC_ALTERNATIVE_DESCRIPTION.toString(), false);
                     }
                     try {
                         member.getUser().openPrivateChannel().complete()
@@ -202,8 +202,8 @@ public class Connection extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
-            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(":warning: " + Discord.ERROR_EMBED_TITLE.toString())
-                    .addField(":no_entry: " + Discord.ILLEGAL_INTERACTION_FIELD_TITLE.toString(), Discord.ILLEGAL_INTERACTION_FIELD_DESCRIPTION.toString(), false)
+            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(":warning: " + Discord.ERROR_EMBED_TITLE)
+                    .addField(":no_entry: " + Discord.ILLEGAL_INTERACTION_FIELD_TITLE, Discord.ILLEGAL_INTERACTION_FIELD_DESCRIPTION.toString(), false)
                     .setColor(Color.RED).build()).queue();
         }
     }

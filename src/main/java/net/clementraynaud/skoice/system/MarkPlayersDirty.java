@@ -95,8 +95,8 @@ public class MarkPlayersDirty extends ListenerAdapter implements Listener {
         if (minecraftID == null) {
             try {
                 event.getMember().getUser().openPrivateChannel().complete()
-                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE.toString())
-                                .addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", event.getGuild().getName()), false)
+                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE)
+                                .addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE, Discord.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", event.getGuild().getName()), false)
                                 .setColor(Color.RED).build()).queue(success -> {
                         }, failure -> {
                         });

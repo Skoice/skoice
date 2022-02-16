@@ -43,16 +43,16 @@ public class ActionBarAlertConfiguration {
     }
 
     public static Message getActionBarAlertConfigurationMessage() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
                 .setColor(Color.ORANGE)
-                .addField(":exclamation: " + Discord.ACTION_BAR_ALERT_EMBED_TITLE.toString(), Discord.ACTION_BAR_ALERT_EMBED_DESCRIPTION.toString(), false);
+                .addField(":exclamation: " + Discord.ACTION_BAR_ALERT_EMBED_TITLE, Discord.ACTION_BAR_ALERT_EMBED_DESCRIPTION.toString(), false);
         List<ActionRow> actionRows = new ArrayList<>();
         actionRows.add(ActionRow.of(SelectionMenu.create("action-bar-alert")
                 .addOptions(SelectOption.of(Discord.ENABLED_SELECT_OPTION_LABEL.toString(), "true")
                                 .withDescription(Discord.DEFAULT_SELECT_OPTION_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+2714")),
                         SelectOption.of(Discord.DISABLED_SELECT_OPTION_LABEL.toString(), "false").withEmoji(Emoji.fromUnicode("U+2716")))
                 .setDefaultValues(Collections.singleton(String.valueOf(getActionBarAlert()))).build()));
-        actionRows.add(ActionRow.of(Button.secondary("advanced-settings", "← " + Discord.BACK_BUTTON_LABEL.toString()),
+        actionRows.add(ActionRow.of(Button.secondary("advanced-settings", "← " + Discord.BACK_BUTTON_LABEL),
                 Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716"))));
         return new MessageBuilder().setEmbeds(embed.build())
                 .setActionRows(actionRows).build();

@@ -39,22 +39,22 @@ public class DistanceConfiguration {
     }
 
     public static Message getHorizontalRadiusConfigurationMessage() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
                 .setColor(Color.ORANGE)
-                .addField(":left_right_arrow: " + Discord.HORIZONTAL_RADIUS_EMBED_TITLE.toString(), Discord.HORIZONTAL_RADIUS_EMBED_DESCRIPTION.toString(), false)
-                .addField(":keyboard: " + Discord.ENTER_A_VALUE_FIELD_TITLE.toString(), Discord.ENTER_A_VALUE_FIELD_DESCRIPTION.toString().replace("{value}", String.valueOf(getHorizontalRadius())), false);
+                .addField(":left_right_arrow: " + Discord.HORIZONTAL_RADIUS_EMBED_TITLE, Discord.HORIZONTAL_RADIUS_EMBED_DESCRIPTION.toString(), false)
+                .addField(":keyboard: " + Discord.ENTER_A_VALUE_FIELD_TITLE, Discord.ENTER_A_VALUE_FIELD_DESCRIPTION.toString().replace("{value}", String.valueOf(getHorizontalRadius())), false);
         return new MessageBuilder().setEmbeds(embed.build())
-                .setActionRows(ActionRow.of(Button.secondary("mode", "← " + Discord.BACK_BUTTON_LABEL.toString()),
+                .setActionRows(ActionRow.of(Button.secondary("mode", "← " + Discord.BACK_BUTTON_LABEL),
                         Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716")))).build();
     }
 
     public static Message getVerticalRadiusConfigurationMessage() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
                 .setColor(Color.ORANGE)
-                .addField(":arrow_up_down: " + Discord.VERTICAL_RADIUS_EMBED_TITLE.toString(), Discord.VERTICAL_RADIUS_EMBED_DESCRIPTION.toString(), false)
-                .addField(":keyboard: " + Discord.ENTER_A_VALUE_FIELD_TITLE.toString(), Discord.ENTER_A_VALUE_FIELD_DESCRIPTION.toString().replace("{value}", String.valueOf(getVerticalRadius())), false);
+                .addField(":arrow_up_down: " + Discord.VERTICAL_RADIUS_EMBED_TITLE, Discord.VERTICAL_RADIUS_EMBED_DESCRIPTION.toString(), false)
+                .addField(":keyboard: " + Discord.ENTER_A_VALUE_FIELD_TITLE, Discord.ENTER_A_VALUE_FIELD_DESCRIPTION.toString().replace("{value}", String.valueOf(getVerticalRadius())), false);
         return new MessageBuilder().setEmbeds(embed.build())
-                .setActionRows(ActionRow.of(Button.secondary("mode", "← " + Discord.BACK_BUTTON_LABEL.toString()),
+                .setActionRows(ActionRow.of(Button.secondary("mode", "← " + Discord.BACK_BUTTON_LABEL),
                         Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716")))).build();
     }
 }

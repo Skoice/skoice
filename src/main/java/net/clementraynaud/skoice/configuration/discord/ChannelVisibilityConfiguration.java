@@ -43,16 +43,16 @@ public class ChannelVisibilityConfiguration {
     }
 
     public static Message getChannelVisibilityConfigurationMessage() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
                 .setColor(Color.ORANGE)
-                .addField(":mag: " + Discord.CHANNEL_VISIBILITY_EMBED_TITLE.toString(), Discord.CHANNEL_VISIBILITY_EMBED_DESCRIPTION.toString(), false);
+                .addField(":mag: " + Discord.CHANNEL_VISIBILITY_EMBED_TITLE, Discord.CHANNEL_VISIBILITY_EMBED_DESCRIPTION.toString(), false);
         List<ActionRow> actionRows = new ArrayList<>();
         actionRows.add(ActionRow.of(SelectionMenu.create("channel-visibility")
                 .addOptions(SelectOption.of(Discord.ENABLED_SELECT_OPTION_LABEL.toString(), "true").withEmoji(Emoji.fromUnicode("U+2714")),
                         SelectOption.of(Discord.DISABLED_SELECT_OPTION_LABEL.toString(), "false")
                                 .withDescription(Discord.DEFAULT_SELECT_OPTION_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+2716")))
                 .setDefaultValues(Collections.singleton(String.valueOf(getChannelVisibility()))).build()));
-        actionRows.add(ActionRow.of(Button.secondary("advanced-settings", "← " + Discord.BACK_BUTTON_LABEL.toString()),
+        actionRows.add(ActionRow.of(Button.secondary("advanced-settings", "← " + Discord.BACK_BUTTON_LABEL),
                 Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716"))));
         return new MessageBuilder().setEmbeds(embed.build())
                 .setActionRows(actionRows).build();

@@ -45,17 +45,17 @@ public class ModeSelection {
     }
 
     public static Message getModeSelectionMessage(boolean customize) {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
                 .setColor(Color.ORANGE);
         List<Button> buttons = new ArrayList<>();
         if (getPlugin().isBotReady()) {
-            embed.addField(":video_game: " + Discord.MODE_EMBED_TITLE.toString(), Discord.MODE_EMBED_DESCRIPTION.toString(), false);
-            buttons.add(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL.toString()));
+            embed.addField(":video_game: " + Discord.MODE_EMBED_TITLE, Discord.MODE_EMBED_DESCRIPTION.toString(), false);
+            buttons.add(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL));
         } else {
-            embed.addField(":video_game: " + Discord.MODE_EMBED_TITLE.toString(), Discord.MODE_EMBED_ALTERNATIVE_DESCRIPTION.toString(), false);
+            embed.addField(":video_game: " + Discord.MODE_EMBED_TITLE, Discord.MODE_EMBED_ALTERNATIVE_DESCRIPTION.toString(), false);
         }
-        embed.addField(":map: " + Discord.VANILLA_MODE_FIELD_TITLE.toString(), Discord.VANILLA_MODE_FIELD_DESCRIPTION.toString(), true)
-                .addField(":crossed_swords: " + Discord.MINIGAME_MODE_FIELD_TITLE.toString(), Discord.MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true);
+        embed.addField(":map: " + Discord.VANILLA_MODE_FIELD_TITLE, Discord.VANILLA_MODE_FIELD_DESCRIPTION.toString(), true)
+                .addField(":crossed_swords: " + Discord.MINIGAME_MODE_FIELD_TITLE, Discord.MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true);
         List<SelectOption> modes = new ArrayList<>();
         modes.add(SelectOption.of(Discord.VANILLA_MODE_FIELD_TITLE.toString(), "vanilla-mode")
                 .withDescription(Discord.VANILLA_MODE_FIELD_ALTERNATIVE_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+1F5FA")));
@@ -63,7 +63,7 @@ public class ModeSelection {
                 .withDescription(Discord.MINIGAME_MODE_FIELD_ALTERNATIVE_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+2694")));
         List<ActionRow> actionRows = new ArrayList<>();
         if (getPlugin().isBotReady()) {
-            embed.addField(":pencil2: " + Discord.CUSTOMIZE_FIELD_TITLE.toString(), Discord.CUSTOMIZE_FIELD_DESCRIPTION.toString(), true);
+            embed.addField(":pencil2: " + Discord.CUSTOMIZE_FIELD_TITLE, Discord.CUSTOMIZE_FIELD_DESCRIPTION.toString(), true);
             String defaultValue;
             if (getHorizontalRadius() == 80
                     && getVerticalRadius() == 40
