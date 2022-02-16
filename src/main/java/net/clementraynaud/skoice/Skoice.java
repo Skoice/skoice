@@ -21,16 +21,16 @@
 package net.clementraynaud.skoice;
 
 import net.clementraynaud.skoice.bot.Connection;
+import net.clementraynaud.skoice.configuration.discord.MessageManagement;
 import net.clementraynaud.skoice.configuration.minecraft.IncorrectConfigurationAlert;
 import net.clementraynaud.skoice.configuration.minecraft.Instructions;
 import net.clementraynaud.skoice.configuration.minecraft.TokenRetrieval;
+import net.clementraynaud.skoice.lang.Console;
 import net.clementraynaud.skoice.link.Link;
 import net.clementraynaud.skoice.link.Unlink;
-import net.clementraynaud.skoice.configuration.discord.MessageManagement;
 import net.clementraynaud.skoice.system.ChannelManagement;
 import net.clementraynaud.skoice.system.MarkPlayersDirty;
 import net.clementraynaud.skoice.system.Network;
-import net.clementraynaud.skoice.util.Lang;
 import net.clementraynaud.skoice.util.UpdateChecker;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
@@ -43,7 +43,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.clementraynaud.skoice.bot.Connection.*;
+import static net.clementraynaud.skoice.bot.Connection.getJda;
 
 public class Skoice extends JavaPlugin {
 
@@ -100,7 +100,7 @@ public class Skoice extends JavaPlugin {
         saveDefaultConfig();
         registerDefaultValues();
         setPlugin(this);
-        getLogger().info(Lang.Console.PLUGIN_ENABLED_INFO.print());
+        getLogger().info(Console.PLUGIN_ENABLED_INFO.toString());
         setBot(new Connection());
         plugin.getCommand("configure").setExecutor(new Instructions());
         plugin.getCommand("token").setExecutor(new TokenRetrieval());
@@ -123,7 +123,7 @@ public class Skoice extends JavaPlugin {
     public void checkVersion() {
         new UpdateChecker(this, 82861).getVersion(version -> {
             if (!this.getDescription().getVersion().equals(version)) {
-                getLogger().warning(Lang.Console.OUTDATED_VERSION_WARNING.print()
+                getLogger().warning(Console.OUTDATED_VERSION_WARNING.toString()
                         .replace("{runningVersion}", this.getDescription().getVersion())
                         .replace("{latestVersion}", version));
             }
@@ -135,22 +135,22 @@ public class Skoice extends JavaPlugin {
         if (!configFile.contains("token")) {
             isTokenSet = false;
             isBotReady = false;
-            getLogger().warning(Lang.Console.NO_TOKEN_WARNING.print());
+            getLogger().warning(Console.NO_TOKEN_WARNING.toString());
         } else if (getJda() == null) {
             isBotReady = false;
         } else if (!configFile.contains("language")) {
             isBotReady = false;
-            getLogger().warning(Lang.Console.NO_LANGUAGE_WARNING.print());
+            getLogger().warning(Console.NO_LANGUAGE_WARNING.toString());
         } else if (!isGuildUnique()) {
             isBotReady = false;
-            getLogger().warning(Lang.Console.MULTIPLE_GUILDS_WARNING.print());
+            getLogger().warning(Console.MULTIPLE_GUILDS_WARNING.toString());
         } else if (!configFile.contains("lobby-id")) {
             isBotReady = false;
-            getLogger().warning(Lang.Console.NO_LOBBY_ID_WARNING.print());
+            getLogger().warning(Console.NO_LOBBY_ID_WARNING.toString());
         } else if (!configFile.contains("radius.horizontal")
                 || !configFile.contains("radius.vertical")) {
             isBotReady = false;
-            getLogger().warning(Lang.Console.NO_DISTANCES_WARNING.print());
+            getLogger().warning(Console.NO_DISTANCES_WARNING.toString());
         } else {
             isBotReady = true;
         }
@@ -175,7 +175,7 @@ public class Skoice extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new ChannelManagement(), plugin);
             getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
             getJda().getPresence().setActivity(Activity.listening("/link"));
-            getLogger().info(Lang.Console.CONFIGURATION_COMPLETE_INFO.print());
+            getLogger().info(Console.CONFIGURATION_COMPLETE_INFO.toString());
         } else if (wasBotReady && !isBotReady) {
             MessageManagement.deleteConfigurationMessage();
             HandlerList.unregisterAll(new MarkPlayersDirty());
@@ -206,7 +206,7 @@ public class Skoice extends JavaPlugin {
                 getJda().shutdown();
             } catch (NoClassDefFoundError ignored) {
             }
-            getLogger().info(Lang.Console.PLUGIN_DISABLED_INFO.print());
+            getLogger().info(Console.PLUGIN_DISABLED_INFO.toString());
         }
     }
 }

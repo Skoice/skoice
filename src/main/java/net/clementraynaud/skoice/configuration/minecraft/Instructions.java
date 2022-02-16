@@ -20,7 +20,7 @@
 
 package net.clementraynaud.skoice.configuration.minecraft;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Minecraft;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -32,23 +32,23 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.bot.Connection.*;
+import static net.clementraynaud.skoice.bot.Connection.getJda;
 
 public class Instructions implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command cmd, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Lang.Minecraft.ILLEGAL_EXECUTOR.print());
+            sender.sendMessage(Minecraft.ILLEGAL_EXECUTOR.toString());
             return true;
         }
         Player player = (Player) sender;
         if (player.isOp()) {
             if (getPlugin().isTokenSet() && getJda() != null) {
                 if (getPlugin().isBotReady()) {
-                    player.sendMessage(Lang.Minecraft.ALREADY_CONFIGURED.print());
+                    player.sendMessage(Minecraft.ALREADY_CONFIGURED.toString());
                 } else {
-                    player.sendMessage(Lang.Minecraft.INCOMPLETE_CONFIGURATION_OPERATOR_DISCORD.print());
+                    player.sendMessage(Minecraft.INCOMPLETE_CONFIGURATION_OPERATOR_DISCORD.toString());
                 }
             } else {
                 try {
@@ -64,7 +64,7 @@ public class Instructions implements CommandExecutor {
                             .append(tokenCommand)
                             .append("§7.\n§8• §7Once done, type \"§e/configure§7\" on your Discord server to go to the next step.\n").event((HoverEvent) null).create());
                 } catch (NoSuchMethodError e) {
-                    player.sendMessage(Lang.Minecraft.BOT_CREATION_LINK.print());
+                    player.sendMessage(Minecraft.BOT_CREATION_LINK.toString());
                 }
             }
         }

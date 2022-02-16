@@ -20,7 +20,7 @@
 
 package net.clementraynaud.skoice.configuration.discord;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Discord;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
@@ -36,7 +36,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.util.DataGetters.*;
+import static net.clementraynaud.skoice.util.DataGetters.getLanguage;
 
 public class LanguageSelection {
 
@@ -44,12 +44,12 @@ public class LanguageSelection {
     }
 
     public static Message getLanguageSelectionMessage() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Lang.Discord.CONFIGURATION_EMBED_TITLE.print())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
                 .setColor(Color.ORANGE)
-                .addField(":globe_with_meridians: " + Lang.Discord.LANGUAGE_EMBED_TITLE.print(), Lang.Discord.LANGUAGE_EMBED_DESCRIPTION.print(), false);
+                .addField(":globe_with_meridians: " + Discord.LANGUAGE_EMBED_TITLE.toString(), Discord.LANGUAGE_EMBED_DESCRIPTION.toString(), false);
         List<SelectOption> options = new ArrayList<>();
         options.add(SelectOption.of("English", "EN")
-                .withDescription(Lang.Discord.DEFAULT_SELECT_OPTION_DESCRIPTION.print()).withEmoji(Emoji.fromUnicode("U+1F1ECU+1F1E7")));
+                .withDescription(Discord.DEFAULT_SELECT_OPTION_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+1F1ECU+1F1E7")));
         options.add(SelectOption.of("Français", "FR")
                 .withEmoji(Emoji.fromUnicode("U+1F1EBU+1F1F7")));
         List<ActionRow> actionRows = new ArrayList<>();
@@ -57,13 +57,13 @@ public class LanguageSelection {
             actionRows.add(ActionRow.of(SelectionMenu.create("languages")
                     .addOptions(options)
                     .setDefaultValues(Collections.singleton(getLanguage())).build()));
-            actionRows.add(ActionRow.of(Button.secondary("settings", "← " + Lang.Discord.BACK_BUTTON_LABEL.print()),
-                    Button.danger("close", Lang.Discord.CLOSE_BUTTON_LABEL.print()).withEmoji(Emoji.fromUnicode("U+2716"))));
+            actionRows.add(ActionRow.of(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL.toString()),
+                    Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716"))));
         } else {
             actionRows.add(ActionRow.of(SelectionMenu.create("languages")
-                    .setPlaceholder(Lang.Discord.LANGUAGE_SELECT_MENU_PLACEHOLDER.print())
+                    .setPlaceholder(Discord.LANGUAGE_SELECT_MENU_PLACEHOLDER.toString())
                     .addOptions(options).build()));
-            actionRows.add(ActionRow.of(Button.secondary("close", Lang.Discord.CONFIGURE_LATER_BUTTON_LABEL.print()).withEmoji(Emoji.fromUnicode("U+1F552"))));
+            actionRows.add(ActionRow.of(Button.secondary("close", Discord.CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+1F552"))));
         }
         return new MessageBuilder().setEmbeds(embed.build()).setActionRows(actionRows).build();
     }

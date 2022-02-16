@@ -22,15 +22,20 @@ package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.configuration.discord.LobbySelection;
 import net.clementraynaud.skoice.configuration.discord.MessageManagement;
+import net.clementraynaud.skoice.lang.Console;
+import net.clementraynaud.skoice.lang.Discord;
+import net.clementraynaud.skoice.lang.Minecraft;
 import net.clementraynaud.skoice.link.Link;
 import net.clementraynaud.skoice.link.Unlink;
 import net.clementraynaud.skoice.system.ChannelManagement;
 import net.clementraynaud.skoice.system.Network;
-import net.clementraynaud.skoice.util.Lang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.ReconnectedEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
@@ -85,12 +90,12 @@ public class Connection extends ListenerAdapter {
                         .setMemberCachePolicy(MemberCachePolicy.ALL)
                         .build()
                         .awaitReady());
-                getPlugin().getLogger().info(Lang.Console.BOT_CONNECTED_INFO.print());
+                getPlugin().getLogger().info(Console.BOT_CONNECTED_INFO.toString());
             } catch (LoginException e) {
                 if (sender == null) {
-                    getPlugin().getLogger().severe(Lang.Console.BOT_COULD_NOT_CONNECT_ERROR.print());
+                    getPlugin().getLogger().severe(Console.BOT_COULD_NOT_CONNECT_ERROR.toString());
                 } else {
-                    sender.sendMessage(Lang.Minecraft.BOT_COULD_NOT_CONNECT.print());
+                    sender.sendMessage(Minecraft.BOT_COULD_NOT_CONNECT.toString());
                     getPlugin().getConfigFile().set("token", null);
                     getPlugin().saveConfig();
                 }
@@ -150,9 +155,9 @@ public class Connection extends ListenerAdapter {
         getPlugin().updateConfigurationStatus(startup);
         if (sender != null && jda != null) {
             if (getPlugin().isBotReady()) {
-                sender.sendMessage(Lang.Minecraft.BOT_CONNECTED.print());
+                sender.sendMessage(Minecraft.BOT_CONNECTED.toString());
             } else {
-                sender.sendMessage(Lang.Minecraft.BOT_CONNECTED_INCOMPLETE_CONFIGURATION_DISCORD.print());
+                sender.sendMessage(Minecraft.BOT_CONNECTED_INCOMPLETE_CONFIGURATION_DISCORD.toString());
             }
         }
     }
@@ -174,17 +179,19 @@ public class Connection extends ListenerAdapter {
             for (Member member : lobby.getMembers()) {
                 UUID minecraftID = getMinecraftID(member);
                 if (minecraftID == null) {
-                    EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Lang.Discord.LINKING_PROCESS_EMBED_TITLE.print())
+                    EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE.toString())
                             .setColor(Color.RED);
                     Guild guild = getGuild();
                     if (guild != null) {
-                        embed.addField(":warning: " + Lang.Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.print(), Lang.Discord.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.print().replace("{discordServer}", guild.getName()), false);
+                        embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", guild.getName()), false);
                     } else {
-                        embed.addField(":warning: " + Lang.Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.print(), Lang.Discord.ACCOUNT_NOT_LINKED_FIELD_GENERIC_ALTERNATIVE_DESCRIPTION.print(), false);
+                        embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_NOT_LINKED_FIELD_GENERIC_ALTERNATIVE_DESCRIPTION.toString(), false);
                     }
                     try {
                         member.getUser().openPrivateChannel().complete()
-                                .sendMessageEmbeds(embed.build()).queue(success -> {}, failure -> {});
+                                .sendMessageEmbeds(embed.build()).queue(success -> {
+                                }, failure -> {
+                                });
                     } catch (ErrorResponseException ignored) {
                     }
                 }
@@ -195,8 +202,8 @@ public class Connection extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
-            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(":warning: " + Lang.Discord.ERROR_EMBED_TITLE.print())
-                    .addField(":no_entry: " + Lang.Discord.ILLEGAL_INTERACTION_FIELD_TITLE.print(), Lang.Discord.ILLEGAL_INTERACTION_FIELD_DESCRIPTION.print(), false)
+            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(":warning: " + Discord.ERROR_EMBED_TITLE.toString())
+                    .addField(":no_entry: " + Discord.ILLEGAL_INTERACTION_FIELD_TITLE.toString(), Discord.ILLEGAL_INTERACTION_FIELD_DESCRIPTION.toString(), false)
                     .setColor(Color.RED).build()).queue();
         }
     }

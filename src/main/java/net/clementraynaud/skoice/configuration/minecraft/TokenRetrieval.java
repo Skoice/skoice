@@ -20,7 +20,7 @@
 
 package net.clementraynaud.skoice.configuration.minecraft;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Minecraft;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ import java.util.Base64;
 
 import static net.clementraynaud.skoice.Skoice.getBot;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.bot.Connection.*;
+import static net.clementraynaud.skoice.bot.Connection.getJda;
 
 public class TokenRetrieval implements CommandExecutor {
 
@@ -40,11 +40,11 @@ public class TokenRetrieval implements CommandExecutor {
             return true;
         }
         if (args.length < 1) {
-            sender.sendMessage(Lang.Minecraft.NO_TOKEN.print());
+            sender.sendMessage(Minecraft.NO_TOKEN.toString());
             return true;
         }
         if (args[0].length() != 59 || !args[0].matches("[a-zA-Z0-9_.]+")) {
-            sender.sendMessage(Lang.Minecraft.INVALID_TOKEN.print());
+            sender.sendMessage(Minecraft.INVALID_TOKEN.toString());
             return true;
         }
         byte[] tokenBytes = args[0].getBytes();
@@ -58,7 +58,7 @@ public class TokenRetrieval implements CommandExecutor {
         if (getJda() == null) {
             getBot().connectBot(false, sender);
         } else {
-            sender.sendMessage(Lang.Minecraft.BOT_ALREADY_CONNECTED.print());
+            sender.sendMessage(Minecraft.BOT_ALREADY_CONNECTED.toString());
         }
         return true;
     }

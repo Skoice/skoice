@@ -20,7 +20,8 @@
 
 package net.clementraynaud.skoice.link;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Discord;
+import net.clementraynaud.skoice.lang.Minecraft;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -40,7 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.bot.Connection.*;
+import static net.clementraynaud.skoice.bot.Connection.getJda;
 import static net.clementraynaud.skoice.util.DataGetters.*;
 
 public class Link extends ListenerAdapter implements CommandExecutor {
@@ -55,16 +56,16 @@ public class Link extends ListenerAdapter implements CommandExecutor {
     public void onSlashCommand(SlashCommandEvent event) {
         if (event.getName().equals("link")) {
             if (!getPlugin().isBotReady()) {
-                EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Lang.Discord.CONFIGURATION_EMBED_TITLE.print());
-                event.replyEmbeds(embed.addField(":warning: " + Lang.Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE, Lang.Discord.INCOMPLETE_CONFIGURATION_FIELD_DESCRIPTION.print(), false)
+                EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString());
+                event.replyEmbeds(embed.addField(":warning: " + Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE, Discord.INCOMPLETE_CONFIGURATION_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
                         .setEphemeral(true).queue();
                 return;
             }
-            EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Lang.Discord.LINKING_PROCESS_EMBED_TITLE.print());
+            EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE.toString());
             boolean isLinked = getPlugin().getConfigFile().contains("link." + event.getUser().getId());
             if (isLinked) {
-                event.replyEmbeds(embed.addField(":warning: " + Lang.Discord.ACCOUNT_ALREADY_LINKED_FIELD_TITLE.print(), Lang.Discord.ACCOUNT_ALREADY_LINKED_FIELD_DESCRIPTION.print(), false)
+                event.replyEmbeds(embed.addField(":warning: " + Discord.ACCOUNT_ALREADY_LINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_ALREADY_LINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
                         .setEphemeral(true).queue();
                 return;
@@ -75,7 +76,7 @@ public class Link extends ListenerAdapter implements CommandExecutor {
                 code = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
             } while (discordIDCodeMap.containsValue(code));
             discordIDCodeMap.put(event.getUser().getId(), code);
-            event.replyEmbeds(embed.addField(":key: " + Lang.Discord.VERIFICATION_CODE_FIELD_TITLE.print(), Lang.Discord.VERIFICATION_CODE_FIELD_DESCRIPTION.print().replace("{code}", code), false)
+            event.replyEmbeds(embed.addField(":key: " + Discord.VERIFICATION_CODE_FIELD_TITLE.toString(), Discord.VERIFICATION_CODE_FIELD_DESCRIPTION.toString().replace("{code}", code), false)
                             .setColor(Color.GREEN).build())
                     .setEphemeral(true).queue();
         }
@@ -84,25 +85,25 @@ public class Link extends ListenerAdapter implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Lang.Minecraft.ILLEGAL_EXECUTOR.print());
+            sender.sendMessage(Minecraft.ILLEGAL_EXECUTOR.toString());
             return true;
         }
         Player player = (Player) sender;
         if (!getPlugin().isBotReady() || getJda() == null) {
-            player.sendMessage(Lang.Minecraft.INCOMPLETE_CONFIGURATION.print());
+            player.sendMessage(Minecraft.INCOMPLETE_CONFIGURATION.toString());
             return true;
         }
         boolean isLinked = getPlugin().getConfigFile().contains("link." + player.getUniqueId());
         if (isLinked) {
-            player.sendMessage(Lang.Minecraft.ACCOUNT_ALREADY_LINKED.print());
+            player.sendMessage(Minecraft.ACCOUNT_ALREADY_LINKED.toString());
             return true;
         }
         if (args.length < 1) {
-            player.sendMessage(Lang.Minecraft.NO_CODE.print());
+            player.sendMessage(Minecraft.NO_CODE.toString());
             return true;
         }
         if (!discordIDCodeMap.containsValue(args[0])) {
-            player.sendMessage(Lang.Minecraft.INVALID_CODE.print());
+            player.sendMessage(Minecraft.INVALID_CODE.toString());
             return true;
         }
         String discordID = getKeyFromValue(discordIDCodeMap, args[0]);
@@ -119,17 +120,19 @@ public class Link extends ListenerAdapter implements CommandExecutor {
         discordIDCodeMap.values().remove(args[0]);
         try {
             member.getUser().openPrivateChannel().complete()
-                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Lang.Discord.LINKING_PROCESS_EMBED_TITLE.print())
-                            .addField(":heavy_check_mark: " + Lang.Discord.ACCOUNT_LINKED_FIELD_TITLE.print(), Lang.Discord.ACCOUNT_LINKED_FIELD_DESCRIPTION.print(), false)
-                            .setColor(Color.GREEN).build()).queue(success -> {}, failure -> {});
+                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE.toString())
+                            .addField(":heavy_check_mark: " + Discord.ACCOUNT_LINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_LINKED_FIELD_DESCRIPTION.toString(), false)
+                            .setColor(Color.GREEN).build()).queue(success -> {
+                    }, failure -> {
+                    });
         } catch (ErrorResponseException ignored) {
         }
-        player.sendMessage(Lang.Minecraft.ACCOUNT_LINKED.print());
+        player.sendMessage(Minecraft.ACCOUNT_LINKED.toString());
         GuildVoiceState voiceState = member.getVoiceState();
         if (voiceState != null) {
             VoiceChannel voiceChannel = voiceState.getChannel();
             if (voiceChannel != null && voiceChannel.equals(getLobby())) {
-                player.sendMessage(Lang.Minecraft.CONNECTED_TO_PROXIMITY_VOICE_CHAT.print());
+                player.sendMessage(Minecraft.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());
             }
         }
         return true;

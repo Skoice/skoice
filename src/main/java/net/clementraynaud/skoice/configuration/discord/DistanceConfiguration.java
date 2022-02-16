@@ -20,7 +20,7 @@
 
 package net.clementraynaud.skoice.configuration.discord;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Discord;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
@@ -30,7 +30,8 @@ import net.dv8tion.jda.api.interactions.components.Button;
 
 import java.awt.*;
 
-import static net.clementraynaud.skoice.util.DataGetters.*;
+import static net.clementraynaud.skoice.util.DataGetters.getHorizontalRadius;
+import static net.clementraynaud.skoice.util.DataGetters.getVerticalRadius;
 
 public class DistanceConfiguration {
 
@@ -38,22 +39,22 @@ public class DistanceConfiguration {
     }
 
     public static Message getHorizontalRadiusConfigurationMessage() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Lang.Discord.CONFIGURATION_EMBED_TITLE.print())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
                 .setColor(Color.ORANGE)
-                .addField(":left_right_arrow: " + Lang.Discord.HORIZONTAL_RADIUS_EMBED_TITLE.print(), Lang.Discord.HORIZONTAL_RADIUS_EMBED_DESCRIPTION.print(), false)
-                .addField(":keyboard: " + Lang.Discord.ENTER_A_VALUE_FIELD_TITLE.print(), Lang.Discord.ENTER_A_VALUE_FIELD_DESCRIPTION.print().replace("{value}", String.valueOf(getHorizontalRadius())), false);
+                .addField(":left_right_arrow: " + Discord.HORIZONTAL_RADIUS_EMBED_TITLE.toString(), Discord.HORIZONTAL_RADIUS_EMBED_DESCRIPTION.toString(), false)
+                .addField(":keyboard: " + Discord.ENTER_A_VALUE_FIELD_TITLE.toString(), Discord.ENTER_A_VALUE_FIELD_DESCRIPTION.toString().replace("{value}", String.valueOf(getHorizontalRadius())), false);
         return new MessageBuilder().setEmbeds(embed.build())
-                .setActionRows(ActionRow.of(Button.secondary("mode", "← " + Lang.Discord.BACK_BUTTON_LABEL.print()),
-                        Button.danger("close", Lang.Discord.CLOSE_BUTTON_LABEL.print()).withEmoji(Emoji.fromUnicode("U+2716")))).build();
+                .setActionRows(ActionRow.of(Button.secondary("mode", "← " + Discord.BACK_BUTTON_LABEL.toString()),
+                        Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716")))).build();
     }
 
     public static Message getVerticalRadiusConfigurationMessage() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Lang.Discord.CONFIGURATION_EMBED_TITLE.print())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
                 .setColor(Color.ORANGE)
-                .addField(":arrow_up_down: " + Lang.Discord.VERTICAL_RADIUS_EMBED_TITLE.print(), Lang.Discord.VERTICAL_RADIUS_EMBED_DESCRIPTION.print(), false)
-                .addField(":keyboard: " + Lang.Discord.ENTER_A_VALUE_FIELD_TITLE.print(), Lang.Discord.ENTER_A_VALUE_FIELD_DESCRIPTION.print().replace("{value}", String.valueOf(getVerticalRadius())), false);
+                .addField(":arrow_up_down: " + Discord.VERTICAL_RADIUS_EMBED_TITLE.toString(), Discord.VERTICAL_RADIUS_EMBED_DESCRIPTION.toString(), false)
+                .addField(":keyboard: " + Discord.ENTER_A_VALUE_FIELD_TITLE.toString(), Discord.ENTER_A_VALUE_FIELD_DESCRIPTION.toString().replace("{value}", String.valueOf(getVerticalRadius())), false);
         return new MessageBuilder().setEmbeds(embed.build())
-                .setActionRows(ActionRow.of(Button.secondary("mode", "← " + Lang.Discord.BACK_BUTTON_LABEL.print()),
-                        Button.danger("close", Lang.Discord.CLOSE_BUTTON_LABEL.print()).withEmoji(Emoji.fromUnicode("U+2716")))).build();
+                .setActionRows(ActionRow.of(Button.secondary("mode", "← " + Discord.BACK_BUTTON_LABEL.toString()),
+                        Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716")))).build();
     }
 }

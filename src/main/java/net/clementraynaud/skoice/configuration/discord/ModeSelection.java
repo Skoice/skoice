@@ -20,7 +20,7 @@
 
 package net.clementraynaud.skoice.configuration.discord;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Discord;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
@@ -36,7 +36,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.util.DataGetters.*;
+import static net.clementraynaud.skoice.util.DataGetters.getHorizontalRadius;
+import static net.clementraynaud.skoice.util.DataGetters.getVerticalRadius;
 
 public class ModeSelection {
 
@@ -44,32 +45,32 @@ public class ModeSelection {
     }
 
     public static Message getModeSelectionMessage(boolean customize) {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Lang.Discord.CONFIGURATION_EMBED_TITLE.print())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
                 .setColor(Color.ORANGE);
         List<Button> buttons = new ArrayList<>();
         if (getPlugin().isBotReady()) {
-            embed.addField(":video_game: " + Lang.Discord.MODE_EMBED_TITLE.print(), Lang.Discord.MODE_EMBED_DESCRIPTION.print(), false);
-            buttons.add(Button.secondary("settings", "← " + Lang.Discord.BACK_BUTTON_LABEL.print()));
+            embed.addField(":video_game: " + Discord.MODE_EMBED_TITLE.toString(), Discord.MODE_EMBED_DESCRIPTION.toString(), false);
+            buttons.add(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL.toString()));
         } else {
-            embed.addField(":video_game: " + Lang.Discord.MODE_EMBED_TITLE.print(), Lang.Discord.MODE_EMBED_ALTERNATIVE_DESCRIPTION.print(), false);
+            embed.addField(":video_game: " + Discord.MODE_EMBED_TITLE.toString(), Discord.MODE_EMBED_ALTERNATIVE_DESCRIPTION.toString(), false);
         }
-        embed.addField(":map: " + Lang.Discord.VANILLA_MODE_FIELD_TITLE.print(), Lang.Discord.VANILLA_MODE_FIELD_DESCRIPTION.print(), true)
-                .addField(":crossed_swords: " + Lang.Discord.MINIGAME_MODE_FIELD_TITLE.print(), Lang.Discord.MINIGAME_MODE_FIELD_DESCRIPTION.print(), true);
+        embed.addField(":map: " + Discord.VANILLA_MODE_FIELD_TITLE.toString(), Discord.VANILLA_MODE_FIELD_DESCRIPTION.toString(), true)
+                .addField(":crossed_swords: " + Discord.MINIGAME_MODE_FIELD_TITLE.toString(), Discord.MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true);
         List<SelectOption> modes = new ArrayList<>();
-        modes.add(SelectOption.of(Lang.Discord.VANILLA_MODE_FIELD_TITLE.print(), "vanilla-mode")
-                .withDescription(Lang.Discord.VANILLA_MODE_FIELD_ALTERNATIVE_DESCRIPTION.print()).withEmoji(Emoji.fromUnicode("U+1F5FA")));
-        modes.add(SelectOption.of(Lang.Discord.MINIGAME_MODE_FIELD_TITLE.print(), "minigame-mode")
-                .withDescription(Lang.Discord.MINIGAME_MODE_FIELD_ALTERNATIVE_DESCRIPTION.print()).withEmoji(Emoji.fromUnicode("U+2694")));
+        modes.add(SelectOption.of(Discord.VANILLA_MODE_FIELD_TITLE.toString(), "vanilla-mode")
+                .withDescription(Discord.VANILLA_MODE_FIELD_ALTERNATIVE_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+1F5FA")));
+        modes.add(SelectOption.of(Discord.MINIGAME_MODE_FIELD_TITLE.toString(), "minigame-mode")
+                .withDescription(Discord.MINIGAME_MODE_FIELD_ALTERNATIVE_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+2694")));
         List<ActionRow> actionRows = new ArrayList<>();
         if (getPlugin().isBotReady()) {
-            embed.addField(":pencil2: " + Lang.Discord.CUSTOMIZE_FIELD_TITLE.print(), Lang.Discord.CUSTOMIZE_FIELD_DESCRIPTION.print(), true);
+            embed.addField(":pencil2: " + Discord.CUSTOMIZE_FIELD_TITLE.toString(), Discord.CUSTOMIZE_FIELD_DESCRIPTION.toString(), true);
             String defaultValue;
             if (getHorizontalRadius() == 80
                     && getVerticalRadius() == 40
                     && !customize) {
                 defaultValue = "vanilla-mode";
-                modes.add(SelectOption.of(Lang.Discord.CUSTOMIZE_FIELD_TITLE.print(), "customize")
-                        .withDescription(Lang.Discord.CUSTOMIZE_SELECT_MENU_DESCRIPTION.print()).withEmoji(Emoji.fromUnicode("U+270F")));
+                modes.add(SelectOption.of(Discord.CUSTOMIZE_FIELD_TITLE.toString(), "customize")
+                        .withDescription(Discord.CUSTOMIZE_SELECT_MENU_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+270F")));
             } else if (getHorizontalRadius() == 40
                     && getVerticalRadius() == 20
                     && !customize) {
@@ -78,20 +79,20 @@ public class ModeSelection {
                         .withDescription("Set distances from 1 to 1000 blocks.").withEmoji(Emoji.fromUnicode("U+270F")));
             } else {
                 defaultValue = "customize";
-                modes.add(SelectOption.of(Lang.Discord.CUSTOMIZE_FIELD_TITLE.print(), "customize")
-                        .withDescription(Lang.Discord.CUSTOMIZE_SELECT_MENU_ALTERNATIVE_DESCRIPTION.print().replace("{horizontalRadius}", String.valueOf(getHorizontalRadius())).replace("{verticalRadius}", String.valueOf(getVerticalRadius()))).withEmoji(Emoji.fromUnicode("U+270F")));
-                buttons.add(Button.primary("horizontal-radius", Lang.Discord.HORIZONTAL_RADIUS_EMBED_TITLE.print()).withEmoji(Emoji.fromUnicode("U+2194")));
-                buttons.add(Button.primary("vertical-radius", Lang.Discord.VERTICAL_RADIUS_EMBED_TITLE.print()).withEmoji(Emoji.fromUnicode("U+2195")));
+                modes.add(SelectOption.of(Discord.CUSTOMIZE_FIELD_TITLE.toString(), "customize")
+                        .withDescription(Discord.CUSTOMIZE_SELECT_MENU_ALTERNATIVE_DESCRIPTION.toString().replace("{horizontalRadius}", String.valueOf(getHorizontalRadius())).replace("{verticalRadius}", String.valueOf(getVerticalRadius()))).withEmoji(Emoji.fromUnicode("U+270F")));
+                buttons.add(Button.primary("horizontal-radius", Discord.HORIZONTAL_RADIUS_EMBED_TITLE.toString()).withEmoji(Emoji.fromUnicode("U+2194")));
+                buttons.add(Button.primary("vertical-radius", Discord.VERTICAL_RADIUS_EMBED_TITLE.toString()).withEmoji(Emoji.fromUnicode("U+2195")));
             }
-            buttons.add(Button.danger("close", Lang.Discord.CLOSE_BUTTON_LABEL.print()).withEmoji(Emoji.fromUnicode("U+2716")));
+            buttons.add(Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716")));
             actionRows.add(ActionRow.of(SelectionMenu.create("modes")
-                    .setPlaceholder(Lang.Discord.MODE_SELECT_OPTION_PLACEHOLDER.print())
+                    .setPlaceholder(Discord.MODE_SELECT_OPTION_PLACEHOLDER.toString())
                     .addOptions(modes)
                     .setDefaultValues(Collections.singleton(defaultValue)).build()));
         } else {
-            buttons.add(Button.secondary("close", Lang.Discord.CONFIGURE_LATER_BUTTON_LABEL.print()).withEmoji(Emoji.fromUnicode("U+1F552")));
+            buttons.add(Button.secondary("close", Discord.CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+1F552")));
             actionRows.add(ActionRow.of(SelectionMenu.create("modes")
-                    .setPlaceholder(Lang.Discord.MODE_SELECT_OPTION_PLACEHOLDER.print())
+                    .setPlaceholder(Discord.MODE_SELECT_OPTION_PLACEHOLDER.toString())
                     .addOptions(modes)
                     .build()));
         }

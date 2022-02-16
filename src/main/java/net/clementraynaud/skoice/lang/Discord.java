@@ -350,6 +350,6 @@ public enum Discord {
 
     @Override
     public String toString() {
-        return messages.getOrDefault(Lang.valueOf(getPlugin().getConfigFile().getString("language")), messages.get(Lang.FR));
+        return messages.getOrDefault(Lang.valueOf(getPlugin().getConfigFile().getString("language")), messages.get(Lang.EN));
     }
 }

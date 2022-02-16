@@ -20,7 +20,8 @@
 
 package net.clementraynaud.skoice.system;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Discord;
+import net.clementraynaud.skoice.lang.Minecraft;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -68,7 +69,7 @@ public class MarkPlayersDirty extends ListenerAdapter implements Listener {
             if (voiceState != null) {
                 VoiceChannel voiceChannel = voiceState.getChannel();
                 if (voiceChannel != null && voiceChannel.equals(getLobby())) {
-                    player.sendMessage(Lang.Minecraft.CONNECTED_TO_PROXIMITY_VOICE_CHAT.print());
+                    player.sendMessage(Minecraft.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());
                 }
             }
         }
@@ -94,16 +95,18 @@ public class MarkPlayersDirty extends ListenerAdapter implements Listener {
         if (minecraftID == null) {
             try {
                 event.getMember().getUser().openPrivateChannel().complete()
-                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Lang.Discord.LINKING_PROCESS_EMBED_TITLE.print())
-                                .addField(":warning: " + Lang.Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.print(), Lang.Discord.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.print().replace("{discordServer}", event.getGuild().getName()), false)
-                                .setColor(Color.RED).build()).queue(success -> {}, failure -> {});
+                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE.toString())
+                                .addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", event.getGuild().getName()), false)
+                                .setColor(Color.RED).build()).queue(success -> {
+                        }, failure -> {
+                        });
             } catch (ErrorResponseException ignored) {
             }
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(minecraftID);
             if (player.isOnline()) {
                 markDirty(player.getPlayer());
-                player.getPlayer().sendMessage(Lang.Minecraft.CONNECTED_TO_PROXIMITY_VOICE_CHAT.print());
+                player.getPlayer().sendMessage(Minecraft.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());
             }
         }
     }

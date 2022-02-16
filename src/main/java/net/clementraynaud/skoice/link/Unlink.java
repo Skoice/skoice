@@ -20,7 +20,8 @@
 
 package net.clementraynaud.skoice.link;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Discord;
+import net.clementraynaud.skoice.lang.Minecraft;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -41,32 +42,33 @@ import java.util.UUID;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.system.ChannelManagement.getNetworks;
-import static net.clementraynaud.skoice.util.DataGetters.*;
+import static net.clementraynaud.skoice.util.DataGetters.getGuild;
+import static net.clementraynaud.skoice.util.DataGetters.getLobby;
 
 public class Unlink extends ListenerAdapter implements CommandExecutor {
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if (event.getName().equals("unlink")) {
-            EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Lang.Discord.LINKING_PROCESS_EMBED_TITLE.print());
+            EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE.toString());
             String minecraftID = getPlugin().getConfigFile().getString("link." + event.getUser().getId());
             if (minecraftID == null) {
-                event.replyEmbeds(embed.addField(":warning: " + Lang.Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.print(), Lang.Discord.ACCOUNT_NOT_LINKED_FIELD_DESCRIPTION.print(), false)
+                event.replyEmbeds(embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_NOT_LINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
                         .setEphemeral(true).queue();
             } else {
                 unlinkUser(event.getUser().getId(), minecraftID);
-                event.replyEmbeds(embed.addField(":heavy_check_mark: " + Lang.Discord.ACCOUNT_UNLINKED_FIELD_TITLE.print(), Lang.Discord.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.print(), false)
+                event.replyEmbeds(embed.addField(":heavy_check_mark: " + Discord.ACCOUNT_UNLINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.GREEN).build())
                         .setEphemeral(true).queue();
                 OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
                 if (player.isOnline()) {
-                    player.getPlayer().sendMessage(Lang.Minecraft.ACCOUNT_UNLINKED.print());
+                    player.getPlayer().sendMessage(Minecraft.ACCOUNT_UNLINKED.toString());
                     GuildVoiceState voiceState = event.getMember().getVoiceState();
                     if (voiceState != null) {
                         VoiceChannel voiceChannel = voiceState.getChannel();
                         if (voiceChannel != null && voiceChannel.equals(getLobby())) {
-                            player.getPlayer().sendMessage(Lang.Minecraft.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.print());
+                            player.getPlayer().sendMessage(Minecraft.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.toString());
                         }
                     }
                 }
@@ -77,13 +79,13 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Lang.Minecraft.ILLEGAL_EXECUTOR.print());
+            sender.sendMessage(Minecraft.ILLEGAL_EXECUTOR.toString());
             return true;
         }
         Player player = (Player) sender;
         String discordID = getPlugin().getConfigFile().getString("link." + player.getUniqueId());
         if (discordID == null) {
-            player.sendMessage(Lang.Minecraft.ACCOUNT_NOT_LINKED.print());
+            player.sendMessage(Minecraft.ACCOUNT_NOT_LINKED.toString());
             return true;
         }
         unlinkUser(discordID, player.getUniqueId().toString());
@@ -91,19 +93,21 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
         try {
             member = getGuild().retrieveMemberById(discordID).complete();
             member.getUser().openPrivateChannel().complete()
-                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Lang.Discord.LINKING_PROCESS_EMBED_TITLE.print())
-                            .addField(":heavy_check_mark: " + Lang.Discord.ACCOUNT_UNLINKED_FIELD_TITLE.print(), Lang.Discord.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.print(), false)
-                            .setColor(Color.GREEN).build()).queue(success -> {}, failure -> {});
+                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE.toString())
+                            .addField(":heavy_check_mark: " + Discord.ACCOUNT_UNLINKED_FIELD_TITLE.toString(), Discord.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.toString(), false)
+                            .setColor(Color.GREEN).build()).queue(success -> {
+                    }, failure -> {
+                    });
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 VoiceChannel voiceChannel = voiceState.getChannel();
                 if (voiceChannel != null && voiceChannel.equals(getLobby()) || getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
-                    player.sendMessage(Lang.Minecraft.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.print());
+                    player.sendMessage(Minecraft.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.toString());
                 }
             }
         } catch (ErrorResponseException ignored) {
         }
-        player.sendMessage(Lang.Minecraft.ACCOUNT_UNLINKED.print());
+        player.sendMessage(Minecraft.ACCOUNT_UNLINKED.toString());
         return true;
     }
 

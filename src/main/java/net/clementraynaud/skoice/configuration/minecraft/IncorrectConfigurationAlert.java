@@ -20,7 +20,7 @@
 
 package net.clementraynaud.skoice.configuration.minecraft;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Minecraft;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -33,7 +33,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.bot.Connection.*;
+import static net.clementraynaud.skoice.bot.Connection.getJda;
 
 public class IncorrectConfigurationAlert implements Listener {
 
@@ -50,10 +50,10 @@ public class IncorrectConfigurationAlert implements Listener {
                             .append(configureCommand)
                             .append(" §7to set it up.").event((HoverEvent) null).create());
                 } catch (NoSuchMethodError e) {
-                    player.sendMessage(Lang.Minecraft.INCOMPLETE_CONFIGURATION_OPERATOR_COMMAND.print());
+                    player.sendMessage(Minecraft.INCOMPLETE_CONFIGURATION_OPERATOR_COMMAND.toString());
                 }
             } else if (!getPlugin().isBotReady()) {
-                player.sendMessage(Lang.Minecraft.INCOMPLETE_CONFIGURATION_OPERATOR_DISCORD.print());
+                player.sendMessage(Minecraft.INCOMPLETE_CONFIGURATION_OPERATOR_DISCORD.toString());
             }
         }
     }

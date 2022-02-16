@@ -20,8 +20,7 @@
 
 package net.clementraynaud.skoice.system;
 
-import net.clementraynaud.skoice.util.DataGetters;
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Minecraft;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
@@ -163,7 +162,7 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
                                 .filter(network -> network.contains(player.getUniqueId()))
                                 .filter(network -> network.isPlayerInRangeToStayConnected(player))
                                 .filter(network -> !network.isPlayerInRangeToBeAdded(player))
-                                .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.Minecraft.ACTION_BAR_ALERT.print())));
+                                .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Minecraft.ACTION_BAR_ALERT.toString())));
                     } catch (NoSuchMethodError ignored) {
                     }
                 }
@@ -294,7 +293,7 @@ public class ChannelManagement extends ListenerAdapter implements Listener {
                     .filter(network -> network.contains(player.getPlayer()))
                     .forEach(network -> network.remove(player.getPlayer()));
             if (event.getChannelLeft().equals(getLobby()) || networks.stream().anyMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
-                player.getPlayer().sendMessage(Lang.Minecraft.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.print());
+                player.getPlayer().sendMessage(Minecraft.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.toString());
             }
         }
     }

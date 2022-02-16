@@ -20,7 +20,7 @@
 
 package net.clementraynaud.skoice.configuration.discord;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Discord;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
@@ -35,7 +35,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.clementraynaud.skoice.bot.Connection.*;
+import static net.clementraynaud.skoice.bot.Connection.getJda;
 
 public class ServerSelection {
 
@@ -52,19 +52,19 @@ public class ServerSelection {
             optionIndex++;
         }
         if (options.size() == 24) {
-            options.add(SelectOption.of(Lang.Discord.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.print(), "refresh")
-                    .withDescription(Lang.Discord.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.print()).withEmoji(Emoji.fromUnicode("U+26A0")));
+            options.add(SelectOption.of(Discord.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.toString(), "refresh")
+                    .withDescription(Discord.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+26A0")));
         }
         List<ActionRow> actionRows = new ArrayList<>();
         actionRows.add(ActionRow.of(SelectionMenu.create("servers")
-                .setPlaceholder(Lang.Discord.SERVER_SELECT_MENU_PLACEHOLDER.print())
+                .setPlaceholder(Discord.SERVER_SELECT_MENU_PLACEHOLDER.toString())
                 .addOptions(options)
                 .build()));
-        actionRows.add(ActionRow.of(Button.primary("settings", "⟳ " + Lang.Discord.REFRESH_BUTTON_LABEL.print()),
-                Button.secondary("close", Lang.Discord.CONFIGURE_LATER_BUTTON_LABEL.print()).withEmoji(Emoji.fromUnicode("U+1F552"))));
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Lang.Discord.CONFIGURATION_EMBED_TITLE.print())
+        actionRows.add(ActionRow.of(Button.primary("settings", "⟳ " + Discord.REFRESH_BUTTON_LABEL.toString()),
+                Button.secondary("close", Discord.CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+1F552"))));
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
                 .setColor(Color.ORANGE)
-                .addField(":file_cabinet: " + Lang.Discord.SERVER_EMBED_TITLE.print(), Lang.Discord.SERVER_EMBED_DESCRIPTION.print(), false);
+                .addField(":file_cabinet: " + Discord.SERVER_EMBED_TITLE.toString(), Discord.SERVER_EMBED_DESCRIPTION.toString(), false);
         return new MessageBuilder().setEmbeds(embed.build()).setActionRows(actionRows).build();
     }
 }

@@ -20,7 +20,7 @@
 
 package net.clementraynaud.skoice.configuration.discord;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Discord;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Emoji;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static net.clementraynaud.skoice.util.DataGetters.*;
+import static net.clementraynaud.skoice.util.DataGetters.getChannelVisibility;
 
 public class ChannelVisibilityConfiguration {
 
@@ -43,17 +43,17 @@ public class ChannelVisibilityConfiguration {
     }
 
     public static Message getChannelVisibilityConfigurationMessage() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Lang.Discord.CONFIGURATION_EMBED_TITLE.print())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
                 .setColor(Color.ORANGE)
-                .addField(":mag: " + Lang.Discord.CHANNEL_VISIBILITY_EMBED_TITLE.print(), Lang.Discord.CHANNEL_VISIBILITY_EMBED_DESCRIPTION.print(), false);
+                .addField(":mag: " + Discord.CHANNEL_VISIBILITY_EMBED_TITLE.toString(), Discord.CHANNEL_VISIBILITY_EMBED_DESCRIPTION.toString(), false);
         List<ActionRow> actionRows = new ArrayList<>();
         actionRows.add(ActionRow.of(SelectionMenu.create("channel-visibility")
-                .addOptions(SelectOption.of(Lang.Discord.ENABLED_SELECT_OPTION_LABEL.print(), "true").withEmoji(Emoji.fromUnicode("U+2714")),
-                        SelectOption.of(Lang.Discord.DISABLED_SELECT_OPTION_LABEL.print(), "false")
-                                .withDescription(Lang.Discord.DEFAULT_SELECT_OPTION_DESCRIPTION.print()).withEmoji(Emoji.fromUnicode("U+2716")))
+                .addOptions(SelectOption.of(Discord.ENABLED_SELECT_OPTION_LABEL.toString(), "true").withEmoji(Emoji.fromUnicode("U+2714")),
+                        SelectOption.of(Discord.DISABLED_SELECT_OPTION_LABEL.toString(), "false")
+                                .withDescription(Discord.DEFAULT_SELECT_OPTION_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+2716")))
                 .setDefaultValues(Collections.singleton(String.valueOf(getChannelVisibility()))).build()));
-        actionRows.add(ActionRow.of(Button.secondary("advanced-settings", "← " + Lang.Discord.BACK_BUTTON_LABEL.print()),
-                Button.danger("close", Lang.Discord.CLOSE_BUTTON_LABEL.print()).withEmoji(Emoji.fromUnicode("U+2716"))));
+        actionRows.add(ActionRow.of(Button.secondary("advanced-settings", "← " + Discord.BACK_BUTTON_LABEL.toString()),
+                Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716"))));
         return new MessageBuilder().setEmbeds(embed.build())
                 .setActionRows(actionRows).build();
     }

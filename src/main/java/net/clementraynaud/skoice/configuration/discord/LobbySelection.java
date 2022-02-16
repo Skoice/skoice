@@ -21,7 +21,7 @@
 package net.clementraynaud.skoice.configuration.discord;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Discord;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.audit.ActionType;
@@ -40,8 +40,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-
 public class LobbySelection extends ListenerAdapter {
 
     private static void deleteLobby(Guild guild) {
@@ -52,9 +50,11 @@ public class LobbySelection extends ListenerAdapter {
         if (user != null) {
             try {
                 user.openPrivateChannel().complete()
-                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + Lang.Discord.CONFIGURATION_EMBED_TITLE.print())
-                                .addField(":warning: " + Lang.Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE.print(), Lang.Discord.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_ALTERNATIVE_DESCRIPTION.print(), false)
-                                .setColor(Color.RED).build()).queue(success -> {}, failure -> {});
+                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
+                                .addField(":warning: " + Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE.toString(), Discord.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_ALTERNATIVE_DESCRIPTION.toString(), false)
+                                .setColor(Color.RED).build()).queue(success -> {
+                        }, failure -> {
+                        });
             } catch (ErrorResponseException ignored) {
             }
         }
@@ -75,29 +75,29 @@ public class LobbySelection extends ListenerAdapter {
             }
             optionIndex++;
         }
-        options.add(SelectOption.of(Lang.Discord.NEW_VOICE_CHANNEL_SELECT_OPTION_LABEL.print(), "generate")
-                .withDescription(Lang.Discord.NEW_VOICE_CHANNEL_SELECT_OPTION_DESCRIPTION.print()).withEmoji(Emoji.fromUnicode("U+2795")));
+        options.add(SelectOption.of(Discord.NEW_VOICE_CHANNEL_SELECT_OPTION_LABEL.toString(), "generate")
+                .withDescription(Discord.NEW_VOICE_CHANNEL_SELECT_OPTION_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+2795")));
         if (options.size() == 23) {
-            options.add(SelectOption.of(Lang.Discord.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.print(), "refresh")
-                    .withDescription(Lang.Discord.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.print()).withEmoji(Emoji.fromUnicode("U+26A0")));
+            options.add(SelectOption.of(Discord.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.toString(), "refresh")
+                    .withDescription(Discord.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+26A0")));
         }
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Lang.Discord.CONFIGURATION_EMBED_TITLE.print())
+        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
                 .setColor(Color.ORANGE)
-                .addField(":sound: " + Lang.Discord.LOBBY_EMBED_TITLE.print(), Lang.Discord.LOBBY_EMBED_ALTERNATIVE_DESCRIPTION.print(), false);
+                .addField(":sound: " + Discord.LOBBY_EMBED_TITLE.toString(), Discord.LOBBY_EMBED_ALTERNATIVE_DESCRIPTION.toString(), false);
         List<ActionRow> actionRows = new ArrayList<>();
         if (Skoice.getPlugin().isBotReady()) {
             actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")
                     .addOptions(options)
                     .setDefaultValues(Collections.singleton(Skoice.getPlugin().getConfigFile().getString("lobby-id"))).build()));
-            actionRows.add(ActionRow.of(Button.secondary("settings", "← " + Lang.Discord.BACK_BUTTON_LABEL.print()),
-                    Button.primary("lobby", "⟳ " + Lang.Discord.REFRESH_BUTTON_LABEL.print()),
-                    Button.danger("close", Lang.Discord.CLOSE_BUTTON_LABEL.print()).withEmoji(Emoji.fromUnicode("U+2716"))));
+            actionRows.add(ActionRow.of(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL.toString()),
+                    Button.primary("lobby", "⟳ " + Discord.REFRESH_BUTTON_LABEL.toString()),
+                    Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716"))));
         } else {
             actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")
-                    .setPlaceholder(Lang.Discord.LOBBY_SELECT_MENU_PLACEHOLDER.print())
+                    .setPlaceholder(Discord.LOBBY_SELECT_MENU_PLACEHOLDER.toString())
                     .addOptions(options).build()));
-            actionRows.add(ActionRow.of(Button.primary("settings", "⟳ " + Lang.Discord.REFRESH_BUTTON_LABEL.print()),
-                    Button.secondary("close", Lang.Discord.CONFIGURE_LATER_BUTTON_LABEL.print()).withEmoji(Emoji.fromUnicode("U+1F552"))));
+            actionRows.add(ActionRow.of(Button.primary("settings", "⟳ " + Discord.REFRESH_BUTTON_LABEL.toString()),
+                    Button.secondary("close", Discord.CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+1F552"))));
         }
         return new MessageBuilder().setEmbeds(embed.build()).setActionRows(actionRows).build();
     }

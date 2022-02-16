@@ -20,7 +20,8 @@
 
 package net.clementraynaud.skoice.configuration.discord;
 
-import net.clementraynaud.skoice.util.Lang;
+import net.clementraynaud.skoice.lang.Console;
+import net.clementraynaud.skoice.lang.Discord;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -38,18 +39,21 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.bot.Connection.*;
+import static net.clementraynaud.skoice.bot.Connection.getJda;
 import static net.clementraynaud.skoice.configuration.discord.ActionBarAlertConfiguration.getActionBarAlertConfigurationMessage;
+import static net.clementraynaud.skoice.configuration.discord.ChannelVisibilityConfiguration.getChannelVisibilityConfigurationMessage;
 import static net.clementraynaud.skoice.configuration.discord.DistanceConfiguration.getHorizontalRadiusConfigurationMessage;
 import static net.clementraynaud.skoice.configuration.discord.DistanceConfiguration.getVerticalRadiusConfigurationMessage;
 import static net.clementraynaud.skoice.configuration.discord.LanguageSelection.getLanguageSelectionMessage;
 import static net.clementraynaud.skoice.configuration.discord.LobbySelection.getLobbySelectionMessage;
-import static net.clementraynaud.skoice.configuration.discord.ModeSelection.*;
+import static net.clementraynaud.skoice.configuration.discord.ModeSelection.getModeSelectionMessage;
 import static net.clementraynaud.skoice.configuration.discord.Settings.*;
-import static net.clementraynaud.skoice.configuration.discord.ChannelVisibilityConfiguration.getChannelVisibilityConfigurationMessage;
 
 public class MessageManagement extends ListenerAdapter {
 
@@ -164,8 +168,8 @@ public class MessageManagement extends ListenerAdapter {
                         getPlugin().saveConfig();
                         if (!getPlugin().isBotReady()) {
                             event.replyEmbeds(new EmbedBuilder()
-                                            .setTitle(":gear: " + Lang.Discord.CONFIGURATION_EMBED_TITLE.print())
-                                            .addField(":warning: " + Lang.Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE.print(), Lang.Discord.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.print(), false)
+                                            .setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE.toString())
+                                            .addField(":warning: " + Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE.toString(), Discord.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.toString(), false)
                                             .setColor(Color.RED).build())
                                     .setEphemeral(true).queue();
                         }
@@ -230,7 +234,7 @@ public class MessageManagement extends ListenerAdapter {
                         }
                         break;
                     default:
-                        throw new IllegalStateException(Lang.Console.UNEXPECTED_VALUE.print().replace("{value}", buttonID));
+                        throw new IllegalStateException(Console.UNEXPECTED_VALUE.toString().replace("{value}", buttonID));
                 }
             }
         } else {
@@ -266,8 +270,8 @@ public class MessageManagement extends ListenerAdapter {
                     Guild guild = event.getGuild();
                     if (guild != null) {
                         if (event.getSelectedOptions().get(0).getValue().equals("generate")) {
-                            String categoryID = guild.createCategory(Lang.Discord.DEFAULT_CATEGORY_NAME.print()).complete().getId();
-                            String lobbyID = guild.createVoiceChannel(Lang.Discord.DEFAULT_LOBBY_NAME.print(), event.getGuild().getCategoryById(categoryID)).complete().getId();
+                            String categoryID = guild.createCategory(Discord.DEFAULT_CATEGORY_NAME.toString()).complete().getId();
+                            String lobbyID = guild.createVoiceChannel(Discord.DEFAULT_LOBBY_NAME.toString(), event.getGuild().getCategoryById(categoryID)).complete().getId();
                             getPlugin().getConfigFile().set("lobby-id", lobbyID);
                             getPlugin().saveConfig();
                             getPlugin().updateConfigurationStatus(false);
