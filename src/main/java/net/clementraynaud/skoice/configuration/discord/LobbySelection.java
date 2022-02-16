@@ -47,7 +47,7 @@ public class LobbySelection extends ListenerAdapter {
         Skoice.getPlugin().saveConfig();
         Skoice.getPlugin().updateConfigurationStatus(false);
         User user = guild.retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
-        if (user != null) {
+        if (user != null && !user.isBot()) {
             try {
                 user.openPrivateChannel().complete()
                         .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
