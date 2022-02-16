@@ -5,17 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.clementraynaud</groupId>
-    <artifactId>Skoice</artifactId>
+    <artifactId>skoice</artifactId>
     <version>2.1</version>
     <packaging>jar</packaging>
 
-    <name>Skoice</name>
-    <url>https://github.com/carlodrift/skoice</url>
+    <name>skoice</name>
 
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <url>https://github.com/carlodrift/skoice</url>
 
     <build>
         <plugins>
@@ -36,17 +36,15 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>net.clementraynaud.skoice.Skoice</shadedPattern>
+                            <shadedPattern>${project.groupId}.skoice.util</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
                             <excludes>
+                                <exclude>META-INF/*</exclude>
                                 <exclude>module-info.class</exclude>
-                                <exclude>META-INF/*.MF</exclude>
-                                <exclude>META-INF/LICENSE*</exclude>
-                                <exclude>META-INF/NOTICE*</exclude>
                             </excludes>
                         </filter>
                     </filters>
@@ -59,6 +57,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <finalName>Skoice</finalName>
                         </configuration>
                     </execution>
                 </executions>
@@ -73,10 +72,6 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
         <repository>
             <id>dv8tion</id>
             <name>m2-dv8tion</name>
@@ -94,7 +89,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>2.2.1</version>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>net.dv8tion</groupId>
@@ -108,9 +103,10 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
