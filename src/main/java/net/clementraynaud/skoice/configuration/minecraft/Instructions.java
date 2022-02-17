@@ -1,6 +1,5 @@
 /*
  * Copyright 2020, 2021 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -21,6 +20,7 @@
 package net.clementraynaud.skoice.configuration.minecraft;
 
 import net.clementraynaud.skoice.lang.Minecraft;
+import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -53,10 +53,10 @@ public class Instructions implements CommandExecutor {
             } else {
                 try {
                     TextComponent tutorialPage = new TextComponent("§bpage");
-                    tutorialPage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§8☀ §bOpen in web browser: §7https://github.com/carlodrift/skoice/wiki")));
+                    MessageUtil.setHoverEvent(tutorialPage, "§8☀ §bOpen in web browser: §7https://github.com/carlodrift/skoice/wiki");
                     tutorialPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/carlodrift/skoice/wiki"));
                     TextComponent tokenCommand = new TextComponent("§bhere");
-                    tokenCommand.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§8☀ §bShortcut: §7/token")));
+                    MessageUtil.setHoverEvent(tokenCommand,"§8☀ §bShortcut: §7/token");
                     tokenCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/token "));
                     player.spigot().sendMessage(new ComponentBuilder("\n§dSkoice §8• §7Configuration (§fBot Creation§7)\n\n§8• §7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this ")
                             .append(tutorialPage)

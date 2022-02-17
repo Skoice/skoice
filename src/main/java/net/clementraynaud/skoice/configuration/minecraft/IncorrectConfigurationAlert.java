@@ -1,6 +1,5 @@
 /*
  * Copyright 2020, 2021 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -21,6 +20,7 @@
 package net.clementraynaud.skoice.configuration.minecraft;
 
 import net.clementraynaud.skoice.lang.Minecraft;
+import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -44,7 +44,7 @@ public class IncorrectConfigurationAlert implements Listener {
             if (!getPlugin().isTokenSet() || getJda() == null) {
                 try {
                     TextComponent configureCommand = new TextComponent("§bhere");
-                    configureCommand.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§8☀ §bExecute: §7/configure")));
+                    MessageUtil.setHoverEvent(configureCommand, "§8☀ §bExecute: §7/configure");
                     configureCommand.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/configure"));
                     player.spigot().sendMessage(new ComponentBuilder("§dSkoice §8• §7Skoice is §cnot configured correctly§7. Click ")
                             .append(configureCommand)
