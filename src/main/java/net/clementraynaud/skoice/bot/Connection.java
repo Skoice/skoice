@@ -54,8 +54,6 @@ import java.util.UUID;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.configuration.discord.MessageManagement.deleteConfigurationMessage;
-import static net.clementraynaud.skoice.configuration.discord.MessageManagement.initializeDiscordIDDistanceMap;
-import static net.clementraynaud.skoice.link.Link.initializeDiscordIDCodeMap;
 import static net.clementraynaud.skoice.system.ChannelManagement.networks;
 import static net.clementraynaud.skoice.util.DataGetters.*;
 
@@ -79,7 +77,7 @@ public class Connection extends ListenerAdapter {
 
     public void connectBot(boolean startup, CommandSender sender) {
         if (getPlugin().isTokenSet()) {
-            byte[] base64TokenBytes = Base64.getDecoder().decode(getPlugin().getConfigFile().getString("token"));
+            byte[] base64TokenBytes = Base64.getDecoder().decode(getPlugin().getConfig().getString("token"));
             for (int i = 0; i < base64TokenBytes.length; i++) {
                 base64TokenBytes[i]--;
             }
@@ -95,7 +93,7 @@ public class Connection extends ListenerAdapter {
                     getPlugin().getLogger().severe(Console.BOT_COULD_NOT_CONNECT_ERROR.toString());
                 } else {
                     sender.sendMessage(Minecraft.BOT_COULD_NOT_CONNECT.toString());
-                    getPlugin().getConfigFile().set("token", null);
+                    getPlugin().getConfig().set("token", null);
                     getPlugin().saveConfig();
                 }
             } catch (IllegalStateException e) {
@@ -110,8 +108,6 @@ public class Connection extends ListenerAdapter {
                 updateGuildUniquenessStatus();
                 checkForValidLobby();
                 checkForUnlinkedUsersInLobby();
-                initializeDiscordIDCodeMap();
-                initializeDiscordIDDistanceMap();
                 jda.getGuilds().forEach(CommandRegistration::registerCommands);
                 jda.addEventListener(this, new CommandRegistration(), new InviteCommand(), new LobbySelection(), new MessageManagement(), new Link(), new Unlink());
                 Bukkit.getScheduler().runTaskLater(getPlugin(), () ->
@@ -132,7 +128,7 @@ public class Connection extends ListenerAdapter {
                                 ),
                         0
                 );
-                if (getPlugin().getConfigFile().contains("lobby-id")) {
+                if (getPlugin().getConfig().contains("lobby-id")) {
                     Category category = getDedicatedCategory();
                     if (category != null) {
                         category.getVoiceChannels().stream()
@@ -166,8 +162,8 @@ public class Connection extends ListenerAdapter {
     }
 
     private void checkForValidLobby() {
-        if (getLobby() == null && getPlugin().getConfigFile().contains("lobby-id")) {
-            getPlugin().getConfigFile().set("lobby-id", null);
+        if (getLobby() == null && getPlugin().getConfig().contains("lobby-id")) {
+            getPlugin().getConfig().set("lobby-id", null);
             getPlugin().saveConfig();
         }
     }

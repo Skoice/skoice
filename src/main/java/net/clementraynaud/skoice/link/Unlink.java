@@ -50,7 +50,7 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
     public void onSlashCommand(SlashCommandEvent event) {
         if (event.getName().equals("unlink")) {
             EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE);
-            String minecraftID = getPlugin().getConfigFile().getString("link." + event.getUser().getId());
+            String minecraftID = getPlugin().getConfig().getString("link." + event.getUser().getId());
             if (minecraftID == null) {
                 event.replyEmbeds(embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE, Discord.ACCOUNT_NOT_LINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
@@ -82,7 +82,7 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
-        String discordID = getPlugin().getConfigFile().getString("link." + player.getUniqueId());
+        String discordID = getPlugin().getConfig().getString("link." + player.getUniqueId());
         if (discordID == null) {
             player.sendMessage(Minecraft.ACCOUNT_NOT_LINKED.toString());
             return true;
@@ -111,8 +111,8 @@ public class Unlink extends ListenerAdapter implements CommandExecutor {
     }
 
     private void unlinkUser(String discordID, String minecraftID) {
-        getPlugin().getConfigFile().set("link." + minecraftID, null);
-        getPlugin().getConfigFile().set("link." + discordID, null);
+        getPlugin().getConfig().set("link." + minecraftID, null);
+        getPlugin().getConfig().set("link." + discordID, null);
         getPlugin().saveConfig();
     }
 }

@@ -42,14 +42,14 @@ public class Settings {
     }
 
     public static Message getConfigurationMessage(Guild guild) {
-        if (!getPlugin().getConfigFile().contains("language")) {
+        if (!getPlugin().getConfig().contains("language")) {
             return getLanguageSelectionMessage();
         } else if (!getPlugin().isGuildUnique()) {
             return getServerSelectionMessage();
-        } else if (!getPlugin().getConfigFile().contains("lobby-id")) {
+        } else if (!getPlugin().getConfig().contains("lobby-id")) {
             return getLobbySelectionMessage(guild);
-        } else if (!getPlugin().getConfigFile().contains("radius.horizontal")
-                || !getPlugin().getConfigFile().contains("radius.vertical")) {
+        } else if (!getPlugin().getConfig().contains("radius.horizontal")
+                || !getPlugin().getConfig().contains("radius.vertical")) {
             return ModeSelection.getModeSelectionMessage(false);
         } else {
             return getSettingsMessage();

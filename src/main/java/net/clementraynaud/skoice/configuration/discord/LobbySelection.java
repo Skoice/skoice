@@ -19,7 +19,6 @@
 
 package net.clementraynaud.skoice.configuration.discord;
 
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.lang.Discord;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
@@ -39,12 +38,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static net.clementraynaud.skoice.Skoice.getPlugin;
+
 public class LobbySelection extends ListenerAdapter {
 
     private static void deleteLobby(Guild guild) {
-        Skoice.getPlugin().getConfigFile().set("lobby-id", null);
-        Skoice.getPlugin().saveConfig();
-        Skoice.getPlugin().updateConfigurationStatus(false);
+        getPlugin().getConfig().set("lobby-id", null);
+        getPlugin().saveConfig();
+        getPlugin().updateConfigurationStatus(false);
         User user = guild.retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
         if (user != null && !user.isBot()) {
             try {
@@ -84,10 +85,10 @@ public class LobbySelection extends ListenerAdapter {
                 .setColor(Color.ORANGE)
                 .addField(":sound: " + Discord.LOBBY_EMBED_TITLE, Discord.LOBBY_EMBED_ALTERNATIVE_DESCRIPTION.toString(), false);
         List<ActionRow> actionRows = new ArrayList<>();
-        if (Skoice.getPlugin().isBotReady()) {
+        if (getPlugin().isBotReady()) {
             actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(Skoice.getPlugin().getConfigFile().getString("lobby-id"))).build()));
+                    .setDefaultValues(Collections.singleton(getPlugin().getConfig().getString("lobby-id"))).build()));
             actionRows.add(ActionRow.of(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL),
                     Button.primary("lobby", "⟳ " + Discord.REFRESH_BUTTON_LABEL),
                     Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716"))));
@@ -103,14 +104,14 @@ public class LobbySelection extends ListenerAdapter {
 
     @Override
     public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
-        if (event.getChannel().getId().equals(Skoice.getPlugin().getConfigFile().getString("lobby-id"))) {
+        if (event.getChannel().getId().equals(getPlugin().getConfig().getString("lobby-id"))) {
             deleteLobby(event.getGuild());
         }
     }
 
     @Override
     public void onVoiceChannelUpdateParent(VoiceChannelUpdateParentEvent event) {
-        if (event.getChannel().getId().equals(Skoice.getPlugin().getConfigFile().getString("lobby-id"))) {
+        if (event.getChannel().getId().equals(getPlugin().getConfig().getString("lobby-id"))) {
             deleteLobby(event.getGuild());
         }
     }

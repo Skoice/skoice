@@ -45,11 +45,7 @@ import static net.clementraynaud.skoice.util.DataGetters.*;
 
 public class Link extends ListenerAdapter implements CommandExecutor {
 
-    private static Map<String, String> discordIDCodeMap;
-
-    public static void initializeDiscordIDCodeMap() {
-        discordIDCodeMap = new HashMap<>();
-    }
+    private final Map<String, String> discordIDCodeMap = new HashMap<>();
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
@@ -62,7 +58,7 @@ public class Link extends ListenerAdapter implements CommandExecutor {
                 return;
             }
             EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE);
-            boolean isLinked = getPlugin().getConfigFile().contains("link." + event.getUser().getId());
+            boolean isLinked = getPlugin().getConfig().contains("link." + event.getUser().getId());
             if (isLinked) {
                 event.replyEmbeds(embed.addField(":warning: " + Discord.ACCOUNT_ALREADY_LINKED_FIELD_TITLE, Discord.ACCOUNT_ALREADY_LINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
@@ -92,7 +88,7 @@ public class Link extends ListenerAdapter implements CommandExecutor {
             player.sendMessage(Minecraft.INCOMPLETE_CONFIGURATION.toString());
             return true;
         }
-        boolean isLinked = getPlugin().getConfigFile().contains("link." + player.getUniqueId());
+        boolean isLinked = getPlugin().getConfig().contains("link." + player.getUniqueId());
         if (isLinked) {
             player.sendMessage(Minecraft.ACCOUNT_ALREADY_LINKED.toString());
             return true;
@@ -113,8 +109,8 @@ public class Link extends ListenerAdapter implements CommandExecutor {
         if (member == null) {
             return true;
         }
-        getPlugin().getConfigFile().set("link." + player.getUniqueId(), discordID);
-        getPlugin().getConfigFile().set("link." + discordID, player.getUniqueId().toString());
+        getPlugin().getConfig().set("link." + player.getUniqueId(), discordID);
+        getPlugin().getConfig().set("link." + discordID, player.getUniqueId().toString());
         getPlugin().saveConfig();
         discordIDCodeMap.values().remove(args[0]);
         try {

@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice;
 
 import net.clementraynaud.skoice.bot.Connection;
+import net.clementraynaud.skoice.configuration.OutdatedConfig;
 import net.clementraynaud.skoice.configuration.discord.MessageManagement;
 import net.clementraynaud.skoice.configuration.minecraft.IncorrectConfigurationAlert;
 import net.clementraynaud.skoice.configuration.minecraft.Instructions;
@@ -30,16 +31,16 @@ import net.clementraynaud.skoice.link.Unlink;
 import net.clementraynaud.skoice.system.ChannelManagement;
 import net.clementraynaud.skoice.system.MarkPlayersDirty;
 import net.clementraynaud.skoice.system.Network;
-import net.clementraynaud.skoice.util.UpdateChecker;
+import net.clementraynaud.skoice.util.UpdateUtil;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
 import static net.clementraynaud.skoice.bot.Connection.getJda;
@@ -48,9 +49,8 @@ public class Skoice extends JavaPlugin {
 
     private static Skoice plugin;
     private static Connection bot;
-    private final FileConfiguration configFile = getConfig();
-    private boolean isTokenSet = configFile.contains("token");
-    private boolean isBotReady = false;
+    private boolean isTokenSet;
+    private boolean isBotReady;
     private boolean isGuildUnique;
 
     public static Skoice getPlugin() {
@@ -67,10 +67,6 @@ public class Skoice extends JavaPlugin {
 
     public static void setBot(Connection bot) {
         Skoice.bot = bot;
-    }
-
-    public FileConfiguration getConfigFile() {
-        return configFile;
     }
 
     public boolean isTokenSet() {
@@ -96,10 +92,12 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onEnable() {
         new Metrics(this, 11380);
-        saveDefaultConfig();
-        registerDefaultValues();
         setPlugin(this);
         getLogger().info(Console.PLUGIN_ENABLED_INFO.toString());
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+        new OutdatedConfig().update();
+        isTokenSet = getConfig().contains("token");
         setBot(new Connection());
         plugin.getCommand("configure").setExecutor(new Instructions());
         plugin.getCommand("token").setExecutor(new TokenRetrieval());
@@ -108,19 +106,8 @@ public class Skoice extends JavaPlugin {
         checkVersion();
     }
 
-    private void registerDefaultValues() {
-        if (!configFile.contains("action-bar-alert")) {
-            configFile.set("action-bar-alert", true);
-            saveConfig();
-        }
-        if (!configFile.contains("channel-visibility")) {
-            configFile.set("channel-visibility", false);
-            saveConfig();
-        }
-    }
-
     public void checkVersion() {
-        new UpdateChecker(this, 82861).getVersion(version -> {
+        new UpdateUtil(this, 82861).getVersion(version -> {
             if (!this.getDescription().getVersion().equals(version)) {
                 getLogger().warning(Console.OUTDATED_VERSION_WARNING.toString()
                         .replace("{runningVersion}", this.getDescription().getVersion())
@@ -131,23 +118,23 @@ public class Skoice extends JavaPlugin {
 
     public void updateConfigurationStatus(boolean startup) {
         boolean wasBotReady = isBotReady;
-        if (!configFile.contains("token")) {
+        if (!getConfig().contains("token")) {
             isTokenSet = false;
             isBotReady = false;
             getLogger().warning(Console.NO_TOKEN_WARNING.toString());
         } else if (getJda() == null) {
             isBotReady = false;
-        } else if (!configFile.contains("language")) {
+        } else if (!getConfig().contains("language")) {
             isBotReady = false;
             getLogger().warning(Console.NO_LANGUAGE_WARNING.toString());
         } else if (!isGuildUnique()) {
             isBotReady = false;
             getLogger().warning(Console.MULTIPLE_GUILDS_WARNING.toString());
-        } else if (!configFile.contains("lobby-id")) {
+        } else if (!getConfig().contains("lobby-id")) {
             isBotReady = false;
             getLogger().warning(Console.NO_LOBBY_ID_WARNING.toString());
-        } else if (!configFile.contains("radius.horizontal")
-                || !configFile.contains("radius.vertical")) {
+        } else if (!getConfig().contains("radius.horizontal")
+                || !getConfig().contains("radius.vertical")) {
             isBotReady = false;
             getLogger().warning(Console.NO_DISTANCES_WARNING.toString());
         } else {

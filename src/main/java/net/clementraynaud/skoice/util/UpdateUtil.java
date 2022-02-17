@@ -28,12 +28,12 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
-public class UpdateChecker {
+public class UpdateUtil {
 
     private final JavaPlugin plugin;
     private final int resourceId;
 
-    public UpdateChecker(JavaPlugin plugin, int resourceId) {
+    public UpdateUtil(JavaPlugin plugin, int resourceId) {
         this.plugin = plugin;
         this.resourceId = resourceId;
     }

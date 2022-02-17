@@ -48,7 +48,7 @@ public class DataGetters {
     }
 
     public static UUID getMinecraftID(Member member) {
-        String minecraftID = getPlugin().getConfigFile().getString("link." + member.getId());
+        String minecraftID = getPlugin().getConfig().getString("link." + member.getId());
         return minecraftID != null ? UUID.fromString(minecraftID) : null;
     }
 
@@ -60,7 +60,7 @@ public class DataGetters {
 
     public static VoiceChannel getLobby() {
         if (getJda() == null) return null;
-        String lobbyID = getPlugin().getConfigFile().getString("lobby-id");
+        String lobbyID = getPlugin().getConfig().getString("lobby-id");
         if (lobbyID == null) return null;
         VoiceChannel lobby = getJda().getVoiceChannelById(lobbyID);
         if (lobby == null) return null;
@@ -76,11 +76,11 @@ public class DataGetters {
     }
 
     public static String getLanguage() {
-        return getPlugin().getConfigFile().getString("language");
+        return getPlugin().getConfig().getString("language");
     }
 
     public static Member getMember(UUID player) {
-        String discordID = getPlugin().getConfigFile().getString("link." + player);
+        String discordID = getPlugin().getConfig().getString("link." + player);
         Guild guild = getGuild();
         if (guild == null) return null;
         return discordID != null ? guild.getMemberById(discordID) : null;
@@ -102,25 +102,25 @@ public class DataGetters {
         return onlinePlayers;
     }
 
-    public static int getVerticalRadius() {
-        return getPlugin().getConfigFile().getInt("radius.vertical");
+    public static int getHorizontalRadius() {
+        return getPlugin().getConfig().getInt("radius.horizontal");
     }
 
-    public static int getHorizontalRadius() {
-        return getPlugin().getConfigFile().getInt("radius.horizontal");
+    public static int getVerticalRadius() {
+        return getPlugin().getConfig().getInt("radius.vertical");
     }
 
     public static boolean getActionBarAlert() {
-        if (!getPlugin().getConfigFile().contains("action-bar-alert")) {
-            getPlugin().getConfigFile().set("action-bar-alert", true);
+        if (!getPlugin().getConfig().contains("action-bar-alert")) {
+            getPlugin().getConfig().set("action-bar-alert", true);
         }
-        return getPlugin().getConfigFile().getBoolean("action-bar-alert");
+        return getPlugin().getConfig().getBoolean("action-bar-alert");
     }
 
     public static boolean getChannelVisibility() {
-        if (!getPlugin().getConfigFile().contains("channel-visibility")) {
-            getPlugin().getConfigFile().set("channel-visibility", false);
+        if (!getPlugin().getConfig().contains("channel-visibility")) {
+            getPlugin().getConfig().set("channel-visibility", false);
         }
-        return getPlugin().getConfigFile().getBoolean("channel-visibility");
+        return getPlugin().getConfig().getBoolean("channel-visibility");
     }
 }

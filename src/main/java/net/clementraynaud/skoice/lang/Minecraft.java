@@ -127,7 +127,7 @@ public enum Minecraft {
 
     @Override
     public String toString() {
-        String language = getPlugin().getConfigFile().getString("language");
+        String language = getPlugin().getConfig().getString("language");
         return messages.getOrDefault(language == null ? Lang.EN : Lang.valueOf(language), messages.get(Lang.EN));
     }
 }

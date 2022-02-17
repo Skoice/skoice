@@ -51,7 +51,7 @@ public class TokenRetrieval implements CommandExecutor {
             tokenBytes[i]++;
         }
         String base64Token = Base64.getEncoder().encodeToString(tokenBytes);
-        getPlugin().getConfigFile().set("token", base64Token);
+        getPlugin().getConfig().set("token", base64Token);
         getPlugin().saveConfig();
         getPlugin().setTokenBoolean(true);
         if (getJda() == null) {

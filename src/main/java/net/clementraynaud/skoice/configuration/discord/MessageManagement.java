@@ -56,23 +56,19 @@ import static net.clementraynaud.skoice.configuration.discord.Settings.*;
 
 public class MessageManagement extends ListenerAdapter {
 
-    private static Map<String, String> discordIDDistanceMap;
+    private final Map<String, String> discordIDDistanceMap = new HashMap<>();
     private boolean configureCommandCooldown = false;
 
-    public static void initializeDiscordIDDistanceMap() {
-        discordIDDistanceMap = new HashMap<>();
-    }
-
     public static void deleteConfigurationMessage() {
-        if (getPlugin().getConfigFile().contains("temp.guild-id")
-                && getPlugin().getConfigFile().contains("temp.text-channel-id")
-                && getPlugin().getConfigFile().contains("temp.message-id")) {
+        if (getPlugin().getConfig().contains("temp.guild-id")
+                && getPlugin().getConfig().contains("temp.text-channel-id")
+                && getPlugin().getConfig().contains("temp.message-id")) {
             try {
-                Guild guild = getJda().getGuildById(getPlugin().getConfigFile().getString("temp.guild-id"));
+                Guild guild = getJda().getGuildById(getPlugin().getConfig().getString("temp.guild-id"));
                 if (guild != null) {
-                    TextChannel textChannel = guild.getTextChannelById(getPlugin().getConfigFile().getString("temp.text-channel-id"));
+                    TextChannel textChannel = guild.getTextChannelById(getPlugin().getConfig().getString("temp.text-channel-id"));
                     if (textChannel != null) {
-                        textChannel.retrieveMessageById(getPlugin().getConfigFile().getString("temp.message-id"))
+                        textChannel.retrieveMessageById(getPlugin().getConfig().getString("temp.message-id"))
                                 .complete().delete().queue(success -> {
                                 }, failure -> {
                                 });
@@ -88,9 +84,9 @@ public class MessageManagement extends ListenerAdapter {
         String discordID = event.getAuthor().getId();
         if (discordID.equals(event.getJDA().getSelfUser().getId())) {
             if (!event.getMessage().isEphemeral()) {
-                getPlugin().getConfigFile().set("temp.guild-id", event.getGuild().getId());
-                getPlugin().getConfigFile().set("temp.text-channel-id", event.getChannel().getId());
-                getPlugin().getConfigFile().set("temp.message-id", event.getMessageId());
+                getPlugin().getConfig().set("temp.guild-id", event.getGuild().getId());
+                getPlugin().getConfig().set("temp.text-channel-id", event.getChannel().getId());
+                getPlugin().getConfig().set("temp.message-id", event.getMessageId());
                 getPlugin().saveConfig();
             }
         } else if (discordIDDistanceMap.containsKey(event.getAuthor().getId())
@@ -99,7 +95,7 @@ public class MessageManagement extends ListenerAdapter {
             int value = Integer.parseInt(event.getMessage().getContentRaw());
             if (value >= 1 && value <= 1000) {
                 event.getMessage().delete().queue();
-                getPlugin().getConfigFile().set("radius." + discordIDDistanceMap.get(event.getAuthor().getId()), value);
+                getPlugin().getConfig().set("radius." + discordIDDistanceMap.get(event.getAuthor().getId()), value);
                 getPlugin().saveConfig();
                 deleteConfigurationMessage();
                 if (discordIDDistanceMap.get(event.getAuthor().getId()).equals("horizontal")) {
@@ -113,9 +109,9 @@ public class MessageManagement extends ListenerAdapter {
 
     @Override
     public void onGuildMessageDelete(@NotNull GuildMessageDeleteEvent event) {
-        if (getPlugin().getConfigFile().contains("temp")
-                && event.getMessageId().equals(getPlugin().getConfigFile().getString("temp.message-id"))) {
-            getPlugin().getConfigFile().set("temp", null);
+        if (getPlugin().getConfig().contains("temp")
+                && event.getMessageId().equals(getPlugin().getConfig().getString("temp.message-id"))) {
+            getPlugin().getConfig().set("temp", null);
             getPlugin().saveConfig();
             discordIDDistanceMap.clear();
         }
@@ -129,7 +125,7 @@ public class MessageManagement extends ListenerAdapter {
                 if (configureCommandCooldown) {
                     event.replyEmbeds(getTooManyInteractionsEmbed()).setEphemeral(true).queue();
                 } else {
-                    if (getPlugin().getConfigFile().contains("temp")) {
+                    if (getPlugin().getConfig().contains("temp")) {
                         deleteConfigurationMessage();
                     }
                     event.reply(getConfigurationMessage(event.getGuild())).queue();
@@ -152,8 +148,8 @@ public class MessageManagement extends ListenerAdapter {
     public void onButtonClick(ButtonClickEvent event) {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (getPlugin().getConfigFile().contains("temp.message-id")
-                    && getPlugin().getConfigFile().getString("temp.message-id").equals(event.getMessageId())
+            if (getPlugin().getConfig().contains("temp.message-id")
+                    && getPlugin().getConfig().getString("temp.message-id").equals(event.getMessageId())
                     && event.getButton() != null) {
                 String buttonID = event.getButton().getId();
                 switch (buttonID) {
@@ -163,7 +159,7 @@ public class MessageManagement extends ListenerAdapter {
                     case "close":
                         event.getMessage().delete().queue();
                         discordIDDistanceMap.remove(event.getUser().getId());
-                        getPlugin().getConfigFile().set("temp", null);
+                        getPlugin().getConfig().set("temp", null);
                         getPlugin().saveConfig();
                         if (!getPlugin().isBotReady()) {
                             event.replyEmbeds(new EmbedBuilder()
@@ -245,8 +241,8 @@ public class MessageManagement extends ListenerAdapter {
     public void onSelectionMenu(SelectionMenuEvent event) {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (getPlugin().getConfigFile().contains("temp.message-id")
-                    && getPlugin().getConfigFile().getString("temp.message-id").equals(event.getMessageId())
+            if (getPlugin().getConfig().contains("temp.message-id")
+                    && getPlugin().getConfig().getString("temp.message-id").equals(event.getMessageId())
                     && event.getSelectedOptions() != null) {
                 String componentID = event.getComponentId();
                 if (componentID.equals("servers")
@@ -261,7 +257,7 @@ public class MessageManagement extends ListenerAdapter {
                         }
                     }
                 } else if (componentID.equals("languages")) {
-                    getPlugin().getConfigFile().set("language", event.getSelectedOptions().get(0).getValue());
+                    getPlugin().getConfig().set("language", event.getSelectedOptions().get(0).getValue());
                     getPlugin().saveConfig();
                     getPlugin().updateConfigurationStatus(false);
                     event.editMessage(getConfigurationMessage(event.getGuild())).queue();
@@ -271,7 +267,7 @@ public class MessageManagement extends ListenerAdapter {
                         if (event.getSelectedOptions().get(0).getValue().equals("generate")) {
                             String categoryID = guild.createCategory(Discord.DEFAULT_CATEGORY_NAME.toString()).complete().getId();
                             String lobbyID = guild.createVoiceChannel(Discord.DEFAULT_LOBBY_NAME.toString(), event.getGuild().getCategoryById(categoryID)).complete().getId();
-                            getPlugin().getConfigFile().set("lobby-id", lobbyID);
+                            getPlugin().getConfig().set("lobby-id", lobbyID);
                             getPlugin().saveConfig();
                             getPlugin().updateConfigurationStatus(false);
                         } else if (event.getSelectedOptions().get(0).getValue().equals("refresh")) {
@@ -279,7 +275,7 @@ public class MessageManagement extends ListenerAdapter {
                         } else {
                             VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                             if (lobby != null && lobby.getParent() != null) {
-                                getPlugin().getConfigFile().set("lobby-id", event.getSelectedOptions().get(0).getValue());
+                                getPlugin().getConfig().set("lobby-id", event.getSelectedOptions().get(0).getValue());
                                 getPlugin().saveConfig();
                                 getPlugin().updateConfigurationStatus(false);
                             }
@@ -288,14 +284,14 @@ public class MessageManagement extends ListenerAdapter {
                     event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                 } else if (componentID.equals("modes")) {
                     if (event.getSelectedOptions().get(0).getValue().equals("vanilla-mode")) {
-                        getPlugin().getConfigFile().set("radius.horizontal", 80);
-                        getPlugin().getConfigFile().set("radius.vertical", 40);
+                        getPlugin().getConfig().set("radius.horizontal", 80);
+                        getPlugin().getConfig().set("radius.vertical", 40);
                         getPlugin().saveConfig();
                         getPlugin().updateConfigurationStatus(false);
                         event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                     } else if (event.getSelectedOptions().get(0).getValue().equals("minigame-mode")) {
-                        getPlugin().getConfigFile().set("radius.horizontal", 40);
-                        getPlugin().getConfigFile().set("radius.vertical", 20);
+                        getPlugin().getConfig().set("radius.horizontal", 40);
+                        getPlugin().getConfig().set("radius.vertical", 20);
                         getPlugin().saveConfig();
                         getPlugin().updateConfigurationStatus(false);
                         event.editMessage(getConfigurationMessage(event.getGuild())).queue();
@@ -304,17 +300,17 @@ public class MessageManagement extends ListenerAdapter {
                     }
                 } else if (componentID.equals("action-bar-alert")) {
                     if (event.getSelectedOptions().get(0).getValue().equals("true")) {
-                        getPlugin().getConfigFile().set("action-bar-alert", true);
+                        getPlugin().getConfig().set("action-bar-alert", true);
                     } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
-                        getPlugin().getConfigFile().set("action-bar-alert", false);
+                        getPlugin().getConfig().set("action-bar-alert", false);
                     }
                     getPlugin().saveConfig();
                     event.editMessage(getConfigurationMessage(event.getGuild())).queue();
                 } else if (componentID.equals("channel-visibility")) {
                     if (event.getSelectedOptions().get(0).getValue().equals("true")) {
-                        getPlugin().getConfigFile().set("channel-visibility", true);
+                        getPlugin().getConfig().set("channel-visibility", true);
                     } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
-                        getPlugin().getConfigFile().set("channel-visibility", false);
+                        getPlugin().getConfig().set("channel-visibility", false);
                     }
                     getPlugin().saveConfig();
                     event.editMessage(getConfigurationMessage(event.getGuild())).queue();
