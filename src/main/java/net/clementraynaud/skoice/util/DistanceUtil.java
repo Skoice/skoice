@@ -17,30 +17,21 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.lang;
+package net.clementraynaud.skoice.util;
 
-import net.dv8tion.jda.api.entities.Emoji;
-import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.util.NumberConversions;
 
-public enum Lang {
-    EN("English", Emoji.fromUnicode("U+1F1ECU+1F1E7")),
-    FR("Français", Emoji.fromUnicode("U+1F1EBU+1F1F7"));
+public class DistanceUtil {
 
-    public static final String PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY;
-
-    private final String fullName;
-    private final Emoji emoji;
-
-    Lang(String fullName, Emoji emoji) {
-        this.fullName = fullName;
-        this.emoji = emoji;
+    private DistanceUtil() {
     }
 
-    public String getFullName() {
-        return fullName;
+    public static double getHorizontalDistance(Location location1, Location location2) {
+        return Math.sqrt(NumberConversions.square(location1.getX() - location2.getX()) + NumberConversions.square(location1.getZ() - location2.getZ()));
     }
 
-    public Emoji getEmoji() {
-        return emoji;
+    public static double getVerticalDistance(Location location1, Location location2) {
+        return Math.abs(location1.getY() - location2.getY());
     }
 }

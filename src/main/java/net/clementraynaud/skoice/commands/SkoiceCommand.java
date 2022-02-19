@@ -17,30 +17,22 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.lang;
+package net.clementraynaud.skoice.commands;
 
-import net.dv8tion.jda.api.entities.Emoji;
-import org.bukkit.ChatColor;
+import net.clementraynaud.skoice.commands.arguments.Argument;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
-public enum Lang {
-    EN("English", Emoji.fromUnicode("U+1F1ECU+1F1E7")),
-    FR("Français", Emoji.fromUnicode("U+1F1EBU+1F1F7"));
+public class SkoiceCommand implements CommandExecutor {
 
-    public static final String PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY;
-
-    private final String fullName;
-    private final Emoji emoji;
-
-    Lang(String fullName, Emoji emoji) {
-        this.fullName = fullName;
-        this.emoji = emoji;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public Emoji getEmoji() {
-        return emoji;
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+        if (args.length == 0 || Argument.getArgument(args[0]) == null) {
+            return true;
+        }
+        Argument.getArgument(args[0]).execute(sender, args.length == 1 ? "" : args[1]);
+        return true;
     }
 }

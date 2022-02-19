@@ -63,7 +63,7 @@ public enum Console {
             Lang.EN, ChatColor.YELLOW + "Lobby not set. Type \"/configure\" on your Discord server to set up Skoice.",
             Lang.FR, ChatColor.YELLOW + "Salon vocal principal non défini. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."))),
 
-    NO_DISTANCES_WARNING(Maps.newHashMap(ImmutableMap.of(
+    NO_RADIUS_WARNING(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, ChatColor.YELLOW + "Radius not set. Type \"/configure\" on your Discord server to set up Skoice.",
             Lang.FR, ChatColor.YELLOW + "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."))),
 
@@ -72,14 +72,14 @@ public enum Console {
             Lang.FR, ChatColor.RED + "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord (\"applications.commands\")."))),
 
     BOT_COULD_NOT_CONNECT_ERROR(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, ChatColor.RED + "Your bot could not connect. To update the token, type \"/token\" followed by the new token.",
-            Lang.FR, ChatColor.RED + "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/token\" suivi du nouveau token."))),
+            Lang.EN, ChatColor.RED + "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token.",
+            Lang.FR, ChatColor.RED + "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."))),
 
     UNEXPECTED_VALUE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Unexpected value: {value}",
             Lang.FR, "Valeur inattendue : {value}")));
 
-    final Map<Lang, String> messages;
+    private final Map<Lang, String> messages;
 
     Console(Map<Lang, String> messages) {
         this.messages = messages;
@@ -87,7 +87,7 @@ public enum Console {
 
     @Override
     public String toString() {
-        String language = getPlugin().getConfig().getString("language");
-        return messages.getOrDefault(language == null ? Lang.EN : Lang.valueOf(language), messages.get(Lang.EN));
+        String lang = getPlugin().getConfig().getString("lang");
+        return messages.getOrDefault(lang == null ? Lang.EN : Lang.valueOf(lang), messages.get(Lang.EN));
     }
 }

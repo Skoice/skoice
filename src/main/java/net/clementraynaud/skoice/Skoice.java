@@ -19,18 +19,20 @@
 
 package net.clementraynaud.skoice;
 
-import net.clementraynaud.skoice.bot.Connection;
-import net.clementraynaud.skoice.configuration.OutdatedConfig;
-import net.clementraynaud.skoice.configuration.discord.MessageManagement;
-import net.clementraynaud.skoice.configuration.minecraft.IncorrectConfigurationAlert;
-import net.clementraynaud.skoice.configuration.minecraft.Instructions;
-import net.clementraynaud.skoice.configuration.minecraft.TokenRetrieval;
+import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.commands.interaction.MessageManagement;
+import net.clementraynaud.skoice.events.VoiceChannelDeleteEvent;
+import net.clementraynaud.skoice.events.guild.GuildVoiceJoinEvent;
+import net.clementraynaud.skoice.events.guild.GuildVoiceLeaveEvent;
+import net.clementraynaud.skoice.events.guild.GuildVoiceMoveEvent;
+import net.clementraynaud.skoice.events.player.PlayerJoinEvent;
+import net.clementraynaud.skoice.events.player.PlayerQuitEvent;
 import net.clementraynaud.skoice.lang.Console;
-import net.clementraynaud.skoice.link.Link;
-import net.clementraynaud.skoice.link.Unlink;
-import net.clementraynaud.skoice.system.ChannelManagement;
-import net.clementraynaud.skoice.system.MarkPlayersDirty;
-import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.commands.SkoiceCommand;
+import net.clementraynaud.skoice.scheduler.UpdateNetworks;
+import net.clementraynaud.skoice.events.player.DirtyPlayerEvents;
+import net.clementraynaud.skoice.networks.NetworkManager;
+import net.clementraynaud.skoice.config.OutdatedConfig;
 import net.clementraynaud.skoice.util.UpdateUtil;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
@@ -40,15 +42,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
-import static net.clementraynaud.skoice.bot.Connection.getJda;
+import static net.clementraynaud.skoice.bot.Bot.getJda;
 
 public class Skoice extends JavaPlugin {
 
     private static Skoice plugin;
-    private static Connection bot;
+    private static Bot bot;
     private boolean isTokenSet;
     private boolean isBotReady;
     private boolean isGuildUnique;
@@ -61,11 +62,11 @@ public class Skoice extends JavaPlugin {
         Skoice.plugin = plugin;
     }
 
-    public static Connection getBot() {
+    public static Bot getBot() {
         return bot;
     }
 
-    public static void setBot(Connection bot) {
+    public static void setBot(Bot bot) {
         Skoice.bot = bot;
     }
 
@@ -98,11 +99,8 @@ public class Skoice extends JavaPlugin {
         saveConfig();
         new OutdatedConfig().update();
         isTokenSet = getConfig().contains("token");
-        setBot(new Connection());
-        plugin.getCommand("configure").setExecutor(new Instructions());
-        plugin.getCommand("token").setExecutor(new TokenRetrieval());
-        plugin.getCommand("link").setExecutor(new Link());
-        plugin.getCommand("unlink").setExecutor(new Unlink());
+        setBot(new Bot());
+        plugin.getCommand("skoice").setExecutor(new SkoiceCommand());
         checkVersion();
     }
 
@@ -136,7 +134,7 @@ public class Skoice extends JavaPlugin {
         } else if (!getConfig().contains("radius.horizontal")
                 || !getConfig().contains("radius.vertical")) {
             isBotReady = false;
-            getLogger().warning(Console.NO_DISTANCES_WARNING.toString());
+            getLogger().warning(Console.NO_RADIUS_WARNING.toString());
         } else {
             isBotReady = true;
         }
@@ -146,29 +144,29 @@ public class Skoice extends JavaPlugin {
     private void updateListeners(boolean startup, boolean wasBotReady) {
         if (startup) {
             if (isBotReady) {
-                Bukkit.getPluginManager().registerEvents(new MarkPlayersDirty(), plugin);
-                Bukkit.getPluginManager().registerEvents(new ChannelManagement(), plugin);
-                getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
+                Bukkit.getPluginManager().registerEvents(new DirtyPlayerEvents(), plugin);
+                Bukkit.getPluginManager().registerEvents(new PlayerQuitEvent(), plugin);
+                getJda().addEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
                 getJda().getPresence().setActivity(Activity.listening("/link"));
             } else {
-                Bukkit.getPluginManager().registerEvents(new IncorrectConfigurationAlert(), plugin);
+                Bukkit.getPluginManager().registerEvents(new PlayerJoinEvent(), plugin);
                 if (getJda() != null)
                     getJda().getPresence().setActivity(Activity.listening("/configure"));
             }
         } else if (!wasBotReady && isBotReady) {
-            HandlerList.unregisterAll(new IncorrectConfigurationAlert());
-            Bukkit.getPluginManager().registerEvents(new MarkPlayersDirty(), plugin);
-            Bukkit.getPluginManager().registerEvents(new ChannelManagement(), plugin);
-            getJda().addEventListener(new ChannelManagement(), new MarkPlayersDirty());
+            HandlerList.unregisterAll(new PlayerJoinEvent());
+            Bukkit.getPluginManager().registerEvents(new DirtyPlayerEvents(), plugin);
+            Bukkit.getPluginManager().registerEvents(new PlayerQuitEvent(), plugin);
+            getJda().addEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
             getJda().getPresence().setActivity(Activity.listening("/link"));
             getLogger().info(Console.CONFIGURATION_COMPLETE_INFO.toString());
         } else if (wasBotReady && !isBotReady) {
             MessageManagement.deleteConfigurationMessage();
-            HandlerList.unregisterAll(new MarkPlayersDirty());
-            HandlerList.unregisterAll(new ChannelManagement());
-            Bukkit.getPluginManager().registerEvents(new IncorrectConfigurationAlert(), plugin);
+            HandlerList.unregisterAll(new DirtyPlayerEvents());
+            HandlerList.unregisterAll(new PlayerQuitEvent());
+            Bukkit.getPluginManager().registerEvents(new PlayerJoinEvent(), plugin);
             if (getJda() != null) {
-                getJda().removeEventListener(new ChannelManagement(), new MarkPlayersDirty());
+                getJda().removeEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
                 getJda().getPresence().setActivity(Activity.listening("/configure"));
             }
         }
@@ -177,17 +175,17 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onDisable() {
         if (getJda() != null) {
-            for (Pair<String, CompletableFuture<Void>> value : ChannelManagement.awaitingMoves.values()) {
+            for (Pair<String, CompletableFuture<Void>> value : UpdateNetworks.awaitingMoves.values()) {
                 value.getRight().cancel(true);
             }
-            for (Network network : ChannelManagement.networks) {
+            for (NetworkManager network : NetworkManager.networks) {
                 for (Member member : network.getChannel().getMembers()) {
                     member.mute(false).queue();
                 }
                 network.getChannel().delete().queue();
                 network.clear();
             }
-            ChannelManagement.networks.clear();
+            NetworkManager.networks.clear();
             try {
                 getJda().shutdown();
             } catch (NoClassDefFoundError ignored) {

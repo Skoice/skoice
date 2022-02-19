@@ -1,5 +1,6 @@
 /*
  * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -17,30 +18,17 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.lang;
+package net.clementraynaud.skoice.events;
 
-import net.dv8tion.jda.api.entities.Emoji;
-import org.bukkit.ChatColor;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
-public enum Lang {
-    EN("English", Emoji.fromUnicode("U+1F1ECU+1F1E7")),
-    FR("Français", Emoji.fromUnicode("U+1F1EBU+1F1F7"));
+import static net.clementraynaud.skoice.networks.NetworkManager.networks;
 
-    public static final String PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY;
+public class VoiceChannelDeleteEvent extends ListenerAdapter {
 
-    private final String fullName;
-    private final Emoji emoji;
-
-    Lang(String fullName, Emoji emoji) {
-        this.fullName = fullName;
-        this.emoji = emoji;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public Emoji getEmoji() {
-        return emoji;
+    @Override
+    public void onVoiceChannelDelete(@NotNull net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent event) {
+        networks.removeIf(network -> network.getChannel() != null && event.getChannel().getId().equals(network.getChannel().getId()));
     }
 }

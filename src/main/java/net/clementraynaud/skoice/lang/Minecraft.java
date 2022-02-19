@@ -33,6 +33,10 @@ public enum Minecraft {
             Lang.EN, PREFIX + "This command is " + ChatColor.RED + "only executable " + ChatColor.GRAY + "by players.",
             Lang.FR, PREFIX + "Cette commande est " + ChatColor.RED + "seulement exécutable " + ChatColor.GRAY + "par les joueurs."))),
 
+    MISSING_PERMISSION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, PREFIX + "This command is " + ChatColor.RED + "only executable " + ChatColor.GRAY + "by operators.",
+            Lang.FR, PREFIX + "Cette commande est " + ChatColor.RED + "seulement exécutable " + ChatColor.GRAY + "par les opérateurs."))),
+
     INCOMPLETE_CONFIGURATION(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, PREFIX + "Skoice is " + ChatColor.RED + "not configured correctly" + ChatColor.GRAY + ". Please contact an administrator.",
             Lang.FR, PREFIX + "Skoice n'est " + ChatColor.RED + "pas configuré correctement" + ChatColor.GRAY + ". Veuillez contacter un administrateur."))),
@@ -41,8 +45,8 @@ public enum Minecraft {
             Lang.EN, "?"))),
 
     INCOMPLETE_CONFIGURATION_OPERATOR_COMMAND(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, PREFIX + "Skoice is " + ChatColor.RED + "not configured correctly" + ChatColor.GRAY + ". Type \"" + ChatColor.YELLOW + "/configure" + ChatColor.GRAY + "\" to set it up.",
-            Lang.FR, PREFIX + "Skoice n'est " + ChatColor.RED + "pas configuré correctement" + ChatColor.GRAY + ". Tapez \"" + ChatColor.YELLOW + "/configure" + ChatColor.GRAY + "\" pour le configurer."))),
+            Lang.EN, PREFIX + "Skoice is " + ChatColor.RED + "not configured correctly" + ChatColor.GRAY + ". Type \"" + ChatColor.YELLOW + "/skoice configure" + ChatColor.GRAY + "\" to set it up.",
+            Lang.FR, PREFIX + "Skoice n'est " + ChatColor.RED + "pas configuré correctement" + ChatColor.GRAY + ". Tapez \"" + ChatColor.YELLOW + "/skoice configure" + ChatColor.GRAY + "\" pour le configurer."))),
 
     INCOMPLETE_CONFIGURATION_OPERATOR_DISCORD(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, PREFIX + "Skoice is " + ChatColor.RED + "not configured correctly" + ChatColor.GRAY + ". Type \"" + ChatColor.YELLOW + "/configure" + ChatColor.GRAY + "\" on your Discord server to set it up.",
@@ -52,8 +56,8 @@ public enum Minecraft {
             Lang.EN, "?"))),
 
     BOT_CREATION_LINK(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, " \n" + PREFIX + "Configuration (" + ChatColor.WHITE + "Bot Creation" + ChatColor.GRAY + ")\n \n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: " + ChatColor.AQUA + "https://github.com/carlodrift/skoice/wiki" + ChatColor.GRAY + ".\n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "When you have retrieved its token, type \"" + ChatColor.YELLOW + "/token" + ChatColor.GRAY + "\" followed by the token.\n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "Once done, type \"" + ChatColor.YELLOW + "/configure" + ChatColor.GRAY + "\" on your Discord server to go to the next step.\n ",
-            Lang.FR, " \n" + PREFIX + "Configuration (" + ChatColor.WHITE + "Création du bot" + ChatColor.GRAY + ")\n \n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Merci de suivre les instructions sur cette page: " + ChatColor.AQUA + "https://github.com/carlodrift/skoice/wiki" + ChatColor.GRAY + ".\n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "Une fois son token récupéré, tapez \"" + ChatColor.YELLOW + "/token" + ChatColor.GRAY + "\" suivi du token.\n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "Une fois fait, tapez \"" + ChatColor.YELLOW + "/configure" + ChatColor.GRAY + "\" sur votre serveur Discord pour passer à l'étape suivante.\n "))),
+            Lang.EN, " \n" + PREFIX + "Configuration (" + ChatColor.WHITE + "Bot Creation" + ChatColor.GRAY + ")\n \n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: " + ChatColor.AQUA + "https://github.com/carlodrift/skoice/wiki" + ChatColor.GRAY + ".\n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "When you have retrieved its token, type \"" + ChatColor.YELLOW + "/skoice token" + ChatColor.GRAY + "\" followed by the token.\n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "Once done, type \"" + ChatColor.YELLOW + "/configure" + ChatColor.GRAY + "\" on your Discord server to go to the next step.\n ",
+            Lang.FR, " \n" + PREFIX + "Configuration (" + ChatColor.WHITE + "Création du bot" + ChatColor.GRAY + ")\n \n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Merci de suivre les instructions sur cette page: " + ChatColor.AQUA + "https://github.com/carlodrift/skoice/wiki" + ChatColor.GRAY + ".\n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "Une fois son token récupéré, tapez \"" + ChatColor.YELLOW + "/skoice token" + ChatColor.GRAY + "\" suivi du token.\n" + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY + "Une fois fait, tapez \"" + ChatColor.YELLOW + "/configure" + ChatColor.GRAY + "\" sur votre serveur Discord pour passer à l'étape suivante.\n "))),
 
     ALREADY_CONFIGURED(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, PREFIX + "Skoice is " + ChatColor.RED + "already configured" + ChatColor.GRAY + ". Type \"" + ChatColor.YELLOW + "/configure" + ChatColor.GRAY + "\" on your Discord server to update its settings.",
@@ -96,8 +100,8 @@ public enum Minecraft {
             Lang.FR, PREFIX + "Vous avez " + ChatColor.RED + "pas lié votre compte Minecraft " + ChatColor.GRAY + "à Discord. Tapez \"" + ChatColor.YELLOW + "/link" + ChatColor.GRAY + "\" sur notre serveur Discord pour le lier."))),
 
     ACCOUNT_ALREADY_LINKED(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, PREFIX + "You have " + ChatColor.RED + "already linked your Minecraft account " + ChatColor.GRAY + "to Discord. Type \"" + ChatColor.YELLOW + "/unlink" + ChatColor.GRAY + "\" to unlink it.",
-            Lang.FR, PREFIX + "Vous avez " + ChatColor.RED + "déjà lié votre compte Minecraft " + ChatColor.GRAY + "à Discord. Tapez \"" + ChatColor.YELLOW + "/unlink" + ChatColor.GRAY + "\" pour le délier."))),
+            Lang.EN, PREFIX + "You have " + ChatColor.RED + "already linked your Minecraft account " + ChatColor.GRAY + "to Discord. Type \"" + ChatColor.YELLOW + "/skoice unlink" + ChatColor.GRAY + "\" to unlink it.",
+            Lang.FR, PREFIX + "Vous avez " + ChatColor.RED + "déjà lié votre compte Minecraft " + ChatColor.GRAY + "à Discord. Tapez \"" + ChatColor.YELLOW + "/skoice unlink" + ChatColor.GRAY + "\" pour le délier."))),
 
     NO_CODE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, PREFIX + "You have " + ChatColor.RED + "not provided a code" + ChatColor.GRAY + ". Type \"" + ChatColor.YELLOW + "/link" + ChatColor.GRAY + "\" on our Discord server to receive one.",
@@ -119,7 +123,7 @@ public enum Minecraft {
             Lang.EN, ChatColor.RED + "⚠ " + ChatColor.GRAY + "You are " + ChatColor.RED + "moving away " + ChatColor.GRAY + "from near players.",
             Lang.FR, ChatColor.RED + "⚠ " + ChatColor.GRAY + "Vous vous " + ChatColor.RED + "éloignez " + ChatColor.GRAY + "des joueurs à proximité.")));
 
-    final Map<Lang, String> messages;
+    private final Map<Lang, String> messages;
 
     Minecraft(Map<Lang, String> messages) {
         this.messages = messages;
@@ -127,7 +131,7 @@ public enum Minecraft {
 
     @Override
     public String toString() {
-        String language = getPlugin().getConfig().getString("language");
-        return messages.getOrDefault(language == null ? Lang.EN : Lang.valueOf(language), messages.get(Lang.EN));
+        String lang = getPlugin().getConfig().getString("lang");
+        return messages.getOrDefault(lang == null ? Lang.EN : Lang.valueOf(lang), messages.get(Lang.EN));
     }
 }

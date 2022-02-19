@@ -23,17 +23,6 @@ authors: [ carlodrift, Lucas_Cdry ]
 description: Proximity Voice Chat in Minecraft using Discord
 website: ${project.url}
 commands:
-  link:
-    usage: /link [code]
-    description: Command to link in Minecraft.
-  unlink:
-    usage: /unlink
-    description: Will unlink the player who uses the command, if they are linked.
-  configure:
-    usage: /configure
-    default: op
-    description: Allows operators to configure their bot.
-  token:
-    usage: /token [token]
-    default: op
-    description: Allows operators to register their bot.
+  skoice:
+    usage: /skoice
+    description: The command to use Skoice.

@@ -339,9 +339,13 @@ public enum Discord {
 
     ILLEGAL_INTERACTION_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "You can only interact with the bot on a Discord server.",
-            Lang.FR, "Vous pouvez seulement interagir avec le bot sur un serveur Discord.")));
+            Lang.FR, "Vous pouvez seulement interagir avec le bot sur un serveur Discord."))),
 
-    final Map<Lang, String> messages;
+    COMMUNICATION_LOST(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Communication lost.",
+            Lang.FR, "Communication perdue.")));
+
+    private final Map<Lang, String> messages;
 
     Discord(Map<Lang, String> messages) {
         this.messages = messages;
@@ -349,7 +353,7 @@ public enum Discord {
 
     @Override
     public String toString() {
-        String language = getPlugin().getConfig().getString("language");
-        return messages.getOrDefault(language == null ? Lang.EN : Lang.valueOf(language), messages.get(Lang.EN));
+        String lang = getPlugin().getConfig().getString("lang");
+        return messages.getOrDefault(lang == null ? Lang.EN : Lang.valueOf(lang), messages.get(Lang.EN));
     }
 }
