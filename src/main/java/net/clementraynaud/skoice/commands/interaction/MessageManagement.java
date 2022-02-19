@@ -19,25 +19,17 @@
 
 package net.clementraynaud.skoice.commands.interaction;
 
-import net.clementraynaud.skoice.lang.Console;
-import net.clementraynaud.skoice.lang.Discord;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
-import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -45,15 +37,11 @@ import java.util.TimerTask;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
-import static net.clementraynaud.skoice.commands.interaction.ActionBarAlertConfiguration.getActionBarAlertConfigurationMessage;
-import static net.clementraynaud.skoice.commands.interaction.DistanceConfiguration.getHorizontalRadiusConfigurationMessage;
-import static net.clementraynaud.skoice.commands.interaction.DistanceConfiguration.getVerticalRadiusConfigurationMessage;
-import static net.clementraynaud.skoice.commands.interaction.LobbySelection.getLobbySelectionMessage;
 import static net.clementraynaud.skoice.commands.interaction.Settings.*;
 
 public class MessageManagement extends ListenerAdapter {
 
-    private final Map<String, String> discordIDDistance = new HashMap<>();
+    public static final Map<String, String> discordIDDistance = new HashMap<>();
     private boolean configureCommandCooldown = false;
 
     public static void deleteConfigurationMessage() {
@@ -96,9 +84,9 @@ public class MessageManagement extends ListenerAdapter {
                 getPlugin().saveConfig();
                 deleteConfigurationMessage();
                 if (discordIDDistance.get(event.getAuthor().getId()).equals("horizontal")) {
-                    event.getChannel().sendMessage(getHorizontalRadiusConfigurationMessage()).queue();
+                    event.getChannel().sendMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
                 } else if (discordIDDistance.get(event.getAuthor().getId()).equals("vertical")) {
-                    event.getChannel().sendMessage(getVerticalRadiusConfigurationMessage()).queue();
+                    event.getChannel().sendMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
                 }
             }
         }
@@ -138,183 +126,6 @@ public class MessageManagement extends ListenerAdapter {
             } else {
                 event.replyEmbeds(getAccessDeniedEmbed()).setEphemeral(true).queue();
             }
-        }
-    }
-
-    @Override
-    public void onButtonClick(ButtonClickEvent event) {
-        Member member = event.getMember();
-        if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (getPlugin().getConfig().contains("temp.message-id")
-                    && getPlugin().getConfig().getString("temp.message-id").equals(event.getMessageId())
-                    && event.getButton() != null) {
-                String buttonID = event.getButton().getId();
-                switch (buttonID) {
-                    case "settings":
-                        event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        break;
-                    case "close":
-                        event.getMessage().delete().queue();
-                        discordIDDistance.remove(event.getUser().getId());
-                        getPlugin().getConfig().set("temp", null);
-                        getPlugin().saveConfig();
-                        if (!getPlugin().isBotReady()) {
-                            event.replyEmbeds(new EmbedBuilder()
-                                            .setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
-                                            .addField(":warning: " + Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE, Discord.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.toString(), false)
-                                            .setColor(Color.RED).build())
-                                    .setEphemeral(true).queue();
-                        }
-                        break;
-                    case "lobby":
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(getLobbySelectionMessage(event.getGuild())).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
-                        break;
-                    case "language":
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(LanguageSelection.getLanguageSelectionMessage()).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
-                        break;
-                    case "advanced-settings":
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(getAdvancedSettingsMessage()).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
-                        break;
-                    case "mode":
-                        discordIDDistance.remove(member.getId());
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(ModeSelection.getModeSelectionMessage(false)).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
-                        break;
-                    case "horizontal-radius":
-                        if (getPlugin().isBotReady()) {
-                            discordIDDistance.put(member.getId(), "horizontal");
-                            event.editMessage(getHorizontalRadiusConfigurationMessage()).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
-                        break;
-                    case "vertical-radius":
-                        if (getPlugin().isBotReady()) {
-                            discordIDDistance.put(member.getId(), "vertical");
-                            event.editMessage(getVerticalRadiusConfigurationMessage()).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
-                        break;
-                    case "action-bar-alert":
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(getActionBarAlertConfigurationMessage()).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
-                        break;
-                    case "channel-visibility":
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(ChannelVisibilityConfiguration.getChannelVisibilityConfigurationMessage()).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
-                        break;
-                    default:
-                        throw new IllegalStateException(Console.UNEXPECTED_VALUE.toString().replace("{value}", buttonID));
-                }
-            }
-        } else {
-            event.replyEmbeds(getAccessDeniedEmbed()).setEphemeral(true).queue();
-        }
-    }
-
-    @Override
-    public void onSelectionMenu(SelectionMenuEvent event) {
-        Member member = event.getMember();
-        if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (getPlugin().getConfig().contains("temp.message-id")
-                    && getPlugin().getConfig().getString("temp.message-id").equals(event.getMessageId())
-                    && event.getSelectedOptions() != null) {
-                String componentID = event.getComponentId();
-                if (componentID.equals("servers")
-                        && getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
-                    for (SelectOption server : event.getComponent().getOptions()) {
-                        if (!event.getGuild().getId().equals(server.getValue())
-                                && getJda().getGuilds().contains(getJda().getGuildById(server.getValue()))) {
-                            try {
-                                getJda().getGuildById(server.getValue()).leave().queue(success -> event.editMessage(getConfigurationMessage(event.getGuild())).queue());
-                            } catch (ErrorResponseException ignored) {
-                            }
-                        }
-                    }
-                } else if (componentID.equals("languages")) {
-                    getPlugin().getConfig().set("lang", event.getSelectedOptions().get(0).getValue());
-                    getPlugin().saveConfig();
-                    getPlugin().updateConfigurationStatus(false);
-                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                } else if (componentID.equals("voice-channels")) {
-                    Guild guild = event.getGuild();
-                    if (guild != null) {
-                        if (event.getSelectedOptions().get(0).getValue().equals("generate")) {
-                            String categoryID = guild.createCategory(Discord.DEFAULT_CATEGORY_NAME.toString()).complete().getId();
-                            String lobbyID = guild.createVoiceChannel(Discord.DEFAULT_LOBBY_NAME.toString(), event.getGuild().getCategoryById(categoryID)).complete().getId();
-                            getPlugin().getConfig().set("lobby-id", lobbyID);
-                            getPlugin().saveConfig();
-                            getPlugin().updateConfigurationStatus(false);
-                        } else if (event.getSelectedOptions().get(0).getValue().equals("refresh")) {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        } else {
-                            VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
-                            if (lobby != null && lobby.getParent() != null) {
-                                getPlugin().getConfig().set("lobby-id", event.getSelectedOptions().get(0).getValue());
-                                getPlugin().saveConfig();
-                                getPlugin().updateConfigurationStatus(false);
-                            }
-                        }
-                    }
-                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                } else if (componentID.equals("modes")) {
-                    if (event.getSelectedOptions().get(0).getValue().equals("vanilla-mode")) {
-                        getPlugin().getConfig().set("radius.horizontal", 80);
-                        getPlugin().getConfig().set("radius.vertical", 40);
-                        getPlugin().saveConfig();
-                        getPlugin().updateConfigurationStatus(false);
-                        event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                    } else if (event.getSelectedOptions().get(0).getValue().equals("minigame-mode")) {
-                        getPlugin().getConfig().set("radius.horizontal", 40);
-                        getPlugin().getConfig().set("radius.vertical", 20);
-                        getPlugin().saveConfig();
-                        getPlugin().updateConfigurationStatus(false);
-                        event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                    } else if (event.getSelectedOptions().get(0).getValue().equals("customize")) {
-                        event.editMessage(ModeSelection.getModeSelectionMessage(true)).queue();
-                    }
-                } else if (componentID.equals("action-bar-alert")) {
-                    if (event.getSelectedOptions().get(0).getValue().equals("true")) {
-                        getPlugin().getConfig().set("action-bar-alert", true);
-                    } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
-                        getPlugin().getConfig().set("action-bar-alert", false);
-                    }
-                    getPlugin().saveConfig();
-                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                } else if (componentID.equals("channel-visibility")) {
-                    if (event.getSelectedOptions().get(0).getValue().equals("true")) {
-                        getPlugin().getConfig().set("channel-visibility", true);
-                    } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
-                        getPlugin().getConfig().set("channel-visibility", false);
-                    }
-                    getPlugin().saveConfig();
-                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                }
-            }
-        } else {
-            event.replyEmbeds(getAccessDeniedEmbed()).setEphemeral(true).queue();
         }
     }
 }

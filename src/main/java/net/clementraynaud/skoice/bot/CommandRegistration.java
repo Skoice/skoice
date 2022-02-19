@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.bot;
 
-import net.clementraynaud.skoice.lang.Console;
+import net.clementraynaud.skoice.lang.Logger;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
@@ -38,7 +38,7 @@ public class CommandRegistration extends ListenerAdapter {
                 guild.upsertCommand("invite", "Get the proximity voice chat on your server.").queue();
             }
         } catch (ErrorResponseException e) {
-            getPlugin().getLogger().severe(Console.MISSING_ACCESS_ERROR.toString());
+            getPlugin().getLogger().severe(Logger.MISSING_ACCESS_ERROR.toString());
         }
     }
 

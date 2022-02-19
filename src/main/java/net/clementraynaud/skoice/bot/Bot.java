@@ -20,9 +20,11 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.commands.InviteCommand;
+import net.clementraynaud.skoice.commands.interaction.ButtonInteraction;
 import net.clementraynaud.skoice.commands.interaction.LobbySelection;
 import net.clementraynaud.skoice.commands.interaction.MessageManagement;
-import net.clementraynaud.skoice.lang.Console;
+import net.clementraynaud.skoice.commands.interaction.SelectMenuInteraction;
+import net.clementraynaud.skoice.lang.Logger;
 import net.clementraynaud.skoice.lang.Discord;
 import net.clementraynaud.skoice.lang.Minecraft;
 import net.clementraynaud.skoice.commands.LinkCommand;
@@ -88,10 +90,10 @@ public class Bot extends ListenerAdapter {
                         .setMemberCachePolicy(MemberCachePolicy.ALL)
                         .build()
                         .awaitReady());
-                getPlugin().getLogger().info(Console.BOT_CONNECTED_INFO.toString());
+                getPlugin().getLogger().info(Logger.BOT_CONNECTED_INFO.toString());
             } catch (LoginException e) {
                 if (sender == null) {
-                    getPlugin().getLogger().severe(Console.BOT_COULD_NOT_CONNECT_ERROR.toString());
+                    getPlugin().getLogger().severe(Logger.BOT_COULD_NOT_CONNECT_ERROR.toString());
                 } else {
                     sender.sendMessage(Minecraft.BOT_COULD_NOT_CONNECT.toString());
                     getPlugin().getConfig().set("token", null);
@@ -110,7 +112,7 @@ public class Bot extends ListenerAdapter {
                 checkForValidLobby();
                 checkForUnlinkedUsersInLobby();
                 jda.getGuilds().forEach(CommandRegistration::registerCommands);
-                jda.addEventListener(this, new CommandRegistration(), new InviteCommand(), new LobbySelection(), new MessageManagement(), new LinkCommand(), new UnlinkCommand());
+                jda.addEventListener(this, new CommandRegistration(), new InviteCommand(), new LobbySelection(), new MessageManagement(), new ButtonInteraction(), new SelectMenuInteraction(), new LinkCommand(), new UnlinkCommand());
                 Bukkit.getScheduler().runTaskLater(getPlugin(), () ->
                                 Bukkit.getScheduler().runTaskTimerAsynchronously(
                                         getPlugin(),

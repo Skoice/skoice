@@ -96,7 +96,6 @@ public class ModeSelection {
                     .build()));
         }
         actionRows.add(ActionRow.of(buttons));
-        return new MessageBuilder().setEmbeds(embed.build())
-                .setActionRows(actionRows).build();
+        return new MessageBuilder().setEmbeds(embed.build()).setActionRows(actionRows).build();
     }
 }

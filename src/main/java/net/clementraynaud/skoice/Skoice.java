@@ -27,7 +27,7 @@ import net.clementraynaud.skoice.events.guild.GuildVoiceLeaveEvent;
 import net.clementraynaud.skoice.events.guild.GuildVoiceMoveEvent;
 import net.clementraynaud.skoice.events.player.PlayerJoinEvent;
 import net.clementraynaud.skoice.events.player.PlayerQuitEvent;
-import net.clementraynaud.skoice.lang.Console;
+import net.clementraynaud.skoice.lang.Logger;
 import net.clementraynaud.skoice.commands.SkoiceCommand;
 import net.clementraynaud.skoice.scheduler.UpdateNetworks;
 import net.clementraynaud.skoice.events.player.DirtyPlayerEvents;
@@ -94,7 +94,7 @@ public class Skoice extends JavaPlugin {
     public void onEnable() {
         new Metrics(this, 11380);
         setPlugin(this);
-        getLogger().info(Console.PLUGIN_ENABLED_INFO.toString());
+        getLogger().info(Logger.PLUGIN_ENABLED_INFO.toString());
         getConfig().options().copyDefaults(true);
         saveConfig();
         new OutdatedConfig().update();
@@ -107,7 +107,7 @@ public class Skoice extends JavaPlugin {
     public void checkVersion() {
         new UpdateUtil(this, 82861).getVersion(version -> {
             if (!this.getDescription().getVersion().equals(version)) {
-                getLogger().warning(Console.OUTDATED_VERSION_WARNING.toString()
+                getLogger().warning(Logger.OUTDATED_VERSION_WARNING.toString()
                         .replace("{runningVersion}", this.getDescription().getVersion())
                         .replace("{latestVersion}", version));
             }
@@ -119,22 +119,22 @@ public class Skoice extends JavaPlugin {
         if (!getConfig().contains("token")) {
             isTokenSet = false;
             isBotReady = false;
-            getLogger().warning(Console.NO_TOKEN_WARNING.toString());
+            getLogger().warning(Logger.NO_TOKEN_WARNING.toString());
         } else if (getJda() == null) {
             isBotReady = false;
-        } else if (!getConfig().contains("language")) {
+        } else if (!getConfig().contains("lang")) {
             isBotReady = false;
-            getLogger().warning(Console.NO_LANGUAGE_WARNING.toString());
+            getLogger().warning(Logger.NO_LANGUAGE_WARNING.toString());
         } else if (!isGuildUnique()) {
             isBotReady = false;
-            getLogger().warning(Console.MULTIPLE_GUILDS_WARNING.toString());
+            getLogger().warning(Logger.MULTIPLE_GUILDS_WARNING.toString());
         } else if (!getConfig().contains("lobby-id")) {
             isBotReady = false;
-            getLogger().warning(Console.NO_LOBBY_ID_WARNING.toString());
+            getLogger().warning(Logger.NO_LOBBY_ID_WARNING.toString());
         } else if (!getConfig().contains("radius.horizontal")
                 || !getConfig().contains("radius.vertical")) {
             isBotReady = false;
-            getLogger().warning(Console.NO_RADIUS_WARNING.toString());
+            getLogger().warning(Logger.NO_RADIUS_WARNING.toString());
         } else {
             isBotReady = true;
         }
@@ -159,7 +159,7 @@ public class Skoice extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new PlayerQuitEvent(), plugin);
             getJda().addEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
             getJda().getPresence().setActivity(Activity.listening("/link"));
-            getLogger().info(Console.CONFIGURATION_COMPLETE_INFO.toString());
+            getLogger().info(Logger.CONFIGURATION_COMPLETE_INFO.toString());
         } else if (wasBotReady && !isBotReady) {
             MessageManagement.deleteConfigurationMessage();
             HandlerList.unregisterAll(new DirtyPlayerEvents());
@@ -190,7 +190,7 @@ public class Skoice extends JavaPlugin {
                 getJda().shutdown();
             } catch (NoClassDefFoundError ignored) {
             }
-            getLogger().info(Console.PLUGIN_DISABLED_INFO.toString());
+            getLogger().info(Logger.PLUGIN_DISABLED_INFO.toString());
         }
     }
 }
