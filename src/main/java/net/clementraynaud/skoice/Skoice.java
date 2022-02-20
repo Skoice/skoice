@@ -20,22 +20,21 @@
 package net.clementraynaud.skoice;
 
 import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.commands.SkoiceCommand;
 import net.clementraynaud.skoice.commands.interaction.MessageManagement;
+import net.clementraynaud.skoice.config.OutdatedConfig;
 import net.clementraynaud.skoice.events.VoiceChannelDeleteEvent;
 import net.clementraynaud.skoice.events.guild.GuildVoiceJoinEvent;
 import net.clementraynaud.skoice.events.guild.GuildVoiceLeaveEvent;
 import net.clementraynaud.skoice.events.guild.GuildVoiceMoveEvent;
+import net.clementraynaud.skoice.events.player.DirtyPlayerEvents;
 import net.clementraynaud.skoice.events.player.PlayerJoinEvent;
 import net.clementraynaud.skoice.events.player.PlayerQuitEvent;
 import net.clementraynaud.skoice.lang.Logger;
-import net.clementraynaud.skoice.commands.SkoiceCommand;
-import net.clementraynaud.skoice.scheduler.UpdateNetworks;
-import net.clementraynaud.skoice.events.player.DirtyPlayerEvents;
 import net.clementraynaud.skoice.networks.NetworkManager;
-import net.clementraynaud.skoice.config.OutdatedConfig;
+import net.clementraynaud.skoice.scheduler.UpdateNetworks;
 import net.clementraynaud.skoice.util.UpdateUtil;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -179,9 +178,6 @@ public class Skoice extends JavaPlugin {
                 value.getRight().cancel(true);
             }
             for (NetworkManager network : NetworkManager.networks) {
-                for (Member member : network.getChannel().getMembers()) {
-                    member.mute(false).queue();
-                }
                 network.getChannel().delete().queue();
                 network.clear();
             }
