@@ -23,14 +23,15 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.MessageManagement.discordIDDistance;
+import static net.clementraynaud.skoice.commands.interaction.ButtonInteraction.discordIDDistance;
+import static net.clementraynaud.skoice.config.Config.TEMP_MESSAGE_ID_FIELD;
 
 public class GuildMessageDeleteEvent extends ListenerAdapter {
 
     @Override
     public void onGuildMessageDelete(@NotNull net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent event) {
         if (getPlugin().getConfig().contains("temp")
-                && event.getMessageId().equals(getPlugin().getConfig().getString("temp.message-id"))) {
+                && event.getMessageId().equals(getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD))) {
             getPlugin().getConfig().set("temp", null);
             getPlugin().saveConfig();
             discordIDDistance.clear();

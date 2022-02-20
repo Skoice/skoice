@@ -19,12 +19,13 @@
 
 package net.clementraynaud.skoice.events.guild;
 
+import net.clementraynaud.skoice.commands.interaction.Response;
 import net.clementraynaud.skoice.commands.interaction.Menu;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.MessageManagement.deleteConfigurationMessage;
-import static net.clementraynaud.skoice.commands.interaction.MessageManagement.discordIDDistance;
+import static net.clementraynaud.skoice.commands.interaction.ButtonInteraction.discordIDDistance;
+import static net.clementraynaud.skoice.config.Config.*;
 
 public class GuildMessageReceivedEvent extends ListenerAdapter {
 
@@ -33,9 +34,9 @@ public class GuildMessageReceivedEvent extends ListenerAdapter {
         String discordID = event.getAuthor().getId();
         if (discordID.equals(event.getJDA().getSelfUser().getId())) {
             if (!event.getMessage().isEphemeral()) {
-                getPlugin().getConfig().set("temp.guild-id", event.getGuild().getId());
-                getPlugin().getConfig().set("temp.text-channel-id", event.getChannel().getId());
-                getPlugin().getConfig().set("temp.message-id", event.getMessageId());
+                getPlugin().getConfig().set(TEMP_GUILD_ID_FIELD, event.getGuild().getId());
+                getPlugin().getConfig().set(TEMP_TEXT_CHANNEL_ID_FIELD, event.getChannel().getId());
+                getPlugin().getConfig().set(TEMP_MESSAGE_ID_FIELD, event.getMessageId());
                 getPlugin().saveConfig();
             }
         } else if (discordIDDistance.containsKey(event.getAuthor().getId())
@@ -46,7 +47,7 @@ public class GuildMessageReceivedEvent extends ListenerAdapter {
                 event.getMessage().delete().queue();
                 getPlugin().getConfig().set("radius." + discordIDDistance.get(event.getAuthor().getId()), value);
                 getPlugin().saveConfig();
-                deleteConfigurationMessage();
+                new Response().deleteMessage();
                 if (discordIDDistance.get(event.getAuthor().getId()).equals("horizontal")) {
                     event.getChannel().sendMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
                 } else if (discordIDDistance.get(event.getAuthor().getId()).equals("vertical")) {

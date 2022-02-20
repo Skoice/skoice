@@ -21,34 +21,13 @@ package net.clementraynaud.skoice.commands.interaction;
 
 import net.clementraynaud.skoice.lang.Discord;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.LobbySelection.*;
-import static net.clementraynaud.skoice.commands.interaction.ModeSelection.*;
-
 public class Settings {
 
     private Settings() {
-    }
-
-    public static Message getConfigurationMessage(Guild guild) {
-        if (!getPlugin().getConfig().contains("lang")) {
-            return Menu.LANGUAGE.getMessage();
-        } else if (!getPlugin().isGuildUnique()) {
-            return Menu.SERVER.getMessage();
-        } else if (!getPlugin().getConfig().contains("lobby-id")) {
-            return getLobbySelectionMessage(guild);
-        } else if (!getPlugin().getConfig().contains("radius.horizontal")
-                || !getPlugin().getConfig().contains("radius.vertical")) {
-            return getModeSelectionMessage(false);
-        } else {
-            return Menu.SETTINGS.getMessage();
-        }
     }
 
     public static MessageEmbed getAccessDeniedEmbed() {

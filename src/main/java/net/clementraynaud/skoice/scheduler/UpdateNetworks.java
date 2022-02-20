@@ -70,7 +70,7 @@ public class UpdateNetworks {
                     return;
                 }
             }
-            Category category = getDedicatedCategory();
+            Category category = getCategory();
             for (Permission permission : CATEGORY_REQUIRED_PERMISSIONS) {
                 if (!selfMember.hasPermission(category, permission)) {
 //                  "The bot doesn't have the \"" + permission.getName() + "\" permission in the voice category (" + category.getName() + ")"
@@ -104,7 +104,7 @@ public class UpdateNetworks {
                 }
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
                 boolean isLobby = playerChannel.getId().equals(getLobby().getId());
-                if (!isLobby && (playerChannel.getParent() == null || !playerChannel.getParent().getId().equals(getDedicatedCategory().getId()))) {
+                if (!isLobby && (playerChannel.getParent() == null || !playerChannel.getParent().getId().equals(getCategory().getId()))) {
 //                    .debug(Debug.VOICE, "Player " + player.getName() + " was not in the voice lobby or category");
                     //member.mute(false).queue();
                     // cancel existing moves if they changed to a different channel

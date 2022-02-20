@@ -26,6 +26,7 @@ import org.bukkit.ChatColor;
 import java.util.Map;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.config.Config.LANG_FIELD;
 
 public enum Logger {
     PLUGIN_ENABLED_INFO(Maps.newHashMap(ImmutableMap.of(
@@ -87,7 +88,7 @@ public enum Logger {
 
     @Override
     public String toString() {
-        String lang = getPlugin().getConfig().getString("lang");
+        String lang = getPlugin().getConfig().getString(LANG_FIELD);
         return messages.getOrDefault(lang == null ? Lang.EN : Lang.valueOf(lang), messages.get(Lang.EN));
     }
 }

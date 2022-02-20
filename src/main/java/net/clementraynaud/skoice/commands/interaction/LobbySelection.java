@@ -39,11 +39,12 @@ import java.util.Collections;
 import java.util.List;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.config.Config.LOBBY_ID_FIELD;
 
 public class LobbySelection extends ListenerAdapter {
 
     private static void deleteLobby(Guild guild) {
-        getPlugin().getConfig().set("lobby-id", null);
+        getPlugin().getConfig().set(LOBBY_ID_FIELD, null);
         getPlugin().saveConfig();
         getPlugin().updateConfigurationStatus(false);
         User user = guild.retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
@@ -88,7 +89,7 @@ public class LobbySelection extends ListenerAdapter {
         if (getPlugin().isBotReady()) {
             actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(getPlugin().getConfig().getString("lobby-id"))).build()));
+                    .setDefaultValues(Collections.singleton(getPlugin().getConfig().getString(LOBBY_ID_FIELD))).build()));
             actionRows.add(ActionRow.of(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL),
                     Button.primary("lobby", "⟳ " + Discord.REFRESH_BUTTON_LABEL),
                     Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716"))));
@@ -104,14 +105,14 @@ public class LobbySelection extends ListenerAdapter {
 
     @Override
     public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
-        if (event.getChannel().getId().equals(getPlugin().getConfig().getString("lobby-id"))) {
+        if (event.getChannel().getId().equals(getPlugin().getConfig().getString(LOBBY_ID_FIELD))) {
             deleteLobby(event.getGuild());
         }
     }
 
     @Override
     public void onVoiceChannelUpdateParent(VoiceChannelUpdateParentEvent event) {
-        if (event.getChannel().getId().equals(getPlugin().getConfig().getString("lobby-id"))) {
+        if (event.getChannel().getId().equals(getPlugin().getConfig().getString(LOBBY_ID_FIELD))) {
             deleteLobby(event.getGuild());
         }
     }

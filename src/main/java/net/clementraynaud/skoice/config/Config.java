@@ -31,13 +31,16 @@ import static net.clementraynaud.skoice.bot.Bot.*;
 
 public class Config {
 
-    private static final String TOKEN_FIELD = "token";
-    private static final String LANG_FIELD = "lang";
-    private static final String LOBBY_ID_FIELD = "lobby-id";
-    private static final String HORIZONTAL_RADIUS_FIELD = "radius.horizontal";
-    private static final String VERTICAL_RADIUS_FIELD = "radius.vertical";
-    private static final String ACTION_BAR_ALERT_FIELD = "action-bar-alert";
-    private static final String CHANNEL_VISIBILITY_FIELD = "channel-visibility";
+    public static final String TOKEN_FIELD = "token";
+    public static final String LANG_FIELD = "lang";
+    public static final String LOBBY_ID_FIELD = "lobby-id";
+    public static final String HORIZONTAL_RADIUS_FIELD = "radius.horizontal"; // One reference to "radius." remaining
+    public static final String VERTICAL_RADIUS_FIELD = "radius.vertical";
+    public static final String ACTION_BAR_ALERT_FIELD = "action-bar-alert";
+    public static final String CHANNEL_VISIBILITY_FIELD = "channel-visibility";
+    public static final String TEMP_GUILD_ID_FIELD = "temp.guild-id";
+    public static final String TEMP_TEXT_CHANNEL_ID_FIELD = "temp.text-channel-id";
+    public static final String TEMP_MESSAGE_ID_FIELD = "temp.message-id";
 
     private Config() {
     }
@@ -88,7 +91,7 @@ public class Config {
         getPlugin().saveConfig();
     }
 
-    public static Category getDedicatedCategory() {
+    public static Category getCategory() {
         if (getJda() == null) return null;
         VoiceChannel lobby = getLobby();
         if (lobby == null) return null;

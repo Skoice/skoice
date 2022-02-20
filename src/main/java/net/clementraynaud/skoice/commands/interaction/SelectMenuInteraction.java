@@ -33,7 +33,7 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
 import static net.clementraynaud.skoice.commands.interaction.Settings.getAccessDeniedEmbed;
-import static net.clementraynaud.skoice.commands.interaction.Settings.getConfigurationMessage;
+import static net.clementraynaud.skoice.config.Config.*;
 
 public class SelectMenuInteraction extends ListenerAdapter {
 
@@ -41,8 +41,8 @@ public class SelectMenuInteraction extends ListenerAdapter {
     public void onSelectionMenu(SelectionMenuEvent event) {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (getPlugin().getConfig().contains("temp.message-id")
-                    && getPlugin().getConfig().getString("temp.message-id").equals(event.getMessageId())
+            if (getPlugin().getConfig().contains(TEMP_MESSAGE_ID_FIELD)
+                    && getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD).equals(event.getMessageId())
                     && event.getSelectedOptions() != null) {
                 String componentID = event.getComponentId();
                 switch (componentID) {
@@ -52,7 +52,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                                 if (!event.getGuild().getId().equals(server.getValue())
                                         && getJda().getGuilds().contains(getJda().getGuildById(server.getValue()))) {
                                     try {
-                                        getJda().getGuildById(server.getValue()).leave().queue(success -> event.editMessage(getConfigurationMessage(event.getGuild())).queue());
+                                        getJda().getGuildById(server.getValue()).leave().queue(success -> event.editMessage(new Response().getMessage(event.getGuild())).queue());
                                     } catch (ErrorResponseException ignored) {
                                     }
                                 }
@@ -60,10 +60,10 @@ public class SelectMenuInteraction extends ListenerAdapter {
                         }
                         break;
                     case "languages":
-                        getPlugin().getConfig().set("lang", event.getSelectedOptions().get(0).getValue());
+                        getPlugin().getConfig().set(LANG_FIELD, event.getSelectedOptions().get(0).getValue());
                         getPlugin().saveConfig();
                         getPlugin().updateConfigurationStatus(false);
-                        event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         break;
                     case "voice-channels":
                         Guild guild = event.getGuild();
@@ -71,56 +71,56 @@ public class SelectMenuInteraction extends ListenerAdapter {
                             if (event.getSelectedOptions().get(0).getValue().equals("generate")) {
                                 String categoryID = guild.createCategory(Discord.DEFAULT_CATEGORY_NAME.toString()).complete().getId();
                                 String lobbyID = guild.createVoiceChannel(Discord.DEFAULT_LOBBY_NAME.toString(), event.getGuild().getCategoryById(categoryID)).complete().getId();
-                                getPlugin().getConfig().set("lobby-id", lobbyID);
+                                getPlugin().getConfig().set(LOBBY_ID_FIELD, lobbyID);
                                 getPlugin().saveConfig();
                                 getPlugin().updateConfigurationStatus(false);
                             } else if (event.getSelectedOptions().get(0).getValue().equals("refresh")) {
-                                event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                                event.editMessage(new Response().getMessage(event.getGuild())).queue();
                             } else {
                                 VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                                 if (lobby != null && lobby.getParent() != null) {
-                                    getPlugin().getConfig().set("lobby-id", event.getSelectedOptions().get(0).getValue());
+                                    getPlugin().getConfig().set(LOBBY_ID_FIELD, event.getSelectedOptions().get(0).getValue());
                                     getPlugin().saveConfig();
                                     getPlugin().updateConfigurationStatus(false);
                                 }
                             }
                         }
-                        event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         break;
                     case "modes":
                         if (event.getSelectedOptions().get(0).getValue().equals("vanilla-mode")) {
-                            getPlugin().getConfig().set("radius.horizontal", 80);
-                            getPlugin().getConfig().set("radius.vertical", 40);
+                            getPlugin().getConfig().set(HORIZONTAL_RADIUS_FIELD, 80);
+                            getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 40);
                             getPlugin().saveConfig();
                             getPlugin().updateConfigurationStatus(false);
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                            event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         } else if (event.getSelectedOptions().get(0).getValue().equals("minigame-mode")) {
-                            getPlugin().getConfig().set("radius.horizontal", 40);
-                            getPlugin().getConfig().set("radius.vertical", 20);
+                            getPlugin().getConfig().set(HORIZONTAL_RADIUS_FIELD, 40);
+                            getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 20);
                             getPlugin().saveConfig();
                             getPlugin().updateConfigurationStatus(false);
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                            event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         } else if (event.getSelectedOptions().get(0).getValue().equals("customize")) {
                             event.editMessage(ModeSelection.getModeSelectionMessage(true)).queue();
                         }
                         break;
                     case "action-bar-alert":
                         if (event.getSelectedOptions().get(0).getValue().equals("true")) {
-                            getPlugin().getConfig().set("action-bar-alert", true);
+                            getPlugin().getConfig().set(ACTION_BAR_ALERT_FIELD, true);
                         } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
-                            getPlugin().getConfig().set("action-bar-alert", false);
+                            getPlugin().getConfig().set(ACTION_BAR_ALERT_FIELD, false);
                         }
                         getPlugin().saveConfig();
-                        event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         break;
                     case "channel-visibility":
                         if (event.getSelectedOptions().get(0).getValue().equals("true")) {
-                            getPlugin().getConfig().set("channel-visibility", true);
+                            getPlugin().getConfig().set(CHANNEL_VISIBILITY_FIELD, true);
                         } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
-                            getPlugin().getConfig().set("channel-visibility", false);
+                            getPlugin().getConfig().set(CHANNEL_VISIBILITY_FIELD, false);
                         }
                         getPlugin().saveConfig();
-                        event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         break;
                     default:
                         throw new IllegalStateException(Logger.UNEXPECTED_VALUE.toString().replace("{value}", componentID));

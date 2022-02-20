@@ -25,6 +25,7 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.config.Config.LANG_FIELD;
 
 public enum Discord {
     CONFIGURATION_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
@@ -218,8 +219,8 @@ public enum Discord {
             Lang.FR, "Code de vérification"))),
 
     VERIFICATION_CODE_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Type `/link {code}` in game to complete the process.",
-            Lang.FR, "Tapez `/link {code}` en jeu pour terminer la procédure."))),
+            Lang.EN, "Type `/skoice link {code}` in game to complete the process.",
+            Lang.FR, "Tapez `/skoice link {code}` en jeu pour terminer la procédure."))),
 
     ACCOUNT_LINKED_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Account Linked",
@@ -353,7 +354,7 @@ public enum Discord {
 
     @Override
     public String toString() {
-        String lang = getPlugin().getConfig().getString("lang");
+        String lang = getPlugin().getConfig().getString(LANG_FIELD);
         return messages.getOrDefault(lang == null ? Lang.EN : Lang.valueOf(lang), messages.get(Lang.EN));
     }
 }

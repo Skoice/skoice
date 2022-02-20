@@ -28,25 +28,28 @@ import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.LobbySelection.getLobbySelectionMessage;
-import static net.clementraynaud.skoice.commands.interaction.MessageManagement.discordIDDistance;
 import static net.clementraynaud.skoice.commands.interaction.Settings.*;
+import static net.clementraynaud.skoice.config.Config.TEMP_MESSAGE_ID_FIELD;
 
 public class ButtonInteraction extends ListenerAdapter {
+
+    public static final Map<String, String> discordIDDistance = new HashMap<>();
 
     @Override
     public void onButtonClick(ButtonClickEvent event) {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (getPlugin().getConfig().contains("temp.message-id")
-                    && getPlugin().getConfig().getString("temp.message-id").equals(event.getMessageId())
+            if (getPlugin().getConfig().contains(TEMP_MESSAGE_ID_FIELD)
+                    && getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD).equals(event.getMessageId())
                     && event.getButton() != null) {
                 String buttonID = event.getButton().getId();
                 switch (buttonID) {
                     case "settings":
-                        event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         break;
                     case "close":
                         event.getMessage().delete().queue();
@@ -62,40 +65,24 @@ public class ButtonInteraction extends ListenerAdapter {
                         }
                         break;
                     case "lobby":
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(getLobbySelectionMessage(event.getGuild())).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
+                        event.editMessage(getPlugin().isBotReady() ? LobbySelection.getLobbySelectionMessage(event.getGuild()) : new Response().getMessage(event.getGuild())).queue();
                         break;
                     case "language":
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(Menu.LANGUAGE.getMessage()).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
+                        event.editMessage(getPlugin().isBotReady() ? Menu.LANGUAGE.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
                     case "advanced-settings":
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(Menu.ADVANCED_SETTINGS.getMessage()).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
+                        event.editMessage(getPlugin().isBotReady() ? Menu.ADVANCED_SETTINGS.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
                     case "mode":
                         discordIDDistance.remove(member.getId());
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(ModeSelection.getModeSelectionMessage(false)).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
+                        event.editMessage(getPlugin().isBotReady() ? ModeSelection.getModeSelectionMessage(false) : new Response().getMessage(event.getGuild())).queue();
                         break;
                     case "horizontal-radius":
                         if (getPlugin().isBotReady()) {
                             discordIDDistance.put(member.getId(), "horizontal");
                             event.editMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
                         } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                            event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         }
                         break;
                     case "vertical-radius":
@@ -103,22 +90,14 @@ public class ButtonInteraction extends ListenerAdapter {
                             discordIDDistance.put(member.getId(), "vertical");
                             event.editMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
                         } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                            event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         }
                         break;
                     case "action-bar-alert":
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(Menu.ACTION_BAR_ALERT.getMessage()).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
+                        event.editMessage(getPlugin().isBotReady() ? Menu.ACTION_BAR_ALERT.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
                     case "channel-visibility":
-                        if (getPlugin().isBotReady()) {
-                            event.editMessage(Menu.CHANNEL_VISIBILITY.getMessage()).queue();
-                        } else {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        }
+                        event.editMessage(getPlugin().isBotReady() ? Menu.CHANNEL_VISIBILITY.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
                     default:
                         throw new IllegalStateException(Logger.UNEXPECTED_VALUE.toString().replace("{value}", buttonID));

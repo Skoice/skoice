@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.bot;
 import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.commands.interaction.ButtonInteraction;
+import net.clementraynaud.skoice.commands.interaction.Response;
 import net.clementraynaud.skoice.commands.interaction.LobbySelection;
 import net.clementraynaud.skoice.commands.interaction.SelectMenuInteraction;
 import net.clementraynaud.skoice.events.BotEvents;
@@ -54,7 +55,6 @@ import java.util.*;
 import java.util.List;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.MessageManagement.deleteConfigurationMessage;
 import static net.clementraynaud.skoice.networks.NetworkManager.networks;
 import static net.clementraynaud.skoice.config.Config.*;
 
@@ -82,7 +82,7 @@ public class Bot {
 
     public void connectBot(boolean startup, CommandSender sender) {
         if (getPlugin().isTokenSet()) {
-            byte[] base64TokenBytes = Base64.getDecoder().decode(getPlugin().getConfig().getString("token"));
+            byte[] base64TokenBytes = Base64.getDecoder().decode(getPlugin().getConfig().getString(TOKEN_FIELD));
             for (int i = 0; i < base64TokenBytes.length; i++) {
                 base64TokenBytes[i]--;
             }
@@ -98,7 +98,7 @@ public class Bot {
                     getPlugin().getLogger().severe(Logger.BOT_COULD_NOT_CONNECT_ERROR.toString());
                 } else {
                     sender.sendMessage(Minecraft.BOT_COULD_NOT_CONNECT.toString());
-                    getPlugin().getConfig().set("token", null);
+                    getPlugin().getConfig().set(TOKEN_FIELD, null);
                     getPlugin().saveConfig();
                 }
             } catch (IllegalStateException e) {
@@ -109,7 +109,7 @@ public class Bot {
                 e.printStackTrace();
             }
             if (jda != null) {
-                deleteConfigurationMessage();
+                new Response().deleteMessage();
                 updateGuildUniquenessStatus();
                 checkForValidLobby();
                 checkForUnlinkedUsersInLobby();
@@ -133,8 +133,8 @@ public class Bot {
                                 ),
                         0
                 );
-                if (getPlugin().getConfig().contains("lobby-id")) {
-                    Category category = getDedicatedCategory();
+                if (getPlugin().getConfig().contains(LOBBY_ID_FIELD)) {
+                    Category category = getCategory();
                     if (category != null) {
                         category.getVoiceChannels().stream()
                                 .filter(channel -> {
@@ -167,8 +167,8 @@ public class Bot {
     }
 
     public void checkForValidLobby() {
-        if (getLobby() == null && getPlugin().getConfig().contains("lobby-id")) {
-            getPlugin().getConfig().set("lobby-id", null);
+        if (getLobby() == null && getPlugin().getConfig().contains(LOBBY_ID_FIELD)) {
+            getPlugin().getConfig().set(LOBBY_ID_FIELD, null);
             getPlugin().saveConfig();
         }
     }

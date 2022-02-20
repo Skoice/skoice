@@ -36,7 +36,7 @@ public class GuildVoiceLeaveEvent extends ListenerAdapter {
     @Override
     public void onGuildVoiceLeave(net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent event) {
         updateMutedUsers(event.getChannelJoined(), event.getMember());
-        if (event.getChannelLeft().getParent() == null || !event.getChannelLeft().getParent().equals(getDedicatedCategory()))
+        if (event.getChannelLeft().getParent() == null || !event.getChannelLeft().getParent().equals(getCategory()))
             return;
         UUID minecraftID = getMinecraftID(event.getMember());
         if (minecraftID == null) return;

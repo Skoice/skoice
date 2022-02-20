@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.events;
 
 import net.clementraynaud.skoice.bot.Commands;
+import net.clementraynaud.skoice.commands.interaction.Response;
 import net.clementraynaud.skoice.lang.Discord;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.ReconnectedEvent;
@@ -33,7 +34,6 @@ import java.awt.*;
 
 import static net.clementraynaud.skoice.Skoice.getBot;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.MessageManagement.deleteConfigurationMessage;
 
 public class BotEvents extends ListenerAdapter {
 
@@ -52,7 +52,7 @@ public class BotEvents extends ListenerAdapter {
 
     @Override
     public void onReconnected(@NotNull ReconnectedEvent event) {
-        deleteConfigurationMessage();
+        new Response().deleteMessage();
         getBot().updateGuildUniquenessStatus();
         getBot().checkForValidLobby();
         getBot().checkForUnlinkedUsersInLobby();

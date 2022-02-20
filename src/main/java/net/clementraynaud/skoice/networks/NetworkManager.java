@@ -59,10 +59,10 @@ public class NetworkManager {
         List<Permission> allowedPermissions = isVoiceActivationAllowed()
                 ? Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD)
                 : Collections.singletonList(Permission.VOICE_SPEAK);
-        List<Permission> deniedPermissions = getPlugin().getConfig().getBoolean("channel-visibility")
+        List<Permission> deniedPermissions = getPlugin().getConfig().getBoolean(CHANNEL_VISIBILITY_FIELD)
                 ? Arrays.asList(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS)
                 : Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
-        getDedicatedCategory().createVoiceChannel(UUID.randomUUID().toString())
+        getCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(
                         getGuild().getPublicRole(),
                         allowedPermissions,
@@ -84,7 +84,7 @@ public class NetworkManager {
     }
 
     public static void updateMutedUsers(VoiceChannel channel, Member member) {
-        if (channel == null || member.getVoiceState() == null || getLobby() == null || getDedicatedCategory() == null) {
+        if (channel == null || member.getVoiceState() == null || getLobby() == null || getCategory() == null) {
             return;
         }
         boolean isLobby = channel.getId().equals(getLobby().getId());
@@ -93,7 +93,7 @@ public class NetworkManager {
             if (override != null && override.getDenied().contains(Permission.VOICE_SPEAK)
                     && member.hasPermission(channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
                     && channel.getGuild().getSelfMember().hasPermission(channel, Permission.VOICE_MUTE_OTHERS)
-                    && channel.getGuild().getSelfMember().hasPermission(getDedicatedCategory(), Permission.VOICE_MOVE_OTHERS)) {
+                    && channel.getGuild().getSelfMember().hasPermission(getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 member.mute(true).queue();
                 mutedUsers.add(member.getId());
             }

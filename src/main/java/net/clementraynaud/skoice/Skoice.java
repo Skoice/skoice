@@ -21,7 +21,7 @@ package net.clementraynaud.skoice;
 
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.SkoiceCommand;
-import net.clementraynaud.skoice.commands.interaction.MessageManagement;
+import net.clementraynaud.skoice.commands.interaction.Response;
 import net.clementraynaud.skoice.config.OutdatedConfig;
 import net.clementraynaud.skoice.events.VoiceChannelDeleteEvent;
 import net.clementraynaud.skoice.events.guild.GuildVoiceJoinEvent;
@@ -44,6 +44,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.concurrent.CompletableFuture;
 
 import static net.clementraynaud.skoice.bot.Bot.getJda;
+import static net.clementraynaud.skoice.config.Config.*;
 
 public class Skoice extends JavaPlugin {
 
@@ -97,7 +98,7 @@ public class Skoice extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
         new OutdatedConfig().update();
-        isTokenSet = getConfig().contains("token");
+        isTokenSet = getConfig().contains(TOKEN_FIELD);
         setBot(new Bot());
         plugin.getCommand("skoice").setExecutor(new SkoiceCommand());
         checkVersion();
@@ -115,23 +116,23 @@ public class Skoice extends JavaPlugin {
 
     public void updateConfigurationStatus(boolean startup) {
         boolean wasBotReady = isBotReady;
-        if (!getConfig().contains("token")) {
+        if (!getConfig().contains(TOKEN_FIELD)) {
             isTokenSet = false;
             isBotReady = false;
             getLogger().warning(Logger.NO_TOKEN_WARNING.toString());
         } else if (getJda() == null) {
             isBotReady = false;
-        } else if (!getConfig().contains("lang")) {
+        } else if (!getConfig().contains(LANG_FIELD)) {
             isBotReady = false;
             getLogger().warning(Logger.NO_LANGUAGE_WARNING.toString());
         } else if (!isGuildUnique()) {
             isBotReady = false;
             getLogger().warning(Logger.MULTIPLE_GUILDS_WARNING.toString());
-        } else if (!getConfig().contains("lobby-id")) {
+        } else if (!getConfig().contains(LOBBY_ID_FIELD)) {
             isBotReady = false;
             getLogger().warning(Logger.NO_LOBBY_ID_WARNING.toString());
-        } else if (!getConfig().contains("radius.horizontal")
-                || !getConfig().contains("radius.vertical")) {
+        } else if (!getConfig().contains(HORIZONTAL_RADIUS_FIELD)
+                || !getConfig().contains(VERTICAL_RADIUS_FIELD)) {
             isBotReady = false;
             getLogger().warning(Logger.NO_RADIUS_WARNING.toString());
         } else {
@@ -160,7 +161,7 @@ public class Skoice extends JavaPlugin {
             getJda().getPresence().setActivity(Activity.listening("/link"));
             getLogger().info(Logger.CONFIGURATION_COMPLETE_INFO.toString());
         } else if (wasBotReady && !isBotReady) {
-            MessageManagement.deleteConfigurationMessage();
+            new Response().deleteMessage();
             HandlerList.unregisterAll(new DirtyPlayerEvents());
             HandlerList.unregisterAll(new PlayerQuitEvent());
             Bukkit.getPluginManager().registerEvents(new PlayerJoinEvent(), plugin);

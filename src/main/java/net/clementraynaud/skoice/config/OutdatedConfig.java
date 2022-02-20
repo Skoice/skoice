@@ -28,7 +28,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.config.Config.setToken;
+import static net.clementraynaud.skoice.config.Config.*;
 
 public class OutdatedConfig {
 
@@ -43,10 +43,10 @@ public class OutdatedConfig {
                 return;
             }
             convertOldToken();
-            convertOldData("mainVoiceChannelID", "lobby-id");
+            convertOldData("mainVoiceChannelID", LOBBY_ID_FIELD);
             convertOldRadius();
-            if (!getPlugin().getConfig().contains("lang"))
-                getPlugin().getConfig().set("lang", Lang.EN.name());
+            if (!getPlugin().getConfig().contains(LANG_FIELD))
+                getPlugin().getConfig().set(LANG_FIELD, Lang.EN.name());
             getPlugin().saveConfig();
         }
     }
@@ -54,7 +54,7 @@ public class OutdatedConfig {
     private void convertOldToken() {
         if (oldData.contains("token")
                 && !oldData.getString("token").isEmpty()
-                && !getPlugin().getConfig().contains("token")) {
+                && !getPlugin().getConfig().contains(TOKEN_FIELD)) {
             setToken(oldData.getString("token"));
         }
     }
@@ -62,14 +62,14 @@ public class OutdatedConfig {
     private void convertOldRadius() {
         if (oldData.contains("distance.type")
                 && oldData.getString("distance.type").equals("custom")) {
-            convertOldData("distance.horizontalStrength", "radius.horizontal");
-            convertOldData("distance.verticalStrength", "radius.vertical");
+            convertOldData("distance.horizontalStrength", HORIZONTAL_RADIUS_FIELD);
+            convertOldData("distance.verticalStrength", VERTICAL_RADIUS_FIELD);
         } else {
-            if (!getPlugin().getConfig().contains("radius.horizontal")) {
-                getPlugin().getConfig().set("radius.horizontal", 80);
+            if (!getPlugin().getConfig().contains(HORIZONTAL_RADIUS_FIELD)) {
+                getPlugin().getConfig().set(HORIZONTAL_RADIUS_FIELD, 80);
             }
-            if (!getPlugin().getConfig().contains("radius.vertical")) {
-                getPlugin().getConfig().set("radius.vertical", 40);
+            if (!getPlugin().getConfig().contains(VERTICAL_RADIUS_FIELD)) {
+                getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 40);
             }
         }
 

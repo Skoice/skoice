@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.commands;
 
+import net.clementraynaud.skoice.commands.interaction.Response;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -28,7 +29,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.MessageManagement.deleteConfigurationMessage;
 import static net.clementraynaud.skoice.commands.interaction.Settings.*;
 
 public class ConfigureCommand extends ListenerAdapter {
@@ -44,9 +44,9 @@ public class ConfigureCommand extends ListenerAdapter {
                     event.replyEmbeds(getTooManyInteractionsEmbed()).setEphemeral(true).queue();
                 } else {
                     if (getPlugin().getConfig().contains("temp")) {
-                        deleteConfigurationMessage();
+                        new Response().deleteMessage();
                     }
-                    event.reply(getConfigurationMessage(event.getGuild())).queue();
+                    event.reply(new Response().getMessage(event.getGuild())).queue();
                     configureCommandCooldown = true;
                     new Timer().schedule(new TimerTask() {
 
