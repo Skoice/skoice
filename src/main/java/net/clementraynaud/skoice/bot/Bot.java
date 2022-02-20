@@ -19,11 +19,14 @@
 
 package net.clementraynaud.skoice.bot;
 
+import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.commands.interaction.ButtonInteraction;
 import net.clementraynaud.skoice.commands.interaction.LobbySelection;
-import net.clementraynaud.skoice.commands.interaction.MessageManagement;
 import net.clementraynaud.skoice.commands.interaction.SelectMenuInteraction;
+import net.clementraynaud.skoice.events.BotEvents;
+import net.clementraynaud.skoice.events.guild.GuildMessageDeleteEvent;
+import net.clementraynaud.skoice.events.guild.GuildMessageReceivedEvent;
 import net.clementraynaud.skoice.lang.Logger;
 import net.clementraynaud.skoice.lang.Discord;
 import net.clementraynaud.skoice.lang.Minecraft;
@@ -38,30 +41,29 @@ import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.ReconnectedEvent;
-import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
-import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
-import java.util.Base64;
-import java.util.UUID;
+import java.util.*;
+import java.util.List;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.commands.interaction.MessageManagement.deleteConfigurationMessage;
 import static net.clementraynaud.skoice.networks.NetworkManager.networks;
 import static net.clementraynaud.skoice.config.Config.*;
 
-public class Bot extends ListenerAdapter {
+public class Bot {
 
+    private static final List<ListenerAdapter> LISTENERS = Arrays.asList(new BotEvents(),
+            new GuildMessageReceivedEvent(), new GuildMessageDeleteEvent(), new LobbySelection(),
+            new ConfigureCommand(), new InviteCommand(), new LinkCommand(), new UnlinkCommand(),
+            new ButtonInteraction(), new SelectMenuInteraction());
     private static final int TICKS_BETWEEN_VERSION_CHECKING = 720000;
 
     private static JDA jda;
@@ -111,8 +113,8 @@ public class Bot extends ListenerAdapter {
                 updateGuildUniquenessStatus();
                 checkForValidLobby();
                 checkForUnlinkedUsersInLobby();
-                jda.getGuilds().forEach(CommandRegistration::registerCommands);
-                jda.addEventListener(this, new CommandRegistration(), new InviteCommand(), new LobbySelection(), new MessageManagement(), new ButtonInteraction(), new SelectMenuInteraction(), new LinkCommand(), new UnlinkCommand());
+                jda.getGuilds().forEach(new Commands()::register);
+                jda.addEventListener(LISTENERS.toArray());
                 Bukkit.getScheduler().runTaskLater(getPlugin(), () ->
                                 Bukkit.getScheduler().runTaskTimerAsynchronously(
                                         getPlugin(),
@@ -164,14 +166,14 @@ public class Bot extends ListenerAdapter {
         getPlugin().setGuildUnique(getJda().getGuilds().size() == 1);
     }
 
-    private void checkForValidLobby() {
+    public void checkForValidLobby() {
         if (getLobby() == null && getPlugin().getConfig().contains("lobby-id")) {
             getPlugin().getConfig().set("lobby-id", null);
             getPlugin().saveConfig();
         }
     }
 
-    private void checkForUnlinkedUsersInLobby() {
+    public void checkForUnlinkedUsersInLobby() {
         VoiceChannel lobby = getLobby();
         if (lobby != null) {
             for (Member member : lobby.getMembers()) {
@@ -195,35 +197,5 @@ public class Bot extends ListenerAdapter {
                 }
             }
         }
-    }
-
-    @Override
-    public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
-        if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
-            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(":warning: " + Discord.ERROR_EMBED_TITLE)
-                    .addField(":no_entry: " + Discord.ILLEGAL_INTERACTION_FIELD_TITLE, Discord.ILLEGAL_INTERACTION_FIELD_DESCRIPTION.toString(), false)
-                    .setColor(Color.RED).build()).queue();
-        }
-    }
-
-    @Override
-    public void onGuildJoin(@NotNull GuildJoinEvent event) {
-        updateGuildUniquenessStatus();
-        getPlugin().updateConfigurationStatus(false);
-    }
-
-    @Override
-    public void onGuildLeave(@NotNull GuildLeaveEvent event) {
-        updateGuildUniquenessStatus();
-        getPlugin().updateConfigurationStatus(false);
-    }
-
-    @Override
-    public void onReconnected(@NotNull ReconnectedEvent event) {
-        deleteConfigurationMessage();
-        updateGuildUniquenessStatus();
-        checkForValidLobby();
-        checkForUnlinkedUsersInLobby();
-        getPlugin().updateConfigurationStatus(false);
     }
 }

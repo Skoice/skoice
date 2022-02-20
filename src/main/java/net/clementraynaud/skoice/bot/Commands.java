@@ -21,15 +21,13 @@ package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.lang.Logger;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 
-public class CommandRegistration extends ListenerAdapter {
+public class Commands {
 
-    public static void registerCommands(Guild guild) {
+    public void register(Guild guild) {
         try {
             if (guild.retrieveCommands().complete().size() < 4) {
                 guild.upsertCommand("configure", "Configure Skoice.").queue();
@@ -40,10 +38,5 @@ public class CommandRegistration extends ListenerAdapter {
         } catch (ErrorResponseException e) {
             getPlugin().getLogger().severe(Logger.MISSING_ACCESS_ERROR.toString());
         }
-    }
-
-    @Override
-    public void onGuildJoin(GuildJoinEvent event) {
-        registerCommands(event.getGuild());
     }
 }

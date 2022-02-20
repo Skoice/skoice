@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands.interaction;
 
 import net.clementraynaud.skoice.lang.Discord;
+import net.clementraynaud.skoice.lang.Logger;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -44,75 +45,85 @@ public class SelectMenuInteraction extends ListenerAdapter {
                     && getPlugin().getConfig().getString("temp.message-id").equals(event.getMessageId())
                     && event.getSelectedOptions() != null) {
                 String componentID = event.getComponentId();
-                if (componentID.equals("servers")
-                        && getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
-                    for (SelectOption server : event.getComponent().getOptions()) {
-                        if (!event.getGuild().getId().equals(server.getValue())
-                                && getJda().getGuilds().contains(getJda().getGuildById(server.getValue()))) {
-                            try {
-                                getJda().getGuildById(server.getValue()).leave().queue(success -> event.editMessage(getConfigurationMessage(event.getGuild())).queue());
-                            } catch (ErrorResponseException ignored) {
+                switch (componentID) {
+                    case "servers":
+                        if (getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
+                            for (SelectOption server : event.getComponent().getOptions()) {
+                                if (!event.getGuild().getId().equals(server.getValue())
+                                        && getJda().getGuilds().contains(getJda().getGuildById(server.getValue()))) {
+                                    try {
+                                        getJda().getGuildById(server.getValue()).leave().queue(success -> event.editMessage(getConfigurationMessage(event.getGuild())).queue());
+                                    } catch (ErrorResponseException ignored) {
+                                    }
+                                }
                             }
                         }
-                    }
-                } else if (componentID.equals("languages")) {
-                    getPlugin().getConfig().set("lang", event.getSelectedOptions().get(0).getValue());
-                    getPlugin().saveConfig();
-                    getPlugin().updateConfigurationStatus(false);
-                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                } else if (componentID.equals("voice-channels")) {
-                    Guild guild = event.getGuild();
-                    if (guild != null) {
-                        if (event.getSelectedOptions().get(0).getValue().equals("generate")) {
-                            String categoryID = guild.createCategory(Discord.DEFAULT_CATEGORY_NAME.toString()).complete().getId();
-                            String lobbyID = guild.createVoiceChannel(Discord.DEFAULT_LOBBY_NAME.toString(), event.getGuild().getCategoryById(categoryID)).complete().getId();
-                            getPlugin().getConfig().set("lobby-id", lobbyID);
-                            getPlugin().saveConfig();
-                            getPlugin().updateConfigurationStatus(false);
-                        } else if (event.getSelectedOptions().get(0).getValue().equals("refresh")) {
-                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                        } else {
-                            VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
-                            if (lobby != null && lobby.getParent() != null) {
-                                getPlugin().getConfig().set("lobby-id", event.getSelectedOptions().get(0).getValue());
+                        break;
+                    case "languages":
+                        getPlugin().getConfig().set("lang", event.getSelectedOptions().get(0).getValue());
+                        getPlugin().saveConfig();
+                        getPlugin().updateConfigurationStatus(false);
+                        event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        break;
+                    case "voice-channels":
+                        Guild guild = event.getGuild();
+                        if (guild != null) {
+                            if (event.getSelectedOptions().get(0).getValue().equals("generate")) {
+                                String categoryID = guild.createCategory(Discord.DEFAULT_CATEGORY_NAME.toString()).complete().getId();
+                                String lobbyID = guild.createVoiceChannel(Discord.DEFAULT_LOBBY_NAME.toString(), event.getGuild().getCategoryById(categoryID)).complete().getId();
+                                getPlugin().getConfig().set("lobby-id", lobbyID);
                                 getPlugin().saveConfig();
                                 getPlugin().updateConfigurationStatus(false);
+                            } else if (event.getSelectedOptions().get(0).getValue().equals("refresh")) {
+                                event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                            } else {
+                                VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
+                                if (lobby != null && lobby.getParent() != null) {
+                                    getPlugin().getConfig().set("lobby-id", event.getSelectedOptions().get(0).getValue());
+                                    getPlugin().saveConfig();
+                                    getPlugin().updateConfigurationStatus(false);
+                                }
                             }
                         }
-                    }
-                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                } else if (componentID.equals("modes")) {
-                    if (event.getSelectedOptions().get(0).getValue().equals("vanilla-mode")) {
-                        getPlugin().getConfig().set("radius.horizontal", 80);
-                        getPlugin().getConfig().set("radius.vertical", 40);
-                        getPlugin().saveConfig();
-                        getPlugin().updateConfigurationStatus(false);
                         event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                    } else if (event.getSelectedOptions().get(0).getValue().equals("minigame-mode")) {
-                        getPlugin().getConfig().set("radius.horizontal", 40);
-                        getPlugin().getConfig().set("radius.vertical", 20);
+                        break;
+                    case "modes":
+                        if (event.getSelectedOptions().get(0).getValue().equals("vanilla-mode")) {
+                            getPlugin().getConfig().set("radius.horizontal", 80);
+                            getPlugin().getConfig().set("radius.vertical", 40);
+                            getPlugin().saveConfig();
+                            getPlugin().updateConfigurationStatus(false);
+                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        } else if (event.getSelectedOptions().get(0).getValue().equals("minigame-mode")) {
+                            getPlugin().getConfig().set("radius.horizontal", 40);
+                            getPlugin().getConfig().set("radius.vertical", 20);
+                            getPlugin().saveConfig();
+                            getPlugin().updateConfigurationStatus(false);
+                            event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        } else if (event.getSelectedOptions().get(0).getValue().equals("customize")) {
+                            event.editMessage(ModeSelection.getModeSelectionMessage(true)).queue();
+                        }
+                        break;
+                    case "action-bar-alert":
+                        if (event.getSelectedOptions().get(0).getValue().equals("true")) {
+                            getPlugin().getConfig().set("action-bar-alert", true);
+                        } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
+                            getPlugin().getConfig().set("action-bar-alert", false);
+                        }
                         getPlugin().saveConfig();
-                        getPlugin().updateConfigurationStatus(false);
                         event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                    } else if (event.getSelectedOptions().get(0).getValue().equals("customize")) {
-                        event.editMessage(ModeSelection.getModeSelectionMessage(true)).queue();
-                    }
-                } else if (componentID.equals("action-bar-alert")) {
-                    if (event.getSelectedOptions().get(0).getValue().equals("true")) {
-                        getPlugin().getConfig().set("action-bar-alert", true);
-                    } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
-                        getPlugin().getConfig().set("action-bar-alert", false);
-                    }
-                    getPlugin().saveConfig();
-                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
-                } else if (componentID.equals("channel-visibility")) {
-                    if (event.getSelectedOptions().get(0).getValue().equals("true")) {
-                        getPlugin().getConfig().set("channel-visibility", true);
-                    } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
-                        getPlugin().getConfig().set("channel-visibility", false);
-                    }
-                    getPlugin().saveConfig();
-                    event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        break;
+                    case "channel-visibility":
+                        if (event.getSelectedOptions().get(0).getValue().equals("true")) {
+                            getPlugin().getConfig().set("channel-visibility", true);
+                        } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
+                            getPlugin().getConfig().set("channel-visibility", false);
+                        }
+                        getPlugin().saveConfig();
+                        event.editMessage(getConfigurationMessage(event.getGuild())).queue();
+                        break;
+                    default:
+                        throw new IllegalStateException(Logger.UNEXPECTED_VALUE.toString().replace("{value}", componentID));
                 }
             }
         } else {

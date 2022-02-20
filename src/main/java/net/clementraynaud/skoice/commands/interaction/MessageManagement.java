@@ -19,30 +19,19 @@
 
 package net.clementraynaud.skoice.commands.interaction;
 
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
-import static net.clementraynaud.skoice.commands.interaction.Settings.*;
 
-public class MessageManagement extends ListenerAdapter {
+public class MessageManagement {
 
     public static final Map<String, String> discordIDDistance = new HashMap<>();
-    private boolean configureCommandCooldown = false;
 
     public static void deleteConfigurationMessage() {
         if (getPlugin().getConfig().contains("temp.guild-id")
@@ -60,71 +49,6 @@ public class MessageManagement extends ListenerAdapter {
                     }
                 }
             } catch (ErrorResponseException | NullPointerException ignored) {
-            }
-        }
-    }
-
-    @Override
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        String discordID = event.getAuthor().getId();
-        if (discordID.equals(event.getJDA().getSelfUser().getId())) {
-            if (!event.getMessage().isEphemeral()) {
-                getPlugin().getConfig().set("temp.guild-id", event.getGuild().getId());
-                getPlugin().getConfig().set("temp.text-channel-id", event.getChannel().getId());
-                getPlugin().getConfig().set("temp.message-id", event.getMessageId());
-                getPlugin().saveConfig();
-            }
-        } else if (discordIDDistance.containsKey(event.getAuthor().getId())
-                && event.getMessage().getContentRaw().length() <= 4
-                && event.getMessage().getContentRaw().matches("[0-9]+")) {
-            int value = Integer.parseInt(event.getMessage().getContentRaw());
-            if (value >= 1 && value <= 1000) {
-                event.getMessage().delete().queue();
-                getPlugin().getConfig().set("radius." + discordIDDistance.get(event.getAuthor().getId()), value);
-                getPlugin().saveConfig();
-                deleteConfigurationMessage();
-                if (discordIDDistance.get(event.getAuthor().getId()).equals("horizontal")) {
-                    event.getChannel().sendMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
-                } else if (discordIDDistance.get(event.getAuthor().getId()).equals("vertical")) {
-                    event.getChannel().sendMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onGuildMessageDelete(@NotNull GuildMessageDeleteEvent event) {
-        if (getPlugin().getConfig().contains("temp")
-                && event.getMessageId().equals(getPlugin().getConfig().getString("temp.message-id"))) {
-            getPlugin().getConfig().set("temp", null);
-            getPlugin().saveConfig();
-            discordIDDistance.clear();
-        }
-    }
-
-    @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        if (event.getName().equals("configure")) {
-            Member member = event.getMember();
-            if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-                if (configureCommandCooldown) {
-                    event.replyEmbeds(getTooManyInteractionsEmbed()).setEphemeral(true).queue();
-                } else {
-                    if (getPlugin().getConfig().contains("temp")) {
-                        deleteConfigurationMessage();
-                    }
-                    event.reply(getConfigurationMessage(event.getGuild())).queue();
-                    configureCommandCooldown = true;
-                    new Timer().schedule(new TimerTask() {
-
-                        @Override
-                        public void run() {
-                            configureCommandCooldown = false;
-                        }
-                    }, 5000);
-                }
-            } else {
-                event.replyEmbeds(getAccessDeniedEmbed()).setEphemeral(true).queue();
             }
         }
     }
