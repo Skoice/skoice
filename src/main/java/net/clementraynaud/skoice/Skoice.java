@@ -93,6 +93,20 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onEnable() {
         new Metrics(this, 11380);
+        String[] versionElements = System.getProperty("java.version").split("\\.");
+        int discard = Integer.parseInt(versionElements[0]);
+        int version;
+        if (discard == 1) {
+            version = Integer.parseInt(versionElements[1]);
+        } else {
+            version = discard;
+        }
+        if (version < 11) {
+            //TODO
+            //getLogger().severe("Skoice requires Java 11 or higher to run. Please update your Java version.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         setPlugin(this);
         getLogger().info(Logger.PLUGIN_ENABLED_INFO.toString());
         getConfig().options().copyDefaults(true);
