@@ -12,7 +12,7 @@
     <name>skoice</name>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <url>https://github.com/carlodrift/skoice</url>
