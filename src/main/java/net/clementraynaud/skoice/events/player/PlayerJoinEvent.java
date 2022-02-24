@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.events.player;
 
-import net.clementraynaud.skoice.lang.Minecraft;
+import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -48,10 +48,10 @@ public class PlayerJoinEvent implements Listener {
                             .append(configureCommand)
                             .append(" §7to set it up.").event((HoverEvent) null).create());
                 } catch (NoSuchMethodError e) {
-                    player.sendMessage(Minecraft.INCOMPLETE_CONFIGURATION_OPERATOR_COMMAND.toString());
+                    player.sendMessage(MinecraftLang.INCOMPLETE_CONFIGURATION_OPERATOR_COMMAND.toString());
                 }
             } else if (!getPlugin().isBotReady()) {
-                player.sendMessage(Minecraft.INCOMPLETE_CONFIGURATION_OPERATOR_DISCORD.toString());
+                player.sendMessage(MinecraftLang.INCOMPLETE_CONFIGURATION_OPERATOR_DISCORD.toString());
             }
         }
     }

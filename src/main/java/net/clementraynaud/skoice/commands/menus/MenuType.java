@@ -17,30 +17,22 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.lang;
+package net.clementraynaud.skoice.commands.menus;
 
-import net.dv8tion.jda.api.entities.Emoji;
-import org.bukkit.ChatColor;
+import java.awt.*;
 
-public enum Lang {
-    EN("English", "U+1F1ECU+1F1E7"),
-    FR("Français", "U+1F1EBU+1F1F7");
+public enum MenuType {
+    DEFAULT(Color.ORANGE),
+    SUCCESS(Color.GREEN),
+    ERROR(Color.RED);
 
-    public static final String PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY;
+    private final Color color;
 
-    private final String fullName;
-    private final String unicode;
-
-    Lang(String fullName, String unicode) {
-        this.fullName = fullName;
-        this.unicode = unicode;
+    MenuType(Color color) {
+        this.color = color;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public Emoji getEmoji() {
-        return Emoji.fromUnicode(unicode);
+    public Color getColor() {
+        return color;
     }
 }

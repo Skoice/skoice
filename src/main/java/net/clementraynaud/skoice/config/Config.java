@@ -59,10 +59,6 @@ public class Config {
         return minecraftID != null ? UUID.fromString(minecraftID) : null;
     }
 
-    public static String getToken() {
-        return getPlugin().getConfig().getString(TOKEN_FIELD);
-    }
-
     public static void setToken(String token) {
         byte[] tokenBytes = token.getBytes();
         for (int i = 0; i < tokenBytes.length; i++) {
@@ -70,10 +66,6 @@ public class Config {
         }
         getPlugin().getConfig().set(TOKEN_FIELD, Base64.getEncoder().encodeToString(tokenBytes));
         getPlugin().saveConfig();
-    }
-
-    public static String getLang() {
-        return getPlugin().getConfig().getString(LANG_FIELD);
     }
 
     public static VoiceChannel getLobby() {
@@ -84,11 +76,6 @@ public class Config {
         if (lobby == null) return null;
         if (lobby.getParent() == null) return null;
         return lobby;
-    }
-
-    public static void setLobbyID(String lobbyID) {
-        getPlugin().getConfig().set(LOBBY_ID_FIELD, lobbyID);
-        getPlugin().saveConfig();
     }
 
     public static Category getCategory() {
@@ -115,36 +102,16 @@ public class Config {
         return getPlugin().getConfig().getInt(HORIZONTAL_RADIUS_FIELD);
     }
 
-    public static void setHorizontalRadius(int horizontalRadius) {
-        getPlugin().getConfig().set(HORIZONTAL_RADIUS_FIELD, horizontalRadius);
-        getPlugin().saveConfig();
-    }
-
     public static int getVerticalRadius() {
         return getPlugin().getConfig().getInt(VERTICAL_RADIUS_FIELD);
-    }
-
-    public static void setVerticalRadius(int verticalRadius) {
-        getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, verticalRadius);
-        getPlugin().saveConfig();
     }
 
     public static boolean getActionBarAlert() {
         return getPlugin().getConfig().getBoolean(ACTION_BAR_ALERT_FIELD);
     }
 
-    public static void setActionBarAlert(boolean actionBarAlert) {
-        getPlugin().getConfig().set(ACTION_BAR_ALERT_FIELD, actionBarAlert);
-        getPlugin().saveConfig();
-    }
-
     public static boolean getChannelVisibility() {
         return getPlugin().getConfig().getBoolean(CHANNEL_VISIBILITY_FIELD);
-    }
-
-    public static void setChannelVisibility(boolean channelVisibility) {
-        getPlugin().getConfig().set(CHANNEL_VISIBILITY_FIELD, channelVisibility);
-        getPlugin().saveConfig();
     }
 
     public static void unlinkUser(String discordID, String minecraftID) {

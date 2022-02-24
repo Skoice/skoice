@@ -17,27 +17,37 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.lang;
+package net.clementraynaud.skoice.commands.menus;
 
 import net.dv8tion.jda.api.entities.Emoji;
-import org.bukkit.ChatColor;
 
-public enum Lang {
-    EN("English", "U+1F1ECU+1F1E7"),
-    FR("Français", "U+1F1EBU+1F1F7");
+public enum MenuUnicode {
+    GEAR("U+2699"),
+    LEFTWARDS_ARROW("U+2190"),
+    CLOCKWISE_GAPPED_CIRCLE_ARROW("U+27F3"),
+    CLOCK3("U+1F552"),
+    HEAVY_CHECK_MARK("U+2714"),
+    HEAVY_PLUS_SIGN("U+2795"),
+    HEAVY_MULTIPLICATION_X("U+2716"),
+    WARNING_SIGN("U+26A0"),
+    FILE_CABINET("U+1F5C4"),
+    SOUND("U+1F509"),
+    VIDEO_GAME("U+1F3AE"),
+    MAP("U+1F5FA"),
+    CROSSED_SWORDS("U+2694"),
+    PENCIL2("U+270F"),
+    LEFT_RIGHT_ARROW("U+2194"),
+    UP_DOWN_ARROW("U+2195"),
+    KEYBOARD("U+2328"),
+    WRENCH("U+1F527"),
+    GLOBE_WITH_MERIDIANS("U+1F310"),
+    EXCLAMATION("U+2757"),
+    MAG("U+1F50D");
 
-    public static final String PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "• " + ChatColor.GRAY;
-
-    private final String fullName;
     private final String unicode;
 
-    Lang(String fullName, String unicode) {
-        this.fullName = fullName;
+    MenuUnicode(String unicode) {
         this.unicode = unicode;
-    }
-
-    public String getFullName() {
-        return fullName;
     }
 
     public Emoji getEmoji() {

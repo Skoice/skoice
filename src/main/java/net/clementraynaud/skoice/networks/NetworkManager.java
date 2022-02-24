@@ -40,7 +40,7 @@ public class NetworkManager {
     private static final double FALLOFF = 2.5;
 
     public static final Set<NetworkManager> networks = ConcurrentHashMap.newKeySet();
-    private static final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
+    public static final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
     private final Set<UUID> players;
     private String channel;
     private boolean initialized = false;
@@ -84,7 +84,7 @@ public class NetworkManager {
     }
 
     public static void updateMutedUsers(VoiceChannel channel, Member member) {
-        if (channel == null || member.getVoiceState() == null || getLobby() == null || getCategory() == null) {
+        if (channel == null || member.getVoiceState() == null || getLobby() == null) {
             return;
         }
         boolean isLobby = channel.getId().equals(getLobby().getId());

@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.lang.Discord;
+import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -31,9 +31,9 @@ public class InviteCommand extends ListenerAdapter {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if (event.getName().equals("invite")) {
-            EmbedBuilder embed = new EmbedBuilder().setTitle(":envelope: " + Discord.GET_THE_PROXIMITY_VOICE_CHAT_EMBED_TITLE)
-                    .addField(":inbox_tray: " + Discord.DOWNLOAD_SKOICE_FIELD_TITLE, Discord.DOWNLOAD_SKOICE_FIELD_DESRIPTION.toString(), false)
-                    .addField(":screwdriver: " + Discord.TROUBLESHOOTING_FIELD_TITLE, Discord.TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), false)
+            EmbedBuilder embed = new EmbedBuilder().setTitle(":envelope: " + DiscordLang.GET_THE_PROXIMITY_VOICE_CHAT_EMBED_TITLE)
+                    .addField(":inbox_tray: " + DiscordLang.DOWNLOAD_SKOICE_FIELD_TITLE, DiscordLang.DOWNLOAD_SKOICE_FIELD_DESRIPTION.toString(), false)
+                    .addField(":screwdriver: " + DiscordLang.TROUBLESHOOTING_FIELD_TITLE, DiscordLang.TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), false)
                     .setColor(Color.ORANGE);
             event.replyEmbeds(embed.build()).setEphemeral(true).queue();
         }

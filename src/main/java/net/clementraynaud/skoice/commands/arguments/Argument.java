@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.commands.arguments;
 
-import net.clementraynaud.skoice.lang.Minecraft;
+import net.clementraynaud.skoice.lang.MinecraftLang;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -30,11 +30,11 @@ public enum Argument {
         @Override
         public void execute(CommandSender sender, String arg) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(Minecraft.ILLEGAL_EXECUTOR.toString());
+                sender.sendMessage(MinecraftLang.ILLEGAL_EXECUTOR.toString());
                 return;
             }
             if (!sender.isOp()) {
-                sender.sendMessage(Minecraft.MISSING_PERMISSION.toString());
+                sender.sendMessage(MinecraftLang.MISSING_PERMISSION.toString());
                 return;
             }
             new ConfigureArgument().execute(sender);
@@ -44,7 +44,7 @@ public enum Argument {
         @Override
         public void execute(CommandSender sender, String arg) {
             if (!sender.isOp()) {
-                sender.sendMessage(Minecraft.MISSING_PERMISSION.toString());
+                sender.sendMessage(MinecraftLang.MISSING_PERMISSION.toString());
                 return;
             }
             new TokenArgument().execute(sender, arg);
@@ -54,7 +54,7 @@ public enum Argument {
         @Override
         public void execute(CommandSender sender, String arg) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(Minecraft.ILLEGAL_EXECUTOR.toString());
+                sender.sendMessage(MinecraftLang.ILLEGAL_EXECUTOR.toString());
                 return;
             }
             new LinkArgument().execute(sender, arg);
@@ -64,7 +64,7 @@ public enum Argument {
         @Override
         public void execute(CommandSender sender, String arg) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(Minecraft.ILLEGAL_EXECUTOR.toString());
+                sender.sendMessage(MinecraftLang.ILLEGAL_EXECUTOR.toString());
                 return;
             }
             new UnlinkArgument().execute(sender);

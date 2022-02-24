@@ -58,6 +58,7 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <finalName>Skoice</finalName>
+                            <outputDirectory>C:\Users\Lucas\Documents\Serveur 1.18.1\plugins</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

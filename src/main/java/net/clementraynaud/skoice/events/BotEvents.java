@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.events;
 
 import net.clementraynaud.skoice.bot.Commands;
 import net.clementraynaud.skoice.commands.interaction.Response;
-import net.clementraynaud.skoice.lang.Discord;
+import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.ReconnectedEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
@@ -62,8 +62,8 @@ public class BotEvents extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
-            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(":warning: " + Discord.ERROR_EMBED_TITLE)
-                    .addField(":no_entry: " + Discord.ILLEGAL_INTERACTION_FIELD_TITLE, Discord.ILLEGAL_INTERACTION_FIELD_DESCRIPTION.toString(), false)
+            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(":warning: " + DiscordLang.ERROR_EMBED_TITLE)
+                    .addField(":no_entry: " + DiscordLang.ILLEGAL_INTERACTION_FIELD_TITLE, DiscordLang.ILLEGAL_INTERACTION_FIELD_DESCRIPTION.toString(), false)
                     .setColor(Color.RED).build()).queue();
         }
     }

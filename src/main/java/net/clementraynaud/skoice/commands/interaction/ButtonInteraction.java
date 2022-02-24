@@ -19,8 +19,9 @@
 
 package net.clementraynaud.skoice.commands.interaction;
 
-import net.clementraynaud.skoice.lang.Logger;
-import net.clementraynaud.skoice.lang.Discord;
+import net.clementraynaud.skoice.commands.menus.Menu;
+import net.clementraynaud.skoice.lang.LoggerLang;
+import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -32,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.Settings.*;
+import static net.clementraynaud.skoice.commands.interaction.ErrorEmbeds.*;
 import static net.clementraynaud.skoice.config.Config.TEMP_MESSAGE_ID_FIELD;
 
 public class ButtonInteraction extends ListenerAdapter {
@@ -48,36 +49,36 @@ public class ButtonInteraction extends ListenerAdapter {
                     && event.getButton() != null) {
                 String buttonID = event.getButton().getId();
                 switch (buttonID) {
-                    case "settings":
+                    case "SETTINGS":
                         event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         break;
-                    case "close":
+                    case "CLOSE":
                         event.getMessage().delete().queue();
                         discordIDDistance.remove(event.getUser().getId());
                         getPlugin().getConfig().set("temp", null);
                         getPlugin().saveConfig();
                         if (!getPlugin().isBotReady()) {
                             event.replyEmbeds(new EmbedBuilder()
-                                            .setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
-                                            .addField(":warning: " + Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE, Discord.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.toString(), false)
+                                            .setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
+                                            .addField(":warning: " + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE, DiscordLang.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.toString(), false)
                                             .setColor(Color.RED).build())
                                     .setEphemeral(true).queue();
                         }
                         break;
-                    case "lobby":
-                        event.editMessage(getPlugin().isBotReady() ? LobbySelection.getLobbySelectionMessage(event.getGuild()) : new Response().getMessage(event.getGuild())).queue();
+                    case "LOBBY":
+                        event.editMessage(getPlugin().isBotReady() ? Menu.LOBBY.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
-                    case "language":
+                    case "LANGUAGE":
                         event.editMessage(getPlugin().isBotReady() ? Menu.LANGUAGE.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
-                    case "advanced-settings":
+                    case "ADVANCED_SETTINGS":
                         event.editMessage(getPlugin().isBotReady() ? Menu.ADVANCED_SETTINGS.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
-                    case "mode":
+                    case "MODE":
                         discordIDDistance.remove(member.getId());
-                        event.editMessage(getPlugin().isBotReady() ? ModeSelection.getModeSelectionMessage(false) : new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(getPlugin().isBotReady() ? Menu.MODE.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
-                    case "horizontal-radius":
+                    case "HORIZONTAL_RADIUS":
                         if (getPlugin().isBotReady()) {
                             discordIDDistance.put(member.getId(), "horizontal");
                             event.editMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
@@ -85,7 +86,7 @@ public class ButtonInteraction extends ListenerAdapter {
                             event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         }
                         break;
-                    case "vertical-radius":
+                    case "VERTICAL_RADIUS":
                         if (getPlugin().isBotReady()) {
                             discordIDDistance.put(member.getId(), "vertical");
                             event.editMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
@@ -93,14 +94,14 @@ public class ButtonInteraction extends ListenerAdapter {
                             event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         }
                         break;
-                    case "action-bar-alert":
+                    case "ACTION_BAR_ALERT":
                         event.editMessage(getPlugin().isBotReady() ? Menu.ACTION_BAR_ALERT.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
-                    case "channel-visibility":
+                    case "CHANNEL_VISIBILITY":
                         event.editMessage(getPlugin().isBotReady() ? Menu.CHANNEL_VISIBILITY.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
                     default:
-                        throw new IllegalStateException(Logger.UNEXPECTED_VALUE.toString().replace("{value}", buttonID));
+                        throw new IllegalStateException(LoggerLang.UNEXPECTED_VALUE.toString().replace("{value}", buttonID));
                 }
             }
         } else {

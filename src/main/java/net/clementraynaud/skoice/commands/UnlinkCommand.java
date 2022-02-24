@@ -19,8 +19,8 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.lang.Discord;
-import net.clementraynaud.skoice.lang.Minecraft;
+import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -41,25 +41,25 @@ public class UnlinkCommand extends ListenerAdapter {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if (event.getName().equals("unlink")) {
-            EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE);
+            EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE);
             String minecraftID = getPlugin().getConfig().getString("link." + event.getUser().getId());
             if (minecraftID == null) {
-                event.replyEmbeds(embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE, Discord.ACCOUNT_NOT_LINKED_FIELD_DESCRIPTION.toString(), false)
+                event.replyEmbeds(embed.addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_NOT_LINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
                         .setEphemeral(true).queue();
             } else {
                 unlinkUser(event.getUser().getId(), minecraftID);
-                event.replyEmbeds(embed.addField(":heavy_check_mark: " + Discord.ACCOUNT_UNLINKED_FIELD_TITLE, Discord.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.toString(), false)
+                event.replyEmbeds(embed.addField(":heavy_check_mark: " + DiscordLang.ACCOUNT_UNLINKED_FIELD_TITLE, DiscordLang.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.GREEN).build())
                         .setEphemeral(true).queue();
                 OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
                 if (player.isOnline()) {
-                    player.getPlayer().sendMessage(Minecraft.ACCOUNT_UNLINKED.toString());
+                    player.getPlayer().sendMessage(MinecraftLang.ACCOUNT_UNLINKED.toString());
                     GuildVoiceState voiceState = event.getMember().getVoiceState();
                     if (voiceState != null) {
                         VoiceChannel voiceChannel = voiceState.getChannel();
                         if (voiceChannel != null && voiceChannel.equals(getLobby())) {
-                            player.getPlayer().sendMessage(Minecraft.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.toString());
+                            player.getPlayer().sendMessage(MinecraftLang.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.toString());
                         }
                     }
                 }

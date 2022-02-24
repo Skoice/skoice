@@ -20,7 +20,7 @@
 
 package net.clementraynaud.skoice.events.player;
 
-import net.clementraynaud.skoice.lang.Minecraft;
+import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -64,7 +64,7 @@ public class DirtyPlayerEvents implements Listener {
             if (voiceState != null) {
                 VoiceChannel voiceChannel = voiceState.getChannel();
                 if (voiceChannel != null && voiceChannel.equals(getLobby())) {
-                    player.sendMessage(Minecraft.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());
+                    player.sendMessage(MinecraftLang.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());
                 }
             }
         }

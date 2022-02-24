@@ -28,9 +28,9 @@ import net.clementraynaud.skoice.commands.interaction.SelectMenuInteraction;
 import net.clementraynaud.skoice.events.BotEvents;
 import net.clementraynaud.skoice.events.guild.GuildMessageDeleteEvent;
 import net.clementraynaud.skoice.events.guild.GuildMessageReceivedEvent;
-import net.clementraynaud.skoice.lang.Logger;
-import net.clementraynaud.skoice.lang.Discord;
-import net.clementraynaud.skoice.lang.Minecraft;
+import net.clementraynaud.skoice.lang.LoggerLang;
+import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
 import net.clementraynaud.skoice.scheduler.UpdateNetworks;
@@ -92,12 +92,12 @@ public class Bot {
                         .setMemberCachePolicy(MemberCachePolicy.ALL)
                         .build()
                         .awaitReady());
-                getPlugin().getLogger().info(Logger.BOT_CONNECTED_INFO.toString());
+                getPlugin().getLogger().info(LoggerLang.BOT_CONNECTED_INFO.toString());
             } catch (LoginException e) {
                 if (sender == null) {
-                    getPlugin().getLogger().severe(Logger.BOT_COULD_NOT_CONNECT_ERROR.toString());
+                    getPlugin().getLogger().severe(LoggerLang.BOT_COULD_NOT_CONNECT_ERROR.toString());
                 } else {
-                    sender.sendMessage(Minecraft.BOT_COULD_NOT_CONNECT.toString());
+                    sender.sendMessage(MinecraftLang.BOT_COULD_NOT_CONNECT.toString());
                     getPlugin().getConfig().set(TOKEN_FIELD, null);
                     getPlugin().saveConfig();
                 }
@@ -155,9 +155,9 @@ public class Bot {
         getPlugin().updateConfigurationStatus(startup);
         if (sender != null && jda != null) {
             if (getPlugin().isBotReady()) {
-                sender.sendMessage(Minecraft.BOT_CONNECTED.toString());
+                sender.sendMessage(MinecraftLang.BOT_CONNECTED.toString());
             } else {
-                sender.sendMessage(Minecraft.BOT_CONNECTED_INCOMPLETE_CONFIGURATION_DISCORD.toString());
+                sender.sendMessage(MinecraftLang.BOT_CONNECTED_INCOMPLETE_CONFIGURATION_DISCORD.toString());
             }
         }
     }
@@ -179,13 +179,13 @@ public class Bot {
             for (Member member : lobby.getMembers()) {
                 UUID minecraftID = getMinecraftID(member);
                 if (minecraftID == null) {
-                    EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE)
+                    EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE)
                             .setColor(Color.RED);
                     Guild guild = getGuild();
                     if (guild != null) {
-                        embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE, Discord.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", guild.getName()), false);
+                        embed.addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", guild.getName()), false);
                     } else {
-                        embed.addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE, Discord.ACCOUNT_NOT_LINKED_FIELD_GENERIC_ALTERNATIVE_DESCRIPTION.toString(), false);
+                        embed.addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_NOT_LINKED_FIELD_GENERIC_ALTERNATIVE_DESCRIPTION.toString(), false);
                     }
                     try {
                         member.getUser().openPrivateChannel().complete()

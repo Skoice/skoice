@@ -19,8 +19,9 @@
 
 package net.clementraynaud.skoice.commands.interaction;
 
-import net.clementraynaud.skoice.lang.Discord;
-import net.clementraynaud.skoice.lang.Logger;
+import net.clementraynaud.skoice.commands.menus.Menu;
+import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.lang.LoggerLang;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -32,7 +33,8 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
-import static net.clementraynaud.skoice.commands.interaction.Settings.getAccessDeniedEmbed;
+import static net.clementraynaud.skoice.commands.interaction.ErrorEmbeds.getAccessDeniedEmbed;
+import static net.clementraynaud.skoice.commands.menus.Menu.customizeRadius;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class SelectMenuInteraction extends ListenerAdapter {
@@ -46,35 +48,38 @@ public class SelectMenuInteraction extends ListenerAdapter {
                     && event.getSelectedOptions() != null) {
                 String componentID = event.getComponentId();
                 switch (componentID) {
-                    case "servers":
+                    case "SERVER":
                         if (getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
                             for (SelectOption server : event.getComponent().getOptions()) {
                                 if (!event.getGuild().getId().equals(server.getValue())
                                         && getJda().getGuilds().contains(getJda().getGuildById(server.getValue()))) {
                                     try {
-                                        getJda().getGuildById(server.getValue()).leave().queue(success -> event.editMessage(new Response().getMessage(event.getGuild())).queue());
+                                        getJda().getGuildById(server.getValue()).leave()
+                                                .queue(success -> event.editMessage(new Response().getMessage(event.getGuild())).queue());
                                     } catch (ErrorResponseException ignored) {
                                     }
                                 }
                             }
                         }
                         break;
-                    case "languages":
+                    case "LANGUAGE":
                         getPlugin().getConfig().set(LANG_FIELD, event.getSelectedOptions().get(0).getValue());
                         getPlugin().saveConfig();
                         getPlugin().updateConfigurationStatus(false);
                         event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         break;
-                    case "voice-channels":
+                    case "LOBBY":
                         Guild guild = event.getGuild();
                         if (guild != null) {
-                            if (event.getSelectedOptions().get(0).getValue().equals("generate")) {
-                                String categoryID = guild.createCategory(Discord.DEFAULT_CATEGORY_NAME.toString()).complete().getId();
-                                String lobbyID = guild.createVoiceChannel(Discord.DEFAULT_LOBBY_NAME.toString(), event.getGuild().getCategoryById(categoryID)).complete().getId();
+                            if (event.getSelectedOptions().get(0).getValue().equals("GENERATE")) {
+                                String categoryID = guild.createCategory(DiscordLang.DEFAULT_CATEGORY_NAME.toString())
+                                        .complete().getId();
+                                String lobbyID = guild.createVoiceChannel(DiscordLang.DEFAULT_LOBBY_NAME.toString(), event.getGuild().getCategoryById(categoryID))
+                                        .complete().getId();
                                 getPlugin().getConfig().set(LOBBY_ID_FIELD, lobbyID);
                                 getPlugin().saveConfig();
                                 getPlugin().updateConfigurationStatus(false);
-                            } else if (event.getSelectedOptions().get(0).getValue().equals("refresh")) {
+                            } else if (event.getSelectedOptions().get(0).getValue().equals("REFRESH")) {
                                 event.editMessage(new Response().getMessage(event.getGuild())).queue();
                             } else {
                                 VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
@@ -87,24 +92,25 @@ public class SelectMenuInteraction extends ListenerAdapter {
                         }
                         event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         break;
-                    case "modes":
-                        if (event.getSelectedOptions().get(0).getValue().equals("vanilla-mode")) {
+                    case "MODE":
+                        if (event.getSelectedOptions().get(0).getValue().equals("VANILLA_MODE")) {
                             getPlugin().getConfig().set(HORIZONTAL_RADIUS_FIELD, 80);
                             getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 40);
                             getPlugin().saveConfig();
                             getPlugin().updateConfigurationStatus(false);
                             event.editMessage(new Response().getMessage(event.getGuild())).queue();
-                        } else if (event.getSelectedOptions().get(0).getValue().equals("minigame-mode")) {
+                        } else if (event.getSelectedOptions().get(0).getValue().equals("MINIGAME_MODE")) {
                             getPlugin().getConfig().set(HORIZONTAL_RADIUS_FIELD, 40);
                             getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 20);
                             getPlugin().saveConfig();
                             getPlugin().updateConfigurationStatus(false);
                             event.editMessage(new Response().getMessage(event.getGuild())).queue();
-                        } else if (event.getSelectedOptions().get(0).getValue().equals("customize")) {
-                            event.editMessage(ModeSelection.getModeSelectionMessage(true)).queue();
+                        } else if (event.getSelectedOptions().get(0).getValue().equals("CUSTOMIZE")) {
+                            customizeRadius = true;
+                            event.editMessage(Menu.MODE.getMessage()).queue();
                         }
                         break;
-                    case "action-bar-alert":
+                    case "ACTION_BAR_ALERT":
                         if (event.getSelectedOptions().get(0).getValue().equals("true")) {
                             getPlugin().getConfig().set(ACTION_BAR_ALERT_FIELD, true);
                         } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
@@ -113,7 +119,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                         getPlugin().saveConfig();
                         event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         break;
-                    case "channel-visibility":
+                    case "CHANNEL_VISIBILITY":
                         if (event.getSelectedOptions().get(0).getValue().equals("true")) {
                             getPlugin().getConfig().set(CHANNEL_VISIBILITY_FIELD, true);
                         } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
@@ -123,7 +129,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                         event.editMessage(new Response().getMessage(event.getGuild())).queue();
                         break;
                     default:
-                        throw new IllegalStateException(Logger.UNEXPECTED_VALUE.toString().replace("{value}", componentID));
+                        throw new IllegalStateException(LoggerLang.UNEXPECTED_VALUE.toString().replace("{value}", componentID));
                 }
             }
         } else {

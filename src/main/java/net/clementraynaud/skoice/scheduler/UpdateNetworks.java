@@ -21,9 +21,9 @@
 package net.clementraynaud.skoice.scheduler;
 
 import net.clementraynaud.skoice.events.player.DirtyPlayerEvents;
-import net.clementraynaud.skoice.lang.Discord;
+import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.networks.NetworkManager;
-import net.clementraynaud.skoice.lang.Minecraft;
+import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
@@ -139,7 +139,7 @@ public class UpdateNetworks {
                                 .filter(network -> network.contains(player.getUniqueId()))
                                 .filter(network -> network.isPlayerInRangeToStayConnected(player))
                                 .filter(network -> !network.isPlayerInRangeToBeAdded(player))
-                                .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Minecraft.ACTION_BAR_ALERT.toString())));
+                                .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(MinecraftLang.ACTION_BAR_ALERT.toString())));
                     } catch (NoSuchMethodError ignored) {
                     }
                 }
@@ -219,7 +219,7 @@ public class UpdateNetworks {
             VoiceChannel voiceChannel = network.getChannel();
             if (voiceChannel == null) continue;
             if (voiceChannel.getMembers().isEmpty()) {
-                voiceChannel.delete().reason(Discord.COMMUNICATION_LOST.toString()).queue();
+                voiceChannel.delete().reason(DiscordLang.COMMUNICATION_LOST.toString()).queue();
                 NetworkManager.networks.remove(network);
             }
         }

@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.commands.arguments;
 
-import net.clementraynaud.skoice.lang.Minecraft;
+import net.clementraynaud.skoice.lang.MinecraftLang;
 import org.bukkit.command.CommandSender;
 
 import static net.clementraynaud.skoice.Skoice.getBot;
@@ -31,11 +31,11 @@ public class TokenArgument {
 
     public void execute(CommandSender sender, String arg) {
         if (arg == null) {
-            sender.sendMessage(Minecraft.NO_TOKEN.toString());
+            sender.sendMessage(MinecraftLang.NO_TOKEN.toString());
             return;
         }
         if (arg.length() != 59 || !arg.matches("[a-zA-Z0-9_.]+")) {
-            sender.sendMessage(Minecraft.INVALID_TOKEN.toString());
+            sender.sendMessage(MinecraftLang.INVALID_TOKEN.toString());
             return;
         }
         setToken(arg);
@@ -43,7 +43,7 @@ public class TokenArgument {
         if (getJda() == null) {
             getBot().connectBot(false, sender);
         } else {
-            sender.sendMessage(Minecraft.BOT_ALREADY_CONNECTED.toString());
+            sender.sendMessage(MinecraftLang.BOT_ALREADY_CONNECTED.toString());
         }
     }
 }

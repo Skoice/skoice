@@ -28,7 +28,7 @@ import java.util.Map;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.config.Config.LANG_FIELD;
 
-public enum Logger {
+public enum LoggerLang {
     PLUGIN_ENABLED_INFO(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Plugin enabled.",
             Lang.FR, "Plugin activé."))),
@@ -82,7 +82,7 @@ public enum Logger {
 
     private final Map<Lang, String> messages;
 
-    Logger(Map<Lang, String> messages) {
+    LoggerLang(Map<Lang, String> messages) {
         this.messages = messages;
     }
 

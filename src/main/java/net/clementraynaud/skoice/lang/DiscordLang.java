@@ -27,7 +27,7 @@ import java.util.Map;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.config.Config.LANG_FIELD;
 
-public enum Discord {
+public enum DiscordLang {
     CONFIGURATION_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Configuration"))),
 
@@ -47,11 +47,11 @@ public enum Discord {
             Lang.EN, "Lobby",
             Lang.FR, "Salon vocal principal"))),
 
-    LOBBY_EMBED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+    LOBBY_EMBED_SHORTENED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Select the channel players have to join to use the proximity voice chat.",
             Lang.FR, "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité."))),
 
-    LOBBY_EMBED_ALTERNATIVE_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+    LOBBY_EMBED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Select the channel players have to join to use the proximity voice chat. It must be in a category.",
             Lang.FR, "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité. Il doit se trouver dans une catégorie."))),
 
@@ -94,7 +94,7 @@ public enum Discord {
             Lang.EN, "Choose this mode if you plan to play open world game modes (longer distances).",
             Lang.FR, "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu en monde ouvert (distances plus longues)."))),
 
-    VANILLA_MODE_FIELD_ALTERNATIVE_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+    VANILLA_MODE_SELECT_MENU_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Horizontal Radius: 80 blocks — Vertical Radius: 40 blocks",
             Lang.FR, "Rayon horizontal : 80 blocs — Rayon vertical : 40 blocs"))),
 
@@ -106,7 +106,7 @@ public enum Discord {
             Lang.EN, "Choose this mode if you plan to play game modes that only require a limited area (shorter distances).",
             Lang.FR, "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu qui requièrent seulement une zone limitée (distances plus courtes)."))),
 
-    MINIGAME_MODE_FIELD_ALTERNATIVE_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+    MINIGAME_MODE_SELECT_MENU_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Horizontal Radius: 40 blocks — Vertical Radius: 20 blocks",
             Lang.FR, "Rayon horizontal : 40 blocs — Rayon vertical : 20 blocs"))),
 
@@ -156,7 +156,7 @@ public enum Discord {
 
     ADVANCED_SETTINGS_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Advanced Settings",
-            Lang.FR, "Réglages avancées"))),
+            Lang.FR, "Réglages avancés"))),
 
     ADVANCED_SETTINGS_EMBED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Manage other parameters.",
@@ -348,7 +348,7 @@ public enum Discord {
 
     private final Map<Lang, String> messages;
 
-    Discord(Map<Lang, String> messages) {
+    DiscordLang(Map<Lang, String> messages) {
         this.messages = messages;
     }
 

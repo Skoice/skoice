@@ -29,7 +29,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.Settings.*;
+import static net.clementraynaud.skoice.commands.interaction.ErrorEmbeds.*;
 
 public class ConfigureCommand extends ListenerAdapter {
 

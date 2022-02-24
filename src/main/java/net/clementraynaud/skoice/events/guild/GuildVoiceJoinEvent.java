@@ -20,8 +20,8 @@
 
 package net.clementraynaud.skoice.events.guild;
 
-import net.clementraynaud.skoice.lang.Discord;
-import net.clementraynaud.skoice.lang.Minecraft;
+import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -46,8 +46,8 @@ public class GuildVoiceJoinEvent extends ListenerAdapter {
         if (minecraftID == null) {
             try {
                 event.getMember().getUser().openPrivateChannel().complete()
-                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE)
-                                .addField(":warning: " + Discord.ACCOUNT_NOT_LINKED_FIELD_TITLE, Discord.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", event.getGuild().getName()), false)
+                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE)
+                                .addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", event.getGuild().getName()), false)
                                 .setColor(Color.RED).build()).queue(success -> {
                         }, failure -> {
                         });
@@ -57,7 +57,7 @@ public class GuildVoiceJoinEvent extends ListenerAdapter {
             OfflinePlayer player = Bukkit.getOfflinePlayer(minecraftID);
             if (player.isOnline()) {
                 markDirty(player.getPlayer());
-                player.getPlayer().sendMessage(Minecraft.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());
+                player.getPlayer().sendMessage(MinecraftLang.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());
             }
         }
     }

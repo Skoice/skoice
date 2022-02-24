@@ -19,24 +19,16 @@
 
 package net.clementraynaud.skoice.commands.interaction;
 
-import net.clementraynaud.skoice.lang.Discord;
+import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
 import net.dv8tion.jda.api.events.channel.voice.update.VoiceChannelUpdateParentEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.Button;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.config.Config.LOBBY_ID_FIELD;
@@ -51,56 +43,14 @@ public class LobbySelection extends ListenerAdapter {
         if (user != null && !user.isBot()) {
             try {
                 user.openPrivateChannel().complete()
-                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
-                                .addField(":warning: " + Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE, Discord.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_ALTERNATIVE_DESCRIPTION.toString(), false)
+                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
+                                .addField(":warning: " + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE, DiscordLang.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_ALTERNATIVE_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build()).queue(success -> {
                         }, failure -> {
                         });
             } catch (ErrorResponseException ignored) {
             }
         }
-    }
-
-    public static Message getLobbySelectionMessage(Guild guild) {
-        List<VoiceChannel> voiceChannels = new ArrayList<>(guild.getVoiceChannels());
-        List<Category> categories = new ArrayList<>();
-        for (VoiceChannel voiceChannel : voiceChannels) {
-            categories.add(voiceChannel.getParent());
-        }
-        List<SelectOption> options = new ArrayList<>();
-        int optionIndex = 0;
-        while (optionIndex < 23 && voiceChannels.size() > optionIndex) {
-            if (voiceChannels.get(optionIndex).getParent() != null) {
-                options.add(SelectOption.of(voiceChannels.get(optionIndex).getName(), voiceChannels.get(optionIndex).getId())
-                        .withDescription(categories.get(optionIndex).getName()).withEmoji(Emoji.fromUnicode("U+1F509")));
-            }
-            optionIndex++;
-        }
-        options.add(SelectOption.of(Discord.NEW_VOICE_CHANNEL_SELECT_OPTION_LABEL.toString(), "generate")
-                .withDescription(Discord.NEW_VOICE_CHANNEL_SELECT_OPTION_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+2795")));
-        if (options.size() == 23) {
-            options.add(SelectOption.of(Discord.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.toString(), "refresh")
-                    .withDescription(Discord.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.toString()).withEmoji(Emoji.fromUnicode("U+26A0")));
-        }
-        EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE)
-                .setColor(Color.ORANGE)
-                .addField(":sound: " + Discord.LOBBY_EMBED_TITLE, Discord.LOBBY_EMBED_ALTERNATIVE_DESCRIPTION.toString(), false);
-        List<ActionRow> actionRows = new ArrayList<>();
-        if (getPlugin().isBotReady()) {
-            actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")
-                    .addOptions(options)
-                    .setDefaultValues(Collections.singleton(getPlugin().getConfig().getString(LOBBY_ID_FIELD))).build()));
-            actionRows.add(ActionRow.of(Button.secondary("settings", "← " + Discord.BACK_BUTTON_LABEL),
-                    Button.primary("lobby", "⟳ " + Discord.REFRESH_BUTTON_LABEL),
-                    Button.danger("close", Discord.CLOSE_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+2716"))));
-        } else {
-            actionRows.add(ActionRow.of(SelectionMenu.create("voice-channels")
-                    .setPlaceholder(Discord.LOBBY_SELECT_MENU_PLACEHOLDER.toString())
-                    .addOptions(options).build()));
-            actionRows.add(ActionRow.of(Button.primary("settings", "⟳ " + Discord.REFRESH_BUTTON_LABEL),
-                    Button.secondary("close", Discord.CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(Emoji.fromUnicode("U+1F552"))));
-        }
-        return new MessageBuilder().setEmbeds(embed.build()).setActionRows(actionRows).build();
     }
 
     @Override

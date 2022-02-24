@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.lang.Discord;
+import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -47,16 +47,16 @@ public class LinkCommand extends ListenerAdapter {
     public void onSlashCommand(SlashCommandEvent event) {
         if (event.getName().equals("link")) {
             if (!getPlugin().isBotReady()) {
-                EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + Discord.CONFIGURATION_EMBED_TITLE);
-                event.replyEmbeds(embed.addField(":warning: " + Discord.INCOMPLETE_CONFIGURATION_FIELD_TITLE, Discord.INCOMPLETE_CONFIGURATION_FIELD_DESCRIPTION.toString(), false)
+                EmbedBuilder embed = new EmbedBuilder().setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE);
+                event.replyEmbeds(embed.addField(":warning: " + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE, DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
                         .setEphemeral(true).queue();
                 return;
             }
-            EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE);
+            EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE);
             boolean isLinked = getPlugin().getConfig().contains("link." + event.getUser().getId());
             if (isLinked) {
-                event.replyEmbeds(embed.addField(":warning: " + Discord.ACCOUNT_ALREADY_LINKED_FIELD_TITLE, Discord.ACCOUNT_ALREADY_LINKED_FIELD_DESCRIPTION.toString(), false)
+                event.replyEmbeds(embed.addField(":warning: " + DiscordLang.ACCOUNT_ALREADY_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_ALREADY_LINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
                         .setEphemeral(true).queue();
                 return;
@@ -67,7 +67,7 @@ public class LinkCommand extends ListenerAdapter {
                 code = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
             } while (discordIDCode.containsValue(code));
             discordIDCode.put(event.getUser().getId(), code);
-            event.replyEmbeds(embed.addField(":key: " + Discord.VERIFICATION_CODE_FIELD_TITLE, Discord.VERIFICATION_CODE_FIELD_DESCRIPTION.toString().replace("{code}", code), false)
+            event.replyEmbeds(embed.addField(":key: " + DiscordLang.VERIFICATION_CODE_FIELD_TITLE, DiscordLang.VERIFICATION_CODE_FIELD_DESCRIPTION.toString().replace("{code}", code), false)
                             .setColor(Color.GREEN).build())
                     .setEphemeral(true).queue();
         }

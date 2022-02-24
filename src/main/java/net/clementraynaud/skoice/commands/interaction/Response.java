@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.commands.interaction;
 
+import net.clementraynaud.skoice.commands.menus.Menu;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -26,8 +27,6 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
-import static net.clementraynaud.skoice.commands.interaction.LobbySelection.getLobbySelectionMessage;
-import static net.clementraynaud.skoice.commands.interaction.ModeSelection.getModeSelectionMessage;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class Response {
@@ -38,10 +37,10 @@ public class Response {
         } else if (!getPlugin().isGuildUnique()) {
             return Menu.SERVER.getMessage();
         } else if (!getPlugin().getConfig().contains(LOBBY_ID_FIELD)) {
-            return getLobbySelectionMessage(guild);
+            return Menu.LOBBY.getMessage();
         } else if (!getPlugin().getConfig().contains(HORIZONTAL_RADIUS_FIELD)
                 || !getPlugin().getConfig().contains(VERTICAL_RADIUS_FIELD)) {
-            return getModeSelectionMessage(false);
+            return Menu.MODE.getMessage();
         } else {
             return Menu.SETTINGS.getMessage();
         }

@@ -29,7 +29,7 @@ import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.config.Config.LANG_FIELD;
 import static net.clementraynaud.skoice.lang.Lang.PREFIX;
 
-public enum Minecraft {
+public enum MinecraftLang {
     ILLEGAL_EXECUTOR(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, PREFIX + "This command is " + ChatColor.RED + "only executable " + ChatColor.GRAY + "by players.",
             Lang.FR, PREFIX + "Cette commande est " + ChatColor.RED + "seulement exécutable " + ChatColor.GRAY + "par les joueurs."))),
@@ -126,7 +126,7 @@ public enum Minecraft {
 
     private final Map<Lang, String> messages;
 
-    Minecraft(Map<Lang, String> messages) {
+    MinecraftLang(Map<Lang, String> messages) {
         this.messages = messages;
     }
 

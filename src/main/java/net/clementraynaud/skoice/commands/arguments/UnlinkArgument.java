@@ -19,8 +19,8 @@
 
 package net.clementraynaud.skoice.commands.arguments;
 
-import net.clementraynaud.skoice.lang.Discord;
-import net.clementraynaud.skoice.lang.Minecraft;
+import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -41,7 +41,7 @@ public class UnlinkArgument {
         Player player = (Player) sender;
         String discordID = getPlugin().getConfig().getString("link." + player.getUniqueId());
         if (discordID == null) {
-            player.sendMessage(Minecraft.ACCOUNT_NOT_LINKED.toString());
+            player.sendMessage(MinecraftLang.ACCOUNT_NOT_LINKED.toString());
             return;
         }
         unlinkUser(discordID, player.getUniqueId().toString());
@@ -49,8 +49,8 @@ public class UnlinkArgument {
         try {
             member = getGuild().retrieveMemberById(discordID).complete();
             member.getUser().openPrivateChannel().complete()
-                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + Discord.LINKING_PROCESS_EMBED_TITLE)
-                            .addField(":heavy_check_mark: " + Discord.ACCOUNT_UNLINKED_FIELD_TITLE, Discord.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.toString(), false)
+                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE)
+                            .addField(":heavy_check_mark: " + DiscordLang.ACCOUNT_UNLINKED_FIELD_TITLE, DiscordLang.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.toString(), false)
                             .setColor(Color.GREEN).build()).queue(success -> {
                     }, failure -> {
                     });
@@ -58,11 +58,11 @@ public class UnlinkArgument {
             if (voiceState != null) {
                 VoiceChannel voiceChannel = voiceState.getChannel();
                 if (voiceChannel != null && voiceChannel.equals(getLobby()) || getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
-                    player.sendMessage(Minecraft.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.toString());
+                    player.sendMessage(MinecraftLang.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.toString());
                 }
             }
         } catch (ErrorResponseException ignored) {
         }
-        player.sendMessage(Minecraft.ACCOUNT_UNLINKED.toString());
+        player.sendMessage(MinecraftLang.ACCOUNT_UNLINKED.toString());
     }
 }

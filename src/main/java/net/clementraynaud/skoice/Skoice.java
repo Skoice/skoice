@@ -30,7 +30,7 @@ import net.clementraynaud.skoice.events.guild.GuildVoiceMoveEvent;
 import net.clementraynaud.skoice.events.player.DirtyPlayerEvents;
 import net.clementraynaud.skoice.events.player.PlayerJoinEvent;
 import net.clementraynaud.skoice.events.player.PlayerQuitEvent;
-import net.clementraynaud.skoice.lang.Logger;
+import net.clementraynaud.skoice.lang.LoggerLang;
 import net.clementraynaud.skoice.networks.NetworkManager;
 import net.clementraynaud.skoice.scheduler.UpdateNetworks;
 import net.clementraynaud.skoice.util.UpdateUtil;
@@ -45,6 +45,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static net.clementraynaud.skoice.bot.Bot.getJda;
 import static net.clementraynaud.skoice.config.Config.*;
+import static net.clementraynaud.skoice.networks.NetworkManager.mutedUsers;
 
 public class Skoice extends JavaPlugin {
 
@@ -94,7 +95,7 @@ public class Skoice extends JavaPlugin {
     public void onEnable() {
         new Metrics(this, 11380);
         setPlugin(this);
-        getLogger().info(Logger.PLUGIN_ENABLED_INFO.toString());
+        getLogger().info(LoggerLang.PLUGIN_ENABLED_INFO.toString());
         getConfig().options().copyDefaults(true);
         saveConfig();
         new OutdatedConfig().update();
@@ -107,7 +108,7 @@ public class Skoice extends JavaPlugin {
     public void checkVersion() {
         new UpdateUtil(this, 82861).getVersion(version -> {
             if (!this.getDescription().getVersion().equals(version)) {
-                getLogger().warning(Logger.OUTDATED_VERSION_WARNING.toString()
+                getLogger().warning(LoggerLang.OUTDATED_VERSION_WARNING.toString()
                         .replace("{runningVersion}", this.getDescription().getVersion())
                         .replace("{latestVersion}", version));
             }
@@ -119,22 +120,22 @@ public class Skoice extends JavaPlugin {
         if (!getConfig().contains(TOKEN_FIELD)) {
             isTokenSet = false;
             isBotReady = false;
-            getLogger().warning(Logger.NO_TOKEN_WARNING.toString());
+            getLogger().warning(LoggerLang.NO_TOKEN_WARNING.toString());
         } else if (getJda() == null) {
             isBotReady = false;
         } else if (!getConfig().contains(LANG_FIELD)) {
             isBotReady = false;
-            getLogger().warning(Logger.NO_LANGUAGE_WARNING.toString());
+            getLogger().warning(LoggerLang.NO_LANGUAGE_WARNING.toString());
         } else if (!isGuildUnique()) {
             isBotReady = false;
-            getLogger().warning(Logger.MULTIPLE_GUILDS_WARNING.toString());
+            getLogger().warning(LoggerLang.MULTIPLE_GUILDS_WARNING.toString());
         } else if (!getConfig().contains(LOBBY_ID_FIELD)) {
             isBotReady = false;
-            getLogger().warning(Logger.NO_LOBBY_ID_WARNING.toString());
+            getLogger().warning(LoggerLang.NO_LOBBY_ID_WARNING.toString());
         } else if (!getConfig().contains(HORIZONTAL_RADIUS_FIELD)
                 || !getConfig().contains(VERTICAL_RADIUS_FIELD)) {
             isBotReady = false;
-            getLogger().warning(Logger.NO_RADIUS_WARNING.toString());
+            getLogger().warning(LoggerLang.NO_RADIUS_WARNING.toString());
         } else {
             isBotReady = true;
         }
@@ -159,7 +160,7 @@ public class Skoice extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new PlayerQuitEvent(), plugin);
             getJda().addEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
             getJda().getPresence().setActivity(Activity.listening("/link"));
-            getLogger().info(Logger.CONFIGURATION_COMPLETE_INFO.toString());
+            getLogger().info(LoggerLang.CONFIGURATION_COMPLETE_INFO.toString());
         } else if (wasBotReady && !isBotReady) {
             new Response().deleteMessage();
             HandlerList.unregisterAll(new DirtyPlayerEvents());
@@ -183,11 +184,8 @@ public class Skoice extends JavaPlugin {
                 network.clear();
             }
             NetworkManager.networks.clear();
-            try {
-                getJda().shutdown();
-            } catch (NoClassDefFoundError ignored) {
-            }
-            getLogger().info(Logger.PLUGIN_DISABLED_INFO.toString());
+            getJda().shutdown();
         }
+        getLogger().info(LoggerLang.PLUGIN_DISABLED_INFO.toString());
     }
 }
