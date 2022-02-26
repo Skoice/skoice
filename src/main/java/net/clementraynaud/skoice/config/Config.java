@@ -38,11 +38,20 @@ public class Config {
     public static final String VERTICAL_RADIUS_FIELD = "radius.vertical";
     public static final String ACTION_BAR_ALERT_FIELD = "action-bar-alert";
     public static final String CHANNEL_VISIBILITY_FIELD = "channel-visibility";
+    public static final String LINK_MAP_FIELD = "link-map";
     public static final String TEMP_GUILD_ID_FIELD = "temp.guild-id";
     public static final String TEMP_TEXT_CHANNEL_ID_FIELD = "temp.text-channel-id";
     public static final String TEMP_MESSAGE_ID_FIELD = "temp.message-id";
 
     private Config() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Map<UUID, String> getLinkMap() {
+        Map<UUID, String> linkMap = new HashMap<>();
+        if (getPlugin().getConfig().getObject(LINK_MAP_FIELD, HashMap.class) != null)
+            linkMap.putAll(getPlugin().getConfig().getObject(LINK_MAP_FIELD, HashMap.class));
+        return linkMap;
     }
 
     public static String getKeyFromValue(Map<String, String> map, String value) {
@@ -54,9 +63,20 @@ public class Config {
         return null;
     }
 
-    public static UUID getMinecraftID(Member member) {
-        String minecraftID = getPlugin().getConfig().getString("link." + member.getId());
-        return minecraftID != null ? UUID.fromString(minecraftID) : null;
+    public static UUID getMinecraftID(String discordID) {
+        for (Map.Entry<UUID, String> entry : getLinkMap().entrySet()) {
+            if (Objects.equals(discordID, entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public static Member getMember(UUID minecraftID) {
+        String discordID = getLinkMap().get(minecraftID);
+        Guild guild = getGuild();
+        if (guild == null) return null;
+        return discordID != null ? guild.getMemberById(discordID) : null;
     }
 
     public static void setToken(String token) {
@@ -91,13 +111,6 @@ public class Config {
         return lobby.getGuild();
     }
 
-    public static Member getMember(UUID player) {
-        String discordID = getPlugin().getConfig().getString("link." + player);
-        Guild guild = getGuild();
-        if (guild == null) return null;
-        return discordID != null ? guild.getMemberById(discordID) : null;
-    }
-
     public static int getHorizontalRadius() {
         return getPlugin().getConfig().getInt(HORIZONTAL_RADIUS_FIELD);
     }
@@ -114,9 +127,17 @@ public class Config {
         return getPlugin().getConfig().getBoolean(CHANNEL_VISIBILITY_FIELD);
     }
 
-    public static void unlinkUser(String discordID, String minecraftID) {
-        getPlugin().getConfig().set("link." + minecraftID, null);
-        getPlugin().getConfig().set("link." + discordID, null);
+    public static void linkUser(UUID minecraftID, String discordID) {
+        Map<UUID, String> linkMap = getLinkMap();
+        linkMap.put(minecraftID, discordID);
+        getPlugin().getConfig().set(LINK_MAP_FIELD, linkMap);
+        getPlugin().saveConfig();
+    }
+
+    public static void unlinkUser(UUID minecraftID) {
+        Map<UUID, String> linkMap = getLinkMap();
+        linkMap.remove(minecraftID);
+        getPlugin().getConfig().set(LINK_MAP_FIELD, linkMap);
         getPlugin().saveConfig();
     }
 }

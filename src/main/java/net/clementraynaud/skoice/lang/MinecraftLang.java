@@ -93,8 +93,8 @@ public enum MinecraftLang {
             Lang.FR, PREFIX + "Vous avez " + ChatColor.GREEN + "lié votre compte Minecraft " + ChatColor.GRAY + "à Discord."))),
 
     ACCOUNT_UNLINKED(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, PREFIX + "You have " + ChatColor.RED + "unlinked your Minecraft account " + ChatColor.GRAY + "from Discord.",
-            Lang.FR, PREFIX + "Vous avez " + ChatColor.RED + "delié votre compte Minecraft " + ChatColor.GRAY + "de Discord."))),
+            Lang.EN, PREFIX + "You have " + ChatColor.GREEN + "unlinked your Minecraft account " + ChatColor.GRAY + "from Discord.",
+            Lang.FR, PREFIX + "Vous avez " + ChatColor.GREEN + "delié votre compte Minecraft " + ChatColor.GRAY + "de Discord."))),
 
     ACCOUNT_NOT_LINKED(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, PREFIX + "You have " + ChatColor.RED + "not linked your Minecraft account " + ChatColor.GRAY + "to Discord. Type \"" + ChatColor.YELLOW + "/link" + ChatColor.GRAY + "\" on our Discord server to link it.",

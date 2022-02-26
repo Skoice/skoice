@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.commands.arguments;
 
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -30,6 +31,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.awt.*;
+import java.util.Map;
+import java.util.UUID;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
@@ -45,8 +48,7 @@ public class LinkArgument {
             player.sendMessage(MinecraftLang.INCOMPLETE_CONFIGURATION.toString());
             return;
         }
-        boolean isLinked = getPlugin().getConfig().contains("link." + player.getUniqueId());
-        if (isLinked) {
+        if (getLinkMap().containsKey(player.getUniqueId())) {
             player.sendMessage(MinecraftLang.ACCOUNT_ALREADY_LINKED.toString());
             return;
         }
@@ -58,7 +60,7 @@ public class LinkArgument {
             player.sendMessage(MinecraftLang.INVALID_CODE.toString());
             return;
         }
-        String discordID = getKeyFromValue(getDiscordIDCode(), arg);
+        String discordID = Config.getKeyFromValue(getDiscordIDCode(), arg);
         if (discordID == null) {
             return;
         }
@@ -66,9 +68,7 @@ public class LinkArgument {
         if (member == null) {
             return;
         }
-        getPlugin().getConfig().set("link." + player.getUniqueId(), discordID);
-        getPlugin().getConfig().set("link." + discordID, player.getUniqueId().toString());
-        getPlugin().saveConfig();
+        linkUser(player.getUniqueId(), discordID);
         removeValueFromDiscordIDCode(arg);
         try {
             member.getUser().openPrivateChannel().complete()

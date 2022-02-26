@@ -38,7 +38,7 @@ public class GuildVoiceLeaveEvent extends ListenerAdapter {
         updateMutedUsers(event.getChannelJoined(), event.getMember());
         if (event.getChannelLeft().getParent() == null || !event.getChannelLeft().getParent().equals(getCategory()))
             return;
-        UUID minecraftID = getMinecraftID(event.getMember());
+        UUID minecraftID = getMinecraftID(event.getMember().getId());
         if (minecraftID == null) return;
         OfflinePlayer player = Bukkit.getOfflinePlayer(minecraftID);
         if (player.isOnline()) {

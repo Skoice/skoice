@@ -177,7 +177,7 @@ public class UpdateNetworks {
                 members.addAll(voiceChannel.getMembers());
             }
             for (Member member : members) {
-                UUID uuid = getMinecraftID(member);
+                UUID uuid = getMinecraftID(member.getId());
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
                 NetworkManager playerNetwork = uuid != null ? NetworkManager.networks.stream()
                         .filter(n -> n.contains(uuid))

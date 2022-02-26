@@ -177,7 +177,7 @@ public class Bot {
         VoiceChannel lobby = getLobby();
         if (lobby != null) {
             for (Member member : lobby.getMembers()) {
-                UUID minecraftID = getMinecraftID(member);
+                UUID minecraftID = getMinecraftID(member.getId());
                 if (minecraftID == null) {
                     EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE)
                             .setColor(Color.RED);

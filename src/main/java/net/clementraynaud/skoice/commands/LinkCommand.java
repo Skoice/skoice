@@ -28,8 +28,10 @@ import org.apache.commons.lang.RandomStringUtils;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.config.Config.getLinkMap;
 
 public class LinkCommand extends ListenerAdapter {
 
@@ -54,8 +56,7 @@ public class LinkCommand extends ListenerAdapter {
                 return;
             }
             EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE);
-            boolean isLinked = getPlugin().getConfig().contains("link." + event.getUser().getId());
-            if (isLinked) {
+            if (getLinkMap().containsValue(event.getUser().getId())) {
                 event.replyEmbeds(embed.addField(":warning: " + DiscordLang.ACCOUNT_ALREADY_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_ALREADY_LINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
                         .setEphemeral(true).queue();

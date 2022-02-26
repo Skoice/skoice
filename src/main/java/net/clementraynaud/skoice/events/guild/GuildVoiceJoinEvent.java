@@ -42,7 +42,7 @@ public class GuildVoiceJoinEvent extends ListenerAdapter {
     public void onGuildVoiceJoin(net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent event) {
         updateMutedUsers(event.getChannelJoined(), event.getMember());
         if (!event.getChannelJoined().equals(getLobby())) return;
-        UUID minecraftID = getMinecraftID(event.getMember());
+        UUID minecraftID = getMinecraftID(event.getMember().getId());
         if (minecraftID == null) {
             try {
                 event.getMember().getUser().openPrivateChannel().complete()

@@ -37,7 +37,7 @@ public class GuildVoiceMoveEvent extends ListenerAdapter {
     public void onGuildVoiceMove(net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent event) {
         if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(getCategory()) &&
                 event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(getCategory())) {
-            UUID minecraftID = getMinecraftID(event.getMember());
+            UUID minecraftID = getMinecraftID(event.getMember().getId());
             if (minecraftID == null) return;
             OfflinePlayer player = Bukkit.getOfflinePlayer(minecraftID);
             if (player.isOnline()) {
