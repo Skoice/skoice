@@ -48,9 +48,9 @@ public class GuildMessageReceivedEvent extends ListenerAdapter {
                 getPlugin().getConfig().set(discordIDAxis.get(event.getAuthor().getId()), value);
                 getPlugin().saveConfig();
                 new Response().deleteMessage();
-                if (discordIDAxis.get(event.getAuthor().getId()).equals("horizontal-radius")) {
+                if (discordIDAxis.get(event.getAuthor().getId()).equals(HORIZONTAL_RADIUS_FIELD)) {
                     event.getChannel().sendMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
-                } else if (discordIDAxis.get(event.getAuthor().getId()).equals("vertical-radius")) {
+                } else if (discordIDAxis.get(event.getAuthor().getId()).equals(VERTICAL_RADIUS_FIELD)) {
                     event.getChannel().sendMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
                 }
             }

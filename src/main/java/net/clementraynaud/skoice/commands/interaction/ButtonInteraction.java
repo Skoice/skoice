@@ -34,7 +34,7 @@ import java.util.Map;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.commands.interaction.ErrorEmbeds.*;
-import static net.clementraynaud.skoice.config.Config.TEMP_MESSAGE_ID_FIELD;
+import static net.clementraynaud.skoice.config.Config.*;
 
 public class ButtonInteraction extends ListenerAdapter {
 
@@ -80,7 +80,7 @@ public class ButtonInteraction extends ListenerAdapter {
                         break;
                     case "HORIZONTAL_RADIUS":
                         if (getPlugin().isBotReady()) {
-                            discordIDAxis.put(member.getId(), "horizontal-radius");
+                            discordIDAxis.put(member.getId(), HORIZONTAL_RADIUS_FIELD);
                             event.editMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
                         } else {
                             event.editMessage(new Response().getMessage()).queue();
@@ -88,7 +88,7 @@ public class ButtonInteraction extends ListenerAdapter {
                         break;
                     case "VERTICAL_RADIUS":
                         if (getPlugin().isBotReady()) {
-                            discordIDAxis.put(member.getId(), "vertical-radius");
+                            discordIDAxis.put(member.getId(), VERTICAL_RADIUS_FIELD);
                             event.editMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
                         } else {
                             event.editMessage(new Response().getMessage()).queue();
