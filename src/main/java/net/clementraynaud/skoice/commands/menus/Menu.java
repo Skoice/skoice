@@ -41,83 +41,24 @@ import static net.clementraynaud.skoice.lang.DiscordLang.*;
 import static net.dv8tion.jda.api.entities.MessageEmbed.*;
 
 public enum Menu {
-    SETTINGS(
-            null,
-            null,
-            DEFAULT,
-            null,
-            false),
-
-    SERVER(
-            FILE_CABINET,
-            null,
-            DEFAULT,
-            null,
-            true),
-
-    LOBBY(
-            SOUND,
-            PRIMARY,
-            DEFAULT,
-            SETTINGS,
-            true),
-
-    MODE(
-            VIDEO_GAME,
-            PRIMARY,
-            DEFAULT,
-            SETTINGS,
-            false),
-
-    HORIZONTAL_RADIUS(
-            LEFT_RIGHT_ARROW,
-            PRIMARY,
-            DEFAULT,
-            MODE,
-            false),
-
-    VERTICAL_RADIUS(
-            UP_DOWN_ARROW,
-            PRIMARY,
-            DEFAULT,
-            MODE,
-            false),
-
-    ADVANCED_SETTINGS(
-            WRENCH,
-            SECONDARY,
-            DEFAULT,
-            SETTINGS,
-            false),
-
-    LANGUAGE(
-            GLOBE_WITH_MERIDIANS,
-            SECONDARY,
-            DEFAULT,
-            SETTINGS,
-            false),
-
-    ACTION_BAR_ALERT(
-            EXCLAMATION,
-            PRIMARY,
-            DEFAULT,
-            ADVANCED_SETTINGS,
-            false),
-
-    CHANNEL_VISIBILITY(
-            MAG,
-            PRIMARY,
-            DEFAULT,
-            ADVANCED_SETTINGS,
-            false);
+    SETTINGS(null, null, DEFAULT, null, false, false),
+    SERVER(FILE_CABINET, null, DEFAULT, null, true, true),
+    LOBBY(SOUND, PRIMARY, DEFAULT, SETTINGS, true, true),
+    MODE(VIDEO_GAME, PRIMARY, DEFAULT, SETTINGS, true, false),
+    HORIZONTAL_RADIUS(LEFT_RIGHT_ARROW, PRIMARY, DEFAULT, MODE, false, false),
+    VERTICAL_RADIUS(UP_DOWN_ARROW, PRIMARY, DEFAULT, MODE, false, false),
+    ADVANCED_SETTINGS(WRENCH, SECONDARY, DEFAULT, SETTINGS, false, false),
+    LANGUAGE(GLOBE_WITH_MERIDIANS, SECONDARY, DEFAULT, SETTINGS, true, false),
+    ACTION_BAR_ALERT(EXCLAMATION, PRIMARY, DEFAULT, ADVANCED_SETTINGS, true, false),
+    CHANNEL_VISIBILITY(MAG, PRIMARY, DEFAULT, ADVANCED_SETTINGS, true, false);
 
     private static final String CLOSE_BUTTON_ID = "CLOSE";
-    public static final String REFRESH_OPTION_ID = "REFRESH";
 
     private final MenuUnicode unicode;
     private final MenuStyle style;
     private final MenuType type;
     private final Menu parent;
+    private final boolean hasSelectMenu;
     private final boolean isRefreshable;
 
     private List<Menu> children;
@@ -141,11 +82,12 @@ public enum Menu {
                         .replace("{value}", String.valueOf(getVerticalRadius())), false));
     }
 
-    Menu(MenuUnicode unicode, MenuStyle style, MenuType type, Menu parent, boolean isRefreshable) {
+    Menu(MenuUnicode unicode, MenuStyle style, MenuType type, Menu parent, boolean hasSelectMenu, boolean isRefreshable) {
         this.unicode = unicode;
         this.style = style;
         this.type = type;
         this.parent = parent;
+        this.hasSelectMenu = hasSelectMenu;
         this.isRefreshable = isRefreshable;
     }
 
@@ -175,8 +117,6 @@ public enum Menu {
                 .setColor(type.getColor());
         if (this.getTitle(false) != null)
             embed.addField(this.getTitle(true), this.getDescription(false), false);
-        if (this == MODE)
-            refreshModeChildren();
         if (children != null)
             for (Menu child : children)
                 embed.addField(child.getTitle(true), child.getDescription(true), true);
@@ -187,7 +127,7 @@ public enum Menu {
     }
 
     private List<ActionRow> getActionRows() {
-        if (hasSelectMenu(this)) {
+        if (hasSelectMenu) {
             return Arrays.asList(ActionRow.of(getSelectMenu(this)), ActionRow.of(getButtons()));
         }
         return Collections.singletonList(ActionRow.of(getButtons()));
@@ -204,6 +144,9 @@ public enum Menu {
                 buttons.add(child.style.equals(PRIMARY) ?
                         Button.primary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmoji()) :
                         Button.secondary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmoji()));
+        else if (this == MODE)
+            buttons.addAll(getModeAdditionalButtons());
+        customizeRadius = false;
         if (getPlugin().isBotReady()) {
             buttons.add(Button.danger(CLOSE_BUTTON_ID, CLOSE_BUTTON_LABEL.toString()).withEmoji(HEAVY_MULTIPLICATION_X.getEmoji()));
         } else {
@@ -222,14 +165,23 @@ public enum Menu {
         return false;
     }
 
-    private void refreshModeChildren() {
-        if (!(getHorizontalRadius() == 80 && getVerticalRadius() == 40 && !customizeRadius)
-                && !(getHorizontalRadius() == 40 && getVerticalRadius() == 20 && !customizeRadius))
-            MODE.children = Arrays.asList(HORIZONTAL_RADIUS, VERTICAL_RADIUS);
+    private List<Button> getModeAdditionalButtons() {
+        if (getPlugin().isBotReady() &&
+                (customizeRadius
+                        || (getHorizontalRadius() != 80 && getVerticalRadius() != 40)
+                        && (getHorizontalRadius() != 40 && getVerticalRadius() != 20)))
+            return Arrays.asList(Button.primary(HORIZONTAL_RADIUS.toString(), HORIZONTAL_RADIUS.getTitle(false))
+                            .withEmoji(HORIZONTAL_RADIUS.unicode.getEmoji()),
+                    Button.primary(VERTICAL_RADIUS.toString(), VERTICAL_RADIUS.getTitle(false))
+                            .withEmoji(VERTICAL_RADIUS.unicode.getEmoji()));
+        return Collections.emptyList();
     }
 
-    private boolean hasSelectMenu(Menu menu) {
-        return menu == SERVER || menu == LOBBY || menu == MODE || menu == LANGUAGE || menu == ACTION_BAR_ALERT || menu == CHANNEL_VISIBILITY;
+    public void refreshAdditionalFields() {
+        MODE.additionalFields = Arrays.asList(
+                new Field(MAP.getEmoji() + " " + VANILLA_MODE_FIELD_TITLE, VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
+                new Field(CROSSED_SWORDS.getEmoji() + " " + MINIGAME_MODE_FIELD_TITLE, MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
+                getPlugin().isBotReady() ? new Field(PENCIL2.getEmoji() + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true) : null);
     }
 
     private SelectionMenu getSelectMenu(Menu menu) {

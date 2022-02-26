@@ -22,6 +22,7 @@ package net.clementraynaud.skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.SkoiceCommand;
 import net.clementraynaud.skoice.commands.interaction.Response;
+import net.clementraynaud.skoice.commands.menus.Menu;
 import net.clementraynaud.skoice.config.OutdatedConfig;
 import net.clementraynaud.skoice.events.VoiceChannelDeleteEvent;
 import net.clementraynaud.skoice.events.guild.GuildVoiceJoinEvent;
@@ -151,14 +152,17 @@ public class Skoice extends JavaPlugin {
                 getJda().getPresence().setActivity(Activity.listening("/link"));
             } else {
                 Bukkit.getPluginManager().registerEvents(new PlayerJoinEvent(), plugin);
-                if (getJda() != null)
+                if (getJda() != null) {
+                    Menu.MODE.refreshAdditionalFields();
                     getJda().getPresence().setActivity(Activity.listening("/configure"));
+                }
             }
         } else if (!wasBotReady && isBotReady) {
             HandlerList.unregisterAll(new PlayerJoinEvent());
             Bukkit.getPluginManager().registerEvents(new DirtyPlayerEvents(), plugin);
             Bukkit.getPluginManager().registerEvents(new PlayerQuitEvent(), plugin);
             getJda().addEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
+            Menu.MODE.refreshAdditionalFields();
             getJda().getPresence().setActivity(Activity.listening("/link"));
             getLogger().info(LoggerLang.CONFIGURATION_COMPLETE_INFO.toString());
         } else if (wasBotReady && !isBotReady) {
@@ -168,6 +172,7 @@ public class Skoice extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new PlayerJoinEvent(), plugin);
             if (getJda() != null) {
                 getJda().removeEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
+                Menu.MODE.refreshAdditionalFields();
                 getJda().getPresence().setActivity(Activity.listening("/configure"));
             }
         }

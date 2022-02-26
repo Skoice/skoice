@@ -33,12 +33,12 @@ import java.util.List;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
-import static net.clementraynaud.skoice.commands.menus.Menu.REFRESH_OPTION_ID;
 import static net.clementraynaud.skoice.config.Config.LOBBY_ID_FIELD;
 
 public class LobbySelectMenu {
 
     private static final String GENERATE_OPTION_ID = "GENERATE";
+    private static final String REFRESH_OPTION_ID = "REFRESH";
 
     public SelectionMenu getComponent() {
         List<VoiceChannel> voiceChannels = new ArrayList<>(getJda().getVoiceChannels());
