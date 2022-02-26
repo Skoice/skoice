@@ -50,7 +50,7 @@ public class ButtonInteraction extends ListenerAdapter {
                 String buttonID = event.getButton().getId();
                 switch (buttonID) {
                     case "SETTINGS":
-                        event.editMessage(new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(new Response().getMessage()).queue();
                         break;
                     case "CLOSE":
                         event.getMessage().delete().queue();
@@ -66,24 +66,24 @@ public class ButtonInteraction extends ListenerAdapter {
                         }
                         break;
                     case "LOBBY":
-                        event.editMessage(getPlugin().isBotReady() ? Menu.LOBBY.getMessage() : new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(getPlugin().isBotReady() ? Menu.LOBBY.getMessage() : new Response().getMessage()).queue();
                         break;
                     case "LANGUAGE":
-                        event.editMessage(getPlugin().isBotReady() ? Menu.LANGUAGE.getMessage() : new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(getPlugin().isBotReady() ? Menu.LANGUAGE.getMessage() : new Response().getMessage()).queue();
                         break;
                     case "ADVANCED_SETTINGS":
-                        event.editMessage(getPlugin().isBotReady() ? Menu.ADVANCED_SETTINGS.getMessage() : new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(getPlugin().isBotReady() ? Menu.ADVANCED_SETTINGS.getMessage() : new Response().getMessage()).queue();
                         break;
                     case "MODE":
                         discordIDAxis.remove(member.getId());
-                        event.editMessage(getPlugin().isBotReady() ? Menu.MODE.getMessage() : new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(getPlugin().isBotReady() ? Menu.MODE.getMessage() : new Response().getMessage()).queue();
                         break;
                     case "HORIZONTAL_RADIUS":
                         if (getPlugin().isBotReady()) {
                             discordIDAxis.put(member.getId(), "horizontal");
                             event.editMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
                         } else {
-                            event.editMessage(new Response().getMessage(event.getGuild())).queue();
+                            event.editMessage(new Response().getMessage()).queue();
                         }
                         break;
                     case "VERTICAL_RADIUS":
@@ -91,14 +91,14 @@ public class ButtonInteraction extends ListenerAdapter {
                             discordIDAxis.put(member.getId(), "vertical");
                             event.editMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
                         } else {
-                            event.editMessage(new Response().getMessage(event.getGuild())).queue();
+                            event.editMessage(new Response().getMessage()).queue();
                         }
                         break;
                     case "ACTION_BAR_ALERT":
-                        event.editMessage(getPlugin().isBotReady() ? Menu.ACTION_BAR_ALERT.getMessage() : new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(getPlugin().isBotReady() ? Menu.ACTION_BAR_ALERT.getMessage() : new Response().getMessage()).queue();
                         break;
                     case "CHANNEL_VISIBILITY":
-                        event.editMessage(getPlugin().isBotReady() ? Menu.CHANNEL_VISIBILITY.getMessage() : new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(getPlugin().isBotReady() ? Menu.CHANNEL_VISIBILITY.getMessage() : new Response().getMessage()).queue();
                         break;
                     default:
                         throw new IllegalStateException(LoggerLang.UNEXPECTED_VALUE.toString().replace("{value}", buttonID));

@@ -31,10 +31,8 @@ import static net.clementraynaud.skoice.config.Config.*;
 
 public class Response {
 
-    public Message getMessage(Guild guild) {
-        if (!getPlugin().getConfig().contains(LANG_FIELD)) {
-            return Menu.LANGUAGE.getMessage();
-        } else if (!getPlugin().isGuildUnique()) {
+    public Message getMessage() {
+        if (!getPlugin().isGuildUnique()) {
             return Menu.SERVER.getMessage();
         } else if (!getPlugin().getConfig().contains(LOBBY_ID_FIELD)) {
             return Menu.LOBBY.getMessage();

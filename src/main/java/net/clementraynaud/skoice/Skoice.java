@@ -124,9 +124,6 @@ public class Skoice extends JavaPlugin {
             getLogger().warning(LoggerLang.NO_TOKEN_WARNING.toString());
         } else if (getJda() == null) {
             isBotReady = false;
-        } else if (!getConfig().contains(LANG_FIELD)) {
-            isBotReady = false;
-            getLogger().warning(LoggerLang.NO_LANGUAGE_WARNING.toString());
         } else if (!isGuildUnique()) {
             isBotReady = false;
             getLogger().warning(LoggerLang.MULTIPLE_GUILDS_WARNING.toString());

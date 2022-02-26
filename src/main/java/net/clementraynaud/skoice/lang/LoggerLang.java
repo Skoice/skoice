@@ -53,9 +53,6 @@ public enum LoggerLang {
             Lang.EN, ChatColor.YELLOW + "Token not set. Join your Minecraft server to set up Skoice.",
             Lang.FR, ChatColor.YELLOW + "Token non défini. Rejoignez votre serveur Minecraft pour configurer Skoice."))),
 
-    NO_LANGUAGE_WARNING(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, ChatColor.YELLOW + "Language not set. Type \"/configure\" on your Discord server to set up Skoice."))),
-
     MULTIPLE_GUILDS_WARNING(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, ChatColor.YELLOW + "Your bot is on multiple Discord servers. Type \"/configure\" on your Discord server to choose one.",
             Lang.FR, ChatColor.YELLOW + "Votre bot est sur plusieurs serveurs Discord. Tapez \"/configure\" sur votre serveur Discord pour en choisir un."))),

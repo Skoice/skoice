@@ -46,7 +46,7 @@ public class ConfigureCommand extends ListenerAdapter {
                     if (getPlugin().getConfig().contains("temp")) {
                         new Response().deleteMessage();
                     }
-                    event.reply(new Response().getMessage(event.getGuild())).queue();
+                    event.reply(new Response().getMessage()).queue();
                     configureCommandCooldown = true;
                     new Timer().schedule(new TimerTask() {
 

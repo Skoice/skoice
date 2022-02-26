@@ -55,7 +55,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                                         && getJda().getGuilds().contains(getJda().getGuildById(server.getValue()))) {
                                     try {
                                         getJda().getGuildById(server.getValue()).leave()
-                                                .queue(success -> event.editMessage(new Response().getMessage(event.getGuild())).queue());
+                                                .queue(success -> event.editMessage(new Response().getMessage()).queue());
                                     } catch (ErrorResponseException ignored) {
                                     }
                                 }
@@ -66,7 +66,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                         getPlugin().getConfig().set(LANG_FIELD, event.getSelectedOptions().get(0).getValue());
                         getPlugin().saveConfig();
                         getPlugin().updateConfigurationStatus(false);
-                        event.editMessage(new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(new Response().getMessage()).queue();
                         break;
                     case "LOBBY":
                         Guild guild = event.getGuild();
@@ -80,7 +80,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                                 getPlugin().saveConfig();
                                 getPlugin().updateConfigurationStatus(false);
                             } else if (event.getSelectedOptions().get(0).getValue().equals("REFRESH")) {
-                                event.editMessage(new Response().getMessage(event.getGuild())).queue();
+                                event.editMessage(new Response().getMessage()).queue();
                             } else {
                                 VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                                 if (lobby != null && lobby.getParent() != null) {
@@ -90,7 +90,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                                 }
                             }
                         }
-                        event.editMessage(new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(new Response().getMessage()).queue();
                         break;
                     case "MODE":
                         if (event.getSelectedOptions().get(0).getValue().equals("VANILLA_MODE")) {
@@ -98,13 +98,13 @@ public class SelectMenuInteraction extends ListenerAdapter {
                             getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 40);
                             getPlugin().saveConfig();
                             getPlugin().updateConfigurationStatus(false);
-                            event.editMessage(new Response().getMessage(event.getGuild())).queue();
+                            event.editMessage(new Response().getMessage()).queue();
                         } else if (event.getSelectedOptions().get(0).getValue().equals("MINIGAME_MODE")) {
                             getPlugin().getConfig().set(HORIZONTAL_RADIUS_FIELD, 40);
                             getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 20);
                             getPlugin().saveConfig();
                             getPlugin().updateConfigurationStatus(false);
-                            event.editMessage(new Response().getMessage(event.getGuild())).queue();
+                            event.editMessage(new Response().getMessage()).queue();
                         } else if (event.getSelectedOptions().get(0).getValue().equals("CUSTOMIZE")) {
                             customizeRadius = true;
                             event.editMessage(Menu.MODE.getMessage()).queue();
@@ -117,7 +117,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                             getPlugin().getConfig().set(ACTION_BAR_ALERT_FIELD, false);
                         }
                         getPlugin().saveConfig();
-                        event.editMessage(new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(new Response().getMessage()).queue();
                         break;
                     case "CHANNEL_VISIBILITY":
                         if (event.getSelectedOptions().get(0).getValue().equals("true")) {
@@ -126,7 +126,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                             getPlugin().getConfig().set(CHANNEL_VISIBILITY_FIELD, false);
                         }
                         getPlugin().saveConfig();
-                        event.editMessage(new Response().getMessage(event.getGuild())).queue();
+                        event.editMessage(new Response().getMessage()).queue();
                         break;
                     default:
                         throw new IllegalStateException(LoggerLang.UNEXPECTED_VALUE.toString().replace("{value}", componentID));
