@@ -24,7 +24,7 @@ import net.clementraynaud.skoice.commands.menus.Menu;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.ButtonInteraction.discordIDDistance;
+import static net.clementraynaud.skoice.commands.interaction.ButtonInteraction.discordIDAxis;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class GuildMessageReceivedEvent extends ListenerAdapter {
@@ -39,18 +39,18 @@ public class GuildMessageReceivedEvent extends ListenerAdapter {
                 getPlugin().getConfig().set(TEMP_MESSAGE_ID_FIELD, event.getMessageId());
                 getPlugin().saveConfig();
             }
-        } else if (discordIDDistance.containsKey(event.getAuthor().getId())
+        } else if (discordIDAxis.containsKey(event.getAuthor().getId())
                 && event.getMessage().getContentRaw().length() <= 4
                 && event.getMessage().getContentRaw().matches("[0-9]+")) {
             int value = Integer.parseInt(event.getMessage().getContentRaw());
             if (value >= 1 && value <= 1000) {
                 event.getMessage().delete().queue();
-                getPlugin().getConfig().set("radius." + discordIDDistance.get(event.getAuthor().getId()), value);
+                getPlugin().getConfig().set("radius." + discordIDAxis.get(event.getAuthor().getId()), value);
                 getPlugin().saveConfig();
                 new Response().deleteMessage();
-                if (discordIDDistance.get(event.getAuthor().getId()).equals("horizontal")) {
+                if (discordIDAxis.get(event.getAuthor().getId()).equals("horizontal")) {
                     event.getChannel().sendMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
-                } else if (discordIDDistance.get(event.getAuthor().getId()).equals("vertical")) {
+                } else if (discordIDAxis.get(event.getAuthor().getId()).equals("vertical")) {
                     event.getChannel().sendMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
                 }
             }

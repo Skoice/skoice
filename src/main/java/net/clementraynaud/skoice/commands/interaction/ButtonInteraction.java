@@ -38,7 +38,7 @@ import static net.clementraynaud.skoice.config.Config.TEMP_MESSAGE_ID_FIELD;
 
 public class ButtonInteraction extends ListenerAdapter {
 
-    public static final Map<String, String> discordIDDistance = new HashMap<>();
+    public static final Map<String, String> discordIDAxis = new HashMap<>();
 
     @Override
     public void onButtonClick(ButtonClickEvent event) {
@@ -54,7 +54,7 @@ public class ButtonInteraction extends ListenerAdapter {
                         break;
                     case "CLOSE":
                         event.getMessage().delete().queue();
-                        discordIDDistance.remove(event.getUser().getId());
+                        discordIDAxis.remove(event.getUser().getId());
                         getPlugin().getConfig().set("temp", null);
                         getPlugin().saveConfig();
                         if (!getPlugin().isBotReady()) {
@@ -75,12 +75,12 @@ public class ButtonInteraction extends ListenerAdapter {
                         event.editMessage(getPlugin().isBotReady() ? Menu.ADVANCED_SETTINGS.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
                     case "MODE":
-                        discordIDDistance.remove(member.getId());
+                        discordIDAxis.remove(member.getId());
                         event.editMessage(getPlugin().isBotReady() ? Menu.MODE.getMessage() : new Response().getMessage(event.getGuild())).queue();
                         break;
                     case "HORIZONTAL_RADIUS":
                         if (getPlugin().isBotReady()) {
-                            discordIDDistance.put(member.getId(), "horizontal");
+                            discordIDAxis.put(member.getId(), "horizontal");
                             event.editMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
                         } else {
                             event.editMessage(new Response().getMessage(event.getGuild())).queue();
@@ -88,7 +88,7 @@ public class ButtonInteraction extends ListenerAdapter {
                         break;
                     case "VERTICAL_RADIUS":
                         if (getPlugin().isBotReady()) {
-                            discordIDDistance.put(member.getId(), "vertical");
+                            discordIDAxis.put(member.getId(), "vertical");
                             event.editMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
                         } else {
                             event.editMessage(new Response().getMessage(event.getGuild())).queue();
