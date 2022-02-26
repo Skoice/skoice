@@ -45,12 +45,12 @@ public class GuildMessageReceivedEvent extends ListenerAdapter {
             int value = Integer.parseInt(event.getMessage().getContentRaw());
             if (value >= 1 && value <= 1000) {
                 event.getMessage().delete().queue();
-                getPlugin().getConfig().set("radius." + discordIDAxis.get(event.getAuthor().getId()), value);
+                getPlugin().getConfig().set(discordIDAxis.get(event.getAuthor().getId()), value);
                 getPlugin().saveConfig();
                 new Response().deleteMessage();
-                if (discordIDAxis.get(event.getAuthor().getId()).equals("horizontal")) {
+                if (discordIDAxis.get(event.getAuthor().getId()).equals("horizontal-radius")) {
                     event.getChannel().sendMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
-                } else if (discordIDAxis.get(event.getAuthor().getId()).equals("vertical")) {
+                } else if (discordIDAxis.get(event.getAuthor().getId()).equals("vertical-radius")) {
                     event.getChannel().sendMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
                 }
             }

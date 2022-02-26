@@ -34,8 +34,8 @@ public class Config {
     public static final String TOKEN_FIELD = "token";
     public static final String LANG_FIELD = "lang";
     public static final String LOBBY_ID_FIELD = "lobby-id";
-    public static final String HORIZONTAL_RADIUS_FIELD = "radius.horizontal"; // One reference to "radius." remaining
-    public static final String VERTICAL_RADIUS_FIELD = "radius.vertical";
+    public static final String HORIZONTAL_RADIUS_FIELD = "horizontal-radius";
+    public static final String VERTICAL_RADIUS_FIELD = "vertical-radius";
     public static final String ACTION_BAR_ALERT_FIELD = "action-bar-alert";
     public static final String CHANNEL_VISIBILITY_FIELD = "channel-visibility";
     public static final String LINK_MAP_FIELD = "link-map";

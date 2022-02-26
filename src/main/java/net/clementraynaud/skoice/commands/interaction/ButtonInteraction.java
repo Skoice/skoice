@@ -80,7 +80,7 @@ public class ButtonInteraction extends ListenerAdapter {
                         break;
                     case "HORIZONTAL_RADIUS":
                         if (getPlugin().isBotReady()) {
-                            discordIDAxis.put(member.getId(), "horizontal");
+                            discordIDAxis.put(member.getId(), "horizontal-radius");
                             event.editMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
                         } else {
                             event.editMessage(new Response().getMessage()).queue();
@@ -88,7 +88,7 @@ public class ButtonInteraction extends ListenerAdapter {
                         break;
                     case "VERTICAL_RADIUS":
                         if (getPlugin().isBotReady()) {
-                            discordIDAxis.put(member.getId(), "vertical");
+                            discordIDAxis.put(member.getId(), "vertical-radius");
                             event.editMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
                         } else {
                             event.editMessage(new Response().getMessage()).queue();
