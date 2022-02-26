@@ -40,7 +40,7 @@ public class UnlinkCommand extends ListenerAdapter {
     public void onSlashCommand(SlashCommandEvent event) {
         if (event.getName().equals("unlink")) {
             EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE);
-            UUID minecraftID = getMinecraftID(event.getUser().getId());
+            String minecraftID = getKeyFromValue(getLinkMap(), event.getUser().getId());
             if (minecraftID == null) {
                 event.replyEmbeds(embed.addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_NOT_LINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
@@ -50,7 +50,7 @@ public class UnlinkCommand extends ListenerAdapter {
                 event.replyEmbeds(embed.addField(":heavy_check_mark: " + DiscordLang.ACCOUNT_UNLINKED_FIELD_TITLE, DiscordLang.ACCOUNT_UNLINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.GREEN).build())
                         .setEphemeral(true).queue();
-                OfflinePlayer player = Bukkit.getOfflinePlayer(minecraftID);
+                OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
                 if (player.isOnline()) {
                     player.getPlayer().sendMessage(MinecraftLang.ACCOUNT_UNLINKED.toString());
                     GuildVoiceState voiceState = event.getMember().getVoiceState();

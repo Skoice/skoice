@@ -31,8 +31,7 @@ import org.bukkit.OfflinePlayer;
 import java.awt.*;
 import java.util.UUID;
 
-import static net.clementraynaud.skoice.config.Config.getLobby;
-import static net.clementraynaud.skoice.config.Config.getMinecraftID;
+import static net.clementraynaud.skoice.config.Config.*;
 import static net.clementraynaud.skoice.events.player.DirtyPlayerEvents.markDirty;
 import static net.clementraynaud.skoice.networks.NetworkManager.updateMutedUsers;
 
@@ -42,7 +41,7 @@ public class GuildVoiceJoinEvent extends ListenerAdapter {
     public void onGuildVoiceJoin(net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent event) {
         updateMutedUsers(event.getChannelJoined(), event.getMember());
         if (!event.getChannelJoined().equals(getLobby())) return;
-        UUID minecraftID = getMinecraftID(event.getMember().getId());
+        String minecraftID = getKeyFromValue(getLinkMap(), event.getMember().getId());
         if (minecraftID == null) {
             try {
                 event.getMember().getUser().openPrivateChannel().complete()
@@ -54,7 +53,7 @@ public class GuildVoiceJoinEvent extends ListenerAdapter {
             } catch (ErrorResponseException ignored) {
             }
         } else {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(minecraftID);
+            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
             if (player.isOnline()) {
                 markDirty(player.getPlayer());
                 player.getPlayer().sendMessage(MinecraftLang.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());

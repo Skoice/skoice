@@ -39,12 +39,12 @@ public class UnlinkArgument {
 
     public void execute(CommandSender sender) {
         Player player = (Player) sender;
-        String discordID = getLinkMap().get(player.getUniqueId());
+        String discordID = getLinkMap().get(player.getUniqueId().toString());
         if (discordID == null) {
             player.sendMessage(MinecraftLang.ACCOUNT_NOT_LINKED.toString());
             return;
         }
-        unlinkUser(player.getUniqueId());
+        unlinkUser(player.getUniqueId().toString());
         Member member;
         try {
             member = getGuild().retrieveMemberById(discordID).complete();

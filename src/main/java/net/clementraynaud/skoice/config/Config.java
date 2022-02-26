@@ -47,8 +47,8 @@ public class Config {
     }
 
     @SuppressWarnings("unchecked")
-    public static Map<UUID, String> getLinkMap() {
-        Map<UUID, String> linkMap = new HashMap<>();
+    public static Map<String, String> getLinkMap() {
+        Map<String, String> linkMap = new HashMap<>();
         if (getPlugin().getConfig().getObject(LINK_MAP_FIELD, HashMap.class) != null)
             linkMap.putAll(getPlugin().getConfig().getObject(LINK_MAP_FIELD, HashMap.class));
         return linkMap;
@@ -57,15 +57,6 @@ public class Config {
     public static String getKeyFromValue(Map<String, String> map, String value) {
         for (Map.Entry<String, String> entry : map.entrySet()) {
             if (Objects.equals(value, entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
-
-    public static UUID getMinecraftID(String discordID) {
-        for (Map.Entry<UUID, String> entry : getLinkMap().entrySet()) {
-            if (Objects.equals(discordID, entry.getValue())) {
                 return entry.getKey();
             }
         }
@@ -127,15 +118,15 @@ public class Config {
         return getPlugin().getConfig().getBoolean(CHANNEL_VISIBILITY_FIELD);
     }
 
-    public static void linkUser(UUID minecraftID, String discordID) {
-        Map<UUID, String> linkMap = getLinkMap();
+    public static void linkUser(String minecraftID, String discordID) {
+        Map<String, String> linkMap = getLinkMap();
         linkMap.put(minecraftID, discordID);
         getPlugin().getConfig().set(LINK_MAP_FIELD, linkMap);
         getPlugin().saveConfig();
     }
 
-    public static void unlinkUser(UUID minecraftID) {
-        Map<UUID, String> linkMap = getLinkMap();
+    public static void unlinkUser(String minecraftID) {
+        Map<String, String> linkMap = getLinkMap();
         linkMap.remove(minecraftID);
         getPlugin().getConfig().set(LINK_MAP_FIELD, linkMap);
         getPlugin().saveConfig();

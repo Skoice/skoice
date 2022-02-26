@@ -31,8 +31,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.awt.*;
-import java.util.Map;
-import java.util.UUID;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
@@ -60,7 +58,7 @@ public class LinkArgument {
             player.sendMessage(MinecraftLang.INVALID_CODE.toString());
             return;
         }
-        String discordID = Config.getKeyFromValue(getDiscordIDCode(), arg);
+        String discordID = getKeyFromValue(getDiscordIDCode(), arg);
         if (discordID == null) {
             return;
         }
@@ -68,7 +66,7 @@ public class LinkArgument {
         if (member == null) {
             return;
         }
-        linkUser(player.getUniqueId(), discordID);
+        linkUser(player.getUniqueId().toString(), discordID);
         removeValueFromDiscordIDCode(arg);
         try {
             member.getUser().openPrivateChannel().complete()

@@ -19,13 +19,14 @@
 
 package net.clementraynaud.skoice.config;
 
-import net.clementraynaud.skoice.lang.Lang;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.*;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.config.Config.*;
@@ -45,9 +46,12 @@ public class OutdatedConfig {
             convertOldToken();
             convertOldData("mainVoiceChannelID", LOBBY_ID_FIELD);
             convertOldRadius();
-            if (!getPlugin().getConfig().contains(LANG_FIELD))
-                getPlugin().getConfig().set(LANG_FIELD, Lang.EN.name());
+            convertOldLinks();
             getPlugin().saveConfig();
+            try {
+                Files.delete(outdatedConfig.toPath());
+            } catch (IOException ignored) {
+            }
         }
     }
 
@@ -72,7 +76,18 @@ public class OutdatedConfig {
                 getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 40);
             }
         }
+    }
 
+    private void convertOldLinks() {
+        if (oldData.getConfigurationSection("Data") != null) {
+            Map<String, String> linkMap = new HashMap<>();
+            Set<String> subkeys = oldData.getConfigurationSection("Data").getKeys(false);
+            Iterator<String> iterator = subkeys.iterator();
+            for (int i = 0; i < subkeys.size(); i+=2)
+                linkMap.put(iterator.next(), iterator.next());
+            linkMap.putAll(getLinkMap());
+            getPlugin().getConfig().set(LINK_MAP_FIELD, linkMap);
+        }
     }
 
     private void convertOldData(String oldField, String newField) {

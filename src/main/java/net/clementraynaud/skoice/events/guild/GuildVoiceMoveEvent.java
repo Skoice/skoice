@@ -26,8 +26,7 @@ import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
-import static net.clementraynaud.skoice.config.Config.getCategory;
-import static net.clementraynaud.skoice.config.Config.getMinecraftID;
+import static net.clementraynaud.skoice.config.Config.*;
 import static net.clementraynaud.skoice.networks.NetworkManager.networks;
 import static net.clementraynaud.skoice.networks.NetworkManager.updateMutedUsers;
 
@@ -37,9 +36,9 @@ public class GuildVoiceMoveEvent extends ListenerAdapter {
     public void onGuildVoiceMove(net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent event) {
         if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(getCategory()) &&
                 event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(getCategory())) {
-            UUID minecraftID = getMinecraftID(event.getMember().getId());
+            String minecraftID = getKeyFromValue(getLinkMap(), event.getMember().getId());
             if (minecraftID == null) return;
-            OfflinePlayer player = Bukkit.getOfflinePlayer(minecraftID);
+            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
             if (player.isOnline()) {
                 networks.stream()
                         .filter(network -> network.contains(player.getPlayer().getUniqueId()))
