@@ -42,6 +42,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static net.clementraynaud.skoice.bot.Bot.getJda;
@@ -137,7 +138,18 @@ public class Skoice extends JavaPlugin {
         } else {
             isBotReady = true;
         }
+        updateActivity();
         updateListeners(startup, wasBotReady);
+    }
+
+    private void updateActivity() {
+        if (getJda() != null) {
+            Activity activity = getJda().getPresence().getActivity();
+            if (isBotReady && !Objects.equals(activity, Activity.listening("link")))
+                getJda().getPresence().setActivity(Activity.listening("/link"));
+            else if (!isBotReady && !Objects.equals(activity, Activity.listening("configure")))
+                getJda().getPresence().setActivity(Activity.listening("/configure"));
+        }
     }
 
     private void updateListeners(boolean startup, boolean wasBotReady) {
@@ -146,13 +158,10 @@ public class Skoice extends JavaPlugin {
                 Bukkit.getPluginManager().registerEvents(new DirtyPlayerEvents(), plugin);
                 Bukkit.getPluginManager().registerEvents(new PlayerQuitEvent(), plugin);
                 getJda().addEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
-                getJda().getPresence().setActivity(Activity.listening("/link"));
             } else {
                 Bukkit.getPluginManager().registerEvents(new PlayerJoinEvent(), plugin);
-                if (getJda() != null) {
+                if (getJda() != null)
                     Menu.MODE.refreshAdditionalFields();
-                    getJda().getPresence().setActivity(Activity.listening("/configure"));
-                }
             }
         } else if (!wasBotReady && isBotReady) {
             HandlerList.unregisterAll(new PlayerJoinEvent());
@@ -160,7 +169,6 @@ public class Skoice extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new PlayerQuitEvent(), plugin);
             getJda().addEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
             Menu.MODE.refreshAdditionalFields();
-            getJda().getPresence().setActivity(Activity.listening("/link"));
             getLogger().info(LoggerLang.CONFIGURATION_COMPLETE_INFO.toString());
         } else if (wasBotReady && !isBotReady) {
             new Response().deleteMessage();
@@ -170,7 +178,6 @@ public class Skoice extends JavaPlugin {
             if (getJda() != null) {
                 getJda().removeEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
                 Menu.MODE.refreshAdditionalFields();
-                getJda().getPresence().setActivity(Activity.listening("/configure"));
             }
         }
     }
