@@ -81,8 +81,8 @@ public enum MinecraftLang {
             Lang.FR, PREFIX + "Votre bot est " + ChatColor.GREEN + "désormais connecté" + ChatColor.GRAY + ". Tapez \"" + ChatColor.YELLOW + "/configure" + ChatColor.GRAY + "\" sur votre serveur Discord pour le configurer."))),
 
     BOT_ALREADY_CONNECTED(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, PREFIX + "A bot is " + ChatColor.RED + "already connected" + ChatColor.GRAY + ". Restart your Minecraft server to apply the new token.",
-            Lang.FR, PREFIX + "Un bot is " + ChatColor.RED + "déjà connecté" + ChatColor.GRAY + ". Redémarrez votre serveur Minecraft pour appliquer le nouveau token."))),
+            Lang.EN, PREFIX + "You have " + ChatColor.GREEN + "updated the token" + ChatColor.GRAY + ". Restart your Minecraft server to connect your bot.",
+            Lang.FR, PREFIX + "Vous avez " + ChatColor.GREEN + "mis à jour le token" + ChatColor.GRAY + ". Redémarrez votre serveur Minecraft pour connecter votre bot."))),
 
     BOT_COULD_NOT_CONNECT(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, PREFIX + "Your bot " + ChatColor.RED + "could not connect" + ChatColor.GRAY + ". Try again with a valid token.",

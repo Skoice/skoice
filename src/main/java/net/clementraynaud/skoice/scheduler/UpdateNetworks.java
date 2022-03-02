@@ -50,9 +50,6 @@ public class UpdateNetworks {
     public static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
     private static final ReentrantLock lock = new ReentrantLock();
 
-    public UpdateNetworks() {
-    }
-
     public void run() {
         if (!lock.tryLock()) {
             return;
