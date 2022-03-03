@@ -48,12 +48,12 @@ public class Config {
     }
 
     public static Map<String, String> getLinkMap() {
-        Map<String, Object> linkMap = new HashMap<>(getPlugin().getConfig().getConfigurationSection(LINK_MAP_FIELD).getValues(false));
         Map<String, String> castedLinkMap = new HashMap<>();
-        for (Map.Entry<String, Object> entry : linkMap.entrySet())
-            if(entry.getValue() instanceof String)
-                castedLinkMap.put(entry.getKey(), (String) entry.getValue());
-        getPlugin().getLogger().info(castedLinkMap.toString());
+        if (getPlugin().getConfig().isSet(LINK_MAP_FIELD)) {
+            Map<String, Object> linkMap = new HashMap<>(getPlugin().getConfig().getConfigurationSection(LINK_MAP_FIELD).getValues(false));
+            for (Map.Entry<String, Object> entry : linkMap.entrySet())
+                castedLinkMap.put(entry.getKey(), entry.getValue().toString());
+        }
         return castedLinkMap;
     }
 
