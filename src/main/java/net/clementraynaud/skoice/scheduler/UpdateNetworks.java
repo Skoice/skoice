@@ -39,6 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import static net.clementraynaud.skoice.networks.NetworkManager.*;
 import static net.clementraynaud.skoice.util.DistanceUtil.getHorizontalDistance;
 import static net.clementraynaud.skoice.util.DistanceUtil.getVerticalDistance;
 import static net.clementraynaud.skoice.config.Config.*;
@@ -81,7 +82,7 @@ public class UpdateNetworks {
                 mainVoiceChannelPublicRoleOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
             }
             // remove networks that have no voice channel
-            NetworkManager.networks.removeIf(network -> network.getChannel() == null && network.isInitialized());
+            networks.removeIf(network -> network.getChannel() == null && network.isInitialized());
             Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers().stream()
                     .filter(player -> !player.isDead())
                     .collect(Collectors.toSet());
@@ -111,7 +112,7 @@ public class UpdateNetworks {
                 }
                 // add player to networks that they may have came into contact with
                 // and combine multiple networks if the player is connecting them together
-                NetworkManager.networks.stream()
+                networks.stream()
                         .filter(network -> network.isPlayerInRangeToBeAdded(player))
                         // combine multiple networks if player is bridging both of them together
                         .reduce((network1, network2) -> network1.size() > network2.size() ? network1.engulf(network2) : network2.engulf(network1))
@@ -122,7 +123,7 @@ public class UpdateNetworks {
                             network.add(player.getUniqueId());
                         });
                 // remove player from networks that they lost connection to
-                NetworkManager.networks.stream()
+                networks.stream()
                         .filter(network -> network.contains(player.getUniqueId()))
                         .filter(network -> !network.isPlayerInRangeToStayConnected(player))
                         .forEach(network -> {
@@ -132,7 +133,7 @@ public class UpdateNetworks {
                         });
                 if (getActionBarAlert()) {
                     try {
-                        NetworkManager.networks.stream()
+                        networks.stream()
                                 .filter(network -> network.contains(player.getUniqueId()))
                                 .filter(network -> network.isPlayerInRangeToStayConnected(player))
                                 .filter(network -> !network.isPlayerInRangeToBeAdded(player))
@@ -143,7 +144,7 @@ public class UpdateNetworks {
 
                 // create networks if two players are within activation distance
                 Set<UUID> playersWithinRange = alivePlayers.stream()
-                        .filter(p -> NetworkManager.networks.stream().noneMatch(network -> network.contains(p)))
+                        .filter(p -> networks.stream().noneMatch(network -> network.contains(p)))
                         .filter(p -> !p.equals(player))
                         .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
                         .filter(p -> getHorizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius()
@@ -163,12 +164,12 @@ public class UpdateNetworks {
                         continue;
                     }
                     playersWithinRange.add(minecraftID);
-                    NetworkManager.networks.add(new NetworkManager(playersWithinRange));
+                    networks.add(new NetworkManager(playersWithinRange));
                 }
             }
             // handle moving players between channels
             Set<Member> members = new HashSet<>(lobby.getMembers());
-            for (NetworkManager network : NetworkManager.getNetworks()) {
+            for (NetworkManager network : getNetworks()) {
                 VoiceChannel voiceChannel = network.getChannel();
                 if (voiceChannel == null) continue;
                 members.addAll(voiceChannel.getMembers());
@@ -176,7 +177,7 @@ public class UpdateNetworks {
             for (Member member : members) {
                 String minecraftID = getKeyFromValue(getLinkMap(), member.getId());
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
-                NetworkManager playerNetwork = minecraftID != null ? NetworkManager.networks.stream()
+                NetworkManager playerNetwork = minecraftID != null ? networks.stream()
                         .filter(n -> n.contains(UUID.fromString(minecraftID)))
                         .findAny().orElse(null) : null;
                 VoiceChannel shouldBeInChannel;
@@ -211,13 +212,13 @@ public class UpdateNetworks {
     }
 
     private void deleteEmptyNetworks() {
-        for (NetworkManager network : new HashSet<>(NetworkManager.networks)) {
+        for (NetworkManager network : new HashSet<>(networks)) {
             if (!network.isEmpty()) continue;
             VoiceChannel voiceChannel = network.getChannel();
             if (voiceChannel == null) continue;
             if (voiceChannel.getMembers().isEmpty()) {
                 voiceChannel.delete().reason(DiscordLang.COMMUNICATION_LOST.toString()).queue();
-                NetworkManager.networks.remove(network);
+                networks.remove(network);
             }
         }
     }

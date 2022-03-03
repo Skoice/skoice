@@ -25,6 +25,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.*;
@@ -46,20 +47,21 @@ public class Config {
     private Config() {
     }
 
-    @SuppressWarnings("unchecked")
     public static Map<String, String> getLinkMap() {
-        Map<String, String> linkMap = new HashMap<>();
-        if (getPlugin().getConfig().getObject(LINK_MAP_FIELD, HashMap.class) != null)
-            linkMap.putAll(getPlugin().getConfig().getObject(LINK_MAP_FIELD, HashMap.class));
-        return linkMap;
+        Map<String, Object> linkMap = new HashMap<>(getPlugin().getConfig().getConfigurationSection(LINK_MAP_FIELD).getValues(false));
+        Map<String, String> castedLinkMap = new HashMap<>();
+        for (Map.Entry<String, Object> entry : linkMap.entrySet())
+            if(entry.getValue() instanceof String)
+                castedLinkMap.put(entry.getKey(), (String) entry.getValue());
+        getPlugin().getLogger().info(castedLinkMap.toString());
+        return castedLinkMap;
     }
 
     public static String getKeyFromValue(Map<String, String> map, String value) {
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
+        for (Map.Entry<String, String> entry : map.entrySet())
+            if (Objects.equals(value, entry.getValue()))
                 return entry.getKey();
-            }
-        }
+
         return null;
     }
 
