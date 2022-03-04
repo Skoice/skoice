@@ -30,6 +30,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.config.Config.*;
@@ -119,13 +120,27 @@ public class NetworkManager {
     }
 
     public boolean isPlayerInRangeToStayConnected(Player player) {
-        return players.stream()
+        List<Player> matches = Arrays.asList(players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
-                .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> getVerticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius() + FALLOFF
-                        && getHorizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius() + FALLOFF);
+                .filter(p -> getVerticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius() + FALLOFF
+                        && getHorizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius() + FALLOFF)
+                .toArray(Player[]::new));
+        if (players.size() > matches.size()) {
+            Player[] otherPlayers = players.stream()
+                    .map(Bukkit::getPlayer)
+                    .filter(Objects::nonNull)
+                    .filter(p -> !matches.contains(p))
+                    .toArray(Player[]::new);
+            for (Player otherPlayer : otherPlayers)
+                if (matches.stream()
+                        .anyMatch(p -> getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= getVerticalRadius() + FALLOFF
+                        && getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= getHorizontalRadius() + FALLOFF))
+                    return true;
+            return false;
+        }
+        return matches.size() != 1;
     }
 
     public void clear() {

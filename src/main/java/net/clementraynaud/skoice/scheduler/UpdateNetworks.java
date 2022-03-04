@@ -20,7 +20,6 @@
 
 package net.clementraynaud.skoice.scheduler;
 
-import net.clementraynaud.skoice.events.player.DirtyPlayerEvents;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.networks.NetworkManager;
 import net.clementraynaud.skoice.lang.MinecraftLang;
@@ -39,6 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import static net.clementraynaud.skoice.events.player.DirtyPlayerEvents.*;
 import static net.clementraynaud.skoice.networks.NetworkManager.*;
 import static net.clementraynaud.skoice.util.DistanceUtil.getHorizontalDistance;
 import static net.clementraynaud.skoice.util.DistanceUtil.getVerticalDistance;
@@ -86,20 +86,14 @@ public class UpdateNetworks {
             Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers().stream()
                     .filter(player -> !player.isDead())
                     .collect(Collectors.toSet());
-            Set<UUID> oldDirtyPlayers = DirtyPlayerEvents.getDirtyPlayers();
-            DirtyPlayerEvents.clearDirtyPlayers();
+            Set<UUID> oldDirtyPlayers = getDirtyPlayers();
+            clearDirtyPlayers();
             for (UUID minecraftID : oldDirtyPlayers) {
                 Player player = Bukkit.getPlayer(minecraftID);
                 if (player == null) continue;
                 Member member = getMember(player.getUniqueId());
-                if (member == null) {
-//                   debug(Debug.VOICE, "Player " + player.getName() + " isn't linked, skipping voice checks");
-                    continue;
-                }
-                if (member.getVoiceState() == null || member.getVoiceState().getChannel() == null) {
-//                    .debug(Debug.VOICE, "Player " + player.getName() + " is not connected to voice");
-                    continue;
-                }
+                if (member == null) continue;
+                if (member.getVoiceState() == null || member.getVoiceState().getChannel() == null) continue;
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
                 boolean isLobby = playerChannel.getId().equals(getLobby().getId());
                 if (!isLobby && (playerChannel.getParent() == null || !playerChannel.getParent().getId().equals(getCategory().getId()))) {
@@ -110,24 +104,15 @@ public class UpdateNetworks {
                     if (pair != null) pair.getRight().cancel(false);
                     continue;
                 }
-                // add player to networks that they may have came into contact with
-                // and combine multiple networks if the player is connecting them together
                 networks.stream()
                         .filter(network -> network.isPlayerInRangeToBeAdded(player))
-                        // combine multiple networks if player is bridging both of them together
                         .reduce((network1, network2) -> network1.size() > network2.size() ? network1.engulf(network2) : network2.engulf(network1))
-                        // add the player to the network if they aren't in it already
                         .filter(network -> !network.contains(player.getUniqueId()))
-                        .ifPresent(network -> {
-//                            debug(Debug.VOICE, player.getName() + " has entered network " + network + "'s influence, connecting");
-                            network.add(player.getUniqueId());
-                        });
-                // remove player from networks that they lost connection to
+                        .ifPresent(network -> network.add(player.getUniqueId()));
                 networks.stream()
                         .filter(network -> network.contains(player.getUniqueId()))
                         .filter(network -> !network.isPlayerInRangeToStayConnected(player))
                         .forEach(network -> {
-//                            .debug(Debug.VOICE, "Player " + player.getName() + " lost connection to " + network + ", disconnecting");
                             network.remove(player.getUniqueId());
                             if (network.size() == 1) network.clear();
                         });
