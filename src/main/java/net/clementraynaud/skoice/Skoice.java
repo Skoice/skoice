@@ -32,7 +32,7 @@ import net.clementraynaud.skoice.listeners.player.DirtyPlayerListeners;
 import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
 import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.lang.LoggerLang;
-import net.clementraynaud.skoice.networks.NetworkManager;
+import net.clementraynaud.skoice.networks.Network;
 import net.clementraynaud.skoice.scheduler.UpdateNetworks;
 import net.clementraynaud.skoice.util.UpdateUtil;
 import net.dv8tion.jda.api.entities.Activity;
@@ -187,11 +187,11 @@ public class Skoice extends JavaPlugin {
             for (Pair<String, CompletableFuture<Void>> value : UpdateNetworks.awaitingMoves.values()) {
                 value.getRight().cancel(true);
             }
-            for (NetworkManager network : NetworkManager.networks) {
+            for (Network network : Network.networks) {
                 network.getChannel().delete().queue();
                 network.clear();
             }
-            NetworkManager.networks.clear();
+            Network.networks.clear();
             getJda().shutdown();
         }
         getLogger().info(LoggerLang.PLUGIN_DISABLED_INFO.toString());

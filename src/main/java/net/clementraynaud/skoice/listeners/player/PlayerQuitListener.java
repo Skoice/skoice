@@ -27,7 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.networks.NetworkManager.networks;
+import static net.clementraynaud.skoice.networks.Network.networks;
 
 public class PlayerQuitListener implements Listener {
 

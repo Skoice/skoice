@@ -34,7 +34,7 @@ import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
 import net.clementraynaud.skoice.scheduler.UpdateNetworks;
-import net.clementraynaud.skoice.networks.NetworkManager;
+import net.clementraynaud.skoice.networks.Network;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -55,7 +55,7 @@ import java.util.*;
 import java.util.List;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.networks.NetworkManager.networks;
+import static net.clementraynaud.skoice.networks.Network.networks;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class Bot {
@@ -145,7 +145,7 @@ public class Bot {
                                         return false;
                                     }
                                 })
-                                .forEach(channel -> networks.add(new NetworkManager(channel.getId())));
+                                .forEach(channel -> networks.add(new Network(channel.getId())));
                     }
                 }
             }

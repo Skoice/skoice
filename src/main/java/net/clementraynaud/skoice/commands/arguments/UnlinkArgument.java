@@ -32,7 +32,7 @@ import org.bukkit.entity.Player;
 import java.awt.*;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.networks.NetworkManager.getNetworks;
+import static net.clementraynaud.skoice.networks.Network.getNetworks;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class UnlinkArgument {

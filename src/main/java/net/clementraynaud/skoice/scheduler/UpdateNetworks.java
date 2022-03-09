@@ -21,7 +21,7 @@
 package net.clementraynaud.skoice.scheduler;
 
 import net.clementraynaud.skoice.lang.DiscordLang;
-import net.clementraynaud.skoice.networks.NetworkManager;
+import net.clementraynaud.skoice.networks.Network;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.Permission;
@@ -39,7 +39,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 import static net.clementraynaud.skoice.listeners.player.DirtyPlayerListeners.*;
-import static net.clementraynaud.skoice.networks.NetworkManager.*;
+import static net.clementraynaud.skoice.networks.Network.*;
 import static net.clementraynaud.skoice.util.DistanceUtil.getHorizontalDistance;
 import static net.clementraynaud.skoice.util.DistanceUtil.getVerticalDistance;
 import static net.clementraynaud.skoice.config.Config.*;
@@ -57,34 +57,10 @@ public class UpdateNetworks {
         }
         try {
             VoiceChannel lobby = getLobby();
-            if (lobby == null) {
+            if (lobby == null || !arePermissionsValid(lobby))
                 return;
-            }
-            Member selfMember = lobby.getGuild().getSelfMember();
-            Role publicRole = lobby.getGuild().getPublicRole();
-            for (Permission permission : LOBBY_REQUIRED_PERMISSIONS) {
-                if (!selfMember.hasPermission(lobby, permission)) {
-//                  "The bot doesn't have the \"" + permission.getName() + "\" permission in the voice lobby (" + lobby.getName() + ")"
-                    return;
-                }
-            }
-            Category category = getCategory();
-            for (Permission permission : CATEGORY_REQUIRED_PERMISSIONS) {
-                if (!selfMember.hasPermission(category, permission)) {
-//                  "The bot doesn't have the \"" + permission.getName() + "\" permission in the voice category (" + category.getName() + ")"
-                    return;
-                }
-            }
-            PermissionOverride mainVoiceChannelPublicRoleOverride = lobby.getPermissionOverride(publicRole);
-            if (mainVoiceChannelPublicRoleOverride == null) {
-                lobby.createPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
-            } else if (!mainVoiceChannelPublicRoleOverride.getDenied().contains(Permission.VOICE_SPEAK)) {
-                mainVoiceChannelPublicRoleOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
-            }
+            muteMembers(lobby);
             networks.removeIf(network -> network.getChannel() == null && network.isInitialized());
-            Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers().stream()
-                    .filter(player -> !player.isDead())
-                    .collect(Collectors.toSet());
             Set<UUID> oldDirtyPlayers = getDirtyPlayers();
             clearDirtyPlayers();
             for (UUID minecraftID : oldDirtyPlayers) {
@@ -100,60 +76,23 @@ public class UpdateNetworks {
                                 pair.getRight().cancel(false);
                             continue;
                         }
-                        networks.stream()
-                                .filter(network -> network.isPlayerInRangeToBeAdded(player))
-                                .reduce((network1, network2) -> network1.size() > network2.size() ? network1.engulf(network2) : network2.engulf(network1))
-                                .filter(network -> !network.contains(player.getUniqueId()))
-                                .ifPresent(network -> network.add(player.getUniqueId()));
-                        networks.stream()
-                                .filter(network -> network.contains(player.getUniqueId()))
-                                .filter(network -> !network.isPlayerInRangeToStayConnected(player))
-                                .forEach(network -> {
-                                    network.remove(player.getUniqueId());
-                                    if (network.size() == 1) network.clear();
-                                });
-                        if (getActionBarAlert()) {
-                            try {
-                                networks.stream()
-                                        .filter(network -> network.contains(player.getUniqueId()))
-                                        .filter(network -> network.isPlayerInRangeToStayConnected(player))
-                                        .filter(network -> !network.isPlayerInRangeToBeAdded(player))
-                                        .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(MinecraftLang.ACTION_BAR_ALERT.toString())));
-                            } catch (NoSuchMethodError ignored) {
-                            }
-                        }
-                        Set<UUID> playersWithinRange = alivePlayers.stream()
-                                .filter(p -> networks.stream().noneMatch(network -> network.contains(p)))
-                                .filter(p -> !p.equals(player))
-                                .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                                .filter(p -> getHorizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius()
-                                        && getVerticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius())
-                                .filter(p -> {
-                                    Member m = getMember(p.getUniqueId());
-                                    return m != null && m.getVoiceState() != null
-                                            && m.getVoiceState().getChannel() != null
-                                            && m.getVoiceState().getChannel().getParent() != null
-                                            && m.getVoiceState().getChannel().getParent().equals(category);
-                                })
-                                .map(Player::getUniqueId)
-                                .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
-                        if (!playersWithinRange.isEmpty() && category.getChannels().size() != 50) {
-                            playersWithinRange.add(minecraftID);
-                            networks.add(new NetworkManager(playersWithinRange));
-                        }
+                        updateNetworksAroundPlayer(player);
+                        if (getActionBarAlert())
+                            sendActionBarAlert(player);
+                        createNetworkIfNeeded(player);
                     }
                 }
             }
-            Set<Member> members = new HashSet<>(lobby.getMembers());
-            for (NetworkManager network : getNetworks()) {
+            Set<Member> membersInLobby = new HashSet<>(lobby.getMembers());
+            for (Network network : getNetworks()) {
                 VoiceChannel voiceChannel = network.getChannel();
                 if (voiceChannel == null) continue;
-                members.addAll(voiceChannel.getMembers());
+                membersInLobby.addAll(voiceChannel.getMembers());
             }
-            for (Member member : members) {
+            for (Member member : membersInLobby) {
                 String minecraftID = getKeyFromValue(getLinkMap(), member.getId());
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
-                NetworkManager playerNetwork = minecraftID != null ? networks.stream()
+                Network playerNetwork = minecraftID != null ? networks.stream()
                         .filter(n -> n.contains(UUID.fromString(minecraftID)))
                         .findAny().orElse(null) : null;
                 VoiceChannel shouldBeInChannel;
@@ -184,8 +123,83 @@ public class UpdateNetworks {
         }
     }
 
+    private boolean arePermissionsValid(VoiceChannel lobby) {
+        Member selfMember = lobby.getGuild().getSelfMember();
+        for (Permission permission : LOBBY_REQUIRED_PERMISSIONS)
+            if (!selfMember.hasPermission(lobby, permission))
+//              "The bot doesn't have the \"" + permission.getName() + "\" permission in the voice lobby (" + lobby.getName() + ")"
+                return false;
+        for (Permission permission : CATEGORY_REQUIRED_PERMISSIONS)
+            if (!selfMember.hasPermission(getCategory(), permission))
+//              "The bot doesn't have the \"" + permission.getName() + "\" permission in the voice category (" + category.getName() + ")"
+                return false;
+        return true;
+    }
+
+    private void muteMembers(VoiceChannel lobby) {
+        Role publicRole = lobby.getGuild().getPublicRole();
+        PermissionOverride lobbyPublicRoleOverride = lobby.getPermissionOverride(publicRole);
+        if (lobbyPublicRoleOverride == null)
+            lobby.createPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
+        else if (!lobbyPublicRoleOverride.getDenied().contains(Permission.VOICE_SPEAK))
+            lobbyPublicRoleOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
+    }
+
+    private void updateNetworksAroundPlayer(Player player) {
+        networks.stream()
+                .filter(network -> network.isPlayerInRangeToBeAdded(player))
+                .reduce((network1, network2) -> network1.size() > network2.size() ? network1.engulf(network2) : network2.engulf(network1))
+                .filter(network -> !network.contains(player.getUniqueId()))
+                .ifPresent(network -> network.add(player.getUniqueId()));
+        networks.stream()
+                .filter(network -> network.contains(player.getUniqueId()))
+                .filter(network -> !network.isPlayerInRangeToStayConnected(player))
+                .forEach(network -> {
+                    network.remove(player.getUniqueId());
+                    if (network.size() == 1)
+                        network.clear();
+                });
+    }
+
+    private void sendActionBarAlert(Player player) {
+        try {
+            networks.stream()
+                    .filter(network -> network.contains(player.getUniqueId()))
+                    .filter(network -> network.isPlayerInRangeToStayConnected(player))
+                    .filter(network -> !network.isPlayerInRangeToBeAdded(player))
+                    .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(MinecraftLang.ACTION_BAR_ALERT.toString())));
+        } catch (NoSuchMethodError ignored) {
+        }
+    }
+
+    private void createNetworkIfNeeded(Player player) {
+        Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers().stream()
+                .filter(p -> !p.isDead())
+                .collect(Collectors.toSet());
+        Category category = getCategory();
+        Set<UUID> playersWithinRange = alivePlayers.stream()
+                .filter(p -> networks.stream().noneMatch(network -> network.contains(p)))
+                .filter(p -> !p.equals(player))
+                .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
+                .filter(p -> getHorizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius()
+                        && getVerticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius())
+                .filter(p -> {
+                    Member m = getMember(p.getUniqueId());
+                    return m != null && m.getVoiceState() != null
+                            && m.getVoiceState().getChannel() != null
+                            && m.getVoiceState().getChannel().getParent() != null
+                            && m.getVoiceState().getChannel().getParent().equals(category);
+                })
+                .map(Player::getUniqueId)
+                .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
+        if (!playersWithinRange.isEmpty() && category.getChannels().size() != 50) {
+            playersWithinRange.add(player.getUniqueId());
+            networks.add(new Network(playersWithinRange));
+        }
+    }
+
     private void deleteEmptyNetworks() {
-        for (NetworkManager network : new HashSet<>(networks)) {
+        for (Network network : new HashSet<>(networks)) {
             if (network.isEmpty()) {
                 VoiceChannel voiceChannel = network.getChannel();
                 if (voiceChannel != null && voiceChannel.getMembers().isEmpty()) {

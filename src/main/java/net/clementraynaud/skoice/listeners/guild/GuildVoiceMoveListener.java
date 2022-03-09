@@ -28,8 +28,8 @@ import org.bukkit.OfflinePlayer;
 import java.util.UUID;
 
 import static net.clementraynaud.skoice.config.Config.*;
-import static net.clementraynaud.skoice.networks.NetworkManager.networks;
-import static net.clementraynaud.skoice.networks.NetworkManager.updateMutedUsers;
+import static net.clementraynaud.skoice.networks.Network.networks;
+import static net.clementraynaud.skoice.networks.Network.updateMutedUsers;
 
 public class GuildVoiceMoveListener extends ListenerAdapter {
 

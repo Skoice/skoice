@@ -24,7 +24,7 @@ import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import static net.clementraynaud.skoice.networks.NetworkManager.networks;
+import static net.clementraynaud.skoice.networks.Network.networks;
 
 public class VoiceChannelDeleteListener extends ListenerAdapter {
 

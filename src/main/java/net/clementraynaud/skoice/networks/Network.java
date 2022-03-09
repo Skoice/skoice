@@ -35,26 +35,26 @@ import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.config.Config.*;
 import static net.clementraynaud.skoice.util.DistanceUtil.*;
 
-public class NetworkManager {
+public class Network {
 
     private static final double FALLOFF = 2.5;
 
-    public static final Set<NetworkManager> networks = ConcurrentHashMap.newKeySet();
+    public static final Set<Network> networks = ConcurrentHashMap.newKeySet();
     public static final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
     private final Set<UUID> players;
     private String channel;
     private boolean initialized = false;
 
-    public NetworkManager(String channel) {
+    public Network(String channel) {
         this.players = Collections.emptySet();
         this.channel = channel;
     }
 
-    public static Set<NetworkManager> getNetworks() {
+    public static Set<Network> getNetworks() {
         return networks;
     }
 
-    public NetworkManager(Set<UUID> players) {
+    public Network(Set<UUID> players) {
         this.players = players;
         List<Permission> allowedPermissions = isVoiceActivationAllowed()
                 ? Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD)
@@ -102,7 +102,7 @@ public class NetworkManager {
         }
     }
 
-    public NetworkManager engulf(NetworkManager network) {
+    public Network engulf(Network network) {
         players.addAll(network.players);
         network.players.clear();
         return this;
