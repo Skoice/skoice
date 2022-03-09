@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.events.player;
+package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.util.MessageUtil;
@@ -29,14 +29,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
 
-public class PlayerJoinEvent implements Listener {
+public class PlayerJoinListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPlayerJoin(org.bukkit.event.player.PlayerJoinEvent event) {
+    public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.isOp()) {
             if (!getPlugin().isTokenSet() || getJda() == null) {

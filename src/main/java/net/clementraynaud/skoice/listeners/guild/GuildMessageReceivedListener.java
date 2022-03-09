@@ -17,20 +17,21 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.events.guild;
+package net.clementraynaud.skoice.listeners.guild;
 
 import net.clementraynaud.skoice.commands.interaction.Response;
 import net.clementraynaud.skoice.commands.menus.Menu;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.commands.interaction.ButtonInteraction.discordIDAxis;
 import static net.clementraynaud.skoice.config.Config.*;
 
-public class GuildMessageReceivedEvent extends ListenerAdapter {
+public class GuildMessageReceivedListener extends ListenerAdapter {
 
     @Override
-    public void onGuildMessageReceived(net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent event) {
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String discordID = event.getAuthor().getId();
         if (discordID.equals(event.getJDA().getSelfUser().getId())) {
             if (!event.getMessage().isEphemeral()) {

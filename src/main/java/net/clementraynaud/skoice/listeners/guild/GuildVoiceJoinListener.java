@@ -18,11 +18,12 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.events.guild;
+package net.clementraynaud.skoice.listeners.guild;
 
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
@@ -32,13 +33,13 @@ import java.awt.*;
 import java.util.UUID;
 
 import static net.clementraynaud.skoice.config.Config.*;
-import static net.clementraynaud.skoice.events.player.DirtyPlayerEvents.markDirty;
+import static net.clementraynaud.skoice.listeners.player.DirtyPlayerListeners.markDirty;
 import static net.clementraynaud.skoice.networks.NetworkManager.updateMutedUsers;
 
-public class GuildVoiceJoinEvent extends ListenerAdapter {
+public class GuildVoiceJoinListener extends ListenerAdapter {
 
     @Override
-    public void onGuildVoiceJoin(net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent event) {
+    public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
         updateMutedUsers(event.getChannelJoined(), event.getMember());
         if (!event.getChannelJoined().equals(getLobby())) return;
         String minecraftID = getKeyFromValue(getLinkMap(), event.getMember().getId());

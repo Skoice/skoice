@@ -38,7 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-import static net.clementraynaud.skoice.events.player.DirtyPlayerEvents.*;
+import static net.clementraynaud.skoice.listeners.player.DirtyPlayerListeners.*;
 import static net.clementraynaud.skoice.networks.NetworkManager.*;
 import static net.clementraynaud.skoice.util.DistanceUtil.getHorizontalDistance;
 import static net.clementraynaud.skoice.util.DistanceUtil.getVerticalDistance;
@@ -81,7 +81,6 @@ public class UpdateNetworks {
             } else if (!mainVoiceChannelPublicRoleOverride.getDenied().contains(Permission.VOICE_SPEAK)) {
                 mainVoiceChannelPublicRoleOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
             }
-            // remove networks that have no voice channel
             networks.removeIf(network -> network.getChannel() == null && network.isInitialized());
             Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers().stream()
                     .filter(player -> !player.isDead())
@@ -90,69 +89,61 @@ public class UpdateNetworks {
             clearDirtyPlayers();
             for (UUID minecraftID : oldDirtyPlayers) {
                 Player player = Bukkit.getPlayer(minecraftID);
-                if (player == null) continue;
-                Member member = getMember(player.getUniqueId());
-                if (member == null) continue;
-                if (member.getVoiceState() == null || member.getVoiceState().getChannel() == null) continue;
-                VoiceChannel playerChannel = member.getVoiceState().getChannel();
-                boolean isLobby = playerChannel.getId().equals(getLobby().getId());
-                if (!isLobby && (playerChannel.getParent() == null || !playerChannel.getParent().getId().equals(getCategory().getId()))) {
-//                    .debug(Debug.VOICE, "Player " + player.getName() + " was not in the voice lobby or category");
-                    //member.mute(false).queue();
-                    // cancel existing moves if they changed to a different channel
-                    Pair<String, CompletableFuture<Void>> pair = awaitingMoves.get(member.getId());
-                    if (pair != null) pair.getRight().cancel(false);
-                    continue;
-                }
-                networks.stream()
-                        .filter(network -> network.isPlayerInRangeToBeAdded(player))
-                        .reduce((network1, network2) -> network1.size() > network2.size() ? network1.engulf(network2) : network2.engulf(network1))
-                        .filter(network -> !network.contains(player.getUniqueId()))
-                        .ifPresent(network -> network.add(player.getUniqueId()));
-                networks.stream()
-                        .filter(network -> network.contains(player.getUniqueId()))
-                        .filter(network -> !network.isPlayerInRangeToStayConnected(player))
-                        .forEach(network -> {
-                            network.remove(player.getUniqueId());
-                            if (network.size() == 1) network.clear();
-                        });
-                if (getActionBarAlert()) {
-                    try {
+                if (player != null) {
+                    Member member = getMember(player.getUniqueId());
+                    if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {
+                        VoiceChannel playerChannel = member.getVoiceState().getChannel();
+                        boolean isLobby = playerChannel == getLobby();
+                        if (!isLobby && (playerChannel.getParent() == null || playerChannel.getParent() != getCategory())) {
+                            Pair<String, CompletableFuture<Void>> pair = awaitingMoves.get(member.getId());
+                            if (pair != null)
+                                pair.getRight().cancel(false);
+                            continue;
+                        }
+                        networks.stream()
+                                .filter(network -> network.isPlayerInRangeToBeAdded(player))
+                                .reduce((network1, network2) -> network1.size() > network2.size() ? network1.engulf(network2) : network2.engulf(network1))
+                                .filter(network -> !network.contains(player.getUniqueId()))
+                                .ifPresent(network -> network.add(player.getUniqueId()));
                         networks.stream()
                                 .filter(network -> network.contains(player.getUniqueId()))
-                                .filter(network -> network.isPlayerInRangeToStayConnected(player))
-                                .filter(network -> !network.isPlayerInRangeToBeAdded(player))
-                                .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(MinecraftLang.ACTION_BAR_ALERT.toString())));
-                    } catch (NoSuchMethodError ignored) {
+                                .filter(network -> !network.isPlayerInRangeToStayConnected(player))
+                                .forEach(network -> {
+                                    network.remove(player.getUniqueId());
+                                    if (network.size() == 1) network.clear();
+                                });
+                        if (getActionBarAlert()) {
+                            try {
+                                networks.stream()
+                                        .filter(network -> network.contains(player.getUniqueId()))
+                                        .filter(network -> network.isPlayerInRangeToStayConnected(player))
+                                        .filter(network -> !network.isPlayerInRangeToBeAdded(player))
+                                        .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(MinecraftLang.ACTION_BAR_ALERT.toString())));
+                            } catch (NoSuchMethodError ignored) {
+                            }
+                        }
+                        Set<UUID> playersWithinRange = alivePlayers.stream()
+                                .filter(p -> networks.stream().noneMatch(network -> network.contains(p)))
+                                .filter(p -> !p.equals(player))
+                                .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
+                                .filter(p -> getHorizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius()
+                                        && getVerticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius())
+                                .filter(p -> {
+                                    Member m = getMember(p.getUniqueId());
+                                    return m != null && m.getVoiceState() != null
+                                            && m.getVoiceState().getChannel() != null
+                                            && m.getVoiceState().getChannel().getParent() != null
+                                            && m.getVoiceState().getChannel().getParent().equals(category);
+                                })
+                                .map(Player::getUniqueId)
+                                .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
+                        if (!playersWithinRange.isEmpty() && category.getChannels().size() != 50) {
+                            playersWithinRange.add(minecraftID);
+                            networks.add(new NetworkManager(playersWithinRange));
+                        }
                     }
-                }
-
-                // create networks if two players are within activation distance
-                Set<UUID> playersWithinRange = alivePlayers.stream()
-                        .filter(p -> networks.stream().noneMatch(network -> network.contains(p)))
-                        .filter(p -> !p.equals(player))
-                        .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                        .filter(p -> getHorizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius()
-                                && getVerticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius())
-                        .filter(p -> {
-                            Member m = getMember(p.getUniqueId());
-                            return m != null && m.getVoiceState() != null
-                                    && m.getVoiceState().getChannel() != null
-                                    && m.getVoiceState().getChannel().getParent() != null
-                                    && m.getVoiceState().getChannel().getParent().equals(category);
-                        })
-                        .map(Player::getUniqueId)
-                        .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
-                if (!playersWithinRange.isEmpty()) {
-                    if (category.getChannels().size() == 50) {
-//                        .debug(Debug.VOICE, "Can't create new voice network because category " + category.getName() + " is full of channels");
-                        continue;
-                    }
-                    playersWithinRange.add(minecraftID);
-                    networks.add(new NetworkManager(playersWithinRange));
                 }
             }
-            // handle moving players between channels
             Set<Member> members = new HashSet<>(lobby.getMembers());
             for (NetworkManager network : getNetworks()) {
                 VoiceChannel voiceChannel = network.getChannel();
@@ -167,22 +158,19 @@ public class UpdateNetworks {
                         .findAny().orElse(null) : null;
                 VoiceChannel shouldBeInChannel;
                 if (playerNetwork != null) {
-                    if (playerNetwork.getChannel() == null) {
-                        // isn't yet created, we can wait until next tick
+                    if (playerNetwork.getChannel() == null)
                         continue;
-                    }
                     shouldBeInChannel = playerNetwork.getChannel();
                 } else {
                     shouldBeInChannel = lobby;
                 }
                 Pair<String, CompletableFuture<Void>> awaitingMove = awaitingMoves.get(member.getId());
-                // they're already where they're suppose to be
-                if (awaitingMove != null && awaitingMove.getLeft().equals(shouldBeInChannel.getId())) continue;
-                // if the cancel succeeded we can move them
+                if (awaitingMove != null && awaitingMove.getLeft().equals(shouldBeInChannel.getId()))
+                    continue;
                 if (awaitingMove != null && !awaitingMove.getLeft().equals(shouldBeInChannel.getId())
-                        && !awaitingMove.getRight().cancel(false)) continue;
-                // schedule a move to the channel they're suppose to be in, if they aren't there yet
-                if (!playerChannel.getId().equals(shouldBeInChannel.getId())) {
+                        && !awaitingMove.getRight().cancel(false))
+                    continue;
+                if (playerChannel != shouldBeInChannel) {
                     awaitingMoves.put(member.getId(), Pair.of(
                             shouldBeInChannel.getId(),
                             getGuild().moveVoiceMember(member, shouldBeInChannel)
@@ -198,12 +186,12 @@ public class UpdateNetworks {
 
     private void deleteEmptyNetworks() {
         for (NetworkManager network : new HashSet<>(networks)) {
-            if (!network.isEmpty()) continue;
-            VoiceChannel voiceChannel = network.getChannel();
-            if (voiceChannel == null) continue;
-            if (voiceChannel.getMembers().isEmpty()) {
-                voiceChannel.delete().reason(DiscordLang.COMMUNICATION_LOST.toString()).queue();
-                networks.remove(network);
+            if (network.isEmpty()) {
+                VoiceChannel voiceChannel = network.getChannel();
+                if (voiceChannel != null && voiceChannel.getMembers().isEmpty()) {
+                    voiceChannel.delete().reason(DiscordLang.COMMUNICATION_LOST.toString()).queue();
+                    networks.remove(network);
+                }
             }
         }
     }

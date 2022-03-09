@@ -18,17 +18,23 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.events;
+package net.clementraynaud.skoice.listeners.player;
 
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 
+import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.networks.NetworkManager.networks;
 
-public class VoiceChannelDeleteEvent extends ListenerAdapter {
+public class PlayerQuitListener implements Listener {
 
-    @Override
-    public void onVoiceChannelDelete(@NotNull net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent event) {
-        networks.removeIf(network -> network.getChannel() != null && event.getChannel().getId().equals(network.getChannel().getId()));
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> networks.stream()
+                .filter(network -> network.contains(event.getPlayer().getUniqueId()))
+                .forEach(network -> network.remove(event.getPlayer().getUniqueId())));
     }
 }

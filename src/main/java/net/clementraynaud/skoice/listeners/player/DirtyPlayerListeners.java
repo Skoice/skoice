@@ -18,7 +18,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.events.player;
+package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
@@ -38,7 +38,7 @@ import java.util.UUID;
 
 import static net.clementraynaud.skoice.config.Config.*;
 
-public class DirtyPlayerEvents implements Listener {
+public class DirtyPlayerListeners implements Listener {
 
     private static Set<UUID> dirtyPlayers = new HashSet<>();
 

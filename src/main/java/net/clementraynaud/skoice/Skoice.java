@@ -24,13 +24,13 @@ import net.clementraynaud.skoice.commands.SkoiceCommand;
 import net.clementraynaud.skoice.commands.interaction.Response;
 import net.clementraynaud.skoice.commands.menus.Menu;
 import net.clementraynaud.skoice.config.OutdatedConfig;
-import net.clementraynaud.skoice.events.VoiceChannelDeleteEvent;
-import net.clementraynaud.skoice.events.guild.GuildVoiceJoinEvent;
-import net.clementraynaud.skoice.events.guild.GuildVoiceLeaveEvent;
-import net.clementraynaud.skoice.events.guild.GuildVoiceMoveEvent;
-import net.clementraynaud.skoice.events.player.DirtyPlayerEvents;
-import net.clementraynaud.skoice.events.player.PlayerJoinEvent;
-import net.clementraynaud.skoice.events.player.PlayerQuitEvent;
+import net.clementraynaud.skoice.listeners.VoiceChannelDeleteListener;
+import net.clementraynaud.skoice.listeners.guild.GuildVoiceJoinListener;
+import net.clementraynaud.skoice.listeners.guild.GuildVoiceLeaveListener;
+import net.clementraynaud.skoice.listeners.guild.GuildVoiceMoveListener;
+import net.clementraynaud.skoice.listeners.player.DirtyPlayerListeners;
+import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
+import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.lang.LoggerLang;
 import net.clementraynaud.skoice.networks.NetworkManager;
 import net.clementraynaud.skoice.scheduler.UpdateNetworks;
@@ -47,7 +47,6 @@ import java.util.concurrent.CompletableFuture;
 
 import static net.clementraynaud.skoice.bot.Bot.getJda;
 import static net.clementraynaud.skoice.config.Config.*;
-import static net.clementraynaud.skoice.networks.NetworkManager.mutedUsers;
 
 public class Skoice extends JavaPlugin {
 
@@ -155,28 +154,28 @@ public class Skoice extends JavaPlugin {
     private void updateListeners(boolean startup, boolean wasBotReady) {
         if (startup) {
             if (isBotReady) {
-                Bukkit.getPluginManager().registerEvents(new DirtyPlayerEvents(), plugin);
-                Bukkit.getPluginManager().registerEvents(new PlayerQuitEvent(), plugin);
-                getJda().addEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
+                Bukkit.getPluginManager().registerEvents(new DirtyPlayerListeners(), plugin);
+                Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), plugin);
+                getJda().addEventListener(new GuildVoiceJoinListener(), new GuildVoiceLeaveListener(), new GuildVoiceMoveListener(), new VoiceChannelDeleteListener());
             } else {
-                Bukkit.getPluginManager().registerEvents(new PlayerJoinEvent(), plugin);
+                Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), plugin);
                 if (getJda() != null)
                     Menu.MODE.refreshAdditionalFields();
             }
         } else if (!wasBotReady && isBotReady) {
-            HandlerList.unregisterAll(new PlayerJoinEvent());
-            Bukkit.getPluginManager().registerEvents(new DirtyPlayerEvents(), plugin);
-            Bukkit.getPluginManager().registerEvents(new PlayerQuitEvent(), plugin);
-            getJda().addEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
+            HandlerList.unregisterAll(new PlayerJoinListener());
+            Bukkit.getPluginManager().registerEvents(new DirtyPlayerListeners(), plugin);
+            Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), plugin);
+            getJda().addEventListener(new GuildVoiceJoinListener(), new GuildVoiceLeaveListener(), new GuildVoiceMoveListener(), new VoiceChannelDeleteListener());
             Menu.MODE.refreshAdditionalFields();
             getLogger().info(LoggerLang.CONFIGURATION_COMPLETE_INFO.toString());
         } else if (wasBotReady && !isBotReady) {
             new Response().deleteMessage();
-            HandlerList.unregisterAll(new DirtyPlayerEvents());
-            HandlerList.unregisterAll(new PlayerQuitEvent());
-            Bukkit.getPluginManager().registerEvents(new PlayerJoinEvent(), plugin);
+            HandlerList.unregisterAll(new DirtyPlayerListeners());
+            HandlerList.unregisterAll(new PlayerQuitListener());
+            Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), plugin);
             if (getJda() != null) {
-                getJda().removeEventListener(new GuildVoiceJoinEvent(), new GuildVoiceLeaveEvent(), new GuildVoiceMoveEvent(), new VoiceChannelDeleteEvent());
+                getJda().removeEventListener(new GuildVoiceJoinListener(), new GuildVoiceLeaveListener(), new GuildVoiceMoveListener(), new VoiceChannelDeleteListener());
                 Menu.MODE.refreshAdditionalFields();
             }
         }

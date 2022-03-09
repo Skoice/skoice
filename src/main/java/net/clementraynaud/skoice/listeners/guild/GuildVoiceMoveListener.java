@@ -18,9 +18,9 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.events.guild;
+package net.clementraynaud.skoice.listeners.guild;
 
-import net.clementraynaud.skoice.lang.MinecraftLang;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -31,23 +31,21 @@ import static net.clementraynaud.skoice.config.Config.*;
 import static net.clementraynaud.skoice.networks.NetworkManager.networks;
 import static net.clementraynaud.skoice.networks.NetworkManager.updateMutedUsers;
 
-public class GuildVoiceLeaveEvent extends ListenerAdapter {
+public class GuildVoiceMoveListener extends ListenerAdapter {
 
     @Override
-    public void onGuildVoiceLeave(net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent event) {
-        updateMutedUsers(event.getChannelJoined(), event.getMember());
-        if (event.getChannelLeft().getParent() == null || !event.getChannelLeft().getParent().equals(getCategory()))
-            return;
-        String minecraftID = getKeyFromValue(getLinkMap(), event.getMember().getId());
-        if (minecraftID == null) return;
-        OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
-        if (player.isOnline()) {
-            networks.stream()
-                    .filter(network -> network.contains(player.getPlayer()))
-                    .forEach(network -> network.remove(player.getPlayer()));
-            if (event.getChannelLeft().equals(getLobby()) || networks.stream().anyMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
-                player.getPlayer().sendMessage(MinecraftLang.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.toString());
+    public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
+        if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(getCategory()) &&
+                event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(getCategory())) {
+            String minecraftID = getKeyFromValue(getLinkMap(), event.getMember().getId());
+            if (minecraftID == null) return;
+            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
+            if (player.isOnline()) {
+                networks.stream()
+                        .filter(network -> network.contains(player.getPlayer().getUniqueId()))
+                        .forEach(network -> network.remove(player.getPlayer()));
             }
         }
+        updateMutedUsers(event.getChannelJoined(), event.getMember());
     }
 }

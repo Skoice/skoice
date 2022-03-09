@@ -25,9 +25,9 @@ import net.clementraynaud.skoice.commands.interaction.ButtonInteraction;
 import net.clementraynaud.skoice.commands.interaction.Response;
 import net.clementraynaud.skoice.commands.interaction.LobbySelection;
 import net.clementraynaud.skoice.commands.interaction.SelectMenuInteraction;
-import net.clementraynaud.skoice.events.BotEvents;
-import net.clementraynaud.skoice.events.guild.GuildMessageDeleteEvent;
-import net.clementraynaud.skoice.events.guild.GuildMessageReceivedEvent;
+import net.clementraynaud.skoice.listeners.BotListeners;
+import net.clementraynaud.skoice.listeners.guild.GuildMessageDeleteListener;
+import net.clementraynaud.skoice.listeners.guild.GuildMessageReceivedListener;
 import net.clementraynaud.skoice.lang.LoggerLang;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;
@@ -60,8 +60,8 @@ import static net.clementraynaud.skoice.config.Config.*;
 
 public class Bot {
 
-    private static final List<ListenerAdapter> LISTENERS = Arrays.asList(new BotEvents(),
-            new GuildMessageReceivedEvent(), new GuildMessageDeleteEvent(), new LobbySelection(),
+    private static final List<ListenerAdapter> LISTENERS = Arrays.asList(new BotListeners(),
+            new GuildMessageReceivedListener(), new GuildMessageDeleteListener(), new LobbySelection(),
             new ConfigureCommand(), new InviteCommand(), new LinkCommand(), new UnlinkCommand(),
             new ButtonInteraction(), new SelectMenuInteraction());
     private static final int TICKS_BETWEEN_VERSION_CHECKING = 720000;
@@ -139,14 +139,12 @@ public class Bot {
                         category.getVoiceChannels().stream()
                                 .filter(channel -> {
                                     try {
-                                        //noinspection ResultOfMethodCallIgnored
                                         UUID.fromString(channel.getName());
                                         return true;
                                     } catch (Exception e) {
                                         return false;
                                     }
                                 })
-                                // temporarily add it as a network so it can be emptied and deleted
                                 .forEach(channel -> networks.add(new NetworkManager(channel.getId())));
                     }
                 }

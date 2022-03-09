@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.events;
+package net.clementraynaud.skoice.listeners;
 
 import net.clementraynaud.skoice.bot.Commands;
 import net.clementraynaud.skoice.commands.interaction.Response;
@@ -35,7 +35,7 @@ import java.awt.*;
 import static net.clementraynaud.skoice.Skoice.getBot;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 
-public class BotEvents extends ListenerAdapter {
+public class BotListeners extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {

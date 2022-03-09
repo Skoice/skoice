@@ -1,6 +1,5 @@
 /*
  * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -18,22 +17,25 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.events.player;
+package net.clementraynaud.skoice.listeners.guild;
 
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.networks.NetworkManager.networks;
+import static net.clementraynaud.skoice.commands.interaction.ButtonInteraction.discordIDAxis;
+import static net.clementraynaud.skoice.config.Config.TEMP_MESSAGE_ID_FIELD;
 
-public class PlayerQuitEvent implements Listener {
+public class GuildMessageDeleteListener extends ListenerAdapter {
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPlayerQuit(org.bukkit.event.player.PlayerQuitEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> networks.stream()
-                .filter(network -> network.contains(event.getPlayer().getUniqueId()))
-                .forEach(network -> network.remove(event.getPlayer().getUniqueId())));
+    @Override
+    public void onGuildMessageDelete(@NotNull GuildMessageDeleteEvent event) {
+        if (getPlugin().getConfig().contains("temp")
+                && event.getMessageId().equals(getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD))) {
+            getPlugin().getConfig().set("temp", null);
+            getPlugin().saveConfig();
+            discordIDAxis.clear();
+        }
     }
 }
