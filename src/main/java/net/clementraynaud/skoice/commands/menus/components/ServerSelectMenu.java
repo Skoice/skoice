@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.commands.menus.components;
 
 import net.clementraynaud.skoice.commands.menus.Menu;
-import net.clementraynaud.skoice.commands.menus.MenuUnicode;
+import net.clementraynaud.skoice.commands.menus.MenuEmoji;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
@@ -39,15 +39,15 @@ public class ServerSelectMenu {
         int optionIndex = 0;
         while (optionIndex < 24 && servers.size() > optionIndex) {
             options.add(SelectOption.of(servers.get(optionIndex).getName(), servers.get(optionIndex).getId())
-                    .withEmoji(MenuUnicode.FILE_CABINET.getEmoji()));
+                    .withEmoji(MenuEmoji.FILE_CABINET.getEmojifromUnicode()));
             optionIndex++;
         }
         if (options.size() == 24) {
             options.add(SelectOption.of(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.toString(), "refresh")
                     .withDescription(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.toString())
-                    .withEmoji(MenuUnicode.WARNING_SIGN.getEmoji()));
+                    .withEmoji(MenuEmoji.WARNING_SIGN.getEmojifromUnicode()));
         }
-        return SelectionMenu.create(Menu.SERVER.name())
+        return SelectionMenu.create(Menu.SERVER.name() + "_SELECTION")
                 .setPlaceholder(DiscordLang.SERVER_SELECT_MENU_PLACEHOLDER.toString())
                 .addOptions(options).build();
     }

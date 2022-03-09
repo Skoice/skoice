@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.commands.menus.components;
 
-import net.clementraynaud.skoice.commands.menus.MenuUnicode;
+import net.clementraynaud.skoice.commands.menus.MenuEmoji;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
@@ -45,10 +45,10 @@ public class ToggleSelectMenu {
         return SelectionMenu.create(componentID)
                 .addOptions(SelectOption.of(DiscordLang.ENABLED_SELECT_OPTION_LABEL.toString(), ENABLED_OPTION_ID)
                                 .withDescription(defaultValue ? DiscordLang.DEFAULT_SELECT_OPTION_DESCRIPTION.toString() : null)
-                                .withEmoji(MenuUnicode.HEAVY_CHECK_MARK.getEmoji()),
+                                .withEmoji(MenuEmoji.HEAVY_CHECK_MARK.getEmojifromUnicode()),
                         SelectOption.of(DiscordLang.DISABLED_SELECT_OPTION_LABEL.toString(), DISABLED_OPTION_ID)
                                 .withDescription(!defaultValue ? DiscordLang.DEFAULT_SELECT_OPTION_DESCRIPTION.toString() : null)
-                                .withEmoji(MenuUnicode.HEAVY_MULTIPLICATION_X.getEmoji()))
+                                .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojifromUnicode()))
                 .setDefaultValues(Collections.singleton(String.valueOf(selectedValue))).build();
     }
 }

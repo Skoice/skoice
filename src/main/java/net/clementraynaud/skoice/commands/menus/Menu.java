@@ -35,7 +35,7 @@ import java.util.*;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.commands.menus.MenuStyle.*;
 import static net.clementraynaud.skoice.commands.menus.MenuType.*;
-import static net.clementraynaud.skoice.commands.menus.MenuUnicode.*;
+import static net.clementraynaud.skoice.commands.menus.MenuEmoji.*;
 import static net.clementraynaud.skoice.config.Config.*;
 import static net.clementraynaud.skoice.lang.DiscordLang.*;
 import static net.dv8tion.jda.api.entities.MessageEmbed.*;
@@ -54,7 +54,7 @@ public enum Menu {
 
     private static final String CLOSE_BUTTON_ID = "CLOSE";
 
-    private final MenuUnicode unicode;
+    private final MenuEmoji unicode;
     private final MenuStyle style;
     private final MenuType type;
     private final Menu parent;
@@ -71,18 +71,18 @@ public enum Menu {
         ADVANCED_SETTINGS.children = Arrays.asList(ACTION_BAR_ALERT, CHANNEL_VISIBILITY);
 
         MODE.additionalFields = Arrays.asList(
-                new Field(MAP.getEmoji() + " " + VANILLA_MODE_FIELD_TITLE, VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
-                new Field(CROSSED_SWORDS.getEmoji() + " " + MINIGAME_MODE_FIELD_TITLE, MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
-                getPlugin().isBotReady() ? new Field(PENCIL2.getEmoji() + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true) : null);
+                new Field(MAP + " " + VANILLA_MODE_FIELD_TITLE, VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
+                new Field(CROSSED_SWORDS + " " + MINIGAME_MODE_FIELD_TITLE, MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
+                getPlugin().isBotReady() ? new Field(PENCIL2 + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true) : null);
         HORIZONTAL_RADIUS.additionalFields = Collections.singletonList(
-                new Field(KEYBOARD.getEmoji() + " " + ENTER_A_VALUE_FIELD_TITLE, ENTER_A_VALUE_FIELD_DESCRIPTION.toString()
+                new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, ENTER_A_VALUE_FIELD_DESCRIPTION.toString()
                         .replace("{value}", String.valueOf(getHorizontalRadius())), false));
         VERTICAL_RADIUS.additionalFields = Collections.singletonList(
-                new Field(KEYBOARD.getEmoji() + " " + ENTER_A_VALUE_FIELD_TITLE, ENTER_A_VALUE_FIELD_DESCRIPTION.toString()
+                new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, ENTER_A_VALUE_FIELD_DESCRIPTION.toString()
                         .replace("{value}", String.valueOf(getVerticalRadius())), false));
     }
 
-    Menu(MenuUnicode unicode, MenuStyle style, MenuType type, Menu parent, boolean hasSelectMenu, boolean isRefreshable) {
+    Menu(MenuEmoji unicode, MenuStyle style, MenuType type, Menu parent, boolean hasSelectMenu, boolean isRefreshable) {
         this.unicode = unicode;
         this.style = style;
         this.type = type;
@@ -98,7 +98,7 @@ public enum Menu {
     private String getTitle(boolean withEmoji) {
         if (isValueSet(this.name() + "_EMBED_TITLE"))
             return withEmoji ?
-                    unicode.getEmoji() + " " + DiscordLang.valueOf(this.name() + "_EMBED_TITLE") :
+                    unicode + " " + DiscordLang.valueOf(this.name() + "_EMBED_TITLE") :
                     DiscordLang.valueOf(this.name() + "_EMBED_TITLE").toString();
         return null;
     }
@@ -113,7 +113,7 @@ public enum Menu {
     }
 
     private MessageEmbed getEmbed() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(GEAR.getEmoji() + " " + CONFIGURATION_EMBED_TITLE)
+        EmbedBuilder embed = new EmbedBuilder().setTitle(GEAR + " " + CONFIGURATION_EMBED_TITLE)
                 .setColor(type.getColor());
         if (this.getTitle(false) != null)
             embed.addField(this.getTitle(true), this.getDescription(false), false);
@@ -136,22 +136,22 @@ public enum Menu {
     private List<Button> getButtons() {
         List<Button> buttons = new ArrayList<>();
         if (parent != null)
-            buttons.add(Button.secondary(parent.name(), LEFTWARDS_ARROW.getEmoji() + " " + DiscordLang.BACK_BUTTON_LABEL));
+            buttons.add(Button.secondary(parent.name(), "← " + DiscordLang.BACK_BUTTON_LABEL));
         if (isRefreshable)
-            Button.primary(this.name(), CLOCKWISE_GAPPED_CIRCLE_ARROW.getEmoji() + " " + DiscordLang.REFRESH_BUTTON_LABEL);
+            buttons.add(Button.primary(this.name(), "⟳ " + DiscordLang.REFRESH_BUTTON_LABEL));
         if (children != null)
             for (Menu child : children)
                 buttons.add(child.style.equals(PRIMARY) ?
-                        Button.primary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmoji()) :
-                        Button.secondary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmoji()));
+                        Button.primary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojifromUnicode()) :
+                        Button.secondary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojifromUnicode()));
         else if (this == MODE)
             buttons.addAll(getModeAdditionalButtons());
         customizeRadius = false;
         if (getPlugin().isBotReady()) {
-            buttons.add(Button.danger(CLOSE_BUTTON_ID, CLOSE_BUTTON_LABEL.toString()).withEmoji(HEAVY_MULTIPLICATION_X.getEmoji()));
+            buttons.add(Button.danger(CLOSE_BUTTON_ID, CLOSE_BUTTON_LABEL.toString()).withEmoji(HEAVY_MULTIPLICATION_X.getEmojifromUnicode()));
         } else {
-            buttons.addAll(Arrays.asList(Button.secondary(LANGUAGE.name(), LANGUAGE_EMBED_TITLE.toString()).withEmoji(GLOBE_WITH_MERIDIANS.getEmoji()),
-                    Button.secondary(CLOSE_BUTTON_ID, CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(CLOCK3.getEmoji())));
+            buttons.addAll(Arrays.asList(Button.secondary(LANGUAGE.name(), LANGUAGE_EMBED_TITLE.toString()).withEmoji(GLOBE_WITH_MERIDIANS.getEmojifromUnicode()),
+                    Button.secondary(CLOSE_BUTTON_ID, CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(CLOCK3.getEmojifromUnicode())));
         }
         return buttons;
     }
@@ -168,20 +168,36 @@ public enum Menu {
     private List<Button> getModeAdditionalButtons() {
         if (getPlugin().isBotReady() &&
                 (customizeRadius
-                        || (getHorizontalRadius() != 80 && getVerticalRadius() != 40)
-                        && (getHorizontalRadius() != 40 && getVerticalRadius() != 20)))
+                        || (getHorizontalRadius() != 80 && getHorizontalRadius() != 40)
+                        || (getVerticalRadius() != 40 && getVerticalRadius() != 20)))
             return Arrays.asList(Button.primary(HORIZONTAL_RADIUS.toString(), HORIZONTAL_RADIUS.getTitle(false))
-                            .withEmoji(HORIZONTAL_RADIUS.unicode.getEmoji()),
+                            .withEmoji(HORIZONTAL_RADIUS.unicode.getEmojifromUnicode()),
                     Button.primary(VERTICAL_RADIUS.toString(), VERTICAL_RADIUS.getTitle(false))
-                            .withEmoji(VERTICAL_RADIUS.unicode.getEmoji()));
+                            .withEmoji(VERTICAL_RADIUS.unicode.getEmojifromUnicode()));
         return Collections.emptyList();
     }
 
     public void refreshAdditionalFields() {
-        MODE.additionalFields = Arrays.asList(
-                new Field(MAP.getEmoji() + " " + VANILLA_MODE_FIELD_TITLE, VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
-                new Field(CROSSED_SWORDS.getEmoji() + " " + MINIGAME_MODE_FIELD_TITLE, MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
-                getPlugin().isBotReady() ? new Field(PENCIL2.getEmoji() + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true) : null);
+        switch (this) {
+            case MODE:
+                MODE.additionalFields = Arrays.asList(
+                        new Field(MAP + " " + VANILLA_MODE_FIELD_TITLE, VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
+                        new Field(CROSSED_SWORDS + " " + MINIGAME_MODE_FIELD_TITLE, MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
+                        getPlugin().isBotReady() ? new Field(PENCIL2 + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true) : null);
+                break;
+            case HORIZONTAL_RADIUS:
+                HORIZONTAL_RADIUS.additionalFields = Collections.singletonList(
+                        new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, ENTER_A_VALUE_FIELD_DESCRIPTION.toString()
+                                .replace("{value}", String.valueOf(getHorizontalRadius())), false));
+                break;
+            case VERTICAL_RADIUS:
+                VERTICAL_RADIUS.additionalFields = Collections.singletonList(
+                        new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, ENTER_A_VALUE_FIELD_DESCRIPTION.toString()
+                                .replace("{value}", String.valueOf(getVerticalRadius())), false));
+                break;
+            default:
+                throw new IllegalStateException(LoggerLang.UNEXPECTED_VALUE.toString().replace("{value}", this.name()));
+        }
     }
 
     private SelectionMenu getSelectMenu(Menu menu) {

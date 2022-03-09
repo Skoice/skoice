@@ -21,10 +21,8 @@ package net.clementraynaud.skoice.commands.menus;
 
 import net.dv8tion.jda.api.entities.Emoji;
 
-public enum MenuUnicode {
+public enum MenuEmoji {
     GEAR("U+2699"),
-    LEFTWARDS_ARROW("U+2190"),
-    CLOCKWISE_GAPPED_CIRCLE_ARROW("U+27F3"),
     CLOCK3("U+1F552"),
     HEAVY_CHECK_MARK("U+2714"),
     HEAVY_PLUS_SIGN("U+2795"),
@@ -46,11 +44,16 @@ public enum MenuUnicode {
 
     private final String unicode;
 
-    MenuUnicode(String unicode) {
+    MenuEmoji(String unicode) {
         this.unicode = unicode;
     }
 
-    public Emoji getEmoji() {
+    public Emoji getEmojifromUnicode() {
         return Emoji.fromUnicode(unicode);
+    }
+
+    @Override
+    public String toString() {
+        return ":" + this.name().toLowerCase() + ":";
     }
 }

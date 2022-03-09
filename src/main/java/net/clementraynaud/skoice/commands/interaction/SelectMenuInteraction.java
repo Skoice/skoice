@@ -48,7 +48,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                     && event.getSelectedOptions() != null) {
                 String componentID = event.getComponentId();
                 switch (componentID) {
-                    case "SERVER":
+                    case "SERVER_SELECTION":
                         if (getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
                             for (SelectOption server : event.getComponent().getOptions()) {
                                 if (!event.getGuild().getId().equals(server.getValue())
@@ -62,13 +62,13 @@ public class SelectMenuInteraction extends ListenerAdapter {
                             }
                         }
                         break;
-                    case "LANGUAGE":
+                    case "LANGUAGE_SELECTION":
                         getPlugin().getConfig().set(LANG_FIELD, event.getSelectedOptions().get(0).getValue());
                         getPlugin().saveConfig();
                         getPlugin().updateConfigurationStatus(false);
                         event.editMessage(new Response().getMessage()).queue();
                         break;
-                    case "LOBBY":
+                    case "LOBBY_SELECTION":
                         Guild guild = event.getGuild();
                         if (guild != null) {
                             if (event.getSelectedOptions().get(0).getValue().equals("GENERATE")) {
@@ -92,7 +92,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                         }
                         event.editMessage(new Response().getMessage()).queue();
                         break;
-                    case "MODE":
+                    case "MODE_SELECTION":
                         if (event.getSelectedOptions().get(0).getValue().equals("VANILLA_MODE")) {
                             getPlugin().getConfig().set(HORIZONTAL_RADIUS_FIELD, 80);
                             getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 40);

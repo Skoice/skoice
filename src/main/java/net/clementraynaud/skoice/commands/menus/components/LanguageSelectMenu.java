@@ -42,11 +42,11 @@ public class LanguageSelectMenu {
                     .withEmoji(lang.getEmoji()));
         }
         if (getPlugin().isBotReady()) {
-            return SelectionMenu.create(Menu.LANGUAGE.name())
+            return SelectionMenu.create(Menu.LANGUAGE.name() + "_SELECTION")
                     .addOptions(options)
                     .setDefaultValues(Collections.singleton(getPlugin().getConfig().getString(LANG_FIELD))).build();
         } else {
-            return SelectionMenu.create(Menu.LANGUAGE.name())
+            return SelectionMenu.create(Menu.LANGUAGE.name() + "_SELECTION")
                     .setPlaceholder(DiscordLang.LANGUAGE_SELECT_MENU_PLACEHOLDER.toString())
                     .addOptions(options).build();
         }
