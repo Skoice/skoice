@@ -68,7 +68,8 @@ public class LinkCommand extends ListenerAdapter {
                 code = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
             } while (discordIDCode.containsValue(code));
             discordIDCode.put(event.getUser().getId(), code);
-            event.replyEmbeds(embed.addField(":key: " + DiscordLang.VERIFICATION_CODE_FIELD_TITLE, DiscordLang.VERIFICATION_CODE_FIELD_DESCRIPTION.toString().replace("{code}", code), false)
+            event.replyEmbeds(embed.addField(":key: " + DiscordLang.VERIFICATION_CODE_FIELD_TITLE,
+                                    String.format(DiscordLang.VERIFICATION_CODE_FIELD_DESCRIPTION.toString(), code), false)
                             .setColor(Color.GREEN).build())
                     .setEphemeral(true).queue();
         }

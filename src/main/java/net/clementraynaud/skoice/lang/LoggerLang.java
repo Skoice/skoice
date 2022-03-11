@@ -46,8 +46,8 @@ public enum LoggerLang {
             Lang.FR, "Votre bot est connecté."))),
 
     OUTDATED_VERSION_WARNING(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, ChatColor.YELLOW + "You are using an outdated version ({runningVersion}). Download the latest version ({latestVersion}) here: " + ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/" + ChatColor.YELLOW + ".",
-            Lang.FR, ChatColor.YELLOW + "Vous utilisez une version obsolète ({runningVersion}). Téléchargez la dernière version ({latestVersion}) ici : " + ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/" + ChatColor.YELLOW + "."))),
+            Lang.EN, ChatColor.YELLOW + "You are using an outdated version (%s). Download the latest version (%s) here: " + ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/" + ChatColor.YELLOW + ".",
+            Lang.FR, ChatColor.YELLOW + "Vous utilisez une version obsolète (%s). Téléchargez la dernière version (%s) ici : " + ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/" + ChatColor.YELLOW + "."))),
 
     NO_TOKEN_WARNING(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, ChatColor.YELLOW + "Token not set. Join your Minecraft server to set up Skoice.",
@@ -74,8 +74,8 @@ public enum LoggerLang {
             Lang.FR, ChatColor.RED + "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."))),
 
     UNEXPECTED_VALUE(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Unexpected value: {value}",
-            Lang.FR, "Valeur inattendue : {value}")));
+            Lang.EN, "Unexpected value: %s",
+            Lang.FR, "Valeur inattendue : %s")));
 
     private final Map<Lang, String> messages;
 

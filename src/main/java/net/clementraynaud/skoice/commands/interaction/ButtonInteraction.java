@@ -101,7 +101,7 @@ public class ButtonInteraction extends ListenerAdapter {
                         event.editMessage(getPlugin().isBotReady() ? Menu.CHANNEL_VISIBILITY.getMessage() : new Response().getMessage()).queue();
                         break;
                     default:
-                        throw new IllegalStateException(LoggerLang.UNEXPECTED_VALUE.toString().replace("{value}", buttonID));
+                        throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), buttonID));
                 }
             }
         } else {

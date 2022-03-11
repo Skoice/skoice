@@ -109,9 +109,8 @@ public class Skoice extends JavaPlugin {
     public void checkVersion() {
         new UpdateUtil(this, 82861).getVersion(version -> {
             if (!this.getDescription().getVersion().equals(version)) {
-                getLogger().warning(LoggerLang.OUTDATED_VERSION_WARNING.toString()
-                        .replace("{runningVersion}", this.getDescription().getVersion())
-                        .replace("{latestVersion}", version));
+                getLogger().warning(String.format(LoggerLang.OUTDATED_VERSION_WARNING.toString(),
+                        this.getDescription().getVersion(), version));
             }
         });
     }

@@ -75,11 +75,11 @@ public enum Menu {
                 new Field(CROSSED_SWORDS + " " + MINIGAME_MODE_FIELD_TITLE, MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
                 getPlugin().isBotReady() ? new Field(PENCIL2 + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true) : null);
         HORIZONTAL_RADIUS.additionalFields = Collections.singletonList(
-                new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, ENTER_A_VALUE_FIELD_DESCRIPTION.toString()
-                        .replace("{value}", String.valueOf(getHorizontalRadius())), false));
+                new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
+                        getHorizontalRadius()), false));
         VERTICAL_RADIUS.additionalFields = Collections.singletonList(
-                new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, ENTER_A_VALUE_FIELD_DESCRIPTION.toString()
-                        .replace("{value}", String.valueOf(getVerticalRadius())), false));
+                new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
+                                getVerticalRadius()), false));
     }
 
     Menu(MenuEmoji unicode, MenuStyle style, MenuType type, Menu parent, boolean hasSelectMenu, boolean isRefreshable) {
@@ -187,16 +187,16 @@ public enum Menu {
                 break;
             case HORIZONTAL_RADIUS:
                 HORIZONTAL_RADIUS.additionalFields = Collections.singletonList(
-                        new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, ENTER_A_VALUE_FIELD_DESCRIPTION.toString()
-                                .replace("{value}", String.valueOf(getHorizontalRadius())), false));
+                        new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
+                                        getHorizontalRadius()), false));
                 break;
             case VERTICAL_RADIUS:
                 VERTICAL_RADIUS.additionalFields = Collections.singletonList(
-                        new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, ENTER_A_VALUE_FIELD_DESCRIPTION.toString()
-                                .replace("{value}", String.valueOf(getVerticalRadius())), false));
+                        new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
+                                        getVerticalRadius()), false));
                 break;
             default:
-                throw new IllegalStateException(LoggerLang.UNEXPECTED_VALUE.toString().replace("{value}", this.name()));
+                throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), this.name()));
         }
     }
 
@@ -215,7 +215,7 @@ public enum Menu {
             case CHANNEL_VISIBILITY:
                 return new ToggleSelectMenu(CHANNEL_VISIBILITY.name(), getChannelVisibility(), true).getComponent();
             default:
-                throw new IllegalStateException(LoggerLang.UNEXPECTED_VALUE.toString() + menu);
+                throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), menu));
         }
     }
 }

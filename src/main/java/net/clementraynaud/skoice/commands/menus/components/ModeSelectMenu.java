@@ -67,9 +67,9 @@ public class ModeSelectMenu {
             } else {
                 defaultValue = CUSTOMIZE_ID;
                 modes.add(SelectOption.of(DiscordLang.CUSTOMIZE_FIELD_TITLE.toString(), CUSTOMIZE_ID)
-                        .withDescription(DiscordLang.CUSTOMIZE_SELECT_MENU_ALTERNATIVE_DESCRIPTION.toString()
-                                .replace("{horizontalRadius}", String.valueOf(getHorizontalRadius()))
-                                .replace("{verticalRadius}", String.valueOf(getVerticalRadius())))
+                        .withDescription(String.format(DiscordLang.CUSTOMIZE_SELECT_MENU_ALTERNATIVE_DESCRIPTION.toString(),
+                                        getHorizontalRadius(),
+                                        getVerticalRadius()))
                         .withEmoji(MenuEmoji.PENCIL2.getEmojifromUnicode()));
             }
             return SelectionMenu.create(Menu.MODE.name() + "_SELECTION")

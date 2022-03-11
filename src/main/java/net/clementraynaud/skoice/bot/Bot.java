@@ -181,7 +181,8 @@ public class Bot {
                             .setColor(Color.RED);
                     Guild guild = getGuild();
                     if (guild != null) {
-                        embed.addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", guild.getName()), false);
+                        embed.addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE,
+                                String.format(DiscordLang.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString(), guild.getName()), false);
                     } else {
                         embed.addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_NOT_LINKED_FIELD_GENERIC_ALTERNATIVE_DESCRIPTION.toString(), false);
                     }

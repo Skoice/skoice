@@ -47,7 +47,8 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
             try {
                 event.getMember().getUser().openPrivateChannel().complete()
                         .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE)
-                                .addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString().replace("{discordServer}", event.getGuild().getName()), false)
+                                .addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE,
+                                        String.format(DiscordLang.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString(), event.getGuild().getName()), false)
                                 .setColor(Color.RED).build()).queue(success -> {
                         }, failure -> {
                         });

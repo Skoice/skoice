@@ -127,8 +127,8 @@ public enum DiscordLang {
             Lang.FR, "Définissez les distances de 1 à 1000 blocs."))),
 
     CUSTOMIZE_SELECT_MENU_ALTERNATIVE_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Horizontal Radius: {horizontalRadius} blocks — Vertical Radius: {verticalRadius} blocks",
-            Lang.FR, "Rayon horizontal : {horizontalRadius} blocs — Rayon vertical : {verticalRadius} blocs"))),
+            Lang.EN, "Horizontal Radius: %s blocks — Vertical Radius: %s blocks",
+            Lang.FR, "Rayon horizontal : %s blocs — Rayon vertical : %s blocs"))),
 
     HORIZONTAL_RADIUS_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Horizontal Radius",
@@ -147,8 +147,8 @@ public enum DiscordLang {
             Lang.FR, "Entrez une valeur"))),
 
     ENTER_A_VALUE_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "This setting is currently set to {value} blocks.\nThe value must be between 1 and 1000.",
-            Lang.FR, "Cette option est actuellement définie sur {value} blocs.\nLa valeur doit être comprise entre 1 et 1000."))),
+            Lang.EN, "This setting is currently set to %s blocks.\nThe value must be between 1 and 1000.",
+            Lang.FR, "Cette option est actuellement définie sur %s blocs.\nLa valeur doit être comprise entre 1 et 1000."))),
 
     VERTICAL_RADIUS_EMBED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "This is the maximum vertical distance between players.",
@@ -219,8 +219,8 @@ public enum DiscordLang {
             Lang.FR, "Code de vérification"))),
 
     VERIFICATION_CODE_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Type `/skoice link {code}` in game to complete the process.",
-            Lang.FR, "Tapez `/skoice link {code}` en jeu pour terminer la procédure."))),
+            Lang.EN, "Type `/skoice link %s` in game to complete the process.",
+            Lang.FR, "Tapez `/skoice link %s` en jeu pour terminer la procédure."))),
 
     ACCOUNT_LINKED_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Account Linked",
@@ -247,8 +247,8 @@ public enum DiscordLang {
             Lang.FR, "Votre compte Discord n'est pas lié à Minecraft.\nTapez `/link` pour le lier."))),
 
     ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Your Discord account is not linked to Minecraft.\nType `/link` on \"{discordServer}\" to link it.",
-            Lang.FR, "Votre compte Discord n'est pas lié à Minecraft.\nTapez `/link` sur \"{discordServer}\" pour le lier."))),
+            Lang.EN, "Your Discord account is not linked to Minecraft.\nType `/link` on \"%s\" to link it.",
+            Lang.FR, "Votre compte Discord n'est pas lié à Minecraft.\nTapez `/link` sur \"%s\" pour le lier."))),
 
     ACCOUNT_NOT_LINKED_FIELD_GENERIC_ALTERNATIVE_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Your Discord account is not linked to Minecraft.\nType `/link` on our Discord server to link it.",

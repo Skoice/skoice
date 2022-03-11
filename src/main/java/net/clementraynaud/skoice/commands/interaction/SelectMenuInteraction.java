@@ -129,7 +129,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                         event.editMessage(new Response().getMessage()).queue();
                         break;
                     default:
-                        throw new IllegalStateException(LoggerLang.UNEXPECTED_VALUE.toString().replace("{value}", componentID));
+                        throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), componentID));
                 }
             }
         } else {
