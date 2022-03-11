@@ -175,11 +175,11 @@ public class Network {
     }
 
     public VoiceChannel getChannel() {
-        if (channel == null || channel.isEmpty()) return null;
+        if (channel == null || channel.isEmpty())
+            return null;
         Guild guild = getGuild();
-        if (guild != null) {
+        if (guild != null)
             return guild.getVoiceChannelById(channel);
-        }
         return null;
     }
 
