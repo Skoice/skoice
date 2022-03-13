@@ -25,58 +25,67 @@ import org.bukkit.entity.Player;
 
 import java.util.stream.Stream;
 
-public enum Argument {
-    CONFIGURE {
-        @Override
-        public void execute(CommandSender sender, String arg) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage(MinecraftLang.ILLEGAL_EXECUTOR.toString());
-                return;
-            }
-            if (!sender.isOp()) {
-                sender.sendMessage(MinecraftLang.MISSING_PERMISSION.toString());
-                return;
-            }
-            new ConfigureArgument().execute(sender);
-        }},
+public abstract class Argument {
 
-    TOKEN {
-        @Override
-        public void execute(CommandSender sender, String arg) {
-            if (!sender.isOp()) {
-                sender.sendMessage(MinecraftLang.MISSING_PERMISSION.toString());
-                return;
-            }
-            new TokenArgument().execute(sender, arg);
-        }},
+    public enum Option {
+        CONFIGURE {
+            @Override
+            public void run(CommandSender sender, String arg) {
+                new ConfigureArgument(sender).run();
+            }},
 
-    LINK {
-        @Override
-        public void execute(CommandSender sender, String arg) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage(MinecraftLang.ILLEGAL_EXECUTOR.toString());
-                return;
-            }
-            new LinkArgument().execute(sender, arg);
-        }},
+        TOKEN {
+            @Override
+            public void run(CommandSender sender, String arg) {
+                new TokenArgument(sender, arg).run();
+            }},
 
-    UNLINK {
-        @Override
-        public void execute(CommandSender sender, String arg) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage(MinecraftLang.ILLEGAL_EXECUTOR.toString());
-                return;
-            }
-            new UnlinkArgument().execute(sender);
-        }};
+        LINK {
+            @Override
+            public void run(CommandSender sender, String arg) {
+                new LinkArgument(sender, arg).run();
+            }},
 
-    //public static String[] getList() {
-    //    return Stream.of(Argument.values()).map(Enum::name).map(String::toLowerCase).toArray(String[]::new);
-    //}
+        UNLINK {
+            @Override
+            public void run(CommandSender sender, String arg) {
+                new UnlinkArgument(sender).run();
+            }};
 
-    public static Argument getArgument(String argument) {
-        return Stream.of(Argument.values()).filter(value -> value.toString().equalsIgnoreCase(argument)).findFirst().orElse(null);
+        public abstract void run(CommandSender sender, String arg);
+
+        public static Option getOption(String option) {
+            return Stream.of(Option.values()).filter(value -> value.toString().equalsIgnoreCase(option)).findFirst().orElse(null);
+        }
+
+        public static String[] getList() {
+            return Stream.of(Option.values()).map(Enum::name).map(String::toLowerCase).toArray(String[]::new);
+        }
     }
 
-    public abstract void execute(CommandSender sender, String arg);
+    protected final CommandSender sender;
+    protected final String arg;
+    protected final boolean allowsConsole;
+    protected final boolean restrictedToOperators;
+
+    protected Argument(CommandSender sender, String arg, boolean allowsConsole, boolean restrictedToOperators) {
+        this.sender = sender;
+        this.arg = arg;
+        this.allowsConsole = allowsConsole;
+        this.restrictedToOperators = restrictedToOperators;
+    }
+
+    protected abstract void run();
+
+    protected boolean canExecuteCommand() {
+        if (!(sender instanceof Player) && !this.allowsConsole) {
+            sender.sendMessage(MinecraftLang.ILLEGAL_EXECUTOR.toString());
+            return false;
+        }
+        if (!sender.isOp() && this.restrictedToOperators) {
+            sender.sendMessage(MinecraftLang.MISSING_PERMISSION.toString());
+            return false;
+        }
+        return true;
+    }
 }

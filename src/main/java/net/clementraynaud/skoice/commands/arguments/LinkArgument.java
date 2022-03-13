@@ -19,7 +19,6 @@
 
 package net.clementraynaud.skoice.commands.arguments;
 
-import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -38,19 +37,26 @@ import static net.clementraynaud.skoice.commands.LinkCommand.getDiscordIDCode;
 import static net.clementraynaud.skoice.commands.LinkCommand.removeValueFromDiscordIDCode;
 import static net.clementraynaud.skoice.config.Config.*;
 
-public class LinkArgument {
+public class LinkArgument extends Argument {
 
-    public void execute(CommandSender sender, String arg) {
+    public LinkArgument(CommandSender sender, String arg) {
+        super(sender, arg, false, false);
+    }
+
+    @Override
+    public void run() {
+        if (!canExecuteCommand())
+            return;
         Player player = (Player) sender;
         if (!getPlugin().isBotReady() || getJda() == null) {
             player.sendMessage(MinecraftLang.INCOMPLETE_CONFIGURATION.toString());
             return;
         }
-        if (getLinkMap().containsKey(player.getUniqueId())) {
+        if (getLinkMap().containsKey(player.getUniqueId().toString())) {
             player.sendMessage(MinecraftLang.ACCOUNT_ALREADY_LINKED.toString());
             return;
         }
-        if (arg == null) {
+        if (arg.isEmpty()) {
             player.sendMessage(MinecraftLang.NO_CODE.toString());
             return;
         }

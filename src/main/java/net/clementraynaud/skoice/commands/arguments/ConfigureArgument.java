@@ -31,9 +31,16 @@ import org.bukkit.entity.Player;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
 
-public class ConfigureArgument {
+public class ConfigureArgument extends Argument {
 
-    public void execute(CommandSender sender) {
+    public ConfigureArgument(CommandSender sender) {
+        super(sender, null, false, true);
+    }
+
+    @Override
+    public void run() {
+        if (!canExecuteCommand())
+            return;
         Player player = (Player) sender;
         if (getPlugin().isTokenSet() && getJda() != null) {
             if (getPlugin().isBotReady()) {

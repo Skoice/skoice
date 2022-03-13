@@ -29,10 +29,10 @@ public class SkoiceCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
-        if (args.length == 0 || Argument.getArgument(args[0]) == null) {
+        if (args.length == 0 || Argument.Option.getOption(args[0]) == null) {
             return true;
         }
-        Argument.getArgument(args[0]).execute(sender, args.length == 1 ? "" : args[1]);
+        Argument.Option.getOption(args[0]).run(sender, args.length == 1 ? "" : args[1]);
         return true;
     }
 }

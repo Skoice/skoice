@@ -31,13 +31,19 @@ import org.bukkit.entity.Player;
 
 import java.awt.*;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.networks.Network.getNetworks;
 import static net.clementraynaud.skoice.config.Config.*;
 
-public class UnlinkArgument {
+public class UnlinkArgument extends Argument {
 
-    public void execute(CommandSender sender) {
+    public UnlinkArgument(CommandSender sender) {
+        super(sender, null, false, false);
+    }
+
+    @Override
+    public void run() {
+        if (!canExecuteCommand())
+            return;
         Player player = (Player) sender;
         String discordID = getLinkMap().get(player.getUniqueId().toString());
         if (discordID == null) {

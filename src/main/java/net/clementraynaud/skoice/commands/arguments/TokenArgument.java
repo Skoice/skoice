@@ -27,10 +27,17 @@ import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
 import static net.clementraynaud.skoice.config.Config.setToken;
 
-public class TokenArgument {
+public class TokenArgument extends Argument {
 
-    public void execute(CommandSender sender, String arg) {
-        if (arg == null) {
+    public TokenArgument(CommandSender sender, String arg) {
+        super(sender, arg, true, true);
+    }
+
+    @Override
+    public void run() {
+        if (!canExecuteCommand())
+            return;
+        if (arg.isEmpty()) {
             sender.sendMessage(MinecraftLang.NO_TOKEN.toString());
             return;
         }
