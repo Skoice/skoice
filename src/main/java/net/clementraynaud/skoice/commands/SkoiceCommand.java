@@ -30,7 +30,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SkoiceCommand implements CommandExecutor, TabCompleter {
 
@@ -47,7 +46,7 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (args.length == 1) {
-            return Stream.of(Argument.Option.getList())
+            return Argument.Option.getList().stream()
                     .filter(option -> option.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }

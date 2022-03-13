@@ -23,6 +23,8 @@ import net.clementraynaud.skoice.lang.MinecraftLang;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class Argument {
@@ -55,11 +57,17 @@ public abstract class Argument {
         public abstract void run(CommandSender sender, String arg);
 
         public static Option getOption(String option) {
-            return Stream.of(Option.values()).filter(value -> value.toString().equalsIgnoreCase(option)).findFirst().orElse(null);
+            return Stream.of(Option.values())
+                    .filter(value -> value.toString().equalsIgnoreCase(option))
+                    .findFirst()
+                    .orElse(null);
         }
 
-        public static String[] getList() {
-            return Stream.of(Option.values()).map(Enum::name).map(String::toLowerCase).toArray(String[]::new);
+        public static List<String> getList() {
+            return Stream.of(Option.values())
+                    .map(Enum::name)
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toList());
         }
     }
 
