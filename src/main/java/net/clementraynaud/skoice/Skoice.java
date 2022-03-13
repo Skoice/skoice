@@ -32,23 +32,18 @@ import net.clementraynaud.skoice.listeners.player.DirtyPlayerListeners;
 import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
 import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.lang.LoggerLang;
-import net.clementraynaud.skoice.networks.Network;
+import net.clementraynaud.skoice.scheduler.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.util.UpdateUtil;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.internal.utils.tuple.Pair;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 import static net.clementraynaud.skoice.bot.Bot.getJda;
 import static net.clementraynaud.skoice.config.Config.*;
-import static net.clementraynaud.skoice.networks.Network.networks;
-import static net.clementraynaud.skoice.scheduler.UpdateNetworks.*;
 
 public class Skoice extends JavaPlugin {
 
@@ -179,33 +174,14 @@ public class Skoice extends JavaPlugin {
                 getJda().removeEventListener(new GuildVoiceJoinListener(), new GuildVoiceLeaveListener(), new GuildVoiceMoveListener(), new VoiceChannelDeleteListener());
                 Menu.MODE.refreshAdditionalFields();
             }
-            interruptTasks();
+            new InterruptSystemTask().run();
         }
-    }
-
-    private void interruptTasks() {
-        for (Pair<String, CompletableFuture<Void>> value : awaitingMoves.values())
-            value.getRight().cancel(true);
-        boolean isLobbySet = getLobby() == null;
-        for (Network network : networks) {
-            if (isLobbySet)
-                for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
-                    Member member = network.getChannel().getMembers().get(i);
-                    if (i + 1 < network.getChannel().getMembers().size())
-                        member.getGuild().moveVoiceMember(member, getLobby()).queue();
-                    else
-                        member.getGuild().moveVoiceMember(member, getLobby()).complete();
-                }
-            network.getChannel().delete().queue();
-            network.clear();
-        }
-        networks.clear();
     }
 
     @Override
     public void onDisable() {
         if (getJda() != null) {
-            interruptTasks();
+            new InterruptSystemTask().run();
             getJda().shutdown();
         }
         getLogger().info(LoggerLang.PLUGIN_DISABLED_INFO.toString());

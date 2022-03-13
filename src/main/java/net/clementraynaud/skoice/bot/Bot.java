@@ -33,7 +33,7 @@ import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
-import net.clementraynaud.skoice.scheduler.UpdateNetworks;
+import net.clementraynaud.skoice.scheduler.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.networks.Network;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -118,7 +118,7 @@ public class Bot {
                 Bukkit.getScheduler().runTaskLater(getPlugin(), () ->
                                 Bukkit.getScheduler().runTaskTimerAsynchronously(
                                         getPlugin(),
-                                        new UpdateNetworks()::run,
+                                        new UpdateNetworksTask()::run,
                                         0,
                                         5
                                 ),

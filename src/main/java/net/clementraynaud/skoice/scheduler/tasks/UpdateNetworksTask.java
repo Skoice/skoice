@@ -18,11 +18,12 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.scheduler;
+package net.clementraynaud.skoice.scheduler.tasks;
 
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.networks.Network;
 import net.clementraynaud.skoice.lang.MinecraftLang;
+import net.clementraynaud.skoice.scheduler.Task;
 import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
@@ -44,7 +45,7 @@ import static net.clementraynaud.skoice.util.DistanceUtil.getHorizontalDistance;
 import static net.clementraynaud.skoice.util.DistanceUtil.getVerticalDistance;
 import static net.clementraynaud.skoice.config.Config.*;
 
-public class UpdateNetworks {
+public class UpdateNetworksTask implements Task {
 
     private static final List<Permission> LOBBY_REQUIRED_PERMISSIONS = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
     private static final List<Permission> CATEGORY_REQUIRED_PERMISSIONS = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS, Permission.MANAGE_PERMISSIONS, Permission.MANAGE_CHANNEL);
@@ -52,6 +53,7 @@ public class UpdateNetworks {
     public static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
     private static final ReentrantLock lock = new ReentrantLock();
 
+    @Override
     public void run() {
         if (!lock.tryLock()) {
             return;
