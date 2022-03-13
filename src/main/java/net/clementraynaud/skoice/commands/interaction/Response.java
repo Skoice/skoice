@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.commands.interaction;
 
-import net.clementraynaud.skoice.commands.menus.Menu;
+import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;

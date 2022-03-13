@@ -17,10 +17,10 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.menus.components;
+package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.commands.menus.Menu;
-import net.clementraynaud.skoice.commands.menus.MenuEmoji;
+import net.clementraynaud.skoice.menus.Menu;
+import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -35,12 +35,13 @@ import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
 import static net.clementraynaud.skoice.config.Config.LOBBY_ID_FIELD;
 
-public class LobbySelectMenu {
+public class LobbySelectMenu implements SelectMenu {
 
     private static final String GENERATE_OPTION_ID = "GENERATE";
     private static final String REFRESH_OPTION_ID = "REFRESH";
 
-    public SelectionMenu getComponent() {
+    @Override
+    public SelectionMenu get() {
         List<VoiceChannel> voiceChannels = new ArrayList<>(getJda().getVoiceChannels());
         List<Category> categories = new ArrayList<>();
         for (VoiceChannel voiceChannel : voiceChannels) {
@@ -52,17 +53,17 @@ public class LobbySelectMenu {
             if (voiceChannels.get(optionIndex).getParent() != null) {
                 options.add(SelectOption.of(voiceChannels.get(optionIndex).getName(), voiceChannels.get(optionIndex).getId())
                         .withDescription(categories.get(optionIndex).getName())
-                        .withEmoji(MenuEmoji.SOUND.getEmojifromUnicode()));
+                        .withEmoji(MenuEmoji.SOUND.getEmojiFromUnicode()));
             }
             optionIndex++;
         }
         options.add(SelectOption.of(DiscordLang.NEW_VOICE_CHANNEL_SELECT_OPTION_LABEL.toString(), GENERATE_OPTION_ID)
                 .withDescription(DiscordLang.NEW_VOICE_CHANNEL_SELECT_OPTION_DESCRIPTION.toString())
-                .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.getEmojifromUnicode()));
+                .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.getEmojiFromUnicode()));
         if (options.size() == 23) {
             options.add(SelectOption.of(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.toString(), REFRESH_OPTION_ID)
                     .withDescription(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.toString())
-                    .withEmoji(MenuEmoji.WARNING_SIGN.getEmojifromUnicode()));
+                    .withEmoji(MenuEmoji.WARNING_SIGN.getEmojiFromUnicode()));
         }
         if (getPlugin().isBotReady()) {
             return SelectionMenu.create(Menu.LOBBY.name() + "_SELECTION")

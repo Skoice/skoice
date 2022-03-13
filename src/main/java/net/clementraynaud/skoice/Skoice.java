@@ -22,7 +22,7 @@ package net.clementraynaud.skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.SkoiceCommand;
 import net.clementraynaud.skoice.commands.interaction.Response;
-import net.clementraynaud.skoice.commands.menus.Menu;
+import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.config.OutdatedConfig;
 import net.clementraynaud.skoice.listeners.VoiceChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.guild.GuildVoiceJoinListener;

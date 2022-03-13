@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.listeners.guild;
 
 import net.clementraynaud.skoice.commands.interaction.Response;
-import net.clementraynaud.skoice.commands.menus.Menu;
+import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 

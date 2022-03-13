@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.commands.interaction;
 
-import net.clementraynaud.skoice.commands.menus.Menu;
+import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.lang.LoggerLang;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.EmbedBuilder;

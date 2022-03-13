@@ -17,9 +17,9 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.menus;
+package net.clementraynaud.skoice.menus;
 
-import net.clementraynaud.skoice.commands.menus.components.*;
+import net.clementraynaud.skoice.menus.selectmenus.*;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.LoggerLang;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -33,9 +33,9 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 import java.util.*;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.menus.MenuStyle.*;
-import static net.clementraynaud.skoice.commands.menus.MenuType.*;
-import static net.clementraynaud.skoice.commands.menus.MenuEmoji.*;
+import static net.clementraynaud.skoice.menus.MenuStyle.*;
+import static net.clementraynaud.skoice.menus.MenuType.*;
+import static net.clementraynaud.skoice.menus.MenuEmoji.*;
 import static net.clementraynaud.skoice.config.Config.*;
 import static net.clementraynaud.skoice.lang.DiscordLang.*;
 import static net.dv8tion.jda.api.entities.MessageEmbed.*;
@@ -144,16 +144,16 @@ public enum Menu {
         if (children != null)
             for (Menu child : children)
                 buttons.add(child.style.equals(PRIMARY)
-                        ? Button.primary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojifromUnicode())
-                        : Button.secondary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojifromUnicode()));
+                        ? Button.primary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojiFromUnicode())
+                        : Button.secondary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojiFromUnicode()));
         else if (this == MODE)
             buttons.addAll(getModeAdditionalButtons());
         customizeRadius = false;
         if (getPlugin().isBotReady()) {
-            buttons.add(Button.danger(CLOSE_BUTTON_ID, CLOSE_BUTTON_LABEL.toString()).withEmoji(HEAVY_MULTIPLICATION_X.getEmojifromUnicode()));
+            buttons.add(Button.danger(CLOSE_BUTTON_ID, CLOSE_BUTTON_LABEL.toString()).withEmoji(HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()));
         } else {
-            buttons.addAll(Arrays.asList(Button.secondary(LANGUAGE.name(), LANGUAGE_EMBED_TITLE.toString()).withEmoji(GLOBE_WITH_MERIDIANS.getEmojifromUnicode()),
-                    Button.secondary(CLOSE_BUTTON_ID, CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(CLOCK3.getEmojifromUnicode())));
+            buttons.addAll(Arrays.asList(Button.secondary(LANGUAGE.name(), LANGUAGE_EMBED_TITLE.toString()).withEmoji(GLOBE_WITH_MERIDIANS.getEmojiFromUnicode()),
+                    Button.secondary(CLOSE_BUTTON_ID, CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(CLOCK3.getEmojiFromUnicode())));
         }
         return buttons;
     }
@@ -173,9 +173,9 @@ public enum Menu {
                         || (getHorizontalRadius() != 80 && getHorizontalRadius() != 40)
                         || (getVerticalRadius() != 40 && getVerticalRadius() != 20)))
             return Arrays.asList(Button.primary(HORIZONTAL_RADIUS.toString(), HORIZONTAL_RADIUS.getTitle(false))
-                            .withEmoji(HORIZONTAL_RADIUS.unicode.getEmojifromUnicode()),
+                            .withEmoji(HORIZONTAL_RADIUS.unicode.getEmojiFromUnicode()),
                     Button.primary(VERTICAL_RADIUS.toString(), VERTICAL_RADIUS.getTitle(false))
-                            .withEmoji(VERTICAL_RADIUS.unicode.getEmojifromUnicode()));
+                            .withEmoji(VERTICAL_RADIUS.unicode.getEmojiFromUnicode()));
         return Collections.emptyList();
     }
 
@@ -207,17 +207,17 @@ public enum Menu {
     private SelectionMenu getSelectMenu(Menu menu) {
         switch (menu) {
             case SERVER:
-                return new ServerSelectMenu().getComponent();
+                return new ServerSelectMenu().get();
             case LOBBY:
-                return new LobbySelectMenu().getComponent();
+                return new LobbySelectMenu().get();
             case MODE:
-                return new ModeSelectMenu().getComponent();
+                return new ModeSelectMenu().get();
             case LANGUAGE:
-                return new LanguageSelectMenu().getComponent();
+                return new LanguageSelectMenu().get();
             case ACTION_BAR_ALERT:
-                return new ToggleSelectMenu(ACTION_BAR_ALERT.name(), getActionBarAlert(), true).getComponent();
+                return new ToggleSelectMenu(ACTION_BAR_ALERT.name(), getActionBarAlert(), true).get();
             case CHANNEL_VISIBILITY:
-                return new ToggleSelectMenu(CHANNEL_VISIBILITY.name(), getChannelVisibility(), true).getComponent();
+                return new ToggleSelectMenu(CHANNEL_VISIBILITY.name(), getChannelVisibility(), true).get();
             default:
                 throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), menu));
         }

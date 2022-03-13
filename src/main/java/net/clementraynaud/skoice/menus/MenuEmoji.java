@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.menus;
+package net.clementraynaud.skoice.menus;
 
 import net.dv8tion.jda.api.entities.Emoji;
 
@@ -48,7 +48,7 @@ public enum MenuEmoji {
         this.unicode = unicode;
     }
 
-    public Emoji getEmojifromUnicode() {
+    public Emoji getEmojiFromUnicode() {
         return Emoji.fromUnicode(unicode);
     }
 

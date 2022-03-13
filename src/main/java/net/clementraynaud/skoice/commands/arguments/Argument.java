@@ -56,7 +56,7 @@ public abstract class Argument {
 
         public abstract void run(CommandSender sender, String arg);
 
-        public static Option getOption(String option) {
+        public static Option get(String option) {
             return Stream.of(Option.values())
                     .filter(value -> value.toString().equalsIgnoreCase(option))
                     .findFirst()

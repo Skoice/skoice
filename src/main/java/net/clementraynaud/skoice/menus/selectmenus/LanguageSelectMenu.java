@@ -17,9 +17,9 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.menus.components;
+package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.commands.menus.Menu;
+import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.Lang;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
@@ -32,9 +32,10 @@ import java.util.List;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.config.Config.LANG_FIELD;
 
-public class LanguageSelectMenu {
+public class LanguageSelectMenu implements SelectMenu {
 
-    public SelectionMenu getComponent() {
+    @Override
+    public SelectionMenu get() {
         List<SelectOption> options = new ArrayList<>();
         for (Lang lang : Lang.values()) {
             options.add(SelectOption.of(lang.getFullName(), lang.name())

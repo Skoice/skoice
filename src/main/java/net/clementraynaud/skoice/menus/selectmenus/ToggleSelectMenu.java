@@ -17,16 +17,16 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.menus.components;
+package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.commands.menus.MenuEmoji;
+import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
 import java.util.Collections;
 
-public class ToggleSelectMenu {
+public class ToggleSelectMenu implements SelectMenu {
 
     private static final String ENABLED_OPTION_ID = "true";
     private static final String DISABLED_OPTION_ID = "false";
@@ -41,14 +41,15 @@ public class ToggleSelectMenu {
         this.defaultValue = defaultValue;
     }
 
-    public SelectionMenu getComponent() {
+    @Override
+    public SelectionMenu get() {
         return SelectionMenu.create(componentID)
                 .addOptions(SelectOption.of(DiscordLang.ENABLED_SELECT_OPTION_LABEL.toString(), ENABLED_OPTION_ID)
                                 .withDescription(defaultValue ? DiscordLang.DEFAULT_SELECT_OPTION_DESCRIPTION.toString() : null)
-                                .withEmoji(MenuEmoji.HEAVY_CHECK_MARK.getEmojifromUnicode()),
+                                .withEmoji(MenuEmoji.HEAVY_CHECK_MARK.getEmojiFromUnicode()),
                         SelectOption.of(DiscordLang.DISABLED_SELECT_OPTION_LABEL.toString(), DISABLED_OPTION_ID)
                                 .withDescription(!defaultValue ? DiscordLang.DEFAULT_SELECT_OPTION_DESCRIPTION.toString() : null)
-                                .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojifromUnicode()))
+                                .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()))
                 .setDefaultValues(Collections.singleton(String.valueOf(selectedValue))).build();
     }
 }

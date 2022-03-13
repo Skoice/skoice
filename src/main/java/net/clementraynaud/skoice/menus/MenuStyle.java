@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.menus;
+package net.clementraynaud.skoice.menus;
 
 public enum MenuStyle {
     PRIMARY, SECONDARY;

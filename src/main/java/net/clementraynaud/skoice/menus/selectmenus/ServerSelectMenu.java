@@ -17,10 +17,10 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.menus.components;
+package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.commands.menus.Menu;
-import net.clementraynaud.skoice.commands.menus.MenuEmoji;
+import net.clementraynaud.skoice.menus.Menu;
+import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
@@ -31,21 +31,22 @@ import java.util.List;
 
 import static net.clementraynaud.skoice.bot.Bot.getJda;
 
-public class ServerSelectMenu {
+public class ServerSelectMenu implements SelectMenu {
 
-    public SelectionMenu getComponent() {
+    @Override
+    public SelectionMenu get() {
         List<Guild> servers = new ArrayList<>(getJda().getGuilds());
         List<SelectOption> options = new ArrayList<>();
         int optionIndex = 0;
         while (optionIndex < 24 && servers.size() > optionIndex) {
             options.add(SelectOption.of(servers.get(optionIndex).getName(), servers.get(optionIndex).getId())
-                    .withEmoji(MenuEmoji.FILE_CABINET.getEmojifromUnicode()));
+                    .withEmoji(MenuEmoji.FILE_CABINET.getEmojiFromUnicode()));
             optionIndex++;
         }
         if (options.size() == 24) {
             options.add(SelectOption.of(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.toString(), "refresh")
                     .withDescription(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.toString())
-                    .withEmoji(MenuEmoji.WARNING_SIGN.getEmojifromUnicode()));
+                    .withEmoji(MenuEmoji.WARNING_SIGN.getEmojiFromUnicode()));
         }
         return SelectionMenu.create(Menu.SERVER.name() + "_SELECTION")
                 .setPlaceholder(DiscordLang.SERVER_SELECT_MENU_PLACEHOLDER.toString())
