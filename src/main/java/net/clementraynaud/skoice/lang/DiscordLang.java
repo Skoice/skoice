@@ -28,6 +28,22 @@ import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.config.Config.LANG_FIELD;
 
 public enum DiscordLang {
+    CONFIGURE_COMMAND_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Configure Skoice.",
+            Lang.FR, "Configurer Skoice."))),
+
+    LINK_COMMAND_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Link your Discord account to Minecraft.",
+            Lang.FR, "Lier votre compte Discord à Minecraft."))),
+
+    UNLINK_COMMAND_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Unlink your Discord account from Minecraft.",
+            Lang.FR, "Délier votre compte Discord de Minecraft."))),
+
+    INVITE_COMMAND_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Get the proximity voice chat on your server.",
+            Lang.FR, "Obtenir le chat vocal de proximité sur votre serveur."))),
+
     CONFIGURATION_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Configuration"))),
 

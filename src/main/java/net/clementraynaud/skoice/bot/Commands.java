@@ -19,24 +19,46 @@
 
 package net.clementraynaud.skoice.bot;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.LoggerLang;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.interactions.commands.Command;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+
+import java.util.*;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 
 public class Commands {
 
     public void register(Guild guild) {
+        Map<String, CommandData> commandsToRegister = getCommands();
+        List<Command> registeredCommands = guild.retrieveCommands().complete();
+        for (Command registeredCommand : registeredCommands)
+            commandsToRegister.remove(registeredCommand.getName());
         try {
-            if (guild.retrieveCommands().complete().size() < 4) {
-                guild.upsertCommand("configure", "Configure Skoice.").queue();
-                guild.upsertCommand("link", "Link your Discord account to Minecraft.").queue();
-                guild.upsertCommand("unlink", "Unlink your Discord account from Minecraft.").queue();
-                guild.upsertCommand("invite", "Get the proximity voice chat on your server.").queue();
-            }
+            commandsToRegister.values().forEach(command -> guild.upsertCommand(command).queue());
         } catch (ErrorResponseException e) {
             getPlugin().getLogger().severe(LoggerLang.MISSING_ACCESS_ERROR.toString());
         }
+    }
+
+    public void reload(Guild guild) {
+        try {
+            guild.updateCommands().addCommands(getCommands().values()).queue();
+        } catch (ErrorResponseException e) {
+            getPlugin().getLogger().severe(LoggerLang.MISSING_ACCESS_ERROR.toString());
+        }
+    }
+
+    private Map<String, CommandData> getCommands() {
+        return Maps.newHashMap(ImmutableMap.of(
+                "configure", new CommandData("configure", DiscordLang.CONFIGURE_COMMAND_DESCRIPTION.toString()),
+                "link", new CommandData("link", DiscordLang.LINK_COMMAND_DESCRIPTION.toString()),
+                "unlink", new CommandData("unlink", DiscordLang.UNLINK_COMMAND_DESCRIPTION.toString()),
+                "invite", new CommandData("invite", DiscordLang.INVITE_COMMAND_DESCRIPTION.toString())));
     }
 }

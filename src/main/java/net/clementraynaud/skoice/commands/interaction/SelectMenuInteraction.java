@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.commands.interaction;
 
+import net.clementraynaud.skoice.bot.Commands;
 import net.clementraynaud.skoice.commands.menus.Menu;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.LoggerLang;
@@ -66,6 +67,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                         getPlugin().getConfig().set(LANG_FIELD, event.getSelectedOptions().get(0).getValue());
                         getPlugin().saveConfig();
                         getPlugin().updateConfigurationStatus(false);
+                        new Commands().reload(event.getGuild());
                         event.editMessage(new Response().getMessage()).queue();
                         break;
                     case "LOBBY_SELECTION":
