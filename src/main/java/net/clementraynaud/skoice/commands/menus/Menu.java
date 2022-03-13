@@ -73,7 +73,9 @@ public enum Menu {
         MODE.additionalFields = Arrays.asList(
                 new Field(MAP + " " + VANILLA_MODE_FIELD_TITLE, VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
                 new Field(CROSSED_SWORDS + " " + MINIGAME_MODE_FIELD_TITLE, MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
-                getPlugin().isBotReady() ? new Field(PENCIL2 + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true) : null);
+                getPlugin().isBotReady()
+                        ? new Field(PENCIL2 + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true)
+                        : null);
         HORIZONTAL_RADIUS.additionalFields = Collections.singletonList(
                 new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
                         getHorizontalRadius()), false));
@@ -97,9 +99,9 @@ public enum Menu {
 
     private String getTitle(boolean withEmoji) {
         if (isValueSet(this.name() + "_EMBED_TITLE"))
-            return withEmoji ?
-                    unicode + " " + DiscordLang.valueOf(this.name() + "_EMBED_TITLE") :
-                    DiscordLang.valueOf(this.name() + "_EMBED_TITLE").toString();
+            return withEmoji
+                    ? unicode + " " + DiscordLang.valueOf(this.name() + "_EMBED_TITLE")
+                    : DiscordLang.valueOf(this.name() + "_EMBED_TITLE").toString();
         return null;
     }
 
@@ -141,9 +143,9 @@ public enum Menu {
             buttons.add(Button.primary(this.name(), "⟳ " + DiscordLang.REFRESH_BUTTON_LABEL));
         if (children != null)
             for (Menu child : children)
-                buttons.add(child.style.equals(PRIMARY) ?
-                        Button.primary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojifromUnicode()) :
-                        Button.secondary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojifromUnicode()));
+                buttons.add(child.style.equals(PRIMARY)
+                        ? Button.primary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojifromUnicode())
+                        : Button.secondary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojifromUnicode()));
         else if (this == MODE)
             buttons.addAll(getModeAdditionalButtons());
         customizeRadius = false;
@@ -183,7 +185,9 @@ public enum Menu {
                 MODE.additionalFields = Arrays.asList(
                         new Field(MAP + " " + VANILLA_MODE_FIELD_TITLE, VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
                         new Field(CROSSED_SWORDS + " " + MINIGAME_MODE_FIELD_TITLE, MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
-                        getPlugin().isBotReady() ? new Field(PENCIL2 + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true) : null);
+                        getPlugin().isBotReady()
+                                ? new Field(PENCIL2 + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true)
+                                : null);
                 break;
             case HORIZONTAL_RADIUS:
                 HORIZONTAL_RADIUS.additionalFields = Collections.singletonList(

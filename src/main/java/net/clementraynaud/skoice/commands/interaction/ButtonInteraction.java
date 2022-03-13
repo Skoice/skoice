@@ -66,17 +66,25 @@ public class ButtonInteraction extends ListenerAdapter {
                         }
                         break;
                     case "LOBBY":
-                        event.editMessage(getPlugin().isBotReady() ? Menu.LOBBY.getMessage() : new Response().getMessage()).queue();
+                        event.editMessage(getPlugin().isBotReady()
+                                ? Menu.LOBBY.getMessage()
+                                : new Response().getMessage()).queue();
                         break;
                     case "LANGUAGE":
-                        event.editMessage(getPlugin().isBotReady() ? Menu.LANGUAGE.getMessage() : new Response().getMessage()).queue();
+                        event.editMessage(getPlugin().isBotReady()
+                                ? Menu.LANGUAGE.getMessage()
+                                : new Response().getMessage()).queue();
                         break;
                     case "ADVANCED_SETTINGS":
-                        event.editMessage(getPlugin().isBotReady() ? Menu.ADVANCED_SETTINGS.getMessage() : new Response().getMessage()).queue();
+                        event.editMessage(getPlugin().isBotReady()
+                                ? Menu.ADVANCED_SETTINGS.getMessage()
+                                : new Response().getMessage()).queue();
                         break;
                     case "MODE":
                         discordIDAxis.remove(member.getId());
-                        event.editMessage(getPlugin().isBotReady() ? Menu.MODE.getMessage() : new Response().getMessage()).queue();
+                        event.editMessage(getPlugin().isBotReady()
+                                ? Menu.MODE.getMessage()
+                                : new Response().getMessage()).queue();
                         break;
                     case "HORIZONTAL_RADIUS":
                         if (getPlugin().isBotReady()) {
@@ -95,10 +103,14 @@ public class ButtonInteraction extends ListenerAdapter {
                         }
                         break;
                     case "ACTION_BAR_ALERT":
-                        event.editMessage(getPlugin().isBotReady() ? Menu.ACTION_BAR_ALERT.getMessage() : new Response().getMessage()).queue();
+                        event.editMessage(getPlugin().isBotReady()
+                                ? Menu.ACTION_BAR_ALERT.getMessage()
+                                : new Response().getMessage()).queue();
                         break;
                     case "CHANNEL_VISIBILITY":
-                        event.editMessage(getPlugin().isBotReady() ? Menu.CHANNEL_VISIBILITY.getMessage() : new Response().getMessage()).queue();
+                        event.editMessage(getPlugin().isBotReady()
+                                ? Menu.CHANNEL_VISIBILITY.getMessage()
+                                : new Response().getMessage()).queue();
                         break;
                     default:
                         throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), buttonID));

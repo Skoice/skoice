@@ -38,7 +38,9 @@ public class LanguageSelectMenu {
         List<SelectOption> options = new ArrayList<>();
         for (Lang lang : Lang.values()) {
             options.add(SelectOption.of(lang.getFullName(), lang.name())
-                    .withDescription(lang.name().equals(Lang.EN.name()) ? DiscordLang.DEFAULT_SELECT_OPTION_DESCRIPTION.toString() : null)
+                    .withDescription(lang.name().equals(Lang.EN.name())
+                            ? DiscordLang.DEFAULT_SELECT_OPTION_DESCRIPTION.toString()
+                            : null)
                     .withEmoji(lang.getEmoji()));
         }
         if (getPlugin().isBotReady()) {

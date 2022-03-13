@@ -150,7 +150,9 @@ public class UpdateNetworksTask implements Task {
     private void updateNetworksAroundPlayer(Player player) {
         networks.stream()
                 .filter(network -> network.isPlayerInRangeToBeAdded(player))
-                .reduce((network1, network2) -> network1.size() > network2.size() ? network1.engulf(network2) : network2.engulf(network1))
+                .reduce((network1, network2) -> network1.size() > network2.size()
+                        ? network1.engulf(network2)
+                        : network2.engulf(network1))
                 .filter(network -> !network.contains(player.getUniqueId()))
                 .ifPresent(network -> network.add(player.getUniqueId()));
         networks.stream()
