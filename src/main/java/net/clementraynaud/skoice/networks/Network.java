@@ -56,31 +56,20 @@ public class Network {
 
     public Network(Set<UUID> players) {
         this.players = players;
-        List<Permission> allowedPermissions = isVoiceActivationAllowed()
-                ? Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD)
-                : Collections.singletonList(Permission.VOICE_SPEAK);
         List<Permission> deniedPermissions = getPlugin().getConfig().getBoolean(CHANNEL_VISIBILITY_FIELD)
                 ? Arrays.asList(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS)
                 : Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
         getCategory().createVoiceChannel(UUID.randomUUID().toString())
-                .addPermissionOverride(
-                        getGuild().getPublicRole(),
-                        allowedPermissions,
-                        deniedPermissions
-                )
-                .addPermissionOverride(
-                        getGuild().getSelfMember(),
+                .addPermissionOverride(getGuild().getPublicRole(),
+                        Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
+                        deniedPermissions)
+                .addPermissionOverride(getGuild().getSelfMember(),
                         Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS),
-                        Collections.emptyList()
-                )
+                        Collections.emptyList())
                 .queue(channel -> {
                     this.channel = channel.getId();
                     initialized = true;
                 }, e -> getNetworks().remove(this));
-    }
-
-    public static boolean isVoiceActivationAllowed() {
-        return true;
     }
 
     public static void updateMutedUsers(VoiceChannel channel, Member member) {
