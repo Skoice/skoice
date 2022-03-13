@@ -17,10 +17,9 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.scheduler.tasks;
+package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.networks.Network;
-import net.clementraynaud.skoice.scheduler.Task;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 
@@ -28,13 +27,12 @@ import java.util.concurrent.CompletableFuture;
 
 import static net.clementraynaud.skoice.config.Config.getLobby;
 import static net.clementraynaud.skoice.networks.Network.networks;
-import static net.clementraynaud.skoice.scheduler.tasks.UpdateNetworksTask.awaitingMoves;
 
 public class InterruptSystemTask implements Task {
 
     @Override
     public void run() {
-        for (Pair<String, CompletableFuture<Void>> value : awaitingMoves.values())
+        for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.awaitingMoves.values())
             value.getRight().cancel(true);
         boolean isLobbySet = getLobby() == null;
         for (Network network : networks) {

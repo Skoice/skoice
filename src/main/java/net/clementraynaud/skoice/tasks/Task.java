@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.scheduler;
+package net.clementraynaud.skoice.tasks;
 
 public interface Task {
 

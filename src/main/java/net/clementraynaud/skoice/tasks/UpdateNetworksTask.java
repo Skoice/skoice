@@ -18,12 +18,11 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.scheduler.tasks;
+package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.networks.Network;
 import net.clementraynaud.skoice.lang.MinecraftLang;
-import net.clementraynaud.skoice.scheduler.Task;
 import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;

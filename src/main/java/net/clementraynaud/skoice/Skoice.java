@@ -32,7 +32,7 @@ import net.clementraynaud.skoice.listeners.player.DirtyPlayerListeners;
 import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
 import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.lang.LoggerLang;
-import net.clementraynaud.skoice.scheduler.tasks.InterruptSystemTask;
+import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.util.UpdateUtil;
 import net.dv8tion.jda.api.entities.Activity;
 import org.bstats.bukkit.Metrics;
@@ -99,7 +99,9 @@ public class Skoice extends JavaPlugin {
         new OutdatedConfig().update();
         isTokenSet = getConfig().contains(TOKEN_FIELD);
         setBot(new Bot());
-        plugin.getCommand("skoice").setExecutor(new SkoiceCommand());
+        SkoiceCommand skoiceCommand = new SkoiceCommand();
+        getCommand("skoice").setExecutor(skoiceCommand);
+        getCommand("skoice").setTabCompleter(skoiceCommand);
         checkVersion();
     }
 
