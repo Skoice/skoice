@@ -30,6 +30,7 @@ import java.util.TimerTask;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.commands.interaction.ErrorEmbeds.*;
+import static net.clementraynaud.skoice.config.Config.TEMP_FIELD;
 
 public class ConfigureCommand extends ListenerAdapter {
 
@@ -43,9 +44,7 @@ public class ConfigureCommand extends ListenerAdapter {
                 if (configureCommandCooldown) {
                     event.replyEmbeds(getTooManyInteractionsEmbed()).setEphemeral(true).queue();
                 } else {
-                    if (getPlugin().getConfig().contains("temp")) {
-                        new Response().deleteMessage();
-                    }
+                    new Response().deleteMessage();
                     event.reply(new Response().getMessage()).queue();
                     configureCommandCooldown = true;
                     new Timer().schedule(new TimerTask() {

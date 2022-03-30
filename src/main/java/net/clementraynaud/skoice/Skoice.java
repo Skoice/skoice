@@ -22,6 +22,7 @@ package net.clementraynaud.skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.SkoiceCommand;
 import net.clementraynaud.skoice.commands.interaction.Response;
+import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.config.OutdatedConfig;
 import net.clementraynaud.skoice.listeners.VoiceChannelDeleteListener;
@@ -34,12 +35,16 @@ import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.lang.LoggerLang;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.util.UpdateUtil;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.awt.*;
 import java.util.Objects;
 
 import static net.clementraynaud.skoice.bot.Bot.getJda;
@@ -167,6 +172,17 @@ public class Skoice extends JavaPlugin {
             getJda().addEventListener(new GuildVoiceJoinListener(), new GuildVoiceLeaveListener(), new GuildVoiceMoveListener(), new VoiceChannelDeleteListener());
             Menu.MODE.refreshAdditionalFields();
             getLogger().info(LoggerLang.CONFIGURATION_COMPLETE_INFO.toString());
+            Message configurationMessage = new Response().getConfigurationMessage();
+            if (configurationMessage != null)
+                try {
+                    configurationMessage.getInteraction().getUser().openPrivateChannel().complete()
+                            .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
+                                    .addField(":heavy_check_mark: " + DiscordLang.CONFIGURATION_COMPLETE_FIELD_TITLE, DiscordLang.CONFIGURATION_COMPLETE_FIELD_DESCRIPTION.toString(), false)
+                                    .setColor(Color.GREEN).build()).queue(success -> {
+                            }, failure -> {
+                            });
+                } catch (ErrorResponseException ignored) {
+                }
         } else if (wasBotReady && !isBotReady) {
             new Response().deleteMessage();
             HandlerList.unregisterAll(new DirtyPlayerListeners());

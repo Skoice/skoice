@@ -45,19 +45,28 @@ public class Response {
     }
 
     public void deleteMessage() {
-        if (getPlugin().getConfig().contains(TEMP_FIELD)) {
+        Message configurationMessage = getConfigurationMessage();
+        if (configurationMessage != null)
             try {
-                Guild guild = getJda().getGuildById(getPlugin().getConfig().getString(TEMP_GUILD_ID_FIELD));
-                if (guild != null) {
-                    TextChannel textChannel = guild.getTextChannelById(getPlugin().getConfig().getString(TEMP_TEXT_CHANNEL_ID_FIELD));
-                    if (textChannel != null)
-                        textChannel.retrieveMessageById(getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD))
-                                .complete().delete().queue(success -> {
-                                }, failure -> {
-                                });
-                }
-            } catch (ErrorResponseException | NullPointerException ignored) {
+                getConfigurationMessage().delete().queue(success -> {
+                }, failure -> {
+                });
+            } catch (ErrorResponseException ignored) {
+            }
+    }
+
+    public Message getConfigurationMessage() {
+        if (getPlugin().getConfig().contains(TEMP_FIELD)) {
+            Guild guild = getJda().getGuildById(getPlugin().getConfig().getString(TEMP_GUILD_ID_FIELD));
+            if (guild != null) {
+                TextChannel textChannel = guild.getTextChannelById(getPlugin().getConfig().getString(TEMP_TEXT_CHANNEL_ID_FIELD));
+                if (textChannel != null)
+                    try {
+                        return textChannel.retrieveMessageById(getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD)).complete();
+                    } catch (ErrorResponseException ignored) {
+                    }
             }
         }
+        return null;
     }
 }

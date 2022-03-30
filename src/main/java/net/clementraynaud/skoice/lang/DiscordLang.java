@@ -334,6 +334,14 @@ public enum DiscordLang {
             Lang.EN, "You are executing commands too fast",
             Lang.FR, "Vous exécutez des commandes trop rapidement."))),
 
+    CONFIGURATION_COMPLETE_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Configuration Complete",
+            Lang.FR, "Configuration terminée"))),
+
+    CONFIGURATION_COMPLETE_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Skoice is now configured. Type \"/link\" on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat.",
+            Lang.FR, "Skoice est désormais configuré. Tapez \"/link\" sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité"))),
+
     INCOMPLETE_CONFIGURATION_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Incomplete Configuration",
             Lang.FR, "Configuration non terminée"))),

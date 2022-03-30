@@ -38,8 +38,8 @@ public enum LoggerLang {
             Lang.FR, "Plugin désactivé."))),
 
     CONFIGURATION_COMPLETE_INFO(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Configuration complete. Type \"/link\" on your Discord server to link your Discord account to Minecraft.",
-            Lang.FR, "Configuration terminée. Tapez \"/link\" sur votre serveur Discord pour relier votre compte Discord à Minecraft."))),
+            Lang.EN, "Skoice is now configured. Type \"/link\" on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat.",
+            Lang.FR, "Skoice est désormais configuré. Tapez \"/link\" sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."))),
 
     BOT_CONNECTED_INFO(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Your bot is connected.",
