@@ -54,9 +54,6 @@ public class ButtonInteraction extends ListenerAdapter {
                         break;
                     case "CLOSE":
                         event.getMessage().delete().queue();
-                        discordIDAxis.remove(event.getUser().getId());
-                        getPlugin().getConfig().set("temp", null);
-                        getPlugin().saveConfig();
                         if (!getPlugin().isBotReady()) {
                             event.replyEmbeds(new EmbedBuilder()
                                             .setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)

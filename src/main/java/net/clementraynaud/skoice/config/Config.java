@@ -40,9 +40,10 @@ public class Config {
     public static final String ACTION_BAR_ALERT_FIELD = "action-bar-alert";
     public static final String CHANNEL_VISIBILITY_FIELD = "channel-visibility";
     public static final String LINK_MAP_FIELD = "link-map";
-    public static final String TEMP_GUILD_ID_FIELD = "temp.guild-id";
-    public static final String TEMP_TEXT_CHANNEL_ID_FIELD = "temp.text-channel-id";
-    public static final String TEMP_MESSAGE_ID_FIELD = "temp.message-id";
+    public static final String TEMP_FIELD = "temp";
+    public static final String TEMP_GUILD_ID_FIELD = TEMP_FIELD + ".guild-id";
+    public static final String TEMP_TEXT_CHANNEL_ID_FIELD = TEMP_FIELD + ".text-channel-id";
+    public static final String TEMP_MESSAGE_ID_FIELD = TEMP_FIELD + ".message-id";
 
     private Config() {
     }

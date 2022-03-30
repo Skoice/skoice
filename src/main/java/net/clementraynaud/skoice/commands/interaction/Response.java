@@ -45,19 +45,16 @@ public class Response {
     }
 
     public void deleteMessage() {
-        if (getPlugin().getConfig().contains(TEMP_GUILD_ID_FIELD)
-                && getPlugin().getConfig().contains(TEMP_TEXT_CHANNEL_ID_FIELD)
-                && getPlugin().getConfig().contains(TEMP_MESSAGE_ID_FIELD)) {
+        if (getPlugin().getConfig().contains(TEMP_FIELD)) {
             try {
                 Guild guild = getJda().getGuildById(getPlugin().getConfig().getString(TEMP_GUILD_ID_FIELD));
                 if (guild != null) {
                     TextChannel textChannel = guild.getTextChannelById(getPlugin().getConfig().getString(TEMP_TEXT_CHANNEL_ID_FIELD));
-                    if (textChannel != null) {
+                    if (textChannel != null)
                         textChannel.retrieveMessageById(getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD))
                                 .complete().delete().queue(success -> {
                                 }, failure -> {
                                 });
-                    }
                 }
             } catch (ErrorResponseException | NullPointerException ignored) {
             }

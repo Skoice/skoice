@@ -25,15 +25,16 @@ import org.jetbrains.annotations.NotNull;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.commands.interaction.ButtonInteraction.discordIDAxis;
+import static net.clementraynaud.skoice.config.Config.TEMP_FIELD;
 import static net.clementraynaud.skoice.config.Config.TEMP_MESSAGE_ID_FIELD;
 
 public class GuildMessageDeleteListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageDelete(@NotNull GuildMessageDeleteEvent event) {
-        if (getPlugin().getConfig().contains("temp")
+        if (getPlugin().getConfig().contains(TEMP_FIELD)
                 && event.getMessageId().equals(getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD))) {
-            getPlugin().getConfig().set("temp", null);
+            getPlugin().getConfig().set(TEMP_FIELD, null);
             getPlugin().saveConfig();
             discordIDAxis.clear();
         }
