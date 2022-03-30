@@ -46,8 +46,8 @@ public enum LoggerLang {
             Lang.FR, "Votre bot est connecté."))),
 
     OUTDATED_VERSION_WARNING(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, ChatColor.YELLOW + "You are using an outdated version (%s). Download the latest version (%s) here: " + ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/" + ChatColor.YELLOW + ".",
-            Lang.FR, ChatColor.YELLOW + "Vous utilisez une version obsolète (%s). Téléchargez la dernière version (%s) ici : " + ChatColor.AQUA + "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/" + ChatColor.YELLOW + "."))),
+            Lang.EN, ChatColor.YELLOW + "You are using an outdated version (%s). Download the latest version (%s) here: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/.",
+            Lang.FR, ChatColor.YELLOW + "Vous utilisez une version obsolète (%s). Téléchargez la dernière version (%s) ici : https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/."))),
 
     NO_TOKEN_WARNING(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, ChatColor.YELLOW + "Token not set. Join your Minecraft server to set up Skoice.",
