@@ -331,7 +331,7 @@ public enum DiscordLang {
             Lang.FR, "Trop d'interactions"))),
 
     TOO_MANY_INTERACTIONS_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "You are executing commands too fast",
+            Lang.EN, "You are executing commands too fast.",
             Lang.FR, "Vous exécutez des commandes trop rapidement."))),
 
     CONFIGURATION_COMPLETE_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(

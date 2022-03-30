@@ -67,7 +67,7 @@ public class SelectMenuInteraction extends ListenerAdapter {
                         getPlugin().getConfig().set(LANG_FIELD, event.getSelectedOptions().get(0).getValue());
                         getPlugin().saveConfig();
                         getPlugin().updateConfigurationStatus(false);
-                        new Commands().reload(event.getGuild());
+                        new Commands().register(event.getGuild());
                         event.editMessage(new Response().getMessage()).queue();
                         break;
                     case "LOBBY_SELECTION":

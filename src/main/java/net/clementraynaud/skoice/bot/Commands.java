@@ -19,14 +19,12 @@
 
 package net.clementraynaud.skoice.bot;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.LoggerLang;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.exceptions.ErrorResponseException;
-import net.dv8tion.jda.api.interactions.commands.Command;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import java.util.*;
 
@@ -35,30 +33,16 @@ import static net.clementraynaud.skoice.Skoice.getPlugin;
 public class Commands {
 
     public void register(Guild guild) {
-        Map<String, CommandData> commandsToRegister = getCommands();
-        List<Command> registeredCommands = guild.retrieveCommands().complete();
-        for (Command registeredCommand : registeredCommands)
-            commandsToRegister.remove(registeredCommand.getName());
-        try {
-            commandsToRegister.values().forEach(command -> guild.upsertCommand(command).queue());
-        } catch (ErrorResponseException e) {
-            getPlugin().getLogger().severe(LoggerLang.MISSING_ACCESS_ERROR.toString());
-        }
+        guild.updateCommands().addCommands(getCommands())
+                .queue(null, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
+                        e -> getPlugin().getLogger().severe(LoggerLang.MISSING_ACCESS_ERROR.toString())));
     }
 
-    public void reload(Guild guild) {
-        try {
-            guild.updateCommands().addCommands(getCommands().values()).queue();
-        } catch (ErrorResponseException e) {
-            getPlugin().getLogger().severe(LoggerLang.MISSING_ACCESS_ERROR.toString());
-        }
-    }
-
-    private Map<String, CommandData> getCommands() {
-        return Maps.newHashMap(ImmutableMap.of(
-                "configure", new CommandData("configure", DiscordLang.CONFIGURE_COMMAND_DESCRIPTION.toString()),
-                "link", new CommandData("link", DiscordLang.LINK_COMMAND_DESCRIPTION.toString()),
-                "unlink", new CommandData("unlink", DiscordLang.UNLINK_COMMAND_DESCRIPTION.toString()),
-                "invite", new CommandData("invite", DiscordLang.INVITE_COMMAND_DESCRIPTION.toString())));
+    private Set<CommandData> getCommands() {
+        return new HashSet<>(Arrays.asList(
+                new CommandData("configure", DiscordLang.CONFIGURE_COMMAND_DESCRIPTION.toString()),
+                new CommandData("link", DiscordLang.LINK_COMMAND_DESCRIPTION.toString()),
+                new CommandData("unlink", DiscordLang.UNLINK_COMMAND_DESCRIPTION.toString()),
+                new CommandData("invite", DiscordLang.INVITE_COMMAND_DESCRIPTION.toString())));
     }
 }

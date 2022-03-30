@@ -147,9 +147,9 @@ public class Skoice extends JavaPlugin {
     private void updateActivity() {
         if (getJda() != null) {
             Activity activity = getJda().getPresence().getActivity();
-            if (isBotReady && !Objects.equals(activity, Activity.listening("link")))
+            if (isBotReady && !Objects.equals(activity, Activity.listening("/link")))
                 getJda().getPresence().setActivity(Activity.listening("/link"));
-            else if (!isBotReady && !Objects.equals(activity, Activity.listening("configure")))
+            else if (!isBotReady && !Objects.equals(activity, Activity.listening("/configure")))
                 getJda().getPresence().setActivity(Activity.listening("/configure"));
         }
     }
