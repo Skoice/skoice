@@ -44,6 +44,10 @@ public enum DiscordLang {
             Lang.EN, "Get the proximity voice chat on your server.",
             Lang.FR, "Obtenir le chat vocal de proximité sur votre serveur."))),
 
+    EMBED_FOOTER(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "The proximity voice chat is provided by Skoice.",
+            Lang.FR, "Le chat vocal de proximité vous est fourni par Skoice."))),
+
     CONFIGURATION_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Configuration"))),
 
@@ -211,8 +215,8 @@ public enum DiscordLang {
             Lang.FR, "Assistance"))),
 
     TROUBLESHOOTING_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Having issues? [Join our Discord server!](https://discord.gg/h3Tgccc)",
-            Lang.FR, "Vous rencontrez des problèmes ? [Rejoignez notre serveur Discord !](https://discord.gg/h3Tgccc)"))),
+            Lang.EN, "Having issues? [Join our Discord server](https://discord.gg/h3Tgccc)!",
+            Lang.FR, "Vous rencontrez des problèmes ? [Rejoignez notre serveur Discord](https://discord.gg/h3Tgccc) !"))),
 
     GET_THE_PROXIMITY_VOICE_CHAT_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Get the Proximity Voice Chat",
@@ -223,8 +227,16 @@ public enum DiscordLang {
             Lang.FR, "Téléchargez Skoice"))),
 
     DOWNLOAD_SKOICE_FIELD_DESRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Get the plugin [here](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server.",
-            Lang.FR, "Obtenez le plugin [ici](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) et installez-le sur votre serveur Minecraft."))),
+            Lang.EN, "[Get the plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server.",
+            Lang.FR, "[Obtenez le plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) et installez-le sur votre serveur Minecraft."))),
+
+    DONATE_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Donate",
+            Lang.FR, "Faire un don"))),
+
+    DONATE_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Skoice is a free software. If you like it, you can help us by [donating](https://paypal.me/whitelines).",
+            Lang.FR, "Skoice est un logiciel gratuit. Si vous l'aimez, vous pouvez nous aider en [faisant un don](https://paypal.me/whitelines)."))),
 
     LINKING_PROCESS_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Linking Process",

@@ -26,7 +26,7 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
 import java.util.Collections;
 
-public class ToggleSelectMenu implements SelectMenu {
+public class ToggleSelectMenu extends SelectMenu {
 
     private static final String ENABLED_OPTION_ID = "true";
     private static final String DISABLED_OPTION_ID = "false";
@@ -36,6 +36,7 @@ public class ToggleSelectMenu implements SelectMenu {
     private final boolean defaultValue;
 
     public ToggleSelectMenu(String componentID, boolean selectedValue, boolean defaultValue) {
+        super(false);
         this.componentID = componentID;
         this.selectedValue = selectedValue;
         this.defaultValue = defaultValue;

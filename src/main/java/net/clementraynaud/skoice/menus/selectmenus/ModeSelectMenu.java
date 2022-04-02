@@ -35,11 +35,15 @@ import static net.clementraynaud.skoice.menus.Menu.customizeRadius;
 import static net.clementraynaud.skoice.config.Config.getHorizontalRadius;
 import static net.clementraynaud.skoice.config.Config.getVerticalRadius;
 
-public class ModeSelectMenu implements SelectMenu {
+public class ModeSelectMenu extends SelectMenu {
 
     private static final String VANILLA_MODE_ID = "VANILLA_MODE";
     private static final String MINIGAME_MODE_ID = "MINIGAME_MODE";
     private static final String CUSTOMIZE_ID = "CUSTOMIZE";
+
+    public ModeSelectMenu() {
+        super(false);
+    }
 
     @Override
     public SelectionMenu get() {

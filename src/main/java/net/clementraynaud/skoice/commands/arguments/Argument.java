@@ -23,7 +23,7 @@ import net.clementraynaud.skoice.lang.MinecraftLang;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -63,7 +63,7 @@ public abstract class Argument {
                     .orElse(null);
         }
 
-        public static List<String> getList() {
+        public static Collection<String> getList() {
             return Stream.of(Option.values())
                     .map(Enum::name)
                     .map(String::toLowerCase)

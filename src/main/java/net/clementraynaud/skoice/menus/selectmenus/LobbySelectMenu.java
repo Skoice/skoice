@@ -35,10 +35,14 @@ import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
 import static net.clementraynaud.skoice.config.Config.LOBBY_ID_FIELD;
 
-public class LobbySelectMenu implements SelectMenu {
+public class LobbySelectMenu extends SelectMenu {
 
     private static final String GENERATE_OPTION_ID = "GENERATE";
     private static final String REFRESH_OPTION_ID = "REFRESH";
+
+    public LobbySelectMenu() {
+        super(true);
+    }
 
     @Override
     public SelectionMenu get() {

@@ -32,7 +32,11 @@ import java.util.List;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.config.Config.LANG_FIELD;
 
-public class LanguageSelectMenu implements SelectMenu {
+public class LanguageSelectMenu extends SelectMenu {
+
+    public LanguageSelectMenu() {
+        super(false);
+    }
 
     @Override
     public SelectionMenu get() {

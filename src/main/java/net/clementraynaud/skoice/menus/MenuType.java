@@ -22,9 +22,9 @@ package net.clementraynaud.skoice.menus;
 import java.awt.*;
 
 public enum MenuType {
-    DEFAULT(Color.ORANGE),
-    SUCCESS(Color.GREEN),
-    ERROR(Color.RED);
+    DEFAULT(Color.decode("#5865F2")),
+    SUCCESS(Color.decode("#57F287")),
+    ERROR(Color.decode("#ED4245"));
 
     private final Color color;
 

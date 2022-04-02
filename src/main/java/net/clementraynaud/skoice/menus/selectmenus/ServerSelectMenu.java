@@ -31,7 +31,11 @@ import java.util.List;
 
 import static net.clementraynaud.skoice.bot.Bot.getJda;
 
-public class ServerSelectMenu implements SelectMenu {
+public class ServerSelectMenu extends SelectMenu {
+
+    public ServerSelectMenu() {
+        super(true);
+    }
 
     @Override
     public SelectionMenu get() {

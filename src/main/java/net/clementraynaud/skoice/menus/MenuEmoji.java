@@ -31,6 +31,7 @@ public enum MenuEmoji {
     FILE_CABINET("U+1F5C4"),
     SOUND("U+1F509"),
     VIDEO_GAME("U+1F3AE"),
+    SCREWDRIVER("U+1FA9B"),
     MAP("U+1F5FA"),
     CROSSED_SWORDS("U+2694"),
     PENCIL2("U+270F"),

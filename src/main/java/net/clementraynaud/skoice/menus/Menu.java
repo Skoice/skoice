@@ -28,11 +28,12 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.Button;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
 import java.util.*;
 
+import static net.clementraynaud.skoice.Skoice.getBot;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.bot.Bot.getJda;
 import static net.clementraynaud.skoice.menus.MenuStyle.*;
 import static net.clementraynaud.skoice.menus.MenuType.*;
 import static net.clementraynaud.skoice.menus.MenuEmoji.*;
@@ -41,16 +42,16 @@ import static net.clementraynaud.skoice.lang.DiscordLang.*;
 import static net.dv8tion.jda.api.entities.MessageEmbed.*;
 
 public enum Menu {
-    SETTINGS(null, null, DEFAULT, null, false, false),
-    SERVER(FILE_CABINET, null, DEFAULT, null, true, true),
-    LOBBY(SOUND, PRIMARY, DEFAULT, SETTINGS, true, true),
-    MODE(VIDEO_GAME, PRIMARY, DEFAULT, SETTINGS, true, false),
-    HORIZONTAL_RADIUS(LEFT_RIGHT_ARROW, PRIMARY, DEFAULT, MODE, false, false),
-    VERTICAL_RADIUS(UP_DOWN_ARROW, PRIMARY, DEFAULT, MODE, false, false),
-    ADVANCED_SETTINGS(WRENCH, SECONDARY, DEFAULT, SETTINGS, false, false),
-    LANGUAGE(GLOBE_WITH_MERIDIANS, SECONDARY, DEFAULT, SETTINGS, true, false),
-    ACTION_BAR_ALERT(EXCLAMATION, PRIMARY, DEFAULT, ADVANCED_SETTINGS, true, false),
-    CHANNEL_VISIBILITY(MAG, PRIMARY, DEFAULT, ADVANCED_SETTINGS, true, false);
+    SETTINGS(null, null, DEFAULT, null, null),
+    SERVER(FILE_CABINET, null, DEFAULT, null, new ServerSelectMenu()),
+    LOBBY(SOUND, PRIMARY, DEFAULT, SETTINGS, new LobbySelectMenu()),
+    MODE(VIDEO_GAME, PRIMARY, DEFAULT, SETTINGS, new ModeSelectMenu()),
+    HORIZONTAL_RADIUS(LEFT_RIGHT_ARROW, PRIMARY, DEFAULT, MODE, null),
+    VERTICAL_RADIUS(UP_DOWN_ARROW, PRIMARY, DEFAULT, MODE, null),
+    ADVANCED_SETTINGS(WRENCH, SECONDARY, DEFAULT, SETTINGS, null),
+    LANGUAGE(GLOBE_WITH_MERIDIANS, SECONDARY, DEFAULT, SETTINGS, new LanguageSelectMenu()),
+    ACTION_BAR_ALERT(EXCLAMATION, PRIMARY, DEFAULT, ADVANCED_SETTINGS, new ToggleSelectMenu("ACTION_BAR_ALERT", getActionBarAlert(), true)),
+    CHANNEL_VISIBILITY(MAG, PRIMARY, DEFAULT, ADVANCED_SETTINGS, new ToggleSelectMenu("CHANNEL_VISIBILITY", getChannelVisibility(), true));
 
     private static final String CLOSE_BUTTON_ID = "CLOSE";
 
@@ -58,8 +59,7 @@ public enum Menu {
     private final MenuStyle style;
     private final MenuType type;
     private final Menu parent;
-    private final boolean hasSelectMenu;
-    private final boolean isRefreshable;
+    private final SelectMenu selectMenu;
 
     private List<Menu> children;
     private List<Field> additionalFields;
@@ -70,6 +70,8 @@ public enum Menu {
         SETTINGS.children = Arrays.asList(LOBBY, MODE, ADVANCED_SETTINGS, LANGUAGE);
         ADVANCED_SETTINGS.children = Arrays.asList(ACTION_BAR_ALERT, CHANNEL_VISIBILITY);
 
+        SETTINGS.additionalFields = Collections.singletonList(
+                new Field(SCREWDRIVER + " " + TROUBLESHOOTING_FIELD_TITLE, TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), true));
         MODE.additionalFields = Arrays.asList(
                 new Field(MAP + " " + VANILLA_MODE_FIELD_TITLE, VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
                 new Field(CROSSED_SWORDS + " " + MINIGAME_MODE_FIELD_TITLE, MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
@@ -81,16 +83,15 @@ public enum Menu {
                         getHorizontalRadius()), false));
         VERTICAL_RADIUS.additionalFields = Collections.singletonList(
                 new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
-                                getVerticalRadius()), false));
+                        getVerticalRadius()), false));
     }
 
-    Menu(MenuEmoji unicode, MenuStyle style, MenuType type, Menu parent, boolean hasSelectMenu, boolean isRefreshable) {
+    Menu(MenuEmoji unicode, MenuStyle style, MenuType type, Menu parent, SelectMenu selectMenu) {
         this.unicode = unicode;
         this.style = style;
         this.type = type;
         this.parent = parent;
-        this.hasSelectMenu = hasSelectMenu;
-        this.isRefreshable = isRefreshable;
+        this.selectMenu = selectMenu;
     }
 
     public Message getMessage() {
@@ -116,21 +117,22 @@ public enum Menu {
 
     private MessageEmbed getEmbed() {
         EmbedBuilder embed = new EmbedBuilder().setTitle(GEAR + " " + CONFIGURATION_EMBED_TITLE)
-                .setColor(type.getColor());
+                .setColor(type.getColor())
+                .setFooter(EMBED_FOOTER.toString(), "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
         if (this.getTitle(false) != null)
             embed.addField(this.getTitle(true), this.getDescription(false), false);
         if (children != null)
             for (Menu child : children)
                 embed.addField(child.getTitle(true), child.getDescription(true), true);
-        else if (additionalFields != null)
+        if (additionalFields != null)
             for (Field additionalField : additionalFields)
                 embed.addField(additionalField);
         return embed.build();
     }
 
     private List<ActionRow> getActionRows() {
-        if (hasSelectMenu) {
-            return Arrays.asList(ActionRow.of(getSelectMenu(this)), ActionRow.of(getButtons()));
+        if (selectMenu != null) {
+            return Arrays.asList(ActionRow.of(selectMenu.get()), ActionRow.of(getButtons()));
         }
         return Collections.singletonList(ActionRow.of(getButtons()));
     }
@@ -139,7 +141,7 @@ public enum Menu {
         List<Button> buttons = new ArrayList<>();
         if (parent != null)
             buttons.add(Button.secondary(parent.name(), "← " + DiscordLang.BACK_BUTTON_LABEL));
-        if (isRefreshable)
+        if (selectMenu != null && selectMenu.isRefreshable())
             buttons.add(Button.primary(this.name(), "⟳ " + DiscordLang.REFRESH_BUTTON_LABEL));
         if (children != null)
             for (Menu child : children)
@@ -201,25 +203,6 @@ public enum Menu {
                 break;
             default:
                 throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), this.name()));
-        }
-    }
-
-    private SelectionMenu getSelectMenu(Menu menu) {
-        switch (menu) {
-            case SERVER:
-                return new ServerSelectMenu().get();
-            case LOBBY:
-                return new LobbySelectMenu().get();
-            case MODE:
-                return new ModeSelectMenu().get();
-            case LANGUAGE:
-                return new LanguageSelectMenu().get();
-            case ACTION_BAR_ALERT:
-                return new ToggleSelectMenu(ACTION_BAR_ALERT.name(), getActionBarAlert(), true).get();
-            case CHANNEL_VISIBILITY:
-                return new ToggleSelectMenu(CHANNEL_VISIBILITY.name(), getChannelVisibility(), true).get();
-            default:
-                throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), menu));
         }
     }
 }
