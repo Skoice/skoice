@@ -18,7 +18,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.guild;
+package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;

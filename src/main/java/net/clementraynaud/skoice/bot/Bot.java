@@ -25,14 +25,17 @@ import net.clementraynaud.skoice.commands.interaction.ButtonInteraction;
 import net.clementraynaud.skoice.commands.interaction.Response;
 import net.clementraynaud.skoice.commands.interaction.LobbySelection;
 import net.clementraynaud.skoice.commands.interaction.SelectMenuInteraction;
-import net.clementraynaud.skoice.listeners.BotListeners;
-import net.clementraynaud.skoice.listeners.guild.GuildMessageDeleteListener;
-import net.clementraynaud.skoice.listeners.guild.GuildMessageReceivedListener;
+import net.clementraynaud.skoice.listeners.ReconnectedListener;
+import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
+import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
+import net.clementraynaud.skoice.listeners.message.guild.GuildMessageDeleteListener;
+import net.clementraynaud.skoice.listeners.message.guild.GuildMessageReceivedListener;
 import net.clementraynaud.skoice.lang.LoggerLang;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
+import net.clementraynaud.skoice.listeners.message.priv.PrivateMessageReceivedListener;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.networks.Network;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -60,7 +63,8 @@ import static net.clementraynaud.skoice.config.Config.*;
 
 public class Bot {
 
-    private static final List<ListenerAdapter> LISTENERS = Arrays.asList(new BotListeners(),
+    private static final List<ListenerAdapter> LISTENERS = Arrays.asList(
+            new ReconnectedListener(), new GuildJoinListener(), new GuildLeaveListener(), new PrivateMessageReceivedListener(),
             new GuildMessageReceivedListener(), new GuildMessageDeleteListener(), new LobbySelection(),
             new ConfigureCommand(), new InviteCommand(), new LinkCommand(), new UnlinkCommand(),
             new ButtonInteraction(), new SelectMenuInteraction());

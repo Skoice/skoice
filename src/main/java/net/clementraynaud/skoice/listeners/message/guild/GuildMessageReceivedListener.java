@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.guild;
+package net.clementraynaud.skoice.listeners.message.guild;
 
 import net.clementraynaud.skoice.commands.interaction.Response;
 import net.clementraynaud.skoice.menus.Menu;

@@ -19,24 +19,18 @@
 
 package net.clementraynaud.skoice.listeners.guild;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import static net.clementraynaud.skoice.Skoice.getBot;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.ButtonInteraction.discordIDAxis;
-import static net.clementraynaud.skoice.config.Config.TEMP_FIELD;
-import static net.clementraynaud.skoice.config.Config.TEMP_MESSAGE_ID_FIELD;
 
-public class GuildMessageDeleteListener extends ListenerAdapter {
+public class GuildLeaveListener extends ListenerAdapter {
 
     @Override
-    public void onGuildMessageDelete(@NotNull GuildMessageDeleteEvent event) {
-        if (getPlugin().getConfig().contains(TEMP_FIELD)
-                && event.getMessageId().equals(getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD))) {
-            getPlugin().getConfig().set(TEMP_FIELD, null);
-            getPlugin().saveConfig();
-            discordIDAxis.clear();
-        }
+    public void onGuildLeave(@NotNull GuildLeaveEvent event) {
+        getBot().updateGuildUniquenessStatus();
+        getPlugin().updateConfigurationStatus(false);
     }
 }
