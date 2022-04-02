@@ -54,8 +54,8 @@ public class ConfigureArgument extends Argument {
                 MessageUtil.setHoverEvent(tutorialPage, "§8☀ §bOpen in web browser: §7https://github.com/carlodrift/skoice/wiki");
                 tutorialPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/carlodrift/skoice/wiki"));
                 TextComponent tokenCommand = new TextComponent("§bhere");
-                MessageUtil.setHoverEvent(tokenCommand,"§8☀ §bShortcut: §7/token");
-                tokenCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/token "));
+                MessageUtil.setHoverEvent(tokenCommand,"§8☀ §bShortcut: §7/skoice token");
+                tokenCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/skoice token "));
                 player.spigot().sendMessage(new ComponentBuilder("\n§dSkoice §8• §7Configuration (§fBot Creation§7)\n\n§8• §7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this ")
                         .append(tutorialPage)
                         .append("§7.\n§8• §7When you have retrieved its token, put it ").event((HoverEvent) null)

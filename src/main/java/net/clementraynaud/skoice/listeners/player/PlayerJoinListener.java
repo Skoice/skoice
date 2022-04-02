@@ -43,8 +43,8 @@ public class PlayerJoinListener implements Listener {
             if (!getPlugin().isTokenSet() || getJda() == null) {
                 try {
                     TextComponent configureCommand = new TextComponent("§bhere");
-                    MessageUtil.setHoverEvent(configureCommand, "§8☀ §bExecute: §7/configure");
-                    configureCommand.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/configure"));
+                    MessageUtil.setHoverEvent(configureCommand, "§8☀ §bExecute: §7/skoice configure");
+                    configureCommand.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/skoice configure"));
                     player.spigot().sendMessage(new ComponentBuilder("§dSkoice §8• §7Skoice is §cnot configured correctly§7. Click ")
                             .append(configureCommand)
                             .append(" §7to set it up.").event((HoverEvent) null).create());
