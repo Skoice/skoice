@@ -46,9 +46,6 @@ import static net.clementraynaud.skoice.config.Config.*;
 
 public class UpdateNetworksTask implements Task {
 
-    private static final List<Permission> LOBBY_REQUIRED_PERMISSIONS = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
-    private static final List<Permission> CATEGORY_REQUIRED_PERMISSIONS = Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS, Permission.MANAGE_PERMISSIONS, Permission.MANAGE_CHANNEL);
-
     public static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
     private static final ReentrantLock lock = new ReentrantLock();
 
@@ -59,7 +56,7 @@ public class UpdateNetworksTask implements Task {
         }
         try {
             VoiceChannel lobby = getLobby();
-            if (lobby == null || !arePermissionsValid(lobby))
+            if (lobby == null)
                 return;
             muteMembers(lobby);
             networks.removeIf(network -> network.getChannel() == null && network.isInitialized());
@@ -123,19 +120,6 @@ public class UpdateNetworksTask implements Task {
         } finally {
             lock.unlock();
         }
-    }
-
-    private boolean arePermissionsValid(VoiceChannel lobby) {
-        Member selfMember = lobby.getGuild().getSelfMember();
-        for (Permission permission : LOBBY_REQUIRED_PERMISSIONS)
-            if (!selfMember.hasPermission(lobby, permission))
-//              "The bot doesn't have the \"" + permission.getName() + "\" permission in the voice lobby (" + lobby.getName() + ")"
-                return false;
-        for (Permission permission : CATEGORY_REQUIRED_PERMISSIONS)
-            if (!selfMember.hasPermission(getCategory(), permission))
-//              "The bot doesn't have the \"" + permission.getName() + "\" permission in the voice category (" + category.getName() + ")"
-                return false;
-        return true;
     }
 
     private void muteMembers(VoiceChannel lobby) {
