@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;
+import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
@@ -33,8 +34,7 @@ import java.awt.*;
 import java.util.UUID;
 
 import static net.clementraynaud.skoice.config.Config.*;
-import static net.clementraynaud.skoice.listeners.player.DirtyPlayerListeners.markDirty;
-import static net.clementraynaud.skoice.networks.Network.updateMutedUsers;
+import static net.clementraynaud.skoice.system.Network.updateMutedUsers;
 
 public class GuildVoiceJoinListener extends ListenerAdapter {
 
@@ -56,8 +56,8 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
             }
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
-            if (player.isOnline()) {
-                markDirty(player.getPlayer());
+            if (player.isOnline() && player.getPlayer() != null) {
+                new EligiblePlayers().add(player.getPlayer());
                 player.getPlayer().sendMessage(MinecraftLang.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());
             }
         }

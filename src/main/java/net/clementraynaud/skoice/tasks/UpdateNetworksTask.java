@@ -21,7 +21,8 @@
 package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.lang.DiscordLang;
-import net.clementraynaud.skoice.networks.Network;
+import net.clementraynaud.skoice.system.EligiblePlayers;
+import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.Permission;
@@ -38,8 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-import static net.clementraynaud.skoice.listeners.player.DirtyPlayerListeners.*;
-import static net.clementraynaud.skoice.networks.Network.*;
+import static net.clementraynaud.skoice.system.Network.*;
 import static net.clementraynaud.skoice.util.DistanceUtil.getHorizontalDistance;
 import static net.clementraynaud.skoice.util.DistanceUtil.getVerticalDistance;
 import static net.clementraynaud.skoice.config.Config.*;
@@ -60,8 +60,9 @@ public class UpdateNetworksTask implements Task {
                 return;
             muteMembers(lobby);
             networks.removeIf(network -> network.getChannel() == null && network.isInitialized());
-            Set<UUID> oldDirtyPlayers = getDirtyPlayers();
-            clearDirtyPlayers();
+            EligiblePlayers eligiblePlayers = new EligiblePlayers();
+            Set<UUID> oldDirtyPlayers = eligiblePlayers.get();
+            eligiblePlayers.clear();
             for (UUID minecraftID : oldDirtyPlayers) {
                 Player player = Bukkit.getPlayer(minecraftID);
                 if (player != null) {

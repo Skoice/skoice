@@ -23,15 +23,16 @@ import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.SkoiceCommand;
 import net.clementraynaud.skoice.commands.interaction.Response;
 import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.listeners.player.eligible.PlayerMoveListener;
+import net.clementraynaud.skoice.listeners.player.eligible.PlayerTeleportListener;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.config.OutdatedConfig;
 import net.clementraynaud.skoice.listeners.channel.voice.VoiceChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceJoinListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceLeaveListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceMoveListener;
-import net.clementraynaud.skoice.listeners.player.DirtyPlayerListeners;
-import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
-import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
+import net.clementraynaud.skoice.listeners.player.eligible.PlayerJoinListener;
+import net.clementraynaud.skoice.listeners.player.eligible.PlayerQuitListener;
 import net.clementraynaud.skoice.lang.LoggerLang;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.util.UpdateUtil;
@@ -157,18 +158,16 @@ public class Skoice extends JavaPlugin {
     private void updateListeners(boolean startup, boolean wasBotReady) {
         if (startup) {
             if (isBotReady) {
-                Bukkit.getPluginManager().registerEvents(new DirtyPlayerListeners(), plugin);
-                Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), plugin);
+                registerEligiblePlayerListeners();
                 getJda().addEventListener(new GuildVoiceJoinListener(), new GuildVoiceLeaveListener(), new GuildVoiceMoveListener(), new VoiceChannelDeleteListener());
             } else {
-                Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), plugin);
+                Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(), plugin);
                 if (getJda() != null)
                     Menu.MODE.refreshAdditionalFields();
             }
         } else if (!wasBotReady && isBotReady) {
-            HandlerList.unregisterAll(new PlayerJoinListener());
-            Bukkit.getPluginManager().registerEvents(new DirtyPlayerListeners(), plugin);
-            Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), plugin);
+            HandlerList.unregisterAll(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener());
+            registerEligiblePlayerListeners();
             getJda().addEventListener(new GuildVoiceJoinListener(), new GuildVoiceLeaveListener(), new GuildVoiceMoveListener(), new VoiceChannelDeleteListener());
             Menu.MODE.refreshAdditionalFields();
             getLogger().info(LoggerLang.CONFIGURATION_COMPLETE_INFO.toString());
@@ -185,15 +184,28 @@ public class Skoice extends JavaPlugin {
                 }
         } else if (wasBotReady && !isBotReady) {
             new Response().deleteMessage();
-            HandlerList.unregisterAll(new DirtyPlayerListeners());
-            HandlerList.unregisterAll(new PlayerQuitListener());
-            Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), plugin);
+            unregisterEligiblePlayerListeners();
+            Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(), plugin);
             if (getJda() != null) {
                 getJda().removeEventListener(new GuildVoiceJoinListener(), new GuildVoiceLeaveListener(), new GuildVoiceMoveListener(), new VoiceChannelDeleteListener());
                 Menu.MODE.refreshAdditionalFields();
             }
             new InterruptSystemTask().run();
         }
+    }
+
+    private void registerEligiblePlayerListeners() {
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), plugin);
+        Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), plugin);
+        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), plugin);
+        Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), plugin);
+    }
+
+    private void unregisterEligiblePlayerListeners() {
+        HandlerList.unregisterAll(new PlayerJoinListener());
+        HandlerList.unregisterAll(new PlayerQuitListener());
+        HandlerList.unregisterAll(new PlayerMoveListener());
+        HandlerList.unregisterAll(new PlayerTeleportListener());
     }
 
     @Override

@@ -1,6 +1,5 @@
 /*
  * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -18,18 +17,18 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.channel.voice;
+package net.clementraynaud.skoice.listeners.player.eligible;
 
-import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+import net.clementraynaud.skoice.system.EligiblePlayers;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 
-import static net.clementraynaud.skoice.system.Network.networks;
+public class PlayerMoveListener implements Listener {
 
-public class VoiceChannelDeleteListener extends ListenerAdapter {
-
-    @Override
-    public void onVoiceChannelDelete(@NotNull VoiceChannelDeleteEvent event) {
-        networks.removeIf(network -> network.getChannel() != null && event.getChannel().getId().equals(network.getChannel().getId()));
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onPlayerMove(PlayerMoveEvent event) {
+        new EligiblePlayers().add(event.getPlayer());
     }
 }

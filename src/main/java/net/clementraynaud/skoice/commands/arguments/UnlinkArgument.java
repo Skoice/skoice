@@ -31,7 +31,7 @@ import org.bukkit.entity.Player;
 
 import java.awt.*;
 
-import static net.clementraynaud.skoice.networks.Network.getNetworks;
+import static net.clementraynaud.skoice.system.Network.getNetworks;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class UnlinkArgument extends Argument {

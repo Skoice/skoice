@@ -1,6 +1,5 @@
 /*
  * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -18,18 +17,27 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.channel.voice;
+package net.clementraynaud.skoice.system;
 
-import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.entity.Player;
 
-import static net.clementraynaud.skoice.system.Network.networks;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
-public class VoiceChannelDeleteListener extends ListenerAdapter {
+public class EligiblePlayers {
 
-    @Override
-    public void onVoiceChannelDelete(@NotNull VoiceChannelDeleteEvent event) {
-        networks.removeIf(network -> network.getChannel() != null && event.getChannel().getId().equals(network.getChannel().getId()));
+    private static final Set<UUID> players = new HashSet<>();
+
+    public void add(Player player) {
+        players.add(player.getUniqueId());
+    }
+
+    public Set<UUID> get() {
+        return players;
+    }
+
+    public void clear() {
+        players.clear();
     }
 }

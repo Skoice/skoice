@@ -37,7 +37,7 @@ import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
 import net.clementraynaud.skoice.listeners.message.priv.PrivateMessageReceivedListener;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
-import net.clementraynaud.skoice.networks.Network;
+import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -58,7 +58,7 @@ import java.util.*;
 import java.util.List;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.networks.Network.networks;
+import static net.clementraynaud.skoice.system.Network.networks;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class Bot {

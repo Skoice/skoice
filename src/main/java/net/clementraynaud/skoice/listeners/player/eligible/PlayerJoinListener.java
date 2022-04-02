@@ -1,6 +1,5 @@
 /*
  * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -18,9 +17,10 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.player;
+package net.clementraynaud.skoice.listeners.player.eligible;
 
 import net.clementraynaud.skoice.lang.MinecraftLang;
+import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -29,35 +29,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 import static net.clementraynaud.skoice.config.Config.*;
 
-public class DirtyPlayerListeners implements Listener {
-
-    private static Set<UUID> dirtyPlayers = new HashSet<>();
-
-    public static Set<UUID> getDirtyPlayers() {
-        return dirtyPlayers;
-    }
-
-    public static void markDirty(Player player) {
-        dirtyPlayers.add(player.getUniqueId());
-    }
-
-    public static void clearDirtyPlayers() {
-        dirtyPlayers = new HashSet<>();
-    }
+public class PlayerJoinListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        markDirty(player);
+        new EligiblePlayers().add(player);
         Member member = getMember(player.getUniqueId());
         if (member != null) {
             GuildVoiceState voiceState = member.getVoiceState();
@@ -68,17 +48,5 @@ public class DirtyPlayerListeners implements Listener {
                 }
             }
         }
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        markDirty(player);
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPlayerTeleport(PlayerTeleportEvent event) {
-        Player player = event.getPlayer();
-        markDirty(player);
     }
 }
