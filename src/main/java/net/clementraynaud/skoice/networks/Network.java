@@ -56,16 +56,18 @@ public class Network {
 
     public Network(Set<UUID> players) {
         this.players = players;
+        Guild guild = getGuild();
         List<Permission> deniedPermissions = getPlugin().getConfig().getBoolean(CHANNEL_VISIBILITY_FIELD)
                 ? Arrays.asList(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS)
                 : Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
         getCategory().createVoiceChannel(UUID.randomUUID().toString())
-                .addPermissionOverride(getGuild().getPublicRole(),
+                .addPermissionOverride(guild.getPublicRole(),
                         Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
                         deniedPermissions)
-                .addPermissionOverride(getGuild().getSelfMember(),
+                .addPermissionOverride(guild.getSelfMember(),
                         Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS),
                         Collections.emptyList())
+                .setBitrate(guild.getMaxBitrate())
                 .queue(channel -> {
                     this.channel = channel.getId();
                     initialized = true;
