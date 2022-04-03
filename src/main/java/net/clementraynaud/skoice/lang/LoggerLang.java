@@ -66,8 +66,8 @@ public enum LoggerLang {
             Lang.FR, "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."))),
 
     MISSING_ACCESS_ERROR(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "You did not grant your bot the permission to register commands on your Discord server (\"applications.commands\"). Click here to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands",
-            Lang.FR, "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord (\"applications.commands\"). Cliquez ici pour l'ajouter et redémarrez votre serveur Minecraft : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands"))),
+            Lang.EN, "You did not grant your bot the permission to register commands on your Discord server (\"applications.commands\"). Click here to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands.",
+            Lang.FR, "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord (\"applications.commands\"). Cliquez ici pour l'ajouter et redémarrez votre serveur Minecraft : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."))),
 
     BOT_COULD_NOT_CONNECT_ERROR(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token.",
