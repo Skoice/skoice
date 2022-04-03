@@ -41,10 +41,7 @@ import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Category;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -56,6 +53,8 @@ import org.bukkit.command.CommandSender;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 import java.util.List;
 
@@ -115,6 +114,7 @@ public class Bot {
                 e.printStackTrace();
             }
             if (jda != null) {
+                setDefaultAvatar();
                 new Response().deleteMessage();
                 updateGuildUniquenessStatus();
                 checkForValidLobby();
@@ -150,6 +150,15 @@ public class Bot {
                 sender.sendMessage(MinecraftLang.BOT_CONNECTED_INCOMPLETE_CONFIGURATION_DISCORD.toString());
             }
         }
+    }
+
+    public void setDefaultAvatar() {
+        if (getJda().getSelfUser().getDefaultAvatarUrl().equals(getJda().getSelfUser().getEffectiveAvatarUrl()))
+            try {
+                getJda().getSelfUser().getManager()
+                        .setAvatar(Icon.from(new URL("https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409").openStream())).queue();
+            } catch (IOException ignored) {
+            }
     }
 
     public void updateGuildUniquenessStatus() {
