@@ -30,10 +30,9 @@ import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.Button;
 
 import java.util.*;
+import java.util.List;
 
-import static net.clementraynaud.skoice.Skoice.getBot;
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.bot.Bot.getJda;
 import static net.clementraynaud.skoice.menus.MenuStyle.*;
 import static net.clementraynaud.skoice.menus.MenuType.*;
 import static net.clementraynaud.skoice.menus.MenuEmoji.*;
@@ -42,16 +41,16 @@ import static net.clementraynaud.skoice.lang.DiscordLang.*;
 import static net.dv8tion.jda.api.entities.MessageEmbed.*;
 
 public enum Menu {
-    SETTINGS(null, null, DEFAULT, null, null),
-    SERVER(FILE_CABINET, null, DEFAULT, null, new ServerSelectMenu()),
-    LOBBY(SOUND, PRIMARY, DEFAULT, SETTINGS, new LobbySelectMenu()),
-    MODE(VIDEO_GAME, PRIMARY, DEFAULT, SETTINGS, new ModeSelectMenu()),
-    HORIZONTAL_RADIUS(LEFT_RIGHT_ARROW, PRIMARY, DEFAULT, MODE, null),
-    VERTICAL_RADIUS(UP_DOWN_ARROW, PRIMARY, DEFAULT, MODE, null),
-    ADVANCED_SETTINGS(WRENCH, SECONDARY, DEFAULT, SETTINGS, null),
-    LANGUAGE(GLOBE_WITH_MERIDIANS, SECONDARY, DEFAULT, SETTINGS, new LanguageSelectMenu()),
-    ACTION_BAR_ALERT(EXCLAMATION, PRIMARY, DEFAULT, ADVANCED_SETTINGS, new ToggleSelectMenu("ACTION_BAR_ALERT", getActionBarAlert(), true)),
-    CHANNEL_VISIBILITY(MAG, PRIMARY, DEFAULT, ADVANCED_SETTINGS, new ToggleSelectMenu("CHANNEL_VISIBILITY", getChannelVisibility(), true));
+    CONFIGURATION(GEAR, null, DEFAULT, null),
+    SERVER(FILE_CABINET, null, DEFAULT, null),
+    LOBBY(SOUND, PRIMARY, DEFAULT, CONFIGURATION),
+    MODE(VIDEO_GAME, PRIMARY, DEFAULT, CONFIGURATION),
+    HORIZONTAL_RADIUS(LEFT_RIGHT_ARROW, PRIMARY, DEFAULT, MODE),
+    VERTICAL_RADIUS(UP_DOWN_ARROW, PRIMARY, DEFAULT, MODE),
+    ADVANCED_SETTINGS(WRENCH, SECONDARY, DEFAULT, CONFIGURATION),
+    LANGUAGE(GLOBE_WITH_MERIDIANS, SECONDARY, DEFAULT, CONFIGURATION),
+    ACTION_BAR_ALERT(EXCLAMATION, PRIMARY, DEFAULT, ADVANCED_SETTINGS),
+    CHANNEL_VISIBILITY(MAG, PRIMARY, DEFAULT, ADVANCED_SETTINGS);
 
     private static final String CLOSE_BUTTON_ID = "CLOSE";
 
@@ -59,18 +58,18 @@ public enum Menu {
     private final MenuStyle style;
     private final MenuType type;
     private final Menu parent;
-    private final SelectMenu selectMenu;
 
     private List<Menu> children;
     private List<Field> additionalFields;
+    private SelectMenu selectMenu;
 
     public static boolean customizeRadius;
 
     static {
-        SETTINGS.children = Arrays.asList(LOBBY, MODE, ADVANCED_SETTINGS, LANGUAGE);
+        CONFIGURATION.children = Arrays.asList(LOBBY, MODE, ADVANCED_SETTINGS, LANGUAGE);
         ADVANCED_SETTINGS.children = Arrays.asList(ACTION_BAR_ALERT, CHANNEL_VISIBILITY);
 
-        SETTINGS.additionalFields = Collections.singletonList(
+        CONFIGURATION.additionalFields = Collections.singletonList(
                 new Field(SCREWDRIVER + " " + TROUBLESHOOTING_FIELD_TITLE, TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), true));
         MODE.additionalFields = Arrays.asList(
                 new Field(MAP + " " + VANILLA_MODE_FIELD_TITLE, VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
@@ -84,14 +83,20 @@ public enum Menu {
         VERTICAL_RADIUS.additionalFields = Collections.singletonList(
                 new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
                         getVerticalRadius()), false));
+
+        SERVER.selectMenu = new ServerSelectMenu();
+        LOBBY.selectMenu = new LobbySelectMenu();
+        MODE.selectMenu = new ModeSelectMenu();
+        LANGUAGE.selectMenu = new LanguageSelectMenu();
+        ACTION_BAR_ALERT.selectMenu = new ToggleSelectMenu("ACTION_BAR_ALERT", getActionBarAlert(), true);
+        CHANNEL_VISIBILITY.selectMenu = new ToggleSelectMenu("CHANNEL_VISIBILITY", getChannelVisibility(), true);
     }
 
-    Menu(MenuEmoji unicode, MenuStyle style, MenuType type, Menu parent, SelectMenu selectMenu) {
+    Menu(MenuEmoji unicode, MenuStyle style, MenuType type, Menu parent) {
         this.unicode = unicode;
         this.style = style;
         this.type = type;
         this.parent = parent;
-        this.selectMenu = selectMenu;
     }
 
     public Message getMessage() {
@@ -111,16 +116,25 @@ public enum Menu {
             return DiscordLang.valueOf(this.name() + "_EMBED_ALTERNATIVE_DESCRIPTION").toString();
         } else if (shortened && isValueSet(this.name() + "_EMBED_SHORTENED_DESCRIPTION")) {
             return DiscordLang.valueOf(this.name() + "_EMBED_SHORTENED_DESCRIPTION").toString();
+        } else if (isValueSet(this.name() + "_EMBED_DESCRIPTION")) {
+            return DiscordLang.valueOf(this.name() + "_EMBED_DESCRIPTION").toString();
         }
-        return DiscordLang.valueOf(this.name() + "_EMBED_DESCRIPTION").toString();
+        return null;
     }
 
     private MessageEmbed getEmbed() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(GEAR + " " + CONFIGURATION_EMBED_TITLE)
+        EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(true))
                 .setColor(type.getColor())
                 .setFooter(EMBED_FOOTER.toString(), "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
-        if (this.getTitle(false) != null)
-            embed.addField(this.getTitle(true), this.getDescription(false), false);
+        if (this.getDescription(false) != null)
+            embed.setDescription(this.getDescription(false));
+        StringBuilder author = new StringBuilder();
+        Menu parent = this.parent;
+        while (parent != null) {
+            author.insert(0, parent.getTitle(false) + " › ");
+            parent = parent.parent;
+        }
+        embed.setAuthor(author.toString());
         if (children != null)
             for (Menu child : children)
                 embed.addField(child.getTitle(true), child.getDescription(true), true);

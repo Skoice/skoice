@@ -40,7 +40,7 @@ public class Response {
                 || !getPlugin().getConfig().contains(VERTICAL_RADIUS_FIELD)) {
             return Menu.MODE.getMessage();
         } else {
-            return Menu.SETTINGS.getMessage();
+            return Menu.CONFIGURATION.getMessage();
         }
     }
 

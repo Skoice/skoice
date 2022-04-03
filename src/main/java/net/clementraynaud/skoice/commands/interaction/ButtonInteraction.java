@@ -49,7 +49,7 @@ public class ButtonInteraction extends ListenerAdapter {
                     && event.getButton() != null) {
                 String buttonID = event.getButton().getId();
                 switch (buttonID) {
-                    case "SETTINGS":
+                    case "CONFIGURATION":
                         event.editMessage(new Response().getMessage()).queue();
                         break;
                     case "CLOSE":
