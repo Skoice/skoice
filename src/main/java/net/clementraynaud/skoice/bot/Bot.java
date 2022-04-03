@@ -139,21 +139,7 @@ public class Bot {
                                 ),
                         0
                 );
-                if (getPlugin().getConfig().contains(LOBBY_ID_FIELD)) {
-                    Category category = getCategory();
-                    if (category != null) {
-                        category.getVoiceChannels().stream()
-                                .filter(channel -> {
-                                    try {
-                                        UUID.fromString(channel.getName());
-                                        return true;
-                                    } catch (Exception e) {
-                                        return false;
-                                    }
-                                })
-                                .forEach(channel -> networks.add(new Network(channel.getId())));
-                    }
-                }
+                retrieveNetworks();
             }
         }
         getPlugin().updateConfigurationStatus(startup);
@@ -197,6 +183,22 @@ public class Bot {
                             .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 }
             }
+        }
+    }
+
+    private void retrieveNetworks() {
+        Category category = getCategory();
+        if (category != null) {
+            category.getVoiceChannels().stream()
+                    .filter(channel -> {
+                        try {
+                            UUID.fromString(channel.getName());
+                            return true;
+                        } catch (IllegalArgumentException e) {
+                            return false;
+                        }
+                    })
+                    .forEach(channel -> networks.add(new Network(channel.getId())));
         }
     }
 }
