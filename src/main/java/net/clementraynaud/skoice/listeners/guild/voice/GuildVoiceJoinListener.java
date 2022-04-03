@@ -25,8 +25,10 @@ import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -44,16 +46,12 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
         if (!event.getChannelJoined().equals(getLobby())) return;
         String minecraftID = getKeyFromValue(getLinkMap(), event.getMember().getId());
         if (minecraftID == null) {
-            try {
-                event.getMember().getUser().openPrivateChannel().complete()
-                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE)
-                                .addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE,
-                                        String.format(DiscordLang.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString(), event.getGuild().getName()), false)
-                                .setColor(Color.RED).build()).queue(success -> {
-                        }, failure -> {
-                        });
-            } catch (ErrorResponseException ignored) {
-            }
+            event.getMember().getUser().openPrivateChannel().complete()
+                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE)
+                            .addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE,
+                                    String.format(DiscordLang.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString(), event.getGuild().getName()), false)
+                            .setColor(Color.RED).build())
+                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
             if (player.isOnline() && player.getPlayer() != null) {

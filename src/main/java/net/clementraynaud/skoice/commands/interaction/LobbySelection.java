@@ -25,8 +25,10 @@ import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
 import net.dv8tion.jda.api.events.channel.voice.update.VoiceChannelUpdateParentEvent;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import java.awt.*;
 
@@ -40,17 +42,12 @@ public class LobbySelection extends ListenerAdapter {
         getPlugin().saveConfig();
         getPlugin().updateConfigurationStatus(false);
         User user = guild.retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
-        if (user != null && !user.isBot()) {
-            try {
-                user.openPrivateChannel().complete()
-                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
-                                .addField(":warning: " + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE, DiscordLang.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_ALTERNATIVE_DESCRIPTION.toString(), false)
-                                .setColor(Color.RED).build()).queue(success -> {
-                        }, failure -> {
-                        });
-            } catch (ErrorResponseException ignored) {
-            }
-        }
+        if (user != null && !user.isBot())
+            user.openPrivateChannel().complete()
+                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
+                            .addField(":warning: " + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE, DiscordLang.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_ALTERNATIVE_DESCRIPTION.toString(), false)
+                            .setColor(Color.RED).build())
+                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
     }
 
     @Override

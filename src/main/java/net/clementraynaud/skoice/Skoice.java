@@ -39,7 +39,9 @@ import net.clementraynaud.skoice.util.UpdateUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
@@ -173,15 +175,11 @@ public class Skoice extends JavaPlugin {
             getLogger().info(LoggerLang.CONFIGURATION_COMPLETE_INFO.toString());
             Message configurationMessage = new Response().getConfigurationMessage();
             if (configurationMessage != null)
-                try {
-                    configurationMessage.getInteraction().getUser().openPrivateChannel().complete()
-                            .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
-                                    .addField(":heavy_check_mark: " + DiscordLang.CONFIGURATION_COMPLETE_FIELD_TITLE, DiscordLang.CONFIGURATION_COMPLETE_FIELD_DESCRIPTION.toString(), false)
-                                    .setColor(Color.GREEN).build()).queue(success -> {
-                            }, failure -> {
-                            });
-                } catch (ErrorResponseException ignored) {
-                }
+                configurationMessage.getInteraction().getUser().openPrivateChannel().complete()
+                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
+                                .addField(":heavy_check_mark: " + DiscordLang.CONFIGURATION_COMPLETE_FIELD_TITLE, DiscordLang.CONFIGURATION_COMPLETE_FIELD_DESCRIPTION.toString(), false)
+                                .setColor(Color.GREEN).build())
+                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         } else if (wasBotReady && !isBotReady) {
             new Response().deleteMessage();
             unregisterEligiblePlayerListeners();

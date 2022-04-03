@@ -45,8 +45,10 @@ import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.bukkit.Bukkit;
@@ -190,13 +192,9 @@ public class Bot {
                     } else {
                         embed.addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_NOT_LINKED_FIELD_GENERIC_ALTERNATIVE_DESCRIPTION.toString(), false);
                     }
-                    try {
-                        member.getUser().openPrivateChannel().complete()
-                                .sendMessageEmbeds(embed.build()).queue(success -> {
-                                }, failure -> {
-                                });
-                    } catch (ErrorResponseException ignored) {
-                    }
+                    member.getUser().openPrivateChannel().complete()
+                            .sendMessageEmbeds(embed.build())
+                            .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 }
             }
         }

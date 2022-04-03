@@ -27,6 +27,7 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
+import static net.clementraynaud.skoice.commands.interaction.ButtonInteraction.discordIDAxis;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class Response {
@@ -47,12 +48,7 @@ public class Response {
     public void deleteMessage() {
         Message configurationMessage = getConfigurationMessage();
         if (configurationMessage != null)
-            try {
-                getConfigurationMessage().delete().queue(success -> {
-                }, failure -> {
-                });
-            } catch (ErrorResponseException ignored) {
-            }
+            getConfigurationMessage().delete().queue();
     }
 
     public Message getConfigurationMessage() {
@@ -63,7 +59,10 @@ public class Response {
                 if (textChannel != null)
                     try {
                         return textChannel.retrieveMessageById(getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD)).complete();
-                    } catch (ErrorResponseException ignored) {
+                    } catch (ErrorResponseException e) {
+                        getPlugin().getConfig().set(TEMP_FIELD, null);
+                        getPlugin().saveConfig();
+                        discordIDAxis.clear();
                     }
             }
         }

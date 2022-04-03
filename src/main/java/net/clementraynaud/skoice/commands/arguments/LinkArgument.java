@@ -25,7 +25,9 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -74,15 +76,11 @@ public class LinkArgument extends Argument {
         }
         linkUser(player.getUniqueId().toString(), discordID);
         removeValueFromDiscordIDCode(arg);
-        try {
-            member.getUser().openPrivateChannel().complete()
-                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE)
-                            .addField(":heavy_check_mark: " + DiscordLang.ACCOUNT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_LINKED_FIELD_DESCRIPTION.toString(), false)
-                            .setColor(Color.GREEN).build()).queue(success -> {
-                    }, failure -> {
-                    });
-        } catch (ErrorResponseException ignored) {
-        }
+        member.getUser().openPrivateChannel().complete()
+                .sendMessageEmbeds(new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE)
+                        .addField(":heavy_check_mark: " + DiscordLang.ACCOUNT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_LINKED_FIELD_DESCRIPTION.toString(), false)
+                        .setColor(Color.GREEN).build())
+                .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         player.sendMessage(MinecraftLang.ACCOUNT_LINKED.toString());
         GuildVoiceState voiceState = member.getVoiceState();
         if (voiceState != null) {
