@@ -73,6 +73,10 @@ public enum LoggerLang {
             Lang.EN, "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token.",
             Lang.FR, "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."))),
 
+    DISCORD_API_TIMED_OUT_ERROR(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Discord seems to be experiencing an outage. Find more information here: https://discordstatus.com.",
+            Lang.FR, "Discord semble subir une panne. Retrouvez plus d'informations ici : https://discordstatus.com."))),
+
     UNEXPECTED_VALUE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Unexpected value: %s",
             Lang.FR, "Valeur inattendue : %s")));

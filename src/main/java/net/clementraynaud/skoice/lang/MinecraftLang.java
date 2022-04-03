@@ -88,6 +88,13 @@ public enum MinecraftLang {
             Lang.EN, PREFIX + "Your bot " + ChatColor.RED + "could not connect" + ChatColor.GRAY + ". Try again with a valid token.",
             Lang.FR, PREFIX + "Votre bot " + ChatColor.RED + "n'a pas pu se connecter" + ChatColor.GRAY + ". Essayez de nouveau avec un token valide."))),
 
+    DISCORD_API_TIMED_OUT_INTERACTIVE(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "?"))),
+
+    DISCORD_API_TIMED_OUT_LINK(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, PREFIX + "Discord seems to " + ChatColor.RED + "be experiencing an outage" + ChatColor.GRAY + ". Find more information here: " + ChatColor.AQUA + "https://discordstatus.com" + ChatColor.GRAY + ".",
+            Lang.FR, PREFIX + "Discord semble " + ChatColor.RED + "subir une panne" + ChatColor.GRAY + ". Retrouvez plus d'informations ici : " + ChatColor.AQUA + "https://discordstatus.com" + ChatColor.GRAY + "."))),
+
     ACCOUNT_LINKED(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, PREFIX + "You have " + ChatColor.GREEN + "linked your Minecraft account " + ChatColor.GRAY + "to Discord.",
             Lang.FR, PREFIX + "Vous avez " + ChatColor.GREEN + "lié votre compte Minecraft " + ChatColor.GRAY + "à Discord."))),

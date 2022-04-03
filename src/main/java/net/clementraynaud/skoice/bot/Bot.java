@@ -38,6 +38,7 @@ import net.clementraynaud.skoice.commands.UnlinkCommand;
 import net.clementraynaud.skoice.listeners.message.priv.PrivateMessageReceivedListener;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.util.MessageUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -48,6 +49,10 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -109,7 +114,20 @@ public class Bot {
             } catch (IllegalStateException e) {
 
             } catch (ErrorResponseException e) {
-
+                if (sender == null) {
+                    getPlugin().getLogger().severe(LoggerLang.DISCORD_API_TIMED_OUT_ERROR.toString());
+                } else {
+                    try {
+                        TextComponent discordStatusPage = new TextComponent("§bpage");
+                        MessageUtil.setHoverEvent(discordStatusPage, "§8☀ §bOpen in web browser: §7https://discordstatus.com");
+                        discordStatusPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discordstatus.com"));
+                        sender.spigot().sendMessage(new ComponentBuilder("§dSkoice §8• §7Discord seems to §cbe experiencing an outage§7. Find more information on this ")
+                                .append(discordStatusPage)
+                                .append("§7.").event((HoverEvent) null).create());
+                    } catch (NoSuchMethodError e2) {
+                        sender.sendMessage(MinecraftLang.DISCORD_API_TIMED_OUT_LINK.toString());
+                    }
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -153,9 +171,9 @@ public class Bot {
     }
 
     public void setDefaultAvatar() {
-        if (getJda().getSelfUser().getDefaultAvatarUrl().equals(getJda().getSelfUser().getEffectiveAvatarUrl()))
+        if (jda.getSelfUser().getDefaultAvatarUrl().equals(jda.getSelfUser().getEffectiveAvatarUrl()))
             try {
-                getJda().getSelfUser().getManager()
+                jda.getSelfUser().getManager()
                         .setAvatar(Icon.from(new URL("https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409").openStream())).queue();
             } catch (IOException ignored) {
             }
