@@ -29,13 +29,14 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 import java.util.*;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.bot.Bot.getJda;
 
 public class Commands {
 
     public void register(Guild guild) {
         guild.updateCommands().addCommands(getCommands())
                 .queue(null, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
-                        e -> getPlugin().getLogger().severe(LoggerLang.MISSING_ACCESS_ERROR.toString())));
+                        e -> getPlugin().getLogger().severe(String.format(LoggerLang.MISSING_ACCESS_ERROR.toString(), getJda().getSelfUser().getId()))));
     }
 
     private Set<CommandData> getCommands() {

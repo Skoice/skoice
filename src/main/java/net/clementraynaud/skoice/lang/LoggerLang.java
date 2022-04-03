@@ -46,32 +46,32 @@ public enum LoggerLang {
             Lang.FR, "Votre bot est connecté."))),
 
     OUTDATED_VERSION_WARNING(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, ChatColor.YELLOW + "You are using an outdated version (%s). Download the latest version (%s) here: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/.",
-            Lang.FR, ChatColor.YELLOW + "Vous utilisez une version obsolète (%s). Téléchargez la dernière version (%s) ici : https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/."))),
+            Lang.EN, "You are using an outdated version (%s). Download the latest version (%s) here: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861.",
+            Lang.FR, "Vous utilisez une version obsolète (%s). Téléchargez la dernière version (%s) ici : https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."))),
 
     NO_TOKEN_WARNING(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, ChatColor.YELLOW + "Token not set. Join your Minecraft server to set up Skoice.",
-            Lang.FR, ChatColor.YELLOW + "Token non défini. Rejoignez votre serveur Minecraft pour configurer Skoice."))),
+            Lang.EN, "Token not set. Join your Minecraft server to set up Skoice.",
+            Lang.FR, "Token non défini. Rejoignez votre serveur Minecraft pour configurer Skoice."))),
 
     MULTIPLE_GUILDS_WARNING(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, ChatColor.YELLOW + "Your bot is on multiple Discord servers. Type \"/configure\" on your Discord server to choose one.",
-            Lang.FR, ChatColor.YELLOW + "Votre bot est sur plusieurs serveurs Discord. Tapez \"/configure\" sur votre serveur Discord pour en choisir un."))),
+            Lang.EN, "Your bot is on multiple Discord servers. Type \"/configure\" on your Discord server to choose one.",
+            Lang.FR, "Votre bot est sur plusieurs serveurs Discord. Tapez \"/configure\" sur votre serveur Discord pour en choisir un."))),
 
     NO_LOBBY_ID_WARNING(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, ChatColor.YELLOW + "Lobby not set. Type \"/configure\" on your Discord server to set up Skoice.",
-            Lang.FR, ChatColor.YELLOW + "Salon vocal principal non défini. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."))),
+            Lang.EN, "Lobby not set. Type \"/configure\" on your Discord server to set up Skoice.",
+            Lang.FR, "Salon vocal principal non défini. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."))),
 
     NO_RADIUS_WARNING(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, ChatColor.YELLOW + "Radius not set. Type \"/configure\" on your Discord server to set up Skoice.",
-            Lang.FR, ChatColor.YELLOW + "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."))),
+            Lang.EN, "Radius not set. Type \"/configure\" on your Discord server to set up Skoice.",
+            Lang.FR, "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."))),
 
     MISSING_ACCESS_ERROR(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, ChatColor.RED + "You did not grant your bot the permission to register commands on your Discord server (\"applications.commands\").",
-            Lang.FR, ChatColor.RED + "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord (\"applications.commands\")."))),
+            Lang.EN, "You did not grant your bot the permission to register commands on your Discord server (\"applications.commands\"). Click here to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands",
+            Lang.FR, "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord (\"applications.commands\"). Cliquez ici pour l'ajouter et redémarrez votre serveur Minecraft : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands"))),
 
     BOT_COULD_NOT_CONNECT_ERROR(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, ChatColor.RED + "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token.",
-            Lang.FR, ChatColor.RED + "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."))),
+            Lang.EN, "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token.",
+            Lang.FR, "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."))),
 
     UNEXPECTED_VALUE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Unexpected value: %s",

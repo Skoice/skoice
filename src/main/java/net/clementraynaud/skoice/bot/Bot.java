@@ -153,7 +153,7 @@ public class Bot {
     }
 
     public void updateGuildUniquenessStatus() {
-        getPlugin().setGuildUnique(getJda().getGuilds().size() == 1);
+        getPlugin().setGuildUnique(getJda().getGuilds().size() <= 1);
     }
 
     public void checkForValidLobby() {
