@@ -144,7 +144,7 @@ public class Bot {
                                         getPlugin(),
                                         new UpdateNetworksTask()::run,
                                         0,
-                                        5
+                                        10
                                 ),
                         0
                 );
@@ -170,7 +170,7 @@ public class Bot {
         }
     }
 
-    public void setDefaultAvatar() {
+    private void setDefaultAvatar() {
         if (jda.getSelfUser().getDefaultAvatarUrl().equals(jda.getSelfUser().getEffectiveAvatarUrl()))
             try {
                 jda.getSelfUser().getManager()
