@@ -128,13 +128,15 @@ public enum Menu {
                 .setFooter(EMBED_FOOTER.toString(), "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
         if (this.getDescription(false) != null)
             embed.setDescription(this.getDescription(false));
-        StringBuilder author = new StringBuilder();
-        Menu parent = this.parent;
-        while (parent != null) {
-            author.insert(0, parent.getTitle(false) + " › ");
-            parent = parent.parent;
+        if (getPlugin().isBotReady()) {
+            StringBuilder author = new StringBuilder();
+            Menu parent = this.parent;
+            while (parent != null) {
+                author.insert(0, parent.getTitle(false) + " › ");
+                parent = parent.parent;
+            }
+            embed.setAuthor(author.toString());
         }
-        embed.setAuthor(author.toString());
         if (children != null)
             for (Menu child : children)
                 embed.addField(child.getTitle(true), child.getDescription(true), true);
