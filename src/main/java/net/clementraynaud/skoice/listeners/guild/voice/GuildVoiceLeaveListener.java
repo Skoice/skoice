@@ -21,6 +21,7 @@
 package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.lang.MinecraftLang;
+import net.clementraynaud.skoice.tasks.UpdateMemberVoiceState;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
@@ -30,17 +31,17 @@ import java.util.UUID;
 
 import static net.clementraynaud.skoice.config.Config.*;
 import static net.clementraynaud.skoice.system.Network.networks;
-import static net.clementraynaud.skoice.system.Network.updateMutedUsers;
 
 public class GuildVoiceLeaveListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
-        updateMutedUsers(event.getChannelJoined(), event.getMember());
+        new UpdateMemberVoiceState(event.getChannelJoined(), event.getMember()).run();
         if (event.getChannelLeft().getParent() == null || !event.getChannelLeft().getParent().equals(getCategory()))
             return;
         String minecraftID = getKeyFromValue(getLinkMap(), event.getMember().getId());
-        if (minecraftID == null) return;
+        if (minecraftID == null)
+            return;
         OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
         if (player.isOnline()) {
             networks.stream()

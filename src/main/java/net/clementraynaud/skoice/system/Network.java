@@ -22,8 +22,6 @@ package net.clementraynaud.skoice.system;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -74,32 +72,7 @@ public class Network {
                 }, e -> getNetworks().remove(this));
     }
 
-    public static void updateMutedUsers(VoiceChannel channel, Member member) {
-        if (channel == null || member.getVoiceState() == null || getLobby() == null) {
-            return;
-        }
-        boolean isLobby = channel.getId().equals(getLobby().getId());
-        if (isLobby && !member.getVoiceState().isGuildMuted()) {
-            PermissionOverride override = channel.getPermissionOverride(channel.getGuild().getPublicRole());
-            if (override != null && override.getDenied().contains(Permission.VOICE_SPEAK)
-                    && member.hasPermission(channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
-                    && channel.getGuild().getSelfMember().hasPermission(channel, Permission.VOICE_MUTE_OTHERS)
-                    && channel.getGuild().getSelfMember().hasPermission(getCategory(), Permission.VOICE_MOVE_OTHERS)) {
-                member.mute(true).queue();
-                mutedUsers.add(member.getId());
-            }
-        } else if (!isLobby && mutedUsers.remove(member.getId())) {
-            member.mute(false).queue();
-        }
-    }
-
-    public Network engulf(Network network) {
-        players.addAll(network.players);
-        network.players.clear();
-        return this;
-    }
-
-    public boolean isPlayerInRangeToBeAdded(Player player) {
+    public boolean canPlayerBeAdded(Player player) {
         return players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
@@ -109,7 +82,7 @@ public class Network {
                         && getHorizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius());
     }
 
-    public boolean isPlayerInRangeToStayConnected(Player player) {
+    public boolean canPlayerStayConnected(Player player) {
         List<Player> matches = Arrays.asList(players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
@@ -131,6 +104,12 @@ public class Network {
             return false;
         }
         return matches.size() != 1;
+    }
+
+    public Network engulf(Network network) {
+        players.addAll(network.players);
+        network.players.clear();
+        return this;
     }
 
     public void clear() {

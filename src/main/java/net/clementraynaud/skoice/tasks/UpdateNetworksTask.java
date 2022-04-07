@@ -134,7 +134,7 @@ public class UpdateNetworksTask implements Task {
 
     private void updateNetworksAroundPlayer(Player player) {
         networks.stream()
-                .filter(network -> network.isPlayerInRangeToBeAdded(player))
+                .filter(network -> network.canPlayerBeAdded(player))
                 .reduce((network1, network2) -> network1.size() > network2.size()
                         ? network1.engulf(network2)
                         : network2.engulf(network1))
@@ -142,7 +142,7 @@ public class UpdateNetworksTask implements Task {
                 .ifPresent(network -> network.add(player.getUniqueId()));
         networks.stream()
                 .filter(network -> network.contains(player.getUniqueId()))
-                .filter(network -> !network.isPlayerInRangeToStayConnected(player))
+                .filter(network -> !network.canPlayerStayConnected(player))
                 .forEach(network -> {
                     network.remove(player.getUniqueId());
                     if (network.size() == 1)
@@ -154,8 +154,8 @@ public class UpdateNetworksTask implements Task {
         try {
             networks.stream()
                     .filter(network -> network.contains(player.getUniqueId()))
-                    .filter(network -> network.isPlayerInRangeToStayConnected(player))
-                    .filter(network -> !network.isPlayerInRangeToBeAdded(player))
+                    .filter(network -> network.canPlayerStayConnected(player))
+                    .filter(network -> !network.canPlayerBeAdded(player))
                     .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(MinecraftLang.ACTION_BAR_ALERT.toString())));
         } catch (NoSuchMethodError ignored) {
         }
