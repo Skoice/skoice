@@ -23,7 +23,7 @@ package net.clementraynaud.skoice.listeners.guild.voice;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.system.EligiblePlayers;
-import net.clementraynaud.skoice.tasks.UpdateMemberVoiceState;
+import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
@@ -41,7 +41,7 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
-        new UpdateMemberVoiceState(event.getChannelJoined(), event.getMember()).run();
+        new UpdateVoiceStateTask(event.getMember(), event.getChannelJoined()).run();
         if (!event.getChannelJoined().equals(getLobby())) return;
         String minecraftID = getKeyFromValue(getLinkMap(), event.getMember().getId());
         if (minecraftID == null) {

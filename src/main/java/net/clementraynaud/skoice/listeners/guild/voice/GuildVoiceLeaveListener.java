@@ -21,7 +21,6 @@
 package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.lang.MinecraftLang;
-import net.clementraynaud.skoice.tasks.UpdateMemberVoiceState;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
@@ -36,7 +35,6 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
-        new UpdateMemberVoiceState(event.getChannelJoined(), event.getMember()).run();
         if (event.getChannelLeft().getParent() == null || !event.getChannelLeft().getParent().equals(getCategory()))
             return;
         String minecraftID = getKeyFromValue(getLinkMap(), event.getMember().getId());

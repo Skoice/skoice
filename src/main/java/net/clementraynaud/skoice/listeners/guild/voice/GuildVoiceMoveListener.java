@@ -20,7 +20,7 @@
 
 package net.clementraynaud.skoice.listeners.guild.voice;
 
-import net.clementraynaud.skoice.tasks.UpdateMemberVoiceState;
+import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
@@ -46,6 +46,6 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
                         .forEach(network -> network.remove(player.getPlayer()));
             }
         }
-        new UpdateMemberVoiceState(event.getChannelJoined(), event.getMember()).run();
+        new UpdateVoiceStateTask(event.getMember(), event.getChannelJoined()).run();
     }
 }

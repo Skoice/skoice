@@ -28,14 +28,14 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import static net.clementraynaud.skoice.config.Config.getCategory;
 import static net.clementraynaud.skoice.config.Config.getLobby;
 
-public class UpdateMemberVoiceState implements Task {
+public class UpdateVoiceStateTask implements Task {
 
-    private final VoiceChannel channel;
     private final Member member;
+    private final VoiceChannel channel;
 
-    public UpdateMemberVoiceState(VoiceChannel channel, Member member) {
-        this.channel = channel;
+    public UpdateVoiceStateTask(Member member, VoiceChannel channel) {
         this.member = member;
+        this.channel = channel;
     }
 
     @Override
