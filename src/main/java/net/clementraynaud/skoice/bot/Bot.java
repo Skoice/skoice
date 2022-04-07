@@ -21,11 +21,12 @@ package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
-import net.clementraynaud.skoice.commands.interaction.ButtonInteraction;
-import net.clementraynaud.skoice.commands.interaction.Response;
-import net.clementraynaud.skoice.commands.interaction.LobbySelection;
-import net.clementraynaud.skoice.commands.interaction.SelectMenuInteraction;
+import net.clementraynaud.skoice.menus.interaction.ButtonInteraction;
+import net.clementraynaud.skoice.menus.Response;
+import net.clementraynaud.skoice.menus.interaction.SelectMenuInteraction;
 import net.clementraynaud.skoice.listeners.ReconnectedListener;
+import net.clementraynaud.skoice.listeners.channel.voice.lobby.VoiceChannelDeleteListener;
+import net.clementraynaud.skoice.listeners.channel.voice.lobby.update.VoiceChannelUpdateParentListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
 import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
 import net.clementraynaud.skoice.listeners.message.guild.GuildMessageDeleteListener;
@@ -71,7 +72,8 @@ public class Bot {
 
     private static final List<ListenerAdapter> LISTENERS = Arrays.asList(
             new ReconnectedListener(), new GuildJoinListener(), new GuildLeaveListener(), new PrivateMessageReceivedListener(),
-            new GuildMessageReceivedListener(), new GuildMessageDeleteListener(), new LobbySelection(),
+            new GuildMessageReceivedListener(), new GuildMessageDeleteListener(),
+            new VoiceChannelDeleteListener(), new VoiceChannelUpdateParentListener(),
             new ConfigureCommand(), new InviteCommand(), new LinkCommand(), new UnlinkCommand(),
             new ButtonInteraction(), new SelectMenuInteraction());
     private static final int TICKS_BETWEEN_VERSION_CHECKING = 720000;

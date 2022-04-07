@@ -17,17 +17,25 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.interaction;
+package net.clementraynaud.skoice.menus;
 
+import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.menus.Menu;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.requests.ErrorResponse;
+
+import java.awt.*;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
-import static net.clementraynaud.skoice.commands.interaction.ButtonInteraction.discordIDAxis;
+import static net.clementraynaud.skoice.menus.interaction.ButtonInteraction.discordIDAxis;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class Response {
@@ -67,5 +75,18 @@ public class Response {
             }
         }
         return null;
+    }
+
+    public void sendLobbyDeletedAlert(Guild guild) {
+        getPlugin().getConfig().set(LOBBY_ID_FIELD, null);
+        getPlugin().saveConfig();
+        getPlugin().updateConfigurationStatus(false);
+        User user = guild.retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
+        if (user != null && !user.isBot())
+            user.openPrivateChannel().complete()
+                    .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
+                            .addField(":warning: " + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE, DiscordLang.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_ALTERNATIVE_DESCRIPTION.toString(), false)
+                            .setColor(Color.RED).build())
+                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
     }
 }

@@ -1,6 +1,5 @@
 /*
  * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -18,18 +17,21 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.channel.voice;
+package net.clementraynaud.skoice.listeners.channel.voice.lobby;
 
+import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
 
-import static net.clementraynaud.skoice.system.Network.networks;
+import static net.clementraynaud.skoice.Skoice.getPlugin;
+import static net.clementraynaud.skoice.config.Config.LOBBY_ID_FIELD;
 
 public class VoiceChannelDeleteListener extends ListenerAdapter {
 
     @Override
-    public void onVoiceChannelDelete(@NotNull VoiceChannelDeleteEvent event) {
-        networks.removeIf(network -> network.getChannel() != null && event.getChannel().getId().equals(network.getChannel().getId()));
+    public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
+        if (event.getChannel().getId().equals(getPlugin().getConfig().getString(LOBBY_ID_FIELD))) {
+            new Response().sendLobbyDeletedAlert(event.getGuild());
+        }
     }
 }

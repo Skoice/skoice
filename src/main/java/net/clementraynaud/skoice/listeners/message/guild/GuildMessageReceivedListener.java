@@ -19,13 +19,13 @@
 
 package net.clementraynaud.skoice.listeners.message.guild;
 
-import net.clementraynaud.skoice.commands.interaction.Response;
+import net.clementraynaud.skoice.menus.Response;
 import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.ButtonInteraction.discordIDAxis;
+import static net.clementraynaud.skoice.menus.interaction.ButtonInteraction.discordIDAxis;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class GuildMessageReceivedListener extends ListenerAdapter {

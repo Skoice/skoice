@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.listeners;
 
-import net.clementraynaud.skoice.commands.interaction.Response;
+import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.events.ReconnectedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;

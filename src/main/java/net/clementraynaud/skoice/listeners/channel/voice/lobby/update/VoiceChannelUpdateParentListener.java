@@ -17,26 +17,21 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.message.guild;
+package net.clementraynaud.skoice.listeners.channel.voice.lobby.update;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
+import net.clementraynaud.skoice.menus.Response;
+import net.dv8tion.jda.api.events.channel.voice.update.VoiceChannelUpdateParentEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.menus.interaction.ButtonInteraction.discordIDAxis;
-import static net.clementraynaud.skoice.config.Config.TEMP_FIELD;
-import static net.clementraynaud.skoice.config.Config.TEMP_MESSAGE_ID_FIELD;
+import static net.clementraynaud.skoice.config.Config.LOBBY_ID_FIELD;
 
-public class GuildMessageDeleteListener extends ListenerAdapter {
+public class VoiceChannelUpdateParentListener extends ListenerAdapter {
 
     @Override
-    public void onGuildMessageDelete(@NotNull GuildMessageDeleteEvent event) {
-        if (getPlugin().getConfig().contains(TEMP_FIELD)
-                && event.getMessageId().equals(getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD))) {
-            getPlugin().getConfig().set(TEMP_FIELD, null);
-            getPlugin().saveConfig();
-            discordIDAxis.clear();
+    public void onVoiceChannelUpdateParent(VoiceChannelUpdateParentEvent event) {
+        if (event.getChannel().getId().equals(getPlugin().getConfig().getString(LOBBY_ID_FIELD))) {
+            new Response().sendLobbyDeletedAlert(event.getGuild());
         }
     }
 }

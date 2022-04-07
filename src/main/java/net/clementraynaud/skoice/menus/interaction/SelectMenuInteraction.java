@@ -17,12 +17,13 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.interaction;
+package net.clementraynaud.skoice.menus.interaction;
 
 import net.clementraynaud.skoice.bot.Commands;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.LoggerLang;
+import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -34,7 +35,7 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
-import static net.clementraynaud.skoice.commands.interaction.ErrorEmbeds.getAccessDeniedEmbed;
+import static net.clementraynaud.skoice.menus.ErrorEmbeds.getAccessDeniedEmbed;
 import static net.clementraynaud.skoice.menus.Menu.customizeRadius;
 import static net.clementraynaud.skoice.config.Config.*;
 

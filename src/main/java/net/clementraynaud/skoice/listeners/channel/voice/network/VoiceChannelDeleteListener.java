@@ -17,26 +17,19 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.message.guild;
+package net.clementraynaud.skoice.listeners.channel.voice.network;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.menus.interaction.ButtonInteraction.discordIDAxis;
-import static net.clementraynaud.skoice.config.Config.TEMP_FIELD;
-import static net.clementraynaud.skoice.config.Config.TEMP_MESSAGE_ID_FIELD;
+import static net.clementraynaud.skoice.system.Network.networks;
 
-public class GuildMessageDeleteListener extends ListenerAdapter {
+public class VoiceChannelDeleteListener extends ListenerAdapter {
 
     @Override
-    public void onGuildMessageDelete(@NotNull GuildMessageDeleteEvent event) {
-        if (getPlugin().getConfig().contains(TEMP_FIELD)
-                && event.getMessageId().equals(getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD))) {
-            getPlugin().getConfig().set(TEMP_FIELD, null);
-            getPlugin().saveConfig();
-            discordIDAxis.clear();
-        }
+    public void onVoiceChannelDelete(@NotNull VoiceChannelDeleteEvent event) {
+        networks.removeIf(network -> network.getChannel() != null
+                && event.getChannel().getId().equals(network.getChannel().getId()));
     }
 }

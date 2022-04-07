@@ -17,11 +17,12 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.interaction;
+package net.clementraynaud.skoice.menus.interaction;
 
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.lang.LoggerLang;
 import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.ErrorEmbeds.*;
+import static net.clementraynaud.skoice.menus.ErrorEmbeds.*;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class ButtonInteraction extends ListenerAdapter {

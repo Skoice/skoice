@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.commands.interaction.Response;
+import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -29,8 +29,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.commands.interaction.ErrorEmbeds.*;
-import static net.clementraynaud.skoice.config.Config.TEMP_FIELD;
+import static net.clementraynaud.skoice.menus.ErrorEmbeds.*;
 
 public class ConfigureCommand extends ListenerAdapter {
 
