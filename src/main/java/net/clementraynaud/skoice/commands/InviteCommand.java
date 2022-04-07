@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -35,6 +36,7 @@ public class InviteCommand extends ListenerAdapter {
                     .addField(":inbox_tray: " + DiscordLang.DOWNLOAD_SKOICE_FIELD_TITLE, DiscordLang.DOWNLOAD_SKOICE_FIELD_DESRIPTION.toString(), false)
                     .addField(":green_heart: " + DiscordLang.DONATE_FIELD_TITLE, DiscordLang.DONATE_FIELD_DESCRIPTION.toString(), false)
                     .addField(":screwdriver: " + DiscordLang.TROUBLESHOOTING_FIELD_TITLE, DiscordLang.TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), false)
+                    .addField(MenuEmoji.HAMMER + " " + DiscordLang.CONTRIBUTE_FIELD_TITLE, DiscordLang.CONTRIBUTE_FIELD_DESCRIPTION.toString(), false)
                     .setColor(Color.ORANGE);
             event.replyEmbeds(embed.build()).setEphemeral(true).queue();
         }

@@ -110,6 +110,11 @@ public class ButtonClickListener extends ListenerAdapter {
                                 ? Menu.CHANNEL_VISIBILITY.getMessage()
                                 : new Response().getMessage()).queue();
                         break;
+                    case "UPCOMING_FEATURES":
+                        event.editMessage(getPlugin().isBotReady()
+                                ? Menu.UPCOMING_FEATURES.getMessage()
+                                : new Response().getMessage()).queue();
+                        break;
                     default:
                         throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), buttonID));
                 }

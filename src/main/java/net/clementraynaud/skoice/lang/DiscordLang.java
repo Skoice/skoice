@@ -182,6 +182,34 @@ public enum DiscordLang {
             Lang.EN, "Manage other parameters.",
             Lang.FR, "Gérez d'autres paramètres."))),
 
+    LANGUAGE_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Language",
+            Lang.FR, "Langue"))),
+
+    LANGUAGE_EMBED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Choose the language used to display messages.",
+            Lang.FR, "Choisissez la langue utilisée pour afficher les messages."))),
+
+    LANGUAGE_SELECT_MENU_PLACEHOLDER(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Select a Language",
+            Lang.FR, "Sélectionnez une langue"))),
+
+    CHANGELOG_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "What's New?",
+            Lang.FR, "Quoi de neuf ?"))),
+
+    CHANGELOG_EMBED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Discover the latest features of Skoice.",
+            Lang.FR, "Découvrez les dernières fonctionnalités de Skoice."))),
+
+    CONTRIBUTE_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Contribute",
+            Lang.FR, "Contribuer"))),
+
+    CONTRIBUTE_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Interested in helping us shape the future of Skoice? Contribute on our [GitHub page](https://github.com/carlodrift/skoice)!",
+            Lang.FR, "Envie de nous aider à façonner le futur de Skoice ? Contribuez sur notre [page GitHub](https://github.com/carlodrift/skoice) !"))),
+
     ACTION_BAR_ALERT_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Action Bar Alert",
             Lang.FR, "Alerte dans la barre d'action"))),
@@ -198,17 +226,21 @@ public enum DiscordLang {
             Lang.EN, "Toggle the visibility of the temporary channels created by Skoice.",
             Lang.FR, "Rendez visibles ou invisibles les salons temporaires créés par Skoice."))),
 
-    LANGUAGE_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Language",
-            Lang.FR, "Langue"))),
+    UPCOMING_FEATURES_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "What's Next?",
+            Lang.FR, "Et après ?"))),
 
-    LANGUAGE_EMBED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Choose the language used to display messages.",
-            Lang.FR, "Choisissez la langue utilisée pour afficher les messages."))),
+    UPCOMING_FEATURES_EMBED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Discover the upcoming features of Skoice.",
+            Lang.FR, "Découvrez les fonctionnalités à venir de Skoice."))),
 
-    LANGUAGE_SELECT_MENU_PLACEHOLDER(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Select a Language",
-            Lang.FR, "Sélectionnez une langue"))),
+    UPCOMING_FEATURES_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Upcoming Features",
+            Lang.FR, "Fonctionnalités à venir"))),
+
+    UPCOMING_FEATURES_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "• Use Skoice on multiple servers.\n• Select worlds.\n• Link multiple Minecraft accounts to a single Discord account.\n• Give a dedicated role to users who have linked their accounts.\n• Remove spectators from the proximity voice chat.\n• Display who can hear you.\n• Disallow chaining.",
+            Lang.FR, "• Utiliser Skoice sur plusieurs serveurs.\n• Sélectionner des mondes.\n• Lier plusieurs comptes Minecraft à un seul compte Discord.\n• Donner un rôle dédié aux utilisateurs qui ont lié leurs comptes.\n• Retirer les spectateurs du chat vocal de proximité.\n• Afficher qui peut vous entendre.\n • Interdire les chaînes de joueurs."))),
 
     TROUBLESHOOTING_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Troubleshooting",

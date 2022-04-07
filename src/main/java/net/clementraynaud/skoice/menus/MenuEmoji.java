@@ -40,8 +40,12 @@ public enum MenuEmoji {
     KEYBOARD("U+2328"),
     WRENCH("U+1F527"),
     GLOBE_WITH_MERIDIANS("U+1F310"),
+    NEWSPAPER("U+1F4F0"),
+    CLIPBOARD("U+1F4CB"),
+    HAMMER("U+1F528"),
     EXCLAMATION("U+2757"),
-    MAG("U+1F50D");
+    MAG("U+1F50D"),
+    CALENDAR_SPIRAL("U+1F5D3");
 
     private final String unicode;
 

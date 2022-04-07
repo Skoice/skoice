@@ -49,8 +49,10 @@ public enum Menu {
     VERTICAL_RADIUS(UP_DOWN_ARROW, PRIMARY, DEFAULT, MODE),
     ADVANCED_SETTINGS(WRENCH, SECONDARY, DEFAULT, CONFIGURATION),
     LANGUAGE(GLOBE_WITH_MERIDIANS, SECONDARY, DEFAULT, CONFIGURATION),
+    //CHANGELOG(NEWSPAPER, SECONDARY, DEFAULT, CONFIGURATION),
     ACTION_BAR_ALERT(EXCLAMATION, PRIMARY, DEFAULT, ADVANCED_SETTINGS),
-    CHANNEL_VISIBILITY(MAG, PRIMARY, DEFAULT, ADVANCED_SETTINGS);
+    CHANNEL_VISIBILITY(MAG, PRIMARY, DEFAULT, ADVANCED_SETTINGS),
+    UPCOMING_FEATURES(CALENDAR_SPIRAL, SECONDARY, DEFAULT, ADVANCED_SETTINGS);
 
     private static final String CLOSE_BUTTON_ID = "CLOSE";
 
@@ -67,7 +69,7 @@ public enum Menu {
 
     static {
         CONFIGURATION.children = Arrays.asList(LOBBY, MODE, ADVANCED_SETTINGS, LANGUAGE);
-        ADVANCED_SETTINGS.children = Arrays.asList(ACTION_BAR_ALERT, CHANNEL_VISIBILITY);
+        ADVANCED_SETTINGS.children = Arrays.asList(ACTION_BAR_ALERT, CHANNEL_VISIBILITY, UPCOMING_FEATURES);
 
         CONFIGURATION.additionalFields = Collections.singletonList(
                 new Field(SCREWDRIVER + " " + TROUBLESHOOTING_FIELD_TITLE, TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), true));
@@ -83,6 +85,10 @@ public enum Menu {
         VERTICAL_RADIUS.additionalFields = Collections.singletonList(
                 new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
                         getVerticalRadius()), false));
+        //CHANGELOG.additionalFields = Arrays.asList();
+        UPCOMING_FEATURES.additionalFields = Arrays.asList(
+                new Field(CLIPBOARD + " " + UPCOMING_FEATURES_FIELD_TITLE, UPCOMING_FEATURES_FIELD_DESCRIPTION.toString(), false),
+                new Field(HAMMER + " " + CONTRIBUTE_FIELD_TITLE, CONTRIBUTE_FIELD_DESCRIPTION.toString(), false));
 
         SERVER.selectMenu = new ServerSelectMenu();
         LOBBY.selectMenu = new LobbySelectMenu();
