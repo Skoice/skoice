@@ -25,7 +25,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.menus.interaction.ButtonInteraction.discordIDAxis;
+import static net.clementraynaud.skoice.listeners.interaction.ButtonClickListener.discordIDAxis;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class GuildMessageReceivedListener extends ListenerAdapter {

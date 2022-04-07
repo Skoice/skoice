@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.lang.DiscordLang;
-import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.Guild;
@@ -35,7 +34,7 @@ import java.awt.*;
 
 import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.bot.Bot.getJda;
-import static net.clementraynaud.skoice.menus.interaction.ButtonInteraction.discordIDAxis;
+import static net.clementraynaud.skoice.listeners.interaction.ButtonClickListener.discordIDAxis;
 import static net.clementraynaud.skoice.config.Config.*;
 
 public class Response {

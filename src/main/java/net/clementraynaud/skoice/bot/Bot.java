@@ -21,9 +21,9 @@ package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
-import net.clementraynaud.skoice.menus.interaction.ButtonInteraction;
+import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.clementraynaud.skoice.menus.Response;
-import net.clementraynaud.skoice.menus.interaction.SelectMenuInteraction;
+import net.clementraynaud.skoice.listeners.interaction.SelectMenuListener;
 import net.clementraynaud.skoice.listeners.ReconnectedListener;
 import net.clementraynaud.skoice.listeners.channel.voice.lobby.VoiceChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.channel.voice.lobby.update.VoiceChannelUpdateParentListener;
@@ -75,7 +75,7 @@ public class Bot {
             new GuildMessageReceivedListener(), new GuildMessageDeleteListener(),
             new VoiceChannelDeleteListener(), new VoiceChannelUpdateParentListener(),
             new ConfigureCommand(), new InviteCommand(), new LinkCommand(), new UnlinkCommand(),
-            new ButtonInteraction(), new SelectMenuInteraction());
+            new ButtonClickListener(), new SelectMenuListener());
     private static final int TICKS_BETWEEN_VERSION_CHECKING = 720000;
 
     private static JDA jda;

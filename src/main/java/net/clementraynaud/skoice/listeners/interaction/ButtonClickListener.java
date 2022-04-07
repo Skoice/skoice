@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.interaction;
+package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.lang.LoggerLang;
@@ -37,7 +37,7 @@ import static net.clementraynaud.skoice.Skoice.getPlugin;
 import static net.clementraynaud.skoice.menus.ErrorEmbeds.*;
 import static net.clementraynaud.skoice.config.Config.*;
 
-public class ButtonInteraction extends ListenerAdapter {
+public class ButtonClickListener extends ListenerAdapter {
 
     public static final Map<String, String> discordIDAxis = new HashMap<>();
 

@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.interaction;
+package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.bot.Commands;
 import net.clementraynaud.skoice.menus.Menu;
@@ -39,7 +39,7 @@ import static net.clementraynaud.skoice.menus.ErrorEmbeds.getAccessDeniedEmbed;
 import static net.clementraynaud.skoice.menus.Menu.customizeRadius;
 import static net.clementraynaud.skoice.config.Config.*;
 
-public class SelectMenuInteraction extends ListenerAdapter {
+public class SelectMenuListener extends ListenerAdapter {
 
     @Override
     public void onSelectionMenu(SelectionMenuEvent event) {
