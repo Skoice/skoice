@@ -54,7 +54,7 @@ public enum Menu {
     CHANNEL_VISIBILITY(MAG, PRIMARY, DEFAULT, ADVANCED_SETTINGS),
     UPCOMING_FEATURES(CALENDAR_SPIRAL, SECONDARY, DEFAULT, ADVANCED_SETTINGS);
 
-    private static final String CLOSE_BUTTON_ID = "CLOSE";
+    public static final String CLOSE_BUTTON_ID = "CLOSE";
 
     private final MenuEmoji unicode;
     private final MenuStyle style;

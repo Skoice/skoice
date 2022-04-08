@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.lang.LoggerLang;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -47,76 +46,28 @@ public class ButtonClickListener extends ListenerAdapter {
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
             if (getPlugin().getConfig().contains(TEMP_MESSAGE_ID_FIELD)
                     && getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD).equals(event.getMessageId())
-                    && event.getButton() != null) {
+                    && event.getButton() != null && event.getButton().getId() != null) {
                 String buttonID = event.getButton().getId();
-                switch (buttonID) {
-                    case "CONFIGURATION":
-                        event.editMessage(new Response().getMessage()).queue();
-                        break;
-                    case "CLOSE":
-                        event.getMessage().delete().queue();
-                        if (!getPlugin().isBotReady()) {
-                            event.replyEmbeds(new EmbedBuilder()
-                                            .setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
-                                            .addField(":warning: " + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE, DiscordLang.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.toString(), false)
-                                            .setColor(Color.RED).build())
-                                    .setEphemeral(true).queue();
-                        }
-                        break;
-                    case "LOBBY":
-                        event.editMessage(getPlugin().isBotReady()
-                                ? Menu.LOBBY.getMessage()
-                                : new Response().getMessage()).queue();
-                        break;
-                    case "LANGUAGE":
-                        event.editMessage(getPlugin().isBotReady()
-                                ? Menu.LANGUAGE.getMessage()
-                                : new Response().getMessage()).queue();
-                        break;
-                    case "ADVANCED_SETTINGS":
-                        event.editMessage(getPlugin().isBotReady()
-                                ? Menu.ADVANCED_SETTINGS.getMessage()
-                                : new Response().getMessage()).queue();
-                        break;
-                    case "MODE":
+                if (buttonID.equals(Menu.CLOSE_BUTTON_ID)) {
+                    event.getMessage().delete().queue();
+                    if (!getPlugin().isBotReady()) {
+                        event.replyEmbeds(new EmbedBuilder()
+                                        .setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
+                                        .addField(":warning: " + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE, DiscordLang.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.toString(), false)
+                                        .setColor(Color.RED).build())
+                                .setEphemeral(true).queue();
+                    }
+                } else if (!getPlugin().isBotReady()) {
+                    event.editMessage(new Response().getMessage()).queue();
+                } else {
+                    if (buttonID.equals(Menu.MODE.name())) {
                         discordIDAxis.remove(member.getId());
-                        event.editMessage(getPlugin().isBotReady()
-                                ? Menu.MODE.getMessage()
-                                : new Response().getMessage()).queue();
-                        break;
-                    case "HORIZONTAL_RADIUS":
-                        if (getPlugin().isBotReady()) {
-                            discordIDAxis.put(member.getId(), HORIZONTAL_RADIUS_FIELD);
-                            event.editMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
-                        } else {
-                            event.editMessage(new Response().getMessage()).queue();
-                        }
-                        break;
-                    case "VERTICAL_RADIUS":
-                        if (getPlugin().isBotReady()) {
-                            discordIDAxis.put(member.getId(), VERTICAL_RADIUS_FIELD);
-                            event.editMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
-                        } else {
-                            event.editMessage(new Response().getMessage()).queue();
-                        }
-                        break;
-                    case "ACTION_BAR_ALERT":
-                        event.editMessage(getPlugin().isBotReady()
-                                ? Menu.ACTION_BAR_ALERT.getMessage()
-                                : new Response().getMessage()).queue();
-                        break;
-                    case "CHANNEL_VISIBILITY":
-                        event.editMessage(getPlugin().isBotReady()
-                                ? Menu.CHANNEL_VISIBILITY.getMessage()
-                                : new Response().getMessage()).queue();
-                        break;
-                    case "UPCOMING_FEATURES":
-                        event.editMessage(getPlugin().isBotReady()
-                                ? Menu.UPCOMING_FEATURES.getMessage()
-                                : new Response().getMessage()).queue();
-                        break;
-                    default:
-                        throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), buttonID));
+                    } else if (buttonID.equals(Menu.HORIZONTAL_RADIUS.name())) {
+                        discordIDAxis.put(member.getId(), HORIZONTAL_RADIUS_FIELD);
+                    } else if (buttonID.equals(Menu.VERTICAL_RADIUS.name())) {
+                        discordIDAxis.put(member.getId(), VERTICAL_RADIUS_FIELD);
+                    }
+                    event.editMessage(Menu.valueOf(buttonID).getMessage()).queue();
                 }
             }
         } else {
