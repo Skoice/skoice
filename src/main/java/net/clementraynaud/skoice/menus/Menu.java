@@ -61,16 +61,12 @@ public enum Menu {
     private final MenuType type;
     private final Menu parent;
 
-    private List<Menu> children;
     private List<Field> additionalFields;
     private SelectMenu selectMenu;
 
     public static boolean customizeRadius;
 
     static {
-        CONFIGURATION.children = Arrays.asList(LOBBY, MODE, ADVANCED_SETTINGS, LANGUAGE);
-        ADVANCED_SETTINGS.children = Arrays.asList(ACTION_BAR_ALERT, CHANNEL_VISIBILITY, UPCOMING_FEATURES);
-
         CONFIGURATION.additionalFields = Collections.singletonList(
                 new Field(SCREWDRIVER + " " + TROUBLESHOOTING_FIELD_TITLE, TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), true));
         MODE.additionalFields = Arrays.asList(
@@ -143,9 +139,9 @@ public enum Menu {
             }
             embed.setAuthor(author.toString());
         }
-        if (children != null)
-            for (Menu child : children)
-                embed.addField(child.getTitle(true), child.getDescription(true), true);
+        for (Menu menu : values())
+            if (menu.parent == this)
+                embed.addField(menu.getTitle(true), menu.getDescription(true), true);
         if (additionalFields != null)
             for (Field additionalField : additionalFields)
                 embed.addField(additionalField);
@@ -165,11 +161,11 @@ public enum Menu {
             buttons.add(Button.secondary(parent.name(), "← " + DiscordLang.BACK_BUTTON_LABEL));
         if (selectMenu != null && selectMenu.isRefreshable())
             buttons.add(Button.primary(this.name(), "⟳ " + DiscordLang.REFRESH_BUTTON_LABEL));
-        if (children != null)
-            for (Menu child : children)
-                buttons.add(child.style.equals(PRIMARY)
-                        ? Button.primary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojiFromUnicode())
-                        : Button.secondary(child.name(), child.getTitle(false)).withEmoji(child.unicode.getEmojiFromUnicode()));
+        for (Menu menu : values())
+            if (menu.parent == this)
+                buttons.add(menu.style.equals(PRIMARY)
+                        ? Button.primary(menu.name(), menu.getTitle(false)).withEmoji(menu.unicode.getEmojiFromUnicode())
+                        : Button.secondary(menu.name(), menu.getTitle(false)).withEmoji(menu.unicode.getEmojiFromUnicode()));
         else if (this == MODE)
             buttons.addAll(getModeAdditionalButtons());
         customizeRadius = false;
