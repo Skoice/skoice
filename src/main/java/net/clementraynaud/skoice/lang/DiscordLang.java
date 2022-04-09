@@ -84,7 +84,7 @@ public enum DiscordLang {
             Lang.FR, "Nouveau salon vocal"))),
 
     NEW_VOICE_CHANNEL_SELECT_OPTION_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Skoice will automatically set up a voice channel",
+            Lang.EN, "Skoice will automatically set up a voice channel.",
             Lang.FR, "Skoice configurera automatiquement un salon vocal."))),
 
     DEFAULT_CATEGORY_NAME(Maps.newHashMap(ImmutableMap.of(
