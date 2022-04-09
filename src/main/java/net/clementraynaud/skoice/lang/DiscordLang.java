@@ -207,8 +207,8 @@ public enum DiscordLang {
             Lang.FR, "Contribuer"))),
 
     CONTRIBUTE_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Interested in helping us shape the future of Skoice? Contribute on our [GitHub page](https://github.com/carlodrift/skoice)!",
-            Lang.FR, "Envie de nous aider à façonner l'avenir de Skoice ? Contribuez sur notre [page GitHub](https://github.com/carlodrift/skoice) !"))),
+            Lang.EN, "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/carlodrift/skoice)!",
+            Lang.FR, "Envie de nous aider à façonner l'avenir de Skoice ? [Contribuez sur notre page GitHub](https://github.com/carlodrift/skoice) !"))),
 
     ACTION_BAR_ALERT_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Action Bar Alert",
