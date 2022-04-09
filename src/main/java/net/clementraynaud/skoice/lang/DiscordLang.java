@@ -194,14 +194,6 @@ public enum DiscordLang {
             Lang.EN, "Please select a language.",
             Lang.FR, "Veuillez sélectionner une langue."))),
 
-    CHANGELOG_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "What's New?",
-            Lang.FR, "Quoi de neuf ?"))),
-
-    CHANGELOG_EMBED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Discover the latest features of Skoice.",
-            Lang.FR, "Découvrez les dernières fonctionnalités de Skoice."))),
-
     CONTRIBUTE_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Contribute",
             Lang.FR, "Contribuer"))),
@@ -226,17 +218,24 @@ public enum DiscordLang {
             Lang.EN, "Toggle the visibility of the temporary channels created by Skoice.",
             Lang.FR, "Rendez visibles ou invisibles les salons temporaires créés par Skoice."))),
 
-    UPCOMING_FEATURES_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "What's Next?",
-            Lang.FR, "Et après ?"))),
+    CHANGELOG_EMBED_TITLE(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "What's New?",
+            Lang.FR, "Quoi de neuf ?"))),
 
-    UPCOMING_FEATURES_EMBED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Discover the upcoming features of Skoice.",
-            Lang.FR, "Découvrez les fonctionnalités à venir de Skoice."))),
+    CHANGELOG_EMBED_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Discover the latest and upcoming features of Skoice.",
+            Lang.FR, "Découvrez les dernières et futures fonctionnalités de Skoice."))),
+
+    SKOICE_2_1_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "Skoice 2.1"))),
+
+    SKOICE_2_1_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
+            Lang.EN, "**General:**\n• Discover a whole new and intuitive configuration interface.\n• Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n• Link your accounts effortlessly thanks to our new linking process.\n\n**New Features:**\n• Action bar alert\n• Channel visibility toggle\n• \"/invite\" command on Discord\n• French translation",
+            Lang.FR, "**Général:**\n• Découvrez une toute nouvelle interface de configuration intuitive.\n• Laissez-nous choisir les meilleures distances pour votre utilisation personnelle de Skoice dans le menu \"Mode\".\n• Connectez vos comptes facilement grâce à notre nouvelle procédure de liaison.\n\n**Nouvelles fonctionnalités:**\n• Commande \"/invite\" sur Discord\n• Configuration de l'alerte dans la barre d'action\n• Configuration de la visibilité des salons\n• Traduction française"))),
 
     UPCOMING_FEATURES_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "Upcoming Features",
-            Lang.FR, "Fonctionnalités à venir"))),
+            Lang.EN, "What's Next?",
+            Lang.FR, "Et après ?"))),
 
     UPCOMING_FEATURES_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "• Use Skoice on multiple servers.\n• Select worlds.\n• Link multiple Minecraft accounts to a single Discord account.\n• Give a dedicated role to users who have linked their accounts.\n• Remove spectators from the proximity voice chat.\n• Display who can hear you.\n• Disallow chaining.",
