@@ -19,6 +19,8 @@
 
 package net.clementraynaud.skoice.commands.arguments;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -28,9 +30,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.bot.Bot.getJda;
-
 public class ConfigureArgument extends Argument {
 
     public ConfigureArgument(CommandSender sender) {
@@ -39,11 +38,12 @@ public class ConfigureArgument extends Argument {
 
     @Override
     public void run() {
-        if (!canExecuteCommand())
+        if (!this.canExecuteCommand()) {
             return;
-        Player player = (Player) sender;
-        if (getPlugin().isTokenSet() && getJda() != null) {
-            if (getPlugin().isBotReady()) {
+        }
+        Player player = (Player) this.sender;
+        if (Skoice.getPlugin().isTokenSet() && Bot.getJda() != null) {
+            if (Skoice.getPlugin().isBotReady()) {
                 player.sendMessage(MinecraftLang.ALREADY_CONFIGURED.toString());
             } else {
                 player.sendMessage(MinecraftLang.INCOMPLETE_CONFIGURATION_OPERATOR_DISCORD.toString());
@@ -54,7 +54,7 @@ public class ConfigureArgument extends Argument {
                 MessageUtil.setHoverEvent(tutorialPage, "§8☀ §bOpen in web browser: §7https://github.com/carlodrift/skoice/wiki");
                 tutorialPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/carlodrift/skoice/wiki"));
                 TextComponent tokenCommand = new TextComponent("§bhere");
-                MessageUtil.setHoverEvent(tokenCommand,"§8☀ §bShortcut: §7/skoice token");
+                MessageUtil.setHoverEvent(tokenCommand, "§8☀ §bShortcut: §7/skoice token");
                 tokenCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/skoice token "));
                 player.spigot().sendMessage(new ComponentBuilder("\n§dSkoice §8• §7Configuration (§fBot Creation§7)\n\n§8• §7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this ")
                         .append(tutorialPage)

@@ -19,7 +19,11 @@
 
 package net.clementraynaud.skoice.listeners.interaction;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.Commands;
+import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.menus.ErrorEmbeds;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.LoggerLang;
@@ -33,30 +37,24 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.bot.Bot.getJda;
-import static net.clementraynaud.skoice.menus.ErrorEmbeds.getAccessDeniedEmbed;
-import static net.clementraynaud.skoice.menus.Menu.customizeRadius;
-import static net.clementraynaud.skoice.config.Config.*;
-
 public class SelectMenuListener extends ListenerAdapter {
 
     @Override
     public void onSelectionMenu(SelectionMenuEvent event) {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (getPlugin().getConfig().contains(TEMP_MESSAGE_ID_FIELD)
-                    && getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD).equals(event.getMessageId())
+            if (Skoice.getPlugin().getConfig().contains(Config.TEMP_MESSAGE_ID_FIELD)
+                    && Skoice.getPlugin().getConfig().getString(Config.TEMP_MESSAGE_ID_FIELD).equals(event.getMessageId())
                     && event.getSelectedOptions() != null) {
                 String componentID = event.getComponentId();
                 switch (componentID) {
                     case "SERVER_SELECTION":
-                        if (getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
+                        if (Bot.getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
                             for (SelectOption server : event.getComponent().getOptions()) {
                                 if (!event.getGuild().getId().equals(server.getValue())
-                                        && getJda().getGuilds().contains(getJda().getGuildById(server.getValue()))) {
+                                        && Bot.getJda().getGuilds().contains(Bot.getJda().getGuildById(server.getValue()))) {
                                     try {
-                                        getJda().getGuildById(server.getValue()).leave()
+                                        Bot.getJda().getGuildById(server.getValue()).leave()
                                                 .queue(success -> event.editMessage(new Response().getMessage()).queue());
                                     } catch (ErrorResponseException ignored) {
                                     }
@@ -65,70 +63,70 @@ public class SelectMenuListener extends ListenerAdapter {
                         }
                         break;
                     case "LANGUAGE_SELECTION":
-                        getPlugin().getConfig().set(LANG_FIELD, event.getSelectedOptions().get(0).getValue());
-                        getPlugin().saveConfig();
-                        getPlugin().updateConfigurationStatus(false);
+                        Skoice.getPlugin().getConfig().set(Config.LANG_FIELD, event.getSelectedOptions().get(0).getValue());
+                        Skoice.getPlugin().saveConfig();
+                        Skoice.getPlugin().updateConfigurationStatus(false);
                         new Commands().register(event.getGuild());
                         event.editMessage(new Response().getMessage()).queue();
                         break;
                     case "LOBBY_SELECTION":
                         Guild guild = event.getGuild();
                         if (guild != null) {
-                            if (event.getSelectedOptions().get(0).getValue().equals("GENERATE")) {
+                            if ("GENERATE" .equals(event.getSelectedOptions().get(0).getValue())) {
                                 String categoryID = guild.createCategory(DiscordLang.DEFAULT_CATEGORY_NAME.toString())
                                         .complete().getId();
                                 String lobbyID = guild.createVoiceChannel(DiscordLang.DEFAULT_LOBBY_NAME.toString(), event.getGuild().getCategoryById(categoryID))
                                         .complete().getId();
-                                getPlugin().getConfig().set(LOBBY_ID_FIELD, lobbyID);
-                                getPlugin().saveConfig();
-                                getPlugin().updateConfigurationStatus(false);
-                            } else if (event.getSelectedOptions().get(0).getValue().equals("REFRESH")) {
+                                Skoice.getPlugin().getConfig().set(Config.LOBBY_ID_FIELD, lobbyID);
+                                Skoice.getPlugin().saveConfig();
+                                Skoice.getPlugin().updateConfigurationStatus(false);
+                            } else if ("REFRESH" .equals(event.getSelectedOptions().get(0).getValue())) {
                                 event.editMessage(new Response().getMessage()).queue();
                             } else {
                                 VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                                 if (lobby != null && lobby.getParent() != null) {
-                                    getPlugin().getConfig().set(LOBBY_ID_FIELD, event.getSelectedOptions().get(0).getValue());
-                                    getPlugin().saveConfig();
-                                    getPlugin().updateConfigurationStatus(false);
+                                    Skoice.getPlugin().getConfig().set(Config.LOBBY_ID_FIELD, event.getSelectedOptions().get(0).getValue());
+                                    Skoice.getPlugin().saveConfig();
+                                    Skoice.getPlugin().updateConfigurationStatus(false);
                                 }
                             }
                         }
                         event.editMessage(new Response().getMessage()).queue();
                         break;
                     case "MODE_SELECTION":
-                        if (event.getSelectedOptions().get(0).getValue().equals("VANILLA_MODE")) {
-                            getPlugin().getConfig().set(HORIZONTAL_RADIUS_FIELD, 80);
-                            getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 40);
-                            getPlugin().saveConfig();
-                            getPlugin().updateConfigurationStatus(false);
+                        if ("VANILLA_MODE" .equals(event.getSelectedOptions().get(0).getValue())) {
+                            Skoice.getPlugin().getConfig().set(Config.HORIZONTAL_RADIUS_FIELD, 80);
+                            Skoice.getPlugin().getConfig().set(Config.VERTICAL_RADIUS_FIELD, 40);
+                            Skoice.getPlugin().saveConfig();
+                            Skoice.getPlugin().updateConfigurationStatus(false);
                             event.editMessage(new Response().getMessage()).queue();
-                        } else if (event.getSelectedOptions().get(0).getValue().equals("MINIGAME_MODE")) {
-                            getPlugin().getConfig().set(HORIZONTAL_RADIUS_FIELD, 40);
-                            getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 20);
-                            getPlugin().saveConfig();
-                            getPlugin().updateConfigurationStatus(false);
+                        } else if ("MINIGAME_MODE" .equals(event.getSelectedOptions().get(0).getValue())) {
+                            Skoice.getPlugin().getConfig().set(Config.HORIZONTAL_RADIUS_FIELD, 40);
+                            Skoice.getPlugin().getConfig().set(Config.VERTICAL_RADIUS_FIELD, 20);
+                            Skoice.getPlugin().saveConfig();
+                            Skoice.getPlugin().updateConfigurationStatus(false);
                             event.editMessage(new Response().getMessage()).queue();
-                        } else if (event.getSelectedOptions().get(0).getValue().equals("CUSTOMIZE")) {
-                            customizeRadius = true;
+                        } else if ("CUSTOMIZE" .equals(event.getSelectedOptions().get(0).getValue())) {
+                            Menu.customizeRadius = true;
                             event.editMessage(Menu.MODE.getMessage()).queue();
                         }
                         break;
                     case "ACTION_BAR_ALERT":
-                        if (event.getSelectedOptions().get(0).getValue().equals("true")) {
-                            getPlugin().getConfig().set(ACTION_BAR_ALERT_FIELD, true);
-                        } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
-                            getPlugin().getConfig().set(ACTION_BAR_ALERT_FIELD, false);
+                        if ("true" .equals(event.getSelectedOptions().get(0).getValue())) {
+                            Skoice.getPlugin().getConfig().set(Config.ACTION_BAR_ALERT_FIELD, true);
+                        } else if ("false" .equals(event.getSelectedOptions().get(0).getValue())) {
+                            Skoice.getPlugin().getConfig().set(Config.ACTION_BAR_ALERT_FIELD, false);
                         }
-                        getPlugin().saveConfig();
+                        Skoice.getPlugin().saveConfig();
                         event.editMessage(new Response().getMessage()).queue();
                         break;
                     case "CHANNEL_VISIBILITY":
-                        if (event.getSelectedOptions().get(0).getValue().equals("true")) {
-                            getPlugin().getConfig().set(CHANNEL_VISIBILITY_FIELD, true);
-                        } else if (event.getSelectedOptions().get(0).getValue().equals("false")) {
-                            getPlugin().getConfig().set(CHANNEL_VISIBILITY_FIELD, false);
+                        if ("true" .equals(event.getSelectedOptions().get(0).getValue())) {
+                            Skoice.getPlugin().getConfig().set(Config.CHANNEL_VISIBILITY_FIELD, true);
+                        } else if ("false" .equals(event.getSelectedOptions().get(0).getValue())) {
+                            Skoice.getPlugin().getConfig().set(Config.CHANNEL_VISIBILITY_FIELD, false);
                         }
-                        getPlugin().saveConfig();
+                        Skoice.getPlugin().saveConfig();
                         event.editMessage(new Response().getMessage()).queue();
                         break;
                     default:
@@ -136,7 +134,7 @@ public class SelectMenuListener extends ListenerAdapter {
                 }
             }
         } else {
-            event.replyEmbeds(getAccessDeniedEmbed()).setEphemeral(true).queue();
+            event.replyEmbeds(ErrorEmbeds.getAccessDeniedEmbed()).setEphemeral(true).queue();
         }
     }
 }

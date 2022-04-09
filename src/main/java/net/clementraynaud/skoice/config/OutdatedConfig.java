@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.config;
 
+import net.clementraynaud.skoice.Skoice;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,26 +29,23 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.config.Config.*;
-
 public class OutdatedConfig {
 
     private final FileConfiguration oldData = new YamlConfiguration();
 
     public void update() {
-        File outdatedConfig = new File(getPlugin().getDataFolder() + File.separator + "data.yml");
+        File outdatedConfig = new File(Skoice.getPlugin().getDataFolder() + File.separator + "data.yml");
         if (outdatedConfig.exists()) {
             try {
-                oldData.load(outdatedConfig);
+                this.oldData.load(outdatedConfig);
             } catch (IOException | InvalidConfigurationException e) {
                 return;
             }
-            convertOldToken();
-            convertOldData("mainVoiceChannelID", LOBBY_ID_FIELD);
-            convertOldRadius();
-            convertOldLinks();
-            getPlugin().saveConfig();
+            this.convertOldToken();
+            this.convertOldData("mainVoiceChannelID", Config.LOBBY_ID_FIELD);
+            this.convertOldRadius();
+            this.convertOldLinks();
+            Skoice.getPlugin().saveConfig();
             try {
                 Files.delete(outdatedConfig.toPath());
             } catch (IOException ignored) {
@@ -56,45 +54,46 @@ public class OutdatedConfig {
     }
 
     private void convertOldToken() {
-        if (oldData.contains("token")
-                && !oldData.getString("token").isEmpty()
-                && !getPlugin().getConfig().contains(TOKEN_FIELD)) {
-            setToken(oldData.getString("token"));
+        if (this.oldData.contains("token")
+                && !this.oldData.getString("token").isEmpty()
+                && !Skoice.getPlugin().getConfig().contains(Config.TOKEN_FIELD)) {
+            Config.setToken(this.oldData.getString("token"));
         }
     }
 
     private void convertOldRadius() {
-        if (oldData.contains("distance.type")
-                && oldData.getString("distance.type").equals("custom")) {
-            convertOldData("distance.horizontalStrength", HORIZONTAL_RADIUS_FIELD);
-            convertOldData("distance.verticalStrength", VERTICAL_RADIUS_FIELD);
+        if (this.oldData.contains("distance.type")
+                && "custom" .equals(this.oldData.getString("distance.type"))) {
+            this.convertOldData("distance.horizontalStrength", Config.HORIZONTAL_RADIUS_FIELD);
+            this.convertOldData("distance.verticalStrength", Config.VERTICAL_RADIUS_FIELD);
         } else {
-            if (!getPlugin().getConfig().contains(HORIZONTAL_RADIUS_FIELD)) {
-                getPlugin().getConfig().set(HORIZONTAL_RADIUS_FIELD, 80);
+            if (!Skoice.getPlugin().getConfig().contains(Config.HORIZONTAL_RADIUS_FIELD)) {
+                Skoice.getPlugin().getConfig().set(Config.HORIZONTAL_RADIUS_FIELD, 80);
             }
-            if (!getPlugin().getConfig().contains(VERTICAL_RADIUS_FIELD)) {
-                getPlugin().getConfig().set(VERTICAL_RADIUS_FIELD, 40);
+            if (!Skoice.getPlugin().getConfig().contains(Config.VERTICAL_RADIUS_FIELD)) {
+                Skoice.getPlugin().getConfig().set(Config.VERTICAL_RADIUS_FIELD, 40);
             }
         }
     }
 
     private void convertOldLinks() {
-        if (oldData.getConfigurationSection("Data") != null) {
+        if (this.oldData.getConfigurationSection("Data") != null) {
             Map<String, String> linkMap = new HashMap<>();
-            Set<String> subkeys = oldData.getConfigurationSection("Data").getKeys(false);
+            Set<String> subkeys = this.oldData.getConfigurationSection("Data").getKeys(false);
             Iterator<String> iterator = subkeys.iterator();
-            for (int i = 0; i < subkeys.size(); i+=2)
+            for (int i = 0; i < subkeys.size(); i += 2) {
                 linkMap.put(iterator.next(), iterator.next());
-            linkMap.putAll(getLinkMap());
-            getPlugin().getConfig().set(LINK_MAP_FIELD, linkMap);
+            }
+            linkMap.putAll(Config.getLinkMap());
+            Skoice.getPlugin().getConfig().set(Config.LINK_MAP_FIELD, linkMap);
         }
     }
 
     private void convertOldData(String oldField, String newField) {
-        if (oldData.contains(oldField)
-                && !oldData.getString(oldField).isEmpty()
-                && !getPlugin().getConfig().contains(newField)) {
-            getPlugin().getConfig().set(newField, oldData.get(oldField));
+        if (this.oldData.contains(oldField)
+                && !this.oldData.getString(oldField).isEmpty()
+                && !Skoice.getPlugin().getConfig().contains(newField)) {
+            Skoice.getPlugin().getConfig().set(newField, this.oldData.get(oldField));
         }
     }
 }

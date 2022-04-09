@@ -20,7 +20,9 @@
 
 package net.clementraynaud.skoice.listeners.guild.voice;
 
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.MinecraftLang;
+import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
@@ -28,24 +30,23 @@ import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
-import static net.clementraynaud.skoice.config.Config.*;
-import static net.clementraynaud.skoice.system.Network.networks;
-
 public class GuildVoiceLeaveListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
-        if (event.getChannelLeft().getParent() == null || !event.getChannelLeft().getParent().equals(getCategory()))
+        if (event.getChannelLeft().getParent() == null || !event.getChannelLeft().getParent().equals(Config.getCategory())) {
             return;
-        String minecraftID = getKeyFromValue(getLinkMap(), event.getMember().getId());
-        if (minecraftID == null)
+        }
+        String minecraftID = Config.getKeyFromValue(Config.getLinkMap(), event.getMember().getId());
+        if (minecraftID == null) {
             return;
+        }
         OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
         if (player.isOnline()) {
-            networks.stream()
+            Network.networks.stream()
                     .filter(network -> network.contains(player.getPlayer()))
                     .forEach(network -> network.remove(player.getPlayer()));
-            if (event.getChannelLeft().equals(getLobby()) || networks.stream().anyMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
+            if (event.getChannelLeft().equals(Config.getLobby()) || Network.networks.stream().anyMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
                 player.getPlayer().sendMessage(MinecraftLang.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.toString());
             }
         }

@@ -19,20 +19,18 @@
 
 package net.clementraynaud.skoice.listeners.guild;
 
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.Commands;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-
-import static net.clementraynaud.skoice.Skoice.getBot;
-import static net.clementraynaud.skoice.Skoice.getPlugin;
 
 public class GuildJoinListener extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
         new Commands().register(event.getGuild());
-        getBot().updateGuildUniquenessStatus();
-        getPlugin().updateConfigurationStatus(false);
+        Skoice.getBot().updateGuildUniquenessStatus();
+        Skoice.getPlugin().updateConfigurationStatus(false);
     }
 }

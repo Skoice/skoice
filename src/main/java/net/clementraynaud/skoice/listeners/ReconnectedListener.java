@@ -19,22 +19,20 @@
 
 package net.clementraynaud.skoice.listeners;
 
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.events.ReconnectedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-
-import static net.clementraynaud.skoice.Skoice.getBot;
-import static net.clementraynaud.skoice.Skoice.getPlugin;
 
 public class ReconnectedListener extends ListenerAdapter {
 
     @Override
     public void onReconnected(@NotNull ReconnectedEvent event) {
         new Response().deleteMessage();
-        getBot().updateGuildUniquenessStatus();
-        getBot().checkForValidLobby();
-        getBot().checkForUnlinkedUsersInLobby();
-        getPlugin().updateConfigurationStatus(false);
+        Skoice.getBot().updateGuildUniquenessStatus();
+        Skoice.getBot().checkForValidLobby();
+        Skoice.getBot().checkForUnlinkedUsersInLobby();
+        Skoice.getPlugin().updateConfigurationStatus(false);
     }
 }

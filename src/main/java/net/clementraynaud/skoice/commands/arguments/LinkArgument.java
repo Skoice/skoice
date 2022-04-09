@@ -19,6 +19,10 @@
 
 package net.clementraynaud.skoice.commands.arguments;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.commands.LinkCommand;
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
@@ -27,18 +31,11 @@ import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
-import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.awt.*;
-
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.bot.Bot.getJda;
-import static net.clementraynaud.skoice.commands.LinkCommand.getDiscordIDCode;
-import static net.clementraynaud.skoice.commands.LinkCommand.removeValueFromDiscordIDCode;
-import static net.clementraynaud.skoice.config.Config.*;
 
 public class LinkArgument extends Argument {
 
@@ -48,35 +45,36 @@ public class LinkArgument extends Argument {
 
     @Override
     public void run() {
-        if (!canExecuteCommand())
+        if (!this.canExecuteCommand()) {
             return;
-        Player player = (Player) sender;
-        if (!getPlugin().isBotReady() || getJda() == null) {
+        }
+        Player player = (Player) this.sender;
+        if (!Skoice.getPlugin().isBotReady() || Bot.getJda() == null) {
             player.sendMessage(MinecraftLang.INCOMPLETE_CONFIGURATION.toString());
             return;
         }
-        if (getLinkMap().containsKey(player.getUniqueId().toString())) {
+        if (Config.getLinkMap().containsKey(player.getUniqueId().toString())) {
             player.sendMessage(MinecraftLang.ACCOUNT_ALREADY_LINKED.toString());
             return;
         }
-        if (arg.isEmpty()) {
+        if (this.arg.isEmpty()) {
             player.sendMessage(MinecraftLang.NO_CODE.toString());
             return;
         }
-        if (!getDiscordIDCode().containsValue(arg)) {
+        if (!LinkCommand.getDiscordIDCode().containsValue(this.arg)) {
             player.sendMessage(MinecraftLang.INVALID_CODE.toString());
             return;
         }
-        String discordID = getKeyFromValue(getDiscordIDCode(), arg);
+        String discordID = Config.getKeyFromValue(LinkCommand.getDiscordIDCode(), this.arg);
         if (discordID == null) {
             return;
         }
-        Member member = getGuild().getMemberById(discordID);
+        Member member = Config.getGuild().getMemberById(discordID);
         if (member == null) {
             return;
         }
-        linkUser(player.getUniqueId().toString(), discordID);
-        removeValueFromDiscordIDCode(arg);
+        Config.linkUser(player.getUniqueId().toString(), discordID);
+        LinkCommand.removeValueFromDiscordIDCode(this.arg);
         member.getUser().openPrivateChannel().complete()
                 .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.LINK + DiscordLang.LINKING_PROCESS_EMBED_TITLE.toString())
                         .addField(MenuEmoji.HEAVY_CHECK_MARK + DiscordLang.ACCOUNT_LINKED_FIELD_TITLE.toString(),
@@ -87,7 +85,7 @@ public class LinkArgument extends Argument {
         GuildVoiceState voiceState = member.getVoiceState();
         if (voiceState != null) {
             VoiceChannel voiceChannel = voiceState.getChannel();
-            if (voiceChannel != null && voiceChannel.equals(getLobby())) {
+            if (voiceChannel != null && voiceChannel.equals(Config.getLobby())) {
                 player.sendMessage(MinecraftLang.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());
             }
         }

@@ -19,34 +19,35 @@
 
 package net.clementraynaud.skoice.tasks;
 
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.clementraynaud.skoice.config.Config.getLobby;
-import static net.clementraynaud.skoice.system.Network.networks;
-
 public class InterruptSystemTask implements Task {
 
     @Override
     public void run() {
-        for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.awaitingMoves.values())
+        for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.awaitingMoves.values()) {
             value.getRight().cancel(true);
-        boolean isLobbySet = getLobby() == null;
-        for (Network network : networks) {
-            if (isLobbySet)
+        }
+        boolean isLobbySet = Config.getLobby() == null;
+        for (Network network : Network.networks) {
+            if (isLobbySet) {
                 for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
                     Member member = network.getChannel().getMembers().get(i);
-                    if (i + 1 < network.getChannel().getMembers().size())
-                        member.getGuild().moveVoiceMember(member, getLobby()).queue();
-                    else
-                        member.getGuild().moveVoiceMember(member, getLobby()).complete();
+                    if (i + 1 < network.getChannel().getMembers().size()) {
+                        member.getGuild().moveVoiceMember(member, Config.getLobby()).queue();
+                    } else {
+                        member.getGuild().moveVoiceMember(member, Config.getLobby()).complete();
+                    }
                 }
+            }
             network.getChannel().delete().queue();
             network.clear();
         }
-        networks.clear();
+        Network.networks.clear();
     }
 }

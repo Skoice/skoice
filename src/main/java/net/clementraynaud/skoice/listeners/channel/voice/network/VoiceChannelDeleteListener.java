@@ -19,17 +19,16 @@
 
 package net.clementraynaud.skoice.listeners.channel.voice.network;
 
+import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-
-import static net.clementraynaud.skoice.system.Network.networks;
 
 public class VoiceChannelDeleteListener extends ListenerAdapter {
 
     @Override
     public void onVoiceChannelDelete(@NotNull VoiceChannelDeleteEvent event) {
-        networks.removeIf(network -> network.getChannel() != null
+        Network.networks.removeIf(network -> network.getChannel() != null
                 && event.getChannel().getId().equals(network.getChannel().getId()));
     }
 }

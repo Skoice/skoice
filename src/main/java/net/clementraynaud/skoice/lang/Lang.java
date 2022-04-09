@@ -37,10 +37,10 @@ public enum Lang {
     }
 
     public String getFullName() {
-        return fullName;
+        return this.fullName;
     }
 
     public Emoji getEmoji() {
-        return Emoji.fromUnicode(unicode);
+        return Emoji.fromUnicode(this.unicode);
     }
 }

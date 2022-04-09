@@ -19,6 +19,8 @@
 
 package net.clementraynaud.skoice.commands;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -30,25 +32,22 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.config.Config.getLinkMap;
-
 public class LinkCommand extends ListenerAdapter {
 
     private static final Map<String, String> discordIDCode = new HashMap<>();
 
     public static Map<String, String> getDiscordIDCode() {
-        return discordIDCode;
+        return LinkCommand.discordIDCode;
     }
 
     public static void removeValueFromDiscordIDCode(String value) {
-        discordIDCode.values().remove(value);
+        LinkCommand.discordIDCode.values().remove(value);
     }
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        if (event.getName().equals("link")) {
-            if (!getPlugin().isBotReady()) {
+        if ("link" .equals(event.getName())) {
+            if (!Skoice.getPlugin().isBotReady()) {
                 EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.GEAR + DiscordLang.CONFIGURATION_EMBED_TITLE.toString());
                 event.replyEmbeds(embed.addField(MenuEmoji.WARNING + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE.toString(),
                                         DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_DESCRIPTION.toString(), false)
@@ -57,19 +56,19 @@ public class LinkCommand extends ListenerAdapter {
                 return;
             }
             EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.LINK + DiscordLang.LINKING_PROCESS_EMBED_TITLE.toString());
-            if (getLinkMap().containsValue(event.getUser().getId())) {
+            if (Config.getLinkMap().containsValue(event.getUser().getId())) {
                 event.replyEmbeds(embed.addField(MenuEmoji.WARNING + DiscordLang.ACCOUNT_ALREADY_LINKED_FIELD_TITLE.toString(),
                                         DiscordLang.ACCOUNT_ALREADY_LINKED_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.RED).build())
                         .setEphemeral(true).queue();
                 return;
             }
-            discordIDCode.remove(event.getUser().getId());
+            LinkCommand.discordIDCode.remove(event.getUser().getId());
             String code;
             do {
                 code = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
-            } while (discordIDCode.containsValue(code));
-            discordIDCode.put(event.getUser().getId(), code);
+            } while (LinkCommand.discordIDCode.containsValue(code));
+            LinkCommand.discordIDCode.put(event.getUser().getId(), code);
             event.replyEmbeds(embed.addField(MenuEmoji.KEY + DiscordLang.VERIFICATION_CODE_FIELD_TITLE.toString(),
                                     String.format(DiscordLang.VERIFICATION_CODE_FIELD_DESCRIPTION.toString(), code), false)
                             .setColor(Color.GREEN).build())

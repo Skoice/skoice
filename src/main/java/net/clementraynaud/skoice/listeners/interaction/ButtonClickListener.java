@@ -19,6 +19,9 @@
 
 package net.clementraynaud.skoice.listeners.interaction;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.menus.ErrorEmbeds;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
@@ -33,10 +36,6 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.menus.ErrorEmbeds.*;
-import static net.clementraynaud.skoice.config.Config.*;
-
 public class ButtonClickListener extends ListenerAdapter {
 
     public static final Map<String, String> discordIDAxis = new HashMap<>();
@@ -45,13 +44,13 @@ public class ButtonClickListener extends ListenerAdapter {
     public void onButtonClick(ButtonClickEvent event) {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (getPlugin().getConfig().contains(TEMP_MESSAGE_ID_FIELD)
-                    && getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD).equals(event.getMessageId())
+            if (Skoice.getPlugin().getConfig().contains(Config.TEMP_MESSAGE_ID_FIELD)
+                    && Skoice.getPlugin().getConfig().getString(Config.TEMP_MESSAGE_ID_FIELD).equals(event.getMessageId())
                     && event.getButton() != null && event.getButton().getId() != null) {
                 String buttonID = event.getButton().getId();
                 if (buttonID.equals(Menu.CLOSE_BUTTON_ID)) {
                     event.getMessage().delete().queue();
-                    if (!getPlugin().isBotReady()) {
+                    if (!Skoice.getPlugin().isBotReady()) {
                         event.replyEmbeds(new EmbedBuilder()
                                         .setTitle(MenuEmoji.GEAR + DiscordLang.CONFIGURATION_EMBED_TITLE.toString())
                                         .addField(MenuEmoji.WARNING + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE.toString(),
@@ -59,21 +58,21 @@ public class ButtonClickListener extends ListenerAdapter {
                                         .setColor(Color.RED).build())
                                 .setEphemeral(true).queue();
                     }
-                } else if (!getPlugin().isBotReady()) {
+                } else if (!Skoice.getPlugin().isBotReady()) {
                     event.editMessage(new Response().getMessage()).queue();
                 } else {
                     if (buttonID.equals(Menu.MODE.name())) {
-                        discordIDAxis.remove(member.getId());
+                        ButtonClickListener.discordIDAxis.remove(member.getId());
                     } else if (buttonID.equals(Menu.HORIZONTAL_RADIUS.name())) {
-                        discordIDAxis.put(member.getId(), HORIZONTAL_RADIUS_FIELD);
+                        ButtonClickListener.discordIDAxis.put(member.getId(), Config.HORIZONTAL_RADIUS_FIELD);
                     } else if (buttonID.equals(Menu.VERTICAL_RADIUS.name())) {
-                        discordIDAxis.put(member.getId(), VERTICAL_RADIUS_FIELD);
+                        ButtonClickListener.discordIDAxis.put(member.getId(), Config.VERTICAL_RADIUS_FIELD);
                     }
                     event.editMessage(Menu.valueOf(buttonID).getMessage()).queue();
                 }
             }
         } else {
-            event.replyEmbeds(getAccessDeniedEmbed()).setEphemeral(true).queue();
+            event.replyEmbeds(ErrorEmbeds.getAccessDeniedEmbed()).setEphemeral(true).queue();
         }
     }
 }

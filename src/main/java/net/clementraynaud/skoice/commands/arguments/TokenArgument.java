@@ -19,13 +19,11 @@
 
 package net.clementraynaud.skoice.commands.arguments;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import org.bukkit.command.CommandSender;
-
-import static net.clementraynaud.skoice.Skoice.getBot;
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.bot.Bot.getJda;
-import static net.clementraynaud.skoice.config.Config.setToken;
 
 public class TokenArgument extends Argument {
 
@@ -35,22 +33,23 @@ public class TokenArgument extends Argument {
 
     @Override
     public void run() {
-        if (!canExecuteCommand())
-            return;
-        if (arg.isEmpty()) {
-            sender.sendMessage(MinecraftLang.NO_TOKEN.toString());
+        if (!this.canExecuteCommand()) {
             return;
         }
-        if (arg.length() != 59 || !arg.matches("[a-zA-Z0-9_.]+")) {
-            sender.sendMessage(MinecraftLang.INVALID_TOKEN.toString());
+        if (this.arg.isEmpty()) {
+            this.sender.sendMessage(MinecraftLang.NO_TOKEN.toString());
             return;
         }
-        setToken(arg);
-        getPlugin().setTokenBoolean(true);
-        if (getJda() == null) {
-            getBot().connectBot(false, sender);
+        if (this.arg.length() != 59 || !this.arg.matches("[a-zA-Z0-9_.]+")) {
+            this.sender.sendMessage(MinecraftLang.INVALID_TOKEN.toString());
+            return;
+        }
+        Config.setToken(this.arg);
+        Skoice.getPlugin().setTokenBoolean(true);
+        if (Bot.getJda() == null) {
+            Skoice.getBot().connectBot(false, this.sender);
         } else {
-            sender.sendMessage(MinecraftLang.BOT_ALREADY_CONNECTED.toString());
+            this.sender.sendMessage(MinecraftLang.BOT_ALREADY_CONNECTED.toString());
         }
     }
 }

@@ -21,12 +21,10 @@ package net.clementraynaud.skoice.lang;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import org.bukkit.ChatColor;
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.config.Config;
 
 import java.util.Map;
-
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.config.Config.LANG_FIELD;
 
 public enum LoggerLang {
     PLUGIN_ENABLED_INFO(Maps.newHashMap(ImmutableMap.of(
@@ -89,7 +87,7 @@ public enum LoggerLang {
 
     @Override
     public String toString() {
-        String lang = getPlugin().getConfig().getString(LANG_FIELD);
-        return messages.getOrDefault(lang == null ? Lang.EN : Lang.valueOf(lang), messages.get(Lang.EN));
+        String lang = Skoice.getPlugin().getConfig().getString(Config.LANG_FIELD);
+        return this.messages.getOrDefault(lang == null ? Lang.EN : Lang.valueOf(lang), this.messages.get(Lang.EN));
     }
 }

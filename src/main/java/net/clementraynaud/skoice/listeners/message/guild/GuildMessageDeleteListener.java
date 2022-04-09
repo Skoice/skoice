@@ -19,24 +19,22 @@
 
 package net.clementraynaud.skoice.listeners.message.guild;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.listeners.interaction.ButtonClickListener.discordIDAxis;
-import static net.clementraynaud.skoice.config.Config.TEMP_FIELD;
-import static net.clementraynaud.skoice.config.Config.TEMP_MESSAGE_ID_FIELD;
 
 public class GuildMessageDeleteListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageDelete(@NotNull GuildMessageDeleteEvent event) {
-        if (getPlugin().getConfig().contains(TEMP_FIELD)
-                && event.getMessageId().equals(getPlugin().getConfig().getString(TEMP_MESSAGE_ID_FIELD))) {
-            getPlugin().getConfig().set(TEMP_FIELD, null);
-            getPlugin().saveConfig();
-            discordIDAxis.clear();
+        if (Skoice.getPlugin().getConfig().contains(Config.TEMP_FIELD)
+                && event.getMessageId().equals(Skoice.getPlugin().getConfig().getString(Config.TEMP_MESSAGE_ID_FIELD))) {
+            Skoice.getPlugin().getConfig().set(Config.TEMP_FIELD, null);
+            Skoice.getPlugin().saveConfig();
+            ButtonClickListener.discordIDAxis.clear();
         }
     }
 }

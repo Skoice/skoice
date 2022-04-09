@@ -19,8 +19,10 @@
 
 package net.clementraynaud.skoice.bot;
 
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.Response;
@@ -65,10 +67,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.system.Network.networks;
-import static net.clementraynaud.skoice.config.Config.*;
-
 public class Bot {
 
     private static final List<ListenerAdapter> LISTENERS = Arrays.asList(
@@ -82,11 +80,11 @@ public class Bot {
     private static JDA jda;
 
     public Bot() {
-        connectBot(true, null);
+        this.connectBot(true, null);
     }
 
     public static JDA getJda() {
-        return jda;
+        return Bot.jda;
     }
 
     public static void setJda(JDA jda) {
@@ -94,31 +92,31 @@ public class Bot {
     }
 
     public void connectBot(boolean startup, CommandSender sender) {
-        if (getPlugin().isTokenSet()) {
-            byte[] base64TokenBytes = Base64.getDecoder().decode(getPlugin().getConfig().getString(TOKEN_FIELD));
+        if (Skoice.getPlugin().isTokenSet()) {
+            byte[] base64TokenBytes = Base64.getDecoder().decode(Skoice.getPlugin().getConfig().getString(Config.TOKEN_FIELD));
             for (int i = 0; i < base64TokenBytes.length; i++) {
                 base64TokenBytes[i]--;
             }
             try {
-                setJda(JDABuilder.createDefault(new String(base64TokenBytes))
+                Bot.setJda(JDABuilder.createDefault(new String(base64TokenBytes))
                         .enableIntents(GatewayIntent.GUILD_MEMBERS)
                         .setMemberCachePolicy(MemberCachePolicy.ALL)
                         .build()
                         .awaitReady());
-                getPlugin().getLogger().info(LoggerLang.BOT_CONNECTED_INFO.toString());
+                Skoice.getPlugin().getLogger().info(LoggerLang.BOT_CONNECTED_INFO.toString());
             } catch (LoginException e) {
                 if (sender == null) {
-                    getPlugin().getLogger().severe(LoggerLang.BOT_COULD_NOT_CONNECT_ERROR.toString());
+                    Skoice.getPlugin().getLogger().severe(LoggerLang.BOT_COULD_NOT_CONNECT_ERROR.toString());
                 } else {
                     sender.sendMessage(MinecraftLang.BOT_COULD_NOT_CONNECT.toString());
-                    getPlugin().getConfig().set(TOKEN_FIELD, null);
-                    getPlugin().saveConfig();
+                    Skoice.getPlugin().getConfig().set(Config.TOKEN_FIELD, null);
+                    Skoice.getPlugin().saveConfig();
                 }
             } catch (IllegalStateException e) {
 
             } catch (ErrorResponseException e) {
                 if (sender == null) {
-                    getPlugin().getLogger().severe(LoggerLang.DISCORD_API_TIMED_OUT_ERROR.toString());
+                    Skoice.getPlugin().getLogger().severe(LoggerLang.DISCORD_API_TIMED_OUT_ERROR.toString());
                 } else {
                     try {
                         TextComponent discordStatusPage = new TextComponent("§bpage");
@@ -134,38 +132,38 @@ public class Bot {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (jda != null) {
-                setDefaultAvatar();
+            if (Bot.jda != null) {
+                this.setDefaultAvatar();
                 new Response().deleteMessage();
-                updateGuildUniquenessStatus();
-                checkForValidLobby();
-                checkForUnlinkedUsersInLobby();
-                jda.getGuilds().forEach(new Commands()::register);
-                jda.addEventListener(LISTENERS.toArray());
-                Bukkit.getScheduler().runTaskLater(getPlugin(), () ->
+                this.updateGuildUniquenessStatus();
+                this.checkForValidLobby();
+                this.checkForUnlinkedUsersInLobby();
+                Bot.jda.getGuilds().forEach(new Commands()::register);
+                Bot.jda.addEventListener(Bot.LISTENERS.toArray());
+                Bukkit.getScheduler().runTaskLater(Skoice.getPlugin(), () ->
                                 Bukkit.getScheduler().runTaskTimerAsynchronously(
-                                        getPlugin(),
+                                        Skoice.getPlugin(),
                                         new UpdateNetworksTask()::run,
                                         0,
                                         10
                                 ),
                         0
                 );
-                Bukkit.getScheduler().runTaskLater(getPlugin(), () ->
+                Bukkit.getScheduler().runTaskLater(Skoice.getPlugin(), () ->
                                 Bukkit.getScheduler().runTaskTimerAsynchronously(
-                                        getPlugin(),
-                                        getPlugin()::checkVersion,
-                                        TICKS_BETWEEN_VERSION_CHECKING,
-                                        TICKS_BETWEEN_VERSION_CHECKING
+                                        Skoice.getPlugin(),
+                                        Skoice.getPlugin()::checkVersion,
+                                        Bot.TICKS_BETWEEN_VERSION_CHECKING,
+                                        Bot.TICKS_BETWEEN_VERSION_CHECKING
                                 ),
                         0
                 );
-                retrieveNetworks();
+                this.retrieveNetworks();
             }
         }
-        getPlugin().updateConfigurationStatus(startup);
-        if (sender != null && jda != null) {
-            if (getPlugin().isBotReady()) {
+        Skoice.getPlugin().updateConfigurationStatus(startup);
+        if (sender != null && Bot.jda != null) {
+            if (Skoice.getPlugin().isBotReady()) {
                 sender.sendMessage(MinecraftLang.BOT_CONNECTED.toString());
             } else {
                 sender.sendMessage(MinecraftLang.BOT_CONNECTED_INCOMPLETE_CONFIGURATION_DISCORD.toString());
@@ -174,34 +172,35 @@ public class Bot {
     }
 
     private void setDefaultAvatar() {
-        if (jda.getSelfUser().getDefaultAvatarUrl().equals(jda.getSelfUser().getEffectiveAvatarUrl()))
+        if (Bot.jda.getSelfUser().getDefaultAvatarUrl().equals(Bot.jda.getSelfUser().getEffectiveAvatarUrl())) {
             try {
-                jda.getSelfUser().getManager()
+                Bot.jda.getSelfUser().getManager()
                         .setAvatar(Icon.from(new URL("https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409").openStream())).queue();
             } catch (IOException ignored) {
             }
+        }
     }
 
     public void updateGuildUniquenessStatus() {
-        getPlugin().setGuildUnique(getJda().getGuilds().size() <= 1);
+        Skoice.getPlugin().setGuildUnique(Bot.getJda().getGuilds().size() <= 1);
     }
 
     public void checkForValidLobby() {
-        if (getLobby() == null && getPlugin().getConfig().contains(LOBBY_ID_FIELD)) {
-            getPlugin().getConfig().set(LOBBY_ID_FIELD, null);
-            getPlugin().saveConfig();
+        if (Config.getLobby() == null && Skoice.getPlugin().getConfig().contains(Config.LOBBY_ID_FIELD)) {
+            Skoice.getPlugin().getConfig().set(Config.LOBBY_ID_FIELD, null);
+            Skoice.getPlugin().saveConfig();
         }
     }
 
     public void checkForUnlinkedUsersInLobby() {
-        VoiceChannel lobby = getLobby();
+        VoiceChannel lobby = Config.getLobby();
         if (lobby != null) {
             for (Member member : lobby.getMembers()) {
-                String minecraftID = getKeyFromValue(getLinkMap(), member.getId());
+                String minecraftID = Config.getKeyFromValue(Config.getLinkMap(), member.getId());
                 if (minecraftID == null) {
                     EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.LINK + DiscordLang.LINKING_PROCESS_EMBED_TITLE.toString())
                             .setColor(Color.RED);
-                    Guild guild = getGuild();
+                    Guild guild = Config.getGuild();
                     if (guild != null) {
                         embed.addField(MenuEmoji.WARNING + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(),
                                 String.format(DiscordLang.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString(), guild.getName()), false);
@@ -218,7 +217,7 @@ public class Bot {
     }
 
     private void retrieveNetworks() {
-        Category category = getCategory();
+        Category category = Config.getCategory();
         if (category != null) {
             category.getVoiceChannels().stream()
                     .filter(channel -> {
@@ -229,7 +228,7 @@ public class Bot {
                             return false;
                         }
                     })
-                    .forEach(channel -> networks.add(new Network(channel.getId())));
+                    .forEach(channel -> Network.networks.add(new Network(channel.getId())));
         }
     }
 }

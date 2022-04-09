@@ -19,14 +19,13 @@
 
 package net.clementraynaud.skoice.listeners.message.guild;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.clementraynaud.skoice.menus.Response;
 import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.listeners.interaction.ButtonClickListener.discordIDAxis;
-import static net.clementraynaud.skoice.config.Config.*;
 
 public class GuildMessageReceivedListener extends ListenerAdapter {
 
@@ -35,25 +34,25 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
         String discordID = event.getAuthor().getId();
         if (discordID.equals(event.getJDA().getSelfUser().getId())) {
             if (!event.getMessage().isEphemeral()) {
-                getPlugin().getConfig().set(TEMP_GUILD_ID_FIELD, event.getGuild().getId());
-                getPlugin().getConfig().set(TEMP_TEXT_CHANNEL_ID_FIELD, event.getChannel().getId());
-                getPlugin().getConfig().set(TEMP_MESSAGE_ID_FIELD, event.getMessageId());
-                getPlugin().saveConfig();
+                Skoice.getPlugin().getConfig().set(Config.TEMP_GUILD_ID_FIELD, event.getGuild().getId());
+                Skoice.getPlugin().getConfig().set(Config.TEMP_TEXT_CHANNEL_ID_FIELD, event.getChannel().getId());
+                Skoice.getPlugin().getConfig().set(Config.TEMP_MESSAGE_ID_FIELD, event.getMessageId());
+                Skoice.getPlugin().saveConfig();
             }
-        } else if (discordIDAxis.containsKey(event.getAuthor().getId())
+        } else if (ButtonClickListener.discordIDAxis.containsKey(event.getAuthor().getId())
                 && event.getMessage().getContentRaw().length() <= 4
                 && event.getMessage().getContentRaw().matches("[0-9]+")) {
             int value = Integer.parseInt(event.getMessage().getContentRaw());
             if (value >= 1 && value <= 1000) {
                 event.getMessage().delete().queue();
-                getPlugin().getConfig().set(discordIDAxis.get(event.getAuthor().getId()), value);
-                getPlugin().saveConfig();
+                Skoice.getPlugin().getConfig().set(ButtonClickListener.discordIDAxis.get(event.getAuthor().getId()), value);
+                Skoice.getPlugin().saveConfig();
                 new Response().deleteMessage();
                 Menu.customizeRadius = false;
-                if (discordIDAxis.get(event.getAuthor().getId()).equals(HORIZONTAL_RADIUS_FIELD)) {
+                if (ButtonClickListener.discordIDAxis.get(event.getAuthor().getId()).equals(Config.HORIZONTAL_RADIUS_FIELD)) {
                     Menu.HORIZONTAL_RADIUS.refreshFields();
                     event.getChannel().sendMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
-                } else if (discordIDAxis.get(event.getAuthor().getId()).equals(VERTICAL_RADIUS_FIELD)) {
+                } else if (ButtonClickListener.discordIDAxis.get(event.getAuthor().getId()).equals(Config.VERTICAL_RADIUS_FIELD)) {
                     Menu.VERTICAL_RADIUS.refreshFields();
                     event.getChannel().sendMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
                 }

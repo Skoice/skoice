@@ -19,9 +19,11 @@
 
 package net.clementraynaud.skoice.commands.arguments;
 
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
+import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -34,9 +36,6 @@ import org.bukkit.entity.Player;
 
 import java.awt.*;
 
-import static net.clementraynaud.skoice.system.Network.getNetworks;
-import static net.clementraynaud.skoice.config.Config.*;
-
 public class UnlinkArgument extends Argument {
 
     public UnlinkArgument(CommandSender sender) {
@@ -45,18 +44,19 @@ public class UnlinkArgument extends Argument {
 
     @Override
     public void run() {
-        if (!canExecuteCommand())
+        if (!this.canExecuteCommand()) {
             return;
-        Player player = (Player) sender;
-        String discordID = getLinkMap().get(player.getUniqueId().toString());
+        }
+        Player player = (Player) this.sender;
+        String discordID = Config.getLinkMap().get(player.getUniqueId().toString());
         if (discordID == null) {
             player.sendMessage(MinecraftLang.ACCOUNT_NOT_LINKED.toString());
             return;
         }
-        unlinkUser(player.getUniqueId().toString());
+        Config.unlinkUser(player.getUniqueId().toString());
         Member member;
         try {
-            member = getGuild().retrieveMemberById(discordID).complete();
+            member = Config.getGuild().retrieveMemberById(discordID).complete();
             member.getUser().openPrivateChannel().complete()
                     .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.LINK + DiscordLang.LINKING_PROCESS_EMBED_TITLE.toString())
                             .addField(MenuEmoji.HEAVY_CHECK_MARK + DiscordLang.ACCOUNT_UNLINKED_FIELD_TITLE.toString(),
@@ -66,7 +66,7 @@ public class UnlinkArgument extends Argument {
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 VoiceChannel voiceChannel = voiceState.getChannel();
-                if (voiceChannel != null && voiceChannel.equals(getLobby()) || getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
+                if (voiceChannel != null && voiceChannel.equals(Config.getLobby()) || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
                     player.sendMessage(MinecraftLang.DISCONNECTED_FROM_PROXIMITY_VOICE_CHAT.toString());
                 }
             }

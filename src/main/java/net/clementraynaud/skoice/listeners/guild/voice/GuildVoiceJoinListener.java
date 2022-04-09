@@ -20,6 +20,7 @@
 
 package net.clementraynaud.skoice.listeners.guild.voice;
 
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
@@ -36,15 +37,15 @@ import org.bukkit.OfflinePlayer;
 import java.awt.*;
 import java.util.UUID;
 
-import static net.clementraynaud.skoice.config.Config.*;
-
 public class GuildVoiceJoinListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
         new UpdateVoiceStateTask(event.getMember(), event.getChannelJoined()).run();
-        if (!event.getChannelJoined().equals(getLobby())) return;
-        String minecraftID = getKeyFromValue(getLinkMap(), event.getMember().getId());
+        if (!event.getChannelJoined().equals(Config.getLobby())) {
+            return;
+        }
+        String minecraftID = Config.getKeyFromValue(Config.getLinkMap(), event.getMember().getId());
         if (minecraftID == null) {
             event.getMember().getUser().openPrivateChannel().complete()
                     .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.LINK + DiscordLang.LINKING_PROCESS_EMBED_TITLE.toString())

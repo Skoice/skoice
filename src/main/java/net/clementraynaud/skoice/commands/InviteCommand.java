@@ -31,12 +31,16 @@ public class InviteCommand extends ListenerAdapter {
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        if (event.getName().equals("invite")) {
+        if ("invite" .equals(event.getName())) {
             EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.ENVELOPE + DiscordLang.GET_THE_PROXIMITY_VOICE_CHAT_EMBED_TITLE.toString())
-                    .addField(MenuEmoji.INBOX_TRAY + DiscordLang.DOWNLOAD_SKOICE_FIELD_TITLE.toString(), DiscordLang.DOWNLOAD_SKOICE_FIELD_DESRIPTION.toString(), false)
-                    .addField(MenuEmoji.GREEN_HEART + DiscordLang.DONATE_FIELD_TITLE.toString(), DiscordLang.DONATE_FIELD_DESCRIPTION.toString(), false)
-                    .addField(MenuEmoji.SCREWDRIVER + DiscordLang.TROUBLESHOOTING_FIELD_TITLE.toString(), DiscordLang.TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), false)
-                    .addField(MenuEmoji.HAMMER + DiscordLang.CONTRIBUTE_FIELD_TITLE.toString().toString(), DiscordLang.CONTRIBUTE_FIELD_DESCRIPTION.toString(), false)
+                    .addField(MenuEmoji.INBOX_TRAY + DiscordLang.DOWNLOAD_SKOICE_FIELD_TITLE.toString(),
+                            DiscordLang.DOWNLOAD_SKOICE_FIELD_DESRIPTION.toString(), false)
+                    .addField(MenuEmoji.GREEN_HEART + DiscordLang.DONATE_FIELD_TITLE.toString(),
+                            DiscordLang.DONATE_FIELD_DESCRIPTION.toString(), false)
+                    .addField(MenuEmoji.SCREWDRIVER + DiscordLang.TROUBLESHOOTING_FIELD_TITLE.toString(),
+                            DiscordLang.TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), false)
+                    .addField(MenuEmoji.HAMMER + DiscordLang.CONTRIBUTE_FIELD_TITLE.toString(),
+                            DiscordLang.CONTRIBUTE_FIELD_DESCRIPTION.toString(), false)
                     .setColor(Color.ORANGE);
             event.replyEmbeds(embed.build()).setEphemeral(true).queue();
         }

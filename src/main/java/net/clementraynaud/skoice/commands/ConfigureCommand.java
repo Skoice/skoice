@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.commands;
 
+import net.clementraynaud.skoice.menus.ErrorEmbeds;
 import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -28,34 +29,31 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.menus.ErrorEmbeds.*;
-
 public class ConfigureCommand extends ListenerAdapter {
 
     private boolean configureCommandCooldown = false;
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        if (event.getName().equals("configure")) {
+        if ("configure" .equals(event.getName())) {
             Member member = event.getMember();
             if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-                if (configureCommandCooldown) {
-                    event.replyEmbeds(getTooManyInteractionsEmbed()).setEphemeral(true).queue();
+                if (this.configureCommandCooldown) {
+                    event.replyEmbeds(ErrorEmbeds.getTooManyInteractionsEmbed()).setEphemeral(true).queue();
                 } else {
                     new Response().deleteMessage();
                     event.reply(new Response().getMessage()).queue();
-                    configureCommandCooldown = true;
+                    this.configureCommandCooldown = true;
                     new Timer().schedule(new TimerTask() {
 
                         @Override
                         public void run() {
-                            configureCommandCooldown = false;
+                            ConfigureCommand.this.configureCommandCooldown = false;
                         }
                     }, 5000);
                 }
             } else {
-                event.replyEmbeds(getAccessDeniedEmbed()).setEphemeral(true).queue();
+                event.replyEmbeds(ErrorEmbeds.getAccessDeniedEmbed()).setEphemeral(true).queue();
             }
         }
     }

@@ -20,6 +20,9 @@
 
 package net.clementraynaud.skoice.system;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.util.DistanceUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -28,10 +31,6 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.config.Config.*;
-import static net.clementraynaud.skoice.util.DistanceUtil.*;
 
 public class Network {
 
@@ -49,16 +48,16 @@ public class Network {
     }
 
     public static Set<Network> getNetworks() {
-        return networks;
+        return Network.networks;
     }
 
     public Network(Set<UUID> players) {
         this.players = players;
-        Guild guild = getGuild();
-        List<Permission> deniedPermissions = getPlugin().getConfig().getBoolean(CHANNEL_VISIBILITY_FIELD)
+        Guild guild = Config.getGuild();
+        List<Permission> deniedPermissions = Skoice.getPlugin().getConfig().getBoolean(Config.CHANNEL_VISIBILITY_FIELD)
                 ? Arrays.asList(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS)
                 : Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
-        getCategory().createVoiceChannel(UUID.randomUUID().toString())
+        Config.getCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(guild.getPublicRole(),
                         Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
                         deniedPermissions)
@@ -68,92 +67,96 @@ public class Network {
                 .setBitrate(guild.getMaxBitrate())
                 .queue(channel -> {
                     this.channel = channel.getId();
-                    initialized = true;
-                }, e -> getNetworks().remove(this));
+                    this.initialized = true;
+                }, e -> Network.getNetworks().remove(this));
     }
 
     public boolean canPlayerBeAdded(Player player) {
-        return players.stream()
+        return this.players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> getVerticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius()
-                        && getHorizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius());
+                .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= Config.getVerticalRadius()
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= Config.getHorizontalRadius());
     }
 
     public boolean canPlayerStayConnected(Player player) {
-        List<Player> matches = Arrays.asList(players.stream()
+        List<Player> matches = Arrays.asList(this.players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .filter(p -> getVerticalDistance(p.getLocation(), player.getLocation()) <= getVerticalRadius() + FALLOFF
-                        && getHorizontalDistance(p.getLocation(), player.getLocation()) <= getHorizontalRadius() + FALLOFF)
+                .filter(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= Config.getVerticalRadius() + Network.FALLOFF
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= Config.getHorizontalRadius() + Network.FALLOFF)
                 .toArray(Player[]::new));
-        if (players.size() > matches.size()) {
-            Player[] otherPlayers = players.stream()
+        if (this.players.size() > matches.size()) {
+            Player[] otherPlayers = this.players.stream()
                     .map(Bukkit::getPlayer)
                     .filter(Objects::nonNull)
                     .filter(p -> !matches.contains(p))
                     .toArray(Player[]::new);
-            for (Player otherPlayer : otherPlayers)
+            for (Player otherPlayer : otherPlayers) {
                 if (matches.stream()
-                        .anyMatch(p -> getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= getVerticalRadius() + FALLOFF
-                        && getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= getHorizontalRadius() + FALLOFF))
+                        .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= Config.getVerticalRadius() + Network.FALLOFF
+                                && DistanceUtil.getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= Config.getHorizontalRadius() + Network.FALLOFF)) {
                     return true;
+                }
+            }
             return false;
         }
         return matches.size() != 1;
     }
 
     public Network engulf(Network network) {
-        players.addAll(network.players);
+        this.players.addAll(network.players);
         network.players.clear();
         return this;
     }
 
     public void clear() {
-        players.clear();
+        this.players.clear();
     }
 
     public void add(UUID uuid) {
-        players.add(uuid);
+        this.players.add(uuid);
     }
 
     public void remove(Player player) {
-        players.remove(player.getUniqueId());
+        this.players.remove(player.getUniqueId());
     }
 
     public void remove(UUID uuid) {
-        players.remove(uuid);
+        this.players.remove(uuid);
     }
 
     public boolean contains(Player player) {
-        return players.contains(player.getUniqueId());
+        return this.players.contains(player.getUniqueId());
     }
 
     public boolean contains(UUID uuid) {
-        return players.contains(uuid);
+        return this.players.contains(uuid);
     }
 
     public int size() {
-        return players.size();
+        return this.players.size();
     }
 
     public boolean isEmpty() {
-        return players.isEmpty();
+        return this.players.isEmpty();
     }
 
     public VoiceChannel getChannel() {
-        if (channel == null || channel.isEmpty())
+        if (this.channel == null || this.channel.isEmpty()) {
             return null;
-        Guild guild = getGuild();
-        if (guild != null)
-            return guild.getVoiceChannelById(channel);
+        }
+        Guild guild = Config.getGuild();
+        if (guild != null) {
+            return guild.getVoiceChannelById(this.channel);
+        }
         return null;
     }
 
     public boolean isInitialized() {
-        return initialized;
+        return this.initialized;
     }
 }

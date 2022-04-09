@@ -19,18 +19,17 @@
 
 package net.clementraynaud.skoice.listeners.channel.voice.lobby;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.config.Config.LOBBY_ID_FIELD;
 
 public class VoiceChannelDeleteListener extends ListenerAdapter {
 
     @Override
     public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
-        if (event.getChannel().getId().equals(getPlugin().getConfig().getString(LOBBY_ID_FIELD))) {
+        if (event.getChannel().getId().equals(Skoice.getPlugin().getConfig().getString(Config.LOBBY_ID_FIELD))) {
             new Response().sendLobbyDeletedAlert(event.getGuild());
         }
     }

@@ -19,6 +19,8 @@
 
 package net.clementraynaud.skoice.listeners.player;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -31,16 +33,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.bot.Bot.getJda;
-
 public class PlayerJoinListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.isOp()) {
-            if (!getPlugin().isTokenSet() || getJda() == null) {
+            if (!Skoice.getPlugin().isTokenSet() || Bot.getJda() == null) {
                 try {
                     TextComponent configureCommand = new TextComponent("§bhere");
                     MessageUtil.setHoverEvent(configureCommand, "§8☀ §bExecute: §7/skoice configure");
@@ -51,7 +50,7 @@ public class PlayerJoinListener implements Listener {
                 } catch (NoSuchMethodError e) {
                     player.sendMessage(MinecraftLang.INCOMPLETE_CONFIGURATION_OPERATOR_COMMAND.toString());
                 }
-            } else if (!getPlugin().isBotReady()) {
+            } else if (!Skoice.getPlugin().isBotReady()) {
                 player.sendMessage(MinecraftLang.INCOMPLETE_CONFIGURATION_OPERATOR_DISCORD.toString());
             }
         }

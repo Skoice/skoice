@@ -34,25 +34,29 @@ public abstract class Argument {
             @Override
             public void run(CommandSender sender, String arg) {
                 new ConfigureArgument(sender).run();
-            }},
+            }
+        },
 
         TOKEN {
             @Override
             public void run(CommandSender sender, String arg) {
                 new TokenArgument(sender, arg).run();
-            }},
+            }
+        },
 
         LINK {
             @Override
             public void run(CommandSender sender, String arg) {
                 new LinkArgument(sender, arg).run();
-            }},
+            }
+        },
 
         UNLINK {
             @Override
             public void run(CommandSender sender, String arg) {
                 new UnlinkArgument(sender).run();
-            }};
+            }
+        };
 
         public abstract void run(CommandSender sender, String arg);
 
@@ -86,12 +90,12 @@ public abstract class Argument {
     protected abstract void run();
 
     protected boolean canExecuteCommand() {
-        if (!(sender instanceof Player) && !this.allowsConsole) {
-            sender.sendMessage(MinecraftLang.ILLEGAL_EXECUTOR.toString());
+        if (!(this.sender instanceof Player) && !this.allowsConsole) {
+            this.sender.sendMessage(MinecraftLang.ILLEGAL_EXECUTOR.toString());
             return false;
         }
-        if (!sender.isOp() && this.restrictedToOperators) {
-            sender.sendMessage(MinecraftLang.MISSING_PERMISSION.toString());
+        if (!this.sender.isOp() && this.restrictedToOperators) {
+            this.sender.sendMessage(MinecraftLang.MISSING_PERMISSION.toString());
             return false;
         }
         return true;

@@ -30,14 +30,14 @@ public class EligiblePlayers {
     private static final Set<UUID> players = new HashSet<>();
 
     public void add(Player player) {
-        players.add(player.getUniqueId());
+        EligiblePlayers.players.add(player.getUniqueId());
     }
 
     public Set<UUID> get() {
-        return players;
+        return EligiblePlayers.players;
     }
 
     public void clear() {
-        players.clear();
+        EligiblePlayers.players.clear();
     }
 }

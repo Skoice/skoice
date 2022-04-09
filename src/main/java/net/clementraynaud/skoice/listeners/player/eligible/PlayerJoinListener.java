@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.listeners.player.eligible;
 
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
@@ -30,20 +31,18 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import static net.clementraynaud.skoice.config.Config.*;
-
 public class PlayerJoinListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         new EligiblePlayers().add(player);
-        Member member = getMember(player.getUniqueId());
+        Member member = Config.getMember(player.getUniqueId());
         if (member != null) {
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 VoiceChannel voiceChannel = voiceState.getChannel();
-                if (voiceChannel != null && voiceChannel.equals(getLobby())) {
+                if (voiceChannel != null && voiceChannel.equals(Config.getLobby())) {
                     player.sendMessage(MinecraftLang.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());
                 }
             }
