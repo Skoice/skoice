@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -52,8 +53,9 @@ public class ButtonClickListener extends ListenerAdapter {
                     event.getMessage().delete().queue();
                     if (!getPlugin().isBotReady()) {
                         event.replyEmbeds(new EmbedBuilder()
-                                        .setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
-                                        .addField(":warning: " + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE, DiscordLang.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.toString(), false)
+                                        .setTitle(MenuEmoji.GEAR + DiscordLang.CONFIGURATION_EMBED_TITLE.toString())
+                                        .addField(MenuEmoji.WARNING + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE.toString(),
+                                                DiscordLang.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.toString(), false)
                                         .setColor(Color.RED).build())
                                 .setEphemeral(true).queue();
                     }

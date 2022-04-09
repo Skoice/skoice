@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.message.priv;
 
 import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -31,8 +32,9 @@ public class PrivateMessageReceivedListener extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
-            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(":warning: " + DiscordLang.ERROR_EMBED_TITLE)
-                    .addField(":no_entry: " + DiscordLang.ILLEGAL_INTERACTION_FIELD_TITLE, DiscordLang.ILLEGAL_INTERACTION_FIELD_DESCRIPTION.toString(), false)
+            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(MenuEmoji.WARNING + DiscordLang.ERROR_EMBED_TITLE.toString())
+                    .addField(MenuEmoji.NO_ENTRY + DiscordLang.ILLEGAL_INTERACTION_FIELD_TITLE.toString(),
+                            DiscordLang.ILLEGAL_INTERACTION_FIELD_DESCRIPTION.toString(), false)
                     .setColor(Color.RED).build()).queue();
         }
     }

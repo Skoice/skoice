@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.bot;
 import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
+import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.Response;
 import net.clementraynaud.skoice.listeners.interaction.SelectMenuListener;
 import net.clementraynaud.skoice.listeners.ReconnectedListener;
@@ -198,14 +199,15 @@ public class Bot {
             for (Member member : lobby.getMembers()) {
                 String minecraftID = getKeyFromValue(getLinkMap(), member.getId());
                 if (minecraftID == null) {
-                    EmbedBuilder embed = new EmbedBuilder().setTitle(":link: " + DiscordLang.LINKING_PROCESS_EMBED_TITLE)
+                    EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.LINK + DiscordLang.LINKING_PROCESS_EMBED_TITLE.toString())
                             .setColor(Color.RED);
                     Guild guild = getGuild();
                     if (guild != null) {
-                        embed.addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE,
+                        embed.addField(MenuEmoji.WARNING + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(),
                                 String.format(DiscordLang.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString(), guild.getName()), false);
                     } else {
-                        embed.addField(":warning: " + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE, DiscordLang.ACCOUNT_NOT_LINKED_FIELD_GENERIC_ALTERNATIVE_DESCRIPTION.toString(), false);
+                        embed.addField(MenuEmoji.WARNING + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(),
+                                DiscordLang.ACCOUNT_NOT_LINKED_FIELD_GENERIC_ALTERNATIVE_DESCRIPTION.toString(), false);
                     }
                     member.getUser().openPrivateChannel().complete()
                             .sendMessageEmbeds(embed.build())

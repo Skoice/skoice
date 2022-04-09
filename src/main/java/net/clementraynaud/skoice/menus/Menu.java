@@ -68,23 +68,23 @@ public enum Menu {
 
     static {
         CONFIGURATION.additionalFields = Collections.singletonList(
-                new Field(SCREWDRIVER + " " + TROUBLESHOOTING_FIELD_TITLE, TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), true));
+                new Field(SCREWDRIVER + TROUBLESHOOTING_FIELD_TITLE.toString(), TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), true));
         MODE.additionalFields = Arrays.asList(
-                new Field(MAP + " " + VANILLA_MODE_FIELD_TITLE, VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
-                new Field(CROSSED_SWORDS + " " + MINIGAME_MODE_FIELD_TITLE, MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
+                new Field(MAP + VANILLA_MODE_FIELD_TITLE.toString(), VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
+                new Field(CROSSED_SWORDS + MINIGAME_MODE_FIELD_TITLE.toString(), MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
                 getPlugin().isBotReady()
-                        ? new Field(PENCIL2 + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true)
+                        ? new Field(PENCIL2 + CUSTOMIZE_FIELD_TITLE.toString(), CUSTOMIZE_FIELD_DESCRIPTION.toString(), true)
                         : null);
         HORIZONTAL_RADIUS.additionalFields = Collections.singletonList(
-                new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
+                new Field(KEYBOARD + ENTER_A_VALUE_FIELD_TITLE.toString(), String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
                         getHorizontalRadius()), false));
         VERTICAL_RADIUS.additionalFields = Collections.singletonList(
-                new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
+                new Field(KEYBOARD + ENTER_A_VALUE_FIELD_TITLE.toString(), String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
                         getVerticalRadius()), false));
         //CHANGELOG.additionalFields = Arrays.asList();
         UPCOMING_FEATURES.additionalFields = Arrays.asList(
-                new Field(CLIPBOARD + " " + UPCOMING_FEATURES_FIELD_TITLE, UPCOMING_FEATURES_FIELD_DESCRIPTION.toString(), false),
-                new Field(HAMMER + " " + CONTRIBUTE_FIELD_TITLE, CONTRIBUTE_FIELD_DESCRIPTION.toString(), false));
+                new Field(CLIPBOARD + UPCOMING_FEATURES_FIELD_TITLE.toString(), UPCOMING_FEATURES_FIELD_DESCRIPTION.toString(), false),
+                new Field(HAMMER + CONTRIBUTE_FIELD_TITLE.toString(), CONTRIBUTE_FIELD_DESCRIPTION.toString(), false));
 
         SERVER.selectMenu = new ServerSelectMenu();
         LOBBY.selectMenu = new LobbySelectMenu();
@@ -108,7 +108,7 @@ public enum Menu {
     private String getTitle(boolean withEmoji) {
         if (isValueSet(this.name() + "_EMBED_TITLE"))
             return withEmoji
-                    ? unicode + " " + DiscordLang.valueOf(this.name() + "_EMBED_TITLE")
+                    ? unicode + DiscordLang.valueOf(this.name() + "_EMBED_TITLE").toString()
                     : DiscordLang.valueOf(this.name() + "_EMBED_TITLE").toString();
         return null;
     }
@@ -203,21 +203,21 @@ public enum Menu {
         switch (this) {
             case MODE:
                 MODE.additionalFields = Arrays.asList(
-                        new Field(MAP + " " + VANILLA_MODE_FIELD_TITLE, VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
-                        new Field(CROSSED_SWORDS + " " + MINIGAME_MODE_FIELD_TITLE, MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
+                        new Field(MAP + VANILLA_MODE_FIELD_TITLE.toString(), VANILLA_MODE_FIELD_DESCRIPTION.toString(), true),
+                        new Field(CROSSED_SWORDS + MINIGAME_MODE_FIELD_TITLE.toString(), MINIGAME_MODE_FIELD_DESCRIPTION.toString(), true),
                         getPlugin().isBotReady()
-                                ? new Field(PENCIL2 + " " + CUSTOMIZE_FIELD_TITLE, CUSTOMIZE_FIELD_DESCRIPTION.toString(), true)
+                                ? new Field(PENCIL2 + CUSTOMIZE_FIELD_TITLE.toString(), CUSTOMIZE_FIELD_DESCRIPTION.toString(), true)
                                 : null);
                 break;
             case HORIZONTAL_RADIUS:
                 HORIZONTAL_RADIUS.additionalFields = Collections.singletonList(
-                        new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
-                                        getHorizontalRadius()), false));
+                        new Field(KEYBOARD + ENTER_A_VALUE_FIELD_TITLE.toString(), String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
+                                getHorizontalRadius()), false));
                 break;
             case VERTICAL_RADIUS:
                 VERTICAL_RADIUS.additionalFields = Collections.singletonList(
-                        new Field(KEYBOARD + " " + ENTER_A_VALUE_FIELD_TITLE, String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
-                                        getVerticalRadius()), false));
+                        new Field(KEYBOARD + ENTER_A_VALUE_FIELD_TITLE.toString(), String.format(ENTER_A_VALUE_FIELD_DESCRIPTION.toString(),
+                                getVerticalRadius()), false));
                 break;
             default:
                 throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), this.name()));

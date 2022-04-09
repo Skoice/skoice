@@ -31,14 +31,16 @@ public class ErrorEmbeds {
     }
 
     public static MessageEmbed getAccessDeniedEmbed() {
-        return new EmbedBuilder().setTitle(":warning: " + DiscordLang.ERROR_EMBED_TITLE)
-                .addField(":no_entry: " + DiscordLang.ACCESS_DENIED_FIELD_TITLE, DiscordLang.ACCESS_DENIED_FIELD_DESCRIPTION.toString(), false)
+        return new EmbedBuilder().setTitle(MenuEmoji.WARNING + DiscordLang.ERROR_EMBED_TITLE.toString())
+                .addField(MenuEmoji.NO_ENTRY + DiscordLang.ACCESS_DENIED_FIELD_TITLE.toString(),
+                        DiscordLang.ACCESS_DENIED_FIELD_DESCRIPTION.toString(), false)
                 .setColor(Color.RED).build();
     }
 
     public static MessageEmbed getTooManyInteractionsEmbed() {
-        return new EmbedBuilder().setTitle(":warning: " + DiscordLang.ERROR_EMBED_TITLE)
-                .addField(":chart_with_upwards_trend: " + DiscordLang.TOO_MANY_INTERACTIONS_FIELD_TITLE, DiscordLang.TOO_MANY_INTERACTIONS_FIELD_DESCRIPTION.toString(), false)
+        return new EmbedBuilder().setTitle(MenuEmoji.WARNING + DiscordLang.ERROR_EMBED_TITLE.toString())
+                .addField(MenuEmoji.CHART_WITH_UPWARDS_TREND + DiscordLang.TOO_MANY_INTERACTIONS_FIELD_TITLE.toString(),
+                        DiscordLang.TOO_MANY_INTERACTIONS_FIELD_DESCRIPTION.toString(), false)
                 .setColor(Color.RED).build();
     }
 }

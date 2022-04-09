@@ -67,7 +67,7 @@ public class LobbySelectMenu extends SelectMenu {
         if (options.size() == 23) {
             options.add(SelectOption.of(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.toString(), REFRESH_OPTION_ID)
                     .withDescription(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.toString())
-                    .withEmoji(MenuEmoji.WARNING_SIGN.getEmojiFromUnicode()));
+                    .withEmoji(MenuEmoji.WARNING.getEmojiFromUnicode()));
         }
         if (getPlugin().isBotReady()) {
             return SelectionMenu.create(Menu.LOBBY.name() + "_SELECTION")

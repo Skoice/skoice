@@ -21,6 +21,7 @@ package net.clementraynaud.skoice;
 
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.SkoiceCommand;
+import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.Response;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.listeners.player.eligible.PlayerMoveListener;
@@ -175,8 +176,9 @@ public class Skoice extends JavaPlugin {
             Message configurationMessage = new Response().getConfigurationMessage();
             if (configurationMessage != null)
                 configurationMessage.getInteraction().getUser().openPrivateChannel().complete()
-                        .sendMessageEmbeds(new EmbedBuilder().setTitle(":gear: " + DiscordLang.CONFIGURATION_EMBED_TITLE)
-                                .addField(":heavy_check_mark: " + DiscordLang.CONFIGURATION_COMPLETE_FIELD_TITLE, DiscordLang.CONFIGURATION_COMPLETE_FIELD_DESCRIPTION.toString(), false)
+                        .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.GEAR + DiscordLang.CONFIGURATION_EMBED_TITLE.toString())
+                                .addField(MenuEmoji.HEAVY_CHECK_MARK + DiscordLang.CONFIGURATION_COMPLETE_FIELD_TITLE.toString(),
+                                        DiscordLang.CONFIGURATION_COMPLETE_FIELD_DESCRIPTION.toString(), false)
                                 .setColor(Color.GREEN).build())
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         } else if (wasBotReady && !isBotReady) {

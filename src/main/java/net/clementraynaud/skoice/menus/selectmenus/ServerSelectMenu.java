@@ -50,7 +50,7 @@ public class ServerSelectMenu extends SelectMenu {
         if (options.size() == 24) {
             options.add(SelectOption.of(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.toString(), "refresh")
                     .withDescription(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.toString())
-                    .withEmoji(MenuEmoji.WARNING_SIGN.getEmojiFromUnicode()));
+                    .withEmoji(MenuEmoji.WARNING.getEmojiFromUnicode()));
         }
         return SelectionMenu.create(Menu.SERVER.name() + "_SELECTION")
                 .setPlaceholder(DiscordLang.SERVER_SELECT_MENU_PLACEHOLDER.toString())

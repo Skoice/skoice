@@ -22,30 +22,37 @@ package net.clementraynaud.skoice.menus;
 import net.dv8tion.jda.api.entities.Emoji;
 
 public enum MenuEmoji {
-    GEAR("U+2699"),
-    CLOCK3("U+1F552"),
-    HEAVY_CHECK_MARK("U+2714"),
-    HEAVY_PLUS_SIGN("U+2795"),
-    HEAVY_MULTIPLICATION_X("U+2716"),
-    WARNING_SIGN("U+26A0"),
-    FILE_CABINET("U+1F5C4"),
-    SOUND("U+1F509"),
-    VIDEO_GAME("U+1F3AE"),
-    SCREWDRIVER("U+1FA9B"),
-    MAP("U+1F5FA"),
-    CROSSED_SWORDS("U+2694"),
-    PENCIL2("U+270F"),
-    LEFT_RIGHT_ARROW("U+2194"),
-    UP_DOWN_ARROW("U+2195"),
-    KEYBOARD("U+2328"),
-    WRENCH("U+1F527"),
-    GLOBE_WITH_MERIDIANS("U+1F310"),
-    NEWSPAPER("U+1F4F0"),
+    CALENDAR_SPIRAL("U+1F5D3"),
+    CHART_WITH_UPWARDS_TREND("U+1F4C8"),
     CLIPBOARD("U+1F4CB"),
-    HAMMER("U+1F528"),
+    CLOCK3("U+1F552"),
+    CROSSED_SWORDS("U+2694"),
+    ENVELOPE("U+2709"),
     EXCLAMATION("U+2757"),
+    FILE_CABINET("U+1F5C4"),
+    GEAR("U+2699"),
+    GLOBE_WITH_MERIDIANS("U+1F310"),
+    GREEN_HEART("U+1F49A"),
+    HAMMER("U+1F528"),
+    HEAVY_CHECK_MARK("U+2714"),
+    HEAVY_MULTIPLICATION_X("U+2716"),
+    HEAVY_PLUS_SIGN("U+2795"),
+    INBOX_TRAY("U+1F4E5"),
+    KEY("U+1F511"),
+    KEYBOARD("U+2328"),
+    LEFT_RIGHT_ARROW("U+2194"),
+    LINK("U+1F517"),
     MAG("U+1F50D"),
-    CALENDAR_SPIRAL("U+1F5D3");
+    MAP("U+1F5FA"),
+    NEWSPAPER("U+1F4F0"),
+    NO_ENTRY("U+26D4"),
+    PENCIL2("U+270F"),
+    SCREWDRIVER("U+1FA9B"),
+    SOUND("U+1F509"),
+    UP_DOWN_ARROW("U+2195"),
+    VIDEO_GAME("U+1F3AE"),
+    WARNING("U+26A0"),
+    WRENCH("U+1F527");
 
     private final String unicode;
 
@@ -59,6 +66,6 @@ public enum MenuEmoji {
 
     @Override
     public String toString() {
-        return ":" + this.name().toLowerCase() + ":";
+        return ":" + this.name().toLowerCase() + ": ";
     }
 }
