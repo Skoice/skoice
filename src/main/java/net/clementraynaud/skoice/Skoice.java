@@ -165,13 +165,13 @@ public class Skoice extends JavaPlugin {
             } else {
                 Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(), plugin);
                 if (getJda() != null)
-                    Menu.MODE.refreshAdditionalFields();
+                    Menu.MODE.refreshFields();
             }
         } else if (!wasBotReady && isBotReady) {
             HandlerList.unregisterAll(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener());
             registerEligiblePlayerListeners();
             getJda().addEventListener(new GuildVoiceJoinListener(), new GuildVoiceLeaveListener(), new GuildVoiceMoveListener(), new VoiceChannelDeleteListener());
-            Menu.MODE.refreshAdditionalFields();
+            Menu.MODE.refreshFields();
             getLogger().info(LoggerLang.CONFIGURATION_COMPLETE_INFO.toString());
             Message configurationMessage = new Response().getConfigurationMessage();
             if (configurationMessage != null)
@@ -187,7 +187,7 @@ public class Skoice extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(), plugin);
             if (getJda() != null) {
                 getJda().removeEventListener(new GuildVoiceJoinListener(), new GuildVoiceLeaveListener(), new GuildVoiceMoveListener(), new VoiceChannelDeleteListener());
-                Menu.MODE.refreshAdditionalFields();
+                Menu.MODE.refreshFields();
             }
             new InterruptSystemTask().run();
         }

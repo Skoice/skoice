@@ -49,7 +49,7 @@ public enum MenuEmoji {
     PENCIL2("U+270F"),
     SCREWDRIVER("U+1FA9B"),
     SOUND("U+1F509"),
-    UP_DOWN_ARROW("U+2195"),
+    ARROW_UP_DOWN("U+2195"),
     VIDEO_GAME("U+1F3AE"),
     WARNING("U+26A0"),
     WRENCH("U+1F527");

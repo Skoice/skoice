@@ -51,10 +51,10 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
                 new Response().deleteMessage();
                 Menu.customizeRadius = false;
                 if (discordIDAxis.get(event.getAuthor().getId()).equals(HORIZONTAL_RADIUS_FIELD)) {
-                    Menu.HORIZONTAL_RADIUS.refreshAdditionalFields();
+                    Menu.HORIZONTAL_RADIUS.refreshFields();
                     event.getChannel().sendMessage(Menu.HORIZONTAL_RADIUS.getMessage()).queue();
                 } else if (discordIDAxis.get(event.getAuthor().getId()).equals(VERTICAL_RADIUS_FIELD)) {
-                    Menu.VERTICAL_RADIUS.refreshAdditionalFields();
+                    Menu.VERTICAL_RADIUS.refreshFields();
                     event.getChannel().sendMessage(Menu.VERTICAL_RADIUS.getMessage()).queue();
                 }
             }
