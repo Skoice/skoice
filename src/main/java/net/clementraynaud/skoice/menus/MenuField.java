@@ -20,20 +20,17 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.lang.DiscordLang;
-
-import static net.clementraynaud.skoice.menus.MenuEmoji.*;
-import static net.dv8tion.jda.api.entities.MessageEmbed.*;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public enum MenuField {
-    TROUBLESHOOTING(SCREWDRIVER, true),
-    CONTRIBUTE(HAMMER, false),
-    VANILLA_MODE(MAP, true),
-    MINIGAME_MODE(CROSSED_SWORDS, true),
-    CUSTOMIZE(PENCIL2, true),
-    ENTER_A_VALUE(KEYBOARD, false), //!!
-    SKOICE_2_1(CLIPBOARD, false),
-    UPCOMING_FEATURES(CALENDAR_SPIRAL, false);
-
+    TROUBLESHOOTING(MenuEmoji.SCREWDRIVER, true),
+    CONTRIBUTE(MenuEmoji.HAMMER, false),
+    VANILLA_MODE(MenuEmoji.MAP, true),
+    MINIGAME_MODE(MenuEmoji.CROSSED_SWORDS, true),
+    CUSTOMIZE(MenuEmoji.PENCIL2, true),
+    ENTER_A_VALUE(MenuEmoji.KEYBOARD, false),
+    SKOICE_2_1(MenuEmoji.CLIPBOARD, false),
+    UPCOMING_FEATURES(MenuEmoji.CALENDAR_SPIRAL, false);
 
     private final MenuEmoji unicode;
     private final boolean inline;
@@ -43,12 +40,12 @@ public enum MenuField {
         this.inline = inline;
     }
 
-    public Field get() {
-        return new Field(unicode + this.getTitle(), this.getDescription(), inline);
+    public MessageEmbed.Field get() {
+        return new MessageEmbed.Field(this.unicode + this.getTitle(), this.getDescription(), this.inline);
     }
 
-    public Field get(int value) {
-        return new Field(unicode + this.getTitle(), this.getDescription(value), inline);
+    public MessageEmbed.Field get(int value) {
+        return new MessageEmbed.Field(this.unicode + this.getTitle(), this.getDescription(value), this.inline);
     }
 
     private String getTitle() {

@@ -19,8 +19,8 @@
 
 package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
@@ -44,13 +44,13 @@ public class ToggleSelectMenu extends SelectMenu {
 
     @Override
     public SelectionMenu get() {
-        return SelectionMenu.create(componentID)
-                .addOptions(SelectOption.of(DiscordLang.ENABLED_SELECT_OPTION_LABEL.toString(), ENABLED_OPTION_ID)
-                                .withDescription(defaultValue ? DiscordLang.DEFAULT_SELECT_OPTION_DESCRIPTION.toString() : null)
+        return SelectionMenu.create(this.componentID)
+                .addOptions(SelectOption.of(DiscordLang.ENABLED_SELECT_OPTION_LABEL.toString(), ToggleSelectMenu.ENABLED_OPTION_ID)
+                                .withDescription(this.defaultValue ? DiscordLang.DEFAULT_SELECT_OPTION_DESCRIPTION.toString() : null)
                                 .withEmoji(MenuEmoji.HEAVY_CHECK_MARK.getEmojiFromUnicode()),
-                        SelectOption.of(DiscordLang.DISABLED_SELECT_OPTION_LABEL.toString(), DISABLED_OPTION_ID)
-                                .withDescription(!defaultValue ? DiscordLang.DEFAULT_SELECT_OPTION_DESCRIPTION.toString() : null)
+                        SelectOption.of(DiscordLang.DISABLED_SELECT_OPTION_LABEL.toString(), ToggleSelectMenu.DISABLED_OPTION_ID)
+                                .withDescription(!this.defaultValue ? DiscordLang.DEFAULT_SELECT_OPTION_DESCRIPTION.toString() : null)
                                 .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()))
-                .setDefaultValues(Collections.singleton(String.valueOf(selectedValue))).build();
+                .setDefaultValues(Collections.singleton(String.valueOf(this.selectedValue))).build();
     }
 }

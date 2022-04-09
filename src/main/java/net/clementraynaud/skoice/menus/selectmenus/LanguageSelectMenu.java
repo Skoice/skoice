@@ -19,6 +19,8 @@
 
 package net.clementraynaud.skoice.menus.selectmenus;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.Lang;
@@ -28,9 +30,6 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.config.Config.LANG_FIELD;
 
 public class LanguageSelectMenu extends SelectMenu {
 
@@ -48,10 +47,10 @@ public class LanguageSelectMenu extends SelectMenu {
                             : null)
                     .withEmoji(lang.getEmoji()));
         }
-        if (getPlugin().isBotReady()) {
+        if (Skoice.getPlugin().isBotReady()) {
             return SelectionMenu.create(Menu.LANGUAGE.name() + "_SELECTION")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(getPlugin().getConfig().getString(LANG_FIELD))).build();
+                    .setDefaultValues(Collections.singleton(Skoice.getPlugin().getConfig().getString(Config.LANG_FIELD))).build();
         } else {
             return SelectionMenu.create(Menu.LANGUAGE.name() + "_SELECTION")
                     .setPlaceholder(DiscordLang.LANGUAGE_SELECT_MENU_PLACEHOLDER.toString())

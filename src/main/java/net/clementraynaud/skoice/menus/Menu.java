@@ -19,9 +19,16 @@
 
 package net.clementraynaud.skoice.menus;
 
-import net.clementraynaud.skoice.menus.selectmenus.*;
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.LoggerLang;
+import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.LobbySelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.ModeSelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.ServerSelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.ToggleSelectMenu;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -29,30 +36,23 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.Button;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.menus.MenuField.*;
-import static net.clementraynaud.skoice.menus.MenuStyle.*;
-import static net.clementraynaud.skoice.menus.MenuType.*;
-import static net.clementraynaud.skoice.menus.MenuEmoji.*;
-import static net.clementraynaud.skoice.config.Config.*;
-import static net.clementraynaud.skoice.lang.DiscordLang.*;
-import static net.dv8tion.jda.api.entities.MessageEmbed.*;
-
 public enum Menu {
-    CONFIGURATION(GEAR, null, DEFAULT, null),
-    SERVER(FILE_CABINET, null, DEFAULT, null),
-    LOBBY(SOUND, PRIMARY, DEFAULT, CONFIGURATION),
-    MODE(VIDEO_GAME, PRIMARY, DEFAULT, CONFIGURATION),
-    HORIZONTAL_RADIUS(LEFT_RIGHT_ARROW, PRIMARY, DEFAULT, MODE),
-    VERTICAL_RADIUS(ARROW_UP_DOWN, PRIMARY, DEFAULT, MODE),
-    ADVANCED_SETTINGS(WRENCH, SECONDARY, DEFAULT, CONFIGURATION),
-    LANGUAGE(GLOBE_WITH_MERIDIANS, SECONDARY, DEFAULT, CONFIGURATION),
-    ACTION_BAR_ALERT(EXCLAMATION, PRIMARY, DEFAULT, ADVANCED_SETTINGS),
-    CHANNEL_VISIBILITY(MAG, PRIMARY, DEFAULT, ADVANCED_SETTINGS),
-    CHANGELOG(NEWSPAPER, SECONDARY, DEFAULT, ADVANCED_SETTINGS);
+    CONFIGURATION(MenuEmoji.GEAR, null, MenuType.DEFAULT, null),
+    SERVER(MenuEmoji.FILE_CABINET, null, MenuType.DEFAULT, null),
+    LOBBY(MenuEmoji.SOUND, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.CONFIGURATION),
+    MODE(MenuEmoji.VIDEO_GAME, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.CONFIGURATION),
+    HORIZONTAL_RADIUS(MenuEmoji.LEFT_RIGHT_ARROW, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.MODE),
+    VERTICAL_RADIUS(MenuEmoji.ARROW_UP_DOWN, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.MODE),
+    ADVANCED_SETTINGS(MenuEmoji.WRENCH, MenuStyle.SECONDARY, MenuType.DEFAULT, Menu.CONFIGURATION),
+    LANGUAGE(MenuEmoji.GLOBE_WITH_MERIDIANS, MenuStyle.SECONDARY, MenuType.DEFAULT, Menu.CONFIGURATION),
+    ACTION_BAR_ALERT(MenuEmoji.EXCLAMATION, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.ADVANCED_SETTINGS),
+    CHANNEL_VISIBILITY(MenuEmoji.MAG, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.ADVANCED_SETTINGS),
+    CHANGELOG(MenuEmoji.NEWSPAPER, MenuStyle.SECONDARY, MenuType.DEFAULT, Menu.ADVANCED_SETTINGS);
 
     public static final String CLOSE_BUTTON_ID = "CLOSE";
 
@@ -61,24 +61,24 @@ public enum Menu {
     private final MenuType type;
     private final Menu parent;
 
-    private List<Field> fields;
+    private List<MessageEmbed.Field> fields;
     private SelectMenu selectMenu;
 
     public static boolean customizeRadius;
 
     static {
-        CONFIGURATION.fields = Collections.singletonList(TROUBLESHOOTING.get());
-        MODE.fields = Arrays.asList(VANILLA_MODE.get(), MINIGAME_MODE.get(), getPlugin().isBotReady() ? CUSTOMIZE.get() : null);
-        HORIZONTAL_RADIUS.fields = Collections.singletonList(ENTER_A_VALUE.get(getHorizontalRadius()));
-        VERTICAL_RADIUS.fields = Collections.singletonList(ENTER_A_VALUE.get(getVerticalRadius()));
-        CHANGELOG.fields = Arrays.asList(SKOICE_2_1.get(), UPCOMING_FEATURES.get(), CONTRIBUTE.get());
+        Menu.CONFIGURATION.fields = Collections.singletonList(MenuField.TROUBLESHOOTING.get());
+        Menu.MODE.fields = Arrays.asList(MenuField.VANILLA_MODE.get(), MenuField.MINIGAME_MODE.get(), Skoice.getPlugin().isBotReady() ? MenuField.CUSTOMIZE.get() : null);
+        Menu.HORIZONTAL_RADIUS.fields = Collections.singletonList(MenuField.ENTER_A_VALUE.get(Config.getHorizontalRadius()));
+        Menu.VERTICAL_RADIUS.fields = Collections.singletonList(MenuField.ENTER_A_VALUE.get(Config.getVerticalRadius()));
+        Menu.CHANGELOG.fields = Arrays.asList(MenuField.SKOICE_2_1.get(), MenuField.UPCOMING_FEATURES.get(), MenuField.CONTRIBUTE.get());
 
-        SERVER.selectMenu = new ServerSelectMenu();
-        LOBBY.selectMenu = new LobbySelectMenu();
-        MODE.selectMenu = new ModeSelectMenu();
-        LANGUAGE.selectMenu = new LanguageSelectMenu();
-        ACTION_BAR_ALERT.selectMenu = new ToggleSelectMenu("ACTION_BAR_ALERT", getActionBarAlert(), true);
-        CHANNEL_VISIBILITY.selectMenu = new ToggleSelectMenu("CHANNEL_VISIBILITY", getChannelVisibility(), false);
+        Menu.SERVER.selectMenu = new ServerSelectMenu();
+        Menu.LOBBY.selectMenu = new LobbySelectMenu();
+        Menu.MODE.selectMenu = new ModeSelectMenu();
+        Menu.LANGUAGE.selectMenu = new LanguageSelectMenu();
+        Menu.ACTION_BAR_ALERT.selectMenu = new ToggleSelectMenu("ACTION_BAR_ALERT", Config.getActionBarAlert(), true);
+        Menu.CHANNEL_VISIBILITY.selectMenu = new ToggleSelectMenu("CHANNEL_VISIBILITY", Config.getChannelVisibility(), false);
     }
 
     Menu(MenuEmoji unicode, MenuStyle style, MenuType type, Menu parent) {
@@ -89,23 +89,24 @@ public enum Menu {
     }
 
     public Message getMessage() {
-        return new MessageBuilder().setEmbeds(getEmbed()).setActionRows(getActionRows()).build();
+        return new MessageBuilder().setEmbeds(this.getEmbed()).setActionRows(this.getActionRows()).build();
     }
 
     private String getTitle(boolean withEmoji) {
-        if (isValueSet(this.name() + "_EMBED_TITLE"))
+        if (this.isValueSet(this.name() + "_EMBED_TITLE")) {
             return withEmoji
-                    ? unicode + DiscordLang.valueOf(this.name() + "_EMBED_TITLE").toString()
+                    ? this.unicode + DiscordLang.valueOf(this.name() + "_EMBED_TITLE").toString()
                     : DiscordLang.valueOf(this.name() + "_EMBED_TITLE").toString();
-        return null;
+        }
+        return "";
     }
 
     private String getDescription(boolean shortened) {
-        if (!getPlugin().isBotReady() && isValueSet(this.name() + "_EMBED_ALTERNATIVE_DESCRIPTION")) {
+        if (!Skoice.getPlugin().isBotReady() && this.isValueSet(this.name() + "_EMBED_ALTERNATIVE_DESCRIPTION")) {
             return DiscordLang.valueOf(this.name() + "_EMBED_ALTERNATIVE_DESCRIPTION").toString();
-        } else if (shortened && isValueSet(this.name() + "_EMBED_SHORTENED_DESCRIPTION")) {
+        } else if (shortened && this.isValueSet(this.name() + "_EMBED_SHORTENED_DESCRIPTION")) {
             return DiscordLang.valueOf(this.name() + "_EMBED_SHORTENED_DESCRIPTION").toString();
-        } else if (isValueSet(this.name() + "_EMBED_DESCRIPTION")) {
+        } else if (this.isValueSet(this.name() + "_EMBED_DESCRIPTION")) {
             return DiscordLang.valueOf(this.name() + "_EMBED_DESCRIPTION").toString();
         }
         return null;
@@ -113,93 +114,113 @@ public enum Menu {
 
     private MessageEmbed getEmbed() {
         EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(true))
-                .setColor(type.getColor())
-                .setFooter(EMBED_FOOTER.toString(), "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
-        if (this.getDescription(false) != null)
+                .setColor(this.type.getColor())
+                .setFooter(DiscordLang.EMBED_FOOTER.toString(), "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
+        if (this.getDescription(false) != null) {
             embed.setDescription(this.getDescription(false));
-        if (getPlugin().isBotReady()) {
+        }
+        if (Skoice.getPlugin().isBotReady()) {
             StringBuilder author = new StringBuilder();
-            Menu parent = this.parent;
-            while (parent != null) {
-                author.insert(0, parent.getTitle(false) + " › ");
-                parent = parent.parent;
+            Menu menuParent = this.parent;
+            while (menuParent != null) {
+                author.insert(0, menuParent.getTitle(false) + " › ");
+                menuParent = menuParent.parent;
             }
             embed.setAuthor(author.toString());
         }
-        if (this != MODE)
-            for (Menu menu : values())
-                if (menu.parent == this)
+        if (this != Menu.MODE) {
+            for (Menu menu : Menu.values()) {
+                if (menu.parent == this) {
                     embed.addField(menu.getTitle(true), menu.getDescription(true), true);
-        if (fields != null)
-            for (Field field : fields)
+                }
+            }
+        }
+        if (this.fields != null) {
+            for (MessageEmbed.Field field : this.fields) {
                 embed.addField(field);
+            }
+        }
         return embed.build();
     }
 
     private List<ActionRow> getActionRows() {
-        if (selectMenu != null) {
-            return Arrays.asList(ActionRow.of(selectMenu.get()), ActionRow.of(getButtons()));
+        if (this.selectMenu != null) {
+            return Arrays.asList(ActionRow.of(this.selectMenu.get()), ActionRow.of(this.getButtons()));
         }
-        return Collections.singletonList(ActionRow.of(getButtons()));
+        return Collections.singletonList(ActionRow.of(this.getButtons()));
     }
 
     private List<Button> getButtons() {
         List<Button> buttons = new ArrayList<>();
-        if (parent != null)
-            buttons.add(Button.secondary(parent.name(), "← " + DiscordLang.BACK_BUTTON_LABEL));
-        if (selectMenu != null && selectMenu.isRefreshable())
+        if (this.parent != null) {
+            buttons.add(Button.secondary(this.parent.name(), "← " + DiscordLang.BACK_BUTTON_LABEL));
+        }
+        if (this.selectMenu != null && this.selectMenu.isRefreshable()) {
             buttons.add(Button.primary(this.name(), "⟳ " + DiscordLang.REFRESH_BUTTON_LABEL));
-        if (this == MODE)
-            buttons.addAll(getModeAdditionalButtons());
-        else
-            for (Menu menu : values())
-                if (menu.parent == this)
-                    buttons.add(menu.style.equals(PRIMARY)
-                            ? Button.primary(menu.name(), menu.getTitle(false)).withEmoji(menu.unicode.getEmojiFromUnicode())
-                            : Button.secondary(menu.name(), menu.getTitle(false)).withEmoji(menu.unicode.getEmojiFromUnicode()));
-        customizeRadius = false;
-        if (getPlugin().isBotReady()) {
-            buttons.add(Button.danger(CLOSE_BUTTON_ID, CLOSE_BUTTON_LABEL.toString()).withEmoji(HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()));
+        }
+        if (this == Menu.MODE) {
+            buttons.addAll(this.getModeAdditionalButtons());
         } else {
-            buttons.addAll(Arrays.asList(Button.secondary(LANGUAGE.name(), LANGUAGE_EMBED_TITLE.toString()).withEmoji(GLOBE_WITH_MERIDIANS.getEmojiFromUnicode()),
-                    Button.secondary(CLOSE_BUTTON_ID, CONFIGURE_LATER_BUTTON_LABEL.toString()).withEmoji(CLOCK3.getEmojiFromUnicode())));
+            for (Menu menu : Menu.values()) {
+                if (menu.parent == this) {
+                    buttons.add(menu.style == MenuStyle.PRIMARY
+                            ? Button.primary(menu.name(), menu.getTitle(false))
+                            .withEmoji(menu.unicode.getEmojiFromUnicode())
+                            : Button.secondary(menu.name(), menu.getTitle(false))
+                            .withEmoji(menu.unicode.getEmojiFromUnicode()));
+                }
+            }
+        }
+        Menu.customizeRadius = false;
+        if (Skoice.getPlugin().isBotReady()) {
+            buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID, DiscordLang.CLOSE_BUTTON_LABEL.toString())
+                    .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()));
+        } else {
+            buttons.addAll(Arrays.asList(Button.secondary(Menu.LANGUAGE.name(), DiscordLang.LANGUAGE_EMBED_TITLE.toString())
+                            .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.getEmojiFromUnicode()),
+                    Button.secondary(Menu.CLOSE_BUTTON_ID, DiscordLang.CONFIGURE_LATER_BUTTON_LABEL.toString())
+                            .withEmoji(MenuEmoji.CLOCK3.getEmojiFromUnicode())));
         }
         return buttons;
     }
 
     private boolean isValueSet(String value) {
-        for (DiscordLang message : DiscordLang.values())
-            if (message.name().equals(value))
+        for (DiscordLang message : DiscordLang.values()) {
+            if (message.name().equals(value)) {
                 return true;
+            }
+        }
         return false;
     }
 
     private List<Button> getModeAdditionalButtons() {
-        if (isModeCustomizable())
-            return Arrays.asList(Button.primary(HORIZONTAL_RADIUS.toString(), HORIZONTAL_RADIUS.getTitle(false))
-                            .withEmoji(HORIZONTAL_RADIUS.unicode.getEmojiFromUnicode()),
-                    Button.primary(VERTICAL_RADIUS.toString(), VERTICAL_RADIUS.getTitle(false))
-                            .withEmoji(VERTICAL_RADIUS.unicode.getEmojiFromUnicode()));
+        if (this.isModeCustomizable()) {
+            return Arrays.asList(Button.primary(Menu.HORIZONTAL_RADIUS.toString(), Menu.HORIZONTAL_RADIUS.getTitle(false))
+                            .withEmoji(Menu.HORIZONTAL_RADIUS.unicode.getEmojiFromUnicode()),
+                    Button.primary(Menu.VERTICAL_RADIUS.toString(), Menu.VERTICAL_RADIUS.getTitle(false))
+                            .withEmoji(Menu.VERTICAL_RADIUS.unicode.getEmojiFromUnicode()));
+        }
         return Collections.emptyList();
     }
 
     private boolean isModeCustomizable() {
-        return getPlugin().isBotReady() &&
-                (customizeRadius
-                        || (getHorizontalRadius() != 80 && getHorizontalRadius() != 40)
-                        || (getVerticalRadius() != 40 && getVerticalRadius() != 20));
+        return Skoice.getPlugin().isBotReady() &&
+                (Menu.customizeRadius
+                        || (Config.getHorizontalRadius() != 80 && Config.getHorizontalRadius() != 40)
+                        || (Config.getVerticalRadius() != 40 && Config.getVerticalRadius() != 20));
     }
 
     public void refreshFields() {
         switch (this) {
             case MODE:
-                MODE.fields = Arrays.asList(VANILLA_MODE.get(), MINIGAME_MODE.get(), getPlugin().isBotReady() ? CUSTOMIZE.get() : null);
+                Menu.MODE.fields = Arrays.asList(MenuField.VANILLA_MODE.get(), MenuField.MINIGAME_MODE.get(),
+                        Skoice.getPlugin().isBotReady() ? MenuField.CUSTOMIZE.get() : null);
                 break;
             case HORIZONTAL_RADIUS:
-                HORIZONTAL_RADIUS.fields = Collections.singletonList(ENTER_A_VALUE.get(getHorizontalRadius()));
+                Menu.HORIZONTAL_RADIUS.fields = Collections.singletonList(MenuField.ENTER_A_VALUE.get(Config.getHorizontalRadius()));
                 break;
             case VERTICAL_RADIUS:
-                VERTICAL_RADIUS.fields = Collections.singletonList(ENTER_A_VALUE.get(getVerticalRadius()));
+                Menu.VERTICAL_RADIUS.fields = Collections.singletonList(MenuField.ENTER_A_VALUE.get(Config.getVerticalRadius()));
                 break;
             default:
                 throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), this.name()));

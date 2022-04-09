@@ -61,7 +61,7 @@ public enum MenuEmoji {
     }
 
     public Emoji getEmojiFromUnicode() {
-        return Emoji.fromUnicode(unicode);
+        return Emoji.fromUnicode(this.unicode);
     }
 
     @Override

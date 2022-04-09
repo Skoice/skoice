@@ -19,6 +19,8 @@
 
 package net.clementraynaud.skoice.menus.selectmenus;
 
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.lang.DiscordLang;
@@ -29,11 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static net.clementraynaud.skoice.Skoice.getPlugin;
-import static net.clementraynaud.skoice.menus.Menu.customizeRadius;
-import static net.clementraynaud.skoice.config.Config.getHorizontalRadius;
-import static net.clementraynaud.skoice.config.Config.getVerticalRadius;
 
 public class ModeSelectMenu extends SelectMenu {
 
@@ -47,34 +44,34 @@ public class ModeSelectMenu extends SelectMenu {
 
     @Override
     public SelectionMenu get() {
-        List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(DiscordLang.VANILLA_MODE_FIELD_TITLE.toString(), VANILLA_MODE_ID)
+        List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(DiscordLang.VANILLA_MODE_FIELD_TITLE.toString(), ModeSelectMenu.VANILLA_MODE_ID)
                         .withDescription(DiscordLang.VANILLA_MODE_SELECT_MENU_DESCRIPTION.toString())
                         .withEmoji(MenuEmoji.MAP.getEmojiFromUnicode()),
-                SelectOption.of(DiscordLang.MINIGAME_MODE_FIELD_TITLE.toString(), MINIGAME_MODE_ID)
+                SelectOption.of(DiscordLang.MINIGAME_MODE_FIELD_TITLE.toString(), ModeSelectMenu.MINIGAME_MODE_ID)
                         .withDescription(DiscordLang.MINIGAME_MODE_SELECT_MENU_DESCRIPTION.toString())
                         .withEmoji(MenuEmoji.CROSSED_SWORDS.getEmojiFromUnicode())));
-        if (getPlugin().isBotReady()) {
+        if (Skoice.getPlugin().isBotReady()) {
             String defaultValue;
-            if (getHorizontalRadius() == 80
-                    && getVerticalRadius() == 40
-                    && !customizeRadius) {
-                defaultValue = VANILLA_MODE_ID;
-                modes.add(SelectOption.of(DiscordLang.CUSTOMIZE_FIELD_TITLE.toString(), CUSTOMIZE_ID)
+            if (Config.getHorizontalRadius() == 80
+                    && Config.getVerticalRadius() == 40
+                    && !Menu.customizeRadius) {
+                defaultValue = ModeSelectMenu.VANILLA_MODE_ID;
+                modes.add(SelectOption.of(DiscordLang.CUSTOMIZE_FIELD_TITLE.toString(), ModeSelectMenu.CUSTOMIZE_ID)
                         .withDescription(DiscordLang.CUSTOMIZE_SELECT_MENU_DESCRIPTION.toString())
                         .withEmoji(MenuEmoji.PENCIL2.getEmojiFromUnicode()));
-            } else if (getHorizontalRadius() == 40
-                    && getVerticalRadius() == 20
-                    && !customizeRadius) {
-                defaultValue = MINIGAME_MODE_ID;
-                modes.add(SelectOption.of(DiscordLang.CUSTOMIZE_FIELD_TITLE.toString(), CUSTOMIZE_ID)
+            } else if (Config.getHorizontalRadius() == 40
+                    && Config.getVerticalRadius() == 20
+                    && !Menu.customizeRadius) {
+                defaultValue = ModeSelectMenu.MINIGAME_MODE_ID;
+                modes.add(SelectOption.of(DiscordLang.CUSTOMIZE_FIELD_TITLE.toString(), ModeSelectMenu.CUSTOMIZE_ID)
                         .withDescription(DiscordLang.CUSTOMIZE_SELECT_MENU_DESCRIPTION.toString())
                         .withEmoji(MenuEmoji.PENCIL2.getEmojiFromUnicode()));
             } else {
-                defaultValue = CUSTOMIZE_ID;
-                modes.add(SelectOption.of(DiscordLang.CUSTOMIZE_FIELD_TITLE.toString(), CUSTOMIZE_ID)
+                defaultValue = ModeSelectMenu.CUSTOMIZE_ID;
+                modes.add(SelectOption.of(DiscordLang.CUSTOMIZE_FIELD_TITLE.toString(), ModeSelectMenu.CUSTOMIZE_ID)
                         .withDescription(String.format(DiscordLang.CUSTOMIZE_SELECT_MENU_ALTERNATIVE_DESCRIPTION.toString(),
-                                        getHorizontalRadius(),
-                                        getVerticalRadius()))
+                                Config.getHorizontalRadius(),
+                                Config.getVerticalRadius()))
                         .withEmoji(MenuEmoji.PENCIL2.getEmojiFromUnicode()));
             }
             return SelectionMenu.create(Menu.MODE.name() + "_SELECTION")

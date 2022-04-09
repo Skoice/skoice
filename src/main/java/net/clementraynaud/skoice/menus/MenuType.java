@@ -33,6 +33,6 @@ public enum MenuType {
     }
 
     public Color getColor() {
-        return color;
+        return this.color;
     }
 }
