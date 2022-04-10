@@ -20,8 +20,8 @@
 
 package net.clementraynaud.skoice.system;
 
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.util.DistanceUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -38,26 +38,30 @@ public class Network {
 
     public static final Set<Network> networks = ConcurrentHashMap.newKeySet();
     public static final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
-    private final Set<UUID> players;
-    private String channel;
+
     private boolean initialized = false;
 
-    public Network(String channel) {
+    private final Config config;
+    private final Set<UUID> players;
+    private String channel;
+
+    public Network(Config config, String channel) {
+        this.config = config;
         this.players = Collections.emptySet();
         this.channel = channel;
     }
 
-    public static Set<Network> getNetworks() {
-        return Network.networks;
+    public Network(Config config, Set<UUID> players) {
+        this.config = config;
+        this.players = players;
     }
 
-    public Network(Set<UUID> players) {
-        this.players = players;
-        Guild guild = Config.getGuild();
-        List<Permission> deniedPermissions = Skoice.getPlugin().getConfig().getBoolean(Config.CHANNEL_VISIBILITY_FIELD)
+    public void build() {
+        Guild guild = this.config.getReader().getGuild();
+        List<Permission> deniedPermissions = this.config.getFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.get())
                 ? Arrays.asList(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS)
                 : Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
-        Config.getCategory().createVoiceChannel(UUID.randomUUID().toString())
+        this.config.getReader().getCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(guild.getPublicRole(),
                         Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
                         deniedPermissions)
@@ -72,22 +76,28 @@ public class Network {
     }
 
     public boolean canPlayerBeAdded(Player player) {
+        DistanceUtil distanceUtil = new DistanceUtil();
         return this.players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= Config.getVerticalRadius()
-                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= Config.getHorizontalRadius());
+                .anyMatch(p -> distanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
+                        .getInt(ConfigField.VERTICAL_RADIUS.get())
+                        && distanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
+                        .getInt(ConfigField.HORIZONTAL_RADIUS.get()));
     }
 
     public boolean canPlayerStayConnected(Player player) {
+        DistanceUtil distanceUtil = new DistanceUtil();
         List<Player> matches = Arrays.asList(this.players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .filter(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= Config.getVerticalRadius() + Network.FALLOFF
-                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= Config.getHorizontalRadius() + Network.FALLOFF)
+                .filter(p -> distanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
+                        .getInt(ConfigField.VERTICAL_RADIUS.get()) + Network.FALLOFF
+                        && distanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
+                        .getInt(ConfigField.HORIZONTAL_RADIUS.get()) + Network.FALLOFF)
                 .toArray(Player[]::new));
         if (this.players.size() > matches.size()) {
             Player[] otherPlayers = this.players.stream()
@@ -97,8 +107,10 @@ public class Network {
                     .toArray(Player[]::new);
             for (Player otherPlayer : otherPlayers) {
                 if (matches.stream()
-                        .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= Config.getVerticalRadius() + Network.FALLOFF
-                                && DistanceUtil.getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= Config.getHorizontalRadius() + Network.FALLOFF)) {
+                        .anyMatch(p -> distanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.config.getFile()
+                                .getInt(ConfigField.VERTICAL_RADIUS.get()) + Network.FALLOFF
+                                && distanceUtil.getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.config.getFile()
+                                .getInt(ConfigField.HORIZONTAL_RADIUS.get()) + Network.FALLOFF)) {
                     return true;
                 }
             }
@@ -149,7 +161,7 @@ public class Network {
         if (this.channel == null || this.channel.isEmpty()) {
             return null;
         }
-        Guild guild = Config.getGuild();
+        Guild guild = this.config.getReader().getGuild();
         if (guild != null) {
             return guild.getVoiceChannelById(this.channel);
         }
@@ -158,5 +170,9 @@ public class Network {
 
     public boolean isInitialized() {
         return this.initialized;
+    }
+
+    public static Set<Network> getNetworks() {
+        return Network.networks;
     }
 }

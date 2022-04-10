@@ -17,12 +17,8 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.arguments;
+package net.clementraynaud.skoice.commands.skoice.arguments;
 
-import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.MinecraftLang;
 import org.bukkit.command.CommandSender;
 
 public class TokenArgument extends Argument {
@@ -37,19 +33,22 @@ public class TokenArgument extends Argument {
             return;
         }
         if (this.arg.isEmpty()) {
-            this.sender.sendMessage(MinecraftLang.NO_TOKEN.toString());
+            this.sender.sendMessage(super.lang.getMessage("minecraft.chat.configuration.no-token"));
             return;
         }
         if (this.arg.length() != 59 || !this.arg.matches("[a-zA-Z0-9_.]+")) {
-            this.sender.sendMessage(MinecraftLang.INVALID_TOKEN.toString());
+            this.sender.sendMessage(super.lang.getMessage("minecraft.chat.configuration.invalid-token"));
             return;
         }
-        Config.setToken(this.arg);
-        Skoice.getPlugin().setTokenBoolean(true);
-        if (Bot.getJda() == null) {
-            Skoice.getBot().connectBot(false, this.sender);
+        super.config.getUpdater().setToken(this.arg);
+        if (super.bot.getJda() == null) {
+            super.bot.connect(this.sender);
+            if (super.bot.getJda() != null) {
+                this.config.initializeReader(this.bot);
+                super.bot.setup(false, this.sender);
+            }
         } else {
-            this.sender.sendMessage(MinecraftLang.BOT_ALREADY_CONNECTED.toString());
+            this.sender.sendMessage(super.lang.getMessage("minecraft.chat.configuration.bot-already-connected"));
         }
     }
 }

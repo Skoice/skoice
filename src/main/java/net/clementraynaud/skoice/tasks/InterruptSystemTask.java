@@ -28,20 +28,26 @@ import java.util.concurrent.CompletableFuture;
 
 public class InterruptSystemTask implements Task {
 
+    private final Config config;
+
+    public InterruptSystemTask(Config config) {
+        this.config = config;
+    }
+
     @Override
     public void run() {
         for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.awaitingMoves.values()) {
             value.getRight().cancel(true);
         }
-        boolean isLobbySet = Config.getLobby() == null;
+        boolean isLobbySet = this.config.getReader().getLobby() == null;
         for (Network network : Network.networks) {
             if (isLobbySet) {
                 for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
                     Member member = network.getChannel().getMembers().get(i);
                     if (i + 1 < network.getChannel().getMembers().size()) {
-                        member.getGuild().moveVoiceMember(member, Config.getLobby()).queue();
+                        member.getGuild().moveVoiceMember(member, this.config.getReader().getLobby()).queue();
                     } else {
-                        member.getGuild().moveVoiceMember(member, Config.getLobby()).complete();
+                        member.getGuild().moveVoiceMember(member, this.config.getReader().getLobby()).complete();
                     }
                 }
             }

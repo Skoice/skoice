@@ -31,10 +31,7 @@ import java.util.List;
 
 public class PlayerUtil {
 
-    private PlayerUtil() {
-    }
-
-    public static List<Player> getOnlinePlayers() {
+    public List<Player> getOnlinePlayers() {
         List<Player> onlinePlayers = new ArrayList<>();
         try {
             Method onlinePlayerMethod = Server.class.getMethod("getOnlinePlayers");

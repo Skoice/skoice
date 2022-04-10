@@ -32,13 +32,24 @@ public class UpdateUtil {
 
     private final JavaPlugin plugin;
     private final int resourceId;
+    private final String updateMessage;
 
-    public UpdateUtil(JavaPlugin plugin, int resourceId) {
+    public UpdateUtil(JavaPlugin plugin, int resourceId, String updateMessage) {
         this.plugin = plugin;
         this.resourceId = resourceId;
+        this.updateMessage = updateMessage;
     }
 
-    public void getVersion(final Consumer<String> consumer) {
+    public void checkVersion() {
+        this.getVersion(version -> {
+            if (!this.plugin.getDescription().getVersion().equals(version)) {
+                this.plugin.getLogger().warning(String.format(this.updateMessage,
+                        this.plugin.getDescription().getVersion(), version));
+            }
+        });
+    }
+
+    private void getVersion(final Consumer<String> consumer) {
         Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
             try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId)
                     .openStream(); Scanner scanner = new Scanner(inputStream)) {

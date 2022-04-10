@@ -21,11 +21,11 @@
 package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.DiscordLang;
-import net.clementraynaud.skoice.lang.MinecraftLang;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
+import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
@@ -39,25 +39,33 @@ import java.util.UUID;
 
 public class GuildVoiceJoinListener extends ListenerAdapter {
 
+    private final Config config;
+    private final LangFile lang;
+
+    public GuildVoiceJoinListener(Config config, LangFile lang) {
+        this.config = config;
+        this.lang = lang;
+    }
+
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
-        new UpdateVoiceStateTask(event.getMember(), event.getChannelJoined()).run();
-        if (!event.getChannelJoined().equals(Config.getLobby())) {
+        new UpdateVoiceStateTask(this.config, event.getMember(), event.getChannelJoined()).run();
+        if (!event.getChannelJoined().equals(this.config.getReader().getLobby())) {
             return;
         }
-        String minecraftID = Config.getKeyFromValue(Config.getLinkMap(), event.getMember().getId());
+        String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinkMap(), event.getMember().getId());
         if (minecraftID == null) {
             event.getMember().getUser().openPrivateChannel().complete()
-                    .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.LINK + DiscordLang.LINKING_PROCESS_EMBED_TITLE.toString())
-                            .addField(MenuEmoji.WARNING + DiscordLang.ACCOUNT_NOT_LINKED_FIELD_TITLE.toString(),
-                                    String.format(DiscordLang.ACCOUNT_NOT_LINKED_FIELD_ALTERNATIVE_DESCRIPTION.toString(), event.getGuild().getName()), false)
+                    .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.LINK + this.lang.getMessage("discord.menu.linking-process.title"))
+                            .addField(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.title"),
+                                    this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.alternative-description", event.getGuild().getName()), false)
                             .setColor(Color.RED).build())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
             if (player.isOnline() && player.getPlayer() != null) {
                 new EligiblePlayers().add(player.getPlayer());
-                player.getPlayer().sendMessage(MinecraftLang.CONNECTED_TO_PROXIMITY_VOICE_CHAT.toString());
+                player.getPlayer().sendMessage(this.lang.getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
             }
         }
     }

@@ -1,28 +1,9 @@
-/*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- *
- * This file is part of Skoice.
- *
- * Skoice is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Skoice is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package net.clementraynaud.skoice.menus;
 
-import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.DiscordLang;
-import net.clementraynaud.skoice.lang.LoggerLang;
+import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.LobbySelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ModeSelectMenu;
@@ -35,195 +16,167 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.Button;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public enum Menu {
-    CONFIGURATION(MenuEmoji.GEAR, null, MenuType.DEFAULT, null),
-    SERVER(MenuEmoji.FILE_CABINET, null, MenuType.DEFAULT, null),
-    LOBBY(MenuEmoji.SOUND, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.CONFIGURATION),
-    MODE(MenuEmoji.VIDEO_GAME, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.CONFIGURATION),
-    HORIZONTAL_RADIUS(MenuEmoji.LEFT_RIGHT_ARROW, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.MODE),
-    VERTICAL_RADIUS(MenuEmoji.ARROW_UP_DOWN, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.MODE),
-    ADVANCED_SETTINGS(MenuEmoji.WRENCH, MenuStyle.SECONDARY, MenuType.DEFAULT, Menu.CONFIGURATION),
-    LANGUAGE(MenuEmoji.GLOBE_WITH_MERIDIANS, MenuStyle.SECONDARY, MenuType.DEFAULT, Menu.CONFIGURATION),
-    ACTION_BAR_ALERT(MenuEmoji.EXCLAMATION, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.ADVANCED_SETTINGS),
-    CHANNEL_VISIBILITY(MenuEmoji.MAG, MenuStyle.PRIMARY, MenuType.DEFAULT, Menu.ADVANCED_SETTINGS),
-    CHANGELOG(MenuEmoji.NEWSPAPER, MenuStyle.SECONDARY, MenuType.DEFAULT, Menu.ADVANCED_SETTINGS);
+public class Menu {
 
-    public static final String CLOSE_BUTTON_ID = "CLOSE";
-
-    private final MenuEmoji unicode;
-    private final MenuStyle style;
-    private final MenuType type;
-    private final Menu parent;
-
-    private List<MessageEmbed.Field> fields;
-    private SelectMenu selectMenu;
+    public static final String CLOSE_BUTTON_ID = "close";
 
     public static boolean customizeRadius;
 
-    static {
-        Menu.CONFIGURATION.fields = Collections.singletonList(MenuField.TROUBLESHOOTING.get());
-        Menu.MODE.fields = Arrays.asList(MenuField.VANILLA_MODE.get(), MenuField.MINIGAME_MODE.get(), Skoice.getPlugin().isBotReady() ? MenuField.CUSTOMIZE.get() : null);
-        Menu.HORIZONTAL_RADIUS.fields = Collections.singletonList(MenuField.ENTER_A_VALUE.get(Config.getHorizontalRadius()));
-        Menu.VERTICAL_RADIUS.fields = Collections.singletonList(MenuField.ENTER_A_VALUE.get(Config.getVerticalRadius()));
-        Menu.CHANGELOG.fields = Arrays.asList(MenuField.SKOICE_2_1.get(), MenuField.UPCOMING_FEATURES.get(), MenuField.CONTRIBUTE.get());
+    private final String name;
+    private final MenuEmoji emoji;
+    private final MenuType type;
+    private final MenuStyle style;
+    private final String parent;
+    private final List<String> fields;
+    private SelectMenu selectMenu;
 
-        Menu.SERVER.selectMenu = new ServerSelectMenu();
-        Menu.LOBBY.selectMenu = new LobbySelectMenu();
-        Menu.MODE.selectMenu = new ModeSelectMenu();
-        Menu.LANGUAGE.selectMenu = new LanguageSelectMenu();
-        Menu.ACTION_BAR_ALERT.selectMenu = new ToggleSelectMenu("ACTION_BAR_ALERT", Config.getActionBarAlert(), true);
-        Menu.CHANNEL_VISIBILITY.selectMenu = new ToggleSelectMenu("CHANNEL_VISIBILITY", Config.getChannelVisibility(), false);
+    public Menu(ConfigurationSection menu) {
+        this.name = menu.getName();
+        this.emoji = MenuEmoji.valueOf(menu.getString("emoji").toUpperCase());
+        this.type = MenuType.valueOf(menu.getString("type").toUpperCase());
+        this.style = menu.contains("style") ? MenuStyle.valueOf(menu.getString("style").toUpperCase()) : null;
+        this.parent = menu.contains("parent") ? menu.getString("parent") : null;
+        this.fields = menu.getStringList("fields");
     }
 
-    Menu(MenuEmoji unicode, MenuStyle style, MenuType type, Menu parent) {
-        this.unicode = unicode;
-        this.style = style;
-        this.type = type;
-        this.parent = parent;
+    public Message toMessage(Config config, LangFile lang, Bot bot) {
+        return new MessageBuilder().setEmbeds(this.getEmbed(lang, bot)).setActionRows(this.getActionRows(config, lang, bot)).build();
     }
 
-    public Message getMessage() {
-        return new MessageBuilder().setEmbeds(this.getEmbed()).setActionRows(this.getActionRows()).build();
+    private String getTitle(LangFile lang, boolean withEmoji) {
+        return withEmoji ? this.emoji + lang.getMessage("discord.menu." + this.name + ".title") :
+                lang.getMessage("discord.menu." + this.name + ".title");
     }
 
-    private String getTitle(boolean withEmoji) {
-        if (this.isValueSet(this.name() + "_EMBED_TITLE")) {
-            return withEmoji
-                    ? this.unicode + DiscordLang.valueOf(this.name() + "_EMBED_TITLE").toString()
-                    : DiscordLang.valueOf(this.name() + "_EMBED_TITLE").toString();
-        }
-        return "";
-    }
-
-    private String getDescription(boolean shortened) {
-        if (!Skoice.getPlugin().isBotReady() && this.isValueSet(this.name() + "_EMBED_ALTERNATIVE_DESCRIPTION")) {
-            return DiscordLang.valueOf(this.name() + "_EMBED_ALTERNATIVE_DESCRIPTION").toString();
-        } else if (shortened && this.isValueSet(this.name() + "_EMBED_SHORTENED_DESCRIPTION")) {
-            return DiscordLang.valueOf(this.name() + "_EMBED_SHORTENED_DESCRIPTION").toString();
-        } else if (this.isValueSet(this.name() + "_EMBED_DESCRIPTION")) {
-            return DiscordLang.valueOf(this.name() + "_EMBED_DESCRIPTION").toString();
+    private String getDescription(LangFile lang, Bot bot, boolean shortened) {
+        if (!bot.isReady() && lang.contains("discord.menu." + this.name + ".alternative-description")) {
+            return lang.getMessage("discord.menu." + this.name + ".alternative-description");
+        } else if (shortened && lang.contains("discord.menu." + this.name + ".shortened-description")) {
+            return lang.getMessage("discord.menu." + this.name + ".shortened-description");
+        } else if (lang.contains("discord.menu." + this.name + ".description")) {
+            return lang.getMessage("discord.menu." + this.name + ".description");
         }
         return null;
     }
 
-    private MessageEmbed getEmbed() {
-        EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(true))
+    private MessageEmbed getEmbed(LangFile lang, Bot bot) {
+        EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(lang, true))
                 .setColor(this.type.getColor())
-                .setFooter(DiscordLang.EMBED_FOOTER.toString(), "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
-        if (this.getDescription(false) != null) {
-            embed.setDescription(this.getDescription(false));
+                .setFooter(lang.getMessage("discord.menu.footer"), "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
+        if (this.getDescription(lang, bot, false) != null) {
+            embed.setDescription(this.getDescription(lang, bot, false));
         }
-        if (Skoice.getPlugin().isBotReady()) {
+        if (bot.isReady()) {
             StringBuilder author = new StringBuilder();
-            Menu menuParent = this.parent;
-            while (menuParent != null) {
-                author.insert(0, menuParent.getTitle(false) + " › ");
-                menuParent = menuParent.parent;
+            String parentMenu = this.parent;
+            while (parentMenu != null) {
+                Menu menuParent = bot.getMenus().get(parentMenu);
+                author.insert(0, menuParent.getTitle(lang, false) + " › ");
+                parentMenu = menuParent.parent;
             }
             embed.setAuthor(author.toString());
         }
-        if (this != Menu.MODE) {
-            for (Menu menu : Menu.values()) {
-                if (menu.parent == this) {
-                    embed.addField(menu.getTitle(true), menu.getDescription(true), true);
+        if (!"mode".equals(this.name)) {
+            for (Menu menu : bot.getMenus().values()) {
+                if (menu.parent != null && menu.parent.equals(this.name)) {
+                    embed.addField(menu.getTitle(lang, true), menu.getDescription(lang, bot, true), true);
                 }
             }
         }
         if (this.fields != null) {
-            for (MessageEmbed.Field field : this.fields) {
-                embed.addField(field);
+            for (String field : this.fields) {
+                embed.addField(bot.getFields().get(field).toField(lang));
             }
         }
         return embed.build();
     }
 
-    private List<ActionRow> getActionRows() {
-        if (this.selectMenu != null) {
-            return Arrays.asList(ActionRow.of(this.selectMenu.get()), ActionRow.of(this.getButtons()));
+    private List<ActionRow> getActionRows(Config config, LangFile lang, Bot bot) {
+        switch (this.name) {
+            case "server":
+                this.selectMenu = new ServerSelectMenu(lang, bot);
+                break;
+            case "lobby":
+                this.selectMenu = new LobbySelectMenu(config, lang, bot);
+                break;
+            case "mode":
+                this.selectMenu = new ModeSelectMenu(config, lang, bot);
+                break;
+            case "language":
+                this.selectMenu = new LanguageSelectMenu(config, lang, bot);
+                break;
+            case "action-bar-alert":
+                this.selectMenu = new ToggleSelectMenu(lang, this.name, config.getFile().getBoolean(ConfigField.ACTION_BAR_ALERT.get()), true);
+                break;
+            case "channel-visibility":
+                this.selectMenu = new ToggleSelectMenu(lang, this.name, config.getFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.get()), false);
+                break;
+            default:
+                return Collections.singletonList(ActionRow.of(this.getButtons(config, lang, bot)));
         }
-        return Collections.singletonList(ActionRow.of(this.getButtons()));
+        return Arrays.asList(ActionRow.of(this.selectMenu.get()), ActionRow.of(this.getButtons(config, lang, bot)));
     }
 
-    private List<Button> getButtons() {
+    private List<Button> getButtons(Config config, LangFile lang, Bot bot) {
         List<Button> buttons = new ArrayList<>();
         if (this.parent != null) {
-            buttons.add(Button.secondary(this.parent.name(), "← " + DiscordLang.BACK_BUTTON_LABEL));
+            buttons.add(Button.secondary(this.parent, "← " + lang.getMessage("discord.button-label.back")));
         }
         if (this.selectMenu != null && this.selectMenu.isRefreshable()) {
-            buttons.add(Button.primary(this.name(), "⟳ " + DiscordLang.REFRESH_BUTTON_LABEL));
+            buttons.add(Button.primary(this.name, "⟳ " + lang.getMessage("discord.button-label.refresh")));
         }
-        if (this == Menu.MODE) {
-            buttons.addAll(this.getModeAdditionalButtons());
+        if ("mode".equals(this.name)) {
+            buttons.addAll(this.getModeAdditionalButtons(config, lang, bot));
         } else {
-            for (Menu menu : Menu.values()) {
-                if (menu.parent == this) {
+            for (Menu menu : bot.getMenus().values()) {
+                if (menu.parent != null && menu.parent.equals(this.name)) {
                     buttons.add(menu.style == MenuStyle.PRIMARY
-                            ? Button.primary(menu.name(), menu.getTitle(false))
-                            .withEmoji(menu.unicode.getEmojiFromUnicode())
-                            : Button.secondary(menu.name(), menu.getTitle(false))
-                            .withEmoji(menu.unicode.getEmojiFromUnicode()));
+                            ? Button.primary(menu.name, menu.getTitle(lang, false))
+                            .withEmoji(menu.emoji.getEmojiFromUnicode())
+                            : Button.secondary(menu.name, menu.getTitle(lang, false))
+                            .withEmoji(menu.emoji.getEmojiFromUnicode()));
                 }
             }
         }
-        Menu.customizeRadius = false;
-        if (Skoice.getPlugin().isBotReady()) {
-            buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID, DiscordLang.CLOSE_BUTTON_LABEL.toString())
+        this.customizeRadius = false;
+        if (bot.isReady()) {
+            buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID, lang.getMessage("discord.button-label.close"))
                     .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()));
         } else {
-            buttons.addAll(Arrays.asList(Button.secondary(Menu.LANGUAGE.name(), DiscordLang.LANGUAGE_EMBED_TITLE.toString())
+            Menu languageMenu = bot.getMenus().get("language");
+            buttons.addAll(Arrays.asList(Button.secondary(languageMenu.name, languageMenu.getTitle(lang, false))
                             .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.getEmojiFromUnicode()),
-                    Button.secondary(Menu.CLOSE_BUTTON_ID, DiscordLang.CONFIGURE_LATER_BUTTON_LABEL.toString())
+                    Button.secondary(Menu.CLOSE_BUTTON_ID, lang.getMessage("discord.button-label.configure-later"))
                             .withEmoji(MenuEmoji.CLOCK3.getEmojiFromUnicode())));
         }
         return buttons;
     }
 
-    private boolean isValueSet(String value) {
-        for (DiscordLang message : DiscordLang.values()) {
-            if (message.name().equals(value)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private List<Button> getModeAdditionalButtons() {
-        if (this.isModeCustomizable()) {
-            return Arrays.asList(Button.primary(Menu.HORIZONTAL_RADIUS.toString(), Menu.HORIZONTAL_RADIUS.getTitle(false))
-                            .withEmoji(Menu.HORIZONTAL_RADIUS.unicode.getEmojiFromUnicode()),
-                    Button.primary(Menu.VERTICAL_RADIUS.toString(), Menu.VERTICAL_RADIUS.getTitle(false))
-                            .withEmoji(Menu.VERTICAL_RADIUS.unicode.getEmojiFromUnicode()));
+    private List<Button> getModeAdditionalButtons(Config config, LangFile lang, Bot bot) {
+        if (this.isModeCustomizable(config, bot)) {
+            Menu horizontalRadiusMenu = bot.getMenus().get("horizontal-radius");
+            Menu verticalRadiusMenu = bot.getMenus().get("vertical-radius");
+            return Arrays.asList(Button.primary(horizontalRadiusMenu.name, horizontalRadiusMenu.getTitle(lang, false))
+                            .withEmoji(horizontalRadiusMenu.emoji.getEmojiFromUnicode()),
+                    Button.primary(verticalRadiusMenu.name, verticalRadiusMenu.getTitle(lang, false))
+                            .withEmoji(verticalRadiusMenu.emoji.getEmojiFromUnicode()));
         }
         return Collections.emptyList();
     }
 
-    private boolean isModeCustomizable() {
-        return Skoice.getPlugin().isBotReady() &&
-                (Menu.customizeRadius
-                        || (Config.getHorizontalRadius() != 80 && Config.getHorizontalRadius() != 40)
-                        || (Config.getVerticalRadius() != 40 && Config.getVerticalRadius() != 20));
-    }
-
-    public void refreshFields() {
-        switch (this) {
-            case MODE:
-                Menu.MODE.fields = Arrays.asList(MenuField.VANILLA_MODE.get(), MenuField.MINIGAME_MODE.get(),
-                        Skoice.getPlugin().isBotReady() ? MenuField.CUSTOMIZE.get() : null);
-                break;
-            case HORIZONTAL_RADIUS:
-                Menu.HORIZONTAL_RADIUS.fields = Collections.singletonList(MenuField.ENTER_A_VALUE.get(Config.getHorizontalRadius()));
-                break;
-            case VERTICAL_RADIUS:
-                Menu.VERTICAL_RADIUS.fields = Collections.singletonList(MenuField.ENTER_A_VALUE.get(Config.getVerticalRadius()));
-                break;
-            default:
-                throw new IllegalStateException(String.format(LoggerLang.UNEXPECTED_VALUE.toString(), this.name()));
-        }
+    private boolean isModeCustomizable(Config config, Bot bot) {
+        return bot.isReady() &&
+                (this.customizeRadius
+                        || (config.getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) != 80
+                        && config.getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) != 40)
+                        || (config.getFile().getInt(ConfigField.VERTICAL_RADIUS.get()) != 40
+                        && config.getFile().getInt(ConfigField.VERTICAL_RADIUS.get()) != 20));
     }
 }

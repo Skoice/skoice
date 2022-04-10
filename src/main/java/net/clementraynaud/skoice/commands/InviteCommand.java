@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -29,18 +29,24 @@ import java.awt.*;
 
 public class InviteCommand extends ListenerAdapter {
 
+    private final LangFile lang;
+
+    public InviteCommand(LangFile lang) {
+        this.lang = lang;
+    }
+
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        if ("invite" .equals(event.getName())) {
-            EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.ENVELOPE + DiscordLang.GET_THE_PROXIMITY_VOICE_CHAT_EMBED_TITLE.toString())
-                    .addField(MenuEmoji.INBOX_TRAY + DiscordLang.DOWNLOAD_SKOICE_FIELD_TITLE.toString(),
-                            DiscordLang.DOWNLOAD_SKOICE_FIELD_DESRIPTION.toString(), false)
-                    .addField(MenuEmoji.GREEN_HEART + DiscordLang.DONATE_FIELD_TITLE.toString(),
-                            DiscordLang.DONATE_FIELD_DESCRIPTION.toString(), false)
-                    .addField(MenuEmoji.SCREWDRIVER + DiscordLang.TROUBLESHOOTING_FIELD_TITLE.toString(),
-                            DiscordLang.TROUBLESHOOTING_FIELD_DESCRIPTION.toString(), false)
-                    .addField(MenuEmoji.HAMMER + DiscordLang.CONTRIBUTE_FIELD_TITLE.toString(),
-                            DiscordLang.CONTRIBUTE_FIELD_DESCRIPTION.toString(), false)
+        if ("invite".equals(event.getName())) {
+            EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.ENVELOPE + this.lang.getMessage("discord.menu.get-the-proximity-voice-chat.title"))
+                    .addField(MenuEmoji.INBOX_TRAY + this.lang.getMessage("discord.menu.get-the-proximity-voice-chat.field.download-skoice.title"),
+                            this.lang.getMessage("discord.menu.get-the-proximity-voice-chat.field.download-skoice.description"), false)
+                    .addField(MenuEmoji.GREEN_HEART + this.lang.getMessage("discord.menu.get-the-proximity-voice-chat.field.donate.title"),
+                            this.lang.getMessage("discord.menu.get-the-proximity-voice-chat.field.donate.description"), false)
+                    .addField(MenuEmoji.SCREWDRIVER + this.lang.getMessage("discord.field.troubleshooting.title"),
+                            this.lang.getMessage("discord.field.troubleshooting.description"), false)
+                    .addField(MenuEmoji.HAMMER + this.lang.getMessage("discord.field.contribute.title"),
+                            this.lang.getMessage("discord.field.contribute.description"), false)
                     .setColor(Color.ORANGE);
             event.replyEmbeds(embed.build()).setEphemeral(true).queue();
         }

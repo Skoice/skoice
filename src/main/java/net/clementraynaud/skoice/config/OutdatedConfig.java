@@ -33,8 +33,16 @@ public class OutdatedConfig {
 
     private final FileConfiguration oldData = new YamlConfiguration();
 
+    private final Skoice plugin;
+    private final Config config;
+
+    public OutdatedConfig(Skoice plugin, Config config) {
+        this.plugin = plugin;
+        this.config = config;
+    }
+
     public void update() {
-        File outdatedConfig = new File(Skoice.getPlugin().getDataFolder() + File.separator + "data.yml");
+        File outdatedConfig = new File(this.plugin.getDataFolder() + File.separator + "data.yml");
         if (outdatedConfig.exists()) {
             try {
                 this.oldData.load(outdatedConfig);
@@ -42,10 +50,10 @@ public class OutdatedConfig {
                 return;
             }
             this.convertOldToken();
-            this.convertOldData("mainVoiceChannelID", Config.LOBBY_ID_FIELD);
+            this.convertOldData("mainVoiceChannelID", ConfigField.LOBBY_ID.get());
             this.convertOldRadius();
             this.convertOldLinks();
-            Skoice.getPlugin().saveConfig();
+            this.config.saveFile();
             try {
                 Files.delete(outdatedConfig.toPath());
             } catch (IOException ignored) {
@@ -56,22 +64,22 @@ public class OutdatedConfig {
     private void convertOldToken() {
         if (this.oldData.contains("token")
                 && !this.oldData.getString("token").isEmpty()
-                && !Skoice.getPlugin().getConfig().contains(Config.TOKEN_FIELD)) {
-            Config.setToken(this.oldData.getString("token"));
+                && !this.config.getFile().contains(ConfigField.TOKEN.get())) {
+            this.config.getUpdater().setToken(this.oldData.getString("token"));
         }
     }
 
     private void convertOldRadius() {
         if (this.oldData.contains("distance.type")
-                && "custom" .equals(this.oldData.getString("distance.type"))) {
-            this.convertOldData("distance.horizontalStrength", Config.HORIZONTAL_RADIUS_FIELD);
-            this.convertOldData("distance.verticalStrength", Config.VERTICAL_RADIUS_FIELD);
+                && "custom".equals(this.oldData.getString("distance.type"))) {
+            this.convertOldData("distance.horizontalStrength", ConfigField.HORIZONTAL_RADIUS.get());
+            this.convertOldData("distance.verticalStrength", ConfigField.VERTICAL_RADIUS.get());
         } else {
-            if (!Skoice.getPlugin().getConfig().contains(Config.HORIZONTAL_RADIUS_FIELD)) {
-                Skoice.getPlugin().getConfig().set(Config.HORIZONTAL_RADIUS_FIELD, 80);
+            if (!this.config.getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())) {
+                this.config.getFile().set(ConfigField.HORIZONTAL_RADIUS.get(), 80);
             }
-            if (!Skoice.getPlugin().getConfig().contains(Config.VERTICAL_RADIUS_FIELD)) {
-                Skoice.getPlugin().getConfig().set(Config.VERTICAL_RADIUS_FIELD, 40);
+            if (!this.config.getFile().contains(ConfigField.VERTICAL_RADIUS.get())) {
+                this.config.getFile().set(ConfigField.VERTICAL_RADIUS.get(), 40);
             }
         }
     }
@@ -84,16 +92,16 @@ public class OutdatedConfig {
             for (int i = 0; i < subkeys.size(); i += 2) {
                 linkMap.put(iterator.next(), iterator.next());
             }
-            linkMap.putAll(Config.getLinkMap());
-            Skoice.getPlugin().getConfig().set(Config.LINK_MAP_FIELD, linkMap);
+            linkMap.putAll(this.config.getReader().getLinkMap());
+            this.config.getFile().set(ConfigField.LINK_MAP.get(), linkMap);
         }
     }
 
     private void convertOldData(String oldField, String newField) {
         if (this.oldData.contains(oldField)
                 && !this.oldData.getString(oldField).isEmpty()
-                && !Skoice.getPlugin().getConfig().contains(newField)) {
-            Skoice.getPlugin().getConfig().set(newField, this.oldData.get(oldField));
+                && !this.config.getFile().contains(newField)) {
+            this.config.getFile().set(newField, this.oldData.get(oldField));
         }
     }
 }

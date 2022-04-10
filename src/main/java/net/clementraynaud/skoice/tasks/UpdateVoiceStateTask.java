@@ -28,26 +28,28 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 
 public class UpdateVoiceStateTask implements Task {
 
+    private final Config config;
     private final Member member;
     private final VoiceChannel channel;
 
-    public UpdateVoiceStateTask(Member member, VoiceChannel channel) {
+    public UpdateVoiceStateTask(Config config, Member member, VoiceChannel channel) {
+        this.config = config;
         this.member = member;
         this.channel = channel;
     }
 
     @Override
     public void run() {
-        if (this.member.getVoiceState() == null || Config.getLobby() == null) {
+        if (this.member.getVoiceState() == null || this.config.getReader().getLobby() == null) {
             return;
         }
-        boolean isLobby = this.channel.getId().equals(Config.getLobby().getId());
+        boolean isLobby = this.channel.getId().equals(this.config.getReader().getLobby().getId());
         if (isLobby && !this.member.getVoiceState().isGuildMuted()) {
             PermissionOverride override = this.channel.getPermissionOverride(this.channel.getGuild().getPublicRole());
             if (override != null && override.getDenied().contains(Permission.VOICE_SPEAK)
                     && this.member.hasPermission(this.channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
-                    && this.channel.getGuild().getSelfMember().hasPermission(Config.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
+                    && this.channel.getGuild().getSelfMember().hasPermission(this.config.getReader().getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
                 Network.mutedUsers.add(this.member.getId());
             }

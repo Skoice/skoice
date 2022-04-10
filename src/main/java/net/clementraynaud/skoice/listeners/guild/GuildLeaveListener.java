@@ -20,15 +20,24 @@
 package net.clementraynaud.skoice.listeners.guild;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class GuildLeaveListener extends ListenerAdapter {
 
+    private final Skoice plugin;
+    private final Bot bot;
+
+    public GuildLeaveListener(Skoice plugin, Bot bot) {
+        this.plugin = plugin;
+        this.bot = bot;
+    }
+
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
-        Skoice.getBot().updateGuildUniquenessStatus();
-        Skoice.getPlugin().updateConfigurationStatus(false);
+        this.bot.updateGuildUniquenessStatus();
+        this.plugin.updateConfigurationStatus(false);
     }
 }

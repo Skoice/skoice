@@ -1,0 +1,25 @@
+troubleshooting:
+  emoji: screwdriver
+  inline: true
+contribute:
+  emoji: hammer
+  inline: false
+vanilla-mode:
+  emoji: map
+  inline: true
+minigame-mode:
+  emoji: crossed_swords
+  inline: true
+customize:
+  emoji: pencil2
+  inline: true
+enter-a-value:
+  emoji: keyboard
+  inline: false
+  value: PLACEHOLDER
+skoice-2-1:
+  emoji: clipboard
+  inline: false
+upcoming-features:
+  emoji: calendar_spiral
+  inline: false

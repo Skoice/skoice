@@ -17,9 +17,9 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands.arguments;
+package net.clementraynaud.skoice.commands.skoice.arguments;
 
-import net.clementraynaud.skoice.lang.MinecraftLang;
+import net.clementraynaud.skoice.Skoice;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,7 +27,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class Argument {
+public abstract class Argument extends Skoice {
 
     public enum Option {
         CONFIGURE {
@@ -91,11 +91,11 @@ public abstract class Argument {
 
     protected boolean canExecuteCommand() {
         if (!(this.sender instanceof Player) && !this.allowsConsole) {
-            this.sender.sendMessage(MinecraftLang.ILLEGAL_EXECUTOR.toString());
+            this.sender.sendMessage(super.lang.getMessage("minecraft.chat.error.illegal-executor"));
             return false;
         }
         if (!this.sender.isOp() && this.restrictedToOperators) {
-            this.sender.sendMessage(MinecraftLang.MISSING_PERMISSION.toString());
+            this.sender.sendMessage(super.lang.getMessage("minecraft.chat.error.missing-permission"));
             return false;
         }
         return true;

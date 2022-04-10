@@ -19,9 +19,9 @@
 
 package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.menus.Menu;
+import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.clementraynaud.skoice.menus.MenuEmoji;
-import net.clementraynaud.skoice.lang.DiscordLang;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
@@ -29,17 +29,20 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.clementraynaud.skoice.bot.Bot.getJda;
-
 public class ServerSelectMenu extends SelectMenu {
 
-    public ServerSelectMenu() {
+    private final LangFile lang;
+    private final Bot bot;
+
+    public ServerSelectMenu(LangFile lang, Bot bot) {
         super(true);
+        this.lang = lang;
+        this.bot = bot;
     }
 
     @Override
     public SelectionMenu get() {
-        List<Guild> servers = new ArrayList<>(getJda().getGuilds());
+        List<Guild> servers = new ArrayList<>(this.bot.getJda().getGuilds());
         List<SelectOption> options = new ArrayList<>();
         int optionIndex = 0;
         while (optionIndex < 24 && servers.size() > optionIndex) {
@@ -48,12 +51,12 @@ public class ServerSelectMenu extends SelectMenu {
             optionIndex++;
         }
         if (options.size() == 24) {
-            options.add(SelectOption.of(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_LABEL.toString(), "refresh")
-                    .withDescription(DiscordLang.TOO_MANY_OPTIONS_SELECT_OPTION_DESCRIPTION.toString())
+            options.add(SelectOption.of(this.lang.getMessage("discord.select-option.too-many-options.label"), "refresh")
+                    .withDescription(this.lang.getMessage("discord.select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.getEmojiFromUnicode()));
         }
-        return SelectionMenu.create(Menu.SERVER.name() + "_SELECTION")
-                .setPlaceholder(DiscordLang.SERVER_SELECT_MENU_PLACEHOLDER.toString())
+        return SelectionMenu.create("server-selection")
+                .setPlaceholder(this.lang.getMessage("discord.menu.server.select-menu.placeholder"))
                 .addOptions(options).build();
     }
 }

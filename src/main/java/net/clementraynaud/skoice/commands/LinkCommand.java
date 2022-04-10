@@ -19,9 +19,9 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -36,6 +36,16 @@ public class LinkCommand extends ListenerAdapter {
 
     private static final Map<String, String> discordIDCode = new HashMap<>();
 
+    private final Config config;
+    private final LangFile lang;
+    private final Bot bot;
+
+    public LinkCommand(Config config, LangFile lang, Bot bot) {
+        this.config = config;
+        this.lang = lang;
+        this.bot = bot;
+    }
+
     public static Map<String, String> getDiscordIDCode() {
         return LinkCommand.discordIDCode;
     }
@@ -46,19 +56,19 @@ public class LinkCommand extends ListenerAdapter {
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        if ("link" .equals(event.getName())) {
-            if (!Skoice.getPlugin().isBotReady()) {
-                EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.GEAR + DiscordLang.CONFIGURATION_EMBED_TITLE.toString());
-                event.replyEmbeds(embed.addField(MenuEmoji.WARNING + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE.toString(),
-                                        DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_DESCRIPTION.toString(), false)
+        if ("link".equals(event.getName())) {
+            if (!this.bot.isReady()) {
+                EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.GEAR + this.lang.getMessage("discord.menu.configuration.title"));
+                event.replyEmbeds(embed.addField(MenuEmoji.WARNING + this.lang.getMessage("discord.field.incomplete-configuration.title"),
+                                        this.lang.getMessage("discord.field.incomplete-configuration.description"), false)
                                 .setColor(Color.RED).build())
                         .setEphemeral(true).queue();
                 return;
             }
-            EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.LINK + DiscordLang.LINKING_PROCESS_EMBED_TITLE.toString());
-            if (Config.getLinkMap().containsValue(event.getUser().getId())) {
-                event.replyEmbeds(embed.addField(MenuEmoji.WARNING + DiscordLang.ACCOUNT_ALREADY_LINKED_FIELD_TITLE.toString(),
-                                        DiscordLang.ACCOUNT_ALREADY_LINKED_FIELD_DESCRIPTION.toString(), false)
+            EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.LINK + this.lang.getMessage("discord.menu.linking-process.title"));
+            if (this.config.getReader().getLinkMap().containsValue(event.getUser().getId())) {
+                event.replyEmbeds(embed.addField(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.linking-process.field.account-already-linked.title"),
+                                        this.lang.getMessage("discord.menu.linking-process.field.account-already-linked.description"), false)
                                 .setColor(Color.RED).build())
                         .setEphemeral(true).queue();
                 return;
@@ -69,8 +79,8 @@ public class LinkCommand extends ListenerAdapter {
                 code = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
             } while (LinkCommand.discordIDCode.containsValue(code));
             LinkCommand.discordIDCode.put(event.getUser().getId(), code);
-            event.replyEmbeds(embed.addField(MenuEmoji.KEY + DiscordLang.VERIFICATION_CODE_FIELD_TITLE.toString(),
-                                    String.format(DiscordLang.VERIFICATION_CODE_FIELD_DESCRIPTION.toString(), code), false)
+            event.replyEmbeds(embed.addField(MenuEmoji.KEY + this.lang.getMessage("discord.menu.linking-process.field.verification-code.title"),
+                                    this.lang.getMessage("discord.menu.linking-process.field.verification-code.description", code), false)
                             .setColor(Color.GREEN).build())
                     .setEphemeral(true).queue();
         }

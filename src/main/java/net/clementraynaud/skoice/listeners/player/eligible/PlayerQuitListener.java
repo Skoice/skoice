@@ -30,9 +30,15 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerQuitListener implements Listener {
 
+    private final Skoice plugin;
+
+    public PlayerQuitListener(Skoice plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(Skoice.getPlugin(), () -> Network.networks.stream()
+        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> Network.networks.stream()
                 .filter(network -> network.contains(event.getPlayer().getUniqueId()))
                 .forEach(network -> network.remove(event.getPlayer().getUniqueId())));
     }

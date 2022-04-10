@@ -17,9 +17,9 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.commands;
+package net.clementraynaud.skoice.commands.skoice;
 
-import net.clementraynaud.skoice.commands.arguments.Argument;
+import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

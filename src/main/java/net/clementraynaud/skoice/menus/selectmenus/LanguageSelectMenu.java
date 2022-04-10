@@ -19,11 +19,11 @@
 
 package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
@@ -33,27 +33,34 @@ import java.util.List;
 
 public class LanguageSelectMenu extends SelectMenu {
 
-    public LanguageSelectMenu() {
+    private final Config config;
+    private final LangFile lang;
+    private final Bot bot;
+
+    public LanguageSelectMenu(Config config, LangFile lang, Bot bot) {
         super(false);
+        this.config = config;
+        this.lang = lang;
+        this.bot = bot;
     }
 
     @Override
     public SelectionMenu get() {
         List<SelectOption> options = new ArrayList<>();
-        for (Lang lang : Lang.values()) {
-            options.add(SelectOption.of(lang.getFullName(), lang.name())
-                    .withDescription(lang.name().equals(Lang.EN.name())
-                            ? DiscordLang.DEFAULT_SELECT_OPTION_DESCRIPTION.toString()
+        for (Lang option : Lang.values()) {
+            options.add(SelectOption.of(option.getFullName(), option.name())
+                    .withDescription(option.name().equals(Lang.EN.name())
+                            ? this.lang.getMessage("discord.select-option.default.description")
                             : null)
-                    .withEmoji(lang.getEmoji()));
+                    .withEmoji(option.getEmoji()));
         }
-        if (Skoice.getPlugin().isBotReady()) {
-            return SelectionMenu.create(Menu.LANGUAGE.name() + "_SELECTION")
+        if (this.bot.isReady()) {
+            return SelectionMenu.create("language-selection")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(Skoice.getPlugin().getConfig().getString(Config.LANG_FIELD))).build();
+                    .setDefaultValues(Collections.singleton(this.config.getFile().getString(ConfigField.LANG.get()))).build();
         } else {
-            return SelectionMenu.create(Menu.LANGUAGE.name() + "_SELECTION")
-                    .setPlaceholder(DiscordLang.LANGUAGE_SELECT_MENU_PLACEHOLDER.toString())
+            return SelectionMenu.create("language-selection")
+                    .setPlaceholder(this.lang.getMessage("discord.menu.language.select-menu.placeholder"))
                     .addOptions(options).build();
         }
     }

@@ -19,9 +19,10 @@
 
 package net.clementraynaud.skoice.listeners.player;
 
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.lang.MinecraftLang;
+import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -35,11 +36,21 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
 
+    private final Config config;
+    private final LangFile lang;
+    private final Bot bot;
+
+    public PlayerJoinListener(Config config, LangFile lang, Bot bot) {
+        this.config = config;
+        this.lang = lang;
+        this.bot = bot;
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.isOp()) {
-            if (!Skoice.getPlugin().isTokenSet() || Bot.getJda() == null) {
+            if (!this.config.getFile().contains(ConfigField.TOKEN.get()) || this.bot.getJda() == null) {
                 try {
                     TextComponent configureCommand = new TextComponent("§bhere");
                     MessageUtil.setHoverEvent(configureCommand, "§8☀ §bExecute: §7/skoice configure");
@@ -48,10 +59,10 @@ public class PlayerJoinListener implements Listener {
                             .append(configureCommand)
                             .append(" §7to set it up.").event((HoverEvent) null).create());
                 } catch (NoSuchMethodError e) {
-                    player.sendMessage(MinecraftLang.INCOMPLETE_CONFIGURATION_OPERATOR_COMMAND.toString());
+                    player.sendMessage(this.lang.getMessage("minecraft.chat.configuration.incomplete-configuration-operator-command"));
                 }
-            } else if (!Skoice.getPlugin().isBotReady()) {
-                player.sendMessage(MinecraftLang.INCOMPLETE_CONFIGURATION_OPERATOR_DISCORD.toString());
+            } else if (!this.bot.isReady()) {
+                player.sendMessage(this.lang.getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
             }
         }
     }

@@ -23,6 +23,7 @@ package net.clementraynaud.skoice.listeners.guild.voice;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
+import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
@@ -32,11 +33,17 @@ import java.util.UUID;
 
 public class GuildVoiceMoveListener extends ListenerAdapter {
 
+    private final Config config;
+
+    public GuildVoiceMoveListener(Config config) {
+        this.config = config;
+    }
+
     @Override
     public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
-        if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(Config.getCategory()) &&
-                event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(Config.getCategory())) {
-            String minecraftID = Config.getKeyFromValue(Config.getLinkMap(), event.getMember().getId());
+        if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(this.config.getReader().getCategory())
+                && event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(this.config.getReader().getCategory())) {
+            String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinkMap(), event.getMember().getId());
             if (minecraftID == null) {
                 return;
             }
@@ -47,6 +54,6 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
                         .forEach(network -> network.remove(player.getPlayer()));
             }
         }
-        new UpdateVoiceStateTask(event.getMember(), event.getChannelJoined()).run();
+        new UpdateVoiceStateTask(this.config, event.getMember(), event.getChannelJoined()).run();
     }
 }

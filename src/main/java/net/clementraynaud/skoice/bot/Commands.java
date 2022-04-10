@@ -20,8 +20,7 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.lang.DiscordLang;
-import net.clementraynaud.skoice.lang.LoggerLang;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -31,17 +30,27 @@ import java.util.*;
 
 public class Commands {
 
+    private final Skoice plugin;
+    private final LangFile lang;
+    private final Bot bot;
+
+    public Commands(Skoice plugin, LangFile lang, Bot bot) {
+        this.plugin = plugin;
+        this.lang = lang;
+        this.bot = bot;
+    }
+
     public void register(Guild guild) {
         guild.updateCommands().addCommands(this.getCommands())
                 .queue(null, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
-                        e -> Skoice.getPlugin().getLogger().severe(String.format(LoggerLang.MISSING_ACCESS_ERROR.toString(), Bot.getJda().getSelfUser().getId()))));
+                        e -> this.plugin.getLogger().severe(this.lang.getMessage("logger.error.missing-access", this.bot.getJda().getSelfUser().getId()))));
     }
 
     private Set<CommandData> getCommands() {
         return new HashSet<>(Arrays.asList(
-                new CommandData("configure", DiscordLang.CONFIGURE_COMMAND_DESCRIPTION.toString()),
-                new CommandData("link", DiscordLang.LINK_COMMAND_DESCRIPTION.toString()),
-                new CommandData("unlink", DiscordLang.UNLINK_COMMAND_DESCRIPTION.toString()),
-                new CommandData("invite", DiscordLang.INVITE_COMMAND_DESCRIPTION.toString())));
+                new CommandData("configure", this.lang.getMessage("discord.command-description.configure")),
+                new CommandData("link", this.lang.getMessage("discord.command-description.link")),
+                new CommandData("unlink", this.lang.getMessage("discord.command-description.unlink")),
+                new CommandData("invite", this.lang.getMessage("discord.command-description.invite"))));
     }
 }

@@ -20,11 +20,13 @@
 package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.menus.ErrorEmbeds;
-import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.menus.ErrorEmbed;
 import net.clementraynaud.skoice.menus.MenuEmoji;
+import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -38,41 +40,53 @@ import java.util.Map;
 
 public class ButtonClickListener extends ListenerAdapter {
 
+    private final Skoice plugin;
+    private final Config config;
+    private final LangFile lang;
+    private final Bot bot;
+
+    public ButtonClickListener(Skoice plugin, Config config, LangFile lang, Bot bot) {
+        this.plugin = plugin;
+        this.config = config;
+        this.lang = lang;
+        this.bot = bot;
+    }
+
     public static final Map<String, String> discordIDAxis = new HashMap<>();
 
     @Override
     public void onButtonClick(ButtonClickEvent event) {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (Skoice.getPlugin().getConfig().contains(Config.TEMP_MESSAGE_ID_FIELD)
-                    && Skoice.getPlugin().getConfig().getString(Config.TEMP_MESSAGE_ID_FIELD).equals(event.getMessageId())
+            if (this.config.getFile().contains(ConfigField.TEMP_MESSAGE.get())
+                    && this.config.getFile().get(ConfigField.TEMP_MESSAGE.get()).equals(event.getMessage())
                     && event.getButton() != null && event.getButton().getId() != null) {
                 String buttonID = event.getButton().getId();
                 if (buttonID.equals(Menu.CLOSE_BUTTON_ID)) {
                     event.getMessage().delete().queue();
-                    if (!Skoice.getPlugin().isBotReady()) {
+                    if (!this.bot.isReady()) {
                         event.replyEmbeds(new EmbedBuilder()
-                                        .setTitle(MenuEmoji.GEAR + DiscordLang.CONFIGURATION_EMBED_TITLE.toString())
-                                        .addField(MenuEmoji.WARNING + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE.toString(),
-                                                DiscordLang.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_DESCRIPTION.toString(), false)
+                                        .setTitle(MenuEmoji.GEAR + this.lang.getMessage("discord.menu.configuration.title"))
+                                        .addField(MenuEmoji.WARNING + this.lang.getMessage("discord.field.incomplete-configuration.title"),
+                                                this.lang.getMessage("discord.field.incomplete-configuration.server-manager-description"), false)
                                         .setColor(Color.RED).build())
                                 .setEphemeral(true).queue();
                     }
-                } else if (!Skoice.getPlugin().isBotReady()) {
-                    event.editMessage(new Response().getMessage()).queue();
+                } else if (!this.bot.isReady()) {
+                    event.editMessage(new Response(this.plugin, this.config, this.lang, this.bot).getMessage()).queue();
                 } else {
-                    if (buttonID.equals(Menu.MODE.name())) {
+                    if ("mode".equals(buttonID)) {
                         ButtonClickListener.discordIDAxis.remove(member.getId());
-                    } else if (buttonID.equals(Menu.HORIZONTAL_RADIUS.name())) {
-                        ButtonClickListener.discordIDAxis.put(member.getId(), Config.HORIZONTAL_RADIUS_FIELD);
-                    } else if (buttonID.equals(Menu.VERTICAL_RADIUS.name())) {
-                        ButtonClickListener.discordIDAxis.put(member.getId(), Config.VERTICAL_RADIUS_FIELD);
+                    } else if ("horizontal-radius".equals(buttonID)) {
+                        ButtonClickListener.discordIDAxis.put(member.getId(), ConfigField.HORIZONTAL_RADIUS.get());
+                    } else if ("vertical-radius".equals(buttonID)) {
+                        ButtonClickListener.discordIDAxis.put(member.getId(), ConfigField.VERTICAL_RADIUS.get());
                     }
-                    event.editMessage(Menu.valueOf(buttonID).getMessage()).queue();
+                    event.editMessage(this.bot.getMenus().get(buttonID).toMessage(this.config, this.lang, this.bot)).queue();
                 }
             }
         } else {
-            event.replyEmbeds(ErrorEmbeds.getAccessDeniedEmbed()).setEphemeral(true).queue();
+            event.replyEmbeds(new ErrorEmbed(this.lang).getAccessDeniedEmbed()).setEphemeral(true).queue();
         }
     }
 }

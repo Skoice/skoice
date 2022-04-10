@@ -22,32 +22,43 @@ package net.clementraynaud.skoice.menus;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
-import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import java.awt.*;
 
 public class Response {
 
+    private final Skoice plugin;
+    private final Config config;
+    private final LangFile lang;
+    private final Bot bot;
+
+    public Response(Skoice plugin, Config config, LangFile lang, Bot bot) {
+        this.plugin = plugin;
+        this.config = config;
+        this.lang = lang;
+        this.bot = bot;
+    }
+
     public Message getMessage() {
-        if (!Skoice.getPlugin().isGuildUnique()) {
-            return Menu.SERVER.getMessage();
-        } else if (!Skoice.getPlugin().getConfig().contains(Config.LOBBY_ID_FIELD)) {
-            return Menu.LOBBY.getMessage();
-        } else if (!Skoice.getPlugin().getConfig().contains(Config.HORIZONTAL_RADIUS_FIELD)
-                || !Skoice.getPlugin().getConfig().contains(Config.VERTICAL_RADIUS_FIELD)) {
-            return Menu.MODE.getMessage();
+        if (this.bot.isOnMultipleGuilds()) {
+            return this.bot.getMenus().get("server").toMessage(this.config, this.lang, this.bot);
+        } else if (!this.config.getFile().contains(ConfigField.LOBBY_ID.get())) {
+            return this.bot.getMenus().get("lobby").toMessage(this.config, this.lang, this.bot);
+        } else if (!this.config.getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())
+                || !this.config.getFile().contains(ConfigField.VERTICAL_RADIUS.get())) {
+            return this.bot.getMenus().get("mode").toMessage(this.config, this.lang, this.bot);
         } else {
-            return Menu.CONFIGURATION.getMessage();
+            return this.bot.getMenus().get("configuration").toMessage(this.config, this.lang, this.bot);
         }
     }
 
@@ -59,34 +70,29 @@ public class Response {
     }
 
     public Message getConfigurationMessage() {
-        if (Skoice.getPlugin().getConfig().contains(Config.TEMP_FIELD)) {
-            Guild guild = Bot.getJda().getGuildById(Skoice.getPlugin().getConfig().getString(Config.TEMP_GUILD_ID_FIELD));
-            if (guild != null) {
-                TextChannel textChannel = guild.getTextChannelById(Skoice.getPlugin().getConfig().getString(Config.TEMP_TEXT_CHANNEL_ID_FIELD));
-                if (textChannel != null) {
-                    try {
-                        return textChannel.retrieveMessageById(Skoice.getPlugin().getConfig().getString(Config.TEMP_MESSAGE_ID_FIELD)).complete();
-                    } catch (ErrorResponseException e) {
-                        Skoice.getPlugin().getConfig().set(Config.TEMP_FIELD, null);
-                        Skoice.getPlugin().saveConfig();
-                        ButtonClickListener.discordIDAxis.clear();
-                    }
-                }
-            }
+        if (!this.config.getFile().contains(ConfigField.TEMP_MESSAGE.get())) {
+            return null;
         }
-        return null;
+        Message message = this.config.getFile().getObject(ConfigField.TEMP_MESSAGE.get(), Message.class);
+        if (message == null) {
+            this.config.getFile().set(ConfigField.TEMP_MESSAGE.get(), null);
+            this.config.saveFile();
+            ButtonClickListener.discordIDAxis.clear();
+            return null;
+        }
+        return message;
     }
 
     public void sendLobbyDeletedAlert(Guild guild) {
-        Skoice.getPlugin().getConfig().set(Config.LOBBY_ID_FIELD, null);
-        Skoice.getPlugin().saveConfig();
-        Skoice.getPlugin().updateConfigurationStatus(false);
+        this.config.getFile().set(ConfigField.LOBBY_ID.get(), null);
+        this.config.saveFile();
+        this.plugin.updateConfigurationStatus(false);
         User user = guild.retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
         if (user != null && !user.isBot()) {
             user.openPrivateChannel().complete()
-                    .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.GEAR + DiscordLang.CONFIGURATION_EMBED_TITLE.toString())
-                            .addField(MenuEmoji.WARNING + DiscordLang.INCOMPLETE_CONFIGURATION_FIELD_TITLE.toString(),
-                                    DiscordLang.INCOMPLETE_CONFIGURATION_SERVER_MANAGER_FIELD_ALTERNATIVE_DESCRIPTION.toString(), false)
+                    .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.GEAR + this.lang.getMessage("discord.menu.configuration.title"))
+                            .addField(MenuEmoji.WARNING + this.lang.getMessage("discord.field.incomplete-configuration.title"),
+                                    this.lang.getMessage("discord.field.incomplete-configuration.server-manager-alternative-description"), false)
                             .setColor(Color.RED).build())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         }

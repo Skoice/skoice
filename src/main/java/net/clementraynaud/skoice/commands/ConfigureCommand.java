@@ -19,7 +19,11 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.menus.ErrorEmbeds;
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.menus.ErrorEmbed;
 import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -33,16 +37,29 @@ public class ConfigureCommand extends ListenerAdapter {
 
     private boolean configureCommandCooldown = false;
 
+    private final Skoice plugin;
+    private final Config config;
+    private final LangFile lang;
+    private final Bot bot;
+
+    public ConfigureCommand(Skoice plugin, Config config, LangFile lang, Bot bot) {
+        this.plugin = plugin;
+        this.config = config;
+        this.lang = lang;
+        this.bot = bot;
+    }
+
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
-        if ("configure" .equals(event.getName())) {
+        if ("configure".equals(event.getName())) {
             Member member = event.getMember();
             if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
                 if (this.configureCommandCooldown) {
-                    event.replyEmbeds(ErrorEmbeds.getTooManyInteractionsEmbed()).setEphemeral(true).queue();
+                    event.replyEmbeds(new ErrorEmbed(this.lang).getTooManyInteractionsEmbed()).setEphemeral(true).queue();
                 } else {
-                    new Response().deleteMessage();
-                    event.reply(new Response().getMessage()).queue();
+                    Response response = new Response(this.plugin, this.config, this.lang, this.bot);
+                    response.deleteMessage();
+                    event.reply(response.getMessage()).queue();
                     this.configureCommandCooldown = true;
                     new Timer().schedule(new TimerTask() {
 
@@ -53,7 +70,7 @@ public class ConfigureCommand extends ListenerAdapter {
                     }, 5000);
                 }
             } else {
-                event.replyEmbeds(ErrorEmbeds.getAccessDeniedEmbed()).setEphemeral(true).queue();
+                event.replyEmbeds(new ErrorEmbed(this.lang).getAccessDeniedEmbed()).setEphemeral(true).queue();
             }
         }
     }

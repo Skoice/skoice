@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.listeners.message.priv;
 
-import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
@@ -29,12 +29,18 @@ import java.awt.*;
 
 public class PrivateMessageReceivedListener extends ListenerAdapter {
 
+    private final LangFile lang;
+
+    public PrivateMessageReceivedListener(LangFile lang) {
+        this.lang = lang;
+    }
+
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
-            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(MenuEmoji.WARNING + DiscordLang.ERROR_EMBED_TITLE.toString())
-                    .addField(MenuEmoji.NO_ENTRY + DiscordLang.ILLEGAL_INTERACTION_FIELD_TITLE.toString(),
-                            DiscordLang.ILLEGAL_INTERACTION_FIELD_DESCRIPTION.toString(), false)
+            event.getMessage().replyEmbeds(new EmbedBuilder().setTitle(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.error.title"))
+                    .addField(MenuEmoji.NO_ENTRY + this.lang.getMessage("discord.menu.error.field.illegal-interaction.title"),
+                            this.lang.getMessage("discord.menu.error.field.illegal-interaction.description"), false)
                     .setColor(Color.RED).build()).queue();
         }
     }

@@ -19,28 +19,31 @@
 
 package net.clementraynaud.skoice.menus;
 
-import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
 
-public class ErrorEmbeds {
+public class ErrorEmbed {
 
-    private ErrorEmbeds() {
+    private final LangFile lang;
+
+    public ErrorEmbed(LangFile lang) {
+        this.lang = lang;
     }
 
-    public static MessageEmbed getAccessDeniedEmbed() {
-        return new EmbedBuilder().setTitle(MenuEmoji.WARNING + DiscordLang.ERROR_EMBED_TITLE.toString())
-                .addField(MenuEmoji.NO_ENTRY + DiscordLang.ACCESS_DENIED_FIELD_TITLE.toString(),
-                        DiscordLang.ACCESS_DENIED_FIELD_DESCRIPTION.toString(), false)
+    public MessageEmbed getAccessDeniedEmbed() {
+        return new EmbedBuilder().setTitle(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.error.title"))
+                .addField(MenuEmoji.NO_ENTRY + this.lang.getMessage("discord.menu.error.field.access-denied.title"),
+                        this.lang.getMessage("discord.menu.error.field.access-denied.description"), false)
                 .setColor(Color.RED).build();
     }
 
-    public static MessageEmbed getTooManyInteractionsEmbed() {
-        return new EmbedBuilder().setTitle(MenuEmoji.WARNING + DiscordLang.ERROR_EMBED_TITLE.toString())
-                .addField(MenuEmoji.CHART_WITH_UPWARDS_TREND + DiscordLang.TOO_MANY_INTERACTIONS_FIELD_TITLE.toString(),
-                        DiscordLang.TOO_MANY_INTERACTIONS_FIELD_DESCRIPTION.toString(), false)
+    public MessageEmbed getTooManyInteractionsEmbed() {
+        return new EmbedBuilder().setTitle(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.error.title"))
+                .addField(MenuEmoji.CHART_WITH_UPWARDS_TREND + this.lang.getMessage("discord.menu.error.field.too-many-interactions.title"),
+                        this.lang.getMessage("discord.menu.error.field.too-many-interactions.description"), false)
                 .setColor(Color.RED).build();
     }
 }

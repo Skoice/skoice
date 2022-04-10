@@ -19,44 +19,36 @@
 
 package net.clementraynaud.skoice.menus;
 
-import net.clementraynaud.skoice.lang.DiscordLang;
+import net.clementraynaud.skoice.lang.LangFile;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import org.bukkit.configuration.ConfigurationSection;
 
-public enum MenuField {
-    TROUBLESHOOTING(MenuEmoji.SCREWDRIVER, true),
-    CONTRIBUTE(MenuEmoji.HAMMER, false),
-    VANILLA_MODE(MenuEmoji.MAP, true),
-    MINIGAME_MODE(MenuEmoji.CROSSED_SWORDS, true),
-    CUSTOMIZE(MenuEmoji.PENCIL2, true),
-    ENTER_A_VALUE(MenuEmoji.KEYBOARD, false),
-    SKOICE_2_1(MenuEmoji.CLIPBOARD, false),
-    UPCOMING_FEATURES(MenuEmoji.CALENDAR_SPIRAL, false);
+public class MenuField {
 
-    private final MenuEmoji unicode;
+    private final String name;
+    private final MenuEmoji emoji;
     private final boolean inline;
+    private final String value;
 
-    MenuField(MenuEmoji unicode, boolean inline) {
-        this.unicode = unicode;
-        this.inline = inline;
+    public MenuField(ConfigurationSection field) {
+        this.name = field.getName();
+        this.emoji = MenuEmoji.valueOf(field.getString("emoji").toUpperCase());
+        this.inline = field.getBoolean("inline");
+        this.value = field.contains("value") ? field.getString("value") : null;
     }
 
-    public MessageEmbed.Field get() {
-        return new MessageEmbed.Field(this.unicode + this.getTitle(), this.getDescription(), this.inline);
+    public MessageEmbed.Field toField(LangFile lang) {
+        return new MessageEmbed.Field(this.emoji + this.getTitle(lang), this.getDescription(lang), this.inline);
     }
 
-    public MessageEmbed.Field get(int value) {
-        return new MessageEmbed.Field(this.unicode + this.getTitle(), this.getDescription(value), this.inline);
+    private String getTitle(LangFile lang) {
+        return lang.getMessage("discord.field." + this.name + ".title");
     }
 
-    private String getTitle() {
-        return DiscordLang.valueOf(this.name() + "_FIELD_TITLE").toString();
-    }
-
-    private String getDescription() {
-        return DiscordLang.valueOf(this.name() + "_FIELD_DESCRIPTION").toString();
-    }
-
-    private String getDescription(int value) {
-        return String.format(DiscordLang.valueOf(this.name() + "_FIELD_DESCRIPTION").toString(), value);
+    private String getDescription(LangFile lang) {
+        if (this.value != null) {
+            return lang.getMessage("discord.field." + this.name + ".description", this.value);
+        }
+        return lang.getMessage("discord.field." + this.name + ".description");
     }
 }
