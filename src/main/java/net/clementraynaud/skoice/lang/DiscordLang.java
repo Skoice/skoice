@@ -229,16 +229,16 @@ public enum DiscordLang {
             Lang.EN, "Skoice 2.1"))),
 
     SKOICE_2_1_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "**General:**\n• Discover a whole new and intuitive configuration interface.\n• Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n• Link your accounts effortlessly thanks to our new linking process.\n\n**New Features:**\n• Action bar alert\n• Channel visibility toggle\n• \"/invite\" command on Discord\n• French translation",
-            Lang.FR, "**Général:**\n• Découvrez une toute nouvelle interface de configuration intuitive.\n• Laissez-nous choisir les meilleures distances pour votre utilisation personnelle de Skoice dans le menu \"Mode\".\n• Connectez vos comptes facilement grâce à notre nouvelle procédure de liaison.\n\n**Nouvelles fonctionnalités:**\n• Commande \"/invite\" sur Discord\n• Configuration de l'alerte dans la barre d'action\n• Configuration de la visibilité des salons\n• Traduction française"))),
+            Lang.EN, "**General:**\n• Discover a whole new and intuitive configuration interface.\n• Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n• Link your accounts effortlessly thanks to our new linking process.\n• Skoice now uses slash commands.\n\n**New Features:**\n• Action bar alert\n• Channel visibility toggle\n• \"/invite\" command on Discord\n• French translation",
+            Lang.FR, "**Général:**\n• Découvrez une toute nouvelle interface de configuration intuitive.\n• Laissez-nous choisir les meilleures distances pour votre utilisation personnelle de Skoice dans le menu \"Mode\".\n• Connectez vos comptes facilement grâce à notre nouvelle procédure de liaison.\n• Skoice utilise désormais les commandes slash.\n\n**Nouvelles fonctionnalités:**\n• Commande \"/invite\" sur Discord\n• Configuration de l'alerte dans la barre d'action\n• Configuration de la visibilité des salons\n• Traduction française"))),
 
     UPCOMING_FEATURES_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "What's Next?",
             Lang.FR, "Et après ?"))),
 
     UPCOMING_FEATURES_FIELD_DESCRIPTION(Maps.newHashMap(ImmutableMap.of(
-            Lang.EN, "• Use Skoice on multiple servers.\n• Select worlds.\n• Link multiple Minecraft accounts to a single Discord account.\n• Give a dedicated role to users who have linked their accounts.\n• Remove spectators from the proximity voice chat.\n• Display who can hear you.\n• Disallow chaining.",
-            Lang.FR, "• Utiliser Skoice sur plusieurs serveurs.\n• Sélectionner des mondes.\n• Lier plusieurs comptes Minecraft à un seul compte Discord.\n• Donner un rôle dédié aux utilisateurs qui ont lié leurs comptes.\n• Retirer les spectateurs du chat vocal de proximité.\n• Afficher qui peut vous entendre.\n • Interdire les chaînes de joueurs."))),
+            Lang.EN, "To discover the upcoming features of Skoice, [take a look at our long-terms plans](https://github.com/carlodrift/skoice/issues/28).",
+            Lang.FR, "Pour découvrir les futures fonctionnalités de Skoice, [jetez un coup d'œil à nos projets à long terme](https://github.com/carlodrift/skoice/issues/28)."))),
 
     TROUBLESHOOTING_FIELD_TITLE(Maps.newHashMap(ImmutableMap.of(
             Lang.EN, "Troubleshooting",
