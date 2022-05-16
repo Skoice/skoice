@@ -27,8 +27,14 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class PlayerMoveListener implements Listener {
 
+    private final EligiblePlayers eligiblePlayers;
+
+    public PlayerMoveListener(EligiblePlayers eligiblePlayers) {
+        this.eligiblePlayers = eligiblePlayers;
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerMove(PlayerMoveEvent event) {
-        new EligiblePlayers().add(event.getPlayer());
+        this.eligiblePlayers.add(event.getPlayer());
     }
 }

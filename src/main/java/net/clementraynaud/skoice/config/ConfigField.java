@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.config;
 
 public enum ConfigField {
-    TOKEN, LANG, LOBBY_ID, HORIZONTAL_RADIUS, VERTICAL_RADIUS, ACTION_BAR_ALERT, CHANNEL_VISIBILITY, LINK_MAP, TEMP_MESSAGE;
+    TOKEN, LANG, LOBBY_ID, HORIZONTAL_RADIUS, VERTICAL_RADIUS, ACTION_BAR_ALERT, CHANNEL_VISIBILITY, LINKS, TEMP_MESSAGE;
 
     public String get() {
         return this.toString().toLowerCase().replace("_", "-");

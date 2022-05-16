@@ -41,10 +41,12 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
 
     private final Config config;
     private final LangFile lang;
+    private final EligiblePlayers eligiblePlayers;
 
-    public GuildVoiceJoinListener(Config config, LangFile lang) {
+    public GuildVoiceJoinListener(Config config, LangFile lang, EligiblePlayers eligiblePlayers) {
         this.config = config;
         this.lang = lang;
+        this.eligiblePlayers = eligiblePlayers;
     }
 
     @Override
@@ -53,7 +55,7 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
         if (!event.getChannelJoined().equals(this.config.getReader().getLobby())) {
             return;
         }
-        String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinkMap(), event.getMember().getId());
+        String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinks(), event.getMember().getId());
         if (minecraftID == null) {
             event.getMember().getUser().openPrivateChannel().complete()
                     .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.LINK + this.lang.getMessage("discord.menu.linking-process.title"))
@@ -64,7 +66,7 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
             if (player.isOnline() && player.getPlayer() != null) {
-                new EligiblePlayers().add(player.getPlayer());
+                this.eligiblePlayers.add(player.getPlayer());
                 player.getPlayer().sendMessage(this.lang.getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
             }
         }

@@ -27,8 +27,14 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class PlayerTeleportListener implements Listener {
 
+    private final EligiblePlayers eligiblePlayers;
+
+    public PlayerTeleportListener(EligiblePlayers eligiblePlayers) {
+        this.eligiblePlayers = eligiblePlayers;
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        new EligiblePlayers().add(event.getPlayer());
+        this.eligiblePlayers.add(event.getPlayer());
     }
 }

@@ -86,14 +86,14 @@ public class OutdatedConfig {
 
     private void convertOldLinks() {
         if (this.oldData.getConfigurationSection("Data") != null) {
-            Map<String, String> linkMap = new HashMap<>();
+            Map<String, String> links = new HashMap<>();
             Set<String> subkeys = this.oldData.getConfigurationSection("Data").getKeys(false);
             Iterator<String> iterator = subkeys.iterator();
             for (int i = 0; i < subkeys.size(); i += 2) {
-                linkMap.put(iterator.next(), iterator.next());
+                links.put(iterator.next(), iterator.next());
             }
-            linkMap.putAll(this.config.getReader().getLinkMap());
-            this.config.getFile().set(ConfigField.LINK_MAP.get(), linkMap);
+            links.putAll(this.config.getReader().getLinks());
+            this.config.getFile().set(ConfigField.LINKS.get(), links);
         }
     }
 

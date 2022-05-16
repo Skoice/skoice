@@ -41,6 +41,7 @@ import net.clementraynaud.skoice.listeners.message.guild.GuildMessageReceivedLis
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
 import net.clementraynaud.skoice.listeners.message.priv.PrivateMessageReceivedListener;
+import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.MapUtil;
@@ -92,11 +93,13 @@ public class Bot {
     private final Skoice plugin;
     private final Config config;
     private final LangFile lang;
+    private final EligiblePlayers eligiblePlayers;
 
-    public Bot(Skoice plugin, Config config, LangFile lang) {
+    public Bot(Skoice plugin, Config config, LangFile lang, EligiblePlayers eligiblePlayers) {
         this.plugin = plugin;
         this.config = config;
         this.lang = lang;
+        this.eligiblePlayers = eligiblePlayers;
     }
 
     public JDA getJda() {
@@ -183,7 +186,7 @@ public class Bot {
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                         Bukkit.getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
-                                new UpdateNetworksTask(this.config, this.lang)::run,
+                                new UpdateNetworksTask(this.config, this.lang, this.eligiblePlayers)::run,
                                 0,
                                 10
                         ),
@@ -237,7 +240,7 @@ public class Bot {
         VoiceChannel lobby = this.config.getReader().getLobby();
         if (lobby != null) {
             for (Member member : lobby.getMembers()) {
-                String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinkMap(), member.getId());
+                String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinks(), member.getId());
                 if (minecraftID == null) {
                     EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.LINK + this.lang.getMessage("discord.menu.linking-process.title"))
                             .setColor(Color.RED);

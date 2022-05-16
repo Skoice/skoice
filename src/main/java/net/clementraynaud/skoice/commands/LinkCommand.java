@@ -66,7 +66,7 @@ public class LinkCommand extends ListenerAdapter {
                 return;
             }
             EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.LINK + this.lang.getMessage("discord.menu.linking-process.title"));
-            if (this.config.getReader().getLinkMap().containsValue(event.getUser().getId())) {
+            if (this.config.getReader().getLinks().containsValue(event.getUser().getId())) {
                 event.replyEmbeds(embed.addField(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.linking-process.field.account-already-linked.title"),
                                         this.lang.getMessage("discord.menu.linking-process.field.account-already-linked.description"), false)
                                 .setColor(Color.RED).build())

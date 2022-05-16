@@ -39,12 +39,12 @@ public class ConfigUpdater {
     }
 
     public void linkUser(String minecraftID, String discordID) {
-        this.config.getFile().set(ConfigField.LINK_MAP.get() + "." + minecraftID, discordID);
+        this.config.getFile().set(ConfigField.LINKS.get() + "." + minecraftID, discordID);
         this.config.saveFile();
     }
 
     public void unlinkUser(String minecraftID) {
-        this.config.getFile().set(ConfigField.LINK_MAP.get() + "." + minecraftID, null);
+        this.config.getFile().set(ConfigField.LINKS.get() + "." + minecraftID, null);
         this.config.saveFile();
     }
 

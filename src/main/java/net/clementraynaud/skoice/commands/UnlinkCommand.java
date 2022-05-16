@@ -48,7 +48,7 @@ public class UnlinkCommand extends ListenerAdapter {
     public void onSlashCommand(SlashCommandEvent event) {
         if ("unlink".equals(event.getName())) {
             EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.LINK + this.lang.getMessage("discord.menu.linking-process.title"));
-            String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinkMap(), event.getUser().getId());
+            String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinks(), event.getUser().getId());
             if (minecraftID == null) {
                 event.replyEmbeds(embed.addField(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.title"),
                                         this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.description"), false)

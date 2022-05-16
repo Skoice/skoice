@@ -24,6 +24,7 @@ import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,24 +40,32 @@ public class ConfigReader {
         this.bot = bot;
     }
 
-    public Map<String, String> getLinkMap() {
-        Map<String, String> castedLinkMap = new HashMap<>();
-        if (this.config.getFile().isSet(ConfigField.LINK_MAP.get())) {
-            Map<String, Object> linkMap = new HashMap<>(this.config.getFile().getConfigurationSection(ConfigField.LINK_MAP.get()).getValues(false));
-            for (Map.Entry<String, Object> entry : linkMap.entrySet()) {
-                castedLinkMap.put(entry.getKey(), entry.getValue().toString());
+    public Map<String, String> getLinks() {
+        Map<String, String> castedLinks = new HashMap<>();
+        if (this.config.getFile().isSet(ConfigField.LINKS.get())) {
+            Map<String, Object> links = new HashMap<>(this.config.getFile().getConfigurationSection(ConfigField.LINKS.get()).getValues(false));
+            for (Map.Entry<String, Object> entry : links.entrySet()) {
+                castedLinks.put(entry.getKey(), entry.getValue().toString());
             }
         }
-        return castedLinkMap;
+        return castedLinks;
     }
 
     public Member getMember(UUID minecraftID) {
-        String discordID = this.getLinkMap().get(minecraftID);
+        String discordID = this.getLinks().get(minecraftID.toString());
+        if (discordID == null) {
+            return null;
+        }
         Guild guild = this.getGuild();
         if (guild == null) {
             return null;
         }
-        return discordID != null ? guild.getMemberById(discordID) : null;
+        Member member = null;
+        try {
+            member = guild.retrieveMemberById(discordID).complete();
+        } catch (ErrorResponseException ignored) {
+        }
+        return member;
     }
 
     public VoiceChannel getLobby() {

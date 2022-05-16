@@ -49,10 +49,12 @@ public class UpdateNetworksTask implements Task {
 
     private final Config config;
     private final LangFile lang;
+    private final EligiblePlayers eligiblePlayers;
 
-    public UpdateNetworksTask(Config config, LangFile lang) {
+    public UpdateNetworksTask(Config config, LangFile lang, EligiblePlayers eligiblePlayers) {
         this.config = config;
         this.lang = lang;
+        this.eligiblePlayers = eligiblePlayers;
     }
 
     @Override
@@ -67,9 +69,8 @@ public class UpdateNetworksTask implements Task {
             }
             this.muteMembers(lobby);
             Network.networks.removeIf(network -> network.getChannel() == null && network.isInitialized());
-            EligiblePlayers eligiblePlayers = new EligiblePlayers();
-            Set<UUID> oldEligiblePlayers = eligiblePlayers.get();
-            eligiblePlayers.clear();
+            Set<UUID> oldEligiblePlayers = this.eligiblePlayers.get();
+            this.eligiblePlayers.clear();
             for (UUID minecraftID : oldEligiblePlayers) {
                 Player player = Bukkit.getPlayer(minecraftID);
                 if (player != null) {
@@ -100,8 +101,9 @@ public class UpdateNetworksTask implements Task {
                 }
                 membersInLobby.addAll(voiceChannel.getMembers());
             }
+            Map<String, String> links = new HashMap<>(this.config.getReader().getLinks());
             for (Member member : membersInLobby) {
-                String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinkMap(), member.getId());
+                String minecraftID = new MapUtil().getKeyFromValue(links, member.getId());
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
                 Network playerNetwork = minecraftID != null ? Network.networks.stream()
                         .filter(n -> n.contains(UUID.fromString(minecraftID)))

@@ -45,7 +45,7 @@ public class UnlinkArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        String discordID = super.config.getReader().getLinkMap().get(player.getUniqueId().toString());
+        String discordID = super.config.getReader().getLinks().get(player.getUniqueId().toString());
         if (discordID == null) {
             player.sendMessage(super.lang.getMessage("minecraft.chat.player.account-not-linked"));
             return;

@@ -49,7 +49,7 @@ public class LinkArgument extends Argument {
             player.sendMessage(super.lang.getMessage("minecraft.chat.configuration.incomplete-configuration"));
             return;
         }
-        if (super.config.getReader().getLinkMap().containsKey(player.getUniqueId().toString())) {
+        if (super.config.getReader().getLinks().containsKey(player.getUniqueId().toString())) {
             player.sendMessage(super.lang.getMessage("minecraft.chat.player.account-already-linked"));
             return;
         }

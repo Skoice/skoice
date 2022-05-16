@@ -35,16 +35,18 @@ public class PlayerJoinListener implements Listener {
 
     private final Config config;
     private final LangFile lang;
+    private final EligiblePlayers eligiblePlayers;
 
-    public PlayerJoinListener(Config config, LangFile lang) {
+    public PlayerJoinListener(Config config, LangFile lang, EligiblePlayers eligiblePlayers) {
         this.config = config;
         this.lang = lang;
+        this.eligiblePlayers = eligiblePlayers;
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        new EligiblePlayers().add(player);
+        this.eligiblePlayers.add(player);
         Member member = this.config.getReader().getMember(player.getUniqueId());
         if (member != null) {
             GuildVoiceState voiceState = member.getVoiceState();
