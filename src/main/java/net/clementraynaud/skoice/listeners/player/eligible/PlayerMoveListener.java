@@ -35,6 +35,6 @@ public class PlayerMoveListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerMove(PlayerMoveEvent event) {
-        this.eligiblePlayers.add(event.getPlayer());
+        this.eligiblePlayers.add(event.getPlayer().getUniqueId());
     }
 }

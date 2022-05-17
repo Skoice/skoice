@@ -126,6 +126,10 @@ public class Bot {
         return this.menus;
     }
 
+    public void connect() {
+        this.connect(null);
+    }
+
     public void connect(CommandSender sender) {
         if (this.config.getFile().contains(ConfigField.TOKEN.get())) {
             byte[] base64TokenBytes = Base64.getDecoder().decode(this.config.getFile().getString(ConfigField.TOKEN.get()));

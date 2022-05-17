@@ -35,6 +35,6 @@ public class PlayerTeleportListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        this.eligiblePlayers.add(event.getPlayer());
+        this.eligiblePlayers.add(event.getPlayer().getUniqueId());
     }
 }

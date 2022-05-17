@@ -46,7 +46,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        this.eligiblePlayers.add(player);
+        this.eligiblePlayers.add(player.getUniqueId());
         Member member = this.config.getReader().getMember(player.getUniqueId());
         if (member != null) {
             GuildVoiceState voiceState = member.getVoiceState();

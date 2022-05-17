@@ -19,8 +19,6 @@
 
 package net.clementraynaud.skoice.system;
 
-import org.bukkit.entity.Player;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -29,12 +27,12 @@ public class EligiblePlayers {
 
     private final Set<UUID> players = new HashSet<>();
 
-    public void add(Player player) {
-        this.players.add(player.getUniqueId());
+    public void add(UUID minecraftID) {
+        this.players.add(minecraftID);
     }
 
-    public Set<UUID> get() {
-        return this.players;
+    public Set<UUID> copy() {
+        return new HashSet<>(this.players);
     }
 
     public void clear() {

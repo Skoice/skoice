@@ -98,7 +98,7 @@ public class Skoice extends JavaPlugin {
 
     private void initializeBot() {
         this.bot = new Bot(this, this.config, this.lang, this.eligiblePlayers);
-        this.bot.connect(null);
+        this.bot.connect();
         if (this.bot.getJda() != null) {
             this.config.initializeReader(this.bot);
             this.bot.setup(true, null);

@@ -66,7 +66,7 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
             if (player.isOnline() && player.getPlayer() != null) {
-                this.eligiblePlayers.add(player.getPlayer());
+                this.eligiblePlayers.add(player.getUniqueId());
                 player.getPlayer().sendMessage(this.lang.getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
             }
         }
