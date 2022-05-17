@@ -38,7 +38,7 @@ import java.awt.*;
 public class UnlinkArgument extends Argument {
 
     public UnlinkArgument(Config config, Lang lang, CommandSender sender) {
-        super(config, lang, sender, false, false);
+        super(config, lang, sender, ArgumentName.UNLINK.isAllowedInConsole(), ArgumentName.UNLINK.isRestrictedToOperators());
     }
 
     @Override

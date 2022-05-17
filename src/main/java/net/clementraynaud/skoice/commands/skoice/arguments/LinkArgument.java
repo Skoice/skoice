@@ -42,7 +42,7 @@ public class LinkArgument extends Argument {
     private final String arg;
 
     public LinkArgument(Config config, Lang lang, CommandSender sender, Bot bot, String arg) {
-        super(config, lang, sender, false, false);
+        super(config, lang, sender, ArgumentName.LINK.isAllowedInConsole(), ArgumentName.LINK.isRestrictedToOperators());
         this.bot = bot;
         this.arg = arg;
     }

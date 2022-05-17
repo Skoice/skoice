@@ -29,21 +29,21 @@ public abstract class Argument {
     protected final Config config;
     protected final Lang lang;
     protected final CommandSender sender;
-    protected final boolean allowsConsole;
+    protected final boolean allowedInConsole;
     protected final boolean restrictedToOperators;
 
-    protected Argument(Config config, Lang lang, CommandSender sender, boolean allowsConsole, boolean restrictedToOperators) {
+    protected Argument(Config config, Lang lang, CommandSender sender, boolean allowedInConsole, boolean restrictedToOperators) {
         this.config = config;
         this.lang = lang;
         this.sender = sender;
-        this.allowsConsole = allowsConsole;
+        this.allowedInConsole = allowedInConsole;
         this.restrictedToOperators = restrictedToOperators;
     }
 
     protected abstract void run();
 
     protected boolean canExecuteCommand() {
-        if (!(this.sender instanceof Player) && !this.allowsConsole) {
+        if (!(this.sender instanceof Player) && !this.allowedInConsole) {
             this.sender.sendMessage(this.lang.getMessage("minecraft.chat.error.illegal-executor"));
             return false;
         }

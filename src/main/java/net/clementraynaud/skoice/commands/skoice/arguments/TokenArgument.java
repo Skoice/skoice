@@ -30,7 +30,7 @@ public class TokenArgument extends Argument {
     private final String arg;
 
     public TokenArgument(Config config, Lang lang, CommandSender sender, Bot bot, String arg) {
-        super(config, lang, sender, true, true);
+        super(config, lang, sender, ArgumentName.TOKEN.isAllowedInConsole(), ArgumentName.TOKEN.isRestrictedToOperators());
         this.bot = bot;
         this.arg = arg;
     }

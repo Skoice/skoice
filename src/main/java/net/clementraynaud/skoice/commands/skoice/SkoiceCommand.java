@@ -79,8 +79,8 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (args.length == 1) {
-            return ArgumentName.getList().stream()
-                    .filter(option -> option.startsWith(args[0].toLowerCase()))
+            return ArgumentName.getList(sender.isOp()).stream()
+                    .filter(arg -> arg.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();

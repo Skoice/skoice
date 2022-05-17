@@ -36,7 +36,7 @@ public class ConfigureArgument extends Argument {
     private final Bot bot;
 
     public ConfigureArgument(Config config, Lang lang, CommandSender sender, Bot bot) {
-        super(config, lang, sender, false, true);
+        super(config, lang, sender, ArgumentName.CONFIGURE.isAllowedInConsole(), ArgumentName.CONFIGURE.isRestrictedToOperators());
         this.bot = bot;
     }
 
