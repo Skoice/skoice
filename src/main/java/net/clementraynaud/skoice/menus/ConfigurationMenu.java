@@ -54,13 +54,6 @@ public class ConfigurationMenu {
         }
     }
 
-    public void saveInConfig(Message message) {
-        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.GUILD_ID.get(), message.getGuild().getId());
-        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.TEXT_CHANNEL_ID.get(), message.getTextChannel().getId());
-        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.MESSAGE_ID.get(), message.getId());
-        this.config.saveFile();
-    }
-
     public boolean exists() {
         return this.config.getFile().contains(ConfigField.CONFIG_MENU.get());
     }
@@ -102,6 +95,13 @@ public class ConfigurationMenu {
         if (configurationMessage != null) {
             configurationMessage.delete().queue();
         }
+    }
+
+    public void storeInConfig(Message message) {
+        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.GUILD_ID.get(), message.getGuild().getId());
+        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.TEXT_CHANNEL_ID.get(), message.getTextChannel().getId());
+        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.MESSAGE_ID.get(), message.getId());
+        this.config.saveFile();
     }
 
     public void clearConfig() {

@@ -19,7 +19,6 @@
 
 package net.clementraynaud.skoice.listeners.message.guild;
 
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
@@ -49,7 +48,7 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
         String discordID = event.getAuthor().getId();
         if (discordID.equals(event.getJDA().getSelfUser().getId())) {
             if (!event.getMessage().isEphemeral()) {
-                this.configurationMenu.saveInConfig(event.getMessage());
+                this.configurationMenu.storeInConfig(event.getMessage());
             }
         } else if (ButtonClickListener.discordIDAxis.containsKey(event.getAuthor().getId())
                 && event.getMessage().getContentRaw().length() <= 4
