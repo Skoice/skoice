@@ -28,6 +28,7 @@ import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.ErrorEmbed;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.Response;
+import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -91,6 +92,7 @@ public class SelectMenuListener extends ListenerAdapter {
                                         .complete().getId();
                                 this.config.getFile().set(ConfigField.LOBBY_ID.get(), lobbyID);
                                 this.config.saveFile();
+                                new InterruptSystemTask(this.config).run();
                                 this.plugin.updateConfigurationStatus(false);
                             } else if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
                                 event.editMessage(new Response(this.plugin, this.config, this.lang, this.bot).getMessage()).queue();
@@ -99,6 +101,7 @@ public class SelectMenuListener extends ListenerAdapter {
                                 if (lobby != null && lobby.getParent() != null) {
                                     this.config.getFile().set(ConfigField.LOBBY_ID.get(), event.getSelectedOptions().get(0).getValue());
                                     this.config.saveFile();
+                                    new InterruptSystemTask(this.config).run();
                                     this.plugin.updateConfigurationStatus(false);
                                 }
                             }
