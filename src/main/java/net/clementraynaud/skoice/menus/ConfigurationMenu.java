@@ -19,31 +19,23 @@
 
 package net.clementraynaud.skoice.menus;
 
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.exceptions.ErrorHandler;
-import net.dv8tion.jda.api.requests.ErrorResponse;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
-import java.awt.*;
+public class ConfigurationMenu {
 
-public class Response {
-
-    private final Skoice plugin;
     private final Config config;
     private final Lang lang;
     private final Bot bot;
 
-    public Response(Skoice plugin, Config config, Lang lang, Bot bot) {
-        this.plugin = plugin;
+    public ConfigurationMenu(Config config, Lang lang, Bot bot) {
         this.config = config;
         this.lang = lang;
         this.bot = bot;
@@ -62,28 +54,62 @@ public class Response {
         }
     }
 
-    public void deleteMessage() {
-        Message configurationMessage = this.getConfigurationMessage();
-        if (configurationMessage != null) {
-            this.getConfigurationMessage().delete().queue();
-        }
+    public void saveInConfig(Message message) {
+        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.GUILD_ID.get(), message.getGuild().getId());
+        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.TEXT_CHANNEL_ID.get(), message.getTextChannel().getId());
+        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.MESSAGE_ID.get(), message.getId());
+        this.config.saveFile();
     }
 
-    public Message getConfigurationMessage() {
-        if (!this.config.getFile().contains(ConfigField.TEMP_MESSAGE.get())) {
+    public boolean exists() {
+        return this.config.getFile().contains(ConfigField.CONFIG_MENU.get());
+    }
+
+    public String getMessageId() {
+        Message message = this.retrieveMessage();
+        if (message != null) {
+            return message.getId();
+        }
+        return "";
+    }
+
+    public Message retrieveMessage() {
+        if (!this.exists()) {
             return null;
         }
-        Message message = this.config.getFile().getObject(ConfigField.TEMP_MESSAGE.get(), Message.class);
-        if (message == null) {
-            this.config.getFile().set(ConfigField.TEMP_MESSAGE.get(), null);
-            this.config.saveFile();
+        Guild guild = this.bot.getJda().getGuildById(this.config.getFile()
+                .getString(ConfigField.CONFIG_MENU.get() + "." + ConfigField.GUILD_ID.get()));
+        if (guild == null) {
+            return null;
+        }
+        TextChannel textChannel = guild.getTextChannelById(this.config.getFile()
+                .getString(ConfigField.CONFIG_MENU.get() + "." + ConfigField.TEXT_CHANNEL_ID.get()));
+        if (textChannel == null) {
+            return null;
+        }
+        try {
+            return textChannel.retrieveMessageById(this.config.getFile()
+                    .getString(ConfigField.CONFIG_MENU.get() + "." + ConfigField.MESSAGE_ID.get())).complete();
+        } catch (ErrorResponseException e) {
+            this.clearConfig();
             ButtonClickListener.discordIDAxis.clear();
-            return null;
         }
-        return message;
+        return null;
     }
 
-    public void sendLobbyDeletedAlert(Guild guild) {
+    public void deleteMessage() {
+        Message configurationMessage = this.retrieveMessage();
+        if (configurationMessage != null) {
+            configurationMessage.delete().queue();
+        }
+    }
+
+    public void clearConfig() {
+        this.config.getFile().set(ConfigField.CONFIG_MENU.get(), null);
+        this.config.saveFile();
+    }
+
+    /*public void sendLobbyDeletedAlert(Guild guild) {
         this.config.getFile().set(ConfigField.LOBBY_ID.get(), null);
         this.config.saveFile();
         this.plugin.updateConfigurationStatus(false);
@@ -96,5 +122,5 @@ public class Response {
                             .setColor(Color.RED).build())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         }
-    }
+    }*/
 }

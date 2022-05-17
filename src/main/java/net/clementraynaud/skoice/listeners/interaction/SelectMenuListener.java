@@ -27,7 +27,7 @@ import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.ErrorEmbed;
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.Response;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -44,20 +44,22 @@ public class SelectMenuListener extends ListenerAdapter {
     private final Config config;
     private final Lang lang;
     private final Bot bot;
+    private final ConfigurationMenu configurationMenu;
 
-    public SelectMenuListener(Skoice plugin, Config config, Lang lang, Bot bot) {
+    public SelectMenuListener(Skoice plugin, Config config, Lang lang, Bot bot, ConfigurationMenu configurationMenu) {
         this.plugin = plugin;
         this.config = config;
         this.lang = lang;
         this.bot = bot;
+        this.configurationMenu = configurationMenu;
     }
 
     @Override
     public void onSelectionMenu(SelectionMenuEvent event) {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (this.config.getFile().contains(ConfigField.TEMP_MESSAGE.get())
-                    && this.config.getFile().get(ConfigField.TEMP_MESSAGE.get()).equals(event.getMessage())
+            if (this.configurationMenu.exists()
+                    && this.configurationMenu.getMessageId().equals(event.getMessage().getId())
                     && event.getSelectedOptions() != null) {
                 String componentID = event.getComponentId();
                 switch (componentID) {
@@ -68,7 +70,7 @@ public class SelectMenuListener extends ListenerAdapter {
                                         && this.bot.getJda().getGuilds().contains(this.bot.getJda().getGuildById(server.getValue()))) {
                                     try {
                                         this.bot.getJda().getGuildById(server.getValue()).leave()
-                                                .queue(success -> event.editMessage(new Response(this.plugin, this.config, this.lang, this.bot).getMessage()).queue());
+                                                .queue(success -> event.editMessage(this.configurationMenu.getMessage()).queue());
                                     } catch (ErrorResponseException ignored) {
                                     }
                                 }
@@ -80,7 +82,7 @@ public class SelectMenuListener extends ListenerAdapter {
                         this.config.saveFile();
                         this.plugin.updateConfigurationStatus(false);
                         new Commands(this.plugin, this.lang, this.bot).register(event.getGuild());
-                        event.editMessage(new Response(this.plugin, this.config, this.lang, this.bot).getMessage()).queue();
+                        event.editMessage(this.configurationMenu.getMessage()).queue();
                         break;
                     case "lobby-selection":
                         Guild guild = event.getGuild();
@@ -95,7 +97,7 @@ public class SelectMenuListener extends ListenerAdapter {
                                 new InterruptSystemTask(this.config).run();
                                 this.plugin.updateConfigurationStatus(false);
                             } else if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
-                                event.editMessage(new Response(this.plugin, this.config, this.lang, this.bot).getMessage()).queue();
+                                event.editMessage(this.configurationMenu.getMessage()).queue();
                             } else {
                                 VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                                 if (lobby != null && lobby.getParent() != null) {
@@ -106,7 +108,7 @@ public class SelectMenuListener extends ListenerAdapter {
                                 }
                             }
                         }
-                        event.editMessage(new Response(this.plugin, this.config, this.lang, this.bot).getMessage()).queue();
+                        event.editMessage(this.configurationMenu.getMessage()).queue();
                         break;
                     case "mode-selection":
                         if ("vanilla-mode".equals(event.getSelectedOptions().get(0).getValue())) {
@@ -114,13 +116,13 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.config.getFile().set(ConfigField.VERTICAL_RADIUS.get(), 40);
                             this.config.saveFile();
                             this.plugin.updateConfigurationStatus(false);
-                            event.editMessage(new Response(this.plugin, this.config, this.lang, this.bot).getMessage()).queue();
+                            event.editMessage(this.configurationMenu.getMessage()).queue();
                         } else if ("minigame-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                             this.config.getFile().set(ConfigField.HORIZONTAL_RADIUS.get(), 40);
                             this.config.getFile().set(ConfigField.VERTICAL_RADIUS.get(), 20);
                             this.config.saveFile();
                             this.plugin.updateConfigurationStatus(false);
-                            event.editMessage(new Response(this.plugin, this.config, this.lang, this.bot).getMessage()).queue();
+                            event.editMessage(this.configurationMenu.getMessage()).queue();
                         } else if ("customize".equals(event.getSelectedOptions().get(0).getValue())) {
                             Menu.customizeRadius = true;
                             event.editMessage(this.bot.getMenus().get("mode").toMessage(this.config, this.lang, this.bot)).queue();
@@ -133,7 +135,7 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.config.getFile().set(ConfigField.ACTION_BAR_ALERT.get(), false);
                         }
                         this.config.saveFile();
-                        event.editMessage(new Response(this.plugin, this.config, this.lang, this.bot).getMessage()).queue();
+                        event.editMessage(this.configurationMenu.getMessage()).queue();
                         break;
                     case "channel-visibility":
                         if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
@@ -142,7 +144,7 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.config.getFile().set(ConfigField.CHANNEL_VISIBILITY.get(), false);
                         }
                         this.config.saveFile();
-                        event.editMessage(new Response(this.plugin, this.config, this.lang, this.bot).getMessage()).queue();
+                        event.editMessage(this.configurationMenu.getMessage()).queue();
                         break;
                     default:
                         throw new IllegalStateException(this.lang.getMessage("logger.exception.unexpected-value", componentID));

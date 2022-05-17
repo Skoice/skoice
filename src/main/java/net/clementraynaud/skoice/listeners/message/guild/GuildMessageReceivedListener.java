@@ -26,22 +26,22 @@ import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.Response;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class GuildMessageReceivedListener extends ListenerAdapter {
 
-    private final Skoice plugin;
     private final Config config;
     private final Lang lang;
     private final Bot bot;
+    private final ConfigurationMenu configurationMenu;
 
-    public GuildMessageReceivedListener(Skoice plugin, Config config, Lang lang, Bot bot) {
-        this.plugin = plugin;
+    public GuildMessageReceivedListener(Config config, Lang lang, Bot bot, ConfigurationMenu configurationMenu) {
         this.config = config;
         this.lang = lang;
         this.bot = bot;
+        this.configurationMenu = configurationMenu;
     }
 
     @Override
@@ -49,8 +49,7 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
         String discordID = event.getAuthor().getId();
         if (discordID.equals(event.getJDA().getSelfUser().getId())) {
             if (!event.getMessage().isEphemeral()) {
-                this.config.getFile().set(ConfigField.TEMP_MESSAGE.get(), event.getMessage());
-                this.config.saveFile();
+                this.configurationMenu.saveInConfig(event.getMessage());
             }
         } else if (ButtonClickListener.discordIDAxis.containsKey(event.getAuthor().getId())
                 && event.getMessage().getContentRaw().length() <= 4
@@ -60,7 +59,7 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
                 event.getMessage().delete().queue();
                 this.config.getFile().set(ButtonClickListener.discordIDAxis.get(event.getAuthor().getId()), value);
                 this.config.saveFile();
-                new Response(this.plugin, this.config, this.lang, this.bot).deleteMessage();
+                this.configurationMenu.deleteMessage();
                 Menu.customizeRadius = false;
                 if (ButtonClickListener.discordIDAxis.get(event.getAuthor().getId()).equals(ConfigField.HORIZONTAL_RADIUS.get())) {
                     event.getChannel().sendMessage(this.bot.getMenus().get("horizontal-radius").toMessage(this.config, this.lang, this.bot)).queue();

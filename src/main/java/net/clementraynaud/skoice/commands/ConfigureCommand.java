@@ -24,7 +24,7 @@ import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.ErrorEmbed;
-import net.clementraynaud.skoice.menus.Response;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -37,16 +37,12 @@ public class ConfigureCommand extends ListenerAdapter {
 
     private boolean configureCommandCooldown = false;
 
-    private final Skoice plugin;
-    private final Config config;
     private final Lang lang;
-    private final Bot bot;
+    private final ConfigurationMenu configurationMenu;
 
-    public ConfigureCommand(Skoice plugin, Config config, Lang lang, Bot bot) {
-        this.plugin = plugin;
-        this.config = config;
+    public ConfigureCommand(Lang lang, ConfigurationMenu configurationMenu) {
         this.lang = lang;
-        this.bot = bot;
+        this.configurationMenu = configurationMenu;
     }
 
     @Override
@@ -57,9 +53,8 @@ public class ConfigureCommand extends ListenerAdapter {
                 if (this.configureCommandCooldown) {
                     event.replyEmbeds(new ErrorEmbed(this.lang).getTooManyInteractionsEmbed()).setEphemeral(true).queue();
                 } else {
-                    Response response = new Response(this.plugin, this.config, this.lang, this.bot);
-                    response.deleteMessage();
-                    event.reply(response.getMessage()).queue();
+                    this.configurationMenu.deleteMessage();
+                    event.reply(this.configurationMenu.getMessage()).queue();
                     this.configureCommandCooldown = true;
                     new Timer().schedule(new TimerTask() {
 

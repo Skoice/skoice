@@ -26,10 +26,10 @@ import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.Response;
 import net.clementraynaud.skoice.listeners.interaction.SelectMenuListener;
 import net.clementraynaud.skoice.listeners.ReconnectedListener;
 import net.clementraynaud.skoice.listeners.channel.voice.lobby.VoiceChannelDeleteListener;
@@ -174,19 +174,27 @@ public class Bot {
         }
     }
 
-    public void setup(boolean startup, CommandSender sender) {
+    public void setup(ConfigurationMenu configurationMenu, boolean startup, CommandSender sender) {
         this.setDefaultAvatar();
-        new Response(this.plugin, this.config, this.lang, this).deleteMessage();
+        configurationMenu.deleteMessage();
         this.updateGuildUniquenessStatus();
         this.checkForValidLobby();
         this.checkForUnlinkedUsersInLobby();
         this.jda.getGuilds().forEach(new Commands(this.plugin, this.lang, this)::register);
-        this.jda.addEventListener(new ReconnectedListener(this.plugin, this.config, this.lang, this), new GuildJoinListener(this.plugin, this.lang, this),
-                new GuildLeaveListener(this.plugin, this), new PrivateMessageReceivedListener(this.lang),
-                new GuildMessageReceivedListener(this.plugin, this.config, this.lang, this), new GuildMessageDeleteListener(this.config),
-                new VoiceChannelDeleteListener(this.plugin, this.config, this.lang, this), new VoiceChannelUpdateParentListener(this.plugin, this.config, this.lang, this),
-                new ConfigureCommand(this.plugin, this.config, this.lang, this), new InviteCommand(this.lang), new LinkCommand(this.config, this.lang, this), new UnlinkCommand(this.config, this.lang),
-                new ButtonClickListener(this.plugin, this.config, this.lang, this), new SelectMenuListener(this.plugin, this.config, this.lang, this));
+        this.jda.addEventListener(new ReconnectedListener(this.plugin, this, configurationMenu),
+                new GuildJoinListener(this.plugin, this.lang, this),
+                new GuildLeaveListener(this.plugin, this),
+                new PrivateMessageReceivedListener(this.lang),
+                new GuildMessageReceivedListener(this.config, this.lang, this, configurationMenu),
+                new GuildMessageDeleteListener(configurationMenu),
+                new VoiceChannelDeleteListener(this.plugin, this.config, this.lang, this),
+                new VoiceChannelUpdateParentListener(this.plugin, this.config, this.lang, this),
+                new ConfigureCommand(this.lang, configurationMenu),
+                new InviteCommand(this.lang),
+                new LinkCommand(this.config, this.lang, this),
+                new UnlinkCommand(this.config, this.lang),
+                new ButtonClickListener(this.config, this.lang, this, configurationMenu),
+                new SelectMenuListener(this.plugin, this.config, this.lang, this, configurationMenu));
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                         Bukkit.getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,

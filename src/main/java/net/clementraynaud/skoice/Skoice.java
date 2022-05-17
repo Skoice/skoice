@@ -36,7 +36,7 @@ import net.clementraynaud.skoice.listeners.player.eligible.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.player.eligible.PlayerTeleportListener;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.MenuType;
-import net.clementraynaud.skoice.menus.Response;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.util.UpdateUtil;
@@ -60,6 +60,7 @@ public class Skoice extends JavaPlugin {
     private Lang lang;
     private Config config;
     private Bot bot;
+    private ConfigurationMenu configurationMenu;
     private EligiblePlayers eligiblePlayers;
 
     @Override
@@ -101,12 +102,13 @@ public class Skoice extends JavaPlugin {
         this.bot.connect();
         if (this.bot.getJda() != null) {
             this.config.initializeReader(this.bot);
-            this.bot.setup(true, null);
+            this.configurationMenu = new ConfigurationMenu(this.config, this.lang, this.bot);
+            this.bot.setup(this.configurationMenu, true, null);
         }
     }
 
     private void initializeSkoiceCommand() {
-        SkoiceCommand skoiceCommand = new SkoiceCommand(this.config, this.lang, this.bot);
+        SkoiceCommand skoiceCommand = new SkoiceCommand(this.config, this.lang, this.bot, this.configurationMenu);
         this.getCommand("skoice").setExecutor(skoiceCommand);
         this.getCommand("skoice").setTabCompleter(skoiceCommand);
     }
@@ -165,9 +167,9 @@ public class Skoice extends JavaPlugin {
                     new GuildVoiceMoveListener(this.config),
                     new VoiceChannelDeleteListener());
             this.getLogger().info(this.lang.getMessage("logger.info.configuration-complete"));
-            Message configurationMessage = new Response(this, this.config, this.lang, this.bot).getConfigurationMessage();
-            if (configurationMessage != null && configurationMessage.getInteraction() != null) {
-                configurationMessage.getInteraction().getUser().openPrivateChannel().complete()
+            Message message = this.configurationMenu.retrieveMessage();
+            if (message != null && message.getInteraction() != null) {
+                message.getInteraction().getUser().openPrivateChannel().complete()
                         .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.GEAR + this.lang.getMessage("discord.menu.configuration.title"))
                                 .addField(MenuEmoji.HEAVY_CHECK_MARK + this.lang.getMessage("discord.field.configuration-complete.title"),
                                         this.lang.getMessage("discord.field.configuration-complete.description"), false)
@@ -175,7 +177,7 @@ public class Skoice extends JavaPlugin {
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             }
         } else if (wasBotReady && !this.bot.isReady()) {
-            new Response(this, this.config, this.lang, this.bot).deleteMessage();
+            this.configurationMenu.deleteMessage();
             this.unregisterEligiblePlayerListeners();
             Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this.config, this.lang, this.bot), this);
             if (this.bot.getJda() != null) {

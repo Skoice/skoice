@@ -19,7 +19,6 @@
 
 package net.clementraynaud.skoice.listeners.interaction;
 
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
@@ -27,7 +26,7 @@ import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.ErrorEmbed;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.Response;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -40,16 +39,16 @@ import java.util.Map;
 
 public class ButtonClickListener extends ListenerAdapter {
 
-    private final Skoice plugin;
     private final Config config;
     private final Lang lang;
     private final Bot bot;
+    private final ConfigurationMenu configurationMenu;
 
-    public ButtonClickListener(Skoice plugin, Config config, Lang lang, Bot bot) {
-        this.plugin = plugin;
+    public ButtonClickListener(Config config, Lang lang, Bot bot, ConfigurationMenu configurationMenu) {
         this.config = config;
         this.lang = lang;
         this.bot = bot;
+        this.configurationMenu = configurationMenu;
     }
 
     public static final Map<String, String> discordIDAxis = new HashMap<>();
@@ -58,8 +57,8 @@ public class ButtonClickListener extends ListenerAdapter {
     public void onButtonClick(ButtonClickEvent event) {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (this.config.getFile().contains(ConfigField.TEMP_MESSAGE.get())
-                    && this.config.getFile().get(ConfigField.TEMP_MESSAGE.get()).equals(event.getMessage())
+            if (this.configurationMenu.exists()
+                    && this.configurationMenu.getMessageId().equals(event.getMessage().getId())
                     && event.getButton() != null && event.getButton().getId() != null) {
                 String buttonID = event.getButton().getId();
                 if (buttonID.equals(Menu.CLOSE_BUTTON_ID)) {
@@ -73,7 +72,7 @@ public class ButtonClickListener extends ListenerAdapter {
                                 .setEphemeral(true).queue();
                     }
                 } else if (!this.bot.isReady()) {
-                    event.editMessage(new Response(this.plugin, this.config, this.lang, this.bot).getMessage()).queue();
+                    event.editMessage(this.configurationMenu.getMessage()).queue();
                 } else {
                     if ("mode".equals(buttonID)) {
                         ButtonClickListener.discordIDAxis.remove(member.getId());

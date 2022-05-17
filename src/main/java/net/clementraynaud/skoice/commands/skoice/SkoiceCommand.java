@@ -27,6 +27,7 @@ import net.clementraynaud.skoice.commands.skoice.arguments.TokenArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.UnlinkArgument;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,11 +44,13 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
     private final Config config;
     private final Lang lang;
     private final Bot bot;
+    private final ConfigurationMenu configurationMenu;
 
-    public SkoiceCommand(Config config, Lang lang, Bot bot) {
+    public SkoiceCommand(Config config, Lang lang, Bot bot, ConfigurationMenu configurationMenu) {
         this.config = config;
         this.lang = lang;
         this.bot = bot;
+        this.configurationMenu = configurationMenu;
     }
 
     @Override
@@ -61,7 +64,7 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
                 new ConfigureArgument(this.config, this.lang, sender, this.bot).run();
                 break;
             case TOKEN:
-                new TokenArgument(this.config, this.lang, sender, this.bot, arg).run();
+                new TokenArgument(this.config, this.lang, sender, this.bot, this.configurationMenu, arg).run();
                 break;
             case LINK:
                 new LinkArgument(this.config, this.lang, sender, this.bot, arg).run();

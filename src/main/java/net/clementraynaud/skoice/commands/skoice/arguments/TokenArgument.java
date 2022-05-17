@@ -22,16 +22,19 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import org.bukkit.command.CommandSender;
 
 public class TokenArgument extends Argument {
 
     private final Bot bot;
+    private final ConfigurationMenu configurationMenu;
     private final String arg;
 
-    public TokenArgument(Config config, Lang lang, CommandSender sender, Bot bot, String arg) {
+    public TokenArgument(Config config, Lang lang, CommandSender sender, Bot bot, ConfigurationMenu configurationMenu, String arg) {
         super(config, lang, sender, ArgumentName.TOKEN.isAllowedInConsole(), ArgumentName.TOKEN.isRestrictedToOperators());
         this.bot = bot;
+        this.configurationMenu = configurationMenu;
         this.arg = arg;
     }
 
@@ -53,7 +56,7 @@ public class TokenArgument extends Argument {
             this.bot.connect(this.sender);
             if (this.bot.getJda() != null) {
                 this.config.initializeReader(this.bot);
-                this.bot.setup(false, this.sender);
+                this.bot.setup(this.configurationMenu, false, this.sender);
             }
         } else {
             this.sender.sendMessage(super.lang.getMessage("minecraft.chat.configuration.bot-already-connected"));
