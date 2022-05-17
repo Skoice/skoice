@@ -22,7 +22,7 @@ package net.clementraynaud.skoice.menus.selectmenus;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
@@ -40,23 +40,21 @@ public class ModeSelectMenu extends SelectMenu {
     private static final String CUSTOMIZE_ID = "customize";
 
     private final Config config;
-    private final LangFile lang;
     private final Bot bot;
 
-    public ModeSelectMenu(Config config, LangFile lang, Bot bot) {
-        super(false);
+    public ModeSelectMenu(Lang lang, Config config, Bot bot) {
+        super(lang, false);
         this.config = config;
-        this.lang = lang;
         this.bot = bot;
     }
 
     @Override
     public SelectionMenu get() {
-        List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(this.lang.getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.label"), ModeSelectMenu.VANILLA_MODE_ID)
-                        .withDescription(this.lang.getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.description"))
+        List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.label"), ModeSelectMenu.VANILLA_MODE_ID)
+                        .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.description"))
                         .withEmoji(MenuEmoji.MAP.getEmojiFromUnicode()),
-                SelectOption.of(this.lang.getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.label"), ModeSelectMenu.MINIGAME_MODE_ID)
-                        .withDescription(this.lang.getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.description"))
+                SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.label"), ModeSelectMenu.MINIGAME_MODE_ID)
+                        .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.description"))
                         .withEmoji(MenuEmoji.CROSSED_SWORDS.getEmojiFromUnicode())));
         if (this.bot.isReady()) {
             String defaultValue;
@@ -71,24 +69,24 @@ public class ModeSelectMenu extends SelectMenu {
                     && this.config.getFile().getInt(ConfigField.VERTICAL_RADIUS.get()) == 20
                     && !Menu.customizeRadius) {
                 defaultValue = ModeSelectMenu.MINIGAME_MODE_ID;
-                modes.add(SelectOption.of(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
-                        .withDescription(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.description"))
+                modes.add(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
+                        .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.description"))
                         .withEmoji(MenuEmoji.PENCIL2.getEmojiFromUnicode()));
             } else {
                 defaultValue = ModeSelectMenu.CUSTOMIZE_ID;
-                modes.add(SelectOption.of(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
-                        .withDescription(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.alternative-description",
+                modes.add(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
+                        .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.alternative-description",
                                 this.config.getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()),
                                 this.config.getFile().getInt(ConfigField.VERTICAL_RADIUS.get())))
                         .withEmoji(MenuEmoji.PENCIL2.getEmojiFromUnicode()));
             }
             return SelectionMenu.create("mode-selection")
-                    .setPlaceholder(this.lang.getMessage("discord.menu.mode.select-menu.placeholder"))
+                    .setPlaceholder(super.lang.getMessage("discord.menu.mode.select-menu.placeholder"))
                     .addOptions(modes)
                     .setDefaultValues(Collections.singleton(defaultValue)).build();
         } else {
             return SelectionMenu.create("mode-selection")
-                    .setPlaceholder(this.lang.getMessage("discord.menu.mode.select-menu.placeholder"))
+                    .setPlaceholder(super.lang.getMessage("discord.menu.mode.select-menu.placeholder"))
                     .addOptions(modes).build();
         }
     }

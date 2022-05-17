@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.menus;
 
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
@@ -27,9 +27,9 @@ import java.awt.*;
 
 public class ErrorEmbed {
 
-    private final LangFile lang;
+    private final Lang lang;
 
-    public ErrorEmbed(LangFile lang) {
+    public ErrorEmbed(Lang lang) {
         this.lang = lang;
     }
 

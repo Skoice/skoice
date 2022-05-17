@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
@@ -31,12 +31,10 @@ import java.util.List;
 
 public class ServerSelectMenu extends SelectMenu {
 
-    private final LangFile lang;
     private final Bot bot;
 
-    public ServerSelectMenu(LangFile lang, Bot bot) {
-        super(true);
-        this.lang = lang;
+    public ServerSelectMenu(Lang lang, Bot bot) {
+        super(lang, true);
         this.bot = bot;
     }
 
@@ -51,12 +49,12 @@ public class ServerSelectMenu extends SelectMenu {
             optionIndex++;
         }
         if (options.size() == 24) {
-            options.add(SelectOption.of(this.lang.getMessage("discord.select-option.too-many-options.label"), "refresh")
-                    .withDescription(this.lang.getMessage("discord.select-option.too-many-options.description"))
+            options.add(SelectOption.of(super.lang.getMessage("discord.select-option.too-many-options.label"), "refresh")
+                    .withDescription(super.lang.getMessage("discord.select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.getEmojiFromUnicode()));
         }
         return SelectionMenu.create("server-selection")
-                .setPlaceholder(this.lang.getMessage("discord.menu.server.select-menu.placeholder"))
+                .setPlaceholder(super.lang.getMessage("discord.menu.server.select-menu.placeholder"))
                 .addOptions(options).build();
     }
 }

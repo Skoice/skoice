@@ -19,6 +19,8 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
+import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -35,8 +37,8 @@ import java.awt.*;
 
 public class UnlinkArgument extends Argument {
 
-    public UnlinkArgument(CommandSender sender) {
-        super(sender, null, false, false);
+    public UnlinkArgument(Config config, Lang lang, CommandSender sender) {
+        super(config, lang, sender, false, false);
     }
 
     @Override
@@ -45,15 +47,15 @@ public class UnlinkArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        String discordID = super.config.getReader().getLinks().get(player.getUniqueId().toString());
+        String discordID = this.config.getReader().getLinks().get(player.getUniqueId().toString());
         if (discordID == null) {
             player.sendMessage(super.lang.getMessage("minecraft.chat.player.account-not-linked"));
             return;
         }
-        super.config.getUpdater().unlinkUser(player.getUniqueId().toString());
+        this.config.getUpdater().unlinkUser(player.getUniqueId().toString());
         Member member;
         try {
-            member = super.config.getReader().getGuild().retrieveMemberById(discordID).complete();
+            member = this.config.getReader().getGuild().retrieveMemberById(discordID).complete();
             member.getUser().openPrivateChannel().complete()
                     .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.LINK + super.lang.getMessage("discord.menu.linking-process.title"))
                             .addField(MenuEmoji.HEAVY_CHECK_MARK + super.lang.getMessage("discord.menu.linking-process.field.account-unlinked.title"),
@@ -63,7 +65,7 @@ public class UnlinkArgument extends Argument {
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 VoiceChannel voiceChannel = voiceState.getChannel();
-                if (voiceChannel != null && voiceChannel.equals(super.config.getReader().getLobby())
+                if (voiceChannel != null && voiceChannel.equals(this.config.getReader().getLobby())
                         || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
                     player.sendMessage(super.lang.getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
                 }

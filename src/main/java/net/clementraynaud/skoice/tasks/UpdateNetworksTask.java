@@ -22,7 +22,7 @@ package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.DistanceUtil;
@@ -45,13 +45,13 @@ import java.util.stream.Collectors;
 public class UpdateNetworksTask implements Task {
 
     public static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
-    private static final ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
 
     private final Config config;
-    private final LangFile lang;
+    private final Lang lang;
     private final EligiblePlayers eligiblePlayers;
 
-    public UpdateNetworksTask(Config config, LangFile lang, EligiblePlayers eligiblePlayers) {
+    public UpdateNetworksTask(Config config, Lang lang, EligiblePlayers eligiblePlayers) {
         this.config = config;
         this.lang = lang;
         this.eligiblePlayers = eligiblePlayers;
@@ -59,7 +59,7 @@ public class UpdateNetworksTask implements Task {
 
     @Override
     public void run() {
-        if (!UpdateNetworksTask.lock.tryLock()) {
+        if (!this.lock.tryLock()) {
             return;
         }
         try {
@@ -135,7 +135,7 @@ public class UpdateNetworksTask implements Task {
             }
             this.deleteEmptyNetworks();
         } finally {
-            UpdateNetworksTask.lock.unlock();
+            this.lock.unlock();
         }
     }
 

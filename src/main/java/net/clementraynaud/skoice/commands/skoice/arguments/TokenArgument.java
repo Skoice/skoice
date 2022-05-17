@@ -19,12 +19,20 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
+import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.lang.Lang;
 import org.bukkit.command.CommandSender;
 
 public class TokenArgument extends Argument {
 
-    public TokenArgument(CommandSender sender, String arg) {
-        super(sender, arg, true, true);
+    private final Bot bot;
+    private final String arg;
+
+    public TokenArgument(Config config, Lang lang, CommandSender sender, Bot bot, String arg) {
+        super(config, lang, sender, true, true);
+        this.bot = bot;
+        this.arg = arg;
     }
 
     @Override
@@ -40,12 +48,12 @@ public class TokenArgument extends Argument {
             this.sender.sendMessage(super.lang.getMessage("minecraft.chat.configuration.invalid-token"));
             return;
         }
-        super.config.getUpdater().setToken(this.arg);
-        if (super.bot.getJda() == null) {
-            super.bot.connect(this.sender);
-            if (super.bot.getJda() != null) {
+        this.config.getUpdater().setToken(this.arg);
+        if (this.bot.getJda() == null) {
+            this.bot.connect(this.sender);
+            if (this.bot.getJda() != null) {
                 this.config.initializeReader(this.bot);
-                super.bot.setup(false, this.sender);
+                this.bot.setup(false, this.sender);
             }
         } else {
             this.sender.sendMessage(super.lang.getMessage("minecraft.chat.configuration.bot-already-connected"));

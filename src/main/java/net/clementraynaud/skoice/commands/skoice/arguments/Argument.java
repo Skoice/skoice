@@ -19,70 +19,23 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
-import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.lang.Lang;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+public abstract class Argument {
 
-public abstract class Argument extends Skoice {
-
-    public enum Option {
-        CONFIGURE {
-            @Override
-            public void run(CommandSender sender, String arg) {
-                new ConfigureArgument(sender).run();
-            }
-        },
-
-        TOKEN {
-            @Override
-            public void run(CommandSender sender, String arg) {
-                new TokenArgument(sender, arg).run();
-            }
-        },
-
-        LINK {
-            @Override
-            public void run(CommandSender sender, String arg) {
-                new LinkArgument(sender, arg).run();
-            }
-        },
-
-        UNLINK {
-            @Override
-            public void run(CommandSender sender, String arg) {
-                new UnlinkArgument(sender).run();
-            }
-        };
-
-        public abstract void run(CommandSender sender, String arg);
-
-        public static Option get(String option) {
-            return Stream.of(Option.values())
-                    .filter(value -> value.toString().equalsIgnoreCase(option))
-                    .findFirst()
-                    .orElse(null);
-        }
-
-        public static Collection<String> getList() {
-            return Stream.of(Option.values())
-                    .map(Enum::name)
-                    .map(String::toLowerCase)
-                    .collect(Collectors.toList());
-        }
-    }
-
+    protected final Config config;
+    protected final Lang lang;
     protected final CommandSender sender;
-    protected final String arg;
     protected final boolean allowsConsole;
     protected final boolean restrictedToOperators;
 
-    protected Argument(CommandSender sender, String arg, boolean allowsConsole, boolean restrictedToOperators) {
+    protected Argument(Config config, Lang lang, CommandSender sender, boolean allowsConsole, boolean restrictedToOperators) {
+        this.config = config;
+        this.lang = lang;
         this.sender = sender;
-        this.arg = arg;
         this.allowsConsole = allowsConsole;
         this.restrictedToOperators = restrictedToOperators;
     }
@@ -91,11 +44,11 @@ public abstract class Argument extends Skoice {
 
     protected boolean canExecuteCommand() {
         if (!(this.sender instanceof Player) && !this.allowsConsole) {
-            this.sender.sendMessage(super.lang.getMessage("minecraft.chat.error.illegal-executor"));
+            this.sender.sendMessage(this.lang.getMessage("minecraft.chat.error.illegal-executor"));
             return false;
         }
         if (!this.sender.isOp() && this.restrictedToOperators) {
-            this.sender.sendMessage(super.lang.getMessage("minecraft.chat.error.missing-permission"));
+            this.sender.sendMessage(this.lang.getMessage("minecraft.chat.error.missing-permission"));
             return false;
         }
         return true;

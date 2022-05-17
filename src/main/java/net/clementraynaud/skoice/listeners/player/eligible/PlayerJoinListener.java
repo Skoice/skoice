@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.listeners.player.eligible;
 
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -34,10 +34,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class PlayerJoinListener implements Listener {
 
     private final Config config;
-    private final LangFile lang;
+    private final Lang lang;
     private final EligiblePlayers eligiblePlayers;
 
-    public PlayerJoinListener(Config config, LangFile lang, EligiblePlayers eligiblePlayers) {
+    public PlayerJoinListener(Config config, Lang lang, EligiblePlayers eligiblePlayers) {
         this.config = config;
         this.lang = lang;
         this.eligiblePlayers = eligiblePlayers;

@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -37,10 +37,10 @@ public class LinkCommand extends ListenerAdapter {
     private static final Map<String, String> discordIDCode = new HashMap<>();
 
     private final Config config;
-    private final LangFile lang;
+    private final Lang lang;
     private final Bot bot;
 
-    public LinkCommand(Config config, LangFile lang, Bot bot) {
+    public LinkCommand(Config config, Lang lang, Bot bot) {
         this.config = config;
         this.lang = lang;
         this.bot = bot;

@@ -19,7 +19,14 @@
 
 package net.clementraynaud.skoice.commands.skoice;
 
-import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
+import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentName;
+import net.clementraynaud.skoice.commands.skoice.arguments.ConfigureArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.TokenArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.UnlinkArgument;
+import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.lang.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,12 +40,38 @@ import java.util.stream.Collectors;
 
 public class SkoiceCommand implements CommandExecutor, TabCompleter {
 
+    private final Config config;
+    private final Lang lang;
+    private final Bot bot;
+
+    public SkoiceCommand(Config config, Lang lang, Bot bot) {
+        this.config = config;
+        this.lang = lang;
+        this.bot = bot;
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
-        if (args.length == 0 || Argument.Option.get(args[0]) == null) {
+        if (args.length == 0 || ArgumentName.get(args[0]) == null) {
             return true;
         }
-        Argument.Option.get(args[0]).run(sender, args.length == 1 ? "" : args[1]);
+        String arg = args.length > 1 ? args[1] : "";
+        switch (ArgumentName.get(args[0])) {
+            case CONFIGURE:
+                new ConfigureArgument(this.config, this.lang, sender, this.bot).run();
+                break;
+            case TOKEN:
+                new TokenArgument(this.config, this.lang, sender, this.bot, arg).run();
+                break;
+            case LINK:
+                new LinkArgument(this.config, this.lang, sender, this.bot, arg).run();
+                break;
+            case UNLINK:
+                new UnlinkArgument(this.config, this.lang, sender).run();
+                break;
+            default:
+                return true;
+        }
         return true;
     }
 
@@ -46,7 +79,7 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (args.length == 1) {
-            return Argument.Option.getList().stream()
+            return ArgumentName.getList().stream()
                     .filter(option -> option.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }

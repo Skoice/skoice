@@ -17,25 +17,27 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.selectmenus;
+package net.clementraynaud.skoice.lang;
 
-import net.clementraynaud.skoice.lang.Lang;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
+import net.dv8tion.jda.api.entities.Emoji;
 
-public abstract class SelectMenu {
+public enum LangName {
+    EN("English", "U+1F1ECU+1F1E7"),
+    FR("Français", "U+1F1EBU+1F1F7");
 
-    protected final Lang lang;
+    private final String fullName;
+    private final String unicode;
 
-    private final boolean isRefreshable;
-
-    protected SelectMenu(Lang lang, boolean isRefreshable) {
-        this.lang = lang;
-        this.isRefreshable = isRefreshable;
+    LangName(String fullName, String unicode) {
+        this.fullName = fullName;
+        this.unicode = unicode;
     }
 
-    public boolean isRefreshable() {
-        return this.isRefreshable;
+    public String getFullName() {
+        return this.fullName;
     }
 
-    public abstract SelectionMenu get();
+    public Emoji getEmoji() {
+        return Emoji.fromUnicode(this.unicode);
+    }
 }

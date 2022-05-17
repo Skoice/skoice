@@ -19,7 +19,10 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
+import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -30,8 +33,11 @@ import org.bukkit.entity.Player;
 
 public class ConfigureArgument extends Argument {
 
-    public ConfigureArgument(CommandSender sender) {
-        super(sender, null, false, true);
+    private final Bot bot;
+
+    public ConfigureArgument(Config config, Lang lang, CommandSender sender, Bot bot) {
+        super(config, lang, sender, false, true);
+        this.bot = bot;
     }
 
     @Override
@@ -40,8 +46,8 @@ public class ConfigureArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        if (super.config.getFile().contains(ConfigField.TOKEN.get()) && super.bot.getJda() != null) {
-            if (super.bot.isReady()) {
+        if (this.config.getFile().contains(ConfigField.TOKEN.get()) && this.bot.getJda() != null) {
+            if (this.bot.isReady()) {
                 player.sendMessage(super.lang.getMessage("minecraft.chat.configuration.already-configured"));
             } else {
                 player.sendMessage(super.lang.getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));

@@ -3,7 +3,7 @@ package net.clementraynaud.skoice.menus;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.LobbySelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ModeSelectMenu;
@@ -46,16 +46,16 @@ public class Menu {
         this.fields = menu.getStringList("fields");
     }
 
-    public Message toMessage(Config config, LangFile lang, Bot bot) {
+    public Message toMessage(Config config, Lang lang, Bot bot) {
         return new MessageBuilder().setEmbeds(this.getEmbed(lang, bot)).setActionRows(this.getActionRows(config, lang, bot)).build();
     }
 
-    private String getTitle(LangFile lang, boolean withEmoji) {
+    private String getTitle(Lang lang, boolean withEmoji) {
         return withEmoji ? this.emoji + lang.getMessage("discord.menu." + this.name + ".title") :
                 lang.getMessage("discord.menu." + this.name + ".title");
     }
 
-    private String getDescription(LangFile lang, Bot bot, boolean shortened) {
+    private String getDescription(Lang lang, Bot bot, boolean shortened) {
         if (!bot.isReady() && lang.contains("discord.menu." + this.name + ".alternative-description")) {
             return lang.getMessage("discord.menu." + this.name + ".alternative-description");
         } else if (shortened && lang.contains("discord.menu." + this.name + ".shortened-description")) {
@@ -66,7 +66,7 @@ public class Menu {
         return null;
     }
 
-    private MessageEmbed getEmbed(LangFile lang, Bot bot) {
+    private MessageEmbed getEmbed(Lang lang, Bot bot) {
         EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(lang, true))
                 .setColor(this.type.getColor())
                 .setFooter(lang.getMessage("discord.menu.footer"), "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
@@ -98,19 +98,19 @@ public class Menu {
         return embed.build();
     }
 
-    private List<ActionRow> getActionRows(Config config, LangFile lang, Bot bot) {
+    private List<ActionRow> getActionRows(Config config, Lang lang, Bot bot) {
         switch (this.name) {
             case "server":
                 this.selectMenu = new ServerSelectMenu(lang, bot);
                 break;
             case "lobby":
-                this.selectMenu = new LobbySelectMenu(config, lang, bot);
+                this.selectMenu = new LobbySelectMenu(lang, config, bot);
                 break;
             case "mode":
-                this.selectMenu = new ModeSelectMenu(config, lang, bot);
+                this.selectMenu = new ModeSelectMenu(lang, config, bot);
                 break;
             case "language":
-                this.selectMenu = new LanguageSelectMenu(config, lang, bot);
+                this.selectMenu = new LanguageSelectMenu(lang, config, bot);
                 break;
             case "action-bar-alert":
                 this.selectMenu = new ToggleSelectMenu(lang, this.name, config.getFile().getBoolean(ConfigField.ACTION_BAR_ALERT.get()), true);
@@ -124,7 +124,7 @@ public class Menu {
         return Arrays.asList(ActionRow.of(this.selectMenu.get()), ActionRow.of(this.getButtons(config, lang, bot)));
     }
 
-    private List<Button> getButtons(Config config, LangFile lang, Bot bot) {
+    private List<Button> getButtons(Config config, Lang lang, Bot bot) {
         List<Button> buttons = new ArrayList<>();
         if (this.parent != null) {
             buttons.add(Button.secondary(this.parent, "← " + lang.getMessage("discord.button-label.back")));
@@ -159,7 +159,7 @@ public class Menu {
         return buttons;
     }
 
-    private List<Button> getModeAdditionalButtons(Config config, LangFile lang, Bot bot) {
+    private List<Button> getModeAdditionalButtons(Config config, Lang lang, Bot bot) {
         if (this.isModeCustomizable(config, bot)) {
             Menu horizontalRadiusMenu = bot.getMenus().get("horizontal-radius");
             Menu verticalRadiusMenu = bot.getMenus().get("vertical-radius");

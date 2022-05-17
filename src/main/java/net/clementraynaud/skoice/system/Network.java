@@ -37,7 +37,6 @@ public class Network {
     private static final double FALLOFF = 2.5;
 
     public static final Set<Network> networks = ConcurrentHashMap.newKeySet();
-    public static final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
 
     private boolean initialized = false;
 

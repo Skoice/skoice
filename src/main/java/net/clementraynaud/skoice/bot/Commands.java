@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -31,10 +31,10 @@ import java.util.*;
 public class Commands {
 
     private final Skoice plugin;
-    private final LangFile lang;
+    private final Lang lang;
     private final Bot bot;
 
-    public Commands(Skoice plugin, LangFile lang, Bot bot) {
+    public Commands(Skoice plugin, Lang lang, Bot bot) {
         this.plugin = plugin;
         this.lang = lang;
         this.bot = bot;

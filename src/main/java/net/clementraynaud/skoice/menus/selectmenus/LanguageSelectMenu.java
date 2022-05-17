@@ -22,8 +22,8 @@ package net.clementraynaud.skoice.menus.selectmenus;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.lang.LangName;
 import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.lang.LangFile;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
@@ -34,23 +34,21 @@ import java.util.List;
 public class LanguageSelectMenu extends SelectMenu {
 
     private final Config config;
-    private final LangFile lang;
     private final Bot bot;
 
-    public LanguageSelectMenu(Config config, LangFile lang, Bot bot) {
-        super(false);
+    public LanguageSelectMenu(Lang lang, Config config, Bot bot) {
+        super(lang, false);
         this.config = config;
-        this.lang = lang;
         this.bot = bot;
     }
 
     @Override
     public SelectionMenu get() {
         List<SelectOption> options = new ArrayList<>();
-        for (Lang option : Lang.values()) {
+        for (LangName option : LangName.values()) {
             options.add(SelectOption.of(option.getFullName(), option.name())
-                    .withDescription(option.name().equals(Lang.EN.name())
-                            ? this.lang.getMessage("discord.select-option.default.description")
+                    .withDescription(option.name().equals(LangName.EN.name())
+                            ? super.lang.getMessage("discord.select-option.default.description")
                             : null)
                     .withEmoji(option.getEmoji()));
         }
@@ -60,7 +58,7 @@ public class LanguageSelectMenu extends SelectMenu {
                     .setDefaultValues(Collections.singleton(this.config.getFile().getString(ConfigField.LANG.get()))).build();
         } else {
             return SelectionMenu.create("language-selection")
-                    .setPlaceholder(this.lang.getMessage("discord.menu.language.select-menu.placeholder"))
+                    .setPlaceholder(super.lang.getMessage("discord.menu.language.select-menu.placeholder"))
                     .addOptions(options).build();
         }
     }

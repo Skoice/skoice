@@ -22,7 +22,7 @@ package net.clementraynaud.skoice.commands;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.ErrorEmbed;
 import net.clementraynaud.skoice.menus.Response;
 import net.dv8tion.jda.api.Permission;
@@ -39,10 +39,10 @@ public class ConfigureCommand extends ListenerAdapter {
 
     private final Skoice plugin;
     private final Config config;
-    private final LangFile lang;
+    private final Lang lang;
     private final Bot bot;
 
-    public ConfigureCommand(Skoice plugin, Config config, LangFile lang, Bot bot) {
+    public ConfigureCommand(Skoice plugin, Config config, Lang lang, Bot bot) {
         this.plugin = plugin;
         this.config = config;
         this.lang = lang;

@@ -20,13 +20,17 @@
 package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class UpdateVoiceStateTask implements Task {
+
+    private final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
 
     private final Config config;
     private final Member member;
@@ -51,9 +55,9 @@ public class UpdateVoiceStateTask implements Task {
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.config.getReader().getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
-                Network.mutedUsers.add(this.member.getId());
+                this.mutedUsers.add(this.member.getId());
             }
-        } else if (!isLobby && Network.mutedUsers.remove(this.member.getId())) {
+        } else if (!isLobby && this.mutedUsers.remove(this.member.getId())) {
             this.member.mute(false).queue();
         }
     }

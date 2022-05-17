@@ -24,7 +24,7 @@ import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.MenuField;
@@ -92,10 +92,10 @@ public class Bot {
 
     private final Skoice plugin;
     private final Config config;
-    private final LangFile lang;
+    private final Lang lang;
     private final EligiblePlayers eligiblePlayers;
 
-    public Bot(Skoice plugin, Config config, LangFile lang, EligiblePlayers eligiblePlayers) {
+    public Bot(Skoice plugin, Config config, Lang lang, EligiblePlayers eligiblePlayers) {
         this.plugin = plugin;
         this.config = config;
         this.lang = lang;

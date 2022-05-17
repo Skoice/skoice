@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
@@ -31,14 +31,12 @@ public class ToggleSelectMenu extends SelectMenu {
     private static final String ENABLED_OPTION_ID = "true";
     private static final String DISABLED_OPTION_ID = "false";
 
-    private final LangFile lang;
     private final String componentID;
     private final boolean selectedValue;
     private final boolean defaultValue;
 
-    public ToggleSelectMenu(LangFile lang, String componentID, boolean selectedValue, boolean defaultValue) {
-        super(false);
-        this.lang = lang;
+    public ToggleSelectMenu(Lang lang, String componentID, boolean selectedValue, boolean defaultValue) {
+        super(lang, false);
         this.componentID = componentID;
         this.selectedValue = selectedValue;
         this.defaultValue = defaultValue;
@@ -47,11 +45,11 @@ public class ToggleSelectMenu extends SelectMenu {
     @Override
     public SelectionMenu get() {
         return SelectionMenu.create(this.componentID)
-                .addOptions(SelectOption.of(this.lang.getMessage("discord.select-option.enabled.label"), ToggleSelectMenu.ENABLED_OPTION_ID)
-                                .withDescription(this.defaultValue ? this.lang.getMessage("discord.select-option.default.description") : null)
+                .addOptions(SelectOption.of(super.lang.getMessage("discord.select-option.enabled.label"), ToggleSelectMenu.ENABLED_OPTION_ID)
+                                .withDescription(this.defaultValue ? super.lang.getMessage("discord.select-option.default.description") : null)
                                 .withEmoji(MenuEmoji.HEAVY_CHECK_MARK.getEmojiFromUnicode()),
-                        SelectOption.of(this.lang.getMessage("discord.select-option.disabled.label"), ToggleSelectMenu.DISABLED_OPTION_ID)
-                                .withDescription(!this.defaultValue ? this.lang.getMessage("discord.select-option.default.description") : null)
+                        SelectOption.of(super.lang.getMessage("discord.select-option.disabled.label"), ToggleSelectMenu.DISABLED_OPTION_ID)
+                                .withDescription(!this.defaultValue ? super.lang.getMessage("discord.select-option.default.description") : null)
                                 .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()))
                 .setDefaultValues(Collections.singleton(String.valueOf(this.selectedValue))).build();
     }

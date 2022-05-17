@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.menus;
 
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -37,15 +37,15 @@ public class MenuField {
         this.value = field.contains("value") ? field.getString("value") : null;
     }
 
-    public MessageEmbed.Field toField(LangFile lang) {
+    public MessageEmbed.Field toField(Lang lang) {
         return new MessageEmbed.Field(this.emoji + this.getTitle(lang), this.getDescription(lang), this.inline);
     }
 
-    private String getTitle(LangFile lang) {
+    private String getTitle(Lang lang) {
         return lang.getMessage("discord.field." + this.name + ".title");
     }
 
-    private String getDescription(LangFile lang) {
+    private String getDescription(Lang lang) {
         if (this.value != null) {
             return lang.getMessage("discord.field." + this.name + ".description", this.value);
         }

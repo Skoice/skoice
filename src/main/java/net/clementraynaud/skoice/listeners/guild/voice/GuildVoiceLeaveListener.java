@@ -21,7 +21,7 @@
 package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
@@ -34,9 +34,9 @@ import java.util.UUID;
 public class GuildVoiceLeaveListener extends ListenerAdapter {
 
     private final Config config;
-    private final LangFile lang;
+    private final Lang lang;
 
-    public GuildVoiceLeaveListener(Config config, LangFile lang) {
+    public GuildVoiceLeaveListener(Config config, Lang lang) {
         this.config = config;
         this.lang = lang;
     }

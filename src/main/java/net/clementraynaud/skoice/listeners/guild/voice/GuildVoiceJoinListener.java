@@ -21,7 +21,7 @@
 package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
@@ -40,10 +40,10 @@ import java.util.UUID;
 public class GuildVoiceJoinListener extends ListenerAdapter {
 
     private final Config config;
-    private final LangFile lang;
+    private final Lang lang;
     private final EligiblePlayers eligiblePlayers;
 
-    public GuildVoiceJoinListener(Config config, LangFile lang, EligiblePlayers eligiblePlayers) {
+    public GuildVoiceJoinListener(Config config, Lang lang, EligiblePlayers eligiblePlayers) {
         this.config = config;
         this.lang = lang;
         this.eligiblePlayers = eligiblePlayers;

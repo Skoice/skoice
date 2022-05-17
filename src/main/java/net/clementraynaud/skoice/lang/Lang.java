@@ -19,26 +19,50 @@
 
 package net.clementraynaud.skoice.lang;
 
-import net.dv8tion.jda.api.entities.Emoji;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
 
-public enum Lang {
-    EN("English", "U+1F1ECU+1F1E7"),
-    FR("Français", "U+1F1EBU+1F1F7");
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
-    private final String fullName;
-    private final String unicode;
+public class Lang {
 
-    Lang(String fullName, String unicode) {
-        this.fullName = fullName;
-        this.unicode = unicode;
+    private static final String CHAT_PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "•" + ChatColor.GRAY;
+
+    private YamlConfiguration englishMessages;
+    private YamlConfiguration messages = new YamlConfiguration();
+
+    public void load(LangName langName) {
+        InputStreamReader englishLangFile = new InputStreamReader(this.getClass().getClassLoader()
+                .getResourceAsStream("lang/" + LangName.EN + ".yml"));
+        this.englishMessages = YamlConfiguration.loadConfiguration(englishLangFile);
+        if (langName != LangName.EN) {
+            InputStreamReader langFile = new InputStreamReader(this.getClass().getClassLoader()
+                    .getResourceAsStream("lang/" + langName + ".yml"));
+            this.messages = YamlConfiguration.loadConfiguration(langFile);
+        }
     }
 
-    public String getFullName() {
-        return this.fullName;
+    public String getMessage(String path) {
+        String message = this.messages.contains(path) ? this.messages.getString(path) : this.englishMessages.getString(path);
+        if (path.startsWith("minecraft.chat.") && message != null) {
+            return ChatColor.translateAlternateColorCodes('&', String.format(message, Lang.CHAT_PREFIX));
+        }
+        return message;
     }
 
-    public Emoji getEmoji() {
-        return Emoji.fromUnicode(this.unicode);
+    public String getMessage(String path, Object... args) {
+        String message = this.messages.contains(path) ? this.messages.getString(path) : this.englishMessages.getString(path);
+        if (message == null) {
+            return null;
+        }
+        if (path.startsWith("minecraft.chat.")) {
+            return ChatColor.translateAlternateColorCodes('&', String.format(message, Lang.CHAT_PREFIX, Arrays.toString(args)));
+        }
+        return String.format(message, args);
+    }
+
+    public boolean contains(String path) {
+        return this.englishMessages.contains(path);
     }
 }

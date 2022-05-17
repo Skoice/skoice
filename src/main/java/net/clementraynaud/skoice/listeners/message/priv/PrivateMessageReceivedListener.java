@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.listeners.message.priv;
 
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
@@ -29,9 +29,9 @@ import java.awt.*;
 
 public class PrivateMessageReceivedListener extends ListenerAdapter {
 
-    private final LangFile lang;
+    private final Lang lang;
 
-    public PrivateMessageReceivedListener(LangFile lang) {
+    public PrivateMessageReceivedListener(Lang lang) {
         this.lang = lang;
     }
 

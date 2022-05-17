@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -29,9 +29,9 @@ import java.awt.*;
 
 public class InviteCommand extends ListenerAdapter {
 
-    private final LangFile lang;
+    private final Lang lang;
 
-    public InviteCommand(LangFile lang) {
+    public InviteCommand(Lang lang) {
         this.lang = lang;
     }
 

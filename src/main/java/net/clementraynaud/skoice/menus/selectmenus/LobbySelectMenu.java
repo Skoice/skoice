@@ -22,7 +22,7 @@ package net.clementraynaud.skoice.menus.selectmenus;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.LangFile;
+import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -39,13 +39,11 @@ public class LobbySelectMenu extends SelectMenu {
     private static final String REFRESH_OPTION_ID = "refresh";
 
     private final Config config;
-    private final LangFile lang;
     private final Bot bot;
 
-    public LobbySelectMenu(Config config, LangFile lang, Bot bot) {
-        super(true);
+    public LobbySelectMenu(Lang lang, Config config, Bot bot) {
+        super(lang, true);
         this.config = config;
-        this.lang = lang;
         this.bot = bot;
     }
 
@@ -66,12 +64,12 @@ public class LobbySelectMenu extends SelectMenu {
             }
             optionIndex++;
         }
-        options.add(SelectOption.of(this.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.label"), LobbySelectMenu.GENERATE_OPTION_ID)
-                .withDescription(this.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.description"))
+        options.add(SelectOption.of(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.label"), LobbySelectMenu.GENERATE_OPTION_ID)
+                .withDescription(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.description"))
                 .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.getEmojiFromUnicode()));
         if (options.size() == 23) {
-            options.add(SelectOption.of(this.lang.getMessage("discord.select-option.too-many-options.label"), LobbySelectMenu.REFRESH_OPTION_ID)
-                    .withDescription(this.lang.getMessage("discord.select-option.too-many-options.description"))
+            options.add(SelectOption.of(super.lang.getMessage("discord.select-option.too-many-options.label"), LobbySelectMenu.REFRESH_OPTION_ID)
+                    .withDescription(super.lang.getMessage("discord.select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.getEmojiFromUnicode()));
         }
         if (this.bot.isReady()) {
@@ -80,7 +78,7 @@ public class LobbySelectMenu extends SelectMenu {
                     .setDefaultValues(Collections.singleton(this.config.getFile().getString(ConfigField.LOBBY_ID.get()))).build();
         } else {
             return SelectionMenu.create("lobby-selection")
-                    .setPlaceholder(this.lang.getMessage("discord.menu.lobby.select-menu.placeholder"))
+                    .setPlaceholder(super.lang.getMessage("discord.menu.lobby.select-menu.placeholder"))
                     .addOptions(options).build();
         }
     }
