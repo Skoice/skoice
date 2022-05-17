@@ -47,6 +47,8 @@ public class Lang {
         String message = this.messages.contains(path) ? this.messages.getString(path) : this.englishMessages.getString(path);
         if (path.startsWith("minecraft.chat.") && message != null) {
             return ChatColor.translateAlternateColorCodes('&', String.format(message, Lang.CHAT_PREFIX));
+        } else if (path.startsWith("minecraft.") && message != null) {
+            return ChatColor.translateAlternateColorCodes('&', message);
         }
         return message;
     }
@@ -58,6 +60,8 @@ public class Lang {
         }
         if (path.startsWith("minecraft.chat.")) {
             return ChatColor.translateAlternateColorCodes('&', String.format(message, Lang.CHAT_PREFIX, Arrays.toString(args)));
+        } else if (path.startsWith("minecraft.")) {
+            return ChatColor.translateAlternateColorCodes('&', String.format(message, Arrays.toString(args)));
         }
         return String.format(message, args);
     }
