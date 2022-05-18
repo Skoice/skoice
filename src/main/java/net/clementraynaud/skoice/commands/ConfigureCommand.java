@@ -19,11 +19,9 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.ErrorEmbed;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -37,11 +35,15 @@ public class ConfigureCommand extends ListenerAdapter {
 
     private boolean configureCommandCooldown = false;
 
+    private final Config config;
     private final Lang lang;
+    private final Bot bot;
     private final ConfigurationMenu configurationMenu;
 
-    public ConfigureCommand(Lang lang, ConfigurationMenu configurationMenu) {
+    public ConfigureCommand(Config config, Lang lang, Bot bot, ConfigurationMenu configurationMenu) {
+        this.config = config;
         this.lang = lang;
+        this.bot = bot;
         this.configurationMenu = configurationMenu;
     }
 
@@ -51,7 +53,8 @@ public class ConfigureCommand extends ListenerAdapter {
             Member member = event.getMember();
             if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
                 if (this.configureCommandCooldown) {
-                    event.replyEmbeds(new ErrorEmbed(this.lang).getTooManyInteractionsEmbed()).setEphemeral(true).queue();
+                    event.reply(this.bot.getMenus().get("error").toMessage(this.config, this.lang, this.bot, "too-many-interactions"))
+                            .setEphemeral(true).queue();
                 } else {
                     this.configurationMenu.deleteMessage();
                     event.reply(this.configurationMenu.getMessage()).queue();
@@ -65,7 +68,8 @@ public class ConfigureCommand extends ListenerAdapter {
                     }, 5000);
                 }
             } else {
-                event.replyEmbeds(new ErrorEmbed(this.lang).getAccessDeniedEmbed()).setEphemeral(true).queue();
+                event.reply(this.bot.getMenus().get("error").toMessage(this.config, this.lang, this.bot, "access-denied"))
+                        .setEphemeral(true).queue();
             }
         }
     }

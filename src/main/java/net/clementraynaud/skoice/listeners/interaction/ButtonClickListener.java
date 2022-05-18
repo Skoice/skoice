@@ -23,7 +23,6 @@ import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.ErrorEmbed;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
@@ -85,7 +84,8 @@ public class ButtonClickListener extends ListenerAdapter {
                 }
             }
         } else {
-            event.replyEmbeds(new ErrorEmbed(this.lang).getAccessDeniedEmbed()).setEphemeral(true).queue();
+            event.reply(this.bot.getMenus().get("error").toMessage(this.config, this.lang, this.bot, "access-denied"))
+                    .setEphemeral(true).queue();
         }
     }
 }

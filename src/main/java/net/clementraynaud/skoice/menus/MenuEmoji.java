@@ -52,7 +52,8 @@ public enum MenuEmoji {
     ARROW_UP_DOWN("U+2195"),
     VIDEO_GAME("U+1F3AE"),
     WARNING("U+26A0"),
-    WRENCH("U+1F527");
+    WRENCH("U+1F527"),
+    X("U+274C");
 
     private final String unicode;
 

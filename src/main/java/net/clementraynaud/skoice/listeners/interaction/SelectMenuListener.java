@@ -25,7 +25,6 @@ import net.clementraynaud.skoice.bot.Commands;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.ErrorEmbed;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
@@ -151,7 +150,8 @@ public class SelectMenuListener extends ListenerAdapter {
                 }
             }
         } else {
-            event.replyEmbeds(new ErrorEmbed(this.lang).getAccessDeniedEmbed()).setEphemeral(true).queue();
+            event.reply(this.bot.getMenus().get("error").toMessage(this.config, this.lang, this.bot, "access-denied"))
+                    .setEphemeral(true).queue();
         }
     }
 }

@@ -65,3 +65,6 @@ changelog:
     - skoice-2-1
     - upcoming-features
     - contribute
+error:
+  emoji: warning
+  type: error

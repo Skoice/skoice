@@ -146,16 +146,6 @@ discord:
           description: "Your Discord account is already linked to Minecraft. Type `/unlink` to unlink it."
     error:
       title: "Error"
-      field:
-        access-denied:
-          title: "Access Denied"
-          description: "You do not have the required permission to execute this action."
-        too-many-interactions:
-          title: "Too Many Interactions"
-          description: "You are executing commands too fast."
-        illegal-interaction:
-          title: "Illegal Interaction"
-          description: "You can only interact with the bot on a Discord server."
   field:
     configuration-complete:
       title: "Configuration Complete"
@@ -189,6 +179,15 @@ discord:
     upcoming-features:
       title: "What's Next?"
       description: "To discover the upcoming features of Skoice, [take a look at our long-terms plans](https://github.com/carlodrift/skoice/issues/28)."
+    access-denied:
+      title: "Access Denied"
+      description: "You do not have the required permission to execute this action."
+    too-many-interactions:
+      title: "Too Many Interactions"
+      description: "You are executing commands too fast."
+    illegal-interaction:
+      title: "Illegal Interaction"
+      description: "You can only interact with the bot on a Discord server."
   button-label:
     back: "Back"
     refresh: "Refresh"

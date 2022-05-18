@@ -23,3 +23,12 @@ skoice-2-1:
 upcoming-features:
   emoji: calendar_spiral
   inline: false
+access-denied:
+  emoji: no_entry
+  inline: false
+too-many-interactions:
+  emoji: chart_with_upwards_trend
+  inline: false
+illegal-interaction:
+  emoji: x
+  inline: false

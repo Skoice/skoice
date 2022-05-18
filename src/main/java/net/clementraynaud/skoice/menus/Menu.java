@@ -46,8 +46,12 @@ public class Menu {
         this.fields = menu.getStringList("fields");
     }
 
+    public Message toMessage(Config config, Lang lang, Bot bot, String optionalField) {
+        return new MessageBuilder().setEmbeds(this.getEmbed(lang, bot, optionalField)).setActionRows(this.getActionRows(config, lang, bot)).build();
+    }
+
     public Message toMessage(Config config, Lang lang, Bot bot) {
-        return new MessageBuilder().setEmbeds(this.getEmbed(lang, bot)).setActionRows(this.getActionRows(config, lang, bot)).build();
+        return this.toMessage(config, lang, bot, null);
     }
 
     private String getTitle(Lang lang, boolean withEmoji) {
@@ -66,7 +70,7 @@ public class Menu {
         return null;
     }
 
-    private MessageEmbed getEmbed(Lang lang, Bot bot) {
+    private MessageEmbed getEmbed(Lang lang, Bot bot, String optionalField) {
         EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(lang, true))
                 .setColor(this.type.getColor())
                 .setFooter(lang.getMessage("discord.menu.footer"), "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
@@ -95,6 +99,9 @@ public class Menu {
                 embed.addField(bot.getFields().get(field).toField(lang));
             }
         }
+        if (optionalField != null) {
+            embed.addField(bot.getFields().get(optionalField).toField(lang));
+        }
         return embed.build();
     }
 
@@ -119,7 +126,11 @@ public class Menu {
                 this.selectMenu = new ToggleSelectMenu(lang, this.name, config.getFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.get()), false);
                 break;
             default:
-                return Collections.singletonList(ActionRow.of(this.getButtons(config, lang, bot)));
+                List<Button> buttons = this.getButtons(config, lang, bot);
+                if (!buttons.isEmpty()) {
+                    return Collections.singletonList(ActionRow.of(buttons));
+                }
+                return Collections.emptyList();
         }
         return Arrays.asList(ActionRow.of(this.selectMenu.get()), ActionRow.of(this.getButtons(config, lang, bot)));
     }
@@ -146,15 +157,17 @@ public class Menu {
             }
         }
         this.customizeRadius = false;
-        if (bot.isReady()) {
-            buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID, lang.getMessage("discord.button-label.close"))
-                    .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()));
-        } else {
-            Menu languageMenu = bot.getMenus().get("language");
-            buttons.addAll(Arrays.asList(Button.secondary(languageMenu.name, languageMenu.getTitle(lang, false))
-                            .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.getEmojiFromUnicode()),
-                    Button.secondary(Menu.CLOSE_BUTTON_ID, lang.getMessage("discord.button-label.configure-later"))
-                            .withEmoji(MenuEmoji.CLOCK3.getEmojiFromUnicode())));
+        if (this.type == MenuType.DEFAULT) {
+            if (bot.isReady()) {
+                buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID, lang.getMessage("discord.button-label.close"))
+                        .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()));
+            } else {
+                Menu languageMenu = bot.getMenus().get("language");
+                buttons.addAll(Arrays.asList(Button.secondary(languageMenu.name, languageMenu.getTitle(lang, false))
+                                .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.getEmojiFromUnicode()),
+                        Button.secondary(Menu.CLOSE_BUTTON_ID, lang.getMessage("discord.button-label.configure-later"))
+                                .withEmoji(MenuEmoji.CLOCK3.getEmojiFromUnicode())));
+            }
         }
         return buttons;
     }
