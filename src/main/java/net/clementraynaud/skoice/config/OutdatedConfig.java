@@ -34,11 +34,9 @@ public class OutdatedConfig {
     private final FileConfiguration oldData = new YamlConfiguration();
 
     private final Skoice plugin;
-    private final Config config;
 
-    public OutdatedConfig(Skoice plugin, Config config) {
+    public OutdatedConfig(Skoice plugin) {
         this.plugin = plugin;
-        this.config = config;
     }
 
     public void update() {
@@ -53,7 +51,7 @@ public class OutdatedConfig {
             this.convertOldData("mainVoiceChannelID", ConfigField.LOBBY_ID.get());
             this.convertOldRadius();
             this.convertOldLinks();
-            this.config.saveFile();
+            this.plugin.readConfig().saveFile();
             try {
                 Files.delete(outdatedConfig.toPath());
             } catch (IOException ignored) {
@@ -64,8 +62,8 @@ public class OutdatedConfig {
     private void convertOldToken() {
         if (this.oldData.contains("token")
                 && !this.oldData.getString("token").isEmpty()
-                && !this.config.getFile().contains(ConfigField.TOKEN.get())) {
-            this.config.getUpdater().setToken(this.oldData.getString("token"));
+                && !this.plugin.readConfig().getFile().contains(ConfigField.TOKEN.get())) {
+            this.plugin.readConfig().setToken(this.oldData.getString("token"));
         }
     }
 
@@ -75,11 +73,11 @@ public class OutdatedConfig {
             this.convertOldData("distance.horizontalStrength", ConfigField.HORIZONTAL_RADIUS.get());
             this.convertOldData("distance.verticalStrength", ConfigField.VERTICAL_RADIUS.get());
         } else {
-            if (!this.config.getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())) {
-                this.config.getFile().set(ConfigField.HORIZONTAL_RADIUS.get(), 80);
+            if (!this.plugin.readConfig().getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())) {
+                this.plugin.readConfig().getFile().set(ConfigField.HORIZONTAL_RADIUS.get(), 80);
             }
-            if (!this.config.getFile().contains(ConfigField.VERTICAL_RADIUS.get())) {
-                this.config.getFile().set(ConfigField.VERTICAL_RADIUS.get(), 40);
+            if (!this.plugin.readConfig().getFile().contains(ConfigField.VERTICAL_RADIUS.get())) {
+                this.plugin.readConfig().getFile().set(ConfigField.VERTICAL_RADIUS.get(), 40);
             }
         }
     }
@@ -92,16 +90,16 @@ public class OutdatedConfig {
             for (int i = 0; i < subkeys.size(); i += 2) {
                 links.put(iterator.next(), iterator.next());
             }
-            links.putAll(this.config.getReader().getLinks());
-            this.config.getFile().set(ConfigField.LINKS.get(), links);
+            links.putAll(this.plugin.readConfig().getLinks());
+            this.plugin.readConfig().getFile().set(ConfigField.LINKS.get(), links);
         }
     }
 
     private void convertOldData(String oldField, String newField) {
         if (this.oldData.contains(oldField)
                 && !this.oldData.getString(oldField).isEmpty()
-                && !this.config.getFile().contains(newField)) {
-            this.config.getFile().set(newField, this.oldData.get(oldField));
+                && !this.plugin.readConfig().getFile().contains(newField)) {
+            this.plugin.readConfig().getFile().set(newField, this.oldData.get(oldField));
         }
     }
 }

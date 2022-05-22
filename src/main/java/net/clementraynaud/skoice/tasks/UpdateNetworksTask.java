@@ -63,7 +63,7 @@ public class UpdateNetworksTask implements Task {
             return;
         }
         try {
-            VoiceChannel lobby = this.config.getReader().getLobby();
+            VoiceChannel lobby = this.config.getLobby();
             if (lobby == null) {
                 return;
             }
@@ -74,11 +74,11 @@ public class UpdateNetworksTask implements Task {
             for (UUID minecraftID : oldEligiblePlayers) {
                 Player player = Bukkit.getPlayer(minecraftID);
                 if (player != null) {
-                    Member member = this.config.getReader().getMember(player.getUniqueId());
+                    Member member = this.config.getMember(player.getUniqueId());
                     if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {
                         VoiceChannel playerChannel = member.getVoiceState().getChannel();
-                        boolean isLobby = playerChannel == this.config.getReader().getLobby();
-                        if (!isLobby && (playerChannel.getParent() == null || playerChannel.getParent() != this.config.getReader().getCategory())) {
+                        boolean isLobby = playerChannel == this.config.getLobby();
+                        if (!isLobby && (playerChannel.getParent() == null || playerChannel.getParent() != this.config.getCategory())) {
                             Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(member.getId());
                             if (pair != null) {
                                 pair.getRight().cancel(false);
@@ -101,7 +101,7 @@ public class UpdateNetworksTask implements Task {
                 }
                 membersInLobby.addAll(voiceChannel.getMembers());
             }
-            Map<String, String> links = new HashMap<>(this.config.getReader().getLinks());
+            Map<String, String> links = new HashMap<>(this.config.getLinks());
             for (Member member : membersInLobby) {
                 String minecraftID = new MapUtil().getKeyFromValue(links, member.getId());
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
@@ -128,7 +128,7 @@ public class UpdateNetworksTask implements Task {
                 if (playerChannel != shouldBeInChannel) {
                     UpdateNetworksTask.awaitingMoves.put(member.getId(), Pair.of(
                             shouldBeInChannel.getId(),
-                            this.config.getReader().getGuild().moveVoiceMember(member, shouldBeInChannel)
+                            this.config.getGuild().moveVoiceMember(member, shouldBeInChannel)
                                     .submit().whenCompleteAsync((v, t) -> UpdateNetworksTask.awaitingMoves.remove(member.getId()))
                     ));
                 }
@@ -184,7 +184,7 @@ public class UpdateNetworksTask implements Task {
         Set<Player> alivePlayers = new PlayerUtil().getOnlinePlayers().stream()
                 .filter(p -> !p.isDead())
                 .collect(Collectors.toSet());
-        Category category = this.config.getReader().getCategory();
+        Category category = this.config.getCategory();
         Set<UUID> playersWithinRange = alivePlayers.stream()
                 .filter(p -> Network.networks.stream().noneMatch(network -> network.contains(p)))
                 .filter(p -> !p.equals(player))
@@ -192,7 +192,7 @@ public class UpdateNetworksTask implements Task {
                 .filter(p -> distanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get())
                         && distanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile().getInt(ConfigField.VERTICAL_RADIUS.get()))
                 .filter(p -> {
-                    Member m = this.config.getReader().getMember(p.getUniqueId());
+                    Member m = this.config.getMember(p.getUniqueId());
                     return m != null && m.getVoiceState() != null
                             && m.getVoiceState().getChannel() != null
                             && m.getVoiceState().getChannel().getParent() != null

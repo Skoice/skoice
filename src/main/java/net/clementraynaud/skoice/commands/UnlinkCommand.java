@@ -50,14 +50,14 @@ public class UnlinkCommand extends ListenerAdapter {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if ("unlink".equals(event.getName())) {
-            String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinks(), event.getUser().getId());
+            String minecraftID = new MapUtil().getKeyFromValue(this.config.getLinks(), event.getUser().getId());
             if (minecraftID == null) {
                 event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
                         Collections.singleton(this.bot.getFields().get("account-not-linked").toField(this.lang)),
                         MenuType.ERROR)
                         .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
             } else {
-                this.config.getUpdater().unlinkUser(minecraftID);
+                this.config.unlinkUser(minecraftID);
                 event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
                         Collections.singleton(this.bot.getFields().get("account-unlinked").toField(this.lang)),
                         MenuType.SUCCESS)
@@ -68,7 +68,7 @@ public class UnlinkCommand extends ListenerAdapter {
                     GuildVoiceState voiceState = event.getMember().getVoiceState();
                     if (voiceState != null) {
                         VoiceChannel voiceChannel = voiceState.getChannel();
-                        if (voiceChannel != null && voiceChannel.equals(this.config.getReader().getLobby())) {
+                        if (voiceChannel != null && voiceChannel.equals(this.config.getLobby())) {
                             player.getPlayer().sendMessage(this.lang.getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
                         }
                     }

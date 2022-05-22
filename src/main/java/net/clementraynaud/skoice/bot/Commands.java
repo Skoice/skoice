@@ -31,26 +31,23 @@ import java.util.*;
 public class Commands {
 
     private final Skoice plugin;
-    private final Lang lang;
-    private final Bot bot;
 
-    public Commands(Skoice plugin, Lang lang, Bot bot) {
+    public Commands(Skoice plugin) {
         this.plugin = plugin;
-        this.lang = lang;
-        this.bot = bot;
     }
 
     public void register(Guild guild) {
         guild.updateCommands().addCommands(this.getCommands())
                 .queue(null, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
-                        e -> this.plugin.getLogger().severe(this.lang.getMessage("logger.error.missing-access", this.bot.getJda().getSelfUser().getId()))));
+                        e -> this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
+                                this.plugin.getBot().getJda().getSelfUser().getId()))));
     }
 
     private Set<CommandData> getCommands() {
         return new HashSet<>(Arrays.asList(
-                new CommandData("configure", this.lang.getMessage("discord.command-description.configure")),
-                new CommandData("link", this.lang.getMessage("discord.command-description.link")),
-                new CommandData("unlink", this.lang.getMessage("discord.command-description.unlink")),
-                new CommandData("invite", this.lang.getMessage("discord.command-description.invite"))));
+                new CommandData("configure", this.plugin.getLang().getMessage("discord.command-description.configure")),
+                new CommandData("link", this.plugin.getLang().getMessage("discord.command-description.link")),
+                new CommandData("unlink", this.plugin.getLang().getMessage("discord.command-description.unlink")),
+                new CommandData("invite", this.plugin.getLang().getMessage("discord.command-description.invite"))));
     }
 }

@@ -47,12 +47,12 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         this.eligiblePlayers.add(player.getUniqueId());
-        Member member = this.config.getReader().getMember(player.getUniqueId());
+        Member member = this.config.getMember(player.getUniqueId());
         if (member != null) {
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 VoiceChannel voiceChannel = voiceState.getChannel();
-                if (voiceChannel != null && voiceChannel.equals(this.config.getReader().getLobby())) {
+                if (voiceChannel != null && voiceChannel.equals(this.config.getLobby())) {
                     player.sendMessage(this.lang.getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
                 }
             }

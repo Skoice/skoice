@@ -20,13 +20,9 @@
 package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.Commands;
-import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -42,36 +38,28 @@ import java.util.Collections;
 public class SelectMenuListener extends ListenerAdapter {
 
     private final Skoice plugin;
-    private final Config config;
-    private final Lang lang;
-    private final Bot bot;
-    private final ConfigurationMenu configurationMenu;
 
-    public SelectMenuListener(Skoice plugin, Config config, Lang lang, Bot bot, ConfigurationMenu configurationMenu) {
+    public SelectMenuListener(Skoice plugin) {
         this.plugin = plugin;
-        this.config = config;
-        this.lang = lang;
-        this.bot = bot;
-        this.configurationMenu = configurationMenu;
     }
 
     @Override
     public void onSelectionMenu(SelectionMenuEvent event) {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (this.configurationMenu.exists()
-                    && this.configurationMenu.getMessageId().equals(event.getMessage().getId())
+            if (this.plugin.getConfigurationMenu().exists()
+                    && this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())
                     && event.getSelectedOptions() != null) {
                 String componentID = event.getComponentId();
                 switch (componentID) {
                     case "server-selection":
-                        if (this.bot.getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
+                        if (this.plugin.getBot().getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
                             for (SelectOption server : event.getComponent().getOptions()) {
                                 if (!event.getGuild().getId().equals(server.getValue())
-                                        && this.bot.getJda().getGuilds().contains(this.bot.getJda().getGuildById(server.getValue()))) {
+                                        && this.plugin.getBot().getJda().getGuilds().contains(this.plugin.getBot().getJda().getGuildById(server.getValue()))) {
                                     try {
-                                        this.bot.getJda().getGuildById(server.getValue()).leave()
-                                                .queue(success -> event.editMessage(this.configurationMenu.getMessage()).queue());
+                                        this.plugin.getBot().getJda().getGuildById(server.getValue()).leave()
+                                                .queue(success -> event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue());
                                     } catch (ErrorResponseException ignored) {
                                     }
                                 }
@@ -79,81 +67,82 @@ public class SelectMenuListener extends ListenerAdapter {
                         }
                         break;
                     case "language-selection":
-                        this.config.getFile().set(ConfigField.LANG.get(), event.getSelectedOptions().get(0).getValue());
-                        this.config.saveFile();
+                        this.plugin.readConfig().getFile().set(ConfigField.LANG.get(), event.getSelectedOptions().get(0).getValue());
+                        this.plugin.readConfig().saveFile();
                         this.plugin.updateConfigurationStatus(false);
-                        new Commands(this.plugin, this.lang, this.bot).register(event.getGuild());
-                        event.editMessage(this.configurationMenu.getMessage()).queue();
+                        new Commands(this.plugin).register(event.getGuild());
+                        event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         break;
                     case "lobby-selection":
                         Guild guild = event.getGuild();
                         if (guild != null) {
                             if ("generate".equals(event.getSelectedOptions().get(0).getValue())) {
-                                String categoryID = guild.createCategory(this.lang.getMessage("discord.default-category-name"))
+                                String categoryID = guild.createCategory(this.plugin.getLang().getMessage("discord.default-category-name"))
                                         .complete().getId();
-                                String lobbyID = guild.createVoiceChannel(this.lang.getMessage("discord.default-lobby-name"), event.getGuild().getCategoryById(categoryID))
+                                String lobbyID = guild.createVoiceChannel(this.plugin.getLang().getMessage("discord.default-lobby-name"),
+                                                event.getGuild().getCategoryById(categoryID))
                                         .complete().getId();
-                                this.config.getFile().set(ConfigField.LOBBY_ID.get(), lobbyID);
-                                this.config.saveFile();
-                                new InterruptSystemTask(this.config).run();
+                                this.plugin.readConfig().getFile().set(ConfigField.LOBBY_ID.get(), lobbyID);
+                                this.plugin.readConfig().saveFile();
+                                new InterruptSystemTask(this.plugin.readConfig()).run();
                                 this.plugin.updateConfigurationStatus(false);
                             } else if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
-                                event.editMessage(this.configurationMenu.getMessage()).queue();
+                                event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                             } else {
                                 VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                                 if (lobby != null && lobby.getParent() != null) {
-                                    this.config.getFile().set(ConfigField.LOBBY_ID.get(), event.getSelectedOptions().get(0).getValue());
-                                    this.config.saveFile();
-                                    new InterruptSystemTask(this.config).run();
+                                    this.plugin.readConfig().getFile().set(ConfigField.LOBBY_ID.get(), event.getSelectedOptions().get(0).getValue());
+                                    this.plugin.readConfig().saveFile();
+                                    new InterruptSystemTask(this.plugin.readConfig()).run();
                                     this.plugin.updateConfigurationStatus(false);
                                 }
                             }
                         }
-                        event.editMessage(this.configurationMenu.getMessage()).queue();
+                        event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         break;
                     case "mode-selection":
                         if ("vanilla-mode".equals(event.getSelectedOptions().get(0).getValue())) {
-                            this.config.getFile().set(ConfigField.HORIZONTAL_RADIUS.get(), 80);
-                            this.config.getFile().set(ConfigField.VERTICAL_RADIUS.get(), 40);
-                            this.config.saveFile();
+                            this.plugin.readConfig().getFile().set(ConfigField.HORIZONTAL_RADIUS.get(), 80);
+                            this.plugin.readConfig().getFile().set(ConfigField.VERTICAL_RADIUS.get(), 40);
+                            this.plugin.readConfig().saveFile();
                             this.plugin.updateConfigurationStatus(false);
-                            event.editMessage(this.configurationMenu.getMessage()).queue();
+                            event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         } else if ("minigame-mode".equals(event.getSelectedOptions().get(0).getValue())) {
-                            this.config.getFile().set(ConfigField.HORIZONTAL_RADIUS.get(), 40);
-                            this.config.getFile().set(ConfigField.VERTICAL_RADIUS.get(), 20);
-                            this.config.saveFile();
+                            this.plugin.readConfig().getFile().set(ConfigField.HORIZONTAL_RADIUS.get(), 40);
+                            this.plugin.readConfig().getFile().set(ConfigField.VERTICAL_RADIUS.get(), 20);
+                            this.plugin.readConfig().saveFile();
                             this.plugin.updateConfigurationStatus(false);
-                            event.editMessage(this.configurationMenu.getMessage()).queue();
+                            event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         } else if ("customize".equals(event.getSelectedOptions().get(0).getValue())) {
-                            event.editMessage(this.bot.getMenus().get("mode").toMessage(this.config, this.lang, this.bot, true)).queue();
+                            event.editMessage(this.plugin.getBot().getMenus().get("mode").toMessage(this.plugin.readConfig(), this.plugin.getLang(), this.plugin.getBot(), true)).queue();
                         }
                         break;
                     case "action-bar-alert":
                         if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
-                            this.config.getFile().set(ConfigField.ACTION_BAR_ALERT.get(), true);
+                            this.plugin.readConfig().getFile().set(ConfigField.ACTION_BAR_ALERT.get(), true);
                         } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
-                            this.config.getFile().set(ConfigField.ACTION_BAR_ALERT.get(), false);
+                            this.plugin.readConfig().getFile().set(ConfigField.ACTION_BAR_ALERT.get(), false);
                         }
-                        this.config.saveFile();
-                        event.editMessage(this.configurationMenu.getMessage()).queue();
+                        this.plugin.readConfig().saveFile();
+                        event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         break;
                     case "channel-visibility":
                         if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
-                            this.config.getFile().set(ConfigField.CHANNEL_VISIBILITY.get(), true);
+                            this.plugin.readConfig().getFile().set(ConfigField.CHANNEL_VISIBILITY.get(), true);
                         } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
-                            this.config.getFile().set(ConfigField.CHANNEL_VISIBILITY.get(), false);
+                            this.plugin.readConfig().getFile().set(ConfigField.CHANNEL_VISIBILITY.get(), false);
                         }
-                        this.config.saveFile();
-                        event.editMessage(this.configurationMenu.getMessage()).queue();
+                        this.plugin.readConfig().saveFile();
+                        event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         break;
                     default:
-                        throw new IllegalStateException(this.lang.getMessage("logger.exception.unexpected-value", componentID));
+                        throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentID));
                 }
             }
         } else {
-            event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("error"),
-                    Collections.singleton(this.bot.getFields().get("access-denied").toField(this.lang)))
-                    .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
+            event.reply(new Menu(this.plugin.getBot().getMenusYaml().getConfigurationSection("error"),
+                    Collections.singleton(this.plugin.getBot().getFields().get("access-denied").toField(this.plugin.getLang())))
+                    .toMessage(this.plugin.readConfig(), this.plugin.getLang(), this.plugin.getBot())).setEphemeral(true).queue();
         }
     }
 }

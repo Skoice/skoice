@@ -55,10 +55,10 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
         new UpdateVoiceStateTask(this.config, event.getMember(), event.getChannelJoined()).run();
-        if (!event.getChannelJoined().equals(this.config.getReader().getLobby())) {
+        if (!event.getChannelJoined().equals(this.config.getLobby())) {
             return;
         }
-        String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinks(), event.getMember().getId());
+        String minecraftID = new MapUtil().getKeyFromValue(this.config.getLinks(), event.getMember().getId());
         if (minecraftID == null) {
             event.getMember().getUser().openPrivateChannel().complete()
                     .sendMessage(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),

@@ -28,16 +28,14 @@ import org.jetbrains.annotations.NotNull;
 public class GuildLeaveListener extends ListenerAdapter {
 
     private final Skoice plugin;
-    private final Bot bot;
 
-    public GuildLeaveListener(Skoice plugin, Bot bot) {
+    public GuildLeaveListener(Skoice plugin) {
         this.plugin = plugin;
-        this.bot = bot;
     }
 
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
-        this.bot.updateGuildUniquenessStatus();
+        this.plugin.getBot().updateGuildUniquenessStatus();
         this.plugin.updateConfigurationStatus(false);
     }
 }

@@ -19,11 +19,8 @@
 
 package net.clementraynaud.skoice.listeners.message.guild;
 
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;

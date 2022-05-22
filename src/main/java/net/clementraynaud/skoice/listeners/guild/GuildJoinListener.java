@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.listeners.guild;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.Commands;
-import net.clementraynaud.skoice.lang.Lang;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -30,19 +29,15 @@ import org.jetbrains.annotations.NotNull;
 public class GuildJoinListener extends ListenerAdapter {
 
     private final Skoice plugin;
-    private final Lang lang;
-    private final Bot bot;
 
-    public GuildJoinListener(Skoice plugin, Lang lang, Bot bot) {
+    public GuildJoinListener(Skoice plugin) {
         this.plugin = plugin;
-        this.lang = lang;
-        this.bot = bot;
     }
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
-        new Commands(this.plugin, this.lang, this.bot).register(event.getGuild());
-        this.bot.updateGuildUniquenessStatus();
+        new Commands(this.plugin).register(event.getGuild());
+        this.plugin.getBot().updateGuildUniquenessStatus();
         this.plugin.updateConfigurationStatus(false);
     }
 }

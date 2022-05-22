@@ -56,11 +56,11 @@ public class Network {
     }
 
     public void build() {
-        Guild guild = this.config.getReader().getGuild();
+        Guild guild = this.config.getGuild();
         List<Permission> deniedPermissions = this.config.getFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.get())
                 ? Arrays.asList(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS)
                 : Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
-        this.config.getReader().getCategory().createVoiceChannel(UUID.randomUUID().toString())
+        this.config.getCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(guild.getPublicRole(),
                         Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
                         deniedPermissions)
@@ -160,7 +160,7 @@ public class Network {
         if (this.channel == null || this.channel.isEmpty()) {
             return null;
         }
-        Guild guild = this.config.getReader().getGuild();
+        Guild guild = this.config.getGuild();
         if (guild != null) {
             return guild.getVoiceChannelById(this.channel);
         }

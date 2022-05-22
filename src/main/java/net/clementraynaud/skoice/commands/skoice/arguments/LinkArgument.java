@@ -55,7 +55,7 @@ public class LinkArgument extends Argument {
             player.sendMessage(super.lang.getMessage("minecraft.chat.configuration.incomplete-configuration"));
             return;
         }
-        if (this.config.getReader().getLinks().containsKey(player.getUniqueId().toString())) {
+        if (this.config.getLinks().containsKey(player.getUniqueId().toString())) {
             player.sendMessage(super.lang.getMessage("minecraft.chat.player.account-already-linked"));
             return;
         }
@@ -71,11 +71,11 @@ public class LinkArgument extends Argument {
         if (discordID == null) {
             return;
         }
-        Member member = this.config.getReader().getGuild().getMemberById(discordID);
+        Member member = this.config.getGuild().getMemberById(discordID);
         if (member == null) {
             return;
         }
-        this.config.getUpdater().linkUser(player.getUniqueId().toString(), discordID);
+        this.config.linkUser(player.getUniqueId().toString(), discordID);
         LinkCommand.removeValueFromDiscordIDCode(this.arg);
         member.getUser().openPrivateChannel().complete()
                 .sendMessage(new Menu(super.bot.getMenusYaml().getConfigurationSection("linking-process"),
@@ -87,7 +87,7 @@ public class LinkArgument extends Argument {
         GuildVoiceState voiceState = member.getVoiceState();
         if (voiceState != null) {
             VoiceChannel voiceChannel = voiceState.getChannel();
-            if (voiceChannel != null && voiceChannel.equals(this.config.getReader().getLobby())) {
+            if (voiceChannel != null && voiceChannel.equals(this.config.getLobby())) {
                 player.sendMessage(super.lang.getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
             }
         }

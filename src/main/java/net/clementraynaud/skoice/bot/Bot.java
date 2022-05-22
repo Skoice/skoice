@@ -22,9 +22,7 @@ package net.clementraynaud.skoice.bot;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
-import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.menus.MenuField;
@@ -41,7 +39,6 @@ import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
 import net.clementraynaud.skoice.listeners.message.priv.PrivateMessageReceivedListener;
 import net.clementraynaud.skoice.menus.MenuType;
-import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.MapUtil;
@@ -94,15 +91,9 @@ public class Bot {
     private boolean isOnMultipleGuilds;
 
     private final Skoice plugin;
-    private final Config config;
-    private final Lang lang;
-    private final EligiblePlayers eligiblePlayers;
 
-    public Bot(Skoice plugin, Config config, Lang lang, EligiblePlayers eligiblePlayers) {
+    public Bot(Skoice plugin) {
         this.plugin = plugin;
-        this.config = config;
-        this.lang = lang;
-        this.eligiblePlayers = eligiblePlayers;
     }
 
     public JDA getJda() {
@@ -134,8 +125,8 @@ public class Bot {
     }
 
     public void connect(CommandSender sender) {
-        if (this.config.getFile().contains(ConfigField.TOKEN.get())) {
-            byte[] base64TokenBytes = Base64.getDecoder().decode(this.config.getFile().getString(ConfigField.TOKEN.get()));
+        if (this.plugin.readConfig().getFile().contains(ConfigField.TOKEN.get())) {
+            byte[] base64TokenBytes = Base64.getDecoder().decode(this.plugin.readConfig().getFile().getString(ConfigField.TOKEN.get()));
             for (int i = 0; i < base64TokenBytes.length; i++) {
                 base64TokenBytes[i]--;
             }
@@ -145,20 +136,20 @@ public class Bot {
                         .setMemberCachePolicy(MemberCachePolicy.ALL)
                         .build()
                         .awaitReady();
-                this.plugin.getLogger().info(this.lang.getMessage("logger.info.bot-connected"));
+                this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connected"));
             } catch (LoginException e) {
                 if (sender == null) {
-                    this.plugin.getLogger().severe(this.lang.getMessage("logger.error.bot-could-not-connect"));
+                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
                 } else {
-                    sender.sendMessage(this.lang.getMessage("minecraft.chat.configuration.bot-could-not-connect"));
-                    this.config.getFile().set(ConfigField.TOKEN.get(), null);
-                    this.config.saveFile();
+                    sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-could-not-connect"));
+                    this.plugin.readConfig().getFile().set(ConfigField.TOKEN.get(), null);
+                    this.plugin.readConfig().saveFile();
                 }
             } catch (IllegalStateException e) {
 
             } catch (ErrorResponseException e) {
                 if (sender == null) {
-                    this.plugin.getLogger().severe(this.lang.getMessage("logger.error.discord-api-timed-out"));
+                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.discord-api-timed-out"));
                 } else {
                     try {
                         TextComponent discordStatusPage = new TextComponent("§bpage");
@@ -168,7 +159,7 @@ public class Bot {
                                 .append(discordStatusPage)
                                 .append("§7.").event((HoverEvent) null).create());
                     } catch (NoSuchMethodError e2) {
-                        sender.sendMessage(this.lang.getMessage("minecraft.chat.error.discord-api-timed-out-link"));
+                        sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.discord-api-timed-out-link"));
                     }
                 }
             } catch (InterruptedException e) {
@@ -182,25 +173,25 @@ public class Bot {
         configurationMenu.deleteMessage();
         this.updateGuildUniquenessStatus();
         this.checkForValidLobby();
-        this.jda.getGuilds().forEach(new Commands(this.plugin, this.lang, this)::register);
-        this.jda.addEventListener(new ReconnectedListener(this.plugin, this, configurationMenu),
-                new GuildJoinListener(this.plugin, this.lang, this),
-                new GuildLeaveListener(this.plugin, this),
-                new PrivateMessageReceivedListener(this.config, this.lang, this),
-                new GuildMessageReceivedListener(this.config, this.lang, this, configurationMenu),
+        this.jda.getGuilds().forEach(new Commands(this.plugin)::register);
+        this.jda.addEventListener(new ReconnectedListener(this.plugin),
+                new GuildJoinListener(this.plugin),
+                new GuildLeaveListener(this.plugin),
+                new PrivateMessageReceivedListener(this.plugin.readConfig(), this.plugin.getLang(), this),
+                new GuildMessageReceivedListener(this.plugin.readConfig(), this.plugin.getLang(), this, configurationMenu),
                 new GuildMessageDeleteListener(configurationMenu),
-                new VoiceChannelDeleteListener(this.plugin, this.config, this.lang, this),
-                new VoiceChannelUpdateParentListener(this.plugin, this.config, this.lang, this),
-                new ConfigureCommand(this.config, this.lang, this, configurationMenu),
-                new InviteCommand(this.config, this.lang, this),
-                new LinkCommand(this.config, this.lang, this),
-                new UnlinkCommand(this.config, this.lang, this),
-                new ButtonClickListener(this.config, this.lang, this, configurationMenu),
-                new SelectMenuListener(this.plugin, this.config, this.lang, this, configurationMenu));
+                new VoiceChannelDeleteListener(this.plugin),
+                new VoiceChannelUpdateParentListener(this.plugin),
+                new ConfigureCommand(this.plugin.readConfig(), this.plugin.getLang(), this, configurationMenu),
+                new InviteCommand(this.plugin.readConfig(), this.plugin.getLang(), this),
+                new LinkCommand(this.plugin.readConfig(), this.plugin.getLang(), this),
+                new UnlinkCommand(this.plugin.readConfig(), this.plugin.getLang(), this),
+                new ButtonClickListener(this.plugin.readConfig(), this.plugin.getLang(), this, configurationMenu),
+                new SelectMenuListener(this.plugin));
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                         Bukkit.getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
-                                new UpdateNetworksTask(this.config, this.lang, this.eligiblePlayers)::run,
+                                new UpdateNetworksTask(this.plugin.readConfig(), this.plugin.getLang(), this.plugin.getEligiblePlayers())::run,
                                 0,
                                 10
                         ),
@@ -209,7 +200,7 @@ public class Bot {
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                         Bukkit.getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
-                                new UpdateUtil(this.plugin, Skoice.RESSOURCE_ID, this.lang.getMessage("logger.warning.outdated-version"))::checkVersion,
+                                new UpdateUtil(this.plugin, Skoice.RESSOURCE_ID, this.plugin.getLang().getMessage("logger.warning.outdated-version"))::checkVersion,
                                 Bot.TICKS_BETWEEN_VERSION_CHECKING,
                                 Bot.TICKS_BETWEEN_VERSION_CHECKING
                         ),
@@ -222,9 +213,9 @@ public class Bot {
         this.plugin.updateConfigurationStatus(startup);
         if (sender != null && this.jda != null) {
             if (this.isReady) {
-                sender.sendMessage(this.lang.getMessage("minecraft.chat.configuration.bot-connected"));
+                sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected"));
             } else {
-                sender.sendMessage(this.lang.getMessage("minecraft.chat.configuration.bot-connected-incomplete-configuration-discord"));
+                sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected-incomplete-configuration-discord"));
             }
         }
     }
@@ -245,23 +236,23 @@ public class Bot {
     }
 
     public void checkForValidLobby() {
-        if (this.config.getReader().getLobby() == null && this.config.getFile().contains(ConfigField.LOBBY_ID.get())) {
-            this.config.getFile().set(ConfigField.LOBBY_ID.get(), null);
-            this.config.saveFile();
+        if (this.plugin.readConfig().getLobby() == null && this.plugin.readConfig().getFile().contains(ConfigField.LOBBY_ID.get())) {
+            this.plugin.readConfig().getFile().set(ConfigField.LOBBY_ID.get(), null);
+            this.plugin.readConfig().saveFile();
         }
     }
 
     public void checkForUnlinkedUsersInLobby() {
-        VoiceChannel lobby = this.config.getReader().getLobby();
+        VoiceChannel lobby = this.plugin.readConfig().getLobby();
         if (lobby != null) {
             for (Member member : lobby.getMembers()) {
-                String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinks(), member.getId());
+                String minecraftID = new MapUtil().getKeyFromValue(this.plugin.readConfig().getLinks(), member.getId());
                 if (minecraftID == null) {
                     member.getUser().openPrivateChannel().complete()
                             .sendMessage(new Menu(this.menusYaml.getConfigurationSection("linking-process"),
-                                    Collections.singleton(this.fields.get("account-not-linked").toField(this.lang)),
+                                    Collections.singleton(this.fields.get("account-not-linked").toField(this.plugin.getLang())),
                                     MenuType.ERROR)
-                                    .toMessage(this.config, this.lang, this))
+                                    .toMessage(this.plugin.readConfig(), this.plugin.getLang(), this))
                             .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 }
             }
@@ -269,7 +260,7 @@ public class Bot {
     }
 
     private void retrieveNetworks() {
-        Category category = this.config.getReader().getCategory();
+        Category category = this.plugin.readConfig().getCategory();
         if (category != null) {
             category.getVoiceChannels().stream()
                     .filter(channel -> {
@@ -280,7 +271,7 @@ public class Bot {
                             return false;
                         }
                     })
-                    .forEach(channel -> Network.networks.add(new Network(this.config, channel.getId())));
+                    .forEach(channel -> Network.networks.add(new Network(this.plugin.readConfig(), channel.getId())));
         }
     }
 
@@ -302,7 +293,7 @@ public class Bot {
         Set<MessageEmbed.Field> menuFields = new LinkedHashSet<>();
         for (String menu : this.menusYaml.getConfigurationSection("startup").getKeys(false)) {
             for (String field : this.menusYaml.getStringList("startup." + menu + ".fields")) {
-                menuFields.add(this.fields.get(field).toField(this.lang));
+                menuFields.add(this.fields.get(field).toField(this.plugin.getLang()));
             }
             this.menus.put(menu, new Menu(this.menusYaml.getConfigurationSection("startup." + menu), new LinkedHashSet<>(menuFields)));
             menuFields.clear();

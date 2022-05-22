@@ -22,12 +22,8 @@ package net.clementraynaud.skoice.commands;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.MenuEmoji;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
-import java.awt.*;
 
 public class InviteCommand extends ListenerAdapter {
 

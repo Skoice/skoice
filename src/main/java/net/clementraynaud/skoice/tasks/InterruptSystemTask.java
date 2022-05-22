@@ -39,15 +39,15 @@ public class InterruptSystemTask implements Task {
         for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.awaitingMoves.values()) {
             value.getRight().cancel(true);
         }
-        boolean isLobbySet = this.config.getReader().getLobby() != null;
+        boolean isLobbySet = this.config.getLobby() != null;
         for (Network network : Network.networks) {
             if (isLobbySet) {
                 for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
                     Member member = network.getChannel().getMembers().get(i);
                     if (i + 1 < network.getChannel().getMembers().size()) {
-                        member.getGuild().moveVoiceMember(member, this.config.getReader().getLobby()).queue();
+                        member.getGuild().moveVoiceMember(member, this.config.getLobby()).queue();
                     } else {
-                        member.getGuild().moveVoiceMember(member, this.config.getReader().getLobby()).complete();
+                        member.getGuild().moveVoiceMember(member, this.config.getLobby()).complete();
                     }
                 }
             }

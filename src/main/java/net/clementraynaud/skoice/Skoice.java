@@ -69,7 +69,7 @@ public class Skoice extends JavaPlugin {
         this.initializeConfig();
         this.initializeLang();
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
-        new OutdatedConfig(this, this.config).update();
+        new OutdatedConfig(this).update();
         this.eligiblePlayers = new EligiblePlayers();
         this.initializeBot();
         this.initializeSkoiceCommand();
@@ -86,10 +86,9 @@ public class Skoice extends JavaPlugin {
     }
 
     private void initializeConfig() {
-        this.config = new Config(this, this.getConfig());
+        this.config = new Config(this);
         this.config.getFile().options().copyDefaults(true);
         this.config.saveFile();
-        this.config.initializeUpdater();
     }
 
     private void initializeLang() {
@@ -98,10 +97,9 @@ public class Skoice extends JavaPlugin {
     }
 
     private void initializeBot() {
-        this.bot = new Bot(this, this.config, this.lang, this.eligiblePlayers);
+        this.bot = new Bot(this);
         this.bot.connect();
         if (this.bot.getJda() != null) {
-            this.config.initializeReader(this.bot);
             this.configurationMenu = new ConfigurationMenu(this.config, this.lang, this.bot);
             this.bot.setup(this.configurationMenu, true, null);
         }
@@ -202,5 +200,25 @@ public class Skoice extends JavaPlugin {
         HandlerList.unregisterAll(new PlayerQuitListener(this));
         HandlerList.unregisterAll(new PlayerMoveListener(this.eligiblePlayers));
         HandlerList.unregisterAll(new PlayerTeleportListener(this.eligiblePlayers));
+    }
+
+    public Lang getLang() {
+        return this.lang;
+    }
+
+    public Config readConfig() {
+        return this.config;
+    }
+
+    public Bot getBot() {
+        return this.bot;
+    }
+
+    public ConfigurationMenu getConfigurationMenu() {
+        return this.configurationMenu;
+    }
+
+    public EligiblePlayers getEligiblePlayers() {
+        return this.eligiblePlayers;
     }
 }
