@@ -20,13 +20,14 @@
 
 package net.clementraynaud.skoice.listeners.guild.voice;
 
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.MenuEmoji;
+import net.clementraynaud.skoice.menus.Menu;
+import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -34,18 +35,20 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import java.awt.*;
+import java.util.Collections;
 import java.util.UUID;
 
 public class GuildVoiceJoinListener extends ListenerAdapter {
 
     private final Config config;
     private final Lang lang;
+    private final Bot bot;
     private final EligiblePlayers eligiblePlayers;
 
-    public GuildVoiceJoinListener(Config config, Lang lang, EligiblePlayers eligiblePlayers) {
+    public GuildVoiceJoinListener(Config config, Lang lang, Bot bot, EligiblePlayers eligiblePlayers) {
         this.config = config;
         this.lang = lang;
+        this.bot = bot;
         this.eligiblePlayers = eligiblePlayers;
     }
 
@@ -58,10 +61,10 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
         String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinks(), event.getMember().getId());
         if (minecraftID == null) {
             event.getMember().getUser().openPrivateChannel().complete()
-                    .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.LINK + this.lang.getMessage("discord.menu.linking-process.title"))
-                            .addField(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.title"),
-                                    this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.alternative-description", event.getGuild().getName()), false)
-                            .setColor(Color.RED).build())
+                    .sendMessage(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
+                            Collections.singleton(this.bot.getFields().get("account-not-linked").toField(this.lang)),
+                            MenuType.ERROR)
+                            .toMessage(this.config, this.lang, this.bot))
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));

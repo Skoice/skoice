@@ -23,11 +23,13 @@ import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
+import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,8 +55,9 @@ public class ConfigureCommand extends ListenerAdapter {
             Member member = event.getMember();
             if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
                 if (this.configureCommandCooldown) {
-                    event.reply(this.bot.getMenus().get("error").toMessage(this.config, this.lang, this.bot, "too-many-interactions"))
-                            .setEphemeral(true).queue();
+                    event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("error"),
+                            Collections.singleton(this.bot.getFields().get("too-many-interactions").toField(this.lang)))
+                            .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
                 } else {
                     this.configurationMenu.deleteMessage();
                     event.reply(this.configurationMenu.getMessage()).queue();
@@ -68,8 +71,9 @@ public class ConfigureCommand extends ListenerAdapter {
                     }, 5000);
                 }
             } else {
-                event.reply(this.bot.getMenus().get("error").toMessage(this.config, this.lang, this.bot, "access-denied"))
-                        .setEphemeral(true).queue();
+                event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("error"),
+                        Collections.singleton(this.bot.getFields().get("access-denied").toField(this.lang)))
+                        .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
             }
         }
     }

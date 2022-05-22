@@ -1,34 +1,50 @@
-troubleshooting:
-  emoji: screwdriver
-  inline: true
-contribute:
-  emoji: hammer
-  inline: false
-vanilla-mode:
-  emoji: map
-  inline: true
-minigame-mode:
-  emoji: crossed_swords
-  inline: true
-customize:
-  emoji: pencil2
-  inline: true
+startup:
+  troubleshooting:
+    emoji: screwdriver
+    inline: true
+  contribute:
+    emoji: hammer
+    inline: false
+  vanilla-mode:
+    emoji: map
+    inline: true
+  minigame-mode:
+    emoji: crossed_swords
+    inline: true
+  customize:
+    emoji: pencil2
+    inline: true
+  skoice-2-1:
+    emoji: clipboard
+    inline: false
+  upcoming-features:
+    emoji: calendar_spiral
+    inline: false
+  account-linked:
+    emoji: heavy_check_mark
+    inline: false
+  account-unlinked:
+    emoji: heavy_check_mark
+    inline: false
+  account-already-linked:
+    emoji: x
+    inline: false
+  account-not-linked:
+    emoji: x
+    inline: false
+  access-denied:
+    emoji: no_entry
+    inline: false
+  too-many-interactions:
+    emoji: chart_with_upwards_trend
+    inline: false
+  illegal-interaction:
+    emoji: x
+    inline: false
+
 enter-a-value:
   emoji: keyboard
   inline: false
-  value: PLACEHOLDER
-skoice-2-1:
-  emoji: clipboard
-  inline: false
-upcoming-features:
-  emoji: calendar_spiral
-  inline: false
-access-denied:
-  emoji: no_entry
-  inline: false
-too-many-interactions:
-  emoji: chart_with_upwards_trend
-  inline: false
-illegal-interaction:
-  emoji: x
+verification-code:
+  emoji: key
   inline: false

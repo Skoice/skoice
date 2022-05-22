@@ -1,70 +1,74 @@
-configuration:
-  emoji: gear
-  type: default
-  fields:
-    - troubleshooting
-server:
-  emoji: file_cabinet
-  type: default
-lobby:
-  emoji: sound
-  type: default
-  style: primary
-  parent: configuration
-mode:
-  emoji: video_game
-  type: default
-  style: primary
-  parent: configuration
-  fields:
-    - vanilla-mode
-    - minigame-mode
-    - customize
-horizontal-radius:
-  emoji: left_right_arrow
-  type: default
-  style: primary
-  parent: mode
-  fields:
-    - enter-a-value
-vertical-radius:
-  emoji: arrow_up_down
-  type: default
-  style: primary
-  parent: mode
-  fields:
-    - enter-a-value
-advanced-settings:
-  emoji: wrench
-  type: default
-  style: secondary
-  selectMenu: null
-  fields: null
-  parent: configuration
-language:
-  emoji: globe_with_meridians
-  type: default
-  style: secondary
-  parent: configuration
-action-bar-alert:
-  emoji: exclamation
-  type: default
-  style: primary
-  parent: advanced-settings
-channel-visibility:
-  emoji: mag
-  type: default
-  style: primary
-  parent: advanced-settings
-changelog:
-  emoji: newspaper
-  type: default
-  style: secondary
-  parent: advanced-settings
-  fields:
-    - skoice-2-1
-    - upcoming-features
-    - contribute
+startup:
+  configuration:
+    emoji: gear
+    type: default
+    fields:
+      - troubleshooting
+  server:
+    emoji: file_cabinet
+    type: default
+  lobby:
+    emoji: sound
+    type: default
+    style: primary
+    parent: configuration
+  mode:
+    emoji: video_game
+    type: default
+    style: primary
+    parent: configuration
+    fields:
+      - vanilla-mode
+      - minigame-mode
+      - customize
+  horizontal-radius:
+    emoji: left_right_arrow
+    type: default
+    style: primary
+    parent: mode
+    #fields:
+    #  - enter-a-value
+  vertical-radius:
+    emoji: arrow_up_down
+    type: default
+    style: primary
+    parent: mode
+    #fields:
+    #  - enter-a-value
+  advanced-settings:
+    emoji: wrench
+    type: default
+    style: secondary
+    selectMenu: null
+    fields: null
+    parent: configuration
+  language:
+    emoji: globe_with_meridians
+    type: default
+    style: secondary
+    parent: configuration
+  action-bar-alert:
+    emoji: exclamation
+    type: default
+    style: primary
+    parent: advanced-settings
+  channel-visibility:
+    emoji: mag
+    type: default
+    style: primary
+    parent: advanced-settings
+  changelog:
+    emoji: newspaper
+    type: default
+    style: secondary
+    parent: advanced-settings
+    fields:
+      - skoice-2-1
+      - upcoming-features
+      - contribute
+
+linking-process:
+  emoji: link
 error:
   emoji: warning
   type: error

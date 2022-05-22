@@ -23,9 +23,9 @@ import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.MenuEmoji;
+import net.clementraynaud.skoice.menus.Menu;
+import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.util.MapUtil;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -34,16 +34,14 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.awt.*;
+import java.util.Collections;
 
 public class LinkArgument extends Argument {
 
-    private final Bot bot;
     private final String arg;
 
-    public LinkArgument(Config config, Lang lang, CommandSender sender, Bot bot, String arg) {
-        super(config, lang, sender, ArgumentName.LINK.isAllowedInConsole(), ArgumentName.LINK.isRestrictedToOperators());
-        this.bot = bot;
+    public LinkArgument(Config config, Lang lang, Bot bot, CommandSender sender, String arg) {
+        super(config, lang, bot, sender, ArgumentName.LINK.isAllowedInConsole(), ArgumentName.LINK.isRestrictedToOperators());
         this.arg = arg;
     }
 
@@ -53,7 +51,7 @@ public class LinkArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        if (!this.bot.isReady() || this.bot.getJda() == null) {
+        if (!super.bot.isReady() || super.bot.getJda() == null) {
             player.sendMessage(super.lang.getMessage("minecraft.chat.configuration.incomplete-configuration"));
             return;
         }
@@ -80,10 +78,10 @@ public class LinkArgument extends Argument {
         this.config.getUpdater().linkUser(player.getUniqueId().toString(), discordID);
         LinkCommand.removeValueFromDiscordIDCode(this.arg);
         member.getUser().openPrivateChannel().complete()
-                .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.LINK + super.lang.getMessage("discord.menu.linking-process.title"))
-                        .addField(MenuEmoji.HEAVY_CHECK_MARK + super.lang.getMessage("discord.menu.linking-process.field.account-linked.title"),
-                                super.lang.getMessage("discord.menu.linking-process.field.account-linked.description"), false)
-                        .setColor(Color.GREEN).build())
+                .sendMessage(new Menu(super.bot.getMenusYaml().getConfigurationSection("linking-process"),
+                        Collections.singleton(super.bot.getFields().get("account-linked").toField(this.lang)),
+                        MenuType.SUCCESS)
+                        .toMessage(this.config, this.lang, super.bot))
                 .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         player.sendMessage(super.lang.getMessage("minecraft.chat.player.account-linked"));
         GuildVoiceState voiceState = member.getVoiceState();

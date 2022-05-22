@@ -33,11 +33,8 @@ import org.bukkit.entity.Player;
 
 public class ConfigureArgument extends Argument {
 
-    private final Bot bot;
-
-    public ConfigureArgument(Config config, Lang lang, CommandSender sender, Bot bot) {
-        super(config, lang, sender, ArgumentName.CONFIGURE.isAllowedInConsole(), ArgumentName.CONFIGURE.isRestrictedToOperators());
-        this.bot = bot;
+    public ConfigureArgument(Config config, Lang lang, Bot bot, CommandSender sender) {
+        super(config, lang, bot, sender, ArgumentName.CONFIGURE.isAllowedInConsole(), ArgumentName.CONFIGURE.isRestrictedToOperators());
     }
 
     @Override
@@ -46,8 +43,8 @@ public class ConfigureArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        if (this.config.getFile().contains(ConfigField.TOKEN.get()) && this.bot.getJda() != null) {
-            if (this.bot.isReady()) {
+        if (this.config.getFile().contains(ConfigField.TOKEN.get()) && super.bot.getJda() != null) {
+            if (super.bot.isReady()) {
                 player.sendMessage(super.lang.getMessage("minecraft.chat.configuration.already-configured"));
             } else {
                 player.sendMessage(super.lang.getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));

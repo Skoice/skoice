@@ -61,16 +61,16 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         String arg = args.length > 1 ? args[1] : "";
         switch (ArgumentName.get(args[0])) {
             case CONFIGURE:
-                new ConfigureArgument(this.config, this.lang, sender, this.bot).run();
+                new ConfigureArgument(this.config, this.lang, this.bot, sender).run();
                 break;
             case TOKEN:
-                new TokenArgument(this.config, this.lang, sender, this.bot, this.configurationMenu, arg).run();
+                new TokenArgument(this.config, this.lang, this.bot, sender, this.configurationMenu, arg).run();
                 break;
             case LINK:
-                new LinkArgument(this.config, this.lang, sender, this.bot, arg).run();
+                new LinkArgument(this.config, this.lang, this.bot, sender, arg).run();
                 break;
             case UNLINK:
-                new UnlinkArgument(this.config, this.lang, sender).run();
+                new UnlinkArgument(this.config, this.lang, this.bot, sender).run();
                 break;
             default:
                 return true;

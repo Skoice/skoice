@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
 import org.bukkit.command.CommandSender;
@@ -28,13 +29,15 @@ public abstract class Argument {
 
     protected final Config config;
     protected final Lang lang;
+    protected final Bot bot;
     protected final CommandSender sender;
     protected final boolean allowedInConsole;
     protected final boolean restrictedToOperators;
 
-    protected Argument(Config config, Lang lang, CommandSender sender, boolean allowedInConsole, boolean restrictedToOperators) {
+    protected Argument(Config config, Lang lang, Bot bot, CommandSender sender, boolean allowedInConsole, boolean restrictedToOperators) {
         this.config = config;
         this.lang = lang;
+        this.bot = bot;
         this.sender = sender;
         this.allowedInConsole = allowedInConsole;
         this.restrictedToOperators = restrictedToOperators;

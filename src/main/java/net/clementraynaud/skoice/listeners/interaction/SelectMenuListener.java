@@ -37,6 +37,8 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 
+import java.util.Collections;
+
 public class SelectMenuListener extends ListenerAdapter {
 
     private final Skoice plugin;
@@ -123,8 +125,7 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.plugin.updateConfigurationStatus(false);
                             event.editMessage(this.configurationMenu.getMessage()).queue();
                         } else if ("customize".equals(event.getSelectedOptions().get(0).getValue())) {
-                            Menu.customizeRadius = true;
-                            event.editMessage(this.bot.getMenus().get("mode").toMessage(this.config, this.lang, this.bot)).queue();
+                            event.editMessage(this.bot.getMenus().get("mode").toMessage(this.config, this.lang, this.bot, true)).queue();
                         }
                         break;
                     case "action-bar-alert":
@@ -150,8 +151,9 @@ public class SelectMenuListener extends ListenerAdapter {
                 }
             }
         } else {
-            event.reply(this.bot.getMenus().get("error").toMessage(this.config, this.lang, this.bot, "access-denied"))
-                    .setEphemeral(true).queue();
+            event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("error"),
+                    Collections.singleton(this.bot.getFields().get("access-denied").toField(this.lang)))
+                    .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
         }
     }
 }

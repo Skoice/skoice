@@ -21,7 +21,7 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive: "?"
-      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/carlodrift/skoice/wiki&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8\u2022 &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/carlodrift/skoice/wiki&7.\n&8\u2022 &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8\u2022 &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
       no-token: "%s You have &cnot provided a token&7."
       invalid-token: "%s You have &cnot provided a valid token&7."
       bot-connected: "%s Your bot is &anow connected&7."
@@ -126,24 +126,6 @@ discord:
           description: "Skoice is a free software. If you like it, you can help us by [donating](https://paypal.me/whitelines)."
     linking-process:
       title: "Linking Process"
-      field:
-        verification-code:
-          title: "Verification Code"
-          description: "Type `/skoice link %s` in game to complete the process."
-        account-linked:
-          title: "Account Linked"
-          description: "Your Discord account has been linked to Minecraft."
-        account-unlinked:
-          title: "Account Unlinked"
-          description: "Your Discord account has been unlinked from Minecraft."
-        account-not-linked:
-          title: "Account Not Linked"
-          description: "Your Discord account is not linked to Minecraft. Type `/link` to link it."
-          alternative-description: "Your Discord account is not linked to Minecraft. Type `/link` on \"%s\" to link it."
-          generic-alternative-description: "Your Discord account is not linked to Minecraft. Type `/link` on our Discord server to link it."
-        account-already-linked:
-          title: "Account Already Linked"
-          description: "Your Discord account is already linked to Minecraft. Type `/unlink` to unlink it."
     error:
       title: "Error"
   field:
@@ -175,10 +157,25 @@ discord:
       description: "This setting is currently set to %s blocks. The value must be between 1 and 1000."
     skoice-2-1:
       title: "Skoice 2.1"
-      description: "**General:**\n• Discover a whole new and intuitive configuration interface.\n• Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n• Link your accounts effortlessly thanks to our new linking process.\n• Skoice now uses slash commands.\n\n**New Features:**\n• Action bar alert\n• Channel visibility toggle\n• \"/invite\" command on Discord\n• French translation"
+      description: "**General:**\n\u2022 Discover a whole new and intuitive configuration interface.\n\u2022 Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n\u2022 Link your accounts effortlessly thanks to our new linking process.\n\u2022 Skoice now uses slash commands.\n\n**New Features:**\n\u2022 Action bar alert\n\u2022 Channel visibility toggle\n\u2022 \"/invite\" command on Discord\n\u2022 French translation"
     upcoming-features:
       title: "What's Next?"
       description: "To discover the upcoming features of Skoice, [take a look at our long-terms plans](https://github.com/carlodrift/skoice/issues/28)."
+    verification-code:
+      title: "Verification Code"
+      description: "Type `/skoice link %s` in game to complete the process."
+    account-linked:
+      title: "Account Linked"
+      description: "Your Discord account has been linked to Minecraft."
+    account-unlinked:
+      title: "Account Unlinked"
+      description: "Your Discord account has been unlinked from Minecraft."
+    account-not-linked:
+      title: "Account Not Linked"
+      description: "Your Discord account is not linked to Minecraft. Type `/link` on our Discord server to link it."
+    account-already-linked:
+      title: "Account Already Linked"
+      description: "Your Discord account is already linked to Minecraft. Type `/unlink` to unlink it."
     access-denied:
       title: "Access Denied"
       description: "You do not have the required permission to execute this action."

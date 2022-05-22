@@ -22,13 +22,17 @@ package net.clementraynaud.skoice.commands;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuEmoji;
+import net.clementraynaud.skoice.menus.MenuField;
+import net.clementraynaud.skoice.menus.MenuType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.lang.RandomStringUtils;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,12 +69,11 @@ public class LinkCommand extends ListenerAdapter {
                         .setEphemeral(true).queue();
                 return;
             }
-            EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.LINK + this.lang.getMessage("discord.menu.linking-process.title"));
             if (this.config.getReader().getLinks().containsValue(event.getUser().getId())) {
-                event.replyEmbeds(embed.addField(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.linking-process.field.account-already-linked.title"),
-                                        this.lang.getMessage("discord.menu.linking-process.field.account-already-linked.description"), false)
-                                .setColor(Color.RED).build())
-                        .setEphemeral(true).queue();
+                event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
+                        Collections.singleton(this.bot.getFields().get("account-already-linked").toField(this.lang)),
+                        MenuType.ERROR)
+                        .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
                 return;
             }
             LinkCommand.discordIDCode.remove(event.getUser().getId());
@@ -79,10 +82,10 @@ public class LinkCommand extends ListenerAdapter {
                 code = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
             } while (LinkCommand.discordIDCode.containsValue(code));
             LinkCommand.discordIDCode.put(event.getUser().getId(), code);
-            event.replyEmbeds(embed.addField(MenuEmoji.KEY + this.lang.getMessage("discord.menu.linking-process.field.verification-code.title"),
-                                    this.lang.getMessage("discord.menu.linking-process.field.verification-code.description", code), false)
-                            .setColor(Color.GREEN).build())
-                    .setEphemeral(true).queue();
+            event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
+                    Collections.singleton(new MenuField(this.bot.getFieldsYaml().getConfigurationSection("verification-code")).toField(this.lang, code)),
+                    MenuType.SUCCESS)
+                    .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
         }
     }
 }

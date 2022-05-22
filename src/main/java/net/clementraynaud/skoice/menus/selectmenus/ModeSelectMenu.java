@@ -24,7 +24,6 @@ import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
-import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
@@ -42,10 +41,13 @@ public class ModeSelectMenu extends SelectMenu {
     private final Config config;
     private final Bot bot;
 
-    public ModeSelectMenu(Lang lang, Config config, Bot bot) {
+    private final boolean customizeRadius;
+
+    public ModeSelectMenu(Lang lang, Config config, Bot bot, boolean customizeRadius) {
         super(lang, false);
         this.config = config;
         this.bot = bot;
+        this.customizeRadius = customizeRadius;
     }
 
     @Override
@@ -60,14 +62,14 @@ public class ModeSelectMenu extends SelectMenu {
             String defaultValue;
             if (this.config.getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) == 80
                     && this.config.getFile().getInt(ConfigField.VERTICAL_RADIUS.get()) == 40
-                    && !Menu.customizeRadius) {
+                    && !this.customizeRadius) {
                 defaultValue = ModeSelectMenu.VANILLA_MODE_ID;
                 modes.add(SelectOption.of(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
                         .withDescription(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.description"))
                         .withEmoji(MenuEmoji.PENCIL2.getEmojiFromUnicode()));
             } else if (this.config.getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) == 40
                     && this.config.getFile().getInt(ConfigField.VERTICAL_RADIUS.get()) == 20
-                    && !Menu.customizeRadius) {
+                    && !this.customizeRadius) {
                 defaultValue = ModeSelectMenu.MINIGAME_MODE_ID;
                 modes.add(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
                         .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.description"))

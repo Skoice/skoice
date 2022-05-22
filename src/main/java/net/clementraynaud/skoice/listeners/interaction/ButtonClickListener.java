@@ -33,6 +33,7 @@ import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,8 +85,9 @@ public class ButtonClickListener extends ListenerAdapter {
                 }
             }
         } else {
-            event.reply(this.bot.getMenus().get("error").toMessage(this.config, this.lang, this.bot, "access-denied"))
-                    .setEphemeral(true).queue();
+            event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("error"),
+                    Collections.singleton(this.bot.getFields().get("access-denied").toField(this.lang)))
+                    .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
         }
     }
 }

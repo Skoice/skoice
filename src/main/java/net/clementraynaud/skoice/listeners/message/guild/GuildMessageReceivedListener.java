@@ -59,7 +59,6 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
                 this.config.getFile().set(ButtonClickListener.discordIDAxis.get(event.getAuthor().getId()), value);
                 this.config.saveFile();
                 this.configurationMenu.deleteMessage();
-                Menu.customizeRadius = false;
                 if (ButtonClickListener.discordIDAxis.get(event.getAuthor().getId()).equals(ConfigField.HORIZONTAL_RADIUS.get())) {
                     event.getChannel().sendMessage(this.bot.getMenus().get("horizontal-radius").toMessage(this.config, this.lang, this.bot)).queue();
                 } else if (ButtonClickListener.discordIDAxis.get(event.getAuthor().getId()).equals(ConfigField.VERTICAL_RADIUS.get())) {

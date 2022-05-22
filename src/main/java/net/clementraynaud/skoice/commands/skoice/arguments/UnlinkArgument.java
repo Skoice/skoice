@@ -19,11 +19,12 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.MenuEmoji;
+import net.clementraynaud.skoice.menus.Menu;
+import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.system.Network;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -33,12 +34,12 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.awt.*;
+import java.util.Collections;
 
 public class UnlinkArgument extends Argument {
 
-    public UnlinkArgument(Config config, Lang lang, CommandSender sender) {
-        super(config, lang, sender, ArgumentName.UNLINK.isAllowedInConsole(), ArgumentName.UNLINK.isRestrictedToOperators());
+    public UnlinkArgument(Config config, Lang lang, Bot bot, CommandSender sender) {
+        super(config, lang, bot, sender, ArgumentName.UNLINK.isAllowedInConsole(), ArgumentName.UNLINK.isRestrictedToOperators());
     }
 
     @Override
@@ -57,10 +58,10 @@ public class UnlinkArgument extends Argument {
         try {
             member = this.config.getReader().getGuild().retrieveMemberById(discordID).complete();
             member.getUser().openPrivateChannel().complete()
-                    .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.LINK + super.lang.getMessage("discord.menu.linking-process.title"))
-                            .addField(MenuEmoji.HEAVY_CHECK_MARK + super.lang.getMessage("discord.menu.linking-process.field.account-unlinked.title"),
-                                    super.lang.getMessage("discord.menu.linking-process.field.account-unlinked.description"), false)
-                            .setColor(Color.GREEN).build())
+                    .sendMessage(new Menu(super.bot.getMenusYaml().getConfigurationSection("linking-process"),
+                            Collections.singleton(super.bot.getFields().get("account-unlinked").toField(this.lang)),
+                            MenuType.SUCCESS)
+                            .toMessage(this.config, this.lang, super.bot))
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {

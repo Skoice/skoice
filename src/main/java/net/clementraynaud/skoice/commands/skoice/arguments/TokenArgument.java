@@ -27,13 +27,11 @@ import org.bukkit.command.CommandSender;
 
 public class TokenArgument extends Argument {
 
-    private final Bot bot;
     private final ConfigurationMenu configurationMenu;
     private final String arg;
 
-    public TokenArgument(Config config, Lang lang, CommandSender sender, Bot bot, ConfigurationMenu configurationMenu, String arg) {
-        super(config, lang, sender, ArgumentName.TOKEN.isAllowedInConsole(), ArgumentName.TOKEN.isRestrictedToOperators());
-        this.bot = bot;
+    public TokenArgument(Config config, Lang lang, Bot bot, CommandSender sender, ConfigurationMenu configurationMenu, String arg) {
+        super(config, lang, bot, sender, ArgumentName.TOKEN.isAllowedInConsole(), ArgumentName.TOKEN.isRestrictedToOperators());
         this.configurationMenu = configurationMenu;
         this.arg = arg;
     }
@@ -52,11 +50,11 @@ public class TokenArgument extends Argument {
             return;
         }
         this.config.getUpdater().setToken(this.arg);
-        if (this.bot.getJda() == null) {
-            this.bot.connect(this.sender);
-            if (this.bot.getJda() != null) {
-                this.config.initializeReader(this.bot);
-                this.bot.setup(this.configurationMenu, false, this.sender);
+        if (super.bot.getJda() == null) {
+            super.bot.connect(this.sender);
+            if (super.bot.getJda() != null) {
+                this.config.initializeReader(super.bot);
+                super.bot.setup(this.configurationMenu, false, this.sender);
             }
         } else {
             this.sender.sendMessage(super.lang.getMessage("minecraft.chat.configuration.bot-already-connected"));

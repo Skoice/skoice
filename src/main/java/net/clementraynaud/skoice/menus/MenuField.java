@@ -28,26 +28,28 @@ public class MenuField {
     private final String name;
     private final MenuEmoji emoji;
     private final boolean inline;
-    private final String value;
 
     public MenuField(ConfigurationSection field) {
         this.name = field.getName();
         this.emoji = MenuEmoji.valueOf(field.getString("emoji").toUpperCase());
         this.inline = field.getBoolean("inline");
-        this.value = field.contains("value") ? field.getString("value") : null;
+    }
+
+    public MessageEmbed.Field toField(Lang lang, String value) {
+        return new MessageEmbed.Field(this.emoji + this.getTitle(lang), this.getDescription(lang, value), this.inline);
     }
 
     public MessageEmbed.Field toField(Lang lang) {
-        return new MessageEmbed.Field(this.emoji + this.getTitle(lang), this.getDescription(lang), this.inline);
+        return this.toField(lang, null);
     }
 
     private String getTitle(Lang lang) {
         return lang.getMessage("discord.field." + this.name + ".title");
     }
 
-    private String getDescription(Lang lang) {
-        if (this.value != null) {
-            return lang.getMessage("discord.field." + this.name + ".description", this.value);
+    private String getDescription(Lang lang, String value) {
+        if (value != null) {
+            return lang.getMessage("discord.field." + this.name + ".description", value);
         }
         return lang.getMessage("discord.field." + this.name + ".description");
     }

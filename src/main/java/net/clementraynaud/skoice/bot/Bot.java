@@ -27,7 +27,6 @@ import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
-import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.listeners.interaction.SelectMenuListener;
@@ -41,19 +40,19 @@ import net.clementraynaud.skoice.listeners.message.guild.GuildMessageReceivedLis
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
 import net.clementraynaud.skoice.listeners.message.priv.PrivateMessageReceivedListener;
+import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.clementraynaud.skoice.util.UpdateUtil;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Category;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
@@ -69,21 +68,25 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import javax.security.auth.login.LoginException;
-import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class Bot {
 
     private static final int TICKS_BETWEEN_VERSION_CHECKING = 720000;
 
+    private YamlConfiguration fieldsYaml;
     private final Map<String, MenuField> fields = new HashMap<>();
+    private YamlConfiguration menusYaml;
     private final Map<String, Menu> menus = new LinkedHashMap<>();
 
     private JDA jda;
@@ -179,7 +182,6 @@ public class Bot {
         configurationMenu.deleteMessage();
         this.updateGuildUniquenessStatus();
         this.checkForValidLobby();
-        this.checkForUnlinkedUsersInLobby();
         this.jda.getGuilds().forEach(new Commands(this.plugin, this.lang, this)::register);
         this.jda.addEventListener(new ReconnectedListener(this.plugin, this, configurationMenu),
                 new GuildJoinListener(this.plugin, this.lang, this),
@@ -192,7 +194,7 @@ public class Bot {
                 new ConfigureCommand(this.config, this.lang, this, configurationMenu),
                 new InviteCommand(this.lang),
                 new LinkCommand(this.config, this.lang, this),
-                new UnlinkCommand(this.config, this.lang),
+                new UnlinkCommand(this.config, this.lang, this),
                 new ButtonClickListener(this.config, this.lang, this, configurationMenu),
                 new SelectMenuListener(this.plugin, this.config, this.lang, this, configurationMenu));
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
@@ -216,6 +218,7 @@ public class Bot {
         this.retrieveNetworks();
         this.loadFields();
         this.loadMenus();
+        this.checkForUnlinkedUsersInLobby();
         this.plugin.updateConfigurationStatus(startup);
         if (sender != null && this.jda != null) {
             if (this.isReady) {
@@ -254,18 +257,11 @@ public class Bot {
             for (Member member : lobby.getMembers()) {
                 String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinks(), member.getId());
                 if (minecraftID == null) {
-                    EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.LINK + this.lang.getMessage("discord.menu.linking-process.title"))
-                            .setColor(Color.RED);
-                    Guild guild = this.config.getReader().getGuild();
-                    if (guild != null) {
-                        embed.addField(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.title"),
-                                this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.alternative-description", guild.getName()), false);
-                    } else {
-                        embed.addField(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.title"),
-                                this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.generic-alternative-description"), false);
-                    }
                     member.getUser().openPrivateChannel().complete()
-                            .sendMessageEmbeds(embed.build())
+                            .sendMessage(new Menu(this.menusYaml.getConfigurationSection("linking-process"),
+                                    Collections.singleton(this.fields.get("account-not-linked").toField(this.lang)),
+                                    MenuType.ERROR)
+                                    .toMessage(this.config, this.lang, this))
                             .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 }
             }
@@ -289,20 +285,31 @@ public class Bot {
     }
 
     private void loadFields() {
-        YamlConfiguration fieldsYaml;
         InputStreamReader fieldsFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("menus/fields.yml"));
-        fieldsYaml = YamlConfiguration.loadConfiguration(fieldsFile);
-        for (String field : fieldsYaml.getKeys(false)) {
-            this.fields.put(field, new MenuField(fieldsYaml.getConfigurationSection(field)));
+        this.fieldsYaml = YamlConfiguration.loadConfiguration(fieldsFile);
+        for (String field : this.fieldsYaml.getConfigurationSection("startup").getKeys(false)) {
+            this.fields.put(field, new MenuField(this.fieldsYaml.getConfigurationSection("startup." + field)));
         }
     }
 
+    public YamlConfiguration getFieldsYaml() {
+        return this.fieldsYaml;
+    }
+
     private void loadMenus() {
-        YamlConfiguration menusYaml;
         InputStreamReader menusFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("menus/menus.yml"));
-        menusYaml = YamlConfiguration.loadConfiguration(menusFile);
-        for (String menu : menusYaml.getKeys(false)) {
-            this.menus.put(menu, new Menu(menusYaml.getConfigurationSection(menu)));
+        this.menusYaml = YamlConfiguration.loadConfiguration(menusFile);
+        Set<MessageEmbed.Field> menuFields = new LinkedHashSet<>();
+        for (String menu : this.menusYaml.getConfigurationSection("startup").getKeys(false)) {
+            for (String field : this.menusYaml.getStringList("startup." + menu + ".fields")) {
+                menuFields.add(this.fields.get(field).toField(this.lang));
+            }
+            this.menus.put(menu, new Menu(this.menusYaml.getConfigurationSection("startup." + menu), new LinkedHashSet<>(menuFields)));
+            menuFields.clear();
         }
+    }
+
+    public YamlConfiguration getMenusYaml() {
+        return this.menusYaml;
     }
 }

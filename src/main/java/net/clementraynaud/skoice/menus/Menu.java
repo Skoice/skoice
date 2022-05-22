@@ -22,36 +22,45 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class Menu {
 
     public static final String CLOSE_BUTTON_ID = "close";
-
-    public static boolean customizeRadius;
 
     private final String name;
     private final MenuEmoji emoji;
     private final MenuType type;
     private final MenuStyle style;
     private final String parent;
-    private final List<String> fields;
+    private final Set<MessageEmbed.Field> fields;
     private SelectMenu selectMenu;
 
-    public Menu(ConfigurationSection menu) {
+    public Menu(ConfigurationSection menu, Set<MessageEmbed.Field> fields) {
         this.name = menu.getName();
         this.emoji = MenuEmoji.valueOf(menu.getString("emoji").toUpperCase());
-        this.type = MenuType.valueOf(menu.getString("type").toUpperCase());
+        this.type = menu.contains("type") ? MenuType.valueOf(menu.getString("type").toUpperCase()) : null;
         this.style = menu.contains("style") ? MenuStyle.valueOf(menu.getString("style").toUpperCase()) : null;
         this.parent = menu.contains("parent") ? menu.getString("parent") : null;
-        this.fields = menu.getStringList("fields");
+        this.fields = fields;
     }
 
-    public Message toMessage(Config config, Lang lang, Bot bot, String optionalField) {
-        return new MessageBuilder().setEmbeds(this.getEmbed(lang, bot, optionalField)).setActionRows(this.getActionRows(config, lang, bot)).build();
+    public Menu(ConfigurationSection menu, Set<MessageEmbed.Field> fields, MenuType type) {
+        this.name = menu.getName();
+        this.emoji = MenuEmoji.valueOf(menu.getString("emoji").toUpperCase());
+        this.type = type;
+        this.style = menu.contains("style") ? MenuStyle.valueOf(menu.getString("style").toUpperCase()) : null;
+        this.parent = menu.contains("parent") ? menu.getString("parent") : null;
+        this.fields = fields;
+    }
+
+    public Message toMessage(Config config, Lang lang, Bot bot, boolean customizeRadius) {
+        return new MessageBuilder().setEmbeds(this.getEmbed(lang, bot))
+                .setActionRows(this.getActionRows(config, lang, bot, customizeRadius)).build();
     }
 
     public Message toMessage(Config config, Lang lang, Bot bot) {
-        return this.toMessage(config, lang, bot, null);
+        return this.toMessage(config, lang, bot, false);
     }
 
     private String getTitle(Lang lang, boolean withEmoji) {
@@ -70,7 +79,7 @@ public class Menu {
         return null;
     }
 
-    private MessageEmbed getEmbed(Lang lang, Bot bot, String optionalField) {
+    private MessageEmbed getEmbed(Lang lang, Bot bot) {
         EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(lang, true))
                 .setColor(this.type.getColor())
                 .setFooter(lang.getMessage("discord.menu.footer"), "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
@@ -94,18 +103,13 @@ public class Menu {
                 }
             }
         }
-        if (this.fields != null) {
-            for (String field : this.fields) {
-                embed.addField(bot.getFields().get(field).toField(lang));
-            }
-        }
-        if (optionalField != null) {
-            embed.addField(bot.getFields().get(optionalField).toField(lang));
+        for (MessageEmbed.Field field : this.fields) {
+            embed.addField(field);
         }
         return embed.build();
     }
 
-    private List<ActionRow> getActionRows(Config config, Lang lang, Bot bot) {
+    private List<ActionRow> getActionRows(Config config, Lang lang, Bot bot, boolean customizeRadius) {
         switch (this.name) {
             case "server":
                 this.selectMenu = new ServerSelectMenu(lang, bot);
@@ -114,7 +118,7 @@ public class Menu {
                 this.selectMenu = new LobbySelectMenu(lang, config, bot);
                 break;
             case "mode":
-                this.selectMenu = new ModeSelectMenu(lang, config, bot);
+                this.selectMenu = new ModeSelectMenu(lang, config, bot, customizeRadius);
                 break;
             case "language":
                 this.selectMenu = new LanguageSelectMenu(lang, config, bot);
@@ -126,16 +130,16 @@ public class Menu {
                 this.selectMenu = new ToggleSelectMenu(lang, this.name, config.getFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.get()), false);
                 break;
             default:
-                List<Button> buttons = this.getButtons(config, lang, bot);
+                List<Button> buttons = this.getButtons(config, lang, bot, customizeRadius);
                 if (!buttons.isEmpty()) {
                     return Collections.singletonList(ActionRow.of(buttons));
                 }
                 return Collections.emptyList();
         }
-        return Arrays.asList(ActionRow.of(this.selectMenu.get()), ActionRow.of(this.getButtons(config, lang, bot)));
+        return Arrays.asList(ActionRow.of(this.selectMenu.get()), ActionRow.of(this.getButtons(config, lang, bot, customizeRadius)));
     }
 
-    private List<Button> getButtons(Config config, Lang lang, Bot bot) {
+    private List<Button> getButtons(Config config, Lang lang, Bot bot, boolean customizeRadius) {
         List<Button> buttons = new ArrayList<>();
         if (this.parent != null) {
             buttons.add(Button.secondary(this.parent, "← " + lang.getMessage("discord.button-label.back")));
@@ -144,7 +148,7 @@ public class Menu {
             buttons.add(Button.primary(this.name, "⟳ " + lang.getMessage("discord.button-label.refresh")));
         }
         if ("mode".equals(this.name)) {
-            buttons.addAll(this.getModeAdditionalButtons(config, lang, bot));
+            buttons.addAll(this.getModeAdditionalButtons(config, lang, bot, customizeRadius));
         } else {
             for (Menu menu : bot.getMenus().values()) {
                 if (menu.parent != null && menu.parent.equals(this.name)) {
@@ -156,7 +160,6 @@ public class Menu {
                 }
             }
         }
-        this.customizeRadius = false;
         if (this.type == MenuType.DEFAULT) {
             if (bot.isReady()) {
                 buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID, lang.getMessage("discord.button-label.close"))
@@ -172,8 +175,8 @@ public class Menu {
         return buttons;
     }
 
-    private List<Button> getModeAdditionalButtons(Config config, Lang lang, Bot bot) {
-        if (this.isModeCustomizable(config, bot)) {
+    private List<Button> getModeAdditionalButtons(Config config, Lang lang, Bot bot, boolean customizeRadius) {
+        if (this.isModeCustomizable(config, bot, customizeRadius)) {
             Menu horizontalRadiusMenu = bot.getMenus().get("horizontal-radius");
             Menu verticalRadiusMenu = bot.getMenus().get("vertical-radius");
             return Arrays.asList(Button.primary(horizontalRadiusMenu.name, horizontalRadiusMenu.getTitle(lang, false))
@@ -184,9 +187,9 @@ public class Menu {
         return Collections.emptyList();
     }
 
-    private boolean isModeCustomizable(Config config, Bot bot) {
+    private boolean isModeCustomizable(Config config, Bot bot, boolean customizeRadius) {
         return bot.isReady() &&
-                (this.customizeRadius
+                (customizeRadius
                         || (config.getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) != 80
                         && config.getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) != 40)
                         || (config.getFile().getInt(ConfigField.VERTICAL_RADIUS.get()) != 40

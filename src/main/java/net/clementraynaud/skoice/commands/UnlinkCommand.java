@@ -19,11 +19,12 @@
 
 package net.clementraynaud.skoice.commands;
 
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.MenuEmoji;
+import net.clementraynaud.skoice.menus.Menu;
+import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.util.MapUtil;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -31,35 +32,36 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import java.awt.*;
+import java.util.Collections;
 import java.util.UUID;
 
 public class UnlinkCommand extends ListenerAdapter {
 
     private final Config config;
     private final Lang lang;
+    private final Bot bot;
 
-    public UnlinkCommand(Config config, Lang lang) {
+    public UnlinkCommand(Config config, Lang lang, Bot bot) {
         this.config = config;
         this.lang = lang;
+        this.bot = bot;
     }
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if ("unlink".equals(event.getName())) {
-            EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.LINK + this.lang.getMessage("discord.menu.linking-process.title"));
             String minecraftID = new MapUtil().getKeyFromValue(this.config.getReader().getLinks(), event.getUser().getId());
             if (minecraftID == null) {
-                event.replyEmbeds(embed.addField(MenuEmoji.WARNING + this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.title"),
-                                        this.lang.getMessage("discord.menu.linking-process.field.account-not-linked.description"), false)
-                                .setColor(Color.RED).build())
-                        .setEphemeral(true).queue();
+                event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
+                        Collections.singleton(this.bot.getFields().get("account-not-linked").toField(this.lang)),
+                        MenuType.ERROR)
+                        .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
             } else {
                 this.config.getUpdater().unlinkUser(minecraftID);
-                event.replyEmbeds(embed.addField(MenuEmoji.HEAVY_CHECK_MARK + this.lang.getMessage("discord.menu.linking-process.field.account-unlinked.title"),
-                                        this.lang.getMessage("discord.menu.linking-process.field.account-unlinked.description"), false)
-                                .setColor(Color.GREEN).build())
-                        .setEphemeral(true).queue();
+                event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
+                        Collections.singleton(this.bot.getFields().get("account-unlinked").toField(this.lang)),
+                        MenuType.SUCCESS)
+                        .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
                 OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
                 if (player.isOnline() && player.getPlayer() != null) {
                     player.getPlayer().sendMessage(this.lang.getMessage("minecraft.chat.player.account-unlinked"));

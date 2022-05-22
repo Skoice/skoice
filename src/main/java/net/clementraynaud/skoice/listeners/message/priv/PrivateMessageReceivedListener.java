@@ -26,6 +26,8 @@ import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.util.Collections;
+
 public class PrivateMessageReceivedListener extends ListenerAdapter {
 
     private final Config config;
@@ -41,7 +43,9 @@ public class PrivateMessageReceivedListener extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
-            event.getMessage().reply(this.bot.getMenus().get("error").toMessage(this.config, this.lang, this.bot, "illegal-interaction")).queue();
+            event.getMessage().reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("error"),
+                    Collections.singleton(this.bot.getFields().get("illegal-interaction").toField(this.lang)))
+                    .toMessage(this.config, this.lang, this.bot)).queue();
         }
     }
 }

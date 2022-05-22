@@ -152,7 +152,7 @@ public class Skoice extends JavaPlugin {
         if (startup) {
             if (this.bot.isReady()) {
                 this.registerEligiblePlayerListeners();
-                this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this.config, this.lang, this.eligiblePlayers),
+                this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this.config, this.lang, this.bot, this.eligiblePlayers),
                         new GuildVoiceLeaveListener(this.config, this.lang),
                         new GuildVoiceMoveListener(this.config),
                         new VoiceChannelDeleteListener());
@@ -162,7 +162,7 @@ public class Skoice extends JavaPlugin {
         } else if (!wasBotReady && this.bot.isReady()) {
             HandlerList.unregisterAll(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this.config, this.lang, this.bot));
             this.registerEligiblePlayerListeners();
-            this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this.config, this.lang, this.eligiblePlayers),
+            this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this.config, this.lang, this.bot, this.eligiblePlayers),
                     new GuildVoiceLeaveListener(this.config, this.lang),
                     new GuildVoiceMoveListener(this.config),
                     new VoiceChannelDeleteListener());
@@ -181,7 +181,7 @@ public class Skoice extends JavaPlugin {
             this.unregisterEligiblePlayerListeners();
             Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this.config, this.lang, this.bot), this);
             if (this.bot.getJda() != null) {
-                this.bot.getJda().removeEventListener(new GuildVoiceJoinListener(this.config, this.lang, this.eligiblePlayers),
+                this.bot.getJda().removeEventListener(new GuildVoiceJoinListener(this.config, this.lang, this.bot, this.eligiblePlayers),
                         new GuildVoiceLeaveListener(this.config, this.lang),
                         new GuildVoiceMoveListener(this.config),
                         new VoiceChannelDeleteListener());
