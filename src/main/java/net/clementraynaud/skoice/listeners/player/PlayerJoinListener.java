@@ -19,10 +19,8 @@
 
 package net.clementraynaud.skoice.listeners.player;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -36,21 +34,17 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
 
-    private final Config config;
-    private final Lang lang;
-    private final Bot bot;
+    private final Skoice plugin;
 
-    public PlayerJoinListener(Config config, Lang lang, Bot bot) {
-        this.config = config;
-        this.lang = lang;
-        this.bot = bot;
+    public PlayerJoinListener(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.isOp()) {
-            if (!this.config.getFile().contains(ConfigField.TOKEN.get()) || this.bot.getJda() == null) {
+            if (!this.plugin.readConfig().getFile().contains(ConfigField.TOKEN.get()) || this.plugin.getBot().getJda() == null) {
                 try {
                     TextComponent configureCommand = new TextComponent("§bhere");
                     MessageUtil.setHoverEvent(configureCommand, "§8☀ §bExecute: §7/skoice configure");
@@ -59,10 +53,10 @@ public class PlayerJoinListener implements Listener {
                             .append(configureCommand)
                             .append(" §7to set it up.").event((HoverEvent) null).create());
                 } catch (NoSuchMethodError e) {
-                    player.sendMessage(this.lang.getMessage("minecraft.chat.configuration.incomplete-configuration-operator-command"));
+                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-command"));
                 }
-            } else if (!this.bot.isReady()) {
-                player.sendMessage(this.lang.getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
+            } else if (!this.plugin.getBot().isReady()) {
+                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
             }
         }
     }

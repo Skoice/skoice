@@ -19,8 +19,7 @@
 
 package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
@@ -31,16 +30,16 @@ import java.util.List;
 
 public class ServerSelectMenu extends SelectMenu {
 
-    private final Bot bot;
+    private final Skoice plugin;
 
-    public ServerSelectMenu(Lang lang, Bot bot) {
-        super(lang, true);
-        this.bot = bot;
+    public ServerSelectMenu(Skoice plugin) {
+        super(plugin.getLang(), true);
+        this.plugin = plugin;
     }
 
     @Override
     public SelectionMenu get() {
-        List<Guild> servers = new ArrayList<>(this.bot.getJda().getGuilds());
+        List<Guild> servers = new ArrayList<>(this.plugin.getBot().getJda().getGuilds());
         List<SelectOption> options = new ArrayList<>();
         int optionIndex = 0;
         while (optionIndex < 24 && servers.size() > optionIndex) {

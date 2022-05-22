@@ -19,10 +19,8 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
-import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.LinkCommand;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.util.MapUtil;
@@ -40,8 +38,8 @@ public class LinkArgument extends Argument {
 
     private final String arg;
 
-    public LinkArgument(Config config, Lang lang, Bot bot, CommandSender sender, String arg) {
-        super(config, lang, bot, sender, ArgumentName.LINK.isAllowedInConsole(), ArgumentName.LINK.isRestrictedToOperators());
+    public LinkArgument(Skoice plugin, CommandSender sender, String arg) {
+        super(plugin, sender, ArgumentName.LINK.isAllowedInConsole(), ArgumentName.LINK.isRestrictedToOperators());
         this.arg = arg;
     }
 
@@ -51,44 +49,44 @@ public class LinkArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        if (!super.bot.isReady() || super.bot.getJda() == null) {
-            player.sendMessage(super.lang.getMessage("minecraft.chat.configuration.incomplete-configuration"));
+        if (!super.plugin.getBot().isReady() || super.plugin.getBot().getJda() == null) {
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
             return;
         }
-        if (this.config.getLinks().containsKey(player.getUniqueId().toString())) {
-            player.sendMessage(super.lang.getMessage("minecraft.chat.player.account-already-linked"));
+        if (super.plugin.readConfig().getLinks().containsKey(player.getUniqueId().toString())) {
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-already-linked"));
             return;
         }
         if (this.arg.isEmpty()) {
-            player.sendMessage(super.lang.getMessage("minecraft.chat.player.no-code"));
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.no-code"));
             return;
         }
         if (!LinkCommand.getDiscordIDCode().containsValue(this.arg)) {
-            player.sendMessage(super.lang.getMessage("minecraft.chat.player.invalid-code"));
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.invalid-code"));
             return;
         }
         String discordID = new MapUtil().getKeyFromValue(LinkCommand.getDiscordIDCode(), this.arg);
         if (discordID == null) {
             return;
         }
-        Member member = this.config.getGuild().getMemberById(discordID);
+        Member member = super.plugin.readConfig().getGuild().getMemberById(discordID);
         if (member == null) {
             return;
         }
-        this.config.linkUser(player.getUniqueId().toString(), discordID);
+        super.plugin.readConfig().linkUser(player.getUniqueId().toString(), discordID);
         LinkCommand.removeValueFromDiscordIDCode(this.arg);
         member.getUser().openPrivateChannel().complete()
-                .sendMessage(new Menu(super.bot.getMenusYaml().getConfigurationSection("linking-process"),
-                        Collections.singleton(super.bot.getFields().get("account-linked").toField(this.lang)),
+                .sendMessage(new Menu(super.plugin, "linking-process",
+                        Collections.singleton(super.plugin.getBot().getFields().get("account-linked")),
                         MenuType.SUCCESS)
-                        .toMessage(this.config, this.lang, super.bot))
+                        .toMessage())
                 .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
-        player.sendMessage(super.lang.getMessage("minecraft.chat.player.account-linked"));
+        player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
         GuildVoiceState voiceState = member.getVoiceState();
         if (voiceState != null) {
             VoiceChannel voiceChannel = voiceState.getChannel();
-            if (voiceChannel != null && voiceChannel.equals(this.config.getLobby())) {
-                player.sendMessage(super.lang.getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
+            if (voiceChannel != null && voiceChannel.equals(super.plugin.readConfig().getLobby())) {
+                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
             }
         }
     }

@@ -19,12 +19,9 @@
 
 package net.clementraynaud.skoice.listeners.interaction;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.menus.MenuType;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -37,16 +34,10 @@ import java.util.Map;
 
 public class ButtonClickListener extends ListenerAdapter {
 
-    private final Config config;
-    private final Lang lang;
-    private final Bot bot;
-    private final ConfigurationMenu configurationMenu;
+    private final Skoice plugin;
 
-    public ButtonClickListener(Config config, Lang lang, Bot bot, ConfigurationMenu configurationMenu) {
-        this.config = config;
-        this.lang = lang;
-        this.bot = bot;
-        this.configurationMenu = configurationMenu;
+    public ButtonClickListener(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     public static final Map<String, String> discordIDAxis = new HashMap<>();
@@ -55,21 +46,21 @@ public class ButtonClickListener extends ListenerAdapter {
     public void onButtonClick(ButtonClickEvent event) {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (this.configurationMenu.exists()
-                    && this.configurationMenu.getMessageId().equals(event.getMessage().getId())
+            if (this.plugin.getConfigurationMenu().exists()
+                    && this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())
                     && event.getButton() != null && event.getButton().getId() != null) {
                 String buttonID = event.getButton().getId();
                 if (buttonID.equals(Menu.CLOSE_BUTTON_ID)) {
                     event.getMessage().delete().queue();
-                    if (!this.bot.isReady()) {
-                        event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("configuration"),
-                                        Collections.singleton(this.bot.getFields().get("incomplete-configuration.server-manager").toField(this.lang)),
+                    if (!this.plugin.getBot().isReady()) {
+                        event.reply(new Menu(this.plugin, "configuration",
+                                        Collections.singleton(this.plugin.getBot().getFields().get("incomplete-configuration.server-manager")),
                                         MenuType.ERROR)
-                                        .toMessage(this.config, this.lang, this.bot))
+                                        .toMessage())
                                 .setEphemeral(true).queue();
                     }
-                } else if (!this.bot.isReady()) {
-                    event.editMessage(this.configurationMenu.getMessage()).queue();
+                } else if (!this.plugin.getBot().isReady()) {
+                    event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                 } else {
                     if ("mode".equals(buttonID)) {
                         ButtonClickListener.discordIDAxis.remove(member.getId());
@@ -78,13 +69,13 @@ public class ButtonClickListener extends ListenerAdapter {
                     } else if ("vertical-radius".equals(buttonID)) {
                         ButtonClickListener.discordIDAxis.put(member.getId(), ConfigField.VERTICAL_RADIUS.get());
                     }
-                    event.editMessage(this.bot.getMenus().get(buttonID).toMessage(this.config, this.lang, this.bot)).queue();
+                    event.editMessage(this.plugin.getBot().getMenus().get(buttonID).toMessage()).queue();
                 }
             }
         } else {
-            event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("error"),
-                    Collections.singleton(this.bot.getFields().get("access-denied").toField(this.lang)))
-                    .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
+            event.reply(new Menu(this.plugin, "error",
+                    Collections.singleton(this.plugin.getBot().getFields().get("access-denied")))
+                    .toMessage()).setEphemeral(true).queue();
         }
     }
 }

@@ -177,21 +177,21 @@ public class Bot {
         this.jda.addEventListener(new ReconnectedListener(this.plugin),
                 new GuildJoinListener(this.plugin),
                 new GuildLeaveListener(this.plugin),
-                new PrivateMessageReceivedListener(this.plugin.readConfig(), this.plugin.getLang(), this),
-                new GuildMessageReceivedListener(this.plugin.readConfig(), this.plugin.getLang(), this, configurationMenu),
+                new PrivateMessageReceivedListener(this.plugin),
+                new GuildMessageReceivedListener(this.plugin),
                 new GuildMessageDeleteListener(configurationMenu),
                 new VoiceChannelDeleteListener(this.plugin),
                 new VoiceChannelUpdateParentListener(this.plugin),
-                new ConfigureCommand(this.plugin.readConfig(), this.plugin.getLang(), this, configurationMenu),
-                new InviteCommand(this.plugin.readConfig(), this.plugin.getLang(), this),
-                new LinkCommand(this.plugin.readConfig(), this.plugin.getLang(), this),
-                new UnlinkCommand(this.plugin.readConfig(), this.plugin.getLang(), this),
-                new ButtonClickListener(this.plugin.readConfig(), this.plugin.getLang(), this, configurationMenu),
+                new ConfigureCommand(this.plugin),
+                new InviteCommand(this.plugin),
+                new LinkCommand(this.plugin),
+                new UnlinkCommand(this.plugin),
+                new ButtonClickListener(this.plugin),
                 new SelectMenuListener(this.plugin));
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                         Bukkit.getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
-                                new UpdateNetworksTask(this.plugin.readConfig(), this.plugin.getLang(), this.plugin.getEligiblePlayers())::run,
+                                new UpdateNetworksTask(this.plugin)::run,
                                 0,
                                 10
                         ),
@@ -249,10 +249,10 @@ public class Bot {
                 String minecraftID = new MapUtil().getKeyFromValue(this.plugin.readConfig().getLinks(), member.getId());
                 if (minecraftID == null) {
                     member.getUser().openPrivateChannel().complete()
-                            .sendMessage(new Menu(this.menusYaml.getConfigurationSection("linking-process"),
-                                    Collections.singleton(this.fields.get("account-not-linked").toField(this.plugin.getLang())),
+                            .sendMessage(new Menu(this.plugin, "linking-process",
+                                    Collections.singleton(this.fields.get("account-not-linked")),
                                     MenuType.ERROR)
-                                    .toMessage(this.plugin.readConfig(), this.plugin.getLang(), this))
+                                    .toMessage())
                             .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 }
             }
@@ -279,7 +279,7 @@ public class Bot {
         InputStreamReader fieldsFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("menus/fields.yml"));
         this.fieldsYaml = YamlConfiguration.loadConfiguration(fieldsFile);
         for (String field : this.fieldsYaml.getConfigurationSection("startup").getKeys(false)) {
-            this.fields.put(field, new MenuField(this.fieldsYaml.getConfigurationSection("startup." + field)));
+            this.fields.put(field, new MenuField(this.plugin, "startup." + field));
         }
     }
 
@@ -290,12 +290,12 @@ public class Bot {
     private void loadMenus() {
         InputStreamReader menusFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("menus/menus.yml"));
         this.menusYaml = YamlConfiguration.loadConfiguration(menusFile);
-        Set<MessageEmbed.Field> menuFields = new LinkedHashSet<>();
+        Set<MenuField> menuFields = new LinkedHashSet<>();
         for (String menu : this.menusYaml.getConfigurationSection("startup").getKeys(false)) {
             for (String field : this.menusYaml.getStringList("startup." + menu + ".fields")) {
-                menuFields.add(this.fields.get(field).toField(this.plugin.getLang()));
+                menuFields.add(this.fields.get(field));
             }
-            this.menus.put(menu, new Menu(this.menusYaml.getConfigurationSection("startup." + menu), new LinkedHashSet<>(menuFields)));
+            this.menus.put(menu, new Menu(this.plugin, "startup." + menu, new LinkedHashSet<>(menuFields)));
             menuFields.clear();
         }
     }

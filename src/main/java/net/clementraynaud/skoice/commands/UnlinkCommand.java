@@ -19,9 +19,7 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.util.MapUtil;
@@ -37,39 +35,35 @@ import java.util.UUID;
 
 public class UnlinkCommand extends ListenerAdapter {
 
-    private final Config config;
-    private final Lang lang;
-    private final Bot bot;
+    private final Skoice plugin;
 
-    public UnlinkCommand(Config config, Lang lang, Bot bot) {
-        this.config = config;
-        this.lang = lang;
-        this.bot = bot;
+    public UnlinkCommand(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if ("unlink".equals(event.getName())) {
-            String minecraftID = new MapUtil().getKeyFromValue(this.config.getLinks(), event.getUser().getId());
+            String minecraftID = new MapUtil().getKeyFromValue(this.plugin.readConfig().getLinks(), event.getUser().getId());
             if (minecraftID == null) {
-                event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
-                        Collections.singleton(this.bot.getFields().get("account-not-linked").toField(this.lang)),
+                event.reply(new Menu(this.plugin, "linking-process",
+                        Collections.singleton(this.plugin.getBot().getFields().get("account-not-linked")),
                         MenuType.ERROR)
-                        .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
+                        .toMessage()).setEphemeral(true).queue();
             } else {
-                this.config.unlinkUser(minecraftID);
-                event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
-                        Collections.singleton(this.bot.getFields().get("account-unlinked").toField(this.lang)),
+                this.plugin.readConfig().unlinkUser(minecraftID);
+                event.reply(new Menu(this.plugin, "linking-process",
+                        Collections.singleton(this.plugin.getBot().getFields().get("account-unlinked")),
                         MenuType.SUCCESS)
-                        .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
+                        .toMessage()).setEphemeral(true).queue();
                 OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
                 if (player.isOnline() && player.getPlayer() != null) {
-                    player.getPlayer().sendMessage(this.lang.getMessage("minecraft.chat.player.account-unlinked"));
+                    player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
                     GuildVoiceState voiceState = event.getMember().getVoiceState();
                     if (voiceState != null) {
                         VoiceChannel voiceChannel = voiceState.getChannel();
-                        if (voiceChannel != null && voiceChannel.equals(this.config.getLobby())) {
-                            player.getPlayer().sendMessage(this.lang.getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
+                        if (voiceChannel != null && voiceChannel.equals(this.plugin.readConfig().getLobby())) {
+                            player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
                         }
                     }
                 }

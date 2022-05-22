@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.listeners.interaction;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.Commands;
 import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.lang.LangName;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
@@ -70,6 +71,7 @@ public class SelectMenuListener extends ListenerAdapter {
                         this.plugin.readConfig().getFile().set(ConfigField.LANG.get(), event.getSelectedOptions().get(0).getValue());
                         this.plugin.readConfig().saveFile();
                         this.plugin.updateConfigurationStatus(false);
+                        this.plugin.getLang().load(LangName.valueOf(event.getSelectedOptions().get(0).getValue()));
                         new Commands(this.plugin).register(event.getGuild());
                         event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         break;
@@ -114,7 +116,7 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.plugin.updateConfigurationStatus(false);
                             event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         } else if ("customize".equals(event.getSelectedOptions().get(0).getValue())) {
-                            event.editMessage(this.plugin.getBot().getMenus().get("mode").toMessage(this.plugin.readConfig(), this.plugin.getLang(), this.plugin.getBot(), true)).queue();
+                            event.editMessage(this.plugin.getBot().getMenus().get("mode").toMessage(true)).queue();
                         }
                         break;
                     case "action-bar-alert":
@@ -140,9 +142,9 @@ public class SelectMenuListener extends ListenerAdapter {
                 }
             }
         } else {
-            event.reply(new Menu(this.plugin.getBot().getMenusYaml().getConfigurationSection("error"),
-                    Collections.singleton(this.plugin.getBot().getFields().get("access-denied").toField(this.plugin.getLang())))
-                    .toMessage(this.plugin.readConfig(), this.plugin.getLang(), this.plugin.getBot())).setEphemeral(true).queue();
+            event.reply(new Menu(this.plugin, "error",
+                    Collections.singleton(this.plugin.getBot().getFields().get("access-denied")))
+                    .toMessage()).setEphemeral(true).queue();
         }
     }
 }

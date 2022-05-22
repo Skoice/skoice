@@ -19,11 +19,9 @@
 
 package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.lang.LangName;
-import net.clementraynaud.skoice.lang.Lang;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
@@ -33,13 +31,11 @@ import java.util.List;
 
 public class LanguageSelectMenu extends SelectMenu {
 
-    private final Config config;
-    private final Bot bot;
+    private final Skoice plugin;
 
-    public LanguageSelectMenu(Lang lang, Config config, Bot bot) {
-        super(lang, false);
-        this.config = config;
-        this.bot = bot;
+    public LanguageSelectMenu(Skoice plugin) {
+        super(plugin.getLang(), false);
+        this.plugin = plugin;
     }
 
     @Override
@@ -52,10 +48,10 @@ public class LanguageSelectMenu extends SelectMenu {
                             : null)
                     .withEmoji(option.getEmoji()));
         }
-        if (this.bot.isReady()) {
+        if (this.plugin.getBot().isReady()) {
             return SelectionMenu.create("language-selection")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(this.config.getFile().getString(ConfigField.LANG.get()))).build();
+                    .setDefaultValues(Collections.singleton(this.plugin.readConfig().getFile().getString(ConfigField.LANG.get()))).build();
         } else {
             return SelectionMenu.create("language-selection")
                     .setPlaceholder(super.lang.getMessage("discord.menu.language.select-menu.placeholder"))

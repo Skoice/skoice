@@ -19,10 +19,7 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.ConfigurationMenu;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -37,16 +34,10 @@ public class ConfigureCommand extends ListenerAdapter {
 
     private boolean configureCommandCooldown = false;
 
-    private final Config config;
-    private final Lang lang;
-    private final Bot bot;
-    private final ConfigurationMenu configurationMenu;
+    private final Skoice plugin;
 
-    public ConfigureCommand(Config config, Lang lang, Bot bot, ConfigurationMenu configurationMenu) {
-        this.config = config;
-        this.lang = lang;
-        this.bot = bot;
-        this.configurationMenu = configurationMenu;
+    public ConfigureCommand(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     @Override
@@ -55,12 +46,12 @@ public class ConfigureCommand extends ListenerAdapter {
             Member member = event.getMember();
             if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
                 if (this.configureCommandCooldown) {
-                    event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("error"),
-                            Collections.singleton(this.bot.getFields().get("too-many-interactions").toField(this.lang)))
-                            .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
+                    event.reply(new Menu(this.plugin, "error",
+                            Collections.singleton(this.plugin.getBot().getFields().get("too-many-interactions")))
+                            .toMessage()).setEphemeral(true).queue();
                 } else {
-                    this.configurationMenu.deleteMessage();
-                    event.reply(this.configurationMenu.getMessage()).queue();
+                    this.plugin.getConfigurationMenu().deleteMessage();
+                    event.reply(this.plugin.getConfigurationMenu().getMessage()).queue();
                     this.configureCommandCooldown = true;
                     new Timer().schedule(new TimerTask() {
 
@@ -71,9 +62,9 @@ public class ConfigureCommand extends ListenerAdapter {
                     }, 5000);
                 }
             } else {
-                event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("error"),
-                        Collections.singleton(this.bot.getFields().get("access-denied").toField(this.lang)))
-                        .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
+                event.reply(new Menu(this.plugin, "error",
+                        Collections.singleton(this.plugin.getBot().getFields().get("access-denied")))
+                        .toMessage()).setEphemeral(true).queue();
             }
         }
     }

@@ -100,13 +100,13 @@ public class Skoice extends JavaPlugin {
         this.bot = new Bot(this);
         this.bot.connect();
         if (this.bot.getJda() != null) {
-            this.configurationMenu = new ConfigurationMenu(this.config, this.lang, this.bot);
+            this.configurationMenu = new ConfigurationMenu(this);
             this.bot.setup(this.configurationMenu, true, null);
         }
     }
 
     private void initializeSkoiceCommand() {
-        SkoiceCommand skoiceCommand = new SkoiceCommand(this.config, this.lang, this.bot, this.configurationMenu);
+        SkoiceCommand skoiceCommand = new SkoiceCommand(this);
         this.getCommand("skoice").setExecutor(skoiceCommand);
         this.getCommand("skoice").setTabCompleter(skoiceCommand);
     }
@@ -150,37 +150,37 @@ public class Skoice extends JavaPlugin {
         if (startup) {
             if (this.bot.isReady()) {
                 this.registerEligiblePlayerListeners();
-                this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this.config, this.lang, this.bot, this.eligiblePlayers),
-                        new GuildVoiceLeaveListener(this.config, this.lang),
+                this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this),
+                        new GuildVoiceLeaveListener(this),
                         new GuildVoiceMoveListener(this.config),
                         new VoiceChannelDeleteListener());
             } else {
-                Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this.config, this.lang, this.bot), this);
+                Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this), this);
             }
         } else if (!wasBotReady && this.bot.isReady()) {
-            HandlerList.unregisterAll(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this.config, this.lang, this.bot));
+            HandlerList.unregisterAll(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this));
             this.registerEligiblePlayerListeners();
-            this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this.config, this.lang, this.bot, this.eligiblePlayers),
-                    new GuildVoiceLeaveListener(this.config, this.lang),
+            this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this),
+                    new GuildVoiceLeaveListener(this),
                     new GuildVoiceMoveListener(this.config),
                     new VoiceChannelDeleteListener());
             this.getLogger().info(this.lang.getMessage("logger.info.configuration-complete"));
             Message message = this.configurationMenu.retrieveMessage();
             if (message != null && message.getInteraction() != null) {
                 message.getInteraction().getUser().openPrivateChannel().complete()
-                        .sendMessage(new Menu(this.bot.getMenusYaml().getConfigurationSection("configuration"),
-                                Collections.singleton(this.bot.getFields().get("configuration-complete").toField(this.lang)),
+                        .sendMessage(new Menu(this, "configuration",
+                                Collections.singleton(this.bot.getFields().get("configuration-complete")),
                                 MenuType.SUCCESS)
-                                .toMessage(this.config, this.lang, this.bot))
+                                .toMessage())
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             }
         } else if (wasBotReady && !this.bot.isReady()) {
             this.configurationMenu.deleteMessage();
             this.unregisterEligiblePlayerListeners();
-            Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this.config, this.lang, this.bot), this);
+            Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this), this);
             if (this.bot.getJda() != null) {
-                this.bot.getJda().removeEventListener(new GuildVoiceJoinListener(this.config, this.lang, this.bot, this.eligiblePlayers),
-                        new GuildVoiceLeaveListener(this.config, this.lang),
+                this.bot.getJda().removeEventListener(new GuildVoiceJoinListener(this),
+                        new GuildVoiceLeaveListener(this),
                         new GuildVoiceMoveListener(this.config),
                         new VoiceChannelDeleteListener());
             }
@@ -189,14 +189,14 @@ public class Skoice extends JavaPlugin {
     }
 
     private void registerEligiblePlayerListeners() {
-        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this.config, this.lang, this.eligiblePlayers), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(this.eligiblePlayers), this);
         Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(this.eligiblePlayers), this);
     }
 
     private void unregisterEligiblePlayerListeners() {
-        HandlerList.unregisterAll(new PlayerJoinListener(this.config, this.lang, this.eligiblePlayers));
+        HandlerList.unregisterAll(new PlayerJoinListener(this));
         HandlerList.unregisterAll(new PlayerQuitListener(this));
         HandlerList.unregisterAll(new PlayerMoveListener(this.eligiblePlayers));
         HandlerList.unregisterAll(new PlayerTeleportListener(this.eligiblePlayers));

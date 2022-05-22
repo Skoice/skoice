@@ -20,8 +20,6 @@
 package net.clementraynaud.skoice.listeners;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.dv8tion.jda.api.events.ReconnectedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;

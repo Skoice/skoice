@@ -20,8 +20,7 @@
 
 package net.clementraynaud.skoice.listeners.guild.voice;
 
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
@@ -33,21 +32,19 @@ import java.util.UUID;
 
 public class GuildVoiceLeaveListener extends ListenerAdapter {
 
-    private final Config config;
-    private final Lang lang;
+    private final Skoice plugin;
 
-    public GuildVoiceLeaveListener(Config config, Lang lang) {
-        this.config = config;
-        this.lang = lang;
+    public GuildVoiceLeaveListener(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
         if (event.getChannelLeft().getParent() == null
-                || !event.getChannelLeft().getParent().equals(this.config.getCategory())) {
+                || !event.getChannelLeft().getParent().equals(this.plugin.readConfig().getCategory())) {
             return;
         }
-        String minecraftID = new MapUtil().getKeyFromValue(this.config.getLinks(), event.getMember().getId());
+        String minecraftID = new MapUtil().getKeyFromValue(this.plugin.readConfig().getLinks(), event.getMember().getId());
         if (minecraftID == null) {
             return;
         }
@@ -56,9 +53,9 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
             Network.networks.stream()
                     .filter(network -> network.contains(player.getPlayer()))
                     .forEach(network -> network.remove(player.getPlayer()));
-            if (event.getChannelLeft().equals(this.config.getLobby())
+            if (event.getChannelLeft().equals(this.plugin.readConfig().getLobby())
                     || Network.networks.stream().anyMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
-                player.getPlayer().sendMessage(this.lang.getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
+                player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
             }
         }
     }

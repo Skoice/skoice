@@ -19,9 +19,7 @@
 
 package net.clementraynaud.skoice.listeners.player.eligible;
 
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.system.EligiblePlayers;
+import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -33,27 +31,23 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
 
-    private final Config config;
-    private final Lang lang;
-    private final EligiblePlayers eligiblePlayers;
+    private final Skoice plugin;
 
-    public PlayerJoinListener(Config config, Lang lang, EligiblePlayers eligiblePlayers) {
-        this.config = config;
-        this.lang = lang;
-        this.eligiblePlayers = eligiblePlayers;
+    public PlayerJoinListener(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        this.eligiblePlayers.add(player.getUniqueId());
-        Member member = this.config.getMember(player.getUniqueId());
+        this.plugin.getEligiblePlayers().add(player.getUniqueId());
+        Member member = this.plugin.readConfig().getMember(player.getUniqueId());
         if (member != null) {
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 VoiceChannel voiceChannel = voiceState.getChannel();
-                if (voiceChannel != null && voiceChannel.equals(this.config.getLobby())) {
-                    player.sendMessage(this.lang.getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
+                if (voiceChannel != null && voiceChannel.equals(this.plugin.readConfig().getLobby())) {
+                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
                 }
             }
         }

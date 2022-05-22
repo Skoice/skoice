@@ -20,10 +20,8 @@
 
 package net.clementraynaud.skoice.tasks;
 
-import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.DistanceUtil;
 import net.clementraynaud.skoice.util.MapUtil;
@@ -47,14 +45,10 @@ public class UpdateNetworksTask implements Task {
     public static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
     private final ReentrantLock lock = new ReentrantLock();
 
-    private final Config config;
-    private final Lang lang;
-    private final EligiblePlayers eligiblePlayers;
+    private final Skoice plugin;
 
-    public UpdateNetworksTask(Config config, Lang lang, EligiblePlayers eligiblePlayers) {
-        this.config = config;
-        this.lang = lang;
-        this.eligiblePlayers = eligiblePlayers;
+    public UpdateNetworksTask(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     @Override
@@ -63,22 +57,22 @@ public class UpdateNetworksTask implements Task {
             return;
         }
         try {
-            VoiceChannel lobby = this.config.getLobby();
+            VoiceChannel lobby = this.plugin.readConfig().getLobby();
             if (lobby == null) {
                 return;
             }
             this.muteMembers(lobby);
             Network.networks.removeIf(network -> network.getChannel() == null && network.isInitialized());
-            Set<UUID> oldEligiblePlayers = this.eligiblePlayers.copy();
-            this.eligiblePlayers.clear();
+            Set<UUID> oldEligiblePlayers = this.plugin.getEligiblePlayers().copy();
+            this.plugin.getEligiblePlayers().clear();
             for (UUID minecraftID : oldEligiblePlayers) {
                 Player player = Bukkit.getPlayer(minecraftID);
                 if (player != null) {
-                    Member member = this.config.getMember(player.getUniqueId());
+                    Member member = this.plugin.readConfig().getMember(player.getUniqueId());
                     if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {
                         VoiceChannel playerChannel = member.getVoiceState().getChannel();
-                        boolean isLobby = playerChannel == this.config.getLobby();
-                        if (!isLobby && (playerChannel.getParent() == null || playerChannel.getParent() != this.config.getCategory())) {
+                        boolean isLobby = playerChannel == this.plugin.readConfig().getLobby();
+                        if (!isLobby && (playerChannel.getParent() == null || playerChannel.getParent() != this.plugin.readConfig().getCategory())) {
                             Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(member.getId());
                             if (pair != null) {
                                 pair.getRight().cancel(false);
@@ -86,7 +80,7 @@ public class UpdateNetworksTask implements Task {
                             continue;
                         }
                         this.updateNetworksAroundPlayer(player);
-                        if (this.config.getFile().getBoolean(ConfigField.ACTION_BAR_ALERT.get())) {
+                        if (this.plugin.readConfig().getFile().getBoolean(ConfigField.ACTION_BAR_ALERT.get())) {
                             this.sendActionBarAlert(player);
                         }
                         this.createNetworkIfNeeded(player);
@@ -101,7 +95,7 @@ public class UpdateNetworksTask implements Task {
                 }
                 membersInLobby.addAll(voiceChannel.getMembers());
             }
-            Map<String, String> links = new HashMap<>(this.config.getLinks());
+            Map<String, String> links = new HashMap<>(this.plugin.readConfig().getLinks());
             for (Member member : membersInLobby) {
                 String minecraftID = new MapUtil().getKeyFromValue(links, member.getId());
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
@@ -128,7 +122,7 @@ public class UpdateNetworksTask implements Task {
                 if (playerChannel != shouldBeInChannel) {
                     UpdateNetworksTask.awaitingMoves.put(member.getId(), Pair.of(
                             shouldBeInChannel.getId(),
-                            this.config.getGuild().moveVoiceMember(member, shouldBeInChannel)
+                            this.plugin.readConfig().getGuild().moveVoiceMember(member, shouldBeInChannel)
                                     .submit().whenCompleteAsync((v, t) -> UpdateNetworksTask.awaitingMoves.remove(member.getId()))
                     ));
                 }
@@ -174,7 +168,7 @@ public class UpdateNetworksTask implements Task {
                     .filter(network -> network.contains(player.getUniqueId()))
                     .filter(network -> network.canPlayerStayConnected(player))
                     .filter(network -> !network.canPlayerBeAdded(player))
-                    .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(this.lang.getMessage("minecraft.action-bar.alert"))));
+                    .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(this.plugin.getLang().getMessage("minecraft.action-bar.alert"))));
         } catch (NoSuchMethodError ignored) {
         }
     }
@@ -184,15 +178,15 @@ public class UpdateNetworksTask implements Task {
         Set<Player> alivePlayers = new PlayerUtil().getOnlinePlayers().stream()
                 .filter(p -> !p.isDead())
                 .collect(Collectors.toSet());
-        Category category = this.config.getCategory();
+        Category category = this.plugin.readConfig().getCategory();
         Set<UUID> playersWithinRange = alivePlayers.stream()
                 .filter(p -> Network.networks.stream().noneMatch(network -> network.contains(p)))
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .filter(p -> distanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get())
-                        && distanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile().getInt(ConfigField.VERTICAL_RADIUS.get()))
+                .filter(p -> distanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.readConfig().getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get())
+                        && distanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.readConfig().getFile().getInt(ConfigField.VERTICAL_RADIUS.get()))
                 .filter(p -> {
-                    Member m = this.config.getMember(p.getUniqueId());
+                    Member m = this.plugin.readConfig().getMember(p.getUniqueId());
                     return m != null && m.getVoiceState() != null
                             && m.getVoiceState().getChannel() != null
                             && m.getVoiceState().getChannel().getParent() != null
@@ -202,7 +196,7 @@ public class UpdateNetworksTask implements Task {
                 .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
         if (!playersWithinRange.isEmpty() && category.getChannels().size() != 50) {
             playersWithinRange.add(player.getUniqueId());
-            Network network = new Network(this.config, playersWithinRange);
+            Network network = new Network(this.plugin.readConfig(), playersWithinRange);
             network.build();
             Network.networks.add(network);
         }
@@ -213,7 +207,7 @@ public class UpdateNetworksTask implements Task {
             if (network.isEmpty()) {
                 VoiceChannel voiceChannel = network.getChannel();
                 if (voiceChannel != null && voiceChannel.getMembers().isEmpty()) {
-                    voiceChannel.delete().reason(this.lang.getMessage("discord.communication-lost")).queue();
+                    voiceChannel.delete().reason(this.plugin.getLang().getMessage("discord.communication-lost")).queue();
                     Network.networks.remove(network);
                 }
             }

@@ -19,25 +19,19 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.Skoice;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public abstract class Argument {
 
-    protected final Config config;
-    protected final Lang lang;
-    protected final Bot bot;
+    protected final Skoice plugin;
     protected final CommandSender sender;
     protected final boolean allowedInConsole;
     protected final boolean restrictedToOperators;
 
-    protected Argument(Config config, Lang lang, Bot bot, CommandSender sender, boolean allowedInConsole, boolean restrictedToOperators) {
-        this.config = config;
-        this.lang = lang;
-        this.bot = bot;
+    protected Argument(Skoice plugin, CommandSender sender, boolean allowedInConsole, boolean restrictedToOperators) {
+        this.plugin = plugin;
         this.sender = sender;
         this.allowedInConsole = allowedInConsole;
         this.restrictedToOperators = restrictedToOperators;
@@ -47,11 +41,11 @@ public abstract class Argument {
 
     protected boolean canExecuteCommand() {
         if (!(this.sender instanceof Player) && !this.allowedInConsole) {
-            this.sender.sendMessage(this.lang.getMessage("minecraft.chat.error.illegal-executor"));
+            this.sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.illegal-executor"));
             return false;
         }
         if (!this.sender.isOp() && this.restrictedToOperators) {
-            this.sender.sendMessage(this.lang.getMessage("minecraft.chat.error.missing-permission"));
+            this.sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.missing-permission"));
             return false;
         }
         return true;

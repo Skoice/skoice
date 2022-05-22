@@ -19,9 +19,7 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.menus.MenuType;
@@ -39,14 +37,10 @@ public class LinkCommand extends ListenerAdapter {
 
     private static final Map<String, String> discordIDCode = new HashMap<>();
 
-    private final Config config;
-    private final Lang lang;
-    private final Bot bot;
+    private final Skoice plugin;
 
-    public LinkCommand(Config config, Lang lang, Bot bot) {
-        this.config = config;
-        this.lang = lang;
-        this.bot = bot;
+    public LinkCommand(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     public static Map<String, String> getDiscordIDCode() {
@@ -60,19 +54,19 @@ public class LinkCommand extends ListenerAdapter {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if ("link".equals(event.getName())) {
-            if (!this.bot.isReady()) {
-                event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("configuration"),
-                                Collections.singleton(this.bot.getFields().get("incomplete-configuration").toField(this.lang)),
+            if (!this.plugin.getBot().isReady()) {
+                event.reply(new Menu(this.plugin, "configuration",
+                                Collections.singleton(this.plugin.getBot().getFields().get("incomplete-configuration")),
                                 MenuType.ERROR)
-                                .toMessage(this.config, this.lang, this.bot))
+                                .toMessage())
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 return;
             }
-            if (this.config.getLinks().containsValue(event.getUser().getId())) {
-                event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
-                        Collections.singleton(this.bot.getFields().get("account-already-linked").toField(this.lang)),
+            if (this.plugin.readConfig().getLinks().containsValue(event.getUser().getId())) {
+                event.reply(new Menu(this.plugin, "linking-process",
+                        Collections.singleton(this.plugin.getBot().getFields().get("account-already-linked")),
                         MenuType.ERROR)
-                        .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
+                        .toMessage()).setEphemeral(true).queue();
                 return;
             }
             LinkCommand.discordIDCode.remove(event.getUser().getId());
@@ -81,10 +75,10 @@ public class LinkCommand extends ListenerAdapter {
                 code = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
             } while (LinkCommand.discordIDCode.containsValue(code));
             LinkCommand.discordIDCode.put(event.getUser().getId(), code);
-            event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
-                    Collections.singleton(new MenuField(this.bot.getFieldsYaml().getConfigurationSection("verification-code")).toField(this.lang, code)),
+            event.reply(new Menu(this.plugin, "linking-process",
+                    Collections.singleton(new MenuField(this.plugin, "verification-code", code)),
                     MenuType.SUCCESS)
-                    .toMessage(this.config, this.lang, this.bot)).setEphemeral(true).queue();
+                    .toMessage()).setEphemeral(true).queue();
         }
     }
 }

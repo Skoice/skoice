@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.listeners.guild;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.Commands;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

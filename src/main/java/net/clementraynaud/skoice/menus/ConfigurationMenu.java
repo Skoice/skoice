@@ -19,10 +19,8 @@
 
 package net.clementraynaud.skoice.menus;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -31,31 +29,27 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 public class ConfigurationMenu {
 
-    private final Config config;
-    private final Lang lang;
-    private final Bot bot;
+    private final Skoice plugin;
 
-    public ConfigurationMenu(Config config, Lang lang, Bot bot) {
-        this.config = config;
-        this.lang = lang;
-        this.bot = bot;
+    public ConfigurationMenu(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     public Message getMessage() {
-        if (this.bot.isOnMultipleGuilds()) {
-            return this.bot.getMenus().get("server").toMessage(this.config, this.lang, this.bot);
-        } else if (!this.config.getFile().contains(ConfigField.LOBBY_ID.get())) {
-            return this.bot.getMenus().get("lobby").toMessage(this.config, this.lang, this.bot);
-        } else if (!this.config.getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())
-                || !this.config.getFile().contains(ConfigField.VERTICAL_RADIUS.get())) {
-            return this.bot.getMenus().get("mode").toMessage(this.config, this.lang, this.bot);
+        if (this.plugin.getBot().isOnMultipleGuilds()) {
+            return this.plugin.getBot().getMenus().get("server").toMessage();
+        } else if (!this.plugin.readConfig().getFile().contains(ConfigField.LOBBY_ID.get())) {
+            return this.plugin.getBot().getMenus().get("lobby").toMessage();
+        } else if (!this.plugin.readConfig().getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())
+                || !this.plugin.readConfig().getFile().contains(ConfigField.VERTICAL_RADIUS.get())) {
+            return this.plugin.getBot().getMenus().get("mode").toMessage();
         } else {
-            return this.bot.getMenus().get("configuration").toMessage(this.config, this.lang, this.bot);
+            return this.plugin.getBot().getMenus().get("configuration").toMessage();
         }
     }
 
     public boolean exists() {
-        return this.config.getFile().contains(ConfigField.CONFIG_MENU.get());
+        return this.plugin.readConfig().getFile().contains(ConfigField.CONFIG_MENU.get());
     }
 
     public String getMessageId() {
@@ -70,18 +64,18 @@ public class ConfigurationMenu {
         if (!this.exists()) {
             return null;
         }
-        Guild guild = this.bot.getJda().getGuildById(this.config.getFile()
+        Guild guild = this.plugin.getBot().getJda().getGuildById(this.plugin.readConfig().getFile()
                 .getString(ConfigField.CONFIG_MENU.get() + "." + ConfigField.GUILD_ID.get()));
         if (guild == null) {
             return null;
         }
-        TextChannel textChannel = guild.getTextChannelById(this.config.getFile()
+        TextChannel textChannel = guild.getTextChannelById(this.plugin.readConfig().getFile()
                 .getString(ConfigField.CONFIG_MENU.get() + "." + ConfigField.TEXT_CHANNEL_ID.get()));
         if (textChannel == null) {
             return null;
         }
         try {
-            return textChannel.retrieveMessageById(this.config.getFile()
+            return textChannel.retrieveMessageById(this.plugin.readConfig().getFile()
                     .getString(ConfigField.CONFIG_MENU.get() + "." + ConfigField.MESSAGE_ID.get())).complete();
         } catch (ErrorResponseException e) {
             this.clearConfig();
@@ -98,15 +92,15 @@ public class ConfigurationMenu {
     }
 
     public void storeInConfig(Message message) {
-        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.GUILD_ID.get(), message.getGuild().getId());
-        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.TEXT_CHANNEL_ID.get(), message.getTextChannel().getId());
-        this.config.getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.MESSAGE_ID.get(), message.getId());
-        this.config.saveFile();
+        this.plugin.readConfig().getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.GUILD_ID.get(), message.getGuild().getId());
+        this.plugin.readConfig().getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.TEXT_CHANNEL_ID.get(), message.getTextChannel().getId());
+        this.plugin.readConfig().getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.MESSAGE_ID.get(), message.getId());
+        this.plugin.readConfig().saveFile();
     }
 
     public void clearConfig() {
-        this.config.getFile().set(ConfigField.CONFIG_MENU.get(), null);
-        this.config.saveFile();
+        this.plugin.readConfig().getFile().set(ConfigField.CONFIG_MENU.get(), null);
+        this.plugin.readConfig().saveFile();
     }
 
     /*public void sendLobbyDeletedAlert(Guild guild) {

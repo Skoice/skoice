@@ -19,15 +19,12 @@
 
 package net.clementraynaud.skoice.commands.skoice;
 
-import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentName;
 import net.clementraynaud.skoice.commands.skoice.arguments.ConfigureArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.TokenArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.UnlinkArgument;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -41,16 +38,10 @@ import java.util.stream.Collectors;
 
 public class SkoiceCommand implements CommandExecutor, TabCompleter {
 
-    private final Config config;
-    private final Lang lang;
-    private final Bot bot;
-    private final ConfigurationMenu configurationMenu;
+    private final Skoice plugin;
 
-    public SkoiceCommand(Config config, Lang lang, Bot bot, ConfigurationMenu configurationMenu) {
-        this.config = config;
-        this.lang = lang;
-        this.bot = bot;
-        this.configurationMenu = configurationMenu;
+    public SkoiceCommand(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     @Override
@@ -61,16 +52,16 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         String arg = args.length > 1 ? args[1] : "";
         switch (ArgumentName.get(args[0])) {
             case CONFIGURE:
-                new ConfigureArgument(this.config, this.lang, this.bot, sender).run();
+                new ConfigureArgument(this.plugin, sender).run();
                 break;
             case TOKEN:
-                new TokenArgument(this.config, this.lang, this.bot, sender, this.configurationMenu, arg).run();
+                new TokenArgument(this.plugin, sender, arg).run();
                 break;
             case LINK:
-                new LinkArgument(this.config, this.lang, this.bot, sender, arg).run();
+                new LinkArgument(this.plugin, sender, arg).run();
                 break;
             case UNLINK:
-                new UnlinkArgument(this.config, this.lang, this.bot, sender).run();
+                new UnlinkArgument(this.plugin, sender).run();
                 break;
             default:
                 return true;

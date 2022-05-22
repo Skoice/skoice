@@ -19,38 +19,48 @@
 
 package net.clementraynaud.skoice.menus;
 
-import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class MenuField {
 
+    private final Skoice plugin;
     private final String name;
     private final MenuEmoji emoji;
     private final boolean inline;
+    private final String value;
 
-    public MenuField(ConfigurationSection field) {
+    public MenuField(Skoice plugin, String path, String value) {
+        this.plugin = plugin;
+        ConfigurationSection field = this.plugin.getBot().getFieldsYaml().getConfigurationSection(path);
         this.name = field.getName();
         this.emoji = MenuEmoji.valueOf(field.getString("emoji").toUpperCase());
         this.inline = field.getBoolean("inline");
+        this.value = value;
     }
 
-    public MessageEmbed.Field toField(Lang lang, String value) {
-        return new MessageEmbed.Field(this.emoji + this.getTitle(lang), this.getDescription(lang, value), this.inline);
+    public MenuField(Skoice plugin, String path) {
+        this.plugin = plugin;
+        ConfigurationSection field = this.plugin.getBot().getFieldsYaml().getConfigurationSection(path);
+        this.name = field.getName();
+        this.emoji = MenuEmoji.valueOf(field.getString("emoji").toUpperCase());
+        this.inline = field.getBoolean("inline");
+        this.value = null;
     }
 
-    public MessageEmbed.Field toField(Lang lang) {
-        return this.toField(lang, null);
+    public MessageEmbed.Field toField() {
+        return new MessageEmbed.Field(this.emoji + this.getTitle(), this.getDescription(), this.inline);
     }
 
-    private String getTitle(Lang lang) {
-        return lang.getMessage("discord.field." + this.name + ".title");
+    private String getTitle() {
+        return this.plugin.getLang().getMessage("discord.field." + this.name + ".title");
     }
 
-    private String getDescription(Lang lang, String value) {
-        if (value != null) {
-            return lang.getMessage("discord.field." + this.name + ".description", value);
+    private String getDescription() {
+        if (this.value != null) {
+            return this.plugin.getLang().getMessage("discord.field." + this.name + ".description", this.value);
         }
-        return lang.getMessage("discord.field." + this.name + ".description");
+        return this.plugin.getLang().getMessage("discord.field." + this.name + ".description");
     }
 }

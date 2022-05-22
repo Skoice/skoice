@@ -20,12 +20,9 @@
 
 package net.clementraynaud.skoice.listeners.guild.voice;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuType;
-import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
@@ -40,37 +37,31 @@ import java.util.UUID;
 
 public class GuildVoiceJoinListener extends ListenerAdapter {
 
-    private final Config config;
-    private final Lang lang;
-    private final Bot bot;
-    private final EligiblePlayers eligiblePlayers;
+    private final Skoice plugin;
 
-    public GuildVoiceJoinListener(Config config, Lang lang, Bot bot, EligiblePlayers eligiblePlayers) {
-        this.config = config;
-        this.lang = lang;
-        this.bot = bot;
-        this.eligiblePlayers = eligiblePlayers;
+    public GuildVoiceJoinListener(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
-        new UpdateVoiceStateTask(this.config, event.getMember(), event.getChannelJoined()).run();
-        if (!event.getChannelJoined().equals(this.config.getLobby())) {
+        new UpdateVoiceStateTask(this.plugin.readConfig(), event.getMember(), event.getChannelJoined()).run();
+        if (!event.getChannelJoined().equals(this.plugin.readConfig().getLobby())) {
             return;
         }
-        String minecraftID = new MapUtil().getKeyFromValue(this.config.getLinks(), event.getMember().getId());
+        String minecraftID = new MapUtil().getKeyFromValue(this.plugin.readConfig().getLinks(), event.getMember().getId());
         if (minecraftID == null) {
             event.getMember().getUser().openPrivateChannel().complete()
-                    .sendMessage(new Menu(this.bot.getMenusYaml().getConfigurationSection("linking-process"),
-                            Collections.singleton(this.bot.getFields().get("account-not-linked").toField(this.lang)),
+                    .sendMessage(new Menu(this.plugin, "linking-process",
+                            Collections.singleton(this.plugin.getBot().getFields().get("account-not-linked")),
                             MenuType.ERROR)
-                            .toMessage(this.config, this.lang, this.bot))
+                            .toMessage())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
             if (player.isOnline() && player.getPlayer() != null) {
-                this.eligiblePlayers.add(player.getUniqueId());
-                player.getPlayer().sendMessage(this.lang.getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
+                this.plugin.getEligiblePlayers().add(player.getUniqueId());
+                player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
             }
         }
     }

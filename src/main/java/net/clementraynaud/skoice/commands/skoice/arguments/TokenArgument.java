@@ -19,20 +19,15 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.ConfigurationMenu;
+import net.clementraynaud.skoice.Skoice;
 import org.bukkit.command.CommandSender;
 
 public class TokenArgument extends Argument {
 
-    private final ConfigurationMenu configurationMenu;
     private final String arg;
 
-    public TokenArgument(Config config, Lang lang, Bot bot, CommandSender sender, ConfigurationMenu configurationMenu, String arg) {
-        super(config, lang, bot, sender, ArgumentName.TOKEN.isAllowedInConsole(), ArgumentName.TOKEN.isRestrictedToOperators());
-        this.configurationMenu = configurationMenu;
+    public TokenArgument(Skoice plugin, CommandSender sender, String arg) {
+        super(plugin, sender, ArgumentName.TOKEN.isAllowedInConsole(), ArgumentName.TOKEN.isRestrictedToOperators());
         this.arg = arg;
     }
 
@@ -42,21 +37,21 @@ public class TokenArgument extends Argument {
             return;
         }
         if (this.arg.isEmpty()) {
-            this.sender.sendMessage(super.lang.getMessage("minecraft.chat.configuration.no-token"));
+            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.no-token"));
             return;
         }
         if (this.arg.length() != 59 || !this.arg.matches("[a-zA-Z0-9_.]+")) {
-            this.sender.sendMessage(super.lang.getMessage("minecraft.chat.configuration.invalid-token"));
+            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.invalid-token"));
             return;
         }
-        this.config.setToken(this.arg);
-        if (super.bot.getJda() == null) {
-            super.bot.connect(this.sender);
-            if (super.bot.getJda() != null) {
-                super.bot.setup(this.configurationMenu, false, this.sender);
+        super.plugin.readConfig().setToken(this.arg);
+        if (super.plugin.getBot().getJda() == null) {
+            super.plugin.getBot().connect(this.sender);
+            if (super.plugin.getBot().getJda() != null) {
+                super.plugin.getBot().setup(super.plugin.getConfigurationMenu(), false, this.sender);
             }
         } else {
-            this.sender.sendMessage(super.lang.getMessage("minecraft.chat.configuration.bot-already-connected"));
+            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.bot-already-connected"));
         }
     }
 }

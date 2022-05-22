@@ -19,28 +19,22 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class InviteCommand extends ListenerAdapter {
 
-    private final Config config;
-    private final Lang lang;
-    private final Bot bot;
+    private final Skoice plugin;
 
-    public InviteCommand(Config config, Lang lang, Bot bot) {
-        this.config = config;
-        this.lang = lang;
-        this.bot = bot;
+    public InviteCommand(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if ("invite".equals(event.getName())) {
-            event.reply(this.bot.getMenus().get("get-the-proximity-voice-chat").toMessage(this.config, this.lang, this.bot))
+            event.reply(this.plugin.getBot().getMenus().get("get-the-proximity-voice-chat").toMessage())
                     .setEphemeral(true).queue();
         }
     }

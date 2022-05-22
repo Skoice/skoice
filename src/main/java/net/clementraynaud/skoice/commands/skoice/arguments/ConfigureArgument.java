@@ -19,10 +19,8 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -33,8 +31,8 @@ import org.bukkit.entity.Player;
 
 public class ConfigureArgument extends Argument {
 
-    public ConfigureArgument(Config config, Lang lang, Bot bot, CommandSender sender) {
-        super(config, lang, bot, sender, ArgumentName.CONFIGURE.isAllowedInConsole(), ArgumentName.CONFIGURE.isRestrictedToOperators());
+    public ConfigureArgument(Skoice plugin, CommandSender sender) {
+        super(plugin, sender, ArgumentName.CONFIGURE.isAllowedInConsole(), ArgumentName.CONFIGURE.isRestrictedToOperators());
     }
 
     @Override
@@ -43,11 +41,11 @@ public class ConfigureArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        if (this.config.getFile().contains(ConfigField.TOKEN.get()) && super.bot.getJda() != null) {
-            if (super.bot.isReady()) {
-                player.sendMessage(super.lang.getMessage("minecraft.chat.configuration.already-configured"));
+        if (super.plugin.readConfig().getFile().contains(ConfigField.TOKEN.get()) && super.plugin.getBot().getJda() != null) {
+            if (super.plugin.getBot().isReady()) {
+                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.already-configured"));
             } else {
-                player.sendMessage(super.lang.getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
+                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
             }
         } else {
             try {
@@ -63,7 +61,7 @@ public class ConfigureArgument extends Argument {
                         .append(tokenCommand)
                         .append("§7.\n§8• §7Once done, type \"§e/configure§7\" on your Discord server to go to the next step.\n").event((HoverEvent) null).create());
             } catch (NoSuchMethodError e) {
-                player.sendMessage(super.lang.getMessage("minecraft.chat.configuration.bot-creation-link"));
+                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.bot-creation-link"));
             }
         }
     }

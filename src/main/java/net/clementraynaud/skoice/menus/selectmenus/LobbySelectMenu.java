@@ -19,10 +19,8 @@
 
 package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -38,18 +36,16 @@ public class LobbySelectMenu extends SelectMenu {
     private static final String GENERATE_OPTION_ID = "generate";
     private static final String REFRESH_OPTION_ID = "refresh";
 
-    private final Config config;
-    private final Bot bot;
+    private final Skoice plugin;
 
-    public LobbySelectMenu(Lang lang, Config config, Bot bot) {
-        super(lang, true);
-        this.config = config;
-        this.bot = bot;
+    public LobbySelectMenu(Skoice plugin) {
+        super(plugin.getLang(), true);
+        this.plugin = plugin;
     }
 
     @Override
     public SelectionMenu get() {
-        List<VoiceChannel> voiceChannels = new ArrayList<>(this.bot.getJda().getVoiceChannels());
+        List<VoiceChannel> voiceChannels = new ArrayList<>(this.plugin.getBot().getJda().getVoiceChannels());
         List<Category> categories = new ArrayList<>();
         for (VoiceChannel voiceChannel : voiceChannels) {
             categories.add(voiceChannel.getParent());
@@ -72,10 +68,10 @@ public class LobbySelectMenu extends SelectMenu {
                     .withDescription(super.lang.getMessage("discord.select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.getEmojiFromUnicode()));
         }
-        if (this.bot.isReady()) {
+        if (this.plugin.getBot().isReady()) {
             return SelectionMenu.create("lobby-selection")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(this.config.getFile().getString(ConfigField.LOBBY_ID.get()))).build();
+                    .setDefaultValues(Collections.singleton(this.plugin.readConfig().getFile().getString(ConfigField.LOBBY_ID.get()))).build();
         } else {
             return SelectionMenu.create("lobby-selection")
                     .setPlaceholder(super.lang.getMessage("discord.menu.lobby.select-menu.placeholder"))

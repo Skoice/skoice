@@ -19,9 +19,7 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
-import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.system.Network;
@@ -38,8 +36,8 @@ import java.util.Collections;
 
 public class UnlinkArgument extends Argument {
 
-    public UnlinkArgument(Config config, Lang lang, Bot bot, CommandSender sender) {
-        super(config, lang, bot, sender, ArgumentName.UNLINK.isAllowedInConsole(), ArgumentName.UNLINK.isRestrictedToOperators());
+    public UnlinkArgument(Skoice plugin, CommandSender sender) {
+        super(plugin, sender, ArgumentName.UNLINK.isAllowedInConsole(), ArgumentName.UNLINK.isRestrictedToOperators());
     }
 
     @Override
@@ -48,31 +46,31 @@ public class UnlinkArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        String discordID = this.config.getLinks().get(player.getUniqueId().toString());
+        String discordID = super.plugin.readConfig().getLinks().get(player.getUniqueId().toString());
         if (discordID == null) {
-            player.sendMessage(super.lang.getMessage("minecraft.chat.player.account-not-linked"));
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked"));
             return;
         }
-        this.config.unlinkUser(player.getUniqueId().toString());
+        super.plugin.readConfig().unlinkUser(player.getUniqueId().toString());
         Member member;
         try {
-            member = this.config.getGuild().retrieveMemberById(discordID).complete();
+            member = super.plugin.readConfig().getGuild().retrieveMemberById(discordID).complete();
             member.getUser().openPrivateChannel().complete()
-                    .sendMessage(new Menu(super.bot.getMenusYaml().getConfigurationSection("linking-process"),
-                            Collections.singleton(super.bot.getFields().get("account-unlinked").toField(this.lang)),
+                    .sendMessage(new Menu(super.plugin, "linking-process",
+                            Collections.singleton(super.plugin.getBot().getFields().get("account-unlinked")),
                             MenuType.SUCCESS)
-                            .toMessage(this.config, this.lang, super.bot))
+                            .toMessage())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 VoiceChannel voiceChannel = voiceState.getChannel();
-                if (voiceChannel != null && voiceChannel.equals(this.config.getLobby())
+                if (voiceChannel != null && voiceChannel.equals(super.plugin.readConfig().getLobby())
                         || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
-                    player.sendMessage(super.lang.getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
+                    player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
                 }
             }
         } catch (ErrorResponseException ignored) {
         }
-        player.sendMessage(super.lang.getMessage("minecraft.chat.player.account-unlinked"));
+        player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
     }
 }
