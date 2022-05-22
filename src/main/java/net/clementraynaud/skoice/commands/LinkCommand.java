@@ -23,15 +23,14 @@ import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.menus.MenuType;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.apache.commons.lang.RandomStringUtils;
 
-import java.awt.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,11 +61,11 @@ public class LinkCommand extends ListenerAdapter {
     public void onSlashCommand(SlashCommandEvent event) {
         if ("link".equals(event.getName())) {
             if (!this.bot.isReady()) {
-                EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.GEAR + this.lang.getMessage("discord.menu.configuration.title"));
-                event.replyEmbeds(embed.addField(MenuEmoji.WARNING + this.lang.getMessage("discord.field.incomplete-configuration.title"),
-                                        this.lang.getMessage("discord.field.incomplete-configuration.description"), false)
-                                .setColor(Color.RED).build())
-                        .setEphemeral(true).queue();
+                event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("configuration"),
+                                Collections.singleton(this.bot.getFields().get("incomplete-configuration").toField(this.lang)),
+                                MenuType.ERROR)
+                                .toMessage(this.config, this.lang, this.bot))
+                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 return;
             }
             if (this.config.getReader().getLinks().containsValue(event.getUser().getId())) {

@@ -23,16 +23,14 @@ import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
-import net.dv8tion.jda.api.EmbedBuilder;
+import net.clementraynaud.skoice.menus.MenuType;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.awt.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,11 +62,10 @@ public class ButtonClickListener extends ListenerAdapter {
                 if (buttonID.equals(Menu.CLOSE_BUTTON_ID)) {
                     event.getMessage().delete().queue();
                     if (!this.bot.isReady()) {
-                        event.replyEmbeds(new EmbedBuilder()
-                                        .setTitle(MenuEmoji.GEAR + this.lang.getMessage("discord.menu.configuration.title"))
-                                        .addField(MenuEmoji.WARNING + this.lang.getMessage("discord.field.incomplete-configuration.title"),
-                                                this.lang.getMessage("discord.field.incomplete-configuration.server-manager-description"), false)
-                                        .setColor(Color.RED).build())
+                        event.reply(new Menu(this.bot.getMenusYaml().getConfigurationSection("configuration"),
+                                        Collections.singleton(this.bot.getFields().get("incomplete-configuration.server-manager").toField(this.lang)),
+                                        MenuType.ERROR)
+                                        .toMessage(this.config, this.lang, this.bot))
                                 .setEphemeral(true).queue();
                     }
                 } else if (!this.bot.isReady()) {

@@ -192,7 +192,7 @@ public class Bot {
                 new VoiceChannelDeleteListener(this.plugin, this.config, this.lang, this),
                 new VoiceChannelUpdateParentListener(this.plugin, this.config, this.lang, this),
                 new ConfigureCommand(this.config, this.lang, this, configurationMenu),
-                new InviteCommand(this.lang),
+                new InviteCommand(this.config, this.lang, this),
                 new LinkCommand(this.config, this.lang, this),
                 new UnlinkCommand(this.config, this.lang, this),
                 new ButtonClickListener(this.config, this.lang, this, configurationMenu),

@@ -34,13 +34,12 @@ import net.clementraynaud.skoice.listeners.player.eligible.PlayerJoinListener;
 import net.clementraynaud.skoice.listeners.player.eligible.PlayerMoveListener;
 import net.clementraynaud.skoice.listeners.player.eligible.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.player.eligible.PlayerTeleportListener;
-import net.clementraynaud.skoice.menus.MenuEmoji;
+import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.util.UpdateUtil;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
@@ -50,6 +49,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Collections;
 import java.util.Objects;
 
 public class Skoice extends JavaPlugin {
@@ -170,10 +170,10 @@ public class Skoice extends JavaPlugin {
             Message message = this.configurationMenu.retrieveMessage();
             if (message != null && message.getInteraction() != null) {
                 message.getInteraction().getUser().openPrivateChannel().complete()
-                        .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.GEAR + this.lang.getMessage("discord.menu.configuration.title"))
-                                .addField(MenuEmoji.HEAVY_CHECK_MARK + this.lang.getMessage("discord.field.configuration-complete.title"),
-                                        this.lang.getMessage("discord.field.configuration-complete.description"), false)
-                                .setColor(MenuType.SUCCESS.getColor()).build())
+                        .sendMessage(new Menu(this.bot.getMenusYaml().getConfigurationSection("configuration"),
+                                Collections.singleton(this.bot.getFields().get("configuration-complete").toField(this.lang)),
+                                MenuType.SUCCESS)
+                                .toMessage(this.config, this.lang, this.bot))
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             }
         } else if (wasBotReady && !this.bot.isReady()) {

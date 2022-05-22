@@ -66,7 +66,17 @@ startup:
       - skoice-2-1
       - upcoming-features
       - contribute
+  get-the-proximity-voice-chat:
+    emoji: envelope
+    type: success
+    fields:
+      - download-skoice
+      - donate
+      - troubleshooting
+      - contribute
 
+configuration:
+  emoji: gear
 linking-process:
   emoji: link
 error:

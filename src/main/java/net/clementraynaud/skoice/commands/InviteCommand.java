@@ -19,6 +19,8 @@
 
 package net.clementraynaud.skoice.commands;
 
+import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -29,26 +31,21 @@ import java.awt.*;
 
 public class InviteCommand extends ListenerAdapter {
 
+    private final Config config;
     private final Lang lang;
+    private final Bot bot;
 
-    public InviteCommand(Lang lang) {
+    public InviteCommand(Config config, Lang lang, Bot bot) {
+        this.config = config;
         this.lang = lang;
+        this.bot = bot;
     }
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if ("invite".equals(event.getName())) {
-            EmbedBuilder embed = new EmbedBuilder().setTitle(MenuEmoji.ENVELOPE + this.lang.getMessage("discord.menu.get-the-proximity-voice-chat.title"))
-                    .addField(MenuEmoji.INBOX_TRAY + this.lang.getMessage("discord.menu.get-the-proximity-voice-chat.field.download-skoice.title"),
-                            this.lang.getMessage("discord.menu.get-the-proximity-voice-chat.field.download-skoice.description"), false)
-                    .addField(MenuEmoji.GREEN_HEART + this.lang.getMessage("discord.menu.get-the-proximity-voice-chat.field.donate.title"),
-                            this.lang.getMessage("discord.menu.get-the-proximity-voice-chat.field.donate.description"), false)
-                    .addField(MenuEmoji.SCREWDRIVER + this.lang.getMessage("discord.field.troubleshooting.title"),
-                            this.lang.getMessage("discord.field.troubleshooting.description"), false)
-                    .addField(MenuEmoji.HAMMER + this.lang.getMessage("discord.field.contribute.title"),
-                            this.lang.getMessage("discord.field.contribute.description"), false)
-                    .setColor(Color.ORANGE);
-            event.replyEmbeds(embed.build()).setEphemeral(true).queue();
+            event.reply(this.bot.getMenus().get("get-the-proximity-voice-chat").toMessage(this.config, this.lang, this.bot))
+                    .setEphemeral(true).queue();
         }
     }
 }

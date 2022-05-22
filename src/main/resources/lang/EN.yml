@@ -117,13 +117,6 @@ discord:
       description: "Discover the latest and upcoming features of Skoice."
     get-the-proximity-voice-chat:
       title: "Get the Proximity Voice Chat"
-      field:
-        download-skoice:
-          title: "Download Skoice"
-          description: "[Get the plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server."
-        donate:
-          title: "Donate"
-          description: "Skoice is a free software. If you like it, you can help us by [donating](https://paypal.me/whitelines)."
     linking-process:
       title: "Linking Process"
     error:
@@ -135,8 +128,18 @@ discord:
     incomplete-configuration:
       title: "Incomplete Configuration"
       description: "Skoice is not configured correctly. Please contact an administrator."
+    incomplete-configuration-server-manager:
+      title: "Incomplete Configuration"
       server-manager-description: "Type `/configure` on your Discord server to complete the configuration and use Skoice."
+    incomplete-configuration-alternative-server-manager:
+      title: "Incomplete Configuration"
       server-manager-alternative-description: "You have either moved or deleted the lobby.\nType `/configure` on your Discord server to complete the configuration and use Skoice."
+    download-skoice:
+      title: "Download Skoice"
+      description: "[Get the plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server."
+    donate:
+      title: "Donate"
+      description: "Skoice is a free software. If you like it, you can help us by [donating](https://paypal.me/whitelines)."
     troubleshooting:
       title: "Troubleshooting"
       description: "Having issues? [Join our Discord server](https://discord.gg/h3Tgccc)!"
