@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
-import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -52,11 +52,19 @@ public enum ArgumentName {
                 .orElse(null);
     }
 
-    public static Collection<String> getList(boolean restrictedToOperators) {
+    public static Set<String> getList(boolean restrictedToOperators) {
         return Stream.of(ArgumentName.values())
                 .filter(arg -> arg.restrictedToOperators == restrictedToOperators || restrictedToOperators)
                 .map(Enum::toString)
                 .map(String::toLowerCase)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
+    }
+
+    public static Set<String> getConsoleAllowedList() {
+        return Stream.of(ArgumentName.values())
+                .filter(arg -> arg.allowedInConsole)
+                .map(Enum::toString)
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
     }
 }

@@ -23,7 +23,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 public class Lang {
 
@@ -53,15 +52,18 @@ public class Lang {
         return message;
     }
 
-    public String getMessage(String path, Object... args) {
+    public String getMessage(String path, String... args) {
         String message = this.messages.contains(path) ? this.messages.getString(path) : this.englishMessages.getString(path);
         if (message == null) {
             return null;
         }
         if (path.startsWith("minecraft.chat.")) {
-            return ChatColor.translateAlternateColorCodes('&', String.format(message, Lang.CHAT_PREFIX, Arrays.toString(args)));
+            String[] newArgs = new String[args.length + 1];
+            newArgs[0] = Lang.CHAT_PREFIX;
+            System.arraycopy(args, 0, newArgs, 1, args.length);
+            return ChatColor.translateAlternateColorCodes('&', String.format(message, (Object[]) newArgs));
         }
-        return String.format(message, args);
+        return String.format(message, (Object[]) args);
     }
 
     public boolean contains(String path) {

@@ -29,6 +29,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,9 +45,35 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         this.plugin = plugin;
     }
 
+    public void init() {
+        this.plugin.getCommand("skoice").setExecutor(this);
+        this.plugin.getCommand("skoice").setTabCompleter(this);
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
-        if (args.length == 0 || ArgumentName.get(args[0]) == null) {
+        if (args.length == 0) {
+            if (sender instanceof Player) {
+                sender.sendMessage(this.plugin.getLang()
+                        .getMessage("minecraft.chat.error.no-parameter",
+                                String.join("/", ArgumentName.getList(sender.isOp()))));
+            } else {
+                sender.sendMessage(this.plugin.getLang()
+                        .getMessage("minecraft.chat.error.no-parameter",
+                                String.join("/", ArgumentName.getConsoleAllowedList())));
+            }
+            return true;
+        }
+        if (ArgumentName.get(args[0]) == null) {
+            if (sender instanceof Player) {
+                sender.sendMessage(this.plugin.getLang()
+                        .getMessage("minecraft.chat.error.invalid-parameter",
+                                String.join("/", ArgumentName.getList(sender.isOp()))));
+            } else {
+                sender.sendMessage(this.plugin.getLang()
+                        .getMessage("minecraft.chat.error.invalid-parameter",
+                                String.join("/", ArgumentName.getConsoleAllowedList())));
+            }
             return true;
         }
         String arg = args.length > 1 ? args[1] : "";

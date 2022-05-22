@@ -43,6 +43,8 @@ minecraft:
       connected-to-proximity-voice-chat: "%s You are &anow connected &7to the proximity voice chat."
       disconnected-from-proximity-voice-chat: "%s You are &cnow disconnected &7from the proximity voice chat."
     error:
+      no-parameter: "%s You have &cnot provided an argument&7. To use this command, type \"&e/skoice <%s>&7\"."
+      invalid-parameter: "%s You have &cnot provided a valid argument&7. To use this command, type \"&e/skoice <%s>&7\"."
       illegal-executor: "%s This command is &conly executable &7by players."
       missing-permission: "%s This command is &conly executable &7by operators."
       discord-api-timed-out-interactive: "?"

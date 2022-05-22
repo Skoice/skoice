@@ -70,7 +70,7 @@ public class SelectMenuListener extends ListenerAdapter {
                     case "language-selection":
                         this.plugin.readConfig().getFile().set(ConfigField.LANG.get(), event.getSelectedOptions().get(0).getValue());
                         this.plugin.readConfig().saveFile();
-                        this.plugin.updateConfigurationStatus(false);
+                        this.plugin.updateStatus(false);
                         this.plugin.getLang().load(LangName.valueOf(event.getSelectedOptions().get(0).getValue()));
                         new Commands(this.plugin).register(event.getGuild());
                         event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
@@ -87,7 +87,7 @@ public class SelectMenuListener extends ListenerAdapter {
                                 this.plugin.readConfig().getFile().set(ConfigField.LOBBY_ID.get(), lobbyID);
                                 this.plugin.readConfig().saveFile();
                                 new InterruptSystemTask(this.plugin.readConfig()).run();
-                                this.plugin.updateConfigurationStatus(false);
+                                this.plugin.updateStatus(false);
                             } else if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
                                 event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                             } else {
@@ -96,7 +96,7 @@ public class SelectMenuListener extends ListenerAdapter {
                                     this.plugin.readConfig().getFile().set(ConfigField.LOBBY_ID.get(), event.getSelectedOptions().get(0).getValue());
                                     this.plugin.readConfig().saveFile();
                                     new InterruptSystemTask(this.plugin.readConfig()).run();
-                                    this.plugin.updateConfigurationStatus(false);
+                                    this.plugin.updateStatus(false);
                                 }
                             }
                         }
@@ -107,13 +107,13 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.plugin.readConfig().getFile().set(ConfigField.HORIZONTAL_RADIUS.get(), 80);
                             this.plugin.readConfig().getFile().set(ConfigField.VERTICAL_RADIUS.get(), 40);
                             this.plugin.readConfig().saveFile();
-                            this.plugin.updateConfigurationStatus(false);
+                            this.plugin.updateStatus(false);
                             event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         } else if ("minigame-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                             this.plugin.readConfig().getFile().set(ConfigField.HORIZONTAL_RADIUS.get(), 40);
                             this.plugin.readConfig().getFile().set(ConfigField.VERTICAL_RADIUS.get(), 20);
                             this.plugin.readConfig().saveFile();
-                            this.plugin.updateConfigurationStatus(false);
+                            this.plugin.updateStatus(false);
                             event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         } else if ("customize".equals(event.getSelectedOptions().get(0).getValue())) {
                             event.editMessage(this.plugin.getBot().getMenus().get("mode").toMessage(true)).queue();

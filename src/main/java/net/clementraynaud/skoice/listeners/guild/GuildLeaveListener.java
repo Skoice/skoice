@@ -35,6 +35,6 @@ public class GuildLeaveListener extends ListenerAdapter {
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
         this.plugin.getBot().updateGuildUniquenessStatus();
-        this.plugin.updateConfigurationStatus(false);
+        this.plugin.updateStatus(false);
     }
 }

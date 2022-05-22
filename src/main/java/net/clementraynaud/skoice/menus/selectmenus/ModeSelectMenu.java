@@ -74,8 +74,8 @@ public class ModeSelectMenu extends SelectMenu {
                 defaultValue = ModeSelectMenu.CUSTOMIZE_ID;
                 modes.add(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
                         .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.alternative-description",
-                                this.plugin.readConfig().getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()),
-                                this.plugin.readConfig().getFile().getInt(ConfigField.VERTICAL_RADIUS.get())))
+                                this.plugin.readConfig().getFile().getString(ConfigField.HORIZONTAL_RADIUS.get()),
+                                this.plugin.readConfig().getFile().getString(ConfigField.VERTICAL_RADIUS.get())))
                         .withEmoji(MenuEmoji.PENCIL2.getEmojiFromUnicode()));
             }
             return SelectionMenu.create("mode-selection")

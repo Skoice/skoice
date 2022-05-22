@@ -49,7 +49,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
@@ -210,7 +209,7 @@ public class Bot {
         this.loadFields();
         this.loadMenus();
         this.checkForUnlinkedUsersInLobby();
-        this.plugin.updateConfigurationStatus(startup);
+        this.plugin.updateStatus(startup);
         if (sender != null && this.jda != null) {
             if (this.isReady) {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected"));

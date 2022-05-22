@@ -42,6 +42,11 @@ public class Config {
         this.file = this.plugin.getConfig();
     }
 
+    public void init() {
+        this.file.options().copyDefaults(true);
+        this.saveFile();
+    }
+
     public FileConfiguration getFile() {
         return this.file;
     }

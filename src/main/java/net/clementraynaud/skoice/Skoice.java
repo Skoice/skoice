@@ -66,13 +66,20 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onEnable() {
         new Metrics(this, Skoice.SERVICE_ID);
-        this.initializeConfig();
-        this.initializeLang();
+        this.config = new Config(this);
+        this.config.init();
+        this.lang = new Lang();
+        this.lang.load(LangName.valueOf(this.config.getFile().getString(ConfigField.LANG.get())));
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
         new OutdatedConfig(this).update();
         this.eligiblePlayers = new EligiblePlayers();
-        this.initializeBot();
-        this.initializeSkoiceCommand();
+        this.bot = new Bot(this);
+        this.bot.connect();
+        if (this.bot.getJda() != null) {
+            this.configurationMenu = new ConfigurationMenu(this);
+            this.bot.setup(this.configurationMenu, true, null);
+        }
+        new SkoiceCommand(this).init();
         new UpdateUtil(this, Skoice.RESSOURCE_ID, this.lang.getMessage("logger.warning.outdated-version")).checkVersion();
     }
 
@@ -85,33 +92,7 @@ public class Skoice extends JavaPlugin {
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));
     }
 
-    private void initializeConfig() {
-        this.config = new Config(this);
-        this.config.getFile().options().copyDefaults(true);
-        this.config.saveFile();
-    }
-
-    private void initializeLang() {
-        this.lang = new Lang();
-        this.lang.load(LangName.valueOf(this.config.getFile().getString(ConfigField.LANG.get())));
-    }
-
-    private void initializeBot() {
-        this.bot = new Bot(this);
-        this.bot.connect();
-        if (this.bot.getJda() != null) {
-            this.configurationMenu = new ConfigurationMenu(this);
-            this.bot.setup(this.configurationMenu, true, null);
-        }
-    }
-
-    private void initializeSkoiceCommand() {
-        SkoiceCommand skoiceCommand = new SkoiceCommand(this);
-        this.getCommand("skoice").setExecutor(skoiceCommand);
-        this.getCommand("skoice").setTabCompleter(skoiceCommand);
-    }
-
-    public void updateConfigurationStatus(boolean startup) {
+    public void updateStatus(boolean startup) {
         boolean wasBotReady = this.bot.isReady();
         if (!this.config.getFile().contains(ConfigField.TOKEN.get())) {
             this.bot.setReady(false);

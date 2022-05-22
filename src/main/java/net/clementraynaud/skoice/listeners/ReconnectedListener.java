@@ -38,6 +38,6 @@ public class ReconnectedListener extends ListenerAdapter {
         this.plugin.getBot().updateGuildUniquenessStatus();
         this.plugin.getBot().checkForValidLobby();
         this.plugin.getBot().checkForUnlinkedUsersInLobby();
-        this.plugin.updateConfigurationStatus(false);
+        this.plugin.updateStatus(false);
     }
 }

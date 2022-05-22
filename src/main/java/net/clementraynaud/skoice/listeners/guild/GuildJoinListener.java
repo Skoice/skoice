@@ -37,6 +37,6 @@ public class GuildJoinListener extends ListenerAdapter {
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
         new Commands(this.plugin).register(event.getGuild());
         this.plugin.getBot().updateGuildUniquenessStatus();
-        this.plugin.updateConfigurationStatus(false);
+        this.plugin.updateStatus(false);
     }
 }
