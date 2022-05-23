@@ -144,8 +144,6 @@ public class Bot {
                     this.plugin.readConfig().getFile().set(ConfigField.TOKEN.get(), null);
                     this.plugin.readConfig().saveFile();
                 }
-            } catch (IllegalStateException e) {
-
             } catch (ErrorResponseException e) {
                 if (sender == null) {
                     this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.discord-api-timed-out"));
@@ -161,8 +159,7 @@ public class Bot {
                         sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.discord-api-timed-out-link"));
                     }
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (IllegalStateException | InterruptedException ignored) {
             }
         }
     }
