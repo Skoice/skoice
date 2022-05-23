@@ -40,7 +40,7 @@ minecraft:
       account-unlinked: "%s You have &aunlinked your Minecraft account &7from Discord."
       account-not-linked: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on our Discord server to link it."
       account-already-linked: "%s You have &calready linked your Minecraft account &7to Discord. Type \"&e/skoice unlink&7\" to unlink it."
-      connected-to-proximity-voice-chat: "%s You are &anow connected &7to the proximity voice chat. For a better experience, you can enable Streamer Mode in your Discord client."
+      connected-to-proximity-voice-chat: "%s You are &anow connected &7to the proximity voice chat. For a better experience, you can enable \"&eStreamer Mode&7\" in your Discord client."
       disconnected-from-proximity-voice-chat: "%s You are &cnow disconnected &7from the proximity voice chat."
     error:
       no-parameter: "%s You have &cnot provided an argument&7. To use this command, type \"&e/skoice <%s>&7\"."
