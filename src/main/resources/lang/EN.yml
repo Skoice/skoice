@@ -40,7 +40,7 @@ minecraft:
       account-unlinked: "%s You have &aunlinked your Minecraft account &7from Discord."
       account-not-linked: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on our Discord server to link it."
       account-already-linked: "%s You have &calready linked your Minecraft account &7to Discord. Type \"&e/skoice unlink&7\" to unlink it."
-      connected-to-proximity-voice-chat: "%s You are &anow connected &7to the proximity voice chat."
+      connected-to-proximity-voice-chat: "%s You are &anow connected &7to the proximity voice chat. For a better experience, you can enable Streamer Mode in your Discord client."
       disconnected-from-proximity-voice-chat: "%s You are &cnow disconnected &7from the proximity voice chat."
     error:
       no-parameter: "%s You have &cnot provided an argument&7. To use this command, type \"&e/skoice <%s>&7\"."
@@ -162,7 +162,7 @@ discord:
       description: "This setting is currently set to %s blocks. The value must be between 1 and 1000."
     skoice-2-1:
       title: "Skoice 2.1"
-      description: "**General:**\n\u2022 Discover a whole new and intuitive configuration interface.\n\u2022 Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n\u2022 Link your accounts effortlessly thanks to our new linking process.\n\u2022 Skoice now uses slash commands.\n\n**New Features:**\n\u2022 Action bar alert\n\u2022 Channel visibility toggle\n\u2022 \"/invite\" command on Discord\n\u2022 French translation"
+      description: "**General:**\n\u2022 Discover a whole new and intuitive configuration interface.\n\u2022 Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n\u2022 Link your accounts effortlessly thanks to our new linking process.\n\u2022 Skoice now uses slash commands.\n\n**New Features:**\n\u2022 Action bar alert\n\u2022 Channel visibility toggle\n\u2022 \"/invite\" command in Discord\n\u2022 French translation"
     upcoming-features:
       title: "What's Next?"
       description: "To discover the upcoming features of Skoice, [take a look at our long-terms plans](https://github.com/carlodrift/skoice/issues/28)."
