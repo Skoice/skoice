@@ -36,11 +36,11 @@ public class InterruptSystemTask implements Task {
 
     @Override
     public void run() {
-        for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.awaitingMoves.values()) {
+        for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.getAwaitingMoves().values()) {
             value.getRight().cancel(true);
         }
         boolean isLobbySet = this.config.getLobby() != null;
-        for (Network network : Network.networks) {
+        for (Network network : Network.getNetworks()) {
             if (isLobbySet) {
                 for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
                     Member member = network.getChannel().getMembers().get(i);
@@ -54,6 +54,6 @@ public class InterruptSystemTask implements Task {
             network.getChannel().delete().queue();
             network.clear();
         }
-        Network.networks.clear();
+        Network.getNetworks().clear();
     }
 }

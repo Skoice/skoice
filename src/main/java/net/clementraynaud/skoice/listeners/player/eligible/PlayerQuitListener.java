@@ -38,7 +38,7 @@ public class PlayerQuitListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> Network.networks.stream()
+        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> Network.getNetworks().stream()
                 .filter(network -> network.contains(event.getPlayer().getUniqueId()))
                 .forEach(network -> network.remove(event.getPlayer().getUniqueId())));
     }

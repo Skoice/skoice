@@ -28,7 +28,7 @@ public class VoiceChannelDeleteListener extends ListenerAdapter {
 
     @Override
     public void onVoiceChannelDelete(@NotNull VoiceChannelDeleteEvent event) {
-        Network.networks.removeIf(network -> network.getChannel() != null
+        Network.getNetworks().removeIf(network -> network.getChannel() != null
                 && event.getChannel().getId().equals(network.getChannel().getId()));
     }
 }

@@ -274,7 +274,7 @@ public class Bot {
                             return false;
                         }
                     })
-                    .forEach(channel -> Network.networks.add(new Network(this.plugin.readConfig(), channel.getId())));
+                    .forEach(channel -> Network.getNetworks().add(new Network(this.plugin.readConfig(), channel.getId())));
         }
     }
 

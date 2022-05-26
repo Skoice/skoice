@@ -36,7 +36,7 @@ public class Network {
 
     private static final double FALLOFF = 2.5;
 
-    public static final Set<Network> networks = ConcurrentHashMap.newKeySet();
+    private static final Set<Network> networks = ConcurrentHashMap.newKeySet();
 
     private boolean initialized = false;
 
@@ -68,14 +68,13 @@ public class Network {
                         Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS),
                         Collections.emptyList())
                 .setBitrate(guild.getMaxBitrate())
-                .queue(channel -> {
-                    this.channel = channel.getId();
+                .queue(voiceChannel -> {
+                    this.channel = voiceChannel.getId();
                     this.initialized = true;
                 }, e -> Network.getNetworks().remove(this));
     }
 
-    public boolean canPlayerBeAdded(Player player) {
-        DistanceUtil distanceUtil = new DistanceUtil();
+    public boolean canPlayerBeAdded(Player player, DistanceUtil distanceUtil) {
         return this.players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
@@ -87,8 +86,7 @@ public class Network {
                         .getInt(ConfigField.HORIZONTAL_RADIUS.get()));
     }
 
-    public boolean canPlayerStayConnected(Player player) {
-        DistanceUtil distanceUtil = new DistanceUtil();
+    public boolean canPlayerStayConnected(Player player, DistanceUtil distanceUtil) {
         List<Player> matches = Arrays.asList(this.players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
