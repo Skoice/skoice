@@ -105,19 +105,4 @@ public class ConfigurationMenu {
         this.plugin.readConfig().getFile().set(ConfigField.CONFIG_MENU.get(), null);
         this.plugin.readConfig().saveFile();
     }
-
-    /*public void sendLobbyDeletedAlert(Guild guild) {
-        this.config.getFile().set(ConfigField.LOBBY_ID.get(), null);
-        this.config.saveFile();
-        this.plugin.updateConfigurationStatus(false);
-        User user = guild.retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
-        if (user != null && !user.isBot()) {
-            user.openPrivateChannel().complete()
-                    .sendMessageEmbeds(new EmbedBuilder().setTitle(MenuEmoji.GEAR + this.lang.getMessage("discord.menu.configuration.title"))
-                            .addField(MenuEmoji.WARNING + this.lang.getMessage("discord.field.incomplete-configuration.title"),
-                                    this.lang.getMessage("discord.field.incomplete-configuration.server-manager-alternative-description"), false)
-                            .setColor(Color.RED).build())
-                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
-        }
-    }*/
 }
