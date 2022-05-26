@@ -74,26 +74,26 @@ public class Network {
                 }, e -> Network.getNetworks().remove(this));
     }
 
-    public boolean canPlayerBeAdded(Player player, DistanceUtil distanceUtil) {
+    public boolean canPlayerBeAdded(Player player) {
         return this.players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> distanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
+                .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
                         .getInt(ConfigField.VERTICAL_RADIUS.get())
-                        && distanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
                         .getInt(ConfigField.HORIZONTAL_RADIUS.get()));
     }
 
-    public boolean canPlayerStayConnected(Player player, DistanceUtil distanceUtil) {
+    public boolean canPlayerStayConnected(Player player) {
         List<Player> matches = Arrays.asList(this.players.stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .filter(p -> distanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
+                .filter(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
                         .getInt(ConfigField.VERTICAL_RADIUS.get()) + Network.FALLOFF
-                        && distanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
                         .getInt(ConfigField.HORIZONTAL_RADIUS.get()) + Network.FALLOFF)
                 .toArray(Player[]::new));
         if (this.players.size() > matches.size()) {
@@ -104,9 +104,9 @@ public class Network {
                     .toArray(Player[]::new);
             for (Player otherPlayer : otherPlayers) {
                 if (matches.stream()
-                        .anyMatch(p -> distanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.config.getFile()
+                        .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.config.getFile()
                                 .getInt(ConfigField.VERTICAL_RADIUS.get()) + Network.FALLOFF
-                                && distanceUtil.getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.config.getFile()
+                                && DistanceUtil.getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.config.getFile()
                                 .getInt(ConfigField.HORIZONTAL_RADIUS.get()) + Network.FALLOFF)) {
                     return true;
                 }

@@ -43,7 +43,7 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
     public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
         if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(this.config.getCategory())
                 && event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(this.config.getCategory())) {
-            String minecraftID = new MapUtil().getKeyFromValue(this.config.getLinks(), event.getMember().getId());
+            String minecraftID = MapUtil.getKeyFromValue(this.config.getLinks(), event.getMember().getId());
             if (minecraftID == null) {
                 return;
             }

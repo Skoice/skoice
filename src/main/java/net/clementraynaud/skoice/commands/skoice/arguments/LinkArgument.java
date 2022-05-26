@@ -39,7 +39,7 @@ public class LinkArgument extends Argument {
     private final String arg;
 
     public LinkArgument(Skoice plugin, CommandSender sender, String arg) {
-        super(plugin, sender, ArgumentName.LINK.isAllowedInConsole(), ArgumentName.LINK.isRestrictedToOperators());
+        super(plugin, sender, ArgumentInfo.LINK.isAllowedInConsole(), ArgumentInfo.LINK.isRestrictedToOperators());
         this.arg = arg;
     }
 
@@ -65,7 +65,7 @@ public class LinkArgument extends Argument {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.invalid-code"));
             return;
         }
-        String discordID = new MapUtil().getKeyFromValue(LinkCommand.getDiscordIDCode(), this.arg);
+        String discordID = MapUtil.getKeyFromValue(LinkCommand.getDiscordIDCode(), this.arg);
         if (discordID == null) {
             return;
         }

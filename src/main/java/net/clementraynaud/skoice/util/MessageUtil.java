@@ -25,6 +25,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 
 public interface MessageUtil {
+
     @SuppressWarnings("deprecation")
     static void setHoverEvent(TextComponent message, String hover) {
         try {

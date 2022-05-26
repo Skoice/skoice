@@ -24,7 +24,7 @@ import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.config.Config;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.config.OutdatedConfig;
-import net.clementraynaud.skoice.lang.LangName;
+import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.listeners.channel.voice.network.VoiceChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceJoinListener;
@@ -39,7 +39,6 @@ import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
-import net.clementraynaud.skoice.util.UpdateUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
@@ -56,7 +55,7 @@ import java.util.Objects;
 public class Skoice extends JavaPlugin {
 
     private static final int SERVICE_ID = 11380;
-    public static final int RESSOURCE_ID = 82861;
+    private static final int RESSOURCE_ID = 82861;
 
     private Lang lang;
     private Config config;
@@ -64,13 +63,15 @@ public class Skoice extends JavaPlugin {
     private ConfigurationMenu configurationMenu;
     private EligiblePlayers eligiblePlayers;
 
+    private Updater updater;
+
     @Override
     public void onEnable() {
         new Metrics(this, Skoice.SERVICE_ID);
         this.config = new Config(this);
         this.config.init();
         this.lang = new Lang();
-        this.lang.load(LangName.valueOf(this.config.getFile().getString(ConfigField.LANG.get())));
+        this.lang.load(LangInfo.valueOf(this.config.getFile().getString(ConfigField.LANG.get())));
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
         new OutdatedConfig(this).update();
         this.eligiblePlayers = new EligiblePlayers();
@@ -81,7 +82,8 @@ public class Skoice extends JavaPlugin {
             this.bot.setup(this.configurationMenu, true, null);
         }
         new SkoiceCommand(this).init();
-        new UpdateUtil(this, Skoice.RESSOURCE_ID, this.lang.getMessage("logger.warning.outdated-version")).checkVersion();
+        this.updater = new Updater(this, Skoice.RESSOURCE_ID);
+        this.updater.checkVersion();
     }
 
     @Override
@@ -205,5 +207,9 @@ public class Skoice extends JavaPlugin {
 
     public EligiblePlayers getEligiblePlayers() {
         return this.eligiblePlayers;
+    }
+
+    public Updater getUpdater() {
+        return this.updater;
     }
 }

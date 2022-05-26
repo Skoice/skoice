@@ -46,10 +46,8 @@ import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.clementraynaud.skoice.util.MessageUtil;
-import net.clementraynaud.skoice.util.UpdateUtil;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
@@ -203,7 +201,7 @@ public class Bot {
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                         Bukkit.getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
-                                new UpdateUtil(this.plugin, Skoice.RESSOURCE_ID, this.plugin.getLang().getMessage("logger.warning.outdated-version"))::checkVersion,
+                                this.plugin.getUpdater()::checkVersion,
                                 Bot.TICKS_BETWEEN_VERSION_CHECKING,
                                 Bot.TICKS_BETWEEN_VERSION_CHECKING
                         ),
@@ -249,7 +247,7 @@ public class Bot {
         VoiceChannel lobby = this.plugin.readConfig().getLobby();
         if (lobby != null) {
             for (Member member : lobby.getMembers()) {
-                String minecraftID = new MapUtil().getKeyFromValue(this.plugin.readConfig().getLinks(), member.getId());
+                String minecraftID = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), member.getId());
                 if (minecraftID == null) {
                     member.getUser().openPrivateChannel().complete()
                             .sendMessage(new Menu(this.plugin, "linking-process",

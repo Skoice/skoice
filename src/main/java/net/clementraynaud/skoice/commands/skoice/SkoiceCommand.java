@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.commands.skoice;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentName;
+import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.ConfigureArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.TokenArgument;
@@ -56,28 +56,28 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("minecraft.chat.error.no-parameter",
-                                String.join("/", ArgumentName.getList(sender.isOp()))));
+                                String.join("/", ArgumentInfo.getList(sender.isOp()))));
             } else {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("minecraft.chat.error.no-parameter",
-                                String.join("/", ArgumentName.getConsoleAllowedList())));
+                                String.join("/", ArgumentInfo.getConsoleAllowedList())));
             }
             return true;
         }
-        if (ArgumentName.get(args[0]) == null) {
+        if (ArgumentInfo.get(args[0]) == null) {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("minecraft.chat.error.invalid-parameter",
-                                String.join("/", ArgumentName.getList(sender.isOp()))));
+                                String.join("/", ArgumentInfo.getList(sender.isOp()))));
             } else {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("minecraft.chat.error.invalid-parameter",
-                                String.join("/", ArgumentName.getConsoleAllowedList())));
+                                String.join("/", ArgumentInfo.getConsoleAllowedList())));
             }
             return true;
         }
         String arg = args.length > 1 ? args[1] : "";
-        switch (ArgumentName.get(args[0])) {
+        switch (ArgumentInfo.get(args[0])) {
             case CONFIGURE:
                 new ConfigureArgument(this.plugin, sender).run();
                 break;
@@ -100,7 +100,7 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (args.length == 1) {
-            return ArgumentName.getList(sender.isOp()).stream()
+            return ArgumentInfo.getList(sender.isOp()).stream()
                     .filter(arg -> arg.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }

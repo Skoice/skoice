@@ -22,7 +22,7 @@ package net.clementraynaud.skoice.listeners.interaction;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.Commands;
 import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.lang.LangName;
+import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
@@ -71,7 +71,7 @@ public class SelectMenuListener extends ListenerAdapter {
                         this.plugin.readConfig().getFile().set(ConfigField.LANG.get(), event.getSelectedOptions().get(0).getValue());
                         this.plugin.readConfig().saveFile();
                         this.plugin.updateStatus(false);
-                        this.plugin.getLang().load(LangName.valueOf(event.getSelectedOptions().get(0).getValue()));
+                        this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                         new Commands(this.plugin).register(event.getGuild());
                         event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         break;

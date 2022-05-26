@@ -22,14 +22,17 @@ package net.clementraynaud.skoice.util;
 import org.bukkit.Location;
 import org.bukkit.util.NumberConversions;
 
-public class DistanceUtil {
+public final class DistanceUtil {
 
-    public double getHorizontalDistance(Location location1, Location location2) {
+    private DistanceUtil() {
+    }
+
+    public static double getHorizontalDistance(Location location1, Location location2) {
         return Math.sqrt(NumberConversions.square(location1.getX() - location2.getX())
                 + NumberConversions.square(location1.getZ() - location2.getZ()));
     }
 
-    public double getVerticalDistance(Location location1, Location location2) {
+    public static double getVerticalDistance(Location location1, Location location2) {
         return Math.abs(location1.getY() - location2.getY());
     }
 }

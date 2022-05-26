@@ -34,13 +34,13 @@ import java.util.Map;
 
 public class ButtonClickListener extends ListenerAdapter {
 
+    private static final Map<String, String> discordIDAxis = new HashMap<>();
+
     private final Skoice plugin;
 
     public ButtonClickListener(Skoice plugin) {
         this.plugin = plugin;
     }
-
-    public static final Map<String, String> discordIDAxis = new HashMap<>();
 
     @Override
     public void onButtonClick(ButtonClickEvent event) {
@@ -81,5 +81,9 @@ public class ButtonClickListener extends ListenerAdapter {
                     Collections.singleton(this.plugin.getBot().getFields().get("access-denied")))
                     .toMessage()).setEphemeral(true).queue();
         }
+    }
+
+    public static Map<String, String> getDiscordIDAxis() {
+        return ButtonClickListener.discordIDAxis;
     }
 }

@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public enum ArgumentName {
+public enum ArgumentInfo {
     CONFIGURE(false, true),
     TOKEN(true, true),
     LINK(false, false),
@@ -32,7 +32,7 @@ public enum ArgumentName {
     private final boolean allowedInConsole;
     private final boolean restrictedToOperators;
 
-    ArgumentName(boolean allowedInConsole, boolean restrictedToOperators) {
+    ArgumentInfo(boolean allowedInConsole, boolean restrictedToOperators) {
         this.allowedInConsole = allowedInConsole;
         this.restrictedToOperators = restrictedToOperators;
     }
@@ -45,15 +45,15 @@ public enum ArgumentName {
         return this.restrictedToOperators;
     }
 
-    public static ArgumentName get(String option) {
-        return Stream.of(ArgumentName.values())
+    public static ArgumentInfo get(String option) {
+        return Stream.of(ArgumentInfo.values())
                 .filter(value -> value.toString().equalsIgnoreCase(option))
                 .findFirst()
                 .orElse(null);
     }
 
     public static Set<String> getList(boolean restrictedToOperators) {
-        return Stream.of(ArgumentName.values())
+        return Stream.of(ArgumentInfo.values())
                 .filter(arg -> arg.restrictedToOperators == restrictedToOperators || restrictedToOperators)
                 .map(Enum::toString)
                 .map(String::toLowerCase)
@@ -61,7 +61,7 @@ public enum ArgumentName {
     }
 
     public static Set<String> getConsoleAllowedList() {
-        return Stream.of(ArgumentName.values())
+        return Stream.of(ArgumentInfo.values())
                 .filter(arg -> arg.allowedInConsole)
                 .map(Enum::toString)
                 .map(String::toLowerCase)

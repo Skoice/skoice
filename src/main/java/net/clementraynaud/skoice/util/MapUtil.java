@@ -22,9 +22,12 @@ package net.clementraynaud.skoice.util;
 import java.util.Map;
 import java.util.Objects;
 
-public class MapUtil {
+public final class MapUtil {
 
-    public String getKeyFromValue(Map<String, String> map, String value) {
+    private MapUtil() {
+    }
+
+    public static String getKeyFromValue(Map<String, String> map, String value) {
         for (Map.Entry<String, String> entry : map.entrySet()) {
             if (Objects.equals(value, entry.getValue())) {
                 return entry.getKey();

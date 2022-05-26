@@ -44,7 +44,7 @@ public class UnlinkCommand extends ListenerAdapter {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if ("unlink".equals(event.getName())) {
-            String minecraftID = new MapUtil().getKeyFromValue(this.plugin.readConfig().getLinks(), event.getUser().getId());
+            String minecraftID = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), event.getUser().getId());
             if (minecraftID == null) {
                 event.reply(new Menu(this.plugin, "linking-process",
                         Collections.singleton(this.plugin.getBot().getFields().get("account-not-linked")),

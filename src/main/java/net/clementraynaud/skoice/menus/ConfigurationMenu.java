@@ -82,7 +82,7 @@ public class ConfigurationMenu {
                     .getString(ConfigField.CONFIG_MENU.get() + "." + ConfigField.MESSAGE_ID.get())).complete();
         } catch (ErrorResponseException e) {
             this.clearConfig();
-            ButtonClickListener.discordIDAxis.clear();
+            ButtonClickListener.getDiscordIDAxis().clear();
         }
         return null;
     }

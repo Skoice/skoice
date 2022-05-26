@@ -49,7 +49,7 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
         if (!event.getChannelJoined().equals(this.plugin.readConfig().getLobby())) {
             return;
         }
-        String minecraftID = new MapUtil().getKeyFromValue(this.plugin.readConfig().getLinks(), event.getMember().getId());
+        String minecraftID = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), event.getMember().getId());
         if (minecraftID == null) {
             event.getMember().getUser().openPrivateChannel().complete()
                     .sendMessage(new Menu(this.plugin, "linking-process",

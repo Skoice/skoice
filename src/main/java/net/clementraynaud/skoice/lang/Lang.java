@@ -31,13 +31,13 @@ public class Lang {
     private YamlConfiguration englishMessages;
     private YamlConfiguration messages = new YamlConfiguration();
 
-    public void load(LangName langName) {
+    public void load(LangInfo langInfo) {
         InputStreamReader englishLangFile = new InputStreamReader(this.getClass().getClassLoader()
-                .getResourceAsStream("lang/" + LangName.EN + ".yml"));
+                .getResourceAsStream("lang/" + LangInfo.EN + ".yml"));
         this.englishMessages = YamlConfiguration.loadConfiguration(englishLangFile);
-        if (langName != LangName.EN) {
+        if (langInfo != LangInfo.EN) {
             InputStreamReader langFile = new InputStreamReader(this.getClass().getClassLoader()
-                    .getResourceAsStream("lang/" + langName + ".yml"));
+                    .getResourceAsStream("lang/" + langInfo + ".yml"));
             this.messages = YamlConfiguration.loadConfiguration(langFile);
         }
     }

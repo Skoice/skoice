@@ -37,7 +37,7 @@ import java.util.Collections;
 public class UnlinkArgument extends Argument {
 
     public UnlinkArgument(Skoice plugin, CommandSender sender) {
-        super(plugin, sender, ArgumentName.UNLINK.isAllowedInConsole(), ArgumentName.UNLINK.isRestrictedToOperators());
+        super(plugin, sender, ArgumentInfo.UNLINK.isAllowedInConsole(), ArgumentInfo.UNLINK.isRestrictedToOperators());
     }
 
     @Override

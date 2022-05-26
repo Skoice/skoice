@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.util;
+package net.clementraynaud.skoice;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,22 +28,20 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
-public class UpdateUtil {
+public class Updater {
 
-    private final JavaPlugin plugin;
+    private final Skoice plugin;
     private final int resourceId;
-    private final String updateMessage;
 
-    public UpdateUtil(JavaPlugin plugin, int resourceId, String updateMessage) {
+    public Updater(Skoice plugin, int resourceId) {
         this.plugin = plugin;
         this.resourceId = resourceId;
-        this.updateMessage = updateMessage;
     }
 
     public void checkVersion() {
         this.getVersion(version -> {
             if (!this.plugin.getDescription().getVersion().equals(version)) {
-                this.plugin.getLogger().warning(String.format(this.updateMessage,
+                this.plugin.getLogger().warning(String.format(this.plugin.getLang().getMessage("logger.warning.outdated-version"),
                         this.plugin.getDescription().getVersion(), version));
             }
         });

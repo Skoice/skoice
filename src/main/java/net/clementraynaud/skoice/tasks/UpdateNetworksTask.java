@@ -45,7 +45,6 @@ public class UpdateNetworksTask implements Task {
     private static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
 
     private final ReentrantLock lock = new ReentrantLock();
-    private final DistanceUtil distanceUtil = new DistanceUtil();
 
     private final Skoice plugin;
 
@@ -99,7 +98,7 @@ public class UpdateNetworksTask implements Task {
             }
             Map<String, String> links = new HashMap<>(this.plugin.readConfig().getLinks());
             for (Member member : membersInLobby) {
-                String minecraftID = new MapUtil().getKeyFromValue(links, member.getId());
+                String minecraftID = MapUtil.getKeyFromValue(links, member.getId());
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
                 Network playerNetwork = minecraftID != null ? Network.getNetworks().stream()
                         .filter(n -> n.contains(UUID.fromString(minecraftID)))
@@ -147,7 +146,7 @@ public class UpdateNetworksTask implements Task {
 
     private void updateNetworksAroundPlayer(Player player) {
         Network.getNetworks().stream()
-                .filter(network -> network.canPlayerBeAdded(player, this.distanceUtil))
+                .filter(network -> network.canPlayerBeAdded(player))
                 .reduce((network1, network2) -> network1.size() > network2.size()
                         ? network1.engulf(network2)
                         : network2.engulf(network1))
@@ -155,7 +154,7 @@ public class UpdateNetworksTask implements Task {
                 .ifPresent(network -> network.add(player.getUniqueId()));
         Network.getNetworks().stream()
                 .filter(network -> network.contains(player.getUniqueId()))
-                .filter(network -> !network.canPlayerStayConnected(player, this.distanceUtil))
+                .filter(network -> !network.canPlayerStayConnected(player))
                 .forEach(network -> {
                     network.remove(player.getUniqueId());
                     if (network.size() == 1) {
@@ -168,15 +167,15 @@ public class UpdateNetworksTask implements Task {
         try {
             Network.getNetworks().stream()
                     .filter(network -> network.contains(player.getUniqueId()))
-                    .filter(network -> network.canPlayerStayConnected(player, this.distanceUtil))
-                    .filter(network -> !network.canPlayerBeAdded(player, this.distanceUtil))
+                    .filter(network -> network.canPlayerStayConnected(player))
+                    .filter(network -> !network.canPlayerBeAdded(player))
                     .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(this.plugin.getLang().getMessage("minecraft.action-bar.alert"))));
         } catch (NoSuchMethodError ignored) {
         }
     }
 
     private void createNetworkIfNeeded(Player player) {
-        Set<Player> alivePlayers = new PlayerUtil().getOnlinePlayers().stream()
+        Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers().stream()
                 .filter(p -> !p.isDead())
                 .collect(Collectors.toSet());
         Category category = this.plugin.readConfig().getCategory();
@@ -184,8 +183,8 @@ public class UpdateNetworksTask implements Task {
                 .filter(p -> Network.getNetworks().stream().noneMatch(network -> network.contains(p)))
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .filter(p -> this.distanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.readConfig().getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get())
-                        && this.distanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.readConfig().getFile().getInt(ConfigField.VERTICAL_RADIUS.get()))
+                .filter(p -> DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.readConfig().getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get())
+                        && DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.readConfig().getFile().getInt(ConfigField.VERTICAL_RADIUS.get()))
                 .filter(p -> {
                     Member m = this.plugin.readConfig().getMember(p.getUniqueId());
                     return m != null && m.getVoiceState() != null
