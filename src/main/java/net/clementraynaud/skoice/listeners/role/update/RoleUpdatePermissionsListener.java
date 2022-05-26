@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.listeners.role.update;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.role.update.RoleUpdatePermissionsEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -39,8 +38,6 @@ public class RoleUpdatePermissionsListener extends ListenerAdapter {
             if (event.getOldPermissions().contains(Permission.ADMINISTRATOR)
                     && !event.getNewPermissions().contains(Permission.ADMINISTRATOR)
                     && !event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                new InterruptSystemTask(this.plugin.readConfig()).run();
-                this.plugin.getConfigurationMenu().deleteMessage();
                 this.plugin.updateStatus(false);
             } else if (!event.getOldPermissions().contains(Permission.ADMINISTRATOR)
                     && event.getNewPermissions().contains(Permission.ADMINISTRATOR)

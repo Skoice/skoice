@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.listeners.guild.member;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -37,8 +36,6 @@ public class GuildMemberRoleRemoveListener extends ListenerAdapter {
     public void onGuildMemberRoleRemove(GuildMemberRoleRemoveEvent event) {
         if (event.getMember().equals(event.getGuild().getSelfMember())
                 && !event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-            new InterruptSystemTask(this.plugin.readConfig()).run();
-            this.plugin.getConfigurationMenu().deleteMessage();
             this.plugin.updateStatus(false);
         }
     }
