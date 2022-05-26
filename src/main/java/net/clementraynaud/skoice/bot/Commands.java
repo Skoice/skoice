@@ -38,8 +38,11 @@ public class Commands {
     public void register(Guild guild) {
         guild.updateCommands().addCommands(this.getCommands())
                 .queue(null, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
-                        e -> this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
-                                this.plugin.getBot().getJda().getSelfUser().getId()))));
+                        e -> {
+                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
+                            this.plugin.getBot().getJda().getSelfUser().getApplicationId()));
+                    this.plugin.getBot().setReady(false);
+                        }));
     }
 
     private Set<CommandData> getCommands() {

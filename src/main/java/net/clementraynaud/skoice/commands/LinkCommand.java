@@ -55,7 +55,7 @@ public class LinkCommand extends ListenerAdapter {
     public void onSlashCommand(SlashCommandEvent event) {
         if ("link".equals(event.getName())) {
             if (!this.plugin.getBot().isReady()) {
-                event.reply(new Menu(this.plugin, "configuration",
+                event.reply(new Menu(this.plugin, "empty-configuration",
                                 Collections.singleton(this.plugin.getBot().getFields().get("incomplete-configuration")),
                                 MenuType.ERROR)
                                 .toMessage())

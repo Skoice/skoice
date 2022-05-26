@@ -7,11 +7,13 @@ logger:
   warning:
     outdated-version: "You are using an outdated version (%s). Download the latest version (%s) here: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
     no-token: "Token not set. Join your Minecraft server to set up Skoice."
+    no-guild: "Your bot is not on a Discord server. Open this link to invite it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     multiple-guilds: "Your bot is on multiple Discord servers. Type \"/configure\" on your Discord server to choose one."
     no-lobby-id: "Lobby not set. Type \"/configure\" on your Discord server to set up Skoice."
     no-radius: "Radius not set. Type \"/configure\" on your Discord server to set up Skoice."
   error:
-    missing-access: "You did not grant your bot the permission to register commands on your Discord server (\"applications.commands\"). Click here to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "You did not grant your bot the permission to register commands on your Discord server. Open this link to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."
     discord-api-timed-out: "Discord seems to be experiencing an outage. Find more information here: https://discordstatus.com."
   exception:
@@ -62,11 +64,16 @@ discord:
     footer: "The proximity voice chat is provided by Skoice."
     configuration:
       title: "Configuration"
+    empty-configuration:
+      title: "Configuration"
     server:
       title: "Server"
       description: "In order to work properly, your bot cannot be present on multiple Discord servers. Select the server where you want the proximity voice chat to be active. Your bot will automatically leave the other ones."
       select-menu:
         placeholder: "Please select a server."
+    permissions:
+      title: "Permissions"
+      description: "In order to work properly, your bot must have the \"Administrator\" permission on your Discord server."
     lobby:
       title: "Lobby"
       description: "Select the channel players have to join to use the proximity voice chat. It must be in a category."
@@ -106,8 +113,6 @@ discord:
     language:
       title: "Language"
       description: "Choose the language used to display messages."
-      select-menu:
-        placeholder: "Please select a language."
     action-bar-alert:
       title: "Action Bar Alert"
       description: "Toggle the alert sent to players who are moving away before they get disconnected from their current voice channel."
@@ -132,10 +137,10 @@ discord:
       description: "Skoice is not configured correctly. Please contact an administrator."
     incomplete-configuration-server-manager:
       title: "Incomplete Configuration"
-      server-manager-description: "Type `/configure` on your Discord server to complete the configuration and use Skoice."
+      description: "Type `/configure` on your Discord server to complete the configuration and use Skoice."
     incomplete-configuration-alternative-server-manager:
       title: "Incomplete Configuration"
-      server-manager-alternative-description: "You have either moved or deleted the lobby.\nType `/configure` on your Discord server to complete the configuration and use Skoice."
+      description: "You have either moved or deleted the lobby.\nType `/configure` on your Discord server to complete the configuration and use Skoice."
     download-skoice:
       title: "Download Skoice"
       description: "[Get the plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server."

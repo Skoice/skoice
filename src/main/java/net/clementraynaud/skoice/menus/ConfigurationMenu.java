@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.menus;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -38,6 +39,8 @@ public class ConfigurationMenu {
     public Message getMessage() {
         if (this.plugin.getBot().isOnMultipleGuilds()) {
             return this.plugin.getBot().getMenus().get("server").toMessage();
+        } else if (!this.plugin.getBot().getJda().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+            return this.plugin.getBot().getMenus().get("permissions").toMessage();
         } else if (!this.plugin.readConfig().getFile().contains(ConfigField.LOBBY_ID.get())) {
             return this.plugin.getBot().getMenus().get("lobby").toMessage();
         } else if (!this.plugin.readConfig().getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())

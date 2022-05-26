@@ -17,29 +17,29 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.message.priv;
+package net.clementraynaud.skoice.listeners.guild.member;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.menus.Menu;
-import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
+import net.clementraynaud.skoice.tasks.InterruptSystemTask;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.util.Collections;
-
-public class PrivateMessageReceivedListener extends ListenerAdapter {
+public class GuildMemberRoleRemoveListener extends ListenerAdapter {
 
     private final Skoice plugin;
 
-    public PrivateMessageReceivedListener(Skoice plugin) {
+    public GuildMemberRoleRemoveListener(Skoice plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
-        if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getApplicationId())) {
-            event.getMessage().reply(new Menu(this.plugin, "error",
-                    Collections.singleton(this.plugin.getBot().getFields().get("illegal-interaction")))
-                    .toMessage()).queue();
+    public void onGuildMemberRoleRemove(GuildMemberRoleRemoveEvent event) {
+        if (event.getMember().equals(event.getGuild().getSelfMember())
+                && !event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+            new InterruptSystemTask(this.plugin.readConfig()).run();
+            this.plugin.getConfigurationMenu().deleteMessage();
+            this.plugin.updateStatus(false);
         }
     }
 }

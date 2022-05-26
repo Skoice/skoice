@@ -7,6 +7,9 @@ startup:
   server:
     emoji: file_cabinet
     type: default
+  permissions:
+    emoji: card_box
+    type: default
   lobby:
     emoji: sound
     type: default
@@ -39,8 +42,6 @@ startup:
     emoji: wrench
     type: default
     style: secondary
-    selectMenu: null
-    fields: null
     parent: configuration
   language:
     emoji: globe_with_meridians
@@ -75,7 +76,7 @@ startup:
       - troubleshooting
       - contribute
 
-configuration:
+empty-configuration:
   emoji: gear
 linking-process:
   emoji: link

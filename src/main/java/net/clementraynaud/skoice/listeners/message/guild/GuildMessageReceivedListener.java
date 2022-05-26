@@ -36,7 +36,7 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String discordID = event.getAuthor().getId();
-        if (discordID.equals(event.getJDA().getSelfUser().getId())) {
+        if (discordID.equals(event.getJDA().getSelfUser().getApplicationId())) {
             if (!event.getMessage().isEphemeral()) {
                 this.plugin.getConfigurationMenu().storeInConfig(event.getMessage());
             }

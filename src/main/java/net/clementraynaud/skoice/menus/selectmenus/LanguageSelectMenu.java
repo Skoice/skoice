@@ -48,14 +48,8 @@ public class LanguageSelectMenu extends SelectMenu {
                             : null)
                     .withEmoji(option.getEmoji()));
         }
-        if (this.plugin.getBot().isReady()) {
-            return SelectionMenu.create("language-selection")
-                    .addOptions(options)
-                    .setDefaultValues(Collections.singleton(this.plugin.readConfig().getFile().getString(ConfigField.LANG.get()))).build();
-        } else {
-            return SelectionMenu.create("language-selection")
-                    .setPlaceholder(super.lang.getMessage("discord.menu.language.select-menu.placeholder"))
-                    .addOptions(options).build();
-        }
+        return SelectionMenu.create("language-selection")
+                .addOptions(options)
+                .setDefaultValues(Collections.singleton(this.plugin.readConfig().getFile().getString(ConfigField.LANG.get()))).build();
     }
 }

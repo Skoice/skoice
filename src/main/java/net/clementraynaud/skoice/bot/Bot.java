@@ -23,7 +23,10 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleAddListener;
+import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleRemoveListener;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
+import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.menus.Menu;
@@ -46,6 +49,7 @@ import net.clementraynaud.skoice.util.MessageUtil;
 import net.clementraynaud.skoice.util.UpdateUtil;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
@@ -173,6 +177,9 @@ public class Bot {
         this.jda.addEventListener(new ReconnectedListener(this.plugin),
                 new GuildJoinListener(this.plugin),
                 new GuildLeaveListener(this.plugin),
+                new GuildMemberRoleAddListener(this.plugin),
+                new GuildMemberRoleRemoveListener(this.plugin),
+                new RoleUpdatePermissionsListener(this.plugin),
                 new PrivateMessageReceivedListener(this.plugin),
                 new GuildMessageReceivedListener(this.plugin),
                 new GuildMessageDeleteListener(configurationMenu),

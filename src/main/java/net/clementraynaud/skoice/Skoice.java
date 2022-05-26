@@ -40,6 +40,7 @@ import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.util.UpdateUtil;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
@@ -94,23 +95,26 @@ public class Skoice extends JavaPlugin {
 
     public void updateStatus(boolean startup) {
         boolean wasBotReady = this.bot.isReady();
+        this.bot.setReady(false);
         if (!this.config.getFile().contains(ConfigField.TOKEN.get())) {
-            this.bot.setReady(false);
             this.getLogger().warning(this.lang.getMessage("logger.warning.no-token"));
-        } else if (this.bot.getJda() == null) {
-            this.bot.setReady(false);
-        } else if (this.bot.isOnMultipleGuilds()) {
-            this.bot.setReady(false);
-            this.getLogger().warning(this.lang.getMessage("logger.warning.multiple-guilds"));
-        } else if (!this.config.getFile().contains(ConfigField.LOBBY_ID.get())) {
-            this.bot.setReady(false);
-            this.getLogger().warning(this.lang.getMessage("logger.warning.no-lobby-id"));
-        } else if (!this.config.getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())
-                || !this.config.getFile().contains(ConfigField.VERTICAL_RADIUS.get())) {
-            this.bot.setReady(false);
-            this.getLogger().warning(this.lang.getMessage("logger.warning.no-radius"));
-        } else {
-            this.bot.setReady(true);
+        } else if (this.bot.getJda() != null) {
+            if (this.bot.getJda().getGuilds().isEmpty()) {
+                this.getLogger().warning(this.lang.getMessage("logger.warning.no-guild",
+                        this.bot.getJda().getSelfUser().getApplicationId()));
+            } else if (this.bot.isOnMultipleGuilds()) {
+                this.getLogger().warning(this.lang.getMessage("logger.warning.multiple-guilds"));
+            } else if (!this.bot.getJda().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+                this.getLogger().severe(this.lang.getMessage("logger.error.missing-permission",
+                        this.bot.getJda().getSelfUser().getApplicationId()));
+            } else if (!this.config.getFile().contains(ConfigField.LOBBY_ID.get())) {
+                this.getLogger().warning(this.lang.getMessage("logger.warning.no-lobby-id"));
+            } else if (!this.config.getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())
+                    || !this.config.getFile().contains(ConfigField.VERTICAL_RADIUS.get())) {
+                this.getLogger().warning(this.lang.getMessage("logger.warning.no-radius"));
+            } else {
+                this.bot.setReady(true);
+            }
         }
         this.updateActivity();
         this.updateListeners(startup, wasBotReady);
@@ -149,7 +153,7 @@ public class Skoice extends JavaPlugin {
             Message message = this.configurationMenu.retrieveMessage();
             if (message != null && message.getInteraction() != null) {
                 message.getInteraction().getUser().openPrivateChannel().complete()
-                        .sendMessage(new Menu(this, "configuration",
+                        .sendMessage(new Menu(this, "empty-configuration",
                                 Collections.singleton(this.bot.getFields().get("configuration-complete")),
                                 MenuType.SUCCESS)
                                 .toMessage())

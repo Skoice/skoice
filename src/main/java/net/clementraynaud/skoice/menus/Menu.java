@@ -150,9 +150,8 @@ public class Menu {
         if (this.selectMenu != null && this.selectMenu.isRefreshable()) {
             buttons.add(Button.primary(this.name, "⟳ " + this.plugin.getLang().getMessage("discord.button-label.refresh")));
         }
-        if ("mode".equals(this.name)) {
-            buttons.addAll(this.getModeAdditionalButtons(customizeRadius));
-        } else {
+        buttons.addAll(this.getAdditionalButtons(customizeRadius));
+        if (!"mode".equals(this.name)) {
             for (Menu menu : this.plugin.getBot().getMenus().values()) {
                 if (menu.parent != null && menu.parent.equals(this.name)) {
                     buttons.add(menu.style == MenuStyle.PRIMARY
@@ -168,18 +167,28 @@ public class Menu {
                 buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID, this.plugin.getLang().getMessage("discord.button-label.close"))
                         .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()));
             } else {
-                Menu languageMenu = this.plugin.getBot().getMenus().get("language");
-                buttons.addAll(Arrays.asList(Button.secondary(languageMenu.name, languageMenu.getTitle(false))
-                                .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.getEmojiFromUnicode()),
-                        Button.secondary(Menu.CLOSE_BUTTON_ID, this.plugin.getLang().getMessage("discord.button-label.configure-later"))
-                                .withEmoji(MenuEmoji.CLOCK3.getEmojiFromUnicode())));
+                if (!"language".equals(this.name)) {
+                    Menu languageMenu = this.plugin.getBot().getMenus().get("language");
+                    buttons.add(Button.secondary(languageMenu.name, languageMenu.getTitle(false))
+                            .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.getEmojiFromUnicode()));
+                }
+                buttons.add(Button.secondary(Menu.CLOSE_BUTTON_ID, this.plugin.getLang().getMessage("discord.button-label.configure-later"))
+                        .withEmoji(MenuEmoji.CLOCK3.getEmojiFromUnicode()));
             }
         }
         return buttons;
     }
 
-    private List<Button> getModeAdditionalButtons(boolean customizeRadius) {
-        if (this.isModeCustomizable(customizeRadius)) {
+    private List<Button> getAdditionalButtons(boolean customizeRadius) {
+        if ("empty-configuration".equals(this.name) && this.type == MenuType.ERROR) {
+            return Collections.singletonList(Button.primary("resume-configuration", "Resume Configuration")
+                    .withEmoji(MenuEmoji.ARROW_FORWARD.getEmojiFromUnicode()));
+        } else if ("permissions".equals(this.name)) {
+            return Collections.singletonList(Button.link("https://discord.com/api/oauth2/authorize?client_id="
+                    + this.plugin.getBot().getJda().getSelfUser().getApplicationId()
+                    + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
+                    .withEmoji(this.emoji.getEmojiFromUnicode()));
+        } else if ("mode".equals(this.name) && this.isModeCustomizable(customizeRadius)) {
             Menu horizontalRadiusMenu = this.plugin.getBot().getMenus().get("horizontal-radius");
             Menu verticalRadiusMenu = this.plugin.getBot().getMenus().get("vertical-radius");
             return Arrays.asList(Button.primary(horizontalRadiusMenu.name, horizontalRadiusMenu.getTitle(false))
