@@ -20,17 +20,15 @@
 package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
 public class UpdateVoiceStateTask implements Task {
-
-    private static final Set<Member> mutedUsers = ConcurrentHashMap.newKeySet();
 
     private final Config config;
     private final Member member;
@@ -55,10 +53,19 @@ public class UpdateVoiceStateTask implements Task {
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.config.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
-                UpdateVoiceStateTask.mutedUsers.add(this.member);
+                List<String> mutedUsers = this.config.getFile().getStringList(ConfigField.MUTED_USERS.get());
+                mutedUsers.add(this.member.getId());
+                this.config.getFile().set(ConfigField.MUTED_USERS.get(), mutedUsers);
+                this.config.saveFile();
             }
-        } else if (!isLobby && UpdateVoiceStateTask.mutedUsers.remove(this.member)) {
-            this.member.mute(false).queue();
+        } else if (!isLobby) {
+            List<String> mutedUsers = this.config.getFile().getStringList(ConfigField.MUTED_USERS.get());
+            if (mutedUsers.contains(this.member.getId())) {
+                this.member.mute(false).queue();
+                mutedUsers.remove(this.member.getId());
+                this.config.getFile().set(ConfigField.MUTED_USERS.get(), mutedUsers);
+                this.config.saveFile();
+            }
         }
     }
 }

@@ -28,6 +28,7 @@ public enum ConfigField {
     ACTION_BAR_ALERT,
     CHANNEL_VISIBILITY,
     LINKS,
+    MUTED_USERS,
     CONFIG_MENU,
     MESSAGE_ID,
     TEXT_CHANNEL_ID,
