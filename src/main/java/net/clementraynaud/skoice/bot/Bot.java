@@ -44,6 +44,7 @@ import net.clementraynaud.skoice.listeners.message.priv.PrivateMessageReceivedLi
 import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.dv8tion.jda.api.JDA;
@@ -169,6 +170,7 @@ public class Bot {
         this.loadFields();
         this.loadMenus();
         this.checkForUnlinkedUsersInLobby();
+        this.checkForUnmutedUsersInLobby();
         this.plugin.updateStatus(startup);
         if (sender != null && this.jda != null) {
             if (this.isReady) {
@@ -236,6 +238,15 @@ public class Bot {
                                     .toMessage())
                             .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 }
+            }
+        }
+    }
+
+    public void checkForUnmutedUsersInLobby() {
+        VoiceChannel lobby = this.plugin.readConfig().getLobby();
+        if (lobby != null) {
+            for (Member member : lobby.getMembers()) {
+                new UpdateVoiceStateTask(this.plugin.readConfig(), member, lobby).run();
             }
         }
     }

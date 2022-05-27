@@ -49,7 +49,7 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
             return;
         }
         OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
-        if (player.isOnline()) {
+        if (player.isOnline() && player.getPlayer() != null) {
             Network.getNetworks().stream()
                     .filter(network -> network.contains(player.getPlayer()))
                     .forEach(network -> network.remove(player.getPlayer()));

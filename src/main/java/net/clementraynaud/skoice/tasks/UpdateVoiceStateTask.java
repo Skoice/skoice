@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class UpdateVoiceStateTask implements Task {
 
-    private final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
+    private static final Set<Member> mutedUsers = ConcurrentHashMap.newKeySet();
 
     private final Config config;
     private final Member member;
@@ -55,10 +55,14 @@ public class UpdateVoiceStateTask implements Task {
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.config.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
-                this.mutedUsers.add(this.member.getId());
+                UpdateVoiceStateTask.mutedUsers.add(this.member);
             }
-        } else if (!isLobby && this.mutedUsers.remove(this.member.getId())) {
+        } else if (!isLobby && UpdateVoiceStateTask.mutedUsers.remove(this.member)) {
             this.member.mute(false).queue();
         }
+    }
+
+    public static Set<Member> getMutedUsers() {
+        return UpdateVoiceStateTask.mutedUsers;
     }
 }
