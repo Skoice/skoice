@@ -27,7 +27,6 @@ import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleAddListen
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleRemoveListener;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
-import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.listeners.interaction.SelectMenuListener;
@@ -170,7 +169,7 @@ public class Bot {
         this.loadFields();
         this.loadMenus();
         this.checkForUnlinkedUsersInLobby();
-        this.checkForUnmutedUsersInLobby();
+        this.muteUsersInLobby();
         this.plugin.updateStatus(startup);
         if (sender != null && this.jda != null) {
             if (this.isReady) {
@@ -242,7 +241,7 @@ public class Bot {
         }
     }
 
-    public void checkForUnmutedUsersInLobby() {
+    public void muteUsersInLobby() {
         VoiceChannel lobby = this.plugin.readConfig().getLobby();
         if (lobby != null) {
             for (Member member : lobby.getMembers()) {

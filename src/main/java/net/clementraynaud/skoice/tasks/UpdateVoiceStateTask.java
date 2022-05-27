@@ -61,8 +61,4 @@ public class UpdateVoiceStateTask implements Task {
             this.member.mute(false).queue();
         }
     }
-
-    public static Set<Member> getMutedUsers() {
-        return UpdateVoiceStateTask.mutedUsers;
-    }
 }
