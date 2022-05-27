@@ -50,6 +50,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -169,7 +170,7 @@ public class Bot {
         this.loadFields();
         this.loadMenus();
         this.checkForUnlinkedUsersInLobby();
-        this.muteUsersInLobby();
+        this.updateVoiceState();
         this.plugin.updateStatus(startup);
         if (sender != null && this.jda != null) {
             if (this.isReady) {
@@ -241,11 +242,13 @@ public class Bot {
         }
     }
 
-    public void muteUsersInLobby() {
-        VoiceChannel lobby = this.plugin.readConfig().getLobby();
-        if (lobby != null) {
-            for (Member member : lobby.getMembers()) {
-                new UpdateVoiceStateTask(this.plugin.readConfig(), member, lobby).run();
+    public void updateVoiceState() {
+        Guild guild = this.plugin.readConfig().getGuild();
+        if (guild != null) {
+            for (VoiceChannel channel : guild.getVoiceChannels()) {
+                for (Member member : channel.getMembers()) {
+                    new UpdateVoiceStateTask(this.plugin.readConfig(), member, channel).run();
+                }
             }
         }
     }
