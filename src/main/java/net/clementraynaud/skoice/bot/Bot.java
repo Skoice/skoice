@@ -48,6 +48,7 @@ import net.clementraynaud.skoice.util.MapUtil;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
@@ -58,8 +59,6 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -75,6 +74,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -127,12 +127,10 @@ public class Bot {
                     this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.discord-api-timed-out"));
                 } else {
                     try {
-                        TextComponent discordStatusPage = new TextComponent("§bpage");
-                        MessageUtil.setHoverEvent(discordStatusPage, "§8☀ §bOpen in web browser: §7https://discordstatus.com");
+                        TextComponent discordStatusPage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
+                        MessageUtil.setHoverEvent(discordStatusPage, this.plugin.getLang().getMessage("minecraft.interaction.link", "https://discordstatus.com"));
                         discordStatusPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discordstatus.com"));
-                        sender.spigot().sendMessage(new ComponentBuilder("§dSkoice §8• §7Discord seems to §cbe experiencing an outage§7. Find more information on this ")
-                                .append(discordStatusPage)
-                                .append("§7.").event((HoverEvent) null).create());
+                        sender.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.discord-api-timed-out-interactive", discordStatusPage));
                     } catch (NoSuchMethodError e2) {
                         sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.discord-api-timed-out-link"));
                     }
@@ -255,6 +253,15 @@ public class Bot {
                         }
                     })
                     .forEach(channel -> Network.getNetworks().add(new Network(this.plugin.readConfig(), channel.getId())));
+        }
+    }
+
+    public void updateActivity() {
+        Activity activity = this.getJda().getPresence().getActivity();
+        if (this.isReady() && !Objects.equals(activity, Activity.listening("/link"))) {
+            this.getJda().getPresence().setActivity(Activity.listening("/link"));
+        } else if (!this.isReady() && !Objects.equals(activity, Activity.listening("/configure"))) {
+            this.getJda().getPresence().setActivity(Activity.listening("/configure"));
         }
     }
 

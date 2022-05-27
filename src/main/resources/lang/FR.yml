@@ -22,8 +22,11 @@ logger:
 minecraft:
   chat:
     configuration:
-      bot-creation-interactive: "?"
-      bot-creation-link: " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Merci de suivre les instructions sur cette page : &bhttps://github.com/carlodrift/skoice/wiki&7.\n&8• &7Une fois son token récupéré, tapez \"&e/skoice token&7\" suivi du token.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
+      bot-creation-interactive:
+        - " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Veuillez de suivre les instructions sur "
+        - "&7.\n&8• &7Une fois son token récupéré, entrez-le "
+        - "&7.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
+      bot-creation-link: " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Veuillez de suivre les instructions sur cette page : &bhttps://github.com/carlodrift/skoice/wiki&7.\n&8• &7Une fois son token récupéré, tapez \"&e/skoice token&7\" suivi du token.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
       no-token: "%s Vous n'avez &cpas fourni de token&7."
       invalid-token: "%s Vous n'avez &cpas fourni de token valide&7."
       bot-connected: "%s Votre bot est &adésormais connecté&7."
@@ -31,7 +34,9 @@ minecraft:
       bot-already-connected: "%s Vous avez &amis à jour le token&7. Redémarrez votre serveur Minecraft pour connecter votre bot."
       bot-could-not-connect: "%s Votre bot &cn'a pas pu se connecter&7. Essayez de nouveau avec un token valide."
       incomplete-configuration: "%s Skoice n'est &cpas configuré correctement&7. Veuillez contacter un administrateur."
-      incomplete-configuration-operator-interactive: "?"
+      incomplete-configuration-operator-interactive:
+        - "%s Skoice n'est &cpas configuré correctement&7. Cliquez "
+        - " &7pour le configurer."
       incomplete-configuration-operator-command: "%s Skoice n'est &cpas configuré correctement&7. Tapez \"&e/skoice configure&7\" pour le configurer."
       incomplete-configuration-operator-discord: "%s Skoice n'est &cpas configuré correctement&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
       already-configured: "%s Skoice est &cdéjà configuré&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour mettre à jour ses réglages."
@@ -49,10 +54,18 @@ minecraft:
       invalid-parameter: "%s Vous n'avez &cpas fourni un argument valide&7. Pour utiliser cette commande, tapez \"&e/skoice <%s>&7\"."
       illegal-executor: "%s Cette commande est &cseulement exécutable &7par les joueurs."
       missing-permission: "%s Cette commande est &cseulement exécutable &7par les opérateurs."
-      discord-api-timed-out-interactive: "?"
+      discord-api-timed-out-interactive:
+        - "%s Discord semble &csubir une panne&7. Retrouvez plus d'informations sur "
+        - "&7."
       discord-api-timed-out-link: "%s Discord semble &csubir une panne&7. Retrouvez plus d'informations ici : &bhttps://discordstatus.com&7."
   action-bar:
     alert: "&c⚠ &7Vous vous &céloignez &7des joueurs à proximité."
+  interaction:
+    here: "&bici"
+    this-page: "&bcette page"
+    execute: "&8☀ &bExécute : &7%s"
+    shortcut: "&8☀ &bRaccourci : &7%s"
+    link: "&8☀ &bOuvre dans le navigateur web : &7%s"
 
 discord:
   command-description:

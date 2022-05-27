@@ -40,7 +40,6 @@ import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
@@ -50,7 +49,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collections;
-import java.util.Objects;
 
 public class Skoice extends JavaPlugin {
 
@@ -80,6 +78,8 @@ public class Skoice extends JavaPlugin {
         if (this.bot.getJda() != null) {
             this.configurationMenu = new ConfigurationMenu(this);
             this.bot.setup(true, null);
+        } else {
+            this.updateStatus(true);
         }
         new SkoiceCommand(this).init();
         this.updater = new Updater(this, Skoice.RESSOURCE_ID);
@@ -117,20 +117,9 @@ public class Skoice extends JavaPlugin {
             } else {
                 this.bot.setReady(true);
             }
+            this.bot.updateActivity();
         }
-        this.updateActivity();
         this.updateListeners(startup, wasBotReady);
-    }
-
-    private void updateActivity() {
-        if (this.bot.getJda() != null) {
-            Activity activity = this.bot.getJda().getPresence().getActivity();
-            if (this.bot.isReady() && !Objects.equals(activity, Activity.listening("/link"))) {
-                this.bot.getJda().getPresence().setActivity(Activity.listening("/link"));
-            } else if (!this.bot.isReady() && !Objects.equals(activity, Activity.listening("/configure"))) {
-                this.bot.getJda().getPresence().setActivity(Activity.listening("/configure"));
-            }
-        }
     }
 
     private void updateListeners(boolean startup, boolean wasBotReady) {

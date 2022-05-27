@@ -44,6 +44,7 @@ public class VoiceChannelUpdateParentListener extends ListenerAdapter {
     public void onVoiceChannelUpdateParent(VoiceChannelUpdateParentEvent event) {
         if (event.getChannel().getId().equals(this.plugin.readConfig().getFile().getString(ConfigField.LOBBY_ID.get()))) {
             this.plugin.readConfig().getFile().set(ConfigField.LOBBY_ID.get(), null);
+            this.plugin.updateStatus(false);
             User user = event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
             if (user != null && !user.isBot()) {
                 user.openPrivateChannel().complete()

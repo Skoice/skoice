@@ -23,8 +23,6 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -49,17 +47,13 @@ public class ConfigureArgument extends Argument {
             }
         } else {
             try {
-                TextComponent tutorialPage = new TextComponent("§bpage");
-                MessageUtil.setHoverEvent(tutorialPage, "§8☀ §bOpen in web browser: §7https://github.com/carlodrift/skoice/wiki");
+                TextComponent tutorialPage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
+                MessageUtil.setHoverEvent(tutorialPage, this.plugin.getLang().getMessage("minecraft.interaction.link", "https://github.com/carlodrift/skoice/wiki"));
                 tutorialPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/carlodrift/skoice/wiki"));
-                TextComponent tokenCommand = new TextComponent("§bhere");
-                MessageUtil.setHoverEvent(tokenCommand, "§8☀ §bShortcut: §7/skoice token");
+                TextComponent tokenCommand = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.here"));
+                MessageUtil.setHoverEvent(tokenCommand, this.plugin.getLang().getMessage("minecraft.interaction.shortcut", "/skoice token"));
                 tokenCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/skoice token "));
-                player.spigot().sendMessage(new ComponentBuilder("\n§dSkoice §8• §7Configuration (§fBot Creation§7)\n\n§8• §7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this ")
-                        .append(tutorialPage)
-                        .append("§7.\n§8• §7When you have retrieved its token, put it ").event((HoverEvent) null)
-                        .append(tokenCommand)
-                        .append("§7.\n§8• §7Once done, type \"§e/configure§7\" on your Discord server to go to the next step.\n").event((HoverEvent) null).create());
+                player.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-creation-interactive", tutorialPage, tokenCommand));
             } catch (NoSuchMethodError e) {
                 player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.bot-creation-link"));
             }

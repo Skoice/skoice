@@ -19,11 +19,17 @@
 
 package net.clementraynaud.skoice.lang;
 
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 public class Lang {
 
@@ -47,17 +53,21 @@ public class Lang {
     }
 
     public String getMessage(String path) {
-        String message = this.messages.contains(path) ? this.messages.getString(path) : this.englishMessages.getString(path);
+        String message = this.messages.contains(path)
+                ? this.messages.getString(path)
+                : this.englishMessages.getString(path);
         if (path.startsWith("minecraft.chat.") && message != null) {
             return ChatColor.translateAlternateColorCodes('&', String.format(message, Lang.CHAT_PREFIX));
-        } else if (path.startsWith("minecraft.action-bar.") && message != null) {
+        } else if ((path.startsWith("minecraft.action-bar.") || path.startsWith("minecraft.interaction.")) && message != null) {
             return ChatColor.translateAlternateColorCodes('&', message);
         }
         return message;
     }
 
     public String getMessage(String path, String... args) {
-        String message = this.messages.contains(path) ? this.messages.getString(path) : this.englishMessages.getString(path);
+        String message = this.messages.contains(path)
+                ? this.messages.getString(path)
+                : this.englishMessages.getString(path);
         if (message == null) {
             return null;
         }
@@ -66,8 +76,22 @@ public class Lang {
             newArgs[0] = Lang.CHAT_PREFIX;
             System.arraycopy(args, 0, newArgs, 1, args.length);
             return ChatColor.translateAlternateColorCodes('&', String.format(message, (Object[]) newArgs));
+        } else if (path.startsWith("minecraft.interaction.")) {
+            return ChatColor.translateAlternateColorCodes('&', String.format(message, (Object[]) args));
         }
         return String.format(message, (Object[]) args);
+    }
+
+    public BaseComponent[] getMessage(String path, TextComponent... components) {
+        String[] strings = this.messages.contains(path)
+                ? this.messages.getStringList(path).toArray(new String[0])
+                : this.englishMessages.getStringList(path).toArray(new String[0]);
+        ComponentBuilder message = new ComponentBuilder(ChatColor.translateAlternateColorCodes( '&', String.format(strings[0], Lang.CHAT_PREFIX)));
+        for (int i = 0; i < components.length; i++) {
+            message.append(components[i])
+                    .append(ChatColor.translateAlternateColorCodes('&', strings[i + 1])).event((HoverEvent) null);
+        }
+        return message.create();
     }
 
     public boolean contains(String path) {

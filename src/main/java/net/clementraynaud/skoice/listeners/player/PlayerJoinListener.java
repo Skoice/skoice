@@ -23,8 +23,6 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,12 +44,10 @@ public class PlayerJoinListener implements Listener {
         if (player.isOp()) {
             if (!this.plugin.readConfig().getFile().contains(ConfigField.TOKEN.get()) || this.plugin.getBot().getJda() == null) {
                 try {
-                    TextComponent configureCommand = new TextComponent("§bhere");
-                    MessageUtil.setHoverEvent(configureCommand, "§8☀ §bExecute: §7/skoice configure");
+                    TextComponent configureCommand = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.here"));
+                    MessageUtil.setHoverEvent(configureCommand, this.plugin.getLang().getMessage("minecraft.interaction.execute", "/skoice configure"));
                     configureCommand.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/skoice configure"));
-                    player.spigot().sendMessage(new ComponentBuilder("§dSkoice §8• §7Skoice is §cnot configured correctly§7. Click ")
-                            .append(configureCommand)
-                            .append(" §7to set it up.").event((HoverEvent) null).create());
+                    player.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", configureCommand));
                 } catch (NoSuchMethodError e) {
                     player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-command"));
                 }
