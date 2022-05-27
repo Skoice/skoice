@@ -62,6 +62,7 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -229,15 +230,25 @@ public class Bot {
         VoiceChannel lobby = this.plugin.readConfig().getLobby();
         if (lobby != null) {
             for (Member member : lobby.getMembers()) {
-                String minecraftID = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), member.getId());
-                if (minecraftID == null) {
-                    member.getUser().openPrivateChannel().complete()
-                            .sendMessage(new Menu(this.plugin, "linking-process",
-                                    Collections.singleton(this.fields.get("account-not-linked")),
-                                    MenuType.ERROR)
-                                    .toMessage())
-                            .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
-                }
+                this.checkMemberStatus(member);
+            }
+        }
+    }
+
+    public void checkMemberStatus(Member member) {
+        String minecraftID = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), member.getId());
+        if (minecraftID == null) {
+            member.getUser().openPrivateChannel().complete()
+                    .sendMessage(new Menu(this.plugin, "linking-process",
+                            Collections.singleton(this.plugin.getBot().getFields().get("account-not-linked")),
+                            MenuType.ERROR)
+                            .toMessage())
+                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
+        } else {
+            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
+            if (player.isOnline() && player.getPlayer() != null) {
+                this.plugin.getEligiblePlayers().add(player.getUniqueId());
+                player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
             }
         }
     }

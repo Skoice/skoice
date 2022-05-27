@@ -21,19 +21,9 @@
 package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
-import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.requests.ErrorResponse;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-
-import java.util.Collections;
-import java.util.UUID;
 
 public class GuildVoiceJoinListener extends ListenerAdapter {
 
@@ -46,23 +36,8 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
         new UpdateVoiceStateTask(this.plugin.readConfig(), event.getMember(), event.getChannelJoined()).run();
-        if (!event.getChannelJoined().equals(this.plugin.readConfig().getLobby())) {
-            return;
-        }
-        String minecraftID = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), event.getMember().getId());
-        if (minecraftID == null) {
-            event.getMember().getUser().openPrivateChannel().complete()
-                    .sendMessage(new Menu(this.plugin, "linking-process",
-                            Collections.singleton(this.plugin.getBot().getFields().get("account-not-linked")),
-                            MenuType.ERROR)
-                            .toMessage())
-                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
-        } else {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
-            if (player.isOnline() && player.getPlayer() != null) {
-                this.plugin.getEligiblePlayers().add(player.getUniqueId());
-                player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
-            }
+        if (event.getChannelJoined().equals(this.plugin.readConfig().getLobby())) {
+            this.plugin.getBot().checkMemberStatus(event.getMember());
         }
     }
 }

@@ -128,7 +128,7 @@ public class Skoice extends JavaPlugin {
                 this.registerEligiblePlayerListeners();
                 this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this),
                         new GuildVoiceLeaveListener(this),
-                        new GuildVoiceMoveListener(this.config),
+                        new GuildVoiceMoveListener(this),
                         new VoiceChannelDeleteListener());
             } else {
                 Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this), this);
@@ -138,7 +138,7 @@ public class Skoice extends JavaPlugin {
             this.registerEligiblePlayerListeners();
             this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this),
                     new GuildVoiceLeaveListener(this),
-                    new GuildVoiceMoveListener(this.config),
+                    new GuildVoiceMoveListener(this),
                     new VoiceChannelDeleteListener());
             this.getLogger().info(this.lang.getMessage("logger.info.configuration-complete"));
             Message message = this.configurationMenu.retrieveMessage();
@@ -157,7 +157,7 @@ public class Skoice extends JavaPlugin {
             if (this.bot.getJda() != null) {
                 this.bot.getJda().removeEventListener(new GuildVoiceJoinListener(this),
                         new GuildVoiceLeaveListener(this),
-                        new GuildVoiceMoveListener(this.config),
+                        new GuildVoiceMoveListener(this),
                         new VoiceChannelDeleteListener());
             }
             new InterruptSystemTask(this.config).run();

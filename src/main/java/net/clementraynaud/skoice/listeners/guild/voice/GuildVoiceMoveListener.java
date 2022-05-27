@@ -20,7 +20,7 @@
 
 package net.clementraynaud.skoice.listeners.guild.voice;
 
-import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
@@ -33,27 +33,29 @@ import java.util.UUID;
 
 public class GuildVoiceMoveListener extends ListenerAdapter {
 
-    private final Config config;
+    private final Skoice plugin;
 
-    public GuildVoiceMoveListener(Config config) {
-        this.config = config;
+    public GuildVoiceMoveListener(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
-        if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(this.config.getCategory())
-                && event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(this.config.getCategory())) {
-            String minecraftID = MapUtil.getKeyFromValue(this.config.getLinks(), event.getMember().getId());
+        new UpdateVoiceStateTask(this.plugin.readConfig(), event.getMember(), event.getChannelJoined()).run();
+        if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(this.plugin.readConfig().getCategory())
+                && event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(this.plugin.readConfig().getCategory())) {
+            String minecraftID = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), event.getMember().getId());
             if (minecraftID == null) {
                 return;
             }
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
-            if (player.isOnline()) {
+            if (player.isOnline() && player.getPlayer() != null) {
                 Network.getNetworks().stream()
                         .filter(network -> network.contains(player.getPlayer().getUniqueId()))
                         .forEach(network -> network.remove(player.getPlayer()));
             }
+        } else if (event.getChannelJoined().equals(this.plugin.readConfig().getLobby())) {
+            this.plugin.getBot().checkMemberStatus(event.getMember());
         }
-        new UpdateVoiceStateTask(this.config, event.getMember(), event.getChannelJoined()).run();
     }
 }
