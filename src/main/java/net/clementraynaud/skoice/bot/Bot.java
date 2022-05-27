@@ -97,30 +97,6 @@ public class Bot {
         this.plugin = plugin;
     }
 
-    public JDA getJda() {
-        return this.jda;
-    }
-
-    public void setReady(boolean ready) {
-        this.isReady = ready;
-    }
-
-    public boolean isReady() {
-        return this.isReady;
-    }
-
-    public boolean isOnMultipleGuilds() {
-        return this.isOnMultipleGuilds;
-    }
-
-    public Map<String, MenuField> getFields() {
-        return this.fields;
-    }
-
-    public Map<String, Menu> getMenus() {
-        return this.menus;
-    }
-
     public void connect() {
         this.connect(null);
     }
@@ -166,29 +142,13 @@ public class Bot {
         }
     }
 
-    public void setup(ConfigurationMenu configurationMenu, boolean startup, CommandSender sender) {
+    public void setup(boolean startup, CommandSender sender) {
         this.setDefaultAvatar();
-        configurationMenu.deleteMessage();
+        this.plugin.getConfigurationMenu().deleteMessage();
         this.updateGuildUniquenessStatus();
         this.checkForValidLobby();
         this.jda.getGuilds().forEach(new Commands(this.plugin)::register);
-        this.jda.addEventListener(new ReconnectedListener(this.plugin),
-                new GuildJoinListener(this.plugin),
-                new GuildLeaveListener(this.plugin),
-                new GuildMemberRoleAddListener(this.plugin),
-                new GuildMemberRoleRemoveListener(this.plugin),
-                new RoleUpdatePermissionsListener(this.plugin),
-                new PrivateMessageReceivedListener(this.plugin),
-                new GuildMessageReceivedListener(this.plugin),
-                new GuildMessageDeleteListener(configurationMenu),
-                new VoiceChannelDeleteListener(this.plugin),
-                new VoiceChannelUpdateParentListener(this.plugin),
-                new ConfigureCommand(this.plugin),
-                new InviteCommand(this.plugin),
-                new LinkCommand(this.plugin),
-                new UnlinkCommand(this.plugin),
-                new ButtonClickListener(this.plugin),
-                new SelectMenuListener(this.plugin));
+        this.registerListeners();
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                         Bukkit.getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
@@ -243,6 +203,28 @@ public class Bot {
         }
     }
 
+    private void registerListeners() {
+        this.jda.addEventListener(
+                new ReconnectedListener(this.plugin),
+                new GuildJoinListener(this.plugin),
+                new GuildLeaveListener(this.plugin),
+                new GuildMemberRoleAddListener(this.plugin),
+                new GuildMemberRoleRemoveListener(this.plugin),
+                new RoleUpdatePermissionsListener(this.plugin),
+                new PrivateMessageReceivedListener(this.plugin),
+                new GuildMessageReceivedListener(this.plugin),
+                new GuildMessageDeleteListener(this.plugin.getConfigurationMenu()),
+                new VoiceChannelDeleteListener(this.plugin),
+                new VoiceChannelUpdateParentListener(this.plugin),
+                new ConfigureCommand(this.plugin),
+                new InviteCommand(this.plugin),
+                new LinkCommand(this.plugin),
+                new UnlinkCommand(this.plugin),
+                new ButtonClickListener(this.plugin),
+                new SelectMenuListener(this.plugin)
+        );
+    }
+
     public void checkForUnlinkedUsersInLobby() {
         VoiceChannel lobby = this.plugin.readConfig().getLobby();
         if (lobby != null) {
@@ -284,10 +266,6 @@ public class Bot {
         }
     }
 
-    public YamlConfiguration getFieldsYaml() {
-        return this.fieldsYaml;
-    }
-
     private void loadMenus() {
         InputStreamReader menusFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("menus/menus.yml"));
         this.menusYaml = YamlConfiguration.loadConfiguration(menusFile);
@@ -301,7 +279,35 @@ public class Bot {
         }
     }
 
+    public JDA getJda() {
+        return this.jda;
+    }
+
+    public void setReady(boolean ready) {
+        this.isReady = ready;
+    }
+
+    public boolean isReady() {
+        return this.isReady;
+    }
+
+    public boolean isOnMultipleGuilds() {
+        return this.isOnMultipleGuilds;
+    }
+
+    public YamlConfiguration getFieldsYaml() {
+        return this.fieldsYaml;
+    }
+
+    public Map<String, MenuField> getFields() {
+        return this.fields;
+    }
+
     public YamlConfiguration getMenusYaml() {
         return this.menusYaml;
+    }
+
+    public Map<String, Menu> getMenus() {
+        return this.menus;
     }
 }

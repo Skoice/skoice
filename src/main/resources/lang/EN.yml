@@ -23,7 +23,7 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive: "?"
-      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8\u2022 &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/carlodrift/skoice/wiki&7.\n&8\u2022 &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8\u2022 &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/carlodrift/skoice/wiki&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
       no-token: "%s You have &cnot provided a token&7."
       invalid-token: "%s You have &cnot provided a valid token&7."
       bot-connected: "%s Your bot is &anow connected&7."
@@ -93,14 +93,14 @@ discord:
         select-option:
           vanilla-mode:
             label: "Vanilla Mode"
-            description: "Horizontal Radius: 80 blocks \u2014 Vertical Radius: 40 blocks"
+            description: "Horizontal Radius: 80 blocks — Vertical Radius: 40 blocks"
           minigame-mode:
             label: "Minigame Mode"
-            description: "Horizontal Radius: 40 blocks \u2014 Vertical Radius: 20 blocks"
+            description: "Horizontal Radius: 40 blocks — Vertical Radius: 20 blocks"
           customize:
             label: "Customize"
             description: "Set distances from 1 to 1000 blocks."
-            alternative-description: "Horizontal Radius: %s blocks \u2014 Vertical Radius: %s blocks"
+            alternative-description: "Horizontal Radius: %s blocks — Vertical Radius: %s blocks"
     horizontal-radius:
       title: "Horizontal Radius"
       description: "This is the maximum horizontal distance between players."
@@ -167,7 +167,7 @@ discord:
       description: "This setting is currently set to %s blocks. The value must be between 1 and 1000."
     skoice-2-1:
       title: "Skoice 2.1"
-      description: "**General:**\n\u2022 Discover a whole new and intuitive configuration interface.\n\u2022 Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n\u2022 Link your accounts effortlessly thanks to our new linking process.\n\u2022 Skoice now uses slash commands.\n\n**New Features:**\n\u2022 Action bar alert\n\u2022 Channel visibility toggle\n\u2022 \"/invite\" command in Discord\n\u2022 French translation"
+      description: "**General:**\n• Discover a whole new and intuitive configuration interface.\n• Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n• Link your accounts effortlessly thanks to our new linking process.\n• Skoice now uses slash commands.\n\n**New Features:**\n• Action bar alert\n• Channel visibility toggle\n• \"/invite\" command in Discord\n• French translation"
     upcoming-features:
       title: "What's Next?"
       description: "To discover the upcoming features of Skoice, [take a look at our long-terms plans](https://github.com/carlodrift/skoice/issues/28)."

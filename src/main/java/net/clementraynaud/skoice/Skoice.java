@@ -79,7 +79,7 @@ public class Skoice extends JavaPlugin {
         this.bot.connect();
         if (this.bot.getJda() != null) {
             this.configurationMenu = new ConfigurationMenu(this);
-            this.bot.setup(this.configurationMenu, true, null);
+            this.bot.setup(true, null);
         }
         new SkoiceCommand(this).init();
         this.updater = new Updater(this, Skoice.RESSOURCE_ID);

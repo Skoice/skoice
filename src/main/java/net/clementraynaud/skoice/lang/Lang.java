@@ -23,21 +23,25 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class Lang {
 
     private static final String CHAT_PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "•" + ChatColor.GRAY;
 
     private YamlConfiguration englishMessages;
-    private YamlConfiguration messages = new YamlConfiguration();
+    private YamlConfiguration messages;
 
     public void load(LangInfo langInfo) {
-        InputStreamReader englishLangFile = new InputStreamReader(this.getClass().getClassLoader()
-                .getResourceAsStream("lang/" + LangInfo.EN + ".yml"));
-        this.englishMessages = YamlConfiguration.loadConfiguration(englishLangFile);
+        if (this.englishMessages == null) {
+            InputStreamReader englishLangFile = new InputStreamReader(this.getClass().getClassLoader()
+                    .getResourceAsStream("lang/" + LangInfo.EN + ".yml"), StandardCharsets.UTF_8);
+            this.englishMessages = YamlConfiguration.loadConfiguration(englishLangFile);
+        }
+        this.messages = new YamlConfiguration();
         if (langInfo != LangInfo.EN) {
             InputStreamReader langFile = new InputStreamReader(this.getClass().getClassLoader()
-                    .getResourceAsStream("lang/" + langInfo + ".yml"));
+                    .getResourceAsStream("lang/" + langInfo + ".yml"), StandardCharsets.UTF_8);
             this.messages = YamlConfiguration.loadConfiguration(langFile);
         }
     }

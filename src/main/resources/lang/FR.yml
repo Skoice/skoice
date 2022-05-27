@@ -1,0 +1,215 @@
+logger:
+  info:
+    plugin-enabled: "Plugin activé."
+    plugin-disabled: "Plugin désactivé."
+    configuration-complete: "Skoice est désormais configuré. Tapez \"/link\" sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
+    bot-connected: "Vour bot est connecté."
+  warning:
+    outdated-version: "Vous utilisez une version obsolète (%s). Téléchargez la dernière version (%s) ici : https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
+    no-token: "Token non défini. Rejoignez votre serveur Minecraft pour configurer Skoice."
+    no-guild: "Votre bot n'est pas sur un serveur Discord. Ouvrez ce lien pour l'inviter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    multiple-guilds: "Votre bot est sur plusieurs serveurs Discord. Tapez \"/configure\" sur votre serveur Discord pour en choisir un."
+    no-lobby-id: "Salon vocal principal non défini. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
+    no-radius: "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
+  error:
+    missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord (\"applications.commands\"). Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."
+    discord-api-timed-out: "Discord semble subir une panne. Retrouvez plus d'informations ici : https://discordstatus.com."
+  exception:
+    unexpected-value: "Valeur inattendue : %s"
+
+minecraft:
+  chat:
+    configuration:
+      bot-creation-interactive: "?"
+      bot-creation-link: " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Merci de suivre les instructions sur cette page : &bhttps://github.com/carlodrift/skoice/wiki&7.\n&8• &7Une fois son token récupéré, tapez \"&e/skoice token&7\" suivi du token.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
+      no-token: "%s Vous n'avez &cpas fourni de token&7."
+      invalid-token: "%s Vous n'avez &cpas fourni de token valide&7."
+      bot-connected: "%s Votre bot est &adésormais connecté&7."
+      bot-connected-incomplete-configuration-discord: "%s Votre bot est &adésormais connecté&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
+      bot-already-connected: "%s Vous avez &amis à jour le token&7. Redémarrez votre serveur Minecraft pour connecter votre bot."
+      bot-could-not-connect: "%s Votre bot &cn'a pas pu se connecter&7. Essayez de nouveau avec un token valide."
+      incomplete-configuration: "%s Skoice n'est &cpas configuré correctement&7. Veuillez contacter un administrateur."
+      incomplete-configuration-operator-interactive: "?"
+      incomplete-configuration-operator-command: "%s Skoice n'est &cpas configuré correctement&7. Tapez \"&e/skoice configure&7\" pour le configurer."
+      incomplete-configuration-operator-discord: "%s Skoice n'est &cpas configuré correctement&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
+      already-configured: "%s Skoice est &cdéjà configuré&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour mettre à jour ses réglages."
+    player:
+      no-code: "%s Vous n'avez &cpas fourni de code&7. Tapez \"&e/link&7\" sur notre serveur Discord pour en recevoir un."
+      invalid-code: "%s Vous n'avez &cpas fourni de code valide&7. Tapez \"&e/link&7\" sur notre serveur Discord pour en recevoir un."
+      account-linked: "%s Vous avez &alié votre compte Minecraft &7à Discord."
+      account-unlinked: "%s Vous avez &adelié votre compte Minecraft &7de Discord."
+      account-not-linked: "%s Vous n'avez &cpas lié votre compte Minecraft &à Discord. Tapez \"&e/link&7\" sur notre serveur Discord pour le lier."
+      account-already-linked: "%s Vous avez &cdéjà lié votre compte Minecraft &7à Discord. Tapez \"&e/skoice unlink&7\" pour le délier."
+      connected-to-proximity-voice-chat: "%s Vous êtes &adésormais connecté &7au chat vocal de proximité. Pour une meilleure expérience, vous pouvez activé le \"&eMode streamer&7\" dans votre client Discord."
+      disconnected-from-proximity-voice-chat: "%s Vous êtes &cdésormais déconnecté &7du chat vocal de proximité."
+    error:
+      no-parameter: "%s Vous n'avez &cpas fourni un argument&7. Pour utiliser cette commande, tapez \"&e/skoice <%s>&7\"."
+      invalid-parameter: "%s Vous n'avez &cpas fourni un argument valide&7. Pour utiliser cette commande, tapez \"&e/skoice <%s>&7\"."
+      illegal-executor: "%s Cette commande est &cseulement exécutable &7par les joueurs."
+      missing-permission: "%s Cette commande est &cseulement exécutable &7par les opérateurs."
+      discord-api-timed-out-interactive: "?"
+      discord-api-timed-out-link: "%s Discord semble &csubir une panne&7. Retrouvez plus d'informations ici : &bhttps://discordstatus.com&7."
+  action-bar:
+    alert: "&c⚠ &7Vous vous &céloignez &7des joueurs à proximité."
+
+discord:
+  command-description:
+    configure: "Configurer Skoice."
+    link: "Lier votre compte Discord à Minecraft."
+    unlink: "Délier votre compte Discord de Minecraft."
+    invite: "Obtenir le chat vocal de proximité sur votre serveur."
+  menu:
+    footer: "Le chat vocal de proximité vous est fourni par Skoice."
+    configuration:
+      title: "Configuration"
+    empty-configuration:
+      title: "Configuration"
+    server:
+      title: "Serveur"
+      description: "Afin de fonctionner correctement, votre bot ne peut pas être présent sur plusieurs serveurs Discord. Sélectionnez le serveur où vous voulez que le chat vocal de proximité soit actif. Votre bot quittera automatiquement les autres."
+      select-menu:
+        placeholder: "Veuillez sélectionner un serveur."
+    permissions:
+      title: "Permissions"
+      description: "Afin de fonctionner correctement, votre bot doit avoir la permission \"Administrateur\" sur votre serveur Discord."
+    lobby:
+      title: "Salon vocal principal"
+      description: "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité. Il doit se trouver dans une catégorie."
+      shortened-description: "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité."
+      select-menu:
+        placeholder: "Veuillez sélectionner un salon vocal."
+        select-option:
+          new-voice-channel:
+            label: "Nouveau salon vocal"
+            description: "Skoice configurera automatiquement un salon vocal."
+    mode:
+      title: "Mode"
+      description: "Sélectionnez un mode ou personnalisez les distances."
+      alternative-description: "Laissez-nous choisir les meilleures réglages pour votre utilisation personnelle de Skoice. Vous pourrez toujours personnaliser les distances plus tard."
+      select-menu:
+        placeholder: "Veuillez sélectionner un mode."
+        select-option:
+          vanilla-mode:
+            label: "Mode standard"
+            description: "Rayon horizontal : 80 blocs — Rayon vertical : 40 blocs"
+          minigame-mode:
+            label: "Mode mini-jeu"
+            description: "Rayon horizontal : 40 blocs — Rayon vertical : 20 blocs"
+          customize:
+            label: "Personnaliser"
+            description: "Définissez les distances de 1 à 1000 blocs."
+            alternative-description: "Rayon horizontal: %s blocs — Rayon vertical: %s blocs"
+    horizontal-radius:
+      title: "Rayon horizontal"
+      description: "Il s'agit de la distance horizontale maximale entre les joueurs."
+    vertical-radius:
+      title: "Rayon vertical"
+      description: "Il s'agit de la distance verticale maximale entre les joueurs."
+    advanced-settings:
+      title: "Réglages avancés"
+      description: "Gérez d'autres paramètres."
+    language:
+      title: "Langue"
+      description: "Choisissez la langue utilisée pour afficher les messages."
+    action-bar-alert:
+      title: "Alerte dans la barre d'action"
+      description: "Activez ou désactivez l'alerte envoyée aux joueurs qui s'éloignent avant qu'ils soient déconnectés de leur salon vocal actuel."
+    channel-visibility:
+      title: "Visibilité des salons"
+      description: "Rendez visibles ou invisibles les salons temporaires créés par Skoice."
+    changelog:
+      title: "Quoi de neuf ?"
+      description: "Découvrez les dernières et futures fonctionnalités de Skoice."
+    get-the-proximity-voice-chat:
+      title: "Obtenir le chat vocal de proximité"
+    linking-process:
+      title: "Procédure de liaison"
+    error:
+      title: "Erreur"
+  field:
+    configuration-complete:
+      title: "Configuration terminée"
+      description: "Skoice est désormais configuré. Tapez \"/link\" sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
+    incomplete-configuration:
+      title: "Configuration non terminée"
+      description: "Skoice n'est pas configuré correctement. Veuillez contacter un administrateur."
+    incomplete-configuration-server-manager:
+      title: "Configuration non terminée"
+      description: "Tapez `/configure` sur votre serveur Discord pour terminer la configuration and utiliser Skoice."
+    incomplete-configuration-alternative-server-manager:
+      title: "Configuration non terminée"
+      description: "Vous avez soit déplacé, soit supprimé le salon vocal principal. Tapez `/configure` sur votre serveur Discord pour terminer la configuration and utiliser Skoice."
+    download-skoice:
+      title: "Téléchargez Skoice"
+      description: "[Obtenez le plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) et installez-le sur votre serveur Minecraft."
+    donate:
+      title: "Faire un don"
+      description: "Skoice est un logiciel gratuit. Si vous l'aimez, vous pouvez nous aider en [faisant un don](https://paypal.me/whitelines)."
+    troubleshooting:
+      title: "Assistance"
+      description: "Vous rencontrez des problèmes ? [Rejoignez notre serveur Discord](https://discord.gg/h3Tgccc) !"
+    contribute:
+      title: "Contribuer"
+      description: "Envie de nous aider à façonner l'avenir de Skoice ? [Contribuez sur notre page GitHub](https://github.com/carlodrift/skoice) !"
+    vanilla-mode:
+      title: "Mode standard"
+      description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu en monde ouvert (distances plus longues)."
+    minigame-mode:
+      title: "Mode mini-jeu"
+      description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu qui requièrent seulement une zone limitée (distances plus courtes)."
+    customize:
+      title: "Personnaliser"
+      description: "Définissez les distances en fonction de vos préférences personnelles."
+    enter-a-value:
+      title: "Entrez une valeur"
+      description: "Cette option est actuellement définie sur %s blocs.\nLa valeur doit être comprise entre 1 et 1000."
+    skoice-2-1:
+      title: "Skoice 2.1"
+      description: "**Général:**\n• Découvrez une toute nouvelle interface de configuration intuitive.\n• Laissez-nous choisir les meilleures distances pour votre utilisation personnelle de Skoice dans le menu \"Mode\".\n• Connectez vos comptes facilement grâce à notre nouvelle procédure de liaison.\n• Skoice utilise désormais les commandes slash.\n\n**Nouvelles fonctionnalités:**\n• Commande \"/invite\" sur Discord\n• Configuration de l'alerte dans la barre d'action\n• Configuration de la visibilité des salons\n• Traduction française"
+    upcoming-features:
+      title: "Et après ?"
+      description: "Pour découvrir les futures fonctionnalités de Skoice, [jetez un coup d'œil à nos projets à long terme](https://github.com/carlodrift/skoice/issues/28)."
+    verification-code:
+      title: "Code de vérification"
+      description: "Tapez `/skoice link %s` en jeu pour terminer la procédure."
+    account-linked:
+      title: "Compte lié"
+      description: "Votre compte Discord a été lié à Minecraft."
+    account-unlinked:
+      title: "Compte délié"
+      description: "Votre compte Discord a été délié de Minecraft."
+    account-not-linked:
+      title: "Compte non lié"
+      description: "Votre compte Discord n'est pas lié à Minecraft.\nTapez `/link` sur notre serveur Discord pour le lier."
+    account-already-linked:
+      title: "Compte déjà lié"
+      description: "Votre compte Discord est déjà lié à Minecraft\nTapez `/unlink` pour le délier."
+    access-denied:
+      title: "Accès refusé"
+      description: "Vous n'avez la permission requise pour effectuer cette action."
+    too-many-interactions:
+      title: "Trop d'interactions"
+      description: "Vous exécutez des commandes trop rapidement."
+    illegal-interaction:
+      title: "Interaction interdite"
+      description: "Vous pouvez seulement interagir avec le bot sur un serveur Discord."
+  button-label:
+    back: "Retour"
+    refresh: "Rafraîchir"
+    close: "Fermer"
+    configure-later: "Configurer plus tard"
+  select-option:
+    default:
+      description: "Cette option est sélectionnée par défaut."
+    enabled:
+      label: "Activé"
+    disabled:
+      label: "Désactivé"
+    too-many-options:
+      label: "Trop d'options"
+      description: "Skoice est incapable de charger plus d'options."
+  default-category-name: "Chat vocal de proximité"
+  default-lobby-name: "Salon vocal principal"
+  communication-lost: "Communication perdue."
