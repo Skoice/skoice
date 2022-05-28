@@ -63,7 +63,7 @@ public enum MenuEmoji {
         this.unicode = unicode;
     }
 
-    public Emoji getEmojiFromUnicode() {
+    public Emoji get() {
         return Emoji.fromUnicode(this.unicode);
     }
 

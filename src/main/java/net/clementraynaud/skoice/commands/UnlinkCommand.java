@@ -44,19 +44,19 @@ public class UnlinkCommand extends ListenerAdapter {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if ("unlink".equals(event.getName())) {
-            String minecraftID = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), event.getUser().getId());
-            if (minecraftID == null) {
+            String minecraftId = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), event.getUser().getId());
+            if (minecraftId == null) {
                 event.reply(new Menu(this.plugin, "linking-process",
                         Collections.singleton(this.plugin.getBot().getFields().get("account-not-linked")),
                         MenuType.ERROR)
                         .toMessage()).setEphemeral(true).queue();
             } else {
-                this.plugin.readConfig().unlinkUser(minecraftID);
+                this.plugin.readConfig().unlinkUser(minecraftId);
                 event.reply(new Menu(this.plugin, "linking-process",
                         Collections.singleton(this.plugin.getBot().getFields().get("account-unlinked")),
                         MenuType.SUCCESS)
                         .toMessage()).setEphemeral(true).queue();
-                OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
+                OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));
                 if (player.isOnline() && player.getPlayer() != null) {
                     player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
                     GuildVoiceState voiceState = event.getMember().getVoiceState();

@@ -31,26 +31,26 @@ public class ToggleSelectMenu extends SelectMenu {
     private static final String ENABLED_OPTION_ID = "true";
     private static final String DISABLED_OPTION_ID = "false";
 
-    private final String componentID;
+    private final String componentId;
     private final boolean selectedValue;
     private final boolean defaultValue;
 
-    public ToggleSelectMenu(Lang lang, String componentID, boolean selectedValue, boolean defaultValue) {
+    public ToggleSelectMenu(Lang lang, String componentId, boolean selectedValue, boolean defaultValue) {
         super(lang, false);
-        this.componentID = componentID;
+        this.componentId = componentId;
         this.selectedValue = selectedValue;
         this.defaultValue = defaultValue;
     }
 
     @Override
     public SelectionMenu get() {
-        return SelectionMenu.create(this.componentID)
+        return SelectionMenu.create(this.componentId)
                 .addOptions(SelectOption.of(super.lang.getMessage("discord.select-option.enabled.label"), ToggleSelectMenu.ENABLED_OPTION_ID)
                                 .withDescription(this.defaultValue ? super.lang.getMessage("discord.select-option.default.description") : null)
-                                .withEmoji(MenuEmoji.HEAVY_CHECK_MARK.getEmojiFromUnicode()),
+                                .withEmoji(MenuEmoji.HEAVY_CHECK_MARK.get()),
                         SelectOption.of(super.lang.getMessage("discord.select-option.disabled.label"), ToggleSelectMenu.DISABLED_OPTION_ID)
                                 .withDescription(!this.defaultValue ? super.lang.getMessage("discord.select-option.default.description") : null)
-                                .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()))
+                                .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.get()))
                 .setDefaultValues(Collections.singleton(String.valueOf(this.selectedValue))).build();
     }
 }

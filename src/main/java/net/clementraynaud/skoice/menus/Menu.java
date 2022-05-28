@@ -156,24 +156,24 @@ public class Menu {
                 if (menu.parent != null && menu.parent.equals(this.name)) {
                     buttons.add(menu.style == MenuStyle.PRIMARY
                             ? Button.primary(menu.name, menu.getTitle(false))
-                            .withEmoji(menu.emoji.getEmojiFromUnicode())
+                            .withEmoji(menu.emoji.get())
                             : Button.secondary(menu.name, menu.getTitle(false))
-                            .withEmoji(menu.emoji.getEmojiFromUnicode()));
+                            .withEmoji(menu.emoji.get()));
                 }
             }
         }
         if (this.type == MenuType.DEFAULT) {
             if (this.plugin.getBot().isReady()) {
                 buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID, this.plugin.getLang().getMessage("discord.button-label.close"))
-                        .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.getEmojiFromUnicode()));
+                        .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.get()));
             } else {
                 if (!"language".equals(this.name)) {
                     Menu languageMenu = this.plugin.getBot().getMenus().get("language");
                     buttons.add(Button.secondary(languageMenu.name, languageMenu.getTitle(false))
-                            .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.getEmojiFromUnicode()));
+                            .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()));
                 }
                 buttons.add(Button.secondary(Menu.CLOSE_BUTTON_ID, this.plugin.getLang().getMessage("discord.button-label.configure-later"))
-                        .withEmoji(MenuEmoji.CLOCK3.getEmojiFromUnicode()));
+                        .withEmoji(MenuEmoji.CLOCK3.get()));
             }
         }
         return buttons;
@@ -182,19 +182,19 @@ public class Menu {
     private List<Button> getAdditionalButtons(boolean customizeRadius) {
         if ("empty-configuration".equals(this.name) && this.type == MenuType.ERROR) {
             return Collections.singletonList(Button.primary("resume-configuration", "Resume Configuration")
-                    .withEmoji(MenuEmoji.ARROW_FORWARD.getEmojiFromUnicode()));
+                    .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
         } else if ("permissions".equals(this.name)) {
             return Collections.singletonList(Button.link("https://discord.com/api/oauth2/authorize?client_id="
                     + this.plugin.getBot().getJda().getSelfUser().getApplicationId()
                     + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
-                    .withEmoji(this.emoji.getEmojiFromUnicode()));
+                    .withEmoji(this.emoji.get()));
         } else if ("mode".equals(this.name) && this.isModeCustomizable(customizeRadius)) {
             Menu horizontalRadiusMenu = this.plugin.getBot().getMenus().get("horizontal-radius");
             Menu verticalRadiusMenu = this.plugin.getBot().getMenus().get("vertical-radius");
             return Arrays.asList(Button.primary(horizontalRadiusMenu.name, horizontalRadiusMenu.getTitle(false))
-                            .withEmoji(horizontalRadiusMenu.emoji.getEmojiFromUnicode()),
+                            .withEmoji(horizontalRadiusMenu.emoji.get()),
                     Button.primary(verticalRadiusMenu.name, verticalRadiusMenu.getTitle(false))
-                            .withEmoji(verticalRadiusMenu.emoji.getEmojiFromUnicode()));
+                            .withEmoji(verticalRadiusMenu.emoji.get()));
         }
         return Collections.emptyList();
     }

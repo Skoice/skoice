@@ -126,24 +126,24 @@ public class Network {
         this.players.clear();
     }
 
-    public void add(UUID uuid) {
-        this.players.add(uuid);
+    public void add(UUID minecraftId) {
+        this.players.add(minecraftId);
     }
 
     public void remove(Player player) {
         this.players.remove(player.getUniqueId());
     }
 
-    public void remove(UUID uuid) {
-        this.players.remove(uuid);
+    public void remove(UUID minecraftId) {
+        this.players.remove(minecraftId);
     }
 
     public boolean contains(Player player) {
         return this.players.contains(player.getUniqueId());
     }
 
-    public boolean contains(UUID uuid) {
-        return this.players.contains(uuid);
+    public boolean contains(UUID minecraftId) {
+        return this.players.contains(minecraftId);
     }
 
     public int size() {

@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class ButtonClickListener extends ListenerAdapter {
 
-    private static final Map<String, String> discordIDAxis = new HashMap<>();
+    private static final Map<String, String> discordIdAxis = new HashMap<>();
 
     private final Skoice plugin;
 
@@ -47,10 +47,10 @@ public class ButtonClickListener extends ListenerAdapter {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
             if (event.getButton() != null && event.getButton().getId() != null) {
-                String buttonID = event.getButton().getId();
+                String buttonId = event.getButton().getId();
                 if (this.plugin.getConfigurationMenu().exists()
                         && this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
-                    if (buttonID.equals(Menu.CLOSE_BUTTON_ID)) {
+                    if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
                         event.getMessage().delete().queue();
                         if (!this.plugin.getBot().isReady()) {
                             event.reply(new Menu(this.plugin, "empty-configuration",
@@ -59,17 +59,17 @@ public class ButtonClickListener extends ListenerAdapter {
                                             .toMessage())
                                     .setEphemeral(true).queue();
                         }
-                    } else if (!this.plugin.getBot().isReady() && !"language".equals(buttonID)) {
+                    } else if (!this.plugin.getBot().isReady() && !"language".equals(buttonId)) {
                         event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                     } else {
-                        if ("mode".equals(buttonID)) {
-                            ButtonClickListener.discordIDAxis.remove(member.getId());
-                        } else if ("horizontal-radius".equals(buttonID)) {
-                            ButtonClickListener.discordIDAxis.put(member.getId(), ConfigField.HORIZONTAL_RADIUS.get());
-                        } else if ("vertical-radius".equals(buttonID)) {
-                            ButtonClickListener.discordIDAxis.put(member.getId(), ConfigField.VERTICAL_RADIUS.get());
+                        if ("mode".equals(buttonId)) {
+                            ButtonClickListener.discordIdAxis.remove(member.getId());
+                        } else if ("horizontal-radius".equals(buttonId)) {
+                            ButtonClickListener.discordIdAxis.put(member.getId(), ConfigField.HORIZONTAL_RADIUS.get());
+                        } else if ("vertical-radius".equals(buttonId)) {
+                            ButtonClickListener.discordIdAxis.put(member.getId(), ConfigField.VERTICAL_RADIUS.get());
                         }
-                        event.editMessage(this.plugin.getBot().getMenus().get(buttonID).toMessage()).queue();
+                        event.editMessage(this.plugin.getBot().getMenus().get(buttonId).toMessage()).queue();
                     }
                 } else if (event.getMessage().getAuthor().equals(event.getJDA().getSelfUser())
                     && "resume-configuration".equals(event.getButton().getId())) {
@@ -83,7 +83,7 @@ public class ButtonClickListener extends ListenerAdapter {
         }
     }
 
-    public static Map<String, String> getDiscordIDAxis() {
-        return ButtonClickListener.discordIDAxis;
+    public static Map<String, String> getDiscordIdAxis() {
+        return ButtonClickListener.discordIdAxis;
     }
 }

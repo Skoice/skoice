@@ -35,23 +35,23 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        String discordID = event.getAuthor().getId();
-        if (discordID.equals(event.getJDA().getSelfUser().getApplicationId())) {
+        String discordId = event.getAuthor().getId();
+        if (discordId.equals(event.getJDA().getSelfUser().getApplicationId())) {
             if (!event.getMessage().isEphemeral()) {
                 this.plugin.getConfigurationMenu().storeInConfig(event.getMessage());
             }
-        } else if (ButtonClickListener.getDiscordIDAxis().containsKey(event.getAuthor().getId())
+        } else if (ButtonClickListener.getDiscordIdAxis().containsKey(event.getAuthor().getId())
                 && event.getMessage().getContentRaw().length() <= 4
                 && event.getMessage().getContentRaw().matches("[0-9]+")) {
             int value = Integer.parseInt(event.getMessage().getContentRaw());
             if (value >= 1 && value <= 1000) {
                 event.getMessage().delete().queue();
-                this.plugin.readConfig().getFile().set(ButtonClickListener.getDiscordIDAxis().get(event.getAuthor().getId()), value);
+                this.plugin.readConfig().getFile().set(ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()), value);
                 this.plugin.readConfig().saveFile();
                 this.plugin.getConfigurationMenu().deleteMessage();
-                if (ButtonClickListener.getDiscordIDAxis().get(event.getAuthor().getId()).equals(ConfigField.HORIZONTAL_RADIUS.get())) {
+                if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigField.HORIZONTAL_RADIUS.get())) {
                     event.getChannel().sendMessage(this.plugin.getBot().getMenus().get("horizontal-radius").toMessage()).queue();
-                } else if (ButtonClickListener.getDiscordIDAxis().get(event.getAuthor().getId()).equals(ConfigField.VERTICAL_RADIUS.get())) {
+                } else if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigField.VERTICAL_RADIUS.get())) {
                     event.getChannel().sendMessage(this.plugin.getBot().getMenus().get("vertical-radius").toMessage()).queue();
                 }
             }

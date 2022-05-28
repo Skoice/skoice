@@ -51,8 +51,8 @@ public class SelectMenuListener extends ListenerAdapter {
             if (this.plugin.getConfigurationMenu().exists()
                     && this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())
                     && event.getSelectedOptions() != null) {
-                String componentID = event.getComponentId();
-                switch (componentID) {
+                String componentId = event.getComponentId();
+                switch (componentId) {
                     case "server-selection":
                         if (this.plugin.getBot().getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
                             for (SelectOption server : event.getComponent().getOptions()) {
@@ -79,12 +79,12 @@ public class SelectMenuListener extends ListenerAdapter {
                         Guild guild = event.getGuild();
                         if (guild != null) {
                             if ("generate".equals(event.getSelectedOptions().get(0).getValue())) {
-                                String categoryID = guild.createCategory(this.plugin.getLang().getMessage("discord.default-category-name"))
+                                String categoryId = guild.createCategory(this.plugin.getLang().getMessage("discord.default-category-name"))
                                         .complete().getId();
-                                String lobbyID = guild.createVoiceChannel(this.plugin.getLang().getMessage("discord.default-lobby-name"),
-                                                event.getGuild().getCategoryById(categoryID))
+                                String lobbyId = guild.createVoiceChannel(this.plugin.getLang().getMessage("discord.default-lobby-name"),
+                                                event.getGuild().getCategoryById(categoryId))
                                         .complete().getId();
-                                this.plugin.readConfig().getFile().set(ConfigField.LOBBY_ID.get(), lobbyID);
+                                this.plugin.readConfig().getFile().set(ConfigField.LOBBY_ID.get(), lobbyId);
                                 this.plugin.readConfig().saveFile();
                                 new InterruptSystemTask(this.plugin.readConfig()).run();
                                 this.plugin.updateStatus(false);
@@ -138,7 +138,7 @@ public class SelectMenuListener extends ListenerAdapter {
                         event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         break;
                     default:
-                        throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentID));
+                        throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));
                 }
             }
         } else {

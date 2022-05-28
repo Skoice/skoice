@@ -44,13 +44,13 @@ public class ServerSelectMenu extends SelectMenu {
         int optionIndex = 0;
         while (optionIndex < 24 && servers.size() > optionIndex) {
             options.add(SelectOption.of(servers.get(optionIndex).getName(), servers.get(optionIndex).getId())
-                    .withEmoji(MenuEmoji.FILE_CABINET.getEmojiFromUnicode()));
+                    .withEmoji(MenuEmoji.FILE_CABINET.get()));
             optionIndex++;
         }
         if (options.size() == 24) {
             options.add(SelectOption.of(super.lang.getMessage("discord.select-option.too-many-options.label"), "refresh")
                     .withDescription(super.lang.getMessage("discord.select-option.too-many-options.description"))
-                    .withEmoji(MenuEmoji.WARNING.getEmojiFromUnicode()));
+                    .withEmoji(MenuEmoji.WARNING.get()));
         }
         return SelectionMenu.create("server-selection")
                 .setPlaceholder(super.lang.getMessage("discord.menu.server.select-menu.placeholder"))

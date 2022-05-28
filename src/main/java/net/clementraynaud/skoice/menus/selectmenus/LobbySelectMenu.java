@@ -56,17 +56,17 @@ public class LobbySelectMenu extends SelectMenu {
             if (voiceChannels.get(optionIndex).getParent() != null) {
                 options.add(SelectOption.of(voiceChannels.get(optionIndex).getName(), voiceChannels.get(optionIndex).getId())
                         .withDescription(categories.get(optionIndex).getName())
-                        .withEmoji(MenuEmoji.SOUND.getEmojiFromUnicode()));
+                        .withEmoji(MenuEmoji.SOUND.get()));
             }
             optionIndex++;
         }
         options.add(SelectOption.of(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.label"), LobbySelectMenu.GENERATE_OPTION_ID)
                 .withDescription(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.description"))
-                .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.getEmojiFromUnicode()));
+                .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.get()));
         if (options.size() == 23) {
             options.add(SelectOption.of(super.lang.getMessage("discord.select-option.too-many-options.label"), LobbySelectMenu.REFRESH_OPTION_ID)
                     .withDescription(super.lang.getMessage("discord.select-option.too-many-options.description"))
-                    .withEmoji(MenuEmoji.WARNING.getEmojiFromUnicode()));
+                    .withEmoji(MenuEmoji.WARNING.get()));
         }
         if (this.plugin.getBot().isReady()) {
             return SelectionMenu.create("lobby-selection")

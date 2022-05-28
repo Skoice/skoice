@@ -38,7 +38,7 @@ public class GuildMessageDeleteListener extends ListenerAdapter {
         if (this.configurationMenu.exists()
                 && this.configurationMenu.getMessageId().equals(event.getMessageId())) {
             this.configurationMenu.clearConfig();
-            ButtonClickListener.getDiscordIDAxis().clear();
+            ButtonClickListener.getDiscordIdAxis().clear();
         }
     }
 }

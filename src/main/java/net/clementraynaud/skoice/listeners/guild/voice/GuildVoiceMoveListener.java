@@ -44,11 +44,11 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
         new UpdateVoiceStateTask(this.plugin.readConfig(), event.getMember(), event.getChannelJoined()).run();
         if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(this.plugin.readConfig().getCategory())
                 && event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(this.plugin.readConfig().getCategory())) {
-            String minecraftID = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), event.getMember().getId());
-            if (minecraftID == null) {
+            String minecraftId = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), event.getMember().getId());
+            if (minecraftId == null) {
                 return;
             }
-            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
+            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
                 Network.getNetworks().stream()
                         .filter(network -> network.contains(player.getPlayer().getUniqueId()))

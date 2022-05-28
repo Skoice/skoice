@@ -46,15 +46,15 @@ public class UnlinkArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        String discordID = super.plugin.readConfig().getLinks().get(player.getUniqueId().toString());
-        if (discordID == null) {
+        String discordId = super.plugin.readConfig().getLinks().get(player.getUniqueId().toString());
+        if (discordId == null) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked"));
             return;
         }
         super.plugin.readConfig().unlinkUser(player.getUniqueId().toString());
         Member member;
         try {
-            member = super.plugin.readConfig().getGuild().retrieveMemberById(discordID).complete();
+            member = super.plugin.readConfig().getGuild().retrieveMemberById(discordId).complete();
             member.getUser().openPrivateChannel().complete()
                     .sendMessage(new Menu(super.plugin, "linking-process",
                             Collections.singleton(super.plugin.getBot().getFields().get("account-unlinked")),

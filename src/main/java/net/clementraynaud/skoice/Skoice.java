@@ -126,20 +126,14 @@ public class Skoice extends JavaPlugin {
         if (startup) {
             if (this.bot.isReady()) {
                 this.registerEligiblePlayerListeners();
-                this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this),
-                        new GuildVoiceLeaveListener(this),
-                        new GuildVoiceMoveListener(this),
-                        new VoiceChannelDeleteListener());
+                this.bot.registerListeners();
             } else {
                 Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this), this);
             }
         } else if (!wasBotReady && this.bot.isReady()) {
             HandlerList.unregisterAll(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this));
             this.registerEligiblePlayerListeners();
-            this.bot.getJda().addEventListener(new GuildVoiceJoinListener(this),
-                    new GuildVoiceLeaveListener(this),
-                    new GuildVoiceMoveListener(this),
-                    new VoiceChannelDeleteListener());
+            this.bot.registerListeners();
             this.getLogger().info(this.lang.getMessage("logger.info.configuration-complete"));
             Message message = this.configurationMenu.retrieveMessage();
             if (message != null && message.getInteraction() != null) {
@@ -155,10 +149,7 @@ public class Skoice extends JavaPlugin {
             this.unregisterEligiblePlayerListeners();
             Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this), this);
             if (this.bot.getJda() != null) {
-                this.bot.getJda().removeEventListener(new GuildVoiceJoinListener(this),
-                        new GuildVoiceLeaveListener(this),
-                        new GuildVoiceMoveListener(this),
-                        new VoiceChannelDeleteListener());
+                this.bot.unregisterListeners();
             }
             new InterruptSystemTask(this.config).run();
         }

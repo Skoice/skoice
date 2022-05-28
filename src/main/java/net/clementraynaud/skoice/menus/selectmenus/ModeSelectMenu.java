@@ -50,10 +50,10 @@ public class ModeSelectMenu extends SelectMenu {
     public SelectionMenu get() {
         List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.label"), ModeSelectMenu.VANILLA_MODE_ID)
                         .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.description"))
-                        .withEmoji(MenuEmoji.MAP.getEmojiFromUnicode()),
+                        .withEmoji(MenuEmoji.MAP.get()),
                 SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.label"), ModeSelectMenu.MINIGAME_MODE_ID)
                         .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.description"))
-                        .withEmoji(MenuEmoji.CROSSED_SWORDS.getEmojiFromUnicode())));
+                        .withEmoji(MenuEmoji.CROSSED_SWORDS.get())));
         if (this.plugin.getBot().isReady()) {
             String defaultValue;
             if (this.plugin.readConfig().getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) == 80
@@ -62,21 +62,21 @@ public class ModeSelectMenu extends SelectMenu {
                 defaultValue = ModeSelectMenu.VANILLA_MODE_ID;
                 modes.add(SelectOption.of(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
                         .withDescription(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.description"))
-                        .withEmoji(MenuEmoji.PENCIL2.getEmojiFromUnicode()));
+                        .withEmoji(MenuEmoji.PENCIL2.get()));
             } else if (this.plugin.readConfig().getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) == 40
                     && this.plugin.readConfig().getFile().getInt(ConfigField.VERTICAL_RADIUS.get()) == 20
                     && !this.customizeRadius) {
                 defaultValue = ModeSelectMenu.MINIGAME_MODE_ID;
                 modes.add(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
                         .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.description"))
-                        .withEmoji(MenuEmoji.PENCIL2.getEmojiFromUnicode()));
+                        .withEmoji(MenuEmoji.PENCIL2.get()));
             } else {
                 defaultValue = ModeSelectMenu.CUSTOMIZE_ID;
                 modes.add(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
                         .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.alternative-description",
                                 this.plugin.readConfig().getFile().getString(ConfigField.HORIZONTAL_RADIUS.get()),
                                 this.plugin.readConfig().getFile().getString(ConfigField.VERTICAL_RADIUS.get())))
-                        .withEmoji(MenuEmoji.PENCIL2.getEmojiFromUnicode()));
+                        .withEmoji(MenuEmoji.PENCIL2.get()));
             }
             return SelectionMenu.create("mode-selection")
                     .setPlaceholder(super.lang.getMessage("discord.menu.mode.select-menu.placeholder"))

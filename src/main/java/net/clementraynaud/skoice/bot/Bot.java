@@ -25,6 +25,9 @@ import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.config.ConfigField;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleAddListener;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleRemoveListener;
+import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceJoinListener;
+import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceLeaveListener;
+import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceMoveListener;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.menus.MenuField;
@@ -148,7 +151,7 @@ public class Bot {
         this.updateGuildUniquenessStatus();
         this.checkForValidLobby();
         this.jda.getGuilds().forEach(new Commands(this.plugin)::register);
-        this.registerListeners();
+        this.registerPermanentListeners();
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                         Bukkit.getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
@@ -204,7 +207,7 @@ public class Bot {
         }
     }
 
-    private void registerListeners() {
+    private void registerPermanentListeners() {
         this.jda.addEventListener(
                 new ReconnectedListener(this.plugin),
                 new GuildJoinListener(this.plugin),
@@ -226,6 +229,24 @@ public class Bot {
         );
     }
 
+    public void registerListeners() {
+        this.getJda().addEventListener(
+                new GuildVoiceJoinListener(this.plugin),
+                new GuildVoiceLeaveListener(this.plugin),
+                new GuildVoiceMoveListener(this.plugin),
+                new net.clementraynaud.skoice.listeners.channel.voice.network.VoiceChannelDeleteListener()
+        );
+    }
+
+    public void unregisterListeners() {
+        this.getJda().removeEventListener(
+                new GuildVoiceJoinListener(this.plugin),
+                new GuildVoiceLeaveListener(this.plugin),
+                new GuildVoiceMoveListener(this.plugin),
+                new net.clementraynaud.skoice.listeners.channel.voice.network.VoiceChannelDeleteListener()
+        );
+    }
+
     public void checkForUnlinkedUsersInLobby() {
         VoiceChannel lobby = this.plugin.readConfig().getLobby();
         if (lobby != null) {
@@ -236,8 +257,8 @@ public class Bot {
     }
 
     public void checkMemberStatus(Member member) {
-        String minecraftID = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), member.getId());
-        if (minecraftID == null) {
+        String minecraftId = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), member.getId());
+        if (minecraftId == null) {
             member.getUser().openPrivateChannel().complete()
                     .sendMessage(new Menu(this.plugin, "linking-process",
                             Collections.singleton(this.plugin.getBot().getFields().get("account-not-linked")),
@@ -245,7 +266,7 @@ public class Bot {
                             .toMessage())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         } else {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftID));
+            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
                 this.plugin.getEligiblePlayers().add(player.getUniqueId());
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));

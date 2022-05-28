@@ -64,13 +64,13 @@ public class Config {
         this.saveFile();
     }
 
-    public void linkUser(String minecraftID, String discordID) {
-        this.file.set(ConfigField.LINKS.get() + "." + minecraftID, discordID);
+    public void linkUser(String minecraftId, String discordId) {
+        this.file.set(ConfigField.LINKS.get() + "." + minecraftId, discordId);
         this.saveFile();
     }
 
-    public void unlinkUser(String minecraftID) {
-        this.file.set(ConfigField.LINKS.get() + "." + minecraftID, null);
+    public void unlinkUser(String minecraftId) {
+        this.file.set(ConfigField.LINKS.get() + "." + minecraftId, null);
         this.saveFile();
     }
 
@@ -85,9 +85,9 @@ public class Config {
         return castedLinks;
     }
 
-    public Member getMember(UUID minecraftID) {
-        String discordID = this.getLinks().get(minecraftID.toString());
-        if (discordID == null) {
+    public Member getMember(UUID minecraftId) {
+        String discordId = this.getLinks().get(minecraftId.toString());
+        if (discordId == null) {
             return null;
         }
         Guild guild = this.getGuild();
@@ -96,7 +96,7 @@ public class Config {
         }
         Member member = null;
         try {
-            member = guild.retrieveMemberById(discordID).complete();
+            member = guild.retrieveMemberById(discordId).complete();
         } catch (ErrorResponseException ignored) {
         }
         return member;
@@ -106,11 +106,11 @@ public class Config {
         if (this.plugin.getBot().getJda() == null) {
             return null;
         }
-        String lobbyID = this.file.getString(ConfigField.LOBBY_ID.get());
-        if (lobbyID == null) {
+        String lobbyId = this.file.getString(ConfigField.LOBBY_ID.get());
+        if (lobbyId == null) {
             return null;
         }
-        VoiceChannel lobby = this.plugin.getBot().getJda().getVoiceChannelById(lobbyID);
+        VoiceChannel lobby = this.plugin.getBot().getJda().getVoiceChannelById(lobbyId);
         return lobby != null && lobby.getParent() != null ? lobby : null;
     }
 

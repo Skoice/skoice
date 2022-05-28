@@ -35,20 +35,12 @@ import java.util.Map;
 
 public class LinkCommand extends ListenerAdapter {
 
-    private static final Map<String, String> discordIDCode = new HashMap<>();
+    private static final Map<String, String> discordIdCode = new HashMap<>();
 
     private final Skoice plugin;
 
     public LinkCommand(Skoice plugin) {
         this.plugin = plugin;
-    }
-
-    public static Map<String, String> getDiscordIDCode() {
-        return LinkCommand.discordIDCode;
-    }
-
-    public static void removeValueFromDiscordIDCode(String value) {
-        LinkCommand.discordIDCode.values().remove(value);
     }
 
     @Override
@@ -69,16 +61,20 @@ public class LinkCommand extends ListenerAdapter {
                         .toMessage()).setEphemeral(true).queue();
                 return;
             }
-            LinkCommand.discordIDCode.remove(event.getUser().getId());
+            LinkCommand.discordIdCode.remove(event.getUser().getId());
             String code;
             do {
                 code = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
-            } while (LinkCommand.discordIDCode.containsValue(code));
-            LinkCommand.discordIDCode.put(event.getUser().getId(), code);
+            } while (LinkCommand.discordIdCode.containsValue(code));
+            LinkCommand.discordIdCode.put(event.getUser().getId(), code);
             event.reply(new Menu(this.plugin, "linking-process",
                     Collections.singleton(new MenuField(this.plugin, "verification-code", code)),
                     MenuType.SUCCESS)
                     .toMessage()).setEphemeral(true).queue();
         }
+    }
+
+    public static Map<String, String> getDiscordIdCode() {
+        return LinkCommand.discordIdCode;
     }
 }

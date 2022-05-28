@@ -27,8 +27,8 @@ public class EligiblePlayers {
 
     private final Set<UUID> players = new HashSet<>();
 
-    public void add(UUID minecraftID) {
-        this.players.add(minecraftID);
+    public void add(UUID minecraftId) {
+        this.players.add(minecraftId);
     }
 
     public Set<UUID> copy() {

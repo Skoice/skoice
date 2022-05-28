@@ -66,8 +66,8 @@ public class UpdateNetworksTask implements Task {
             Network.getNetworks().removeIf(network -> network.getChannel() == null && network.isInitialized());
             Set<UUID> oldEligiblePlayers = this.plugin.getEligiblePlayers().copy();
             this.plugin.getEligiblePlayers().clear();
-            for (UUID minecraftID : oldEligiblePlayers) {
-                Player player = Bukkit.getPlayer(minecraftID);
+            for (UUID minecraftId : oldEligiblePlayers) {
+                Player player = Bukkit.getPlayer(minecraftId);
                 if (player != null) {
                     Member member = this.plugin.readConfig().getMember(player.getUniqueId());
                     if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {
@@ -98,10 +98,10 @@ public class UpdateNetworksTask implements Task {
             }
             Map<String, String> links = new HashMap<>(this.plugin.readConfig().getLinks());
             for (Member member : membersInLobby) {
-                String minecraftID = MapUtil.getKeyFromValue(links, member.getId());
+                String minecraftId = MapUtil.getKeyFromValue(links, member.getId());
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
-                Network playerNetwork = minecraftID != null ? Network.getNetworks().stream()
-                        .filter(n -> n.contains(UUID.fromString(minecraftID)))
+                Network playerNetwork = minecraftId != null ? Network.getNetworks().stream()
+                        .filter(n -> n.contains(UUID.fromString(minecraftId)))
                         .findAny().orElse(null) : null;
                 VoiceChannel shouldBeInChannel;
                 if (playerNetwork != null) {

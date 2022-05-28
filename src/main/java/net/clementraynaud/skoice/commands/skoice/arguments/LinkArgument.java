@@ -61,20 +61,20 @@ public class LinkArgument extends Argument {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.no-code"));
             return;
         }
-        if (!LinkCommand.getDiscordIDCode().containsValue(this.arg)) {
+        if (!LinkCommand.getDiscordIdCode().containsValue(this.arg)) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.invalid-code"));
             return;
         }
-        String discordID = MapUtil.getKeyFromValue(LinkCommand.getDiscordIDCode(), this.arg);
-        if (discordID == null) {
+        String discordId = MapUtil.getKeyFromValue(LinkCommand.getDiscordIdCode(), this.arg);
+        if (discordId == null) {
             return;
         }
-        Member member = super.plugin.readConfig().getGuild().getMemberById(discordID);
+        Member member = super.plugin.readConfig().getGuild().getMemberById(discordId);
         if (member == null) {
             return;
         }
-        super.plugin.readConfig().linkUser(player.getUniqueId().toString(), discordID);
-        LinkCommand.removeValueFromDiscordIDCode(this.arg);
+        super.plugin.readConfig().linkUser(player.getUniqueId().toString(), discordId);
+        LinkCommand.getDiscordIdCode().values().remove(this.arg);
         member.getUser().openPrivateChannel().complete()
                 .sendMessage(new Menu(super.plugin, "linking-process",
                         Collections.singleton(super.plugin.getBot().getFields().get("account-linked")),
