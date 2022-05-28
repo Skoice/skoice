@@ -20,8 +20,8 @@
 
 package net.clementraynaud.skoice.system;
 
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.config.Configuration;
+import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.util.DistanceUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -40,27 +40,27 @@ public class Network {
 
     private boolean initialized = false;
 
-    private final Config config;
+    private final Configuration configuration;
     private final Set<UUID> players;
     private String channel;
 
-    public Network(Config config, String channel) {
-        this.config = config;
+    public Network(Configuration configuration, String channel) {
+        this.configuration = configuration;
         this.players = Collections.emptySet();
         this.channel = channel;
     }
 
-    public Network(Config config, Set<UUID> players) {
-        this.config = config;
+    public Network(Configuration configuration, Set<UUID> players) {
+        this.configuration = configuration;
         this.players = players;
     }
 
     public void build() {
-        Guild guild = this.config.getGuild();
-        List<Permission> deniedPermissions = this.config.getFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.get())
+        Guild guild = this.configuration.getGuild();
+        List<Permission> deniedPermissions = this.configuration.getFile().getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString())
                 ? Arrays.asList(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS)
                 : Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
-        this.config.getCategory().createVoiceChannel(UUID.randomUUID().toString())
+        this.configuration.getCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(guild.getPublicRole(),
                         Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
                         deniedPermissions)
@@ -80,10 +80,10 @@ public class Network {
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
-                        .getInt(ConfigField.VERTICAL_RADIUS.get())
-                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
-                        .getInt(ConfigField.HORIZONTAL_RADIUS.get()));
+                .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.configuration.getFile()
+                        .getInt(ConfigurationField.VERTICAL_RADIUS.toString())
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.configuration.getFile()
+                        .getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()));
     }
 
     public boolean canPlayerStayConnected(Player player) {
@@ -91,10 +91,10 @@ public class Network {
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .filter(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
-                        .getInt(ConfigField.VERTICAL_RADIUS.get()) + Network.FALLOFF
-                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.config.getFile()
-                        .getInt(ConfigField.HORIZONTAL_RADIUS.get()) + Network.FALLOFF)
+                .filter(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.configuration.getFile()
+                        .getInt(ConfigurationField.VERTICAL_RADIUS.toString()) + Network.FALLOFF
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.configuration.getFile()
+                        .getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) + Network.FALLOFF)
                 .toArray(Player[]::new));
         if (this.players.size() > matches.size()) {
             Player[] otherPlayers = this.players.stream()
@@ -104,10 +104,10 @@ public class Network {
                     .toArray(Player[]::new);
             for (Player otherPlayer : otherPlayers) {
                 if (matches.stream()
-                        .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.config.getFile()
-                                .getInt(ConfigField.VERTICAL_RADIUS.get()) + Network.FALLOFF
-                                && DistanceUtil.getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.config.getFile()
-                                .getInt(ConfigField.HORIZONTAL_RADIUS.get()) + Network.FALLOFF)) {
+                        .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.configuration.getFile()
+                                .getInt(ConfigurationField.VERTICAL_RADIUS.toString()) + Network.FALLOFF
+                                && DistanceUtil.getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.configuration.getFile()
+                                .getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) + Network.FALLOFF)) {
                     return true;
                 }
             }
@@ -158,7 +158,7 @@ public class Network {
         if (this.channel == null || this.channel.isEmpty()) {
             return null;
         }
-        Guild guild = this.config.getGuild();
+        Guild guild = this.configuration.getGuild();
         if (guild != null) {
             return guild.getVoiceChannelById(this.channel);
         }

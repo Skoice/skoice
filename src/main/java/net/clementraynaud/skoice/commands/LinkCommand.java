@@ -54,7 +54,7 @@ public class LinkCommand extends ListenerAdapter {
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 return;
             }
-            if (this.plugin.readConfig().getLinks().containsValue(event.getUser().getId())) {
+            if (this.plugin.getConfiguration().getLinks().containsValue(event.getUser().getId())) {
                 event.reply(new Menu(this.plugin, "linking-process",
                         Collections.singleton(this.plugin.getBot().getFields().get("account-already-linked")),
                         MenuType.ERROR)

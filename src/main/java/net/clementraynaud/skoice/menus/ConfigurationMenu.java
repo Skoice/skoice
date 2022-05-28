@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -41,10 +41,10 @@ public class ConfigurationMenu {
             return this.plugin.getBot().getMenus().get("server").toMessage();
         } else if (!this.plugin.getBot().getJda().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
             return this.plugin.getBot().getMenus().get("permissions").toMessage();
-        } else if (!this.plugin.readConfig().getFile().contains(ConfigField.LOBBY_ID.get())) {
+        } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
             return this.plugin.getBot().getMenus().get("lobby").toMessage();
-        } else if (!this.plugin.readConfig().getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())
-                || !this.plugin.readConfig().getFile().contains(ConfigField.VERTICAL_RADIUS.get())) {
+        } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
+                || !this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
             return this.plugin.getBot().getMenus().get("mode").toMessage();
         } else {
             return this.plugin.getBot().getMenus().get("configuration").toMessage();
@@ -52,7 +52,7 @@ public class ConfigurationMenu {
     }
 
     public boolean exists() {
-        return this.plugin.readConfig().getFile().contains(ConfigField.CONFIG_MENU.get());
+        return this.plugin.getConfiguration().getFile().contains(ConfigurationField.CONFIG_MENU.toString());
     }
 
     public String getMessageId() {
@@ -67,19 +67,19 @@ public class ConfigurationMenu {
         if (!this.exists()) {
             return null;
         }
-        Guild guild = this.plugin.getBot().getJda().getGuildById(this.plugin.readConfig().getFile()
-                .getString(ConfigField.CONFIG_MENU.get() + "." + ConfigField.GUILD_ID.get()));
+        Guild guild = this.plugin.getBot().getJda().getGuildById(this.plugin.getConfiguration().getFile()
+                .getString(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.GUILD_ID)));
         if (guild == null) {
             return null;
         }
-        TextChannel textChannel = guild.getTextChannelById(this.plugin.readConfig().getFile()
-                .getString(ConfigField.CONFIG_MENU.get() + "." + ConfigField.TEXT_CHANNEL_ID.get()));
+        TextChannel textChannel = guild.getTextChannelById(this.plugin.getConfiguration().getFile()
+                .getString(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.TEXT_CHANNEL_ID)));
         if (textChannel == null) {
             return null;
         }
         try {
-            return textChannel.retrieveMessageById(this.plugin.readConfig().getFile()
-                    .getString(ConfigField.CONFIG_MENU.get() + "." + ConfigField.MESSAGE_ID.get())).complete();
+            return textChannel.retrieveMessageById(this.plugin.getConfiguration().getFile()
+                    .getString(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.MESSAGE_ID))).complete();
         } catch (ErrorResponseException e) {
             this.clearConfig();
             ButtonClickListener.getDiscordIdAxis().clear();
@@ -95,14 +95,20 @@ public class ConfigurationMenu {
     }
 
     public void storeInConfig(Message message) {
-        this.plugin.readConfig().getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.GUILD_ID.get(), message.getGuild().getId());
-        this.plugin.readConfig().getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.TEXT_CHANNEL_ID.get(), message.getTextChannel().getId());
-        this.plugin.readConfig().getFile().set(ConfigField.CONFIG_MENU.get() + "." + ConfigField.MESSAGE_ID.get(), message.getId());
-        this.plugin.readConfig().saveFile();
+        this.plugin.getConfiguration().getFile()
+                .set(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.GUILD_ID),
+                        message.getGuild().getId());
+        this.plugin.getConfiguration().getFile()
+                .set(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.TEXT_CHANNEL_ID),
+                        message.getTextChannel().getId());
+        this.plugin.getConfiguration().getFile()
+                .set(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.MESSAGE_ID),
+                        message.getId());
+        this.plugin.getConfiguration().saveFile();
     }
 
     public void clearConfig() {
-        this.plugin.readConfig().getFile().set(ConfigField.CONFIG_MENU.get(), null);
-        this.plugin.readConfig().saveFile();
+        this.plugin.getConfiguration().getFile().set(ConfigurationField.CONFIG_MENU.toString(), null);
+        this.plugin.getConfiguration().saveFile();
     }
 }

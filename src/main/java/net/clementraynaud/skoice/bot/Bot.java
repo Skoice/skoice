@@ -22,7 +22,7 @@ package net.clementraynaud.skoice.bot;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
-import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleAddListener;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleRemoveListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceJoinListener;
@@ -107,8 +107,8 @@ public class Bot {
     }
 
     public void connect(CommandSender sender) {
-        if (this.plugin.readConfig().getFile().contains(ConfigField.TOKEN.get())) {
-            byte[] base64TokenBytes = Base64.getDecoder().decode(this.plugin.readConfig().getFile().getString(ConfigField.TOKEN.get()));
+        if (this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
+            byte[] base64TokenBytes = Base64.getDecoder().decode(this.plugin.getConfiguration().getFile().getString(ConfigurationField.TOKEN.toString()));
             for (int i = 0; i < base64TokenBytes.length; i++) {
                 base64TokenBytes[i]--;
             }
@@ -124,8 +124,8 @@ public class Bot {
                     this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
                 } else {
                     sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-could-not-connect"));
-                    this.plugin.readConfig().getFile().set(ConfigField.TOKEN.get(), null);
-                    this.plugin.readConfig().saveFile();
+                    this.plugin.getConfiguration().getFile().set(ConfigurationField.TOKEN.toString(), null);
+                    this.plugin.getConfiguration().saveFile();
                 }
             } catch (ErrorResponseException e) {
                 if (sender == null) {
@@ -201,9 +201,9 @@ public class Bot {
     }
 
     public void checkForValidLobby() {
-        if (this.plugin.readConfig().getLobby() == null && this.plugin.readConfig().getFile().contains(ConfigField.LOBBY_ID.get())) {
-            this.plugin.readConfig().getFile().set(ConfigField.LOBBY_ID.get(), null);
-            this.plugin.readConfig().saveFile();
+        if (this.plugin.getConfiguration().getLobby() == null && this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
+            this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), null);
+            this.plugin.getConfiguration().saveFile();
         }
     }
 
@@ -248,7 +248,7 @@ public class Bot {
     }
 
     public void checkForUnlinkedUsersInLobby() {
-        VoiceChannel lobby = this.plugin.readConfig().getLobby();
+        VoiceChannel lobby = this.plugin.getConfiguration().getLobby();
         if (lobby != null) {
             for (Member member : lobby.getMembers()) {
                 this.checkMemberStatus(member);
@@ -257,7 +257,7 @@ public class Bot {
     }
 
     public void checkMemberStatus(Member member) {
-        String minecraftId = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), member.getId());
+        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getConfiguration().getLinks(), member.getId());
         if (minecraftId == null) {
             member.getUser().openPrivateChannel().complete()
                     .sendMessage(new Menu(this.plugin, "linking-process",
@@ -275,18 +275,18 @@ public class Bot {
     }
 
     public void updateVoiceState() {
-        Guild guild = this.plugin.readConfig().getGuild();
+        Guild guild = this.plugin.getConfiguration().getGuild();
         if (guild != null) {
             for (VoiceChannel channel : guild.getVoiceChannels()) {
                 for (Member member : channel.getMembers()) {
-                    new UpdateVoiceStateTask(this.plugin.readConfig(), member, channel).run();
+                    new UpdateVoiceStateTask(this.plugin.getConfiguration(), member, channel).run();
                 }
             }
         }
     }
 
     private void retrieveNetworks() {
-        Category category = this.plugin.readConfig().getCategory();
+        Category category = this.plugin.getConfiguration().getCategory();
         if (category != null) {
             category.getVoiceChannels().stream()
                     .filter(channel -> {
@@ -297,7 +297,7 @@ public class Bot {
                             return false;
                         }
                     })
-                    .forEach(channel -> Network.getNetworks().add(new Network(this.plugin.readConfig(), channel.getId())));
+                    .forEach(channel -> Network.getNetworks().add(new Network(this.plugin.getConfiguration(), channel.getId())));
         }
     }
 

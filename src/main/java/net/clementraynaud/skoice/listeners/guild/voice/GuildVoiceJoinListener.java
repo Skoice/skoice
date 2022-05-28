@@ -35,8 +35,8 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
-        new UpdateVoiceStateTask(this.plugin.readConfig(), event.getMember(), event.getChannelJoined()).run();
-        if (event.getChannelJoined().equals(this.plugin.readConfig().getLobby())) {
+        new UpdateVoiceStateTask(this.plugin.getConfiguration(), event.getMember(), event.getChannelJoined()).run();
+        if (event.getChannelJoined().equals(this.plugin.getConfiguration().getLobby())) {
             this.plugin.getBot().checkMemberStatus(event.getMember());
         }
     }

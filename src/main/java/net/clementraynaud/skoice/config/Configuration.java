@@ -32,12 +32,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Config {
+public class Configuration {
 
     private final Skoice plugin;
     private final FileConfiguration file;
 
-    public Config(Skoice plugin) {
+    public Configuration(Skoice plugin) {
         this.plugin = plugin;
         this.file = this.plugin.getConfig();
     }
@@ -60,24 +60,24 @@ public class Config {
         for (int i = 0; i < tokenBytes.length; i++) {
             tokenBytes[i]++;
         }
-        this.file.set(ConfigField.TOKEN.get(), Base64.getEncoder().encodeToString(tokenBytes));
+        this.file.set(ConfigurationField.TOKEN.toString(), Base64.getEncoder().encodeToString(tokenBytes));
         this.saveFile();
     }
 
     public void linkUser(String minecraftId, String discordId) {
-        this.file.set(ConfigField.LINKS.get() + "." + minecraftId, discordId);
+        this.file.set(ConfigurationField.LINKS.toString() + "." + minecraftId, discordId);
         this.saveFile();
     }
 
     public void unlinkUser(String minecraftId) {
-        this.file.set(ConfigField.LINKS.get() + "." + minecraftId, null);
+        this.file.set(ConfigurationField.LINKS.toString() + "." + minecraftId, null);
         this.saveFile();
     }
 
     public Map<String, String> getLinks() {
         Map<String, String> castedLinks = new HashMap<>();
-        if (this.file.isSet(ConfigField.LINKS.get())) {
-            Map<String, Object> links = new HashMap<>(this.file.getConfigurationSection(ConfigField.LINKS.get()).getValues(false));
+        if (this.file.isSet(ConfigurationField.LINKS.toString())) {
+            Map<String, Object> links = new HashMap<>(this.file.getConfigurationSection(ConfigurationField.LINKS.toString()).getValues(false));
             for (Map.Entry<String, Object> entry : links.entrySet()) {
                 castedLinks.put(entry.getKey(), entry.getValue().toString());
             }
@@ -106,7 +106,7 @@ public class Config {
         if (this.plugin.getBot().getJda() == null) {
             return null;
         }
-        String lobbyId = this.file.getString(ConfigField.LOBBY_ID.get());
+        String lobbyId = this.file.getString(ConfigurationField.LOBBY_ID.toString());
         if (lobbyId == null) {
             return null;
         }

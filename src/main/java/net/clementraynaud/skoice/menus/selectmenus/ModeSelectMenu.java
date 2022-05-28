@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
@@ -56,15 +56,15 @@ public class ModeSelectMenu extends SelectMenu {
                         .withEmoji(MenuEmoji.CROSSED_SWORDS.get())));
         if (this.plugin.getBot().isReady()) {
             String defaultValue;
-            if (this.plugin.readConfig().getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) == 80
-                    && this.plugin.readConfig().getFile().getInt(ConfigField.VERTICAL_RADIUS.get()) == 40
+            if (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 80
+                    && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 40
                     && !this.customizeRadius) {
                 defaultValue = ModeSelectMenu.VANILLA_MODE_ID;
                 modes.add(SelectOption.of(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
                         .withDescription(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.description"))
                         .withEmoji(MenuEmoji.PENCIL2.get()));
-            } else if (this.plugin.readConfig().getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) == 40
-                    && this.plugin.readConfig().getFile().getInt(ConfigField.VERTICAL_RADIUS.get()) == 20
+            } else if (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 40
+                    && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 20
                     && !this.customizeRadius) {
                 defaultValue = ModeSelectMenu.MINIGAME_MODE_ID;
                 modes.add(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
@@ -74,8 +74,8 @@ public class ModeSelectMenu extends SelectMenu {
                 defaultValue = ModeSelectMenu.CUSTOMIZE_ID;
                 modes.add(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
                         .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.alternative-description",
-                                this.plugin.readConfig().getFile().getString(ConfigField.HORIZONTAL_RADIUS.get()),
-                                this.plugin.readConfig().getFile().getString(ConfigField.VERTICAL_RADIUS.get())))
+                                this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()),
+                                this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString())))
                         .withEmoji(MenuEmoji.PENCIL2.get()));
             }
             return SelectionMenu.create("mode-selection")

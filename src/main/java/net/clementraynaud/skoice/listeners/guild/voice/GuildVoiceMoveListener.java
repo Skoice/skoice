@@ -41,10 +41,10 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
-        new UpdateVoiceStateTask(this.plugin.readConfig(), event.getMember(), event.getChannelJoined()).run();
-        if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(this.plugin.readConfig().getCategory())
-                && event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(this.plugin.readConfig().getCategory())) {
-            String minecraftId = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), event.getMember().getId());
+        new UpdateVoiceStateTask(this.plugin.getConfiguration(), event.getMember(), event.getChannelJoined()).run();
+        if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(this.plugin.getConfiguration().getCategory())
+                && event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(this.plugin.getConfiguration().getCategory())) {
+            String minecraftId = MapUtil.getKeyFromValue(this.plugin.getConfiguration().getLinks(), event.getMember().getId());
             if (minecraftId == null) {
                 return;
             }
@@ -54,7 +54,7 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
                         .filter(network -> network.contains(player.getPlayer().getUniqueId()))
                         .forEach(network -> network.remove(player.getPlayer()));
             }
-        } else if (event.getChannelJoined().equals(this.plugin.readConfig().getLobby())) {
+        } else if (event.getChannelJoined().equals(this.plugin.getConfiguration().getLobby())) {
             this.plugin.getBot().checkMemberStatus(event.getMember());
         }
     }

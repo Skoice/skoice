@@ -44,7 +44,7 @@ public class TokenArgument extends Argument {
             this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.invalid-token"));
             return;
         }
-        super.plugin.readConfig().setToken(this.arg);
+        super.plugin.getConfiguration().setToken(this.arg);
         if (super.plugin.getBot().getJda() == null) {
             super.plugin.getBot().connect(this.sender);
             if (super.plugin.getBot().getJda() != null) {

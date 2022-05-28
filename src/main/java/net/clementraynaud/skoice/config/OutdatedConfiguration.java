@@ -29,13 +29,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 
-public class OutdatedConfig {
+public class OutdatedConfiguration {
 
     private final FileConfiguration oldData = new YamlConfiguration();
 
     private final Skoice plugin;
 
-    public OutdatedConfig(Skoice plugin) {
+    public OutdatedConfiguration(Skoice plugin) {
         this.plugin = plugin;
     }
 
@@ -48,10 +48,10 @@ public class OutdatedConfig {
                 return;
             }
             this.convertOldToken();
-            this.convertOldData("mainVoiceChannelID", ConfigField.LOBBY_ID.get());
+            this.convertOldData("mainVoiceChannelID", ConfigurationField.LOBBY_ID.toString());
             this.convertOldRadius();
             this.convertOldLinks();
-            this.plugin.readConfig().saveFile();
+            this.plugin.getConfiguration().saveFile();
             try {
                 Files.delete(outdatedConfig.toPath());
             } catch (IOException ignored) {
@@ -62,22 +62,22 @@ public class OutdatedConfig {
     private void convertOldToken() {
         if (this.oldData.contains("token")
                 && !this.oldData.getString("token").isEmpty()
-                && !this.plugin.readConfig().getFile().contains(ConfigField.TOKEN.get())) {
-            this.plugin.readConfig().setToken(this.oldData.getString("token"));
+                && !this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
+            this.plugin.getConfiguration().setToken(this.oldData.getString("token"));
         }
     }
 
     private void convertOldRadius() {
         if (this.oldData.contains("distance.type")
                 && "custom".equals(this.oldData.getString("distance.type"))) {
-            this.convertOldData("distance.horizontalStrength", ConfigField.HORIZONTAL_RADIUS.get());
-            this.convertOldData("distance.verticalStrength", ConfigField.VERTICAL_RADIUS.get());
+            this.convertOldData("distance.horizontalStrength", ConfigurationField.HORIZONTAL_RADIUS.toString());
+            this.convertOldData("distance.verticalStrength", ConfigurationField.VERTICAL_RADIUS.toString());
         } else {
-            if (!this.plugin.readConfig().getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())) {
-                this.plugin.readConfig().getFile().set(ConfigField.HORIZONTAL_RADIUS.get(), 80);
+            if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
+                this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), 80);
             }
-            if (!this.plugin.readConfig().getFile().contains(ConfigField.VERTICAL_RADIUS.get())) {
-                this.plugin.readConfig().getFile().set(ConfigField.VERTICAL_RADIUS.get(), 40);
+            if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
+                this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 40);
             }
         }
     }
@@ -90,16 +90,16 @@ public class OutdatedConfig {
             for (int i = 0; i < subkeys.size(); i += 2) {
                 links.put(iterator.next(), iterator.next());
             }
-            links.putAll(this.plugin.readConfig().getLinks());
-            this.plugin.readConfig().getFile().set(ConfigField.LINKS.get(), links);
+            links.putAll(this.plugin.getConfiguration().getLinks());
+            this.plugin.getConfiguration().getFile().set(ConfigurationField.LINKS.toString(), links);
         }
     }
 
     private void convertOldData(String oldField, String newField) {
         if (this.oldData.contains(oldField)
                 && !this.oldData.getString(oldField).isEmpty()
-                && !this.plugin.readConfig().getFile().contains(newField)) {
-            this.plugin.readConfig().getFile().set(newField, this.oldData.get(oldField));
+                && !this.plugin.getConfiguration().getFile().contains(newField)) {
+            this.plugin.getConfiguration().getFile().set(newField, this.oldData.get(oldField));
         }
     }
 }

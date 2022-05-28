@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -42,7 +42,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.isOp()) {
-            if (!this.plugin.readConfig().getFile().contains(ConfigField.TOKEN.get()) || this.plugin.getBot().getJda() == null) {
+            if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString()) || this.plugin.getBot().getJda() == null) {
                 try {
                     TextComponent configureCommand = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.here"));
                     MessageUtil.setHoverEvent(configureCommand, this.plugin.getLang().getMessage("minecraft.interaction.execute", "/skoice configure"));

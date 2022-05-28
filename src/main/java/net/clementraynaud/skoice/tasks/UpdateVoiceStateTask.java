@@ -19,8 +19,8 @@
 
 package net.clementraynaud.skoice.tasks;
 
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.config.Configuration;
+import net.clementraynaud.skoice.config.ConfigurationField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.PermissionOverride;
@@ -30,41 +30,41 @@ import java.util.List;
 
 public class UpdateVoiceStateTask implements Task {
 
-    private final Config config;
+    private final Configuration configuration;
     private final Member member;
     private final VoiceChannel channel;
 
-    public UpdateVoiceStateTask(Config config, Member member, VoiceChannel channel) {
-        this.config = config;
+    public UpdateVoiceStateTask(Configuration configuration, Member member, VoiceChannel channel) {
+        this.configuration = configuration;
         this.member = member;
         this.channel = channel;
     }
 
     @Override
     public void run() {
-        if (this.member.getVoiceState() == null || this.config.getLobby() == null) {
+        if (this.member.getVoiceState() == null || this.configuration.getLobby() == null) {
             return;
         }
-        boolean isLobby = this.channel.getId().equals(this.config.getLobby().getId());
+        boolean isLobby = this.channel.getId().equals(this.configuration.getLobby().getId());
         if (isLobby && !this.member.getVoiceState().isGuildMuted()) {
             PermissionOverride override = this.channel.getPermissionOverride(this.channel.getGuild().getPublicRole());
             if (override != null && override.getDenied().contains(Permission.VOICE_SPEAK)
                     && this.member.hasPermission(this.channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
-                    && this.channel.getGuild().getSelfMember().hasPermission(this.config.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
+                    && this.channel.getGuild().getSelfMember().hasPermission(this.configuration.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
-                List<String> mutedUsers = this.config.getFile().getStringList(ConfigField.MUTED_USERS.get());
+                List<String> mutedUsers = this.configuration.getFile().getStringList(ConfigurationField.MUTED_USERS_ID.toString());
                 mutedUsers.add(this.member.getId());
-                this.config.getFile().set(ConfigField.MUTED_USERS.get(), mutedUsers);
-                this.config.saveFile();
+                this.configuration.getFile().set(ConfigurationField.MUTED_USERS_ID.toString(), mutedUsers);
+                this.configuration.saveFile();
             }
         } else if (!isLobby) {
-            List<String> mutedUsers = this.config.getFile().getStringList(ConfigField.MUTED_USERS.get());
+            List<String> mutedUsers = this.configuration.getFile().getStringList(ConfigurationField.MUTED_USERS_ID.toString());
             if (mutedUsers.contains(this.member.getId())) {
                 this.member.mute(false).queue();
                 mutedUsers.remove(this.member.getId());
-                this.config.getFile().set(ConfigField.MUTED_USERS.get(), mutedUsers);
-                this.config.saveFile();
+                this.configuration.getFile().set(ConfigurationField.MUTED_USERS_ID.toString(), mutedUsers);
+                this.configuration.saveFile();
             }
         }
     }

@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuType;
 import net.dv8tion.jda.api.Permission;
@@ -65,9 +65,9 @@ public class ButtonClickListener extends ListenerAdapter {
                         if ("mode".equals(buttonId)) {
                             ButtonClickListener.discordIdAxis.remove(member.getId());
                         } else if ("horizontal-radius".equals(buttonId)) {
-                            ButtonClickListener.discordIdAxis.put(member.getId(), ConfigField.HORIZONTAL_RADIUS.get());
+                            ButtonClickListener.discordIdAxis.put(member.getId(), ConfigurationField.HORIZONTAL_RADIUS.toString());
                         } else if ("vertical-radius".equals(buttonId)) {
-                            ButtonClickListener.discordIdAxis.put(member.getId(), ConfigField.VERTICAL_RADIUS.get());
+                            ButtonClickListener.discordIdAxis.put(member.getId(), ConfigurationField.VERTICAL_RADIUS.toString());
                         }
                         event.editMessage(this.plugin.getBot().getMenus().get(buttonId).toMessage()).queue();
                     }

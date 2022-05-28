@@ -1,7 +1,7 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.LobbySelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ModeSelectMenu;
@@ -127,10 +127,10 @@ public class Menu {
                 this.selectMenu = new LanguageSelectMenu(this.plugin);
                 break;
             case "action-bar-alert":
-                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name, this.plugin.readConfig().getFile().getBoolean(ConfigField.ACTION_BAR_ALERT.get()), true);
+                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name, this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.ACTION_BAR_ALERT.toString()), true);
                 break;
             case "channel-visibility":
-                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name, this.plugin.readConfig().getFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.get()), false);
+                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name, this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString()), false);
                 break;
             default:
                 List<Button> buttons = this.getButtons(customizeRadius);
@@ -202,9 +202,9 @@ public class Menu {
     private boolean isModeCustomizable(boolean customizeRadius) {
         return this.plugin.getBot().isReady() &&
                 (customizeRadius
-                        || (this.plugin.readConfig().getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) != 80
-                        && this.plugin.readConfig().getFile().getInt(ConfigField.HORIZONTAL_RADIUS.get()) != 40)
-                        || (this.plugin.readConfig().getFile().getInt(ConfigField.VERTICAL_RADIUS.get()) != 40
-                        && this.plugin.readConfig().getFile().getInt(ConfigField.VERTICAL_RADIUS.get()) != 20));
+                        || (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) != 80
+                        && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) != 40)
+                        || (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) != 40
+                        && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) != 20));
     }
 }

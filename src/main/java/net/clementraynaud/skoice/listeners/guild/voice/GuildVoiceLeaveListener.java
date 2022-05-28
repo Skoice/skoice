@@ -41,10 +41,10 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
         if (event.getChannelLeft().getParent() == null
-                || !event.getChannelLeft().getParent().equals(this.plugin.readConfig().getCategory())) {
+                || !event.getChannelLeft().getParent().equals(this.plugin.getConfiguration().getCategory())) {
             return;
         }
-        String minecraftId = MapUtil.getKeyFromValue(this.plugin.readConfig().getLinks(), event.getMember().getId());
+        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getConfiguration().getLinks(), event.getMember().getId());
         if (minecraftId == null) {
             return;
         }
@@ -53,7 +53,7 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
             Network.getNetworks().stream()
                     .filter(network -> network.contains(player.getPlayer()))
                     .forEach(network -> network.remove(player.getPlayer()));
-            if (event.getChannelLeft().equals(this.plugin.readConfig().getLobby())
+            if (event.getChannelLeft().equals(this.plugin.getConfiguration().getLobby())
                     || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
             }

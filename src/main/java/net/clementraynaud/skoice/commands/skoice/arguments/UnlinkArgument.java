@@ -46,15 +46,15 @@ public class UnlinkArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        String discordId = super.plugin.readConfig().getLinks().get(player.getUniqueId().toString());
+        String discordId = super.plugin.getConfiguration().getLinks().get(player.getUniqueId().toString());
         if (discordId == null) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked"));
             return;
         }
-        super.plugin.readConfig().unlinkUser(player.getUniqueId().toString());
+        super.plugin.getConfiguration().unlinkUser(player.getUniqueId().toString());
         Member member;
         try {
-            member = super.plugin.readConfig().getGuild().retrieveMemberById(discordId).complete();
+            member = super.plugin.getConfiguration().getGuild().retrieveMemberById(discordId).complete();
             member.getUser().openPrivateChannel().complete()
                     .sendMessage(new Menu(super.plugin, "linking-process",
                             Collections.singleton(super.plugin.getBot().getFields().get("account-unlinked")),
@@ -64,7 +64,7 @@ public class UnlinkArgument extends Argument {
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 VoiceChannel voiceChannel = voiceState.getChannel();
-                if (voiceChannel != null && voiceChannel.equals(super.plugin.readConfig().getLobby())
+                if (voiceChannel != null && voiceChannel.equals(super.plugin.getConfiguration().getLobby())
                         || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
                     player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
                 }

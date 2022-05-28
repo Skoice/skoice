@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.config;
 
-public enum ConfigField {
+public enum ConfigurationField {
     TOKEN,
     LANG,
     LOBBY_ID,
@@ -28,13 +28,22 @@ public enum ConfigField {
     ACTION_BAR_ALERT,
     CHANNEL_VISIBILITY,
     LINKS,
-    MUTED_USERS,
+    MUTED_USERS_ID,
     CONFIG_MENU,
     MESSAGE_ID,
     TEXT_CHANNEL_ID,
     GUILD_ID;
 
-    public String get() {
-        return this.toString().toLowerCase().replace("_", "-");
+    @Override
+    public String toString() {
+        return this.name().toLowerCase().replace("_", "-");
+    }
+
+    public static String getPath(ConfigurationField... fields) {
+        StringBuilder node = new StringBuilder();
+        for (ConfigurationField field : fields) {
+            node.append(field.toString()).append(".");
+        }
+        return node.substring(0, node.length() - 1);
     }
 }

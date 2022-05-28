@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.listeners.channel.voice.lobby.update;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuType;
 import net.dv8tion.jda.api.audit.ActionType;
@@ -42,8 +42,8 @@ public class VoiceChannelUpdateParentListener extends ListenerAdapter {
 
     @Override
     public void onVoiceChannelUpdateParent(VoiceChannelUpdateParentEvent event) {
-        if (event.getChannel().getId().equals(this.plugin.readConfig().getFile().getString(ConfigField.LOBBY_ID.get()))) {
-            this.plugin.readConfig().getFile().set(ConfigField.LOBBY_ID.get(), null);
+        if (event.getChannel().getId().equals(this.plugin.getConfiguration().getFile().getString(ConfigurationField.LOBBY_ID.toString()))) {
+            this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), null);
             this.plugin.updateStatus(false);
             User user = event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
             if (user != null && !user.isBot()) {

@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.listeners.message.guild;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -46,12 +46,12 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
             int value = Integer.parseInt(event.getMessage().getContentRaw());
             if (value >= 1 && value <= 1000) {
                 event.getMessage().delete().queue();
-                this.plugin.readConfig().getFile().set(ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()), value);
-                this.plugin.readConfig().saveFile();
+                this.plugin.getConfiguration().getFile().set(ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()), value);
+                this.plugin.getConfiguration().saveFile();
                 this.plugin.getConfigurationMenu().deleteMessage();
-                if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigField.HORIZONTAL_RADIUS.get())) {
+                if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
                     event.getChannel().sendMessage(this.plugin.getBot().getMenus().get("horizontal-radius").toMessage()).queue();
-                } else if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigField.VERTICAL_RADIUS.get())) {
+                } else if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigurationField.VERTICAL_RADIUS.toString())) {
                     event.getChannel().sendMessage(this.plugin.getBot().getMenus().get("vertical-radius").toMessage()).queue();
                 }
             }

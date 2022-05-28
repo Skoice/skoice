@@ -21,15 +21,11 @@ package net.clementraynaud.skoice;
 
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
-import net.clementraynaud.skoice.config.Config;
-import net.clementraynaud.skoice.config.ConfigField;
-import net.clementraynaud.skoice.config.OutdatedConfig;
+import net.clementraynaud.skoice.config.Configuration;
+import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.config.OutdatedConfiguration;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.lang.Lang;
-import net.clementraynaud.skoice.listeners.channel.voice.network.VoiceChannelDeleteListener;
-import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceJoinListener;
-import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceLeaveListener;
-import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceMoveListener;
 import net.clementraynaud.skoice.listeners.player.eligible.PlayerJoinListener;
 import net.clementraynaud.skoice.listeners.player.eligible.PlayerMoveListener;
 import net.clementraynaud.skoice.listeners.player.eligible.PlayerQuitListener;
@@ -56,7 +52,7 @@ public class Skoice extends JavaPlugin {
     private static final int RESSOURCE_ID = 82861;
 
     private Lang lang;
-    private Config config;
+    private Configuration configuration;
     private Bot bot;
     private ConfigurationMenu configurationMenu;
     private EligiblePlayers eligiblePlayers;
@@ -66,12 +62,12 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onEnable() {
         new Metrics(this, Skoice.SERVICE_ID);
-        this.config = new Config(this);
-        this.config.init();
+        this.configuration = new Configuration(this);
+        this.configuration.init();
         this.lang = new Lang();
-        this.lang.load(LangInfo.valueOf(this.config.getFile().getString(ConfigField.LANG.get())));
+        this.lang.load(LangInfo.valueOf(this.configuration.getFile().getString(ConfigurationField.LANG.toString())));
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
-        new OutdatedConfig(this).update();
+        new OutdatedConfiguration(this).update();
         this.eligiblePlayers = new EligiblePlayers();
         this.bot = new Bot(this);
         this.bot.connect();
@@ -89,7 +85,7 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onDisable() {
         if (this.bot.getJda() != null) {
-            new InterruptSystemTask(this.config).run();
+            new InterruptSystemTask(this.configuration).run();
             this.bot.getJda().shutdown();
         }
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));
@@ -98,7 +94,7 @@ public class Skoice extends JavaPlugin {
     public void updateStatus(boolean startup) {
         boolean wasBotReady = this.bot.isReady();
         this.bot.setReady(false);
-        if (!this.config.getFile().contains(ConfigField.TOKEN.get())) {
+        if (!this.configuration.getFile().contains(ConfigurationField.TOKEN.toString())) {
             this.getLogger().warning(this.lang.getMessage("logger.warning.no-token"));
         } else if (this.bot.getJda() != null) {
             if (this.bot.getJda().getGuilds().isEmpty()) {
@@ -109,10 +105,10 @@ public class Skoice extends JavaPlugin {
             } else if (!this.bot.getJda().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                 this.getLogger().severe(this.lang.getMessage("logger.error.missing-permission",
                         this.bot.getJda().getSelfUser().getApplicationId()));
-            } else if (!this.config.getFile().contains(ConfigField.LOBBY_ID.get())) {
+            } else if (!this.configuration.getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
                 this.getLogger().warning(this.lang.getMessage("logger.warning.no-lobby-id"));
-            } else if (!this.config.getFile().contains(ConfigField.HORIZONTAL_RADIUS.get())
-                    || !this.config.getFile().contains(ConfigField.VERTICAL_RADIUS.get())) {
+            } else if (!this.configuration.getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
+                    || !this.configuration.getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
                 this.getLogger().warning(this.lang.getMessage("logger.warning.no-radius"));
             } else {
                 this.bot.setReady(true);
@@ -151,7 +147,7 @@ public class Skoice extends JavaPlugin {
             if (this.bot.getJda() != null) {
                 this.bot.unregisterListeners();
             }
-            new InterruptSystemTask(this.config).run();
+            new InterruptSystemTask(this.configuration).run();
         }
     }
 
@@ -173,8 +169,8 @@ public class Skoice extends JavaPlugin {
         return this.lang;
     }
 
-    public Config readConfig() {
-        return this.config;
+    public Configuration getConfiguration() {
+        return this.configuration;
     }
 
     public Bot getBot() {

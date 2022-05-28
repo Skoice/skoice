@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigField;
+import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -71,7 +71,7 @@ public class LobbySelectMenu extends SelectMenu {
         if (this.plugin.getBot().isReady()) {
             return SelectionMenu.create("lobby-selection")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(this.plugin.readConfig().getFile().getString(ConfigField.LOBBY_ID.get()))).build();
+                    .setDefaultValues(Collections.singleton(this.plugin.getConfiguration().getFile().getString(ConfigurationField.LOBBY_ID.toString()))).build();
         } else {
             return SelectionMenu.create("lobby-selection")
                     .setPlaceholder(super.lang.getMessage("discord.menu.lobby.select-menu.placeholder"))

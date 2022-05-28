@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.tasks;
 
-import net.clementraynaud.skoice.config.Config;
+import net.clementraynaud.skoice.config.Configuration;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
@@ -28,10 +28,10 @@ import java.util.concurrent.CompletableFuture;
 
 public class InterruptSystemTask implements Task {
 
-    private final Config config;
+    private final Configuration configuration;
 
-    public InterruptSystemTask(Config config) {
-        this.config = config;
+    public InterruptSystemTask(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
@@ -39,15 +39,15 @@ public class InterruptSystemTask implements Task {
         for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.getAwaitingMoves().values()) {
             value.getRight().cancel(true);
         }
-        boolean isLobbySet = this.config.getLobby() != null;
+        boolean isLobbySet = this.configuration.getLobby() != null;
         for (Network network : Network.getNetworks()) {
             if (isLobbySet) {
                 for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
                     Member member = network.getChannel().getMembers().get(i);
                     if (i + 1 < network.getChannel().getMembers().size()) {
-                        member.getGuild().moveVoiceMember(member, this.config.getLobby()).queue();
+                        member.getGuild().moveVoiceMember(member, this.configuration.getLobby()).queue();
                     } else {
-                        member.getGuild().moveVoiceMember(member, this.config.getLobby()).complete();
+                        member.getGuild().moveVoiceMember(member, this.configuration.getLobby()).complete();
                     }
                 }
             }
