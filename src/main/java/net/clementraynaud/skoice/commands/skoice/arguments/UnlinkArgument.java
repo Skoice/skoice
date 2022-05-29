@@ -20,8 +20,6 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -31,8 +29,6 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Collections;
 
 public class UnlinkArgument extends Argument {
 
@@ -56,10 +52,7 @@ public class UnlinkArgument extends Argument {
         try {
             member = super.plugin.getConfiguration().getGuild().retrieveMemberById(discordId).complete();
             member.getUser().openPrivateChannel().complete()
-                    .sendMessage(new Menu(super.plugin, "linking-process",
-                            Collections.singleton(super.plugin.getBot().getFields().get("account-unlinked")),
-                            MenuType.SUCCESS)
-                            .toMessage())
+                    .sendMessage(this.plugin.getBot().getMenus().get("account-unlinked").toMessage())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {

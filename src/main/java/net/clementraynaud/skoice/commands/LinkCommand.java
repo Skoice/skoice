@@ -20,16 +20,12 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.MenuField;
-import net.clementraynaud.skoice.menus.MenuType;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.apache.commons.lang.RandomStringUtils;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,18 +43,12 @@ public class LinkCommand extends ListenerAdapter {
     public void onSlashCommand(SlashCommandEvent event) {
         if ("link".equals(event.getName())) {
             if (!this.plugin.getBot().isReady()) {
-                event.reply(new Menu(this.plugin, "empty-configuration",
-                                Collections.singleton(this.plugin.getBot().getFields().get("incomplete-configuration")),
-                                MenuType.ERROR)
-                                .toMessage())
+                event.reply(this.plugin.getBot().getMenus().get("incomplete-configuration").toMessage())
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 return;
             }
             if (this.plugin.getConfiguration().getLinks().containsValue(event.getUser().getId())) {
-                event.reply(new Menu(this.plugin, "linking-process",
-                        Collections.singleton(this.plugin.getBot().getFields().get("account-already-linked")),
-                        MenuType.ERROR)
-                        .toMessage()).setEphemeral(true).queue();
+                event.reply(this.plugin.getBot().getMenus().get("account-already-linked").toMessage()).setEphemeral(true).queue();
                 return;
             }
             LinkCommand.discordIdCode.remove(event.getUser().getId());
@@ -67,10 +57,7 @@ public class LinkCommand extends ListenerAdapter {
                 code = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
             } while (LinkCommand.discordIdCode.containsValue(code));
             LinkCommand.discordIdCode.put(event.getUser().getId(), code);
-            event.reply(new Menu(this.plugin, "linking-process",
-                    Collections.singleton(new MenuField(this.plugin, "verification-code", code)),
-                    MenuType.SUCCESS)
-                    .toMessage()).setEphemeral(true).queue();
+            event.reply(this.plugin.getBot().getMenus().get("verification-code").toMessage(code)).setEphemeral(true).queue();
         }
     }
 

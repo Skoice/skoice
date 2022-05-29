@@ -20,8 +20,6 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -30,7 +28,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import java.util.Collections;
 import java.util.UUID;
 
 public class UnlinkCommand extends ListenerAdapter {
@@ -46,16 +43,10 @@ public class UnlinkCommand extends ListenerAdapter {
         if ("unlink".equals(event.getName())) {
             String minecraftId = MapUtil.getKeyFromValue(this.plugin.getConfiguration().getLinks(), event.getUser().getId());
             if (minecraftId == null) {
-                event.reply(new Menu(this.plugin, "linking-process",
-                        Collections.singleton(this.plugin.getBot().getFields().get("account-not-linked")),
-                        MenuType.ERROR)
-                        .toMessage()).setEphemeral(true).queue();
+                event.reply(this.plugin.getBot().getMenus().get("account-not-linked").toMessage()).setEphemeral(true).queue();
             } else {
                 this.plugin.getConfiguration().unlinkUser(minecraftId);
-                event.reply(new Menu(this.plugin, "linking-process",
-                        Collections.singleton(this.plugin.getBot().getFields().get("account-unlinked")),
-                        MenuType.SUCCESS)
-                        .toMessage()).setEphemeral(true).queue();
+                event.reply(this.plugin.getBot().getMenus().get("account-unlinked").toMessage()).setEphemeral(true).queue();
                 OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));
                 if (player.isOnline() && player.getPlayer() != null) {
                     player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));

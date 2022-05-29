@@ -22,13 +22,11 @@ package net.clementraynaud.skoice.listeners.interaction;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.MenuType;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,10 +51,7 @@ public class ButtonClickListener extends ListenerAdapter {
                     if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
                         event.getMessage().delete().queue();
                         if (!this.plugin.getBot().isReady()) {
-                            event.reply(new Menu(this.plugin, "empty-configuration",
-                                            Collections.singleton(this.plugin.getBot().getFields().get("incomplete-configuration-server-manager")),
-                                            MenuType.ERROR)
-                                            .toMessage())
+                            event.reply(this.plugin.getBot().getMenus().get("incomplete-configuration-server-manager").toMessage())
                                     .setEphemeral(true).queue();
                         }
                     } else if (!this.plugin.getBot().isReady() && !"language".equals(buttonId)) {
@@ -66,8 +61,14 @@ public class ButtonClickListener extends ListenerAdapter {
                             ButtonClickListener.discordIdAxis.remove(member.getId());
                         } else if ("horizontal-radius".equals(buttonId)) {
                             ButtonClickListener.discordIdAxis.put(member.getId(), ConfigurationField.HORIZONTAL_RADIUS.toString());
+                            event.editMessage(this.plugin.getBot().getMenus().get(buttonId)
+                                    .toMessage(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))).queue();
+                            return;
                         } else if ("vertical-radius".equals(buttonId)) {
                             ButtonClickListener.discordIdAxis.put(member.getId(), ConfigurationField.VERTICAL_RADIUS.toString());
+                            event.editMessage(this.plugin.getBot().getMenus().get(buttonId)
+                                    .toMessage(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))).queue();
+                            return;
                         }
                         event.editMessage(this.plugin.getBot().getMenus().get(buttonId).toMessage()).queue();
                     }
@@ -77,9 +78,7 @@ public class ButtonClickListener extends ListenerAdapter {
                 }
             }
         } else {
-            event.reply(new Menu(this.plugin, "error",
-                    Collections.singleton(this.plugin.getBot().getFields().get("access-denied")))
-                    .toMessage()).setEphemeral(true).queue();
+            event.reply(this.plugin.getBot().getMenus().get("access-denied").toMessage()).setEphemeral(true).queue();
         }
     }
 

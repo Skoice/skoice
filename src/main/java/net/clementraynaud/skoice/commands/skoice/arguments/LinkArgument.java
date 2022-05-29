@@ -21,8 +21,6 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.LinkCommand;
-import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -31,8 +29,6 @@ import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Collections;
 
 public class LinkArgument extends Argument {
 
@@ -76,10 +72,7 @@ public class LinkArgument extends Argument {
         super.plugin.getConfiguration().linkUser(player.getUniqueId().toString(), discordId);
         LinkCommand.getDiscordIdCode().values().remove(this.arg);
         member.getUser().openPrivateChannel().complete()
-                .sendMessage(new Menu(super.plugin, "linking-process",
-                        Collections.singleton(super.plugin.getBot().getFields().get("account-linked")),
-                        MenuType.SUCCESS)
-                        .toMessage())
+                .sendMessage(this.plugin.getBot().getMenus().get("account-linked").toMessage())
                 .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
         GuildVoiceState voiceState = member.getVoiceState();

@@ -29,16 +29,6 @@ public class MenuField {
     private final String name;
     private final MenuEmoji emoji;
     private final boolean inline;
-    private final String value;
-
-    public MenuField(Skoice plugin, String path, String value) {
-        this.plugin = plugin;
-        ConfigurationSection field = this.plugin.getBot().getFieldsYaml().getConfigurationSection(path);
-        this.name = field.getName();
-        this.emoji = MenuEmoji.valueOf(field.getString("emoji").toUpperCase());
-        this.inline = field.getBoolean("inline");
-        this.value = value;
-    }
 
     public MenuField(Skoice plugin, String path) {
         this.plugin = plugin;
@@ -46,20 +36,19 @@ public class MenuField {
         this.name = field.getName();
         this.emoji = MenuEmoji.valueOf(field.getString("emoji").toUpperCase());
         this.inline = field.getBoolean("inline");
-        this.value = null;
     }
 
-    public MessageEmbed.Field toField() {
-        return new MessageEmbed.Field(this.emoji + this.getTitle(), this.getDescription(), this.inline);
+    public MessageEmbed.Field toField(String... args) {
+        return new MessageEmbed.Field(this.emoji + this.getTitle(), this.getDescription(args), this.inline);
     }
 
     private String getTitle() {
         return this.plugin.getLang().getMessage("discord.field." + this.name + ".title");
     }
 
-    private String getDescription() {
-        if (this.value != null) {
-            return this.plugin.getLang().getMessage("discord.field." + this.name + ".description", this.value);
+    public String getDescription(String... args) {
+        if (args.length != 0) {
+            return this.plugin.getLang().getMessage("discord.field." + this.name + ".description", args);
         }
         return this.plugin.getLang().getMessage("discord.field." + this.name + ".description");
     }

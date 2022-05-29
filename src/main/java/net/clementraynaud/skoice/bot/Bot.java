@@ -43,7 +43,6 @@ import net.clementraynaud.skoice.listeners.message.guild.GuildMessageReceivedLis
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
 import net.clementraynaud.skoice.listeners.message.priv.PrivateMessageReceivedListener;
-import net.clementraynaud.skoice.menus.MenuType;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
@@ -74,13 +73,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 public class Bot {
@@ -150,7 +146,7 @@ public class Bot {
         this.plugin.getConfigurationMenu().deleteMessage();
         this.updateGuildUniquenessStatus();
         this.checkForValidLobby();
-        this.jda.getGuilds().forEach(new Commands(this.plugin)::register);
+        this.jda.getGuilds().forEach(new BotCommands(this.plugin)::register);
         this.registerPermanentListeners();
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                         Bukkit.getScheduler().runTaskTimerAsynchronously(
@@ -260,10 +256,7 @@ public class Bot {
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getConfiguration().getLinks(), member.getId());
         if (minecraftId == null) {
             member.getUser().openPrivateChannel().complete()
-                    .sendMessage(new Menu(this.plugin, "linking-process",
-                            Collections.singleton(this.plugin.getBot().getFields().get("account-not-linked")),
-                            MenuType.ERROR)
-                            .toMessage())
+                    .sendMessage(this.menus.get("account-not-linked").toMessage())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));
@@ -313,21 +306,24 @@ public class Bot {
     private void loadFields() {
         InputStreamReader fieldsFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("menus/fields.yml"));
         this.fieldsYaml = YamlConfiguration.loadConfiguration(fieldsFile);
-        for (String field : this.fieldsYaml.getConfigurationSection("startup").getKeys(false)) {
-            this.fields.put(field, new MenuField(this.plugin, "startup." + field));
+        for (String field : this.fieldsYaml.getKeys(false)) {
+            this.fields.put(field, new MenuField(this.plugin, field));
         }
     }
 
     private void loadMenus() {
         InputStreamReader menusFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("menus/menus.yml"));
         this.menusYaml = YamlConfiguration.loadConfiguration(menusFile);
-        Set<MenuField> menuFields = new LinkedHashSet<>();
-        for (String menu : this.menusYaml.getConfigurationSection("startup").getKeys(false)) {
-            for (String field : this.menusYaml.getStringList("startup." + menu + ".fields")) {
-                menuFields.add(this.fields.get(field));
+        for (String menu : this.menusYaml.getKeys(false)) {
+            if ("configuration".equals(menu) || "linking-process".equals(menu) || "error".equals(menu)) {
+                for (String subMenu : this.menusYaml.getConfigurationSection(menu).getKeys(false)) {
+                    if (!"emoji".equals(subMenu)) {
+                        this.menus.put(subMenu, new Menu(this.plugin, menu + "." + subMenu));
+                    }
+                }
+            } else {
+                this.menus.put(menu, new Menu(this.plugin, menu));
             }
-            this.menus.put(menu, new Menu(this.plugin, "startup." + menu, new LinkedHashSet<>(menuFields)));
-            menuFields.clear();
         }
     }
 

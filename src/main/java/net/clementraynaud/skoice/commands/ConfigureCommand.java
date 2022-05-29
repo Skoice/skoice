@@ -20,13 +20,11 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,9 +44,8 @@ public class ConfigureCommand extends ListenerAdapter {
             Member member = event.getMember();
             if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
                 if (this.configureCommandCooldown) {
-                    event.reply(new Menu(this.plugin, "error",
-                            Collections.singleton(this.plugin.getBot().getFields().get("too-many-interactions")))
-                            .toMessage()).setEphemeral(true).queue();
+                    event.reply(this.plugin.getBot().getMenus().get("too-many-interactions").toMessage())
+                            .setEphemeral(true).queue();
                 } else {
                     this.plugin.getConfigurationMenu().deleteMessage();
                     event.reply(this.plugin.getConfigurationMenu().getMessage()).queue();
@@ -62,9 +59,8 @@ public class ConfigureCommand extends ListenerAdapter {
                     }, 5000);
                 }
             } else {
-                event.reply(new Menu(this.plugin, "error",
-                        Collections.singleton(this.plugin.getBot().getFields().get("access-denied")))
-                        .toMessage()).setEphemeral(true).queue();
+                event.reply(this.plugin.getBot().getMenus().get("access-denied").toMessage())
+                        .setEphemeral(true).queue();
             }
         }
     }

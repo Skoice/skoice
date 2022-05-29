@@ -47,7 +47,7 @@ public class ConfigurationMenu {
                 || !this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
             return this.plugin.getBot().getMenus().get("mode").toMessage();
         } else {
-            return this.plugin.getBot().getMenus().get("configuration").toMessage();
+            return this.plugin.getBot().getMenus().get("settings").toMessage();
         }
     }
 

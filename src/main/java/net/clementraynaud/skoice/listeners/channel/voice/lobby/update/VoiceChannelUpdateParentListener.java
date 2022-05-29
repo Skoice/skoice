@@ -21,16 +21,12 @@ package net.clementraynaud.skoice.listeners.channel.voice.lobby.update;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
-import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.menus.MenuType;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.channel.voice.update.VoiceChannelUpdateParentEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-
-import java.util.Collections;
 
 public class VoiceChannelUpdateParentListener extends ListenerAdapter {
 
@@ -48,10 +44,7 @@ public class VoiceChannelUpdateParentListener extends ListenerAdapter {
             User user = event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
             if (user != null && !user.isBot()) {
                 user.openPrivateChannel().complete()
-                        .sendMessage(new Menu(this.plugin, "empty-configuration",
-                                Collections.singleton(this.plugin.getBot().getFields().get("incomplete-configuration-alternative-server-manager")),
-                                MenuType.ERROR)
-                                .toMessage())
+                        .sendMessage(this.plugin.getBot().getMenus().get("incomplete-configuration-alternative-server-manager").toMessage())
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             }
         }

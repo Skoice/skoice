@@ -20,10 +20,9 @@
 package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.Commands;
+import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.lang.LangInfo;
-import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -33,8 +32,6 @@ import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-
-import java.util.Collections;
 
 public class SelectMenuListener extends ListenerAdapter {
 
@@ -72,7 +69,7 @@ public class SelectMenuListener extends ListenerAdapter {
                         this.plugin.getConfiguration().saveFile();
                         this.plugin.updateStatus(false);
                         this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
-                        new Commands(this.plugin).register(event.getGuild());
+                        new BotCommands(this.plugin).register(event.getGuild());
                         event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         break;
                     case "lobby-selection":
@@ -142,9 +139,7 @@ public class SelectMenuListener extends ListenerAdapter {
                 }
             }
         } else {
-            event.reply(new Menu(this.plugin, "error",
-                    Collections.singleton(this.plugin.getBot().getFields().get("access-denied")))
-                    .toMessage()).setEphemeral(true).queue();
+            event.reply(this.plugin.getBot().getMenus().get("access-denied").toMessage()).setEphemeral(true).queue();
         }
     }
 }

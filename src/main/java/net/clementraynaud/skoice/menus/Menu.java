@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 public class Menu {
 
@@ -28,61 +27,54 @@ public class Menu {
 
     private final Skoice plugin;
     private final String name;
+    private final String parentName;
     private final MenuEmoji emoji;
     private final MenuType type;
     private final MenuStyle style;
     private final String parent;
-    private final Set<MenuField> fields;
+    private final String[] fields;
     private SelectMenu selectMenu;
 
-    public Menu(Skoice plugin, String path, Set<MenuField> fields) {
+    public Menu(Skoice plugin, String path) {
         this.plugin = plugin;
         ConfigurationSection menu = this.plugin.getBot().getMenusYaml().getConfigurationSection(path);
         this.name = menu.getName();
-        this.emoji = MenuEmoji.valueOf(menu.getString("emoji").toUpperCase());
+        this.parentName = !menu.getParent().equals(menu.getRoot()) ? menu.getParent().getName() : this.name;
+        this.emoji = MenuEmoji.valueOf(!menu.getParent().equals(menu.getRoot())
+                ? menu.getParent().getString("emoji").toUpperCase()
+                : menu.getString("emoji").toUpperCase());
         this.type = menu.contains("type") ? MenuType.valueOf(menu.getString("type").toUpperCase()) : null;
         this.style = menu.contains("style") ? MenuStyle.valueOf(menu.getString("style").toUpperCase()) : null;
         this.parent = menu.contains("parent") ? menu.getString("parent") : null;
-        this.fields = fields;
+        this.fields = menu.getStringList("fields").toArray(new String[0]);
     }
 
-    public Menu(Skoice plugin, String path, Set<MenuField> fields, MenuType type) {
-        this.plugin = plugin;
-        ConfigurationSection menu = this.plugin.getBot().getMenusYaml().getConfigurationSection(path);
-        this.name = menu.getName();
-        this.emoji = MenuEmoji.valueOf(menu.getString("emoji").toUpperCase());
-        this.type = type;
-        this.style = menu.contains("style") ? MenuStyle.valueOf(menu.getString("style").toUpperCase()) : null;
-        this.parent = menu.contains("parent") ? menu.getString("parent") : null;
-        this.fields = fields;
-    }
-
-    public Message toMessage(boolean customizeRadius) {
-        return new MessageBuilder().setEmbeds(this.getEmbed())
+    public Message toMessage(boolean customizeRadius, String... args) {
+        return new MessageBuilder().setEmbeds(this.getEmbed(args))
                 .setActionRows(this.getActionRows(customizeRadius)).build();
     }
 
-    public Message toMessage() {
-        return this.toMessage(false);
+    public Message toMessage(String... args) {
+        return this.toMessage(false, args);
     }
 
     private String getTitle(boolean withEmoji) {
-        return withEmoji ? this.emoji + this.plugin.getLang().getMessage("discord.menu." + this.name + ".title") :
-                this.plugin.getLang().getMessage("discord.menu." + this.name + ".title");
+        return withEmoji ? this.emoji + this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".title") :
+                this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".title");
     }
 
     private String getDescription(boolean shortened) {
-        if (!this.plugin.getBot().isReady() && this.plugin.getLang().contains("discord.menu." + this.name + ".alternative-description")) {
-            return this.plugin.getLang().getMessage("discord.menu." + this.name + ".alternative-description");
-        } else if (shortened && this.plugin.getLang().contains("discord.menu." + this.name + ".shortened-description")) {
-            return this.plugin.getLang().getMessage("discord.menu." + this.name + ".shortened-description");
-        } else if (this.plugin.getLang().contains("discord.menu." + this.name + ".description")) {
-            return this.plugin.getLang().getMessage("discord.menu." + this.name + ".description");
+        if (!this.plugin.getBot().isReady() && this.plugin.getLang().contains("discord.menu." + this.parentName + ".alternative-description")) {
+            return this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".alternative-description");
+        } else if (shortened && this.plugin.getLang().contains("discord.menu." + this.parentName + ".shortened-description")) {
+            return this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".shortened-description");
+        } else if (this.plugin.getLang().contains("discord.menu." + this.parentName + ".description")) {
+            return this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".description");
         }
         return null;
     }
 
-    private MessageEmbed getEmbed() {
+    private MessageEmbed getEmbed(String... args) {
         EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(true))
                 .setColor(this.type.getColor())
                 .setFooter(this.plugin.getLang().getMessage("discord.menu.footer"), "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
@@ -106,8 +98,12 @@ public class Menu {
                 }
             }
         }
-        for (MenuField field : this.fields) {
-            embed.addField(field.toField());
+        int startIndex = 0;
+        for (String field : this.fields) {
+            MenuField menuField = this.plugin.getBot().getFields().get(field);
+            int endIndex = this.plugin.getLang().getAmountOfArgsRequired(menuField.getDescription());
+            embed.addField(menuField.toField(Arrays.copyOfRange(args, startIndex, endIndex)));
+            startIndex = endIndex;
         }
         return embed.build();
     }
@@ -180,7 +176,7 @@ public class Menu {
     }
 
     private List<Button> getAdditionalButtons(boolean customizeRadius) {
-        if ("empty-configuration".equals(this.name) && this.type == MenuType.ERROR) {
+        if ("incomplete-configuration-server-manager".equals(this.name)) {
             return Collections.singletonList(Button.primary("resume-configuration", "Resume Configuration")
                     .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
         } else if ("permissions".equals(this.name)) {

@@ -27,11 +27,11 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import java.util.*;
 
-public class Commands {
+public class BotCommands {
 
     private final Skoice plugin;
 
-    public Commands(Skoice plugin) {
+    public BotCommands(Skoice plugin) {
         this.plugin = plugin;
     }
 

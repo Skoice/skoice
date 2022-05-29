@@ -1,68 +1,66 @@
-startup:
-  configuration-complete:
-    emoji: heavy_check_mark
-    inline: false
-  incomplete-configuration:
-    emoji: x
-    inline: false
-  incomplete-configuration-server-manager:
-    emoji: x
-    inline: false
-  incomplete-configuration-alternative-server-manager:
-    emoji: x
-    inline: false
-  download-skoice:
-    emoji: inbox_tray
-    inline: false
-  donate:
-    emoji: green_heart
-    inline: false
-  troubleshooting:
-    emoji: screwdriver
-    inline: true
-  contribute:
-    emoji: hammer
-    inline: false
-  vanilla-mode:
-    emoji: map
-    inline: true
-  minigame-mode:
-    emoji: crossed_swords
-    inline: true
-  customize:
-    emoji: pencil2
-    inline: true
-  skoice-2-1:
-    emoji: clipboard
-    inline: false
-  upcoming-features:
-    emoji: calendar_spiral
-    inline: false
-  account-linked:
-    emoji: heavy_check_mark
-    inline: false
-  account-unlinked:
-    emoji: heavy_check_mark
-    inline: false
-  account-already-linked:
-    emoji: x
-    inline: false
-  account-not-linked:
-    emoji: x
-    inline: false
-  access-denied:
-    emoji: no_entry
-    inline: false
-  too-many-interactions:
-    emoji: chart_with_upwards_trend
-    inline: false
-  illegal-interaction:
-    emoji: x
-    inline: false
-
+configuration-complete:
+  emoji: heavy_check_mark
+  inline: false
+incomplete-configuration:
+  emoji: x
+  inline: false
+incomplete-configuration-server-manager:
+  emoji: x
+  inline: false
+incomplete-configuration-alternative-server-manager:
+  emoji: x
+  inline: false
+download-skoice:
+  emoji: inbox_tray
+  inline: false
+donate:
+  emoji: green_heart
+  inline: false
+troubleshooting:
+  emoji: screwdriver
+  inline: true
+contribute:
+  emoji: hammer
+  inline: false
+vanilla-mode:
+  emoji: map
+  inline: true
+minigame-mode:
+  emoji: crossed_swords
+  inline: true
+customize:
+  emoji: pencil2
+  inline: true
+skoice-2-1:
+  emoji: clipboard
+  inline: false
+upcoming-features:
+  emoji: calendar_spiral
+  inline: false
 enter-a-value:
   emoji: keyboard
   inline: false
+account-linked:
+  emoji: heavy_check_mark
+  inline: false
+account-unlinked:
+  emoji: heavy_check_mark
+  inline: false
+account-already-linked:
+  emoji: x
+  inline: false
+account-not-linked:
+  emoji: x
+  inline: false
 verification-code:
   emoji: key
+  inline: false
+access-denied:
+  emoji: no_entry
+  inline: false
+too-many-interactions:
+  emoji: chart_with_upwards_trend
+  inline: false
+illegal-interaction:
+  emoji: x
   inline: false
