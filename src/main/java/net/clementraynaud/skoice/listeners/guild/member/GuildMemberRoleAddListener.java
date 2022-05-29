@@ -37,7 +37,7 @@ public class GuildMemberRoleAddListener extends ListenerAdapter {
     public void onGuildMemberRoleAdd(GuildMemberRoleAddEvent event) {
         if (event.getMember().equals(event.getGuild().getSelfMember())
                 && event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-            this.plugin.updateStatus(false);
+            this.plugin.updateStatus(false, event.getUser());
             this.plugin.getConfigurationMenu().retrieveMessage().editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
         }
     }

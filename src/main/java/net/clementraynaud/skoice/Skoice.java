@@ -35,6 +35,7 @@ import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bstats.bukkit.Metrics;
@@ -87,7 +88,7 @@ public class Skoice extends JavaPlugin {
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));
     }
 
-    public void updateStatus(boolean startup) {
+    public void updateStatus(boolean startup, User user) {
         boolean wasBotReady = this.bot.isReady();
         this.bot.setReady(false);
         if (!this.configuration.getFile().contains(ConfigurationField.TOKEN.toString())) {
@@ -111,10 +112,14 @@ public class Skoice extends JavaPlugin {
             }
             this.bot.updateActivity();
         }
-        this.updateListeners(startup, wasBotReady);
+        this.updateListeners(startup, user, wasBotReady);
     }
 
-    private void updateListeners(boolean startup, boolean wasBotReady) {
+    public void updateStatus(boolean startup) {
+        this.updateStatus(startup, null);
+    }
+
+    private void updateListeners(boolean startup, User user, boolean wasBotReady) {
         if (startup) {
             if (this.bot.isReady()) {
                 this.registerEligiblePlayerListeners();
@@ -127,12 +132,9 @@ public class Skoice extends JavaPlugin {
             this.registerEligiblePlayerListeners();
             this.bot.registerListeners();
             this.getLogger().info(this.lang.getMessage("logger.info.configuration-complete"));
-            Message message = this.configurationMenu.retrieveMessage();
-            if (message != null && message.getInteraction() != null) {
-                message.getInteraction().getUser().openPrivateChannel().complete()
-                        .sendMessage(this.bot.getMenu("configuration-complete").toMessage())
-                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
-            }
+            user.openPrivateChannel().complete()
+                    .sendMessage(this.bot.getMenu("configuration-complete").toMessage())
+                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         } else if (wasBotReady && !this.bot.isReady()) {
             this.configurationMenu.deleteMessage();
             this.unregisterEligiblePlayerListeners();
