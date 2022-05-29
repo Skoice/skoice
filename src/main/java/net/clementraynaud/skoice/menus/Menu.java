@@ -146,7 +146,7 @@ public class Menu {
 
     private List<Button> getButtons(boolean customizeRadius) {
         List<Button> buttons = new ArrayList<>();
-        if (this.parent != null) {
+        if (this.parent != null && this.plugin.getBot().isReady()) {
             buttons.add(Button.secondary(this.parent, "← " + this.plugin.getLang().getMessage("discord.button-label.back")));
         }
         if (this.selectMenu != null && this.selectMenu.isRefreshable()) {
