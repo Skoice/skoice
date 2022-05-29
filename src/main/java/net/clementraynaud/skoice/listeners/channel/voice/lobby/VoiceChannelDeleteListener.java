@@ -44,7 +44,7 @@ public class VoiceChannelDeleteListener extends ListenerAdapter {
             User user = event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
             if (user != null && !user.isBot()) {
                 user.openPrivateChannel().complete()
-                        .sendMessage(this.plugin.getBot().getMenus().get("incomplete-configuration-alternative-server-manager").toMessage())
+                        .sendMessage(this.plugin.getBot().getMenu("incomplete-configuration-alternative-server-manager").toMessage())
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             }
         }

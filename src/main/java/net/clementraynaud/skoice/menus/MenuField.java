@@ -30,9 +30,8 @@ public class MenuField {
     private final MenuEmoji emoji;
     private final boolean inline;
 
-    public MenuField(Skoice plugin, String path) {
+    public MenuField(Skoice plugin, ConfigurationSection field) {
         this.plugin = plugin;
-        ConfigurationSection field = this.plugin.getBot().getFieldsYaml().getConfigurationSection(path);
         this.name = field.getName();
         this.emoji = MenuEmoji.valueOf(field.getString("emoji").toUpperCase());
         this.inline = field.getBoolean("inline");

@@ -50,10 +50,10 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
                 this.plugin.getConfiguration().saveFile();
                 this.plugin.getConfigurationMenu().deleteMessage();
                 if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
-                    event.getChannel().sendMessage(this.plugin.getBot().getMenus().get("horizontal-radius")
+                    event.getChannel().sendMessage(this.plugin.getBot().getMenu("horizontal-radius")
                             .toMessage(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))).queue();
                 } else if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigurationField.VERTICAL_RADIUS.toString())) {
-                    event.getChannel().sendMessage(this.plugin.getBot().getMenus().get("vertical-radius")
+                    event.getChannel().sendMessage(this.plugin.getBot().getMenu("vertical-radius")
                             .toMessage(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))).queue();
                 }
             }

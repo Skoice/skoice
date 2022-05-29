@@ -52,7 +52,7 @@ public class UnlinkArgument extends Argument {
         try {
             member = super.plugin.getConfiguration().getGuild().retrieveMemberById(discordId).complete();
             member.getUser().openPrivateChannel().complete()
-                    .sendMessage(this.plugin.getBot().getMenus().get("account-unlinked").toMessage())
+                    .sendMessage(this.plugin.getBot().getMenu("account-unlinked").toMessage())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {

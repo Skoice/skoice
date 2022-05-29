@@ -34,7 +34,7 @@ public class InviteCommand extends ListenerAdapter {
     @Override
     public void onSlashCommand(SlashCommandEvent event) {
         if ("invite".equals(event.getName())) {
-            event.reply(this.plugin.getBot().getMenus().get("get-the-proximity-voice-chat").toMessage())
+            event.reply(this.plugin.getBot().getMenu("get-the-proximity-voice-chat").toMessage())
                     .setEphemeral(true).queue();
         }
     }

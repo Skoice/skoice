@@ -38,16 +38,16 @@ public class ConfigurationMenu {
 
     public Message getMessage() {
         if (this.plugin.getBot().isOnMultipleGuilds()) {
-            return this.plugin.getBot().getMenus().get("server").toMessage();
+            return this.plugin.getBot().getMenu("server").toMessage();
         } else if (!this.plugin.getBot().getJda().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-            return this.plugin.getBot().getMenus().get("permissions").toMessage();
+            return this.plugin.getBot().getMenu("permissions").toMessage();
         } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
-            return this.plugin.getBot().getMenus().get("lobby").toMessage();
+            return this.plugin.getBot().getMenu("lobby").toMessage();
         } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
                 || !this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
-            return this.plugin.getBot().getMenus().get("mode").toMessage();
+            return this.plugin.getBot().getMenu("mode").toMessage();
         } else {
-            return this.plugin.getBot().getMenus().get("settings").toMessage();
+            return this.plugin.getBot().getMenu("settings").toMessage();
         }
     }
 

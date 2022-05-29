@@ -213,6 +213,7 @@ discord:
     refresh: "Refresh"
     close: "Close"
     configure-later: "Configure Later"
+    resume-configuration: "Resume Configuration"
   select-option:
     default:
       description: "This option is selected by default."

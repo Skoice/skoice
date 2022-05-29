@@ -130,7 +130,7 @@ public class Skoice extends JavaPlugin {
             Message message = this.configurationMenu.retrieveMessage();
             if (message != null && message.getInteraction() != null) {
                 message.getInteraction().getUser().openPrivateChannel().complete()
-                        .sendMessage(this.bot.getMenus().get("configuration-complete").toMessage())
+                        .sendMessage(this.bot.getMenu("configuration-complete").toMessage())
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             }
         } else if (wasBotReady && !this.bot.isReady()) {

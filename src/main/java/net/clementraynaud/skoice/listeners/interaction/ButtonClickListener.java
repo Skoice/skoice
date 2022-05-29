@@ -51,7 +51,7 @@ public class ButtonClickListener extends ListenerAdapter {
                     if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
                         event.getMessage().delete().queue();
                         if (!this.plugin.getBot().isReady()) {
-                            event.reply(this.plugin.getBot().getMenus().get("incomplete-configuration-server-manager").toMessage())
+                            event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").toMessage())
                                     .setEphemeral(true).queue();
                         }
                     } else if (!this.plugin.getBot().isReady() && !"language".equals(buttonId)) {
@@ -61,16 +61,16 @@ public class ButtonClickListener extends ListenerAdapter {
                             ButtonClickListener.discordIdAxis.remove(member.getId());
                         } else if ("horizontal-radius".equals(buttonId)) {
                             ButtonClickListener.discordIdAxis.put(member.getId(), ConfigurationField.HORIZONTAL_RADIUS.toString());
-                            event.editMessage(this.plugin.getBot().getMenus().get(buttonId)
+                            event.editMessage(this.plugin.getBot().getMenu(buttonId)
                                     .toMessage(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))).queue();
                             return;
                         } else if ("vertical-radius".equals(buttonId)) {
                             ButtonClickListener.discordIdAxis.put(member.getId(), ConfigurationField.VERTICAL_RADIUS.toString());
-                            event.editMessage(this.plugin.getBot().getMenus().get(buttonId)
+                            event.editMessage(this.plugin.getBot().getMenu(buttonId)
                                     .toMessage(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))).queue();
                             return;
                         }
-                        event.editMessage(this.plugin.getBot().getMenus().get(buttonId).toMessage()).queue();
+                        event.editMessage(this.plugin.getBot().getMenu(buttonId).toMessage()).queue();
                     }
                 } else if (event.getMessage().getAuthor().equals(event.getJDA().getSelfUser())
                     && "resume-configuration".equals(event.getButton().getId())) {
@@ -78,7 +78,7 @@ public class ButtonClickListener extends ListenerAdapter {
                 }
             }
         } else {
-            event.reply(this.plugin.getBot().getMenus().get("access-denied").toMessage()).setEphemeral(true).queue();
+            event.reply(this.plugin.getBot().getMenu("access-denied").toMessage()).setEphemeral(true).queue();
         }
     }
 

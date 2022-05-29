@@ -304,25 +304,28 @@ public class Bot {
     }
 
     private void loadFields() {
-        InputStreamReader fieldsFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("menus/fields.yml"));
+        InputStreamReader fieldsFile = new InputStreamReader(this.getClass().getClassLoader()
+                .getResourceAsStream("menus/fields.yml"));
         this.fieldsYaml = YamlConfiguration.loadConfiguration(fieldsFile);
         for (String field : this.fieldsYaml.getKeys(false)) {
-            this.fields.put(field, new MenuField(this.plugin, field));
+            this.fields.put(field, new MenuField(this.plugin, this.fieldsYaml.getConfigurationSection(field)));
         }
     }
 
     private void loadMenus() {
-        InputStreamReader menusFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("menus/menus.yml"));
+        InputStreamReader menusFile = new InputStreamReader(this.getClass().getClassLoader()
+                .getResourceAsStream("menus/menus.yml"));
         this.menusYaml = YamlConfiguration.loadConfiguration(menusFile);
         for (String menu : this.menusYaml.getKeys(false)) {
             if ("configuration".equals(menu) || "linking-process".equals(menu) || "error".equals(menu)) {
                 for (String subMenu : this.menusYaml.getConfigurationSection(menu).getKeys(false)) {
                     if (!"emoji".equals(subMenu)) {
-                        this.menus.put(subMenu, new Menu(this.plugin, menu + "." + subMenu));
+                        this.menus.put(subMenu, new Menu(this.plugin,
+                                this.menusYaml.getConfigurationSection(menu + "." + subMenu)));
                     }
                 }
             } else {
-                this.menus.put(menu, new Menu(this.plugin, menu));
+                this.menus.put(menu, new Menu(this.plugin, this.menusYaml.getConfigurationSection(menu)));
             }
         }
     }
@@ -343,19 +346,15 @@ public class Bot {
         return this.isOnMultipleGuilds;
     }
 
-    public YamlConfiguration getFieldsYaml() {
-        return this.fieldsYaml;
-    }
-
-    public Map<String, MenuField> getFields() {
-        return this.fields;
-    }
-
-    public YamlConfiguration getMenusYaml() {
-        return this.menusYaml;
+    public MenuField getField(String field) {
+        return this.fields.get(field);
     }
 
     public Map<String, Menu> getMenus() {
         return this.menus;
+    }
+
+    public Menu getMenu(String menu) {
+        return this.menus.get(menu);
     }
 }

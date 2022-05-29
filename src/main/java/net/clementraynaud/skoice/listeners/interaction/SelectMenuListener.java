@@ -113,7 +113,7 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.plugin.updateStatus(false);
                             event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
                         } else if ("customize".equals(event.getSelectedOptions().get(0).getValue())) {
-                            event.editMessage(this.plugin.getBot().getMenus().get("mode").toMessage(true)).queue();
+                            event.editMessage(this.plugin.getBot().getMenu("mode").toMessage(true)).queue();
                         }
                         break;
                     case "action-bar-alert":
@@ -139,7 +139,7 @@ public class SelectMenuListener extends ListenerAdapter {
                 }
             }
         } else {
-            event.reply(this.plugin.getBot().getMenus().get("access-denied").toMessage()).setEphemeral(true).queue();
+            event.reply(this.plugin.getBot().getMenu("access-denied").toMessage()).setEphemeral(true).queue();
         }
     }
 }

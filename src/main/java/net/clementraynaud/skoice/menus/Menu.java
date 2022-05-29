@@ -35,9 +35,8 @@ public class Menu {
     private final String[] fields;
     private SelectMenu selectMenu;
 
-    public Menu(Skoice plugin, String path) {
+    public Menu(Skoice plugin, ConfigurationSection menu) {
         this.plugin = plugin;
-        ConfigurationSection menu = this.plugin.getBot().getMenusYaml().getConfigurationSection(path);
         this.name = menu.getName();
         this.parentName = !menu.getParent().equals(menu.getRoot()) ? menu.getParent().getName() : this.name;
         this.emoji = MenuEmoji.valueOf(!menu.getParent().equals(menu.getRoot())
@@ -85,7 +84,7 @@ public class Menu {
             StringBuilder author = new StringBuilder();
             String parentMenu = this.parent;
             while (parentMenu != null) {
-                Menu menuParent = this.plugin.getBot().getMenus().get(parentMenu);
+                Menu menuParent = this.plugin.getBot().getMenu(parentMenu);
                 author.insert(0, menuParent.getTitle(false) + " › ");
                 parentMenu = menuParent.parent;
             }
@@ -100,7 +99,10 @@ public class Menu {
         }
         int startIndex = 0;
         for (String field : this.fields) {
-            MenuField menuField = this.plugin.getBot().getFields().get(field);
+            if ("customize".equals(field) && !this.plugin.getBot().isReady()) {
+                break;
+            }
+            MenuField menuField = this.plugin.getBot().getField(field);
             int endIndex = this.plugin.getLang().getAmountOfArgsRequired(menuField.getDescription());
             embed.addField(menuField.toField(Arrays.copyOfRange(args, startIndex, endIndex)));
             startIndex = endIndex;
@@ -123,10 +125,14 @@ public class Menu {
                 this.selectMenu = new LanguageSelectMenu(this.plugin);
                 break;
             case "action-bar-alert":
-                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name, this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.ACTION_BAR_ALERT.toString()), true);
+                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name,
+                        this.plugin.getConfiguration().getFile()
+                                .getBoolean(ConfigurationField.ACTION_BAR_ALERT.toString()), true);
                 break;
             case "channel-visibility":
-                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name, this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString()), false);
+                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name,
+                        this.plugin.getConfiguration().getFile()
+                                .getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString()), false);
                 break;
             default:
                 List<Button> buttons = this.getButtons(customizeRadius);
@@ -160,15 +166,17 @@ public class Menu {
         }
         if (this.type == MenuType.DEFAULT) {
             if (this.plugin.getBot().isReady()) {
-                buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID, this.plugin.getLang().getMessage("discord.button-label.close"))
+                buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID,
+                                this.plugin.getLang().getMessage("discord.button-label.close"))
                         .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.get()));
             } else {
                 if (!"language".equals(this.name)) {
-                    Menu languageMenu = this.plugin.getBot().getMenus().get("language");
+                    Menu languageMenu = this.plugin.getBot().getMenu("language");
                     buttons.add(Button.secondary(languageMenu.name, languageMenu.getTitle(false))
                             .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()));
                 }
-                buttons.add(Button.secondary(Menu.CLOSE_BUTTON_ID, this.plugin.getLang().getMessage("discord.button-label.configure-later"))
+                buttons.add(Button.secondary(Menu.CLOSE_BUTTON_ID,
+                                this.plugin.getLang().getMessage("discord.button-label.configure-later"))
                         .withEmoji(MenuEmoji.CLOCK3.get()));
             }
         }
@@ -177,7 +185,8 @@ public class Menu {
 
     private List<Button> getAdditionalButtons(boolean customizeRadius) {
         if ("incomplete-configuration-server-manager".equals(this.name)) {
-            return Collections.singletonList(Button.primary("resume-configuration", "Resume Configuration")
+            return Collections.singletonList(Button.primary("resume-configuration",
+                            this.plugin.getLang().getMessage("discord.button-label.resume-configuration"))
                     .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
         } else if ("permissions".equals(this.name)) {
             return Collections.singletonList(Button.link("https://discord.com/api/oauth2/authorize?client_id="
@@ -185,8 +194,8 @@ public class Menu {
                     + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
                     .withEmoji(this.emoji.get()));
         } else if ("mode".equals(this.name) && this.isModeCustomizable(customizeRadius)) {
-            Menu horizontalRadiusMenu = this.plugin.getBot().getMenus().get("horizontal-radius");
-            Menu verticalRadiusMenu = this.plugin.getBot().getMenus().get("vertical-radius");
+            Menu horizontalRadiusMenu = this.plugin.getBot().getMenu("horizontal-radius");
+            Menu verticalRadiusMenu = this.plugin.getBot().getMenu("vertical-radius");
             return Arrays.asList(Button.primary(horizontalRadiusMenu.name, horizontalRadiusMenu.getTitle(false))
                             .withEmoji(horizontalRadiusMenu.emoji.get()),
                     Button.primary(verticalRadiusMenu.name, verticalRadiusMenu.getTitle(false))

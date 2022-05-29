@@ -43,12 +43,12 @@ public class LinkCommand extends ListenerAdapter {
     public void onSlashCommand(SlashCommandEvent event) {
         if ("link".equals(event.getName())) {
             if (!this.plugin.getBot().isReady()) {
-                event.reply(this.plugin.getBot().getMenus().get("incomplete-configuration").toMessage())
+                event.reply(this.plugin.getBot().getMenu("incomplete-configuration").toMessage())
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 return;
             }
             if (this.plugin.getConfiguration().getLinks().containsValue(event.getUser().getId())) {
-                event.reply(this.plugin.getBot().getMenus().get("account-already-linked").toMessage()).setEphemeral(true).queue();
+                event.reply(this.plugin.getBot().getMenu("account-already-linked").toMessage()).setEphemeral(true).queue();
                 return;
             }
             LinkCommand.discordIdCode.remove(event.getUser().getId());
@@ -57,7 +57,7 @@ public class LinkCommand extends ListenerAdapter {
                 code = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
             } while (LinkCommand.discordIdCode.containsValue(code));
             LinkCommand.discordIdCode.put(event.getUser().getId(), code);
-            event.reply(this.plugin.getBot().getMenus().get("verification-code").toMessage(code)).setEphemeral(true).queue();
+            event.reply(this.plugin.getBot().getMenu("verification-code").toMessage(code)).setEphemeral(true).queue();
         }
     }
 
