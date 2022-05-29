@@ -20,10 +20,13 @@
 package net.clementraynaud.skoice.listeners.guild.member;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuildMemberRoleAddListener extends ListenerAdapter {
 
@@ -37,8 +40,13 @@ public class GuildMemberRoleAddListener extends ListenerAdapter {
     public void onGuildMemberRoleAdd(GuildMemberRoleAddEvent event) {
         if (event.getMember().equals(event.getGuild().getSelfMember())
                 && event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-            this.plugin.updateStatus(false, event.getUser());
-            this.plugin.getConfigurationMenu().retrieveMessage().editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
+            List<Role> rolesBeforeUpdate = new ArrayList<>(event.getMember().getRoles());
+            rolesBeforeUpdate.removeAll(event.getRoles());
+            if (rolesBeforeUpdate.stream().noneMatch(role -> role.hasPermission(Permission.ADMINISTRATOR))) {
+                this.plugin.updateStatus(false);
+                this.plugin.getConfigurationMenu().retrieveMessage()
+                        .editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
+            }
         }
     }
 }

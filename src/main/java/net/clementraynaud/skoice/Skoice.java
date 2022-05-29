@@ -132,9 +132,11 @@ public class Skoice extends JavaPlugin {
             this.registerEligiblePlayerListeners();
             this.bot.registerListeners();
             this.getLogger().info(this.lang.getMessage("logger.info.configuration-complete"));
-            user.openPrivateChannel().complete()
-                    .sendMessage(this.bot.getMenu("configuration-complete").toMessage())
-                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
+            if (user != null) {
+                user.openPrivateChannel().complete()
+                        .sendMessage(this.bot.getMenu("configuration-complete").toMessage())
+                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
+            }
         } else if (wasBotReady && !this.bot.isReady()) {
             this.configurationMenu.deleteMessage();
             this.unregisterEligiblePlayerListeners();
