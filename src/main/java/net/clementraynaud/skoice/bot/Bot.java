@@ -46,6 +46,7 @@ import net.clementraynaud.skoice.listeners.message.priv.PrivateMessageReceivedLi
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
+import net.clementraynaud.skoice.util.ConfigurationUtils;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.dv8tion.jda.api.JDA;
@@ -70,7 +71,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Base64;
 import java.util.HashMap;
@@ -83,9 +83,7 @@ public class Bot {
 
     private static final int TICKS_BETWEEN_VERSION_CHECKING = 720000;
 
-    private YamlConfiguration fieldsYaml;
     private final Map<String, MenuField> fields = new HashMap<>();
-    private YamlConfiguration menusYaml;
     private final Map<String, Menu> menus = new LinkedHashMap<>();
 
     private JDA jda;
@@ -167,7 +165,6 @@ public class Bot {
                 0
         );
         this.retrieveNetworks();
-        this.loadFields();
         this.loadMenus();
         this.checkForUnlinkedUsersInLobby();
         this.updateVoiceState();
@@ -303,30 +300,27 @@ public class Bot {
         }
     }
 
-    private void loadFields() {
-        InputStreamReader fieldsFile = new InputStreamReader(this.getClass().getClassLoader()
-                .getResourceAsStream("menus/fields.yml"));
-        this.fieldsYaml = YamlConfiguration.loadConfiguration(fieldsFile);
-        for (String field : this.fieldsYaml.getKeys(false)) {
-            this.fields.put(field, new MenuField(this.plugin, this.fieldsYaml.getConfigurationSection(field)));
-        }
-    }
-
     private void loadMenus() {
-        InputStreamReader menusFile = new InputStreamReader(this.getClass().getClassLoader()
-                .getResourceAsStream("menus/menus.yml"));
-        this.menusYaml = YamlConfiguration.loadConfiguration(menusFile);
-        for (String menu : this.menusYaml.getKeys(false)) {
+        this.loadMenuFields();
+        YamlConfiguration menusYaml = ConfigurationUtils.loadResource(this.getClass().getName(), "menus/menus.yml");
+        for (String menu : menusYaml.getKeys(false)) {
             if ("configuration".equals(menu) || "linking-process".equals(menu) || "error".equals(menu)) {
-                for (String subMenu : this.menusYaml.getConfigurationSection(menu).getKeys(false)) {
+                for (String subMenu : menusYaml.getConfigurationSection(menu).getKeys(false)) {
                     if (!"emoji".equals(subMenu)) {
                         this.menus.put(subMenu, new Menu(this.plugin,
-                                this.menusYaml.getConfigurationSection(menu + "." + subMenu)));
+                                menusYaml.getConfigurationSection(menu + "." + subMenu)));
                     }
                 }
             } else {
-                this.menus.put(menu, new Menu(this.plugin, this.menusYaml.getConfigurationSection(menu)));
+                this.menus.put(menu, new Menu(this.plugin, menusYaml.getConfigurationSection(menu)));
             }
+        }
+    }
+
+    private void loadMenuFields() {
+        YamlConfiguration fieldsYaml = ConfigurationUtils.loadResource(this.getClass().getName(), "menus/fields.yml");
+        for (String field : fieldsYaml.getKeys(false)) {
+            this.fields.put(field, new MenuField(this.plugin, fieldsYaml.getConfigurationSection(field)));
         }
     }
 
