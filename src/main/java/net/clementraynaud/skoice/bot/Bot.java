@@ -143,7 +143,7 @@ public class Bot {
 
     public void setup(boolean startup, CommandSender sender) {
         this.setDefaultAvatar();
-        this.plugin.getConfigurationMenu().deleteMessage();
+        this.plugin.getConfigurationMenu().delete();
         this.updateGuildUniquenessStatus();
         this.checkForValidLobby();
         this.jda.getGuilds().forEach(new BotCommands(this.plugin)::register);
@@ -256,7 +256,7 @@ public class Bot {
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getConfiguration().getLinks(), member.getId());
         if (minecraftId == null) {
             member.getUser().openPrivateChannel().complete()
-                    .sendMessage(this.menus.get("account-not-linked").toMessage())
+                    .sendMessage(this.menus.get("account-not-linked").build())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         } else {
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));

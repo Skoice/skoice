@@ -57,7 +57,7 @@ public class SelectMenuListener extends ListenerAdapter {
                                         && this.plugin.getBot().getJda().getGuilds().contains(this.plugin.getBot().getJda().getGuildById(server.getValue()))) {
                                     try {
                                         this.plugin.getBot().getJda().getGuildById(server.getValue()).leave()
-                                                .queue(success -> event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue());
+                                                .queue(success -> event.editMessage(this.plugin.getConfigurationMenu().update()).queue());
                                     } catch (ErrorResponseException ignored) {
                                     }
                                 }
@@ -70,7 +70,7 @@ public class SelectMenuListener extends ListenerAdapter {
                         this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                         this.plugin.updateStatus(false);
                         new BotCommands(this.plugin).register(event.getGuild());
-                        event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
+                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                         break;
                     case "lobby-selection":
                         Guild guild = event.getGuild();
@@ -86,7 +86,7 @@ public class SelectMenuListener extends ListenerAdapter {
                                 new InterruptSystemTask(this.plugin.getConfiguration()).run();
                                 this.plugin.updateStatus(false, event.getUser());
                             } else if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
-                                event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
+                                event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                             } else {
                                 VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                                 if (lobby != null && lobby.getParent() != null) {
@@ -97,7 +97,7 @@ public class SelectMenuListener extends ListenerAdapter {
                                 }
                             }
                         }
-                        event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
+                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                         break;
                     case "mode-selection":
                         if ("vanilla-mode".equals(event.getSelectedOptions().get(0).getValue())) {
@@ -105,15 +105,15 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 40);
                             this.plugin.getConfiguration().saveFile();
                             this.plugin.updateStatus(false, event.getUser());
-                            event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
+                            event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                         } else if ("minigame-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                             this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), 40);
                             this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 20);
                             this.plugin.getConfiguration().saveFile();
                             this.plugin.updateStatus(false, event.getUser());
-                            event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
+                            event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                         } else if ("customize".equals(event.getSelectedOptions().get(0).getValue())) {
-                            event.editMessage(this.plugin.getBot().getMenu("mode").toMessage(true)).queue();
+                            event.editMessage(this.plugin.getBot().getMenu("mode").build(true)).queue();
                         }
                         break;
                     case "action-bar-alert":
@@ -123,7 +123,7 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.plugin.getConfiguration().getFile().set(ConfigurationField.ACTION_BAR_ALERT.toString(), false);
                         }
                         this.plugin.getConfiguration().saveFile();
-                        event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
+                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                         break;
                     case "channel-visibility":
                         if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
@@ -132,14 +132,14 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.plugin.getConfiguration().getFile().set(ConfigurationField.CHANNEL_VISIBILITY.toString(), false);
                         }
                         this.plugin.getConfiguration().saveFile();
-                        event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
+                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                         break;
                     default:
                         throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));
                 }
             }
         } else {
-            event.reply(this.plugin.getBot().getMenu("access-denied").toMessage()).setEphemeral(true).queue();
+            event.reply(this.plugin.getBot().getMenu("access-denied").build()).setEphemeral(true).queue();
         }
     }
 }

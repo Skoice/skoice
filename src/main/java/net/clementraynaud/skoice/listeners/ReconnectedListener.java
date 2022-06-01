@@ -34,7 +34,7 @@ public class ReconnectedListener extends ListenerAdapter {
 
     @Override
     public void onReconnected(@NotNull ReconnectedEvent event) {
-        this.plugin.getConfigurationMenu().deleteMessage();
+        this.plugin.getConfigurationMenu().delete();
         this.plugin.getBot().updateGuildUniquenessStatus();
         this.plugin.getBot().checkForValidLobby();
         this.plugin.getBot().checkForUnlinkedUsersInLobby();

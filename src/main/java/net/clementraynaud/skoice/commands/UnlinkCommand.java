@@ -43,10 +43,10 @@ public class UnlinkCommand extends ListenerAdapter {
         if ("unlink".equals(event.getName())) {
             String minecraftId = MapUtil.getKeyFromValue(this.plugin.getConfiguration().getLinks(), event.getUser().getId());
             if (minecraftId == null) {
-                event.reply(this.plugin.getBot().getMenu("account-not-linked").toMessage()).setEphemeral(true).queue();
+                event.reply(this.plugin.getBot().getMenu("account-not-linked").build()).setEphemeral(true).queue();
             } else {
                 this.plugin.getConfiguration().unlinkUser(minecraftId);
-                event.reply(this.plugin.getBot().getMenu("account-unlinked").toMessage()).setEphemeral(true).queue();
+                event.reply(this.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
                 OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));
                 if (player.isOnline() && player.getPlayer() != null) {
                     player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));

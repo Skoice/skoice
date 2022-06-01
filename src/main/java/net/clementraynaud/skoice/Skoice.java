@@ -34,7 +34,6 @@ import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
@@ -134,11 +133,11 @@ public class Skoice extends JavaPlugin {
             this.getLogger().info(this.lang.getMessage("logger.info.configuration-complete"));
             if (user != null) {
                 user.openPrivateChannel().complete()
-                        .sendMessage(this.bot.getMenu("configuration-complete").toMessage())
+                        .sendMessage(this.bot.getMenu("configuration-complete").build())
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             }
         } else if (wasBotReady && !this.bot.isReady()) {
-            this.configurationMenu.deleteMessage();
+            this.configurationMenu.delete();
             this.unregisterEligiblePlayerListeners();
             Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this), this);
             if (this.bot.getJda() != null) {

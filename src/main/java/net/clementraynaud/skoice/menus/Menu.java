@@ -48,13 +48,13 @@ public class Menu {
         this.fields = menu.getStringList("fields").toArray(new String[0]);
     }
 
-    public Message toMessage(boolean customizeRadius, String... args) {
+    public Message build(boolean customizeRadius, String... args) {
         return new MessageBuilder().setEmbeds(this.getEmbed(args))
                 .setActionRows(this.getActionRows(customizeRadius)).build();
     }
 
-    public Message toMessage(String... args) {
-        return this.toMessage(false, args);
+    public Message build(String... args) {
+        return this.build(false, args);
     }
 
     private String getTitle(boolean withEmoji) {
@@ -104,7 +104,7 @@ public class Menu {
             }
             MenuField menuField = this.plugin.getBot().getField(field);
             int endIndex = this.plugin.getLang().getAmountOfArgsRequired(menuField.getDescription());
-            embed.addField(menuField.toField(Arrays.copyOfRange(args, startIndex, endIndex)));
+            embed.addField(menuField.build(Arrays.copyOfRange(args, startIndex, endIndex)));
             startIndex = endIndex;
         }
         return embed.build();

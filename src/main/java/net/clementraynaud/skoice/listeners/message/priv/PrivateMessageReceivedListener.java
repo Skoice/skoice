@@ -34,7 +34,7 @@ public class PrivateMessageReceivedListener extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getApplicationId())) {
-            event.getMessage().reply(this.plugin.getBot().getMenu("illegal-interaction").toMessage()).queue();
+            event.getMessage().reply(this.plugin.getBot().getMenu("illegal-interaction").build()).queue();
         }
     }
 }

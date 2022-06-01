@@ -51,34 +51,34 @@ public class ButtonClickListener extends ListenerAdapter {
                     if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
                         event.getMessage().delete().queue();
                         if (!this.plugin.getBot().isReady()) {
-                            event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").toMessage())
+                            event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").build())
                                     .setEphemeral(true).queue();
                         }
                     } else if (!this.plugin.getBot().isReady() && !"language".equals(buttonId)) {
-                        event.editMessage(this.plugin.getConfigurationMenu().getMessage()).queue();
+                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     } else {
                         if ("mode".equals(buttonId)) {
                             ButtonClickListener.discordIdAxis.remove(member.getId());
                         } else if ("horizontal-radius".equals(buttonId)) {
                             ButtonClickListener.discordIdAxis.put(member.getId(), ConfigurationField.HORIZONTAL_RADIUS.toString());
                             event.editMessage(this.plugin.getBot().getMenu(buttonId)
-                                    .toMessage(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))).queue();
+                                    .build(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))).queue();
                             return;
                         } else if ("vertical-radius".equals(buttonId)) {
                             ButtonClickListener.discordIdAxis.put(member.getId(), ConfigurationField.VERTICAL_RADIUS.toString());
                             event.editMessage(this.plugin.getBot().getMenu(buttonId)
-                                    .toMessage(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))).queue();
+                                    .build(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))).queue();
                             return;
                         }
-                        event.editMessage(this.plugin.getBot().getMenu(buttonId).toMessage()).queue();
+                        event.editMessage(this.plugin.getBot().getMenu(buttonId).build()).queue();
                     }
                 } else if (event.getMessage().getAuthor().equals(event.getJDA().getSelfUser())
                     && "resume-configuration".equals(event.getButton().getId())) {
-                    event.reply(this.plugin.getConfigurationMenu().getMessage()).queue();
+                    event.reply(this.plugin.getConfigurationMenu().update()).queue();
                 }
             }
         } else {
-            event.reply(this.plugin.getBot().getMenu("access-denied").toMessage()).setEphemeral(true).queue();
+            event.reply(this.plugin.getBot().getMenu("access-denied").build()).setEphemeral(true).queue();
         }
     }
 

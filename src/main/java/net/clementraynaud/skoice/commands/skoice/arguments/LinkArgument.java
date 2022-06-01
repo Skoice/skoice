@@ -72,7 +72,7 @@ public class LinkArgument extends Argument {
         super.plugin.getConfiguration().linkUser(player.getUniqueId().toString(), discordId);
         LinkCommand.getDiscordIdCode().values().remove(this.arg);
         member.getUser().openPrivateChannel().complete()
-                .sendMessage(this.plugin.getBot().getMenu("account-linked").toMessage())
+                .sendMessage(this.plugin.getBot().getMenu("account-linked").build())
                 .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
         GuildVoiceState voiceState = member.getVoiceState();

@@ -36,19 +36,21 @@ public class ConfigurationMenu {
         this.plugin = plugin;
     }
 
-    public Message getMessage() {
+    public Message update() {
+        Menu menu;
         if (this.plugin.getBot().isOnMultipleGuilds()) {
-            return this.plugin.getBot().getMenu("server").toMessage();
+            menu = this.plugin.getBot().getMenu("server");
         } else if (!this.plugin.getBot().getJda().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-            return this.plugin.getBot().getMenu("permissions").toMessage();
+            menu = this.plugin.getBot().getMenu("permissions");
         } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
-            return this.plugin.getBot().getMenu("lobby").toMessage();
+            menu = this.plugin.getBot().getMenu("lobby");
         } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
                 || !this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
-            return this.plugin.getBot().getMenu("mode").toMessage();
+            menu = this.plugin.getBot().getMenu("mode");
         } else {
-            return this.plugin.getBot().getMenu("settings").toMessage();
+            menu = this.plugin.getBot().getMenu("settings");
         }
+        return menu.build();
     }
 
     public boolean exists() {
@@ -87,14 +89,14 @@ public class ConfigurationMenu {
         return null;
     }
 
-    public void deleteMessage() {
+    public void delete() {
         Message configurationMessage = this.retrieveMessage();
         if (configurationMessage != null) {
             configurationMessage.delete().queue();
         }
     }
 
-    public void storeInConfig(Message message) {
+    public void store(Message message) {
         this.plugin.getConfiguration().getFile()
                 .set(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.GUILD_ID),
                         message.getGuild().getId());

@@ -55,9 +55,12 @@ public class Lang {
         String message = this.messages.contains(path)
                 ? this.messages.getString(path)
                 : this.englishMessages.getString(path);
-        if (path.startsWith("minecraft.chat.") && message != null) {
+        if (message == null) {
+            return null;
+        }
+        if (path.startsWith("minecraft.chat.")) {
             return ChatColor.translateAlternateColorCodes('&', String.format(message, Lang.CHAT_PREFIX));
-        } else if ((path.startsWith("minecraft.action-bar.") || path.startsWith("minecraft.interaction.")) && message != null) {
+        } else if ((path.startsWith("minecraft.action-bar.") || path.startsWith("minecraft.interaction."))) {
             return ChatColor.translateAlternateColorCodes('&', message);
         }
         return message;
@@ -85,7 +88,8 @@ public class Lang {
         String[] strings = this.messages.contains(path)
                 ? this.messages.getStringList(path).toArray(new String[0])
                 : this.englishMessages.getStringList(path).toArray(new String[0]);
-        ComponentBuilder message = new ComponentBuilder(ChatColor.translateAlternateColorCodes( '&', String.format(strings[0], Lang.CHAT_PREFIX)));
+        ComponentBuilder message = new ComponentBuilder(ChatColor.translateAlternateColorCodes( '&',
+                String.format(strings[0], Lang.CHAT_PREFIX)));
         for (int i = 0; i < components.length; i++) {
             message.append(components[i])
                     .append(ChatColor.translateAlternateColorCodes('&', strings[i + 1])).event((HoverEvent) null);

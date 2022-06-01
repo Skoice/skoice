@@ -44,11 +44,11 @@ public class ConfigureCommand extends ListenerAdapter {
             Member member = event.getMember();
             if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
                 if (this.configureCommandCooldown) {
-                    event.reply(this.plugin.getBot().getMenu("too-many-interactions").toMessage())
+                    event.reply(this.plugin.getBot().getMenu("too-many-interactions").build())
                             .setEphemeral(true).queue();
                 } else {
-                    this.plugin.getConfigurationMenu().deleteMessage();
-                    event.reply(this.plugin.getConfigurationMenu().getMessage()).queue();
+                    this.plugin.getConfigurationMenu().delete();
+                    event.reply(this.plugin.getConfigurationMenu().update()).queue();
                     this.configureCommandCooldown = true;
                     new Timer().schedule(new TimerTask() {
 
@@ -59,7 +59,7 @@ public class ConfigureCommand extends ListenerAdapter {
                     }, 5000);
                 }
             } else {
-                event.reply(this.plugin.getBot().getMenu("access-denied").toMessage())
+                event.reply(this.plugin.getBot().getMenu("access-denied").build())
                         .setEphemeral(true).queue();
             }
         }

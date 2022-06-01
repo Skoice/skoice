@@ -37,7 +37,7 @@ public class MenuField {
         this.inline = field.getBoolean("inline");
     }
 
-    public MessageEmbed.Field toField(String... args) {
+    public MessageEmbed.Field build(String... args) {
         return new MessageEmbed.Field(this.emoji + this.getTitle(), this.getDescription(args), this.inline);
     }
 

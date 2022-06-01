@@ -38,7 +38,7 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
         String discordId = event.getAuthor().getId();
         if (discordId.equals(event.getJDA().getSelfUser().getApplicationId())) {
             if (!event.getMessage().isEphemeral()) {
-                this.plugin.getConfigurationMenu().storeInConfig(event.getMessage());
+                this.plugin.getConfigurationMenu().store(event.getMessage());
             }
         } else if (ButtonClickListener.getDiscordIdAxis().containsKey(event.getAuthor().getId())
                 && event.getMessage().getContentRaw().length() <= 4
@@ -48,13 +48,13 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
                 event.getMessage().delete().queue();
                 this.plugin.getConfiguration().getFile().set(ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()), value);
                 this.plugin.getConfiguration().saveFile();
-                this.plugin.getConfigurationMenu().deleteMessage();
+                this.plugin.getConfigurationMenu().delete();
                 if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
                     event.getChannel().sendMessage(this.plugin.getBot().getMenu("horizontal-radius")
-                            .toMessage(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))).queue();
+                            .build(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))).queue();
                 } else if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigurationField.VERTICAL_RADIUS.toString())) {
                     event.getChannel().sendMessage(this.plugin.getBot().getMenu("vertical-radius")
-                            .toMessage(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))).queue();
+                            .build(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))).queue();
                 }
             }
         }
