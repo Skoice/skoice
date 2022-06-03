@@ -62,10 +62,7 @@ public class UpdateNetworksTask implements Task {
             if (lobby == null) {
                 return;
             }
-            boolean muteLobby = this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.MUTE_LOBBY.toString());
-            if (muteLobby) {
-                this.muteMembers(lobby);
-            }
+            this.muteMembers(lobby);
             Network.getNetworks().removeIf(network -> network.getChannel() == null && network.isInitialized());
             Set<UUID> oldEligiblePlayers = this.plugin.getEligiblePlayers().copy();
             this.plugin.getEligiblePlayers().clear();
@@ -140,10 +137,19 @@ public class UpdateNetworksTask implements Task {
     private void muteMembers(VoiceChannel lobby) {
         Role publicRole = lobby.getGuild().getPublicRole();
         PermissionOverride lobbyPublicRoleOverride = lobby.getPermissionOverride(publicRole);
-        if (lobbyPublicRoleOverride == null) {
-            lobby.createPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
-        } else if (!lobbyPublicRoleOverride.getDenied().contains(Permission.VOICE_SPEAK)) {
-            lobbyPublicRoleOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
+        boolean muteLobby = this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.MUTE_LOBBY.toString());
+        if (muteLobby) {
+            if (lobbyPublicRoleOverride == null) {
+                lobby.createPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
+            } else if (!lobbyPublicRoleOverride.getDenied().contains(Permission.VOICE_SPEAK)) {
+                lobbyPublicRoleOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
+            }
+        } else {
+            if (lobbyPublicRoleOverride == null) {
+                lobby.createPermissionOverride(publicRole).grant(Permission.VOICE_SPEAK).queue();
+            } else if (!lobbyPublicRoleOverride.getAllowed().contains(Permission.VOICE_SPEAK)) {
+                lobbyPublicRoleOverride.getManager().grant(Permission.VOICE_SPEAK).queue();
+            }
         }
     }
 

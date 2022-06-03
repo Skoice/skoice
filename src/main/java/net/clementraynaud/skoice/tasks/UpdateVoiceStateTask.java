@@ -42,8 +42,7 @@ public class UpdateVoiceStateTask implements Task {
 
     @Override
     public void run() {
-        boolean muteLobby = this.configuration.getFile().getBoolean(ConfigurationField.MUTE_LOBBY.toString());
-        if (this.member.getVoiceState() == null || this.configuration.getLobby() == null || !muteLobby) {
+        if (this.member.getVoiceState() == null || this.configuration.getLobby() == null) {
             return;
         }
         boolean isLobby = this.channel.getId().equals(this.configuration.getLobby().getId());
@@ -53,18 +52,19 @@ public class UpdateVoiceStateTask implements Task {
                     && this.member.hasPermission(this.channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.configuration.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
-                this.member.mute(true).queue();
-                List<String> mutedUsers = this.configuration.getFile().getStringList(ConfigurationField.MUTED_USERS_ID.toString());
-                mutedUsers.add(this.member.getId());
-                this.configuration.getFile().set(ConfigurationField.MUTED_USERS_ID.toString(), mutedUsers);
+                boolean muteLobby = this.configuration.getFile().getBoolean(ConfigurationField.MUTE_LOBBY.toString());
+                this.member.mute(muteLobby).queue();
+                List<String> usersInLobby = this.configuration.getFile().getStringList(ConfigurationField.MUTED_USERS_ID.toString());
+                usersInLobby.add(this.member.getId());
+                this.configuration.getFile().set(ConfigurationField.MUTED_USERS_ID.toString(), usersInLobby);
                 this.configuration.saveFile();
             }
         } else if (!isLobby) {
-            List<String> mutedUsers = this.configuration.getFile().getStringList(ConfigurationField.MUTED_USERS_ID.toString());
-            if (mutedUsers.contains(this.member.getId())) {
+            List<String> usersInLobby = this.configuration.getFile().getStringList(ConfigurationField.MUTED_USERS_ID.toString());
+            if (usersInLobby.contains(this.member.getId())) {
                 this.member.mute(false).queue();
-                mutedUsers.remove(this.member.getId());
-                this.configuration.getFile().set(ConfigurationField.MUTED_USERS_ID.toString(), mutedUsers);
+                usersInLobby.remove(this.member.getId());
+                this.configuration.getFile().set(ConfigurationField.MUTED_USERS_ID.toString(), usersInLobby);
                 this.configuration.saveFile();
             }
         }
