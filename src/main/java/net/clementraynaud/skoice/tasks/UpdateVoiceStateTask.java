@@ -42,7 +42,8 @@ public class UpdateVoiceStateTask implements Task {
 
     @Override
     public void run() {
-        if (this.member.getVoiceState() == null || this.configuration.getLobby() == null) {
+        boolean muteLobby = this.configuration.getFile().getBoolean(ConfigurationField.MUTE_LOBBY.toString());
+        if (this.member.getVoiceState() == null || this.configuration.getLobby() == null || !muteLobby) {
             return;
         }
         boolean isLobby = this.channel.getId().equals(this.configuration.getLobby().getId());

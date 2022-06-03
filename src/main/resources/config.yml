@@ -3,3 +3,4 @@
 lang: EN
 action-bar-alert: true
 channel-visibility: false
+mute-lobby: true

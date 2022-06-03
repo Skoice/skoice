@@ -141,6 +141,9 @@ discord:
       title: "Procédure de liaison"
     error:
       title: "Erreur"
+    mute-lobby:
+      title: "[EN Placeholder] Mute Lobby"
+      description: "[EN Placeholder] Toggle whether users are muted when in the lobby voice channel."
   field:
     configuration-complete:
       title: "Configuration terminée"

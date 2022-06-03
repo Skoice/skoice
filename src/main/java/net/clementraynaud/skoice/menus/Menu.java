@@ -134,6 +134,11 @@ public class Menu {
                         this.plugin.getConfiguration().getFile()
                                 .getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString()), false);
                 break;
+            case "mute-lobby":
+                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name,
+                        this.plugin.getConfiguration().getFile()
+                                .getBoolean(ConfigurationField.MUTE_LOBBY.toString()), true);
+                break;
             default:
                 List<Button> buttons = this.getButtons(customizeRadius);
                 if (!buttons.isEmpty()) {

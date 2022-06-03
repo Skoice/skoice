@@ -46,6 +46,7 @@ public enum MenuEmoji {
     LINK("U+1F517"),
     MAG("U+1F50D"),
     MAP("U+1F5FA"),
+    MUTE("U+1F507"),
     NEWSPAPER("U+1F4F0"),
     NO_ENTRY("U+26D4"),
     PENCIL2("U+270F"),

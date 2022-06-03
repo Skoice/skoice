@@ -62,7 +62,10 @@ public class UpdateNetworksTask implements Task {
             if (lobby == null) {
                 return;
             }
-            this.muteMembers(lobby);
+            boolean muteLobby = this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.MUTE_LOBBY.toString());
+            if (muteLobby) {
+                this.muteMembers(lobby);
+            }
             Network.getNetworks().removeIf(network -> network.getChannel() == null && network.isInitialized());
             Set<UUID> oldEligiblePlayers = this.plugin.getEligiblePlayers().copy();
             this.plugin.getEligiblePlayers().clear();

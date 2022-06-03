@@ -130,3 +130,8 @@ get-the-proximity-voice-chat:
     - donate
     - troubleshooting
     - contribute
+mute-lobby:
+  emoji: mute
+  type: default
+  style: primary
+  parent: advanced-settings
