@@ -107,11 +107,21 @@ channel-visibility:
   type: default
   style: primary
   parent: advanced-settings
+advanced-settings-page-two:
+  emoji: arrow_right
+  type: default
+  style: secondary
+  parent: advanced-settings
+mute-lobby:
+  emoji: mute
+  type: default
+  style: primary
+  parent: advanced-settings-page-two
 changelog:
   emoji: newspaper
   type: default
   style: secondary
-  parent: advanced-settings
+  parent: advanced-settings-page-two
   fields:
     - skoice-2-1
     - upcoming-features
@@ -130,8 +140,3 @@ get-the-proximity-voice-chat:
     - donate
     - troubleshooting
     - contribute
-mute-lobby:
-  emoji: mute
-  type: default
-  style: primary
-  parent: advanced-settings

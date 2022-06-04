@@ -144,6 +144,9 @@ discord:
     mute-lobby:
       title: "[EN Placeholder] Mute Lobby"
       description: "[EN Placeholder] Toggle whether users are muted when in the lobby voice channel."
+    advanced-settings-page-two:
+      title: "[EN Placeholder] Next page"
+      description: "[EN Placeholder] See more parameters to manage."
   field:
     configuration-complete:
       title: "Configuration terminée"
