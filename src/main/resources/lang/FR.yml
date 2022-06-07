@@ -46,7 +46,7 @@ minecraft:
       account-unlinked: "%s Vous avez &adelié votre compte Minecraft &7de Discord."
       account-not-linked: "%s Vous n'avez &cpas lié votre compte Minecraft &à Discord. Tapez \"&e/link&7\" sur notre serveur Discord pour le lier."
       account-already-linked: "%s Vous avez &cdéjà lié votre compte Minecraft &7à Discord. Tapez \"&e/skoice unlink&7\" pour le délier."
-      connected-to-proximity-voice-chat: "%s Vous êtes &adésormais connecté &7au chat vocal de proximité. Pour une meilleure expérience, vous pouvez activé le \"&eMode streamer&7\" dans votre client Discord."
+      connected-to-proximity-voice-chat: "%s Vous êtes &adésormais connecté &7au chat vocal de proximité. Pour une meilleure expérience, vous pouvez activer le \"&eMode streamer&7\" dans votre client Discord."
       disconnected-from-proximity-voice-chat: "%s Vous êtes &cdésormais déconnecté &7du chat vocal de proximité."
     error:
       no-parameter: "%s Vous n'avez &cpas fourni un argument&7. Pour utiliser cette commande, tapez \"&e/skoice <%s>&7\"."
