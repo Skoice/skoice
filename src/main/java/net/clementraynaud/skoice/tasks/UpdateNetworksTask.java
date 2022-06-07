@@ -73,7 +73,8 @@ public class UpdateNetworksTask implements Task {
                     if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {
                         VoiceChannel playerChannel = member.getVoiceState().getChannel();
                         boolean isLobby = playerChannel == this.plugin.getConfiguration().getLobby();
-                        if (!isLobby && (playerChannel.getParent() == null || playerChannel.getParent() != this.plugin.getConfiguration().getCategory())) {
+                        if (!isLobby && (playerChannel.getParent() == null
+                                || playerChannel.getParent() != this.plugin.getConfiguration().getCategory())) {
                             Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(member.getId());
                             if (pair != null) {
                                 pair.getRight().cancel(false);
@@ -169,7 +170,8 @@ public class UpdateNetworksTask implements Task {
                     .filter(network -> network.contains(player.getUniqueId()))
                     .filter(network -> network.canPlayerStayConnected(player))
                     .filter(network -> !network.canPlayerBeAdded(player))
-                    .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(this.plugin.getLang().getMessage("minecraft.action-bar.alert"))));
+                    .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+                            new TextComponent(this.plugin.getLang().getMessage("minecraft.action-bar.alert"))));
         } catch (NoSuchMethodError ignored) {
         }
     }
@@ -183,8 +185,10 @@ public class UpdateNetworksTask implements Task {
                 .filter(p -> Network.getNetworks().stream().noneMatch(network -> network.contains(p)))
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .filter(p -> DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString())
-                        && DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()))
+                .filter(p -> DistanceUtil.getHorizontalDistance(p.getLocation(),
+                        player.getLocation()) <= this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString())
+                        && DistanceUtil.getVerticalDistance(p.getLocation(),
+                        player.getLocation()) <= this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()))
                 .filter(p -> {
                     Member m = this.plugin.getConfiguration().getMember(p.getUniqueId());
                     return m != null && m.getVoiceState() != null

@@ -127,7 +127,8 @@ public class Bot {
                 } else {
                     try {
                         TextComponent discordStatusPage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
-                        MessageUtil.setHoverEvent(discordStatusPage, this.plugin.getLang().getMessage("minecraft.interaction.link", "https://discordstatus.com"));
+                        MessageUtil.setHoverEvent(discordStatusPage,
+                                this.plugin.getLang().getMessage("minecraft.interaction.link", "https://discordstatus.com"));
                         discordStatusPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discordstatus.com"));
                         sender.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.discord-api-timed-out-interactive", discordStatusPage));
                     } catch (NoSuchMethodError e2) {
@@ -194,7 +195,8 @@ public class Bot {
     }
 
     public void checkForValidLobby() {
-        if (this.plugin.getConfiguration().getLobby() == null && this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
+        if (this.plugin.getConfiguration().getLobby() == null
+                && this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
             this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), null);
             this.plugin.getConfiguration().saveFile();
         }

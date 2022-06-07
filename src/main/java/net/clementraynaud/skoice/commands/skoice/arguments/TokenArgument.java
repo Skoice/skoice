@@ -40,10 +40,6 @@ public class TokenArgument extends Argument {
             this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.no-token"));
             return;
         }
-        if (this.arg.length() != 59 || !this.arg.matches("[a-zA-Z0-9_.]+")) {
-            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.invalid-token"));
-            return;
-        }
         super.plugin.getConfiguration().setToken(this.arg);
         if (super.plugin.getBot().getJda() == null) {
             super.plugin.getBot().connect(this.sender);
