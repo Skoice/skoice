@@ -80,27 +80,32 @@ public class SelectMenuListener extends ListenerAdapter {
                     case "lobby-selection":
                         Guild guild = event.getGuild();
                         if (guild != null) {
-                            if ("generate".equals(event.getSelectedOptions().get(0).getValue())) {
-                                String categoryId = guild.createCategory(this.plugin.getLang().getMessage("discord.default-category-name"))
-                                        .complete().getId();
-                                String lobbyId = guild.createVoiceChannel(this.plugin.getLang().getMessage("discord.default-lobby-name"),
-                                                event.getGuild().getCategoryById(categoryId))
-                                        .complete().getId();
-                                this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), lobbyId);
-                                this.plugin.getConfiguration().saveFile();
-                                new InterruptSystemTask(this.plugin.getConfiguration()).run();
-                                this.plugin.updateStatus(false, event.getUser());
-                            } else if (!"refresh".equals(event.getSelectedOptions().get(0).getValue())) {
-                                VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
-                                if (lobby != null && lobby.getParent() != null) {
-                                    this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), event.getSelectedOptions().get(0).getValue());
+                            if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
+                                event.editMessage(this.plugin.getBot().getMenu("lobby").build()).queue();
+                            } else {
+                                if ("generate".equals(event.getSelectedOptions().get(0).getValue())) {
+                                    String categoryId = guild.createCategory(this.plugin.getLang().getMessage("discord.default-category-name"))
+                                            .complete().getId();
+                                    String lobbyId = guild.createVoiceChannel(this.plugin.getLang().getMessage("discord.default-lobby-name"),
+                                                    event.getGuild().getCategoryById(categoryId))
+                                            .complete().getId();
+                                    this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), lobbyId);
                                     this.plugin.getConfiguration().saveFile();
                                     new InterruptSystemTask(this.plugin.getConfiguration()).run();
                                     this.plugin.updateStatus(false, event.getUser());
+                                } else {
+                                    VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
+                                    if (lobby != null && lobby.getParent() != null) {
+                                        this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(),
+                                                event.getSelectedOptions().get(0).getValue());
+                                        this.plugin.getConfiguration().saveFile();
+                                        new InterruptSystemTask(this.plugin.getConfiguration()).run();
+                                        this.plugin.updateStatus(false, event.getUser());
+                                    }
                                 }
+                                event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                             }
                         }
-                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                         break;
                     case "mode-selection":
                         if ("vanilla-mode".equals(event.getSelectedOptions().get(0).getValue())) {
