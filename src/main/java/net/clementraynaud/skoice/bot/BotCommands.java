@@ -40,7 +40,7 @@ public class BotCommands {
                 .queue(null, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
                         e -> {
                     this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
-                            this.plugin.getBot().getJda().getSelfUser().getApplicationId()));
+                            this.plugin.getBot().getJDA().getSelfUser().getApplicationId()));
                     this.plugin.getBot().setReady(false);
                         }));
     }

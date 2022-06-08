@@ -41,9 +41,9 @@ public class TokenArgument extends Argument {
             return;
         }
         super.plugin.getConfiguration().setToken(this.arg);
-        if (super.plugin.getBot().getJda() == null) {
+        if (super.plugin.getBot().getJDA() == null) {
             super.plugin.getBot().connect(this.sender);
-            if (super.plugin.getBot().getJda() != null) {
+            if (super.plugin.getBot().getJDA() != null) {
                 super.plugin.getBot().setup(false, this.sender);
             }
         } else {

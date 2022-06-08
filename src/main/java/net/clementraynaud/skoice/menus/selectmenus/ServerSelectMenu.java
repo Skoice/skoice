@@ -39,7 +39,7 @@ public class ServerSelectMenu extends SelectMenu {
 
     @Override
     public SelectionMenu get() {
-        List<Guild> servers = new ArrayList<>(this.plugin.getBot().getJda().getGuilds());
+        List<Guild> servers = new ArrayList<>(this.plugin.getBot().getJDA().getGuilds());
         List<SelectOption> options = new ArrayList<>();
         int optionIndex = 0;
         while (optionIndex < 24 && servers.size() > optionIndex) {

@@ -67,7 +67,7 @@ public class Skoice extends JavaPlugin {
         this.eligiblePlayers = new EligiblePlayers();
         this.bot = new Bot(this);
         this.bot.connect();
-        if (this.bot.getJda() != null) {
+        if (this.bot.getJDA() != null) {
             this.configurationMenu = new ConfigurationMenu(this);
             this.bot.setup(true, null);
         } else {
@@ -80,9 +80,9 @@ public class Skoice extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (this.bot.getJda() != null) {
+        if (this.bot.getJDA() != null) {
             new InterruptSystemTask(this.configuration).run();
-            this.bot.getJda().shutdown();
+            this.bot.getJDA().shutdown();
         }
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));
     }
@@ -92,15 +92,15 @@ public class Skoice extends JavaPlugin {
         this.bot.setReady(false);
         if (!this.configuration.getFile().contains(ConfigurationField.TOKEN.toString())) {
             this.getLogger().warning(this.lang.getMessage("logger.warning.no-token"));
-        } else if (this.bot.getJda() != null) {
-            if (this.bot.getJda().getGuilds().isEmpty()) {
+        } else if (this.bot.getJDA() != null) {
+            if (this.bot.getJDA().getGuilds().isEmpty()) {
                 this.getLogger().warning(this.lang.getMessage("logger.warning.no-guild",
-                        this.bot.getJda().getSelfUser().getApplicationId()));
+                        this.bot.getJDA().getSelfUser().getApplicationId()));
             } else if (this.bot.isOnMultipleGuilds()) {
                 this.getLogger().warning(this.lang.getMessage("logger.warning.multiple-guilds"));
-            } else if (!this.bot.getJda().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+            } else if (!this.bot.getJDA().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                 this.getLogger().severe(this.lang.getMessage("logger.error.missing-permission",
-                        this.bot.getJda().getSelfUser().getApplicationId()));
+                        this.bot.getJDA().getSelfUser().getApplicationId()));
             } else if (!this.configuration.getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
                 this.getLogger().warning(this.lang.getMessage("logger.warning.no-lobby-id"));
             } else if (!this.configuration.getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
@@ -140,7 +140,7 @@ public class Skoice extends JavaPlugin {
             this.configurationMenu.delete();
             this.unregisterEligiblePlayerListeners();
             Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this), this);
-            if (this.bot.getJda() != null) {
+            if (this.bot.getJDA() != null) {
                 this.bot.unregisterListeners();
             }
             new InterruptSystemTask(this.configuration).run();

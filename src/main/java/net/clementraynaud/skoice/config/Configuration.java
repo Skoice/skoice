@@ -103,19 +103,19 @@ public class Configuration {
     }
 
     public VoiceChannel getLobby() {
-        if (this.plugin.getBot().getJda() == null) {
+        if (this.plugin.getBot().getJDA() == null) {
             return null;
         }
         String lobbyId = this.file.getString(ConfigurationField.LOBBY_ID.toString());
         if (lobbyId == null) {
             return null;
         }
-        VoiceChannel lobby = this.plugin.getBot().getJda().getVoiceChannelById(lobbyId);
+        VoiceChannel lobby = this.plugin.getBot().getJDA().getVoiceChannelById(lobbyId);
         return lobby != null && lobby.getParent() != null ? lobby : null;
     }
 
     public Category getCategory() {
-        if (this.plugin.getBot().getJda() == null) {
+        if (this.plugin.getBot().getJDA() == null) {
             return null;
         }
         VoiceChannel lobby = this.getLobby();

@@ -231,7 +231,7 @@ public class Bot {
     }
 
     public void registerListeners() {
-        this.getJda().addEventListener(
+        this.getJDA().addEventListener(
                 new GuildVoiceJoinListener(this.plugin),
                 new GuildVoiceLeaveListener(this.plugin),
                 new GuildVoiceMoveListener(this.plugin),
@@ -240,7 +240,7 @@ public class Bot {
     }
 
     public void unregisterListeners() {
-        this.getJda().removeEventListener(
+        this.getJDA().removeEventListener(
                 new GuildVoiceJoinListener(this.plugin),
                 new GuildVoiceLeaveListener(this.plugin),
                 new GuildVoiceMoveListener(this.plugin),
@@ -300,11 +300,11 @@ public class Bot {
     }
 
     public void updateActivity() {
-        Activity activity = this.getJda().getPresence().getActivity();
+        Activity activity = this.getJDA().getPresence().getActivity();
         if (this.isReady() && !Objects.equals(activity, Activity.listening("/link"))) {
-            this.getJda().getPresence().setActivity(Activity.listening("/link"));
+            this.getJDA().getPresence().setActivity(Activity.listening("/link"));
         } else if (!this.isReady() && !Objects.equals(activity, Activity.listening("/configure"))) {
-            this.getJda().getPresence().setActivity(Activity.listening("/configure"));
+            this.getJDA().getPresence().setActivity(Activity.listening("/configure"));
         }
     }
 
@@ -332,7 +332,7 @@ public class Bot {
         }
     }
 
-    public JDA getJda() {
+    public JDA getJDA() {
         return this.jda;
     }
 

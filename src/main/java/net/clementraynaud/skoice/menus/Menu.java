@@ -191,7 +191,7 @@ public class Menu {
                     .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
         } else if ("permissions".equals(this.name)) {
             return Collections.singletonList(Button.link("https://discord.com/api/oauth2/authorize?client_id="
-                    + this.plugin.getBot().getJda().getSelfUser().getApplicationId()
+                    + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
                     + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
                     .withEmoji(this.emoji.get()));
         } else if ("mode".equals(this.name) && this.isModeCustomizable(customizeRadius)) {

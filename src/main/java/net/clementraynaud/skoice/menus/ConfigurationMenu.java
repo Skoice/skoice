@@ -40,7 +40,7 @@ public class ConfigurationMenu {
         Menu menu;
         if (this.plugin.getBot().isOnMultipleGuilds()) {
             menu = this.plugin.getBot().getMenu("server");
-        } else if (!this.plugin.getBot().getJda().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+        } else if (!this.plugin.getBot().getJDA().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
             menu = this.plugin.getBot().getMenu("permissions");
         } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
             menu = this.plugin.getBot().getMenu("lobby");
@@ -69,7 +69,7 @@ public class ConfigurationMenu {
         if (!this.exists()) {
             return null;
         }
-        Guild guild = this.plugin.getBot().getJda().getGuildById(this.plugin.getConfiguration().getFile()
+        Guild guild = this.plugin.getBot().getJDA().getGuildById(this.plugin.getConfiguration().getFile()
                 .getString(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.GUILD_ID)));
         if (guild == null) {
             return null;

@@ -43,20 +43,25 @@ public class SelectMenuListener extends ListenerAdapter {
 
     @Override
     public void onSelectionMenu(SelectionMenuEvent event) {
+        if (!event.getMessage().getAuthor().equals(event.getJDA().getSelfUser())) {
+            return;
+        }
+        if (!this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
+            event.getMessage().delete().queue();
+            return;
+        }
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (this.plugin.getConfigurationMenu().exists()
-                    && this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())
-                    && event.getSelectedOptions() != null) {
+            if (event.getSelectedOptions() != null) {
                 String componentId = event.getComponentId();
                 switch (componentId) {
                     case "server-selection":
-                        if (this.plugin.getBot().getJda().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
+                        if (this.plugin.getBot().getJDA().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
                             for (SelectOption server : event.getComponent().getOptions()) {
                                 if (!event.getGuild().getId().equals(server.getValue())
-                                        && this.plugin.getBot().getJda().getGuilds().contains(this.plugin.getBot().getJda().getGuildById(server.getValue()))) {
+                                        && this.plugin.getBot().getJDA().getGuilds().contains(this.plugin.getBot().getJDA().getGuildById(server.getValue()))) {
                                     try {
-                                        this.plugin.getBot().getJda().getGuildById(server.getValue()).leave()
+                                        this.plugin.getBot().getJDA().getGuildById(server.getValue()).leave()
                                                 .queue(success -> event.editMessage(this.plugin.getConfigurationMenu().update()).queue());
                                     } catch (ErrorResponseException ignored) {
                                     }

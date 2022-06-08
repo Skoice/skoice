@@ -45,7 +45,7 @@ public class LobbySelectMenu extends SelectMenu {
 
     @Override
     public SelectionMenu get() {
-        List<VoiceChannel> voiceChannels = new ArrayList<>(this.plugin.getBot().getJda().getVoiceChannels());
+        List<VoiceChannel> voiceChannels = new ArrayList<>(this.plugin.getBot().getJDA().getVoiceChannels());
         List<Category> categories = new ArrayList<>();
         for (VoiceChannel voiceChannel : voiceChannels) {
             categories.add(voiceChannel.getParent());

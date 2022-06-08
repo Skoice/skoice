@@ -42,12 +42,19 @@ public class ButtonClickListener extends ListenerAdapter {
 
     @Override
     public void onButtonClick(ButtonClickEvent event) {
+        if (!event.getMessage().getAuthor().equals(event.getJDA().getSelfUser())) {
+            return;
+        }
+        if (!this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())
+                && !event.getMessage().isEphemeral()) {
+            event.getMessage().delete().queue();
+            return;
+        }
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
             if (event.getButton() != null && event.getButton().getId() != null) {
                 String buttonId = event.getButton().getId();
-                if (this.plugin.getConfigurationMenu().exists()
-                        && this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
+                if (this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
                     if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
                         event.getMessage().delete().queue();
                         if (!this.plugin.getBot().isReady()) {
@@ -72,8 +79,7 @@ public class ButtonClickListener extends ListenerAdapter {
                         }
                         event.editMessage(this.plugin.getBot().getMenu(buttonId).build()).queue();
                     }
-                } else if (event.getMessage().getAuthor().equals(event.getJDA().getSelfUser())
-                    && "resume-configuration".equals(event.getButton().getId())) {
+                } else if ("resume-configuration".equals(event.getButton().getId())) {
                     event.reply(this.plugin.getConfigurationMenu().update()).queue();
                 }
             }
