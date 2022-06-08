@@ -128,6 +128,7 @@ discord:
     action-bar-alert:
       title: "Alerte dans la barre d'action"
       description: "Activez ou désactivez l'alerte envoyée aux joueurs qui s'éloignent avant qu'ils soient déconnectés de leur salon vocal actuel. Cette fonctionnalité n'est supportées que sur les serveurs qui utilisent Minecraft 1.10 ou supérieur."
+      shortened-description: "Activez ou désactivez l'alerte envoyée aux joueurs qui s'éloignent avant qu'ils soient déconnectés de leur salon vocal actuel."
     channel-visibility:
       title: "Visibilité des salons"
       description: "Rendez visibles ou invisibles les salons temporaires créés par Skoice."

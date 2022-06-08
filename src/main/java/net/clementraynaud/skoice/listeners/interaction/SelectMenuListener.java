@@ -75,7 +75,7 @@ public class SelectMenuListener extends ListenerAdapter {
                         this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                         this.plugin.updateStatus(false);
                         new BotCommands(this.plugin).register(event.getGuild());
-                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+                        event.editMessage(this.plugin.getBot().getMenu("language").build()).queue();
                         break;
                     case "lobby-selection":
                         Guild guild = event.getGuild();
@@ -90,9 +90,7 @@ public class SelectMenuListener extends ListenerAdapter {
                                 this.plugin.getConfiguration().saveFile();
                                 new InterruptSystemTask(this.plugin.getConfiguration()).run();
                                 this.plugin.updateStatus(false, event.getUser());
-                            } else if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
-                                event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
-                            } else {
+                            } else if (!"refresh".equals(event.getSelectedOptions().get(0).getValue())) {
                                 VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                                 if (lobby != null && lobby.getParent() != null) {
                                     this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), event.getSelectedOptions().get(0).getValue());
@@ -128,7 +126,7 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.plugin.getConfiguration().getFile().set(ConfigurationField.ACTION_BAR_ALERT.toString(), false);
                         }
                         this.plugin.getConfiguration().saveFile();
-                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+                        event.editMessage(this.plugin.getBot().getMenu("action-bar-alert").build()).queue();
                         break;
                     case "channel-visibility":
                         if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
@@ -137,7 +135,7 @@ public class SelectMenuListener extends ListenerAdapter {
                             this.plugin.getConfiguration().getFile().set(ConfigurationField.CHANNEL_VISIBILITY.toString(), false);
                         }
                         this.plugin.getConfiguration().saveFile();
-                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+                        event.editMessage(this.plugin.getBot().getMenu("channel-visibility").build()).queue();
                         break;
                     default:
                         throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));
