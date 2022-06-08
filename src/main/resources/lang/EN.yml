@@ -127,7 +127,7 @@ discord:
       description: "Choose the language used to display messages."
     action-bar-alert:
       title: "Action Bar Alert"
-      description: "Toggle the alert sent to players who are moving away before they get disconnected from their current voice channel."
+      description: "Toggle the alert sent to players who are moving away before they get disconnected from their current voice channel. This feature is only supported on servers that run Minecraft 1.10 or later."
     channel-visibility:
       title: "Channel Visibility"
       description: "Toggle the visibility of the temporary channels created by Skoice."

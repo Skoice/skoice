@@ -89,16 +89,16 @@ public class UpdateNetworksTask implements Task {
                     }
                 }
             }
-            Set<Member> membersInLobby = new HashSet<>(lobby.getMembers());
+            Set<Member> members = new HashSet<>(lobby.getMembers());
             for (Network network : Network.getNetworks()) {
                 VoiceChannel voiceChannel = network.getChannel();
                 if (voiceChannel == null) {
                     continue;
                 }
-                membersInLobby.addAll(voiceChannel.getMembers());
+                members.addAll(voiceChannel.getMembers());
             }
             Map<String, String> links = new HashMap<>(this.plugin.getConfiguration().getLinks());
-            for (Member member : membersInLobby) {
+            for (Member member : members) {
                 String minecraftId = MapUtil.getKeyFromValue(links, member.getId());
                 VoiceChannel playerChannel = member.getVoiceState().getChannel();
                 Network playerNetwork = minecraftId != null ? Network.getNetworks().stream()
