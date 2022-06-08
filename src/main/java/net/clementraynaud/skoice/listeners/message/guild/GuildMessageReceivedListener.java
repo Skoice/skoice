@@ -35,8 +35,7 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        String discordId = event.getAuthor().getId();
-        if (discordId.equals(event.getJDA().getSelfUser().getApplicationId())) {
+        if (event.getAuthor().equals(event.getJDA().getSelfUser())) {
             if (!event.getMessage().isEphemeral()) {
                 this.plugin.getConfigurationMenu().store(event.getMessage());
             }
@@ -46,16 +45,12 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
             int value = Integer.parseInt(event.getMessage().getContentRaw());
             if (value >= 1 && value <= 1000) {
                 event.getMessage().delete().queue();
-                this.plugin.getConfiguration().getFile().set(ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()), value);
+                String axis = ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId());
+                this.plugin.getConfiguration().getFile().set(axis, value);
                 this.plugin.getConfiguration().saveFile();
-                this.plugin.getConfigurationMenu().delete();
-                if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
-                    event.getChannel().sendMessage(this.plugin.getBot().getMenu("horizontal-radius")
-                            .build(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))).queue();
-                } else if (ButtonClickListener.getDiscordIdAxis().get(event.getAuthor().getId()).equals(ConfigurationField.VERTICAL_RADIUS.toString())) {
-                    event.getChannel().sendMessage(this.plugin.getBot().getMenu("vertical-radius")
-                            .build(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))).queue();
-                }
+                this.plugin.getConfigurationMenu().retrieveMessage()
+                        .editMessage(this.plugin.getBot().getMenu(axis)
+                                .build(this.plugin.getConfiguration().getFile().getString(axis))).queue();
             }
         }
     }

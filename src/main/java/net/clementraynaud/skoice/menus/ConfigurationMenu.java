@@ -53,10 +53,6 @@ public class ConfigurationMenu {
         return menu.build();
     }
 
-    public boolean exists() {
-        return this.plugin.getConfiguration().getFile().contains(ConfigurationField.CONFIG_MENU.toString());
-    }
-
     public String getMessageId() {
         Message message = this.retrieveMessage();
         if (message != null) {
@@ -66,7 +62,7 @@ public class ConfigurationMenu {
     }
 
     public Message retrieveMessage() {
-        if (!this.exists()) {
+        if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.CONFIG_MENU.toString())) {
             return null;
         }
         Guild guild = this.plugin.getBot().getJDA().getGuildById(this.plugin.getConfiguration().getFile()
