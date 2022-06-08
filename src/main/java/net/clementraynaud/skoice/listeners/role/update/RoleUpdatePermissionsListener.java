@@ -34,6 +34,9 @@ public class RoleUpdatePermissionsListener extends ListenerAdapter {
 
     @Override
     public void onRoleUpdatePermissions(RoleUpdatePermissionsEvent event) {
+        if (event.getRole().isPublicRole() && !event.getRole().hasPermission(Permission.USE_SLASH_COMMANDS)) {
+            event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_SLASH_COMMANDS).queue();
+        }
         if (event.getGuild().getSelfMember().getRoles().contains(event.getRole())) {
             if (event.getOldPermissions().contains(Permission.ADMINISTRATOR)
                     && !event.getNewPermissions().contains(Permission.ADMINISTRATOR)
@@ -42,6 +45,7 @@ public class RoleUpdatePermissionsListener extends ListenerAdapter {
             } else if (!event.getOldPermissions().contains(Permission.ADMINISTRATOR)
                     && event.getNewPermissions().contains(Permission.ADMINISTRATOR)
                     && event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+                event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_SLASH_COMMANDS).queue();
                 this.plugin.updateStatus(false);
                 this.plugin.getConfigurationMenu().retrieveMessage()
                         .editMessage(this.plugin.getConfigurationMenu().update()).queue();

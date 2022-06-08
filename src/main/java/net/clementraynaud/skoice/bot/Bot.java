@@ -51,6 +51,7 @@ import net.clementraynaud.skoice.util.MapUtil;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
@@ -145,7 +146,12 @@ public class Bot {
         this.plugin.getConfigurationMenu().delete();
         this.updateGuildUniquenessStatus();
         this.checkForValidLobby();
-        this.jda.getGuilds().forEach(new BotCommands(this.plugin)::register);
+        this.jda.getGuilds().forEach(guild -> {
+            new BotCommands(this.plugin).register(guild);
+            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+                guild.getPublicRole().getManager().givePermissions(Permission.USE_SLASH_COMMANDS).queue();
+            }
+        });
         this.registerPermanentListeners();
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                         Bukkit.getScheduler().runTaskTimerAsynchronously(

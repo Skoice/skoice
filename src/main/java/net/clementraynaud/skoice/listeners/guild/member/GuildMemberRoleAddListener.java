@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.guild.member;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotCommands;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
@@ -43,6 +44,7 @@ public class GuildMemberRoleAddListener extends ListenerAdapter {
             List<Role> rolesBeforeUpdate = new ArrayList<>(event.getMember().getRoles());
             rolesBeforeUpdate.removeAll(event.getRoles());
             if (rolesBeforeUpdate.stream().noneMatch(role -> role.hasPermission(Permission.ADMINISTRATOR))) {
+                event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_SLASH_COMMANDS).queue();
                 this.plugin.updateStatus(false);
                 this.plugin.getConfigurationMenu().retrieveMessage()
                         .editMessage(this.plugin.getConfigurationMenu().update()).queue();
