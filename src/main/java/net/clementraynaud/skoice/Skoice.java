@@ -58,6 +58,7 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onEnable() {
         new Metrics(this, Skoice.SERVICE_ID);
+        this.saveDefaultConfig();
         this.configuration = new Configuration(this);
         this.configuration.init();
         this.lang = new Lang();

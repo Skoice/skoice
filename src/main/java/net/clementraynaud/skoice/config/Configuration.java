@@ -65,19 +65,20 @@ public class Configuration {
     }
 
     public void linkUser(String minecraftId, String discordId) {
-        this.file.set(ConfigurationField.LINKS.toString() + "." + minecraftId, discordId);
+        this.file.set(ConfigurationField.LINKS + "." + minecraftId, discordId);
         this.saveFile();
     }
 
     public void unlinkUser(String minecraftId) {
-        this.file.set(ConfigurationField.LINKS.toString() + "." + minecraftId, null);
+        this.file.set(ConfigurationField.LINKS + "." + minecraftId, null);
         this.saveFile();
     }
 
     public Map<String, String> getLinks() {
         Map<String, String> castedLinks = new HashMap<>();
         if (this.file.isSet(ConfigurationField.LINKS.toString())) {
-            Map<String, Object> links = new HashMap<>(this.file.getConfigurationSection(ConfigurationField.LINKS.toString()).getValues(false));
+            Map<String, Object> links = new HashMap<>(this.file.getConfigurationSection(ConfigurationField.LINKS.toString())
+                    .getValues(false));
             for (Map.Entry<String, Object> entry : links.entrySet()) {
                 castedLinks.put(entry.getKey(), entry.getValue().toString());
             }
