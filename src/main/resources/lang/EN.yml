@@ -178,12 +178,12 @@ discord:
     enter-a-value:
       title: "Enter a value"
       description: "This setting is currently set to %s blocks. The value must be between 1 and 1000."
-    skoice-2-1:
+    changelog:
       title: "Skoice 2.1"
       description: "**General:**\n• Discover a whole new and intuitive configuration interface.\n• Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n• Link your accounts effortlessly thanks to our new linking process.\n• Skoice now uses slash commands.\n\n**New Features:**\n• Action bar alert\n• Channel visibility toggle\n• \"/invite\" command in Discord\n• French translation"
     upcoming-features:
       title: "What's Next?"
-      description: "To discover the upcoming features of Skoice, [take a look at our long-terms plans](https://github.com/carlodrift/skoice/issues/28)."
+      description: "To discover the upcoming features of Skoice, [take a look at our long-terms plans](https://github.com/Skoice/skoice/discussions/33)."
     verification-code:
       title: "Verification Code"
       description: "Type `/skoice link %s` in game to complete the process."

@@ -31,7 +31,7 @@ minigame-mode:
 customize:
   emoji: pencil2
   inline: true
-skoice-2-1:
+changelog:
   emoji: clipboard
   inline: false
 upcoming-features:

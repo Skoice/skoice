@@ -113,7 +113,7 @@ changelog:
   style: secondary
   parent: advanced-settings
   fields:
-    - skoice-2-1
+    - changelog
     - upcoming-features
     - contribute
 server:

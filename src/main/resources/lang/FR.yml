@@ -127,7 +127,7 @@ discord:
       description: "Choisissez la langue utilisée pour afficher les messages."
     action-bar-alert:
       title: "Alerte dans la barre d'action"
-      description: "Activez ou désactivez l'alerte envoyée aux joueurs qui s'éloignent avant qu'ils soient déconnectés de leur salon vocal actuel. Cette fonctionnalité n'est supportées que sur les serveurs qui utilisent Minecraft 1.10 ou supérieur."
+      description: "Activez ou désactivez l'alerte envoyée aux joueurs qui s'éloignent avant qu'ils soient déconnectés de leur salon vocal actuel. Cette fonctionnalité n'est supportées que sur les serveurs qui utilisent Minecraft 1.10 ou ultérieur."
       shortened-description: "Activez ou désactivez l'alerte envoyée aux joueurs qui s'éloignent avant qu'ils soient déconnectés de leur salon vocal actuel."
     channel-visibility:
       title: "Visibilité des salons"
@@ -178,12 +178,12 @@ discord:
     enter-a-value:
       title: "Entrez une valeur"
       description: "Cette option est actuellement définie sur %s blocs.\nLa valeur doit être comprise entre 1 et 1000."
-    skoice-2-1:
+    changelog:
       title: "Skoice 2.1"
       description: "**Général:**\n• Découvrez une toute nouvelle interface de configuration intuitive.\n• Laissez-nous choisir les meilleures distances pour votre utilisation personnelle de Skoice dans le menu \"Mode\".\n• Connectez vos comptes facilement grâce à notre nouvelle procédure de liaison.\n• Skoice utilise désormais les commandes slash.\n\n**Nouvelles fonctionnalités:**\n• Commande \"/invite\" sur Discord\n• Configuration de l'alerte dans la barre d'action\n• Configuration de la visibilité des salons\n• Traduction française"
     upcoming-features:
       title: "Et après ?"
-      description: "Pour découvrir les futures fonctionnalités de Skoice, [jetez un coup d'œil à nos projets à long terme](https://github.com/carlodrift/skoice/issues/28)."
+      description: "Pour découvrir les futures fonctionnalités de Skoice, [jetez un coup d'œil à nos projets à long terme](https://github.com/Skoice/skoice/discussions/33)."
     verification-code:
       title: "Code de vérification"
       description: "Tapez `/skoice link %s` en jeu pour terminer la procédure."
