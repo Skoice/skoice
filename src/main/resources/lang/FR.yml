@@ -26,7 +26,7 @@ minecraft:
         - " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Veuillez de suivre les instructions sur "
         - "&7.\n&8• &7Quand vous aurez récupéré son token, entrez-le "
         - "&7.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
-      bot-creation-link: " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Veuillez de suivre les instructions sur cette page : &bhttps://github.com/carlodrift/skoice/wiki&7.\n&8• &7Quand vous aurez récupéré son token, tapez \"&e/skoice token&7\" suivi du token.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
+      bot-creation-link: " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Veuillez de suivre les instructions sur cette page : &bhttps://github.com/Skoice/skoice/wiki&7.\n&8• &7Quand vous aurez récupéré son token, tapez \"&e/skoice token&7\" suivi du token.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
       no-token: "%s Vous n'avez &cpas fourni de token&7."
       bot-connected: "%s Votre bot est &adésormais connecté&7."
       bot-connected-incomplete-configuration-discord: "%s Votre bot est &adésormais connecté&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
@@ -165,7 +165,7 @@ discord:
       description: "Vous rencontrez des problèmes ? [Rejoignez notre serveur Discord](https://discord.gg/h3Tgccc) !"
     contribute:
       title: "Contribuer"
-      description: "Envie de nous aider à façonner l'avenir de Skoice ? [Contribuez sur notre page GitHub](https://github.com/carlodrift/skoice) !"
+      description: "Envie de nous aider à façonner l'avenir de Skoice ? [Contribuez sur notre page GitHub](https://github.com/Skoice/skoice) !"
     vanilla-mode:
       title: "Mode standard"
       description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu en monde ouvert (distances plus longues)."

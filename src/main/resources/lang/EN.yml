@@ -26,7 +26,7 @@ minecraft:
         - " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on "
         - "&7.\n&8• &7When you have retrieved its token, put it "
         - "&7.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
-      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/carlodrift/skoice/wiki&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
       no-token: "%s You have &cnot provided a token&7."
       bot-connected: "%s Your bot is &anow connected&7."
       bot-connected-incomplete-configuration-discord: "%s Your bot is &anow connected&7. Type \"&e/configure&7\" on your Discord server to set it up."
@@ -165,7 +165,7 @@ discord:
       description: "Having issues? [Join our Discord server](https://discord.gg/h3Tgccc)!"
     contribute:
       title: "Contribute"
-      description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/carlodrift/skoice)!"
+      description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/Skoice/skoice)!"
     vanilla-mode:
       title: "Vanilla Mode"
       description: "Choose this mode if you plan to play open world game modes (longer distances)."

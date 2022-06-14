@@ -48,8 +48,8 @@ public class ConfigureArgument extends Argument {
         } else {
             try {
                 TextComponent tutorialPage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
-                MessageUtil.setHoverEvent(tutorialPage, this.plugin.getLang().getMessage("minecraft.interaction.link", "https://github.com/carlodrift/skoice/wiki"));
-                tutorialPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/carlodrift/skoice/wiki"));
+                MessageUtil.setHoverEvent(tutorialPage, this.plugin.getLang().getMessage("minecraft.interaction.link", "https://github.com/Skoice/skoice/wiki"));
+                tutorialPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Skoice/skoice/wiki"));
                 TextComponent tokenCommand = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.here"));
                 MessageUtil.setHoverEvent(tokenCommand, this.plugin.getLang().getMessage("minecraft.interaction.shortcut", "/skoice token"));
                 tokenCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/skoice token "));
