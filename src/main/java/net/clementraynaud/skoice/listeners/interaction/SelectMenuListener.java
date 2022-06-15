@@ -142,6 +142,15 @@ public class SelectMenuListener extends ListenerAdapter {
                         this.plugin.getConfiguration().saveFile();
                         event.editMessage(this.plugin.getBot().getMenu("channel-visibility").build()).queue();
                         break;
+                    case "mute-lobby":
+                        if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
+                            this.plugin.getConfiguration().getFile().set(ConfigurationField.MUTE_LOBBY.toString(), true);
+                        } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
+                            this.plugin.getConfiguration().getFile().set(ConfigurationField.MUTE_LOBBY.toString(), false);
+                        }
+                        this.plugin.getConfiguration().saveFile();
+                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+                        break;
                     default:
                         throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));
                 }

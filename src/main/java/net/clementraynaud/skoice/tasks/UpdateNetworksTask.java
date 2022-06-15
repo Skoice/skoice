@@ -138,10 +138,19 @@ public class UpdateNetworksTask implements Task {
     private void muteMembers(VoiceChannel lobby) {
         Role publicRole = lobby.getGuild().getPublicRole();
         PermissionOverride lobbyPublicRoleOverride = lobby.getPermissionOverride(publicRole);
-        if (lobbyPublicRoleOverride == null) {
-            lobby.createPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
-        } else if (!lobbyPublicRoleOverride.getDenied().contains(Permission.VOICE_SPEAK)) {
-            lobbyPublicRoleOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
+        boolean muteLobby = this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.MUTE_LOBBY.toString());
+        if (muteLobby) {
+            if (lobbyPublicRoleOverride == null) {
+                lobby.createPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
+            } else if (!lobbyPublicRoleOverride.getDenied().contains(Permission.VOICE_SPEAK)) {
+                lobbyPublicRoleOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
+            }
+        } else {
+            if (lobbyPublicRoleOverride == null) {
+                lobby.createPermissionOverride(publicRole).grant(Permission.VOICE_SPEAK).queue();
+            } else if (!lobbyPublicRoleOverride.getAllowed().contains(Permission.VOICE_SPEAK)) {
+                lobbyPublicRoleOverride.getManager().grant(Permission.VOICE_SPEAK).queue();
+            }
         }
     }
 

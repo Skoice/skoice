@@ -141,6 +141,12 @@ discord:
       title: "Linking Process"
     error:
       title: "Error"
+    mute-lobby:
+      title: "Mute Lobby"
+      description: "Toggle whether users are muted when in the lobby voice channel."
+    advanced-settings-page-two:
+      title: "Next page"
+      description: "See more parameters to manage."
   field:
     configuration-complete:
       title: "Configuration Complete"

@@ -23,6 +23,7 @@ import net.dv8tion.jda.api.entities.Emoji;
 
 public enum MenuEmoji {
     ARROW_FORWARD("U+25B6"),
+    ARROW_RIGHT("U+27A1"),
     CALENDAR_SPIRAL("U+1F5D3"),
     CARD_BOX("U+1F5C3"),
     CHART_WITH_UPWARDS_TREND("U+1F4C8"),
@@ -46,6 +47,7 @@ public enum MenuEmoji {
     LINK("U+1F517"),
     MAG("U+1F50D"),
     MAP("U+1F5FA"),
+    MUTE("U+1F507"),
     NEWSPAPER("U+1F4F0"),
     NO_ENTRY("U+26D4"),
     PENCIL2("U+270F"),

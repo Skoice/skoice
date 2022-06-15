@@ -32,7 +32,8 @@ public enum ConfigurationField {
     CONFIG_MENU,
     MESSAGE_ID,
     TEXT_CHANNEL_ID,
-    GUILD_ID;
+    GUILD_ID,
+    MUTE_LOBBY;
 
     @Override
     public String toString() {
