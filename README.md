@@ -1,4 +1,4 @@
-<img align="right" src="https://cdn.discordapp.com/attachments/331868186654015489/959864627519455372/Skoice.png" height="200" width="200">
+<img align="right" src="https://avatars.githubusercontent.com/u/107434569?s=200&v=4" height="200" width="200">
 
 # Skoice: Proximity Voice Chat [![](https://discord.com/api/guilds/741375523275407461/widget.png)](https://discord.gg/h3Tgccc)
 
