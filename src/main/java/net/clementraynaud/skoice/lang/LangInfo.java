@@ -23,7 +23,8 @@ import net.dv8tion.jda.api.entities.Emoji;
 
 public enum LangInfo {
     EN("English", "U+1F1ECU+1F1E7"),
-    FR("Français", "U+1F1EBU+1F1F7");
+    FR("Français", "U+1F1EBU+1F1F7"),
+    DE("Deutsch", "U+1F1E9U+1F1EA");
 
     private final String fullName;
     private final String unicode;
