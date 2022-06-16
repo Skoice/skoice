@@ -76,8 +76,6 @@ discord:
     footer: "The proximity voice chat is provided by Skoice."
     configuration:
       title: "Configuration"
-    empty-configuration:
-      title: "Configuration"
     server:
       title: "Server"
       description: "In order to work properly, your bot cannot be present on multiple Discord servers. Select the server where you want the proximity voice chat to be active. Your bot will automatically leave the other ones."
@@ -135,8 +133,8 @@ discord:
     changelog:
       title: "What's New?"
       description: "Discover the latest and upcoming features of Skoice."
-    get-the-proximity-voice-chat:
-      title: "Get the Proximity Voice Chat"
+    skoice-proximity-voice-chat:
+      title: "Skoice: Proximity Voice Chat"
     linking-process:
       title: "Linking Process"
     error:
@@ -154,17 +152,17 @@ discord:
     incomplete-configuration-alternative-server-manager:
       title: "Incomplete Configuration"
       description: "You have either moved or deleted the lobby. Type `/configure` on your Discord server to complete the configuration and use Skoice."
-    download-skoice:
-      title: "Download Skoice"
+    download:
+      title: "Download"
       description: "[Get the plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server."
-    donate:
-      title: "Donate"
+    donating:
+      title: "Donating"
       description: "Skoice is a free software. If you like it, you can help us by [donating](https://paypal.me/whitelines)."
     troubleshooting:
       title: "Troubleshooting"
       description: "Having issues? [Join our Discord server](https://discord.gg/h3Tgccc)!"
-    contribute:
-      title: "Contribute"
+    contributing:
+      title: "Contributing"
       description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/Skoice/skoice)!"
     vanilla-mode:
       title: "Vanilla Mode"
@@ -180,7 +178,7 @@ discord:
       description: "This setting is currently set to %s blocks. The value must be between 1 and 1000."
     changelog:
       title: "Skoice 2.1"
-      description: "**General:**\n• Discover a whole new and intuitive configuration interface.\n• Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n• Link your accounts effortlessly thanks to our new linking process.\n• Skoice now uses slash commands.\n\n**New Features:**\n• Action bar alert\n• Channel visibility toggle\n• \"/invite\" command in Discord\n• French translation"
+      description: "To learn about the latest features of Skoice, [read the changelog](https://github.com/Skoice/skoice/discussions/35)."
     upcoming-features:
       title: "What's Next?"
       description: "To discover the upcoming features of Skoice, [take a look at our long-terms plans](https://github.com/Skoice/skoice/discussions/33)."

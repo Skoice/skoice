@@ -10,16 +10,16 @@ incomplete-configuration-server-manager:
 incomplete-configuration-alternative-server-manager:
   emoji: x
   inline: false
-download-skoice:
+download:
   emoji: inbox_tray
   inline: false
-donate:
+donating:
   emoji: green_heart
   inline: false
 troubleshooting:
   emoji: screwdriver
   inline: true
-contribute:
+contributing:
   emoji: hammer
   inline: false
 vanilla-mode:

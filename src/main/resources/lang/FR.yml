@@ -76,8 +76,6 @@ discord:
     footer: "Le chat vocal de proximité vous est fourni par Skoice."
     configuration:
       title: "Configuration"
-    empty-configuration:
-      title: "Configuration"
     server:
       title: "Serveur"
       description: "Afin de fonctionner correctement, votre bot ne peut pas être présent sur plusieurs serveurs Discord. Sélectionnez le serveur où vous voulez que le chat vocal de proximité soit actif. Votre bot quittera automatiquement les autres."
@@ -135,8 +133,8 @@ discord:
     changelog:
       title: "Quoi de neuf ?"
       description: "Découvrez les dernières et futures fonctionnalités de Skoice."
-    get-the-proximity-voice-chat:
-      title: "Obtenir le chat vocal de proximité"
+    skoice-proximity-voice-chat:
+      title: "Skoice : Chat vocal de proximité"
     linking-process:
       title: "Procédure de liaison"
     error:
@@ -154,16 +152,16 @@ discord:
     incomplete-configuration-alternative-server-manager:
       title: "Configuration non terminée"
       description: "Vous avez soit déplacé, soit supprimé le salon vocal principal. Tapez `/configure` sur votre serveur Discord pour terminer la configuration and utiliser Skoice."
-    download-skoice:
-      title: "Téléchargez Skoice"
+    download:
+      title: "Téléchargement"
       description: "[Obtenez le plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) et installez-le sur votre serveur Minecraft."
-    donate:
+    donating:
       title: "Faire un don"
       description: "Skoice est un logiciel gratuit. Si vous l'aimez, vous pouvez nous aider en [faisant un don](https://paypal.me/whitelines)."
     troubleshooting:
       title: "Assistance"
       description: "Vous rencontrez des problèmes ? [Rejoignez notre serveur Discord](https://discord.gg/h3Tgccc) !"
-    contribute:
+    contributing:
       title: "Contribuer"
       description: "Envie de nous aider à façonner l'avenir de Skoice ? [Contribuez sur notre page GitHub](https://github.com/Skoice/skoice) !"
     vanilla-mode:
@@ -180,7 +178,7 @@ discord:
       description: "Cette option est actuellement définie sur %s blocs.\nLa valeur doit être comprise entre 1 et 1000."
     changelog:
       title: "Skoice 2.1"
-      description: "**Général:**\n• Découvrez une toute nouvelle interface de configuration intuitive.\n• Laissez-nous choisir les meilleures distances pour votre utilisation personnelle de Skoice dans le menu \"Mode\".\n• Connectez vos comptes facilement grâce à notre nouvelle procédure de liaison.\n• Skoice utilise désormais les commandes slash.\n\n**Nouvelles fonctionnalités:**\n• Commande \"/invite\" sur Discord\n• Configuration de l'alerte dans la barre d'action\n• Configuration de la visibilité des salons\n• Traduction française"
+      description: "Pour en savoir plus sur les dernières fonctinnalités de Skoice, [lisez le récapitulatif des nouveautés](https://github.com/Skoice/skoice/discussions/35)."
     upcoming-features:
       title: "Et après ?"
       description: "Pour découvrir les futures fonctionnalités de Skoice, [jetez un coup d'œil à nos projets à long terme](https://github.com/Skoice/skoice/discussions/33)."

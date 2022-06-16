@@ -115,18 +115,18 @@ changelog:
   fields:
     - changelog
     - upcoming-features
-    - contribute
+    - contributing
 server:
   emoji: file_cabinet
   type: default
 permissions:
   emoji: card_box
   type: default
-get-the-proximity-voice-chat:
+skoice-proximity-voice-chat:
   emoji: envelope
   type: success
   fields:
-    - download-skoice
-    - donate
+    - download
+    - donating
     - troubleshooting
-    - contribute
+    - contributing
