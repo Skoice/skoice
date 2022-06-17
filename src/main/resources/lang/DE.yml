@@ -155,7 +155,7 @@ discord:
     download-skoice:
       title: "Skoice herunterladen"
       description: "[Holen Sie sich das Plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) und installieren Sie es auf Ihrem Minecraft-Server."
-    donate:
+    donating:
       title: "Spenden Sie"
       description: "Skoice ist eine kostenlose Software. Wenn Sie es mögen, können Sie uns helfen, indem Sie [spenden](https://paypal.me/whitelines)."
     troubleshooting:
