@@ -161,7 +161,7 @@ discord:
     troubleshooting:
       title: "Fehlersuche"
       description: "Haben Sie Probleme? [Treten Sie unserem Discord-Server bei](https://discord.gg/h3Tgccc)!"
-    contribute:
+    contributing:
       title: "Beitragen"
       description: "Möchten Sie uns helfen, die Zukunft von Skoice zu gestalten? [Beitragen auf unserer GitHub-Seite](https://github.com/Skoice/skoice)!"
     vanilla-mode:
