@@ -76,8 +76,6 @@ discord:
     footer: "Der Voice-Chat in der Nähe wird von Skoice bereitgestellt."
     configuration:
       title: "Konfiguration"
-    empty-configuration:
-      title: "Konfiguration"
     server:
       title: "Server"
       description: "Damit Ihr Bot richtig funktioniert, darf er nicht auf mehreren Discord-Servern vorhanden sein. Wählen Sie den Server aus, auf dem der Proximity Voice Chat aktiv sein soll. Ihr Bot wird die anderen Server automatisch verlassen."
