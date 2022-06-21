@@ -152,8 +152,8 @@ discord:
     incomplete-configuration-alternative-server-manager:
       title: "Unvollständige Konfiguration"
       description: "Sie haben die Lobby entweder verschoben oder gelöscht. Geben Sie `/configure` auf Ihrem Discord-Server ein, um die Konfiguration abzuschließen und Skoice zu verwenden."
-    download-skoice:
-      title: "Skoice herunterladen"
+    download:
+      title: "Herunterladen"
       description: "[Holen Sie sich das Plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) und installieren Sie es auf Ihrem Minecraft-Server."
     donating:
       title: "Spenden Sie"
