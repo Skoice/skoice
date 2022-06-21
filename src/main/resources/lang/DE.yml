@@ -2,7 +2,7 @@ logger:
   info:
     plugin-enabled: "Plugin aktiviert."
     plugin-disabled: "Plugin deaktiviert."
-    configuration-complete: "Skoice ist jetzt konfiguriert. Gebt \"/link\" auf eurem Discord-Server ein, um euren Discord-Account mit Minecraft zu verknüpfen. Spieler müssen ihre Konten verknüpfen, um den Proximity-Voice-Chat nutzen zu können."
+    configuration-complete: "Skoice ist jetzt konfiguriert. Gebt \"/link\" auf eurem Discord-Server ein, um euren Discord-Account mit Minecraft zu verknüpfen. Spieler müssen ihre Konten verknüpfen, um den Sprachchat im Nahbereich nutzen zu können."
     bot-connected: "Ihr Bot ist verbunden."
   warning:
     outdated-version: "Sie verwenden eine veraltete Version (%s). Laden Sie die neueste Version (%s) hier herunter: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
@@ -40,14 +40,14 @@ minecraft:
       incomplete-configuration-operator-discord: "%s Skoice ist &cnicht richtig konfiguriert&7. Gib \"&e/configure&7\" auf deinem Discord-Server ein, um es einzurichten."
       already-configured: "%s Skoice ist &cbereits konfiguriert&7. Geben Sie \"&e/configure&7\" auf Ihrem Discord-Server ein, um seine Einstellungen zu aktualisieren."
     player:
-      no-code: "%s You have &cnot provided a code&7. Type \"&e/link&7\" on our Discord server to receive one."
-      invalid-code: "%s You have &cnot provided a valid code&7. Type \"&e/link&7\" on our Discord server to receive one."
-      account-linked: "%s You have &alinked your Minecraft account &7to Discord."
-      account-unlinked: "%s You have &aunlinked your Minecraft account &7from Discord."
-      account-not-linked: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on our Discord server to link it."
-      account-already-linked: "%s You have &calready linked your Minecraft account &7to Discord. Type \"&e/skoice unlink&7\" to unlink it."
-      connected-to-proximity-voice-chat: "%s You are &anow connected &7to the proximity voice chat. For a better experience, you can enable \"&eStreamer Mode&7\" in your Discord client."
-      disconnected-from-proximity-voice-chat: "%s You are &cnow disconnected &7from the proximity voice chat."
+      no-code: "%s Sie haben &ckeinen Code angegeben&7. Geben Sie \"&e/link&7\" auf unserem Discord-Server ein, um einen zu erhalten."
+      invalid-code: "%s Sie haben &ckeinen gültigen Code angegeben&7. Geben Sie \"&e/link&7\" auf unserem Discord-Server ein, um einen zu erhalten."
+      account-linked: "%s Du hast &adeinen Minecraft-Account&7 mit Discord verknüpft."
+      account-unlinked: "%s Du hast &adeinen Minecraft-Account&7 von Discord entkoppelt."
+      account-not-linked: "%s Du hast &cdeinen Minecraft-Account&7 nicht mit Discord verknüpft. Gib \"&e/link&7\" auf unserem Discord-Server ein, um ihn zu verknüpfen."
+      account-already-linked: "%s Du hast &cdeinen Minecraft-Account&7 bereits mit Discord verknüpft. Gib \"&e/skoice unlink&7\" ein, um die Verknüpfung zu lösen."
+      connected-to-proximity-voice-chat: "%s Du bist &ajetzt verbunden&7 mit dem Sprachchat im Nahbereich. Für ein besseres Erlebnis kannst du \"&eStreamer-Modus&7\" in deinem Discord-Client aktivieren.
+      disconnected-from-proximity-voice-chat: "%s Die Verbindung zum Sprachchat im Nahbereich ist &cjetzt unterbrochen&7."
     error:
       no-parameter: "%s You have &cnot provided an argument&7. To use this command, type \"&e/skoice <%s>&7\"."
       invalid-parameter: "%s You have &cnot provided a valid argument&7. To use this command, type \"&e/skoice <%s>&7\"."
@@ -222,6 +222,6 @@ discord:
     too-many-options:
       label: "Zu viele Optionen"
       description: "Skoice ist nicht aktiviert, um mehr Optionen zu laden."
-  default-category-name: "Proximity-Voice-Chat"
+  default-category-name: "Sprachchat im Nahbereich"
   default-lobby-name: "Lobby"
   communication-lost: "Kommunikation verloren."
