@@ -29,6 +29,7 @@ import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleRemoveLis
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceJoinListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceLeaveListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceMoveListener;
+import net.clementraynaud.skoice.listeners.interaction.ModalInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.menus.MenuField;
@@ -224,7 +225,8 @@ public class Bot {
                 new LinkCommand(this.plugin),
                 new UnlinkCommand(this.plugin),
                 new ButtonInteractionListener(this.plugin),
-                new SelectMenuInteractionListener(this.plugin)
+                new SelectMenuInteractionListener(this.plugin),
+                new ModalInteractionListener(this.plugin)
         );
     }
 

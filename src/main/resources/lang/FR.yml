@@ -222,6 +222,13 @@ discord:
     too-many-options:
       label: "Trop d'options"
       description: "Skoice est incapable de charger plus d'options."
-  default-category-name: "Chat vocal de proximité"
-  default-lobby-name: "Salon vocal principal"
+  modal:
+    new-voice-channel:
+      title: "Nouveau salon vocal"
+      category-name:
+        label: "Nom de la catégorie"
+        placeholder: "Chat vocal de proximité"
+      lobby-name:
+        label: "Nom du salon vocal principal"
+        placeholder: "Salon vocal principal"
   communication-lost: "Communication perdue."

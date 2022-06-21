@@ -222,6 +222,13 @@ discord:
     too-many-options:
       label: "Too Many Options"
       description: "Skoice is unabled to load more options."
-  default-category-name: "Proximity Voice Chat"
-  default-lobby-name: "Lobby"
+  modal:
+    new-voice-channel:
+      title: "New Voice Channel"
+      category-name:
+        label: "Category Name"
+        placeholder: "Proximity Voice Chat"
+      lobby-name:
+        label: "Lobby Name"
+        placeholder: "Lobby"
   communication-lost: "Communication lost."

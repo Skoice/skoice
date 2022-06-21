@@ -31,7 +31,11 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.Modal;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.text.TextInput;
+import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 
 public class SelectMenuInteractionListener extends ListenerAdapter {
 
@@ -82,16 +86,25 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                         if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
                             event.editMessage(this.plugin.getBot().getMenu("lobby").build()).queue();
                         } else {
-                            if ("generate".equals(event.getSelectedOptions().get(0).getValue())) {
-                                String categoryId = guild.createCategory(this.plugin.getLang().getMessage("discord.default-category-name"))
-                                        .complete().getId();
-                                String lobbyId = guild.createVoiceChannel(this.plugin.getLang().getMessage("discord.default-lobby-name"),
-                                                event.getGuild().getCategoryById(categoryId))
-                                        .complete().getId();
-                                this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), lobbyId);
-                                this.plugin.getConfiguration().saveFile();
-                                new InterruptSystemTask(this.plugin.getConfiguration()).run();
-                                this.plugin.updateStatus(false, event.getUser());
+                            if ("new-voice-channel".equals(event.getSelectedOptions().get(0).getValue())) {
+                                TextInput categoryName = TextInput.create("category-name",
+                                                this.plugin.getLang().getMessage("discord.modal.new-voice-channel.category-name.label"),
+                                                TextInputStyle.SHORT)
+                                        .setPlaceholder(this.plugin.getLang().getMessage("discord.modal.new-voice-channel.category-name.placeholder"))
+                                        .setRequired(false)
+                                        .setRequiredRange(1, 25)
+                                        .build();
+                                TextInput lobbyName = TextInput.create("lobby-name",
+                                                this.plugin.getLang().getMessage("discord.modal.new-voice-channel.lobby-name.label"),
+                                                TextInputStyle.SHORT)
+                                        .setPlaceholder(this.plugin.getLang().getMessage("discord.modal.new-voice-channel.lobby-name.placeholder"))
+                                        .setRequired(false)
+                                        .setRequiredRange(1, 25)
+                                        .build();
+                                Modal modal = Modal.create("new-voice-channel", this.plugin.getLang().getMessage("discord.modal.new-voice-channel.title"))
+                                        .addActionRows(ActionRow.of(categoryName), ActionRow.of(lobbyName))
+                                        .build();
+                                event.replyModal(modal).queue();
                             } else {
                                 VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                                 if (lobby != null && lobby.getParentCategory() != null) {
@@ -101,8 +114,8 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                                     new InterruptSystemTask(this.plugin.getConfiguration()).run();
                                     this.plugin.updateStatus(false, event.getUser());
                                 }
+                                event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                             }
-                            event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                         }
                     }
                     break;

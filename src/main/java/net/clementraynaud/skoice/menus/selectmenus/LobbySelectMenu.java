@@ -32,9 +32,6 @@ import java.util.List;
 
 public class LobbySelectMenu extends SelectMenu {
 
-    private static final String GENERATE_OPTION_ID = "generate";
-    private static final String REFRESH_OPTION_ID = "refresh";
-
     private final Skoice plugin;
 
     public LobbySelectMenu(Skoice plugin) {
@@ -59,11 +56,11 @@ public class LobbySelectMenu extends SelectMenu {
             }
             optionIndex++;
         }
-        options.add(SelectOption.of(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.label"), LobbySelectMenu.GENERATE_OPTION_ID)
+        options.add(SelectOption.of(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
                 .withDescription(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.description"))
                 .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.get()));
         if (options.size() == 23) {
-            options.add(SelectOption.of(super.lang.getMessage("discord.select-option.too-many-options.label"), LobbySelectMenu.REFRESH_OPTION_ID)
+            options.add(SelectOption.of(super.lang.getMessage("discord.select-option.too-many-options.label"), "refresh")
                     .withDescription(super.lang.getMessage("discord.select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
