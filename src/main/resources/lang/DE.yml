@@ -133,8 +133,8 @@ discord:
     changelog:
       title: "Was gibt es Neues?"
       description: "Entdecken Sie die neuesten und kommenden Funktionen von Skoice."
-    get-the-proximity-voice-chat:
-      title: "Holen Sie sich den Proximity Voice Chat"
+    skoice-proximity-voice-chat:
+      title: "Skoice: Proximity Voice Chat"
     linking-process:
       title: "Verknüpfungsprozess"
     error:
