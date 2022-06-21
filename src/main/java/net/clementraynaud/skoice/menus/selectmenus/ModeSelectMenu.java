@@ -23,7 +23,6 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +46,7 @@ public class ModeSelectMenu extends SelectMenu {
     }
 
     @Override
-    public SelectionMenu get() {
+    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
         List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.label"), ModeSelectMenu.VANILLA_MODE_ID)
                         .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.description"))
                         .withEmoji(MenuEmoji.MAP.get()),
@@ -78,12 +77,12 @@ public class ModeSelectMenu extends SelectMenu {
                                 this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString())))
                         .withEmoji(MenuEmoji.PENCIL2.get()));
             }
-            return SelectionMenu.create("mode-selection")
+            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("mode-selection")
                     .setPlaceholder(super.lang.getMessage("discord.menu.mode.select-menu.placeholder"))
                     .addOptions(modes)
                     .setDefaultValues(Collections.singleton(defaultValue)).build();
         } else {
-            return SelectionMenu.create("mode-selection")
+            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("mode-selection")
                     .setPlaceholder(super.lang.getMessage("discord.menu.mode.select-menu.placeholder"))
                     .addOptions(modes).build();
         }

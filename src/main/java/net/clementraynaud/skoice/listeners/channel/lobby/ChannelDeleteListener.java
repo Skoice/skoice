@@ -17,27 +17,30 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.channel.voice.lobby;
+package net.clementraynaud.skoice.listeners.channel.lobby;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
+import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
-public class VoiceChannelDeleteListener extends ListenerAdapter {
+public class ChannelDeleteListener extends ListenerAdapter {
 
     private final Skoice plugin;
 
-    public VoiceChannelDeleteListener(Skoice plugin) {
+    public ChannelDeleteListener(Skoice plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
+    public void onChannelDelete(ChannelDeleteEvent event) {
+        if (!event.getChannelType().isAudio()) {
+            return;
+        }
         if (event.getChannel().getId().equals(this.plugin.getConfiguration().getFile().getString(ConfigurationField.LOBBY_ID.toString()))) {
             this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), null);
             this.plugin.updateStatus(false);

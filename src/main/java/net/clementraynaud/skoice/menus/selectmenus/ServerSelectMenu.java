@@ -23,7 +23,6 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ public class ServerSelectMenu extends SelectMenu {
     }
 
     @Override
-    public SelectionMenu get() {
+    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
         List<Guild> servers = new ArrayList<>(this.plugin.getBot().getJDA().getGuilds());
         List<SelectOption> options = new ArrayList<>();
         int optionIndex = 0;
@@ -52,7 +51,7 @@ public class ServerSelectMenu extends SelectMenu {
                     .withDescription(super.lang.getMessage("discord.select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
-        return SelectionMenu.create("server-selection")
+        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("server-selection")
                 .setPlaceholder(super.lang.getMessage("discord.menu.server.select-menu.placeholder"))
                 .addOptions(options).build();
     }

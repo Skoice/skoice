@@ -17,31 +17,31 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.interaction;
+package net.clementraynaud.skoice.listeners.interaction.component;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ButtonClickListener extends ListenerAdapter {
+public class ButtonInteractionListener extends ListenerAdapter {
 
     private static final Map<String, String> discordIdAxis = new HashMap<>();
 
     private final Skoice plugin;
 
-    public ButtonClickListener(Skoice plugin) {
+    public ButtonInteractionListener(Skoice plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public void onButtonClick(ButtonClickEvent event) {
+    public void onButtonInteraction(ButtonInteractionEvent event) {
         if (!event.getMessage().getAuthor().equals(event.getJDA().getSelfUser())) {
             return;
         }
@@ -52,7 +52,7 @@ public class ButtonClickListener extends ListenerAdapter {
         }
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (event.getButton() != null && event.getButton().getId() != null) {
+            if (event.getButton().getId() != null) {
                 String buttonId = event.getButton().getId();
                 if (this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
                     if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
@@ -65,14 +65,14 @@ public class ButtonClickListener extends ListenerAdapter {
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     } else {
                         if ("mode".equals(buttonId)) {
-                            ButtonClickListener.discordIdAxis.remove(member.getId());
+                            ButtonInteractionListener.discordIdAxis.remove(member.getId());
                         } else if ("horizontal-radius".equals(buttonId)) {
-                            ButtonClickListener.discordIdAxis.put(member.getId(), ConfigurationField.HORIZONTAL_RADIUS.toString());
+                            ButtonInteractionListener.discordIdAxis.put(member.getId(), ConfigurationField.HORIZONTAL_RADIUS.toString());
                             event.editMessage(this.plugin.getBot().getMenu(buttonId)
                                     .build(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))).queue();
                             return;
                         } else if ("vertical-radius".equals(buttonId)) {
-                            ButtonClickListener.discordIdAxis.put(member.getId(), ConfigurationField.VERTICAL_RADIUS.toString());
+                            ButtonInteractionListener.discordIdAxis.put(member.getId(), ConfigurationField.VERTICAL_RADIUS.toString());
                             event.editMessage(this.plugin.getBot().getMenu(buttonId)
                                     .build(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))).queue();
                             return;
@@ -89,6 +89,6 @@ public class ButtonClickListener extends ListenerAdapter {
     }
 
     public static Map<String, String> getDiscordIdAxis() {
-        return ButtonClickListener.discordIdAxis;
+        return ButtonInteractionListener.discordIdAxis;
     }
 }

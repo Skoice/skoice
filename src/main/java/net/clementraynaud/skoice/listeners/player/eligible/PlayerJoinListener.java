@@ -20,9 +20,9 @@
 package net.clementraynaud.skoice.listeners.player.eligible;
 
 import net.clementraynaud.skoice.Skoice;
+import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -45,8 +45,8 @@ public class PlayerJoinListener implements Listener {
         if (member != null) {
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
-                VoiceChannel voiceChannel = voiceState.getChannel();
-                if (voiceChannel != null && voiceChannel.equals(this.plugin.getConfiguration().getLobby())) {
+                AudioChannel audioChannel = voiceState.getChannel();
+                if (audioChannel != null && audioChannel.equals(this.plugin.getConfiguration().getLobby())) {
                     player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
                 }
             }

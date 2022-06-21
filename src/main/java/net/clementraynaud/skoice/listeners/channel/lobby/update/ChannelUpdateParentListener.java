@@ -17,27 +17,30 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.channel.voice.lobby.update;
+package net.clementraynaud.skoice.listeners.channel.lobby.update;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.channel.voice.update.VoiceChannelUpdateParentEvent;
+import net.dv8tion.jda.api.events.channel.update.ChannelUpdateParentEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
-public class VoiceChannelUpdateParentListener extends ListenerAdapter {
+public class ChannelUpdateParentListener extends ListenerAdapter {
 
     private final Skoice plugin;
 
-    public VoiceChannelUpdateParentListener(Skoice plugin) {
+    public ChannelUpdateParentListener(Skoice plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public void onVoiceChannelUpdateParent(VoiceChannelUpdateParentEvent event) {
+    public void onChannelUpdateParent(ChannelUpdateParentEvent event) {
+        if (!event.getChannelType().isAudio()) {
+            return;
+        }
         if (event.getChannel().getId().equals(this.plugin.getConfiguration().getFile().getString(ConfigurationField.LOBBY_ID.toString()))) {
             this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), null);
             this.plugin.updateStatus(false);

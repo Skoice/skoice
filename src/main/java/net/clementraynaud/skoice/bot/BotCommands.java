@@ -22,7 +22,8 @@ package net.clementraynaud.skoice.bot;
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import java.util.*;
@@ -45,11 +46,11 @@ public class BotCommands {
                         }));
     }
 
-    private Set<CommandData> getCommands() {
+    private Set<SlashCommandData> getCommands() {
         return new HashSet<>(Arrays.asList(
-                new CommandData("configure", this.plugin.getLang().getMessage("discord.command-description.configure")),
-                new CommandData("link", this.plugin.getLang().getMessage("discord.command-description.link")),
-                new CommandData("unlink", this.plugin.getLang().getMessage("discord.command-description.unlink")),
-                new CommandData("invite", this.plugin.getLang().getMessage("discord.command-description.invite"))));
+                Commands.slash("configure", this.plugin.getLang().getMessage("discord.command-description.configure")),
+                Commands.slash("link", this.plugin.getLang().getMessage("discord.command-description.link")),
+                Commands.slash("unlink", this.plugin.getLang().getMessage("discord.command-description.unlink")),
+                Commands.slash("invite", this.plugin.getLang().getMessage("discord.command-description.invite"))));
     }
 }

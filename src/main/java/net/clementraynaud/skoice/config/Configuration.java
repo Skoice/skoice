@@ -112,7 +112,7 @@ public class Configuration {
             return null;
         }
         VoiceChannel lobby = this.plugin.getBot().getJDA().getVoiceChannelById(lobbyId);
-        return lobby != null && lobby.getParent() != null ? lobby : null;
+        return lobby != null && lobby.getParentCategory() != null ? lobby : null;
     }
 
     public Category getCategory() {
@@ -120,7 +120,7 @@ public class Configuration {
             return null;
         }
         VoiceChannel lobby = this.getLobby();
-        return lobby != null ? lobby.getParent() : null;
+        return lobby != null ? lobby.getParentCategory() : null;
     }
 
     public Guild getGuild() {

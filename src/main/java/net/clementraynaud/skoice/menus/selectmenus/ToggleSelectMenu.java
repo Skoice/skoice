@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.menus.selectmenus;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
 import java.util.Collections;
 
@@ -43,8 +42,8 @@ public class ToggleSelectMenu extends SelectMenu {
     }
 
     @Override
-    public SelectionMenu get() {
-        return SelectionMenu.create(this.componentId)
+    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
+        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create(this.componentId)
                 .addOptions(SelectOption.of(super.lang.getMessage("discord.select-option.enabled.label"), ToggleSelectMenu.ENABLED_OPTION_ID)
                                 .withDescription(this.defaultValue ? super.lang.getMessage("discord.select-option.default.description") : null)
                                 .withEmoji(MenuEmoji.HEAVY_CHECK_MARK.get()),

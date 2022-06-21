@@ -17,24 +17,27 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.message.priv;
+package net.clementraynaud.skoice.listeners.message;
 
-import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
+import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
+import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
-public class PrivateMessageReceivedListener extends ListenerAdapter {
+public class MessageDeleteListener extends ListenerAdapter {
 
-    private final Skoice plugin;
+    private final ConfigurationMenu configurationMenu;
 
-    public PrivateMessageReceivedListener(Skoice plugin) {
-        this.plugin = plugin;
+    public MessageDeleteListener(ConfigurationMenu configurationMenu) {
+        this.configurationMenu = configurationMenu;
     }
 
     @Override
-    public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
-        if (!event.getAuthor().getId().equals(event.getJDA().getSelfUser().getApplicationId())) {
-            event.getMessage().reply(this.plugin.getBot().getMenu("illegal-interaction").build()).queue();
+    public void onMessageDelete(@NotNull MessageDeleteEvent event) {
+        if (this.configurationMenu.getMessageId().equals(event.getMessageId())) {
+            this.configurationMenu.clearConfig();
+            ButtonInteractionListener.getDiscordIdAxis().clear();
         }
     }
 }

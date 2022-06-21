@@ -21,11 +21,11 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
-import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
+import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 public class ConfigurationMenu {
@@ -70,17 +70,17 @@ public class ConfigurationMenu {
         if (guild == null) {
             return null;
         }
-        TextChannel textChannel = guild.getTextChannelById(this.plugin.getConfiguration().getFile()
+        GuildMessageChannel channel = guild.getChannelById(GuildMessageChannel.class, this.plugin.getConfiguration().getFile()
                 .getString(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.TEXT_CHANNEL_ID)));
-        if (textChannel == null) {
+        if (channel == null) {
             return null;
         }
         try {
-            return textChannel.retrieveMessageById(this.plugin.getConfiguration().getFile()
+            return channel.retrieveMessageById(this.plugin.getConfiguration().getFile()
                     .getString(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.MESSAGE_ID))).complete();
         } catch (ErrorResponseException e) {
             this.clearConfig();
-            ButtonClickListener.getDiscordIdAxis().clear();
+            ButtonInteractionListener.getDiscordIdAxis().clear();
         }
         return null;
     }
@@ -98,7 +98,7 @@ public class ConfigurationMenu {
                         message.getGuild().getId());
         this.plugin.getConfiguration().getFile()
                 .set(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.TEXT_CHANNEL_ID),
-                        message.getTextChannel().getId());
+                        message.getGuildChannel().getId());
         this.plugin.getConfiguration().getFile()
                 .set(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.MESSAGE_ID),
                         message.getId());

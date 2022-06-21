@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.lang;
 import net.dv8tion.jda.api.entities.Emoji;
 
 public enum LangInfo {
+
     EN("English", "U+1F1ECU+1F1E7"),
     FR("Français", "U+1F1EBU+1F1F7");
 

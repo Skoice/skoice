@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class InviteCommand extends ListenerAdapter {
@@ -32,9 +32,9 @@ public class InviteCommand extends ListenerAdapter {
     }
 
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if ("invite".equals(event.getName())) {
-            event.reply(this.plugin.getBot().getMenu("get-the-proximity-voice-chat").build())
+            event.reply(this.plugin.getBot().getMenu("skoice-proximity-voice-chat").build())
                     .setEphemeral(true).queue();
         }
     }

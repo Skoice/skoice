@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.config;
 
 public enum ConfigurationField {
+
     TOKEN,
     LANG,
     LOBBY_ID,

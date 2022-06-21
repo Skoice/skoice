@@ -24,6 +24,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
@@ -41,9 +42,17 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
-        new UpdateVoiceStateTask(this.plugin.getConfiguration(), event.getMember(), event.getChannelJoined()).run();
-        if (event.getChannelJoined().getParent() != null && !event.getChannelJoined().getParent().equals(this.plugin.getConfiguration().getCategory())
-                && event.getChannelLeft().getParent() != null && event.getChannelLeft().getParent().equals(this.plugin.getConfiguration().getCategory())) {
+        if (!(event.getChannelJoined() instanceof VoiceChannel)) {
+            return;
+        }
+        VoiceChannel voiceChannelJoined = (VoiceChannel) event.getChannelJoined();
+        new UpdateVoiceStateTask(this.plugin.getConfiguration(), event.getMember(), voiceChannelJoined).run();
+        if (!(event.getChannelLeft() instanceof VoiceChannel)) {
+            return;
+        }
+        VoiceChannel voiceChannelLeft = (VoiceChannel) event.getChannelLeft();
+        if (voiceChannelJoined.getParentCategory() != null && !voiceChannelJoined.getParentCategory().equals(this.plugin.getConfiguration().getCategory())
+                && voiceChannelLeft.getParentCategory() != null && voiceChannelLeft.getParentCategory().equals(this.plugin.getConfiguration().getCategory())) {
             String minecraftId = MapUtil.getKeyFromValue(this.plugin.getConfiguration().getLinks(), event.getMember().getId());
             if (minecraftId == null) {
                 return;

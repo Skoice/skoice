@@ -21,9 +21,9 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.util.MapUtil;
+import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -39,8 +39,8 @@ public class UnlinkCommand extends ListenerAdapter {
     }
 
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
-        if ("unlink".equals(event.getName())) {
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        if ("unlink".equals(event.getName()) && event.getMember() != null) {
             String minecraftId = MapUtil.getKeyFromValue(this.plugin.getConfiguration().getLinks(), event.getUser().getId());
             if (minecraftId == null) {
                 event.reply(this.plugin.getBot().getMenu("account-not-linked").build()).setEphemeral(true).queue();
@@ -52,7 +52,7 @@ public class UnlinkCommand extends ListenerAdapter {
                     player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
                     GuildVoiceState voiceState = event.getMember().getVoiceState();
                     if (voiceState != null) {
-                        VoiceChannel voiceChannel = voiceState.getChannel();
+                        AudioChannel voiceChannel = voiceState.getChannel();
                         if (voiceChannel != null && voiceChannel.equals(this.plugin.getConfiguration().getLobby())) {
                             player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
                         }

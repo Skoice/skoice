@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.menus;
 import net.dv8tion.jda.api.entities.Emoji;
 
 public enum MenuEmoji {
+
     ARROW_FORWARD("U+25B6"),
     CALENDAR_SPIRAL("U+1F5D3"),
     CARD_BOX("U+1F5C3"),

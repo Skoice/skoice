@@ -25,7 +25,6 @@ import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,16 +43,16 @@ public class LobbySelectMenu extends SelectMenu {
     }
 
     @Override
-    public SelectionMenu get() {
+    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
         List<VoiceChannel> voiceChannels = new ArrayList<>(this.plugin.getBot().getJDA().getVoiceChannels());
         List<Category> categories = new ArrayList<>();
         for (VoiceChannel voiceChannel : voiceChannels) {
-            categories.add(voiceChannel.getParent());
+            categories.add(voiceChannel.getParentCategory());
         }
         List<SelectOption> options = new ArrayList<>();
         int optionIndex = 0;
         while (optionIndex < 23 && voiceChannels.size() > optionIndex) {
-            if (voiceChannels.get(optionIndex).getParent() != null) {
+            if (voiceChannels.get(optionIndex).getParentCategory() != null) {
                 options.add(SelectOption.of(voiceChannels.get(optionIndex).getName(), voiceChannels.get(optionIndex).getId())
                         .withDescription(categories.get(optionIndex).getName())
                         .withEmoji(MenuEmoji.SOUND.get()));
@@ -69,11 +68,11 @@ public class LobbySelectMenu extends SelectMenu {
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
         if (this.plugin.getBot().isReady()) {
-            return SelectionMenu.create("lobby-selection")
+            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("lobby-selection")
                     .addOptions(options)
                     .setDefaultValues(Collections.singleton(this.plugin.getConfiguration().getFile().getString(ConfigurationField.LOBBY_ID.toString()))).build();
         } else {
-            return SelectionMenu.create("lobby-selection")
+            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("lobby-selection")
                     .setPlaceholder(super.lang.getMessage("discord.menu.lobby.select-menu.placeholder"))
                     .addOptions(options).build();
         }

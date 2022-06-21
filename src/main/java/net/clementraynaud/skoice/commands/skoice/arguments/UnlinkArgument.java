@@ -21,9 +21,9 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
+import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
@@ -56,9 +56,9 @@ public class UnlinkArgument extends Argument {
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
-                VoiceChannel voiceChannel = voiceState.getChannel();
-                if (voiceChannel != null && voiceChannel.equals(super.plugin.getConfiguration().getLobby())
-                        || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
+                AudioChannel audioChannel = voiceState.getChannel();
+                if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getLobby())
+                        || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
                     player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
                 }
             }

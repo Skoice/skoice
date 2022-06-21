@@ -23,7 +23,6 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +38,7 @@ public class LanguageSelectMenu extends SelectMenu {
     }
 
     @Override
-    public SelectionMenu get() {
+    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
         List<SelectOption> options = new ArrayList<>();
         for (LangInfo option : LangInfo.values()) {
             options.add(SelectOption.of(option.getFullName(), option.name())
@@ -48,7 +47,7 @@ public class LanguageSelectMenu extends SelectMenu {
                             : null)
                     .withEmoji(option.getEmoji()));
         }
-        return SelectionMenu.create("language-selection")
+        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("language-selection")
                 .addOptions(options)
                 .setDefaultValues(Collections.singleton(this.plugin.getConfiguration().getFile().getString(ConfigurationField.LANG.toString()))).build();
     }

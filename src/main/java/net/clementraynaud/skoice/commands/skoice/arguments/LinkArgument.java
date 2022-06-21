@@ -22,9 +22,9 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.util.MapUtil;
+import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
@@ -77,8 +77,8 @@ public class LinkArgument extends Argument {
         player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
         GuildVoiceState voiceState = member.getVoiceState();
         if (voiceState != null) {
-            VoiceChannel voiceChannel = voiceState.getChannel();
-            if (voiceChannel != null && voiceChannel.equals(super.plugin.getConfiguration().getLobby())) {
+            AudioChannel audioChannel = voiceState.getChannel();
+            if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getLobby())) {
                 player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
             }
         }

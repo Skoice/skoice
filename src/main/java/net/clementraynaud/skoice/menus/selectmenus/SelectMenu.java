@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.lang.Lang;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
 public abstract class SelectMenu {
 
@@ -37,5 +36,5 @@ public abstract class SelectMenu {
         return this.isRefreshable;
     }
 
-    public abstract SelectionMenu get();
+    public abstract net.dv8tion.jda.api.interactions.components.selections.SelectMenu get();
 }

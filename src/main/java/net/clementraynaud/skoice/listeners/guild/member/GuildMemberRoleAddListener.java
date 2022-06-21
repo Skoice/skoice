@@ -43,7 +43,7 @@ public class GuildMemberRoleAddListener extends ListenerAdapter {
             List<Role> rolesBeforeUpdate = new ArrayList<>(event.getMember().getRoles());
             rolesBeforeUpdate.removeAll(event.getRoles());
             if (rolesBeforeUpdate.stream().noneMatch(role -> role.hasPermission(Permission.ADMINISTRATOR))) {
-                event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_SLASH_COMMANDS).queue();
+                event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
                 this.plugin.updateStatus(false);
                 this.plugin.getConfigurationMenu().retrieveMessage()
                         .editMessage(this.plugin.getConfigurationMenu().update()).queue();

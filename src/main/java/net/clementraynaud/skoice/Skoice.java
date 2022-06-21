@@ -68,8 +68,8 @@ public class Skoice extends JavaPlugin {
         this.eligiblePlayers = new EligiblePlayers();
         this.bot = new Bot(this);
         this.bot.connect();
+        this.configurationMenu = new ConfigurationMenu(this);
         if (this.bot.getJDA() != null) {
-            this.configurationMenu = new ConfigurationMenu(this);
             this.bot.setup(true, null);
         } else {
             this.updateStatus(true);

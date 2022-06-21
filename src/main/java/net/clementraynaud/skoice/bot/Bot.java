@@ -23,26 +23,25 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.listeners.channel.network.ChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleAddListener;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleRemoveListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceJoinListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceLeaveListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceMoveListener;
-import net.clementraynaud.skoice.listeners.interaction.ButtonClickListener;
+import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.listeners.interaction.SelectMenuListener;
+import net.clementraynaud.skoice.listeners.interaction.component.SelectMenuInteractionListener;
 import net.clementraynaud.skoice.listeners.ReconnectedListener;
-import net.clementraynaud.skoice.listeners.channel.voice.lobby.VoiceChannelDeleteListener;
-import net.clementraynaud.skoice.listeners.channel.voice.lobby.update.VoiceChannelUpdateParentListener;
+import net.clementraynaud.skoice.listeners.channel.lobby.update.ChannelUpdateParentListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
 import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
-import net.clementraynaud.skoice.listeners.message.guild.GuildMessageDeleteListener;
-import net.clementraynaud.skoice.listeners.message.guild.GuildMessageReceivedListener;
+import net.clementraynaud.skoice.listeners.message.MessageDeleteListener;
+import net.clementraynaud.skoice.listeners.message.MessageReceivedListener;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
-import net.clementraynaud.skoice.listeners.message.priv.PrivateMessageReceivedListener;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
@@ -149,7 +148,7 @@ public class Bot {
         this.jda.getGuilds().forEach(guild -> {
             new BotCommands(this.plugin).register(guild);
             if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                guild.getPublicRole().getManager().givePermissions(Permission.USE_SLASH_COMMANDS).queue();
+                guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
             }
         });
         this.registerPermanentListeners();
@@ -216,17 +215,16 @@ public class Bot {
                 new GuildMemberRoleAddListener(this.plugin),
                 new GuildMemberRoleRemoveListener(this.plugin),
                 new RoleUpdatePermissionsListener(this.plugin),
-                new PrivateMessageReceivedListener(this.plugin),
-                new GuildMessageReceivedListener(this.plugin),
-                new GuildMessageDeleteListener(this.plugin.getConfigurationMenu()),
-                new VoiceChannelDeleteListener(this.plugin),
-                new VoiceChannelUpdateParentListener(this.plugin),
+                new MessageReceivedListener(this.plugin),
+                new MessageDeleteListener(this.plugin.getConfigurationMenu()),
+                new net.clementraynaud.skoice.listeners.channel.lobby.ChannelDeleteListener(this.plugin),
+                new ChannelUpdateParentListener(this.plugin),
                 new ConfigureCommand(this.plugin),
                 new InviteCommand(this.plugin),
                 new LinkCommand(this.plugin),
                 new UnlinkCommand(this.plugin),
-                new ButtonClickListener(this.plugin),
-                new SelectMenuListener(this.plugin)
+                new ButtonInteractionListener(this.plugin),
+                new SelectMenuInteractionListener(this.plugin)
         );
     }
 
@@ -235,7 +233,7 @@ public class Bot {
                 new GuildVoiceJoinListener(this.plugin),
                 new GuildVoiceLeaveListener(this.plugin),
                 new GuildVoiceMoveListener(this.plugin),
-                new net.clementraynaud.skoice.listeners.channel.voice.network.VoiceChannelDeleteListener()
+                new ChannelDeleteListener()
         );
     }
 
@@ -244,7 +242,7 @@ public class Bot {
                 new GuildVoiceJoinListener(this.plugin),
                 new GuildVoiceLeaveListener(this.plugin),
                 new GuildVoiceMoveListener(this.plugin),
-                new net.clementraynaud.skoice.listeners.channel.voice.network.VoiceChannelDeleteListener()
+                new ChannelDeleteListener()
         );
     }
 

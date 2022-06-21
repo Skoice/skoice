@@ -71,15 +71,18 @@ public class UpdateNetworksTask implements Task {
                 if (player != null) {
                     Member member = this.plugin.getConfiguration().getMember(player.getUniqueId());
                     if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {
-                        VoiceChannel playerChannel = member.getVoiceState().getChannel();
-                        boolean isLobby = playerChannel == this.plugin.getConfiguration().getLobby();
-                        if (!isLobby && (playerChannel.getParent() == null
-                                || playerChannel.getParent() != this.plugin.getConfiguration().getCategory())) {
-                            Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(member.getId());
-                            if (pair != null) {
-                                pair.getRight().cancel(false);
+                        AudioChannel audioChannel = member.getVoiceState().getChannel();
+                        if (audioChannel instanceof VoiceChannel) {
+                            VoiceChannel voiceChannel = (VoiceChannel) audioChannel;
+                            boolean isLobby = voiceChannel == this.plugin.getConfiguration().getLobby();
+                            if (!isLobby && (voiceChannel.getParentCategory() == null
+                                    || voiceChannel.getParentCategory() != this.plugin.getConfiguration().getCategory())) {
+                                Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(member.getId());
+                                if (pair != null) {
+                                    pair.getRight().cancel(false);
+                                }
+                                continue;
                             }
-                            continue;
                         }
                         this.updateNetworksAroundPlayer(player);
                         if (this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.ACTION_BAR_ALERT.toString())) {
@@ -100,7 +103,6 @@ public class UpdateNetworksTask implements Task {
             Map<String, String> links = new HashMap<>(this.plugin.getConfiguration().getLinks());
             for (Member member : members) {
                 String minecraftId = MapUtil.getKeyFromValue(links, member.getId());
-                VoiceChannel playerChannel = member.getVoiceState().getChannel();
                 Network playerNetwork = minecraftId != null ? Network.getNetworks().stream()
                         .filter(n -> n.contains(UUID.fromString(minecraftId)))
                         .findAny().orElse(null) : null;
@@ -121,7 +123,7 @@ public class UpdateNetworksTask implements Task {
                         && !awaitingMove.getRight().cancel(false)) {
                     continue;
                 }
-                if (playerChannel != shouldBeInChannel) {
+                if (member.getVoiceState().getChannel() != shouldBeInChannel) {
                     UpdateNetworksTask.awaitingMoves.put(member.getId(), Pair.of(
                             shouldBeInChannel.getId(),
                             this.plugin.getConfiguration().getGuild().moveVoiceMember(member, shouldBeInChannel)
@@ -139,7 +141,7 @@ public class UpdateNetworksTask implements Task {
         Role publicRole = lobby.getGuild().getPublicRole();
         PermissionOverride lobbyPublicRoleOverride = lobby.getPermissionOverride(publicRole);
         if (lobbyPublicRoleOverride == null) {
-            lobby.createPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
+            lobby.upsertPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
         } else if (!lobbyPublicRoleOverride.getDenied().contains(Permission.VOICE_SPEAK)) {
             lobbyPublicRoleOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
         }
@@ -190,11 +192,11 @@ public class UpdateNetworksTask implements Task {
                         && DistanceUtil.getVerticalDistance(p.getLocation(),
                         player.getLocation()) <= this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()))
                 .filter(p -> {
-                    Member m = this.plugin.getConfiguration().getMember(p.getUniqueId());
-                    return m != null && m.getVoiceState() != null
-                            && m.getVoiceState().getChannel() != null
-                            && m.getVoiceState().getChannel().getParent() != null
-                            && m.getVoiceState().getChannel().getParent().equals(category);
+                    Member member = this.plugin.getConfiguration().getMember(p.getUniqueId());
+                    return member != null && member.getVoiceState() != null
+                            && member.getVoiceState().getChannel() instanceof VoiceChannel
+                            && ((VoiceChannel) member.getVoiceState().getChannel()).getParentCategory() != null
+                            && ((VoiceChannel) member.getVoiceState().getChannel()).getParentCategory().equals(category);
                 })
                 .map(Player::getUniqueId)
                 .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
