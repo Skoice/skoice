@@ -119,7 +119,7 @@ discord:
       description: "Dies ist der maximale vertikale Abstand zwischen den Spielern."
     advanced-settings:
       title: "Erweiterte Einstellungen"
-      description: "Manage other parameters."
+      description: "Verwalten Sie andere Parameter."
     language:
       title: "Sprache"
       description: "Wählen Sie die Sprache, in der die Meldungen angezeigt werden sollen."
