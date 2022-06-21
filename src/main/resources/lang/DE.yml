@@ -49,16 +49,16 @@ minecraft:
       connected-to-proximity-voice-chat: "%s Du bist &ajetzt verbunden&7 mit dem Sprachchat im Nahbereich. Für ein besseres Erlebnis kannst du \"&eStreamer-Modus&7\" in deinem Discord-Client aktivieren.
       disconnected-from-proximity-voice-chat: "%s Die Verbindung zum Sprachchat im Nahbereich ist &cjetzt unterbrochen&7."
     error:
-      no-parameter: "%s You have &cnot provided an argument&7. To use this command, type \"&e/skoice <%s>&7\"."
-      invalid-parameter: "%s You have &cnot provided a valid argument&7. To use this command, type \"&e/skoice <%s>&7\"."
-      illegal-executor: "%s This command is &conly executable &7by players."
-      missing-permission: "%s This command is &conly executable &7by operators."
+      no-parameter: "%s Sie haben &ckein Argument angegeben&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice <%s>&7\" ein."
+      invalid-parameter: "%s Sie haben &ckein gültiges Argument angegeben&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice <%s>&7\" ein."
+      illegal-executor: "%s Dieser Befehl ist &cnur von Spielern ausführbar&7."
+      missing-permission: "%s Dieser Befehl ist &cnur&è von Operatoren ausführbar."
       discord-api-timed-out-interactive:
-        - "%s Discord seems to &cbe experiencing an outage&7. Find more information on "
+        - "%s Discord scheint &ceine Störung zu haben&7. Weitere Informationen finden Sie unter "
         - "&7."
-      discord-api-timed-out-link: "%s Discord seems to &cbe experiencing an outage&7. Find more information here: &bhttps://discordstatus.com&7."
+      discord-api-timed-out-link: "%s Discord scheint &ceine Störung zu haben&7. Weitere Informationen finden Sie hier: &bhttps://discordstatus.com&7."
   action-bar:
-    alert: "&c⚠ &7You are &cmoving away &7from near players."
+    alert: "&c⚠ &7Sie &centfernen sich&7 von nahen Spielern."
   interaction:
     here: "&bhier"
     this-page: "&bdiese Seite"
