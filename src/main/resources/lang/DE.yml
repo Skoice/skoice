@@ -178,7 +178,7 @@ discord:
       description: "Diese Einstellung ist derzeit auf %s Blöcke eingestellt. Der Wert muss zwischen 1 und 1000 liegen."
     changelog:
       title: "Skoice 2.1"
-      description: "**General:**\n• Discover a whole new and intuitive configuration interface.\n• Let us choose the best distances for your personal use of Skoice in the \"Mode\" menu.\n• Link your accounts effortlessly thanks to our new linking process.\n• Skoice now uses slash commands.\n\n**New Features:**\n• Action bar alert\n• Channel visibility toggle\n• \"/invite\" command in Discord\n• French translation"
+      description: "Um mehr über die neuesten Funktionen von Skoice zu erfahren, [lesen Sie das Changelog](https://github.com/Skoice/skoice/discussions/35)."
     upcoming-features:
       title: "Was kommt als Nächstes?"
       description: "Um die kommenden Funktionen von Skoice zu entdecken, [werfen Sie einen Blick auf unsere langfristigen Pläne](https://github.com/Skoice/skoice/discussions/33)."
