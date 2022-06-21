@@ -71,14 +71,14 @@ discord:
     configure: "Konfigurieren Sie Skoice."
     link: "Verbinde dein Discord-Konto mit Minecraft."
     unlink: "Entkopple deinen Discord-Account von Minecraft."
-    invite: "Holen Sie sich die Nähe Voice-Chat auf Ihrem Server."
+    invite: "Holen Sie sich die Sprachchat im Nahbereich auf Ihrem Server."
   menu:
-    footer: "Der Voice-Chat in der Nähe wird von Skoice bereitgestellt."
+    footer: "Der Sprachchat im Nahbereich wird von Skoice bereitgestellt."
     configuration:
       title: "Konfiguration"
     server:
       title: "Server"
-      description: "Damit Ihr Bot richtig funktioniert, darf er nicht auf mehreren Discord-Servern vorhanden sein. Wählen Sie den Server aus, auf dem der Proximity Voice Chat aktiv sein soll. Ihr Bot wird die anderen Server automatisch verlassen."
+      description: "Damit Ihr Bot richtig funktioniert, darf er nicht auf mehreren Discord-Servern vorhanden sein. Wählen Sie den Server aus, auf dem der Sprachchat im Nahbereich aktiv sein soll. Ihr Bot wird die anderen Server automatisch verlassen."
       select-menu:
         placeholder: "Bitte wählen Sie einen Server aus."
     permissions:
@@ -86,8 +86,8 @@ discord:
       description: "Um richtig zu funktionieren, muss dein Bot die Berechtigung \"Administrator\" auf deinem Discord-Server haben."
     lobby:
       title: "Lobby"
-      description: "Wählen Sie den Kanal aus, dem die Spieler beitreten müssen, um den Proximity Voice Chat zu nutzen. Er muss sich in einer Kategorie befinden."
-      shortened-description: "Wählen Sie den Kanal aus, dem die Spieler beitreten müssen, um den Proximity Voice Chat zu nutzen."
+      description: "Wählen Sie den Kanal aus, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen. Er muss sich in einer Kategorie befinden."
+      shortened-description: "Wählen Sie den Kanal aus, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen."
       select-menu:
         placeholder: "Bitte wählen Sie einen Sprachkanal."
         select-option:
@@ -134,7 +134,7 @@ discord:
       title: "Was gibt es Neues?"
       description: "Entdecken Sie die neuesten und kommenden Funktionen von Skoice."
     skoice-proximity-voice-chat:
-      title: "Skoice: Proximity Voice Chat"
+      title: "Skoice: Sprachchat im Nahbereich"
     linking-process:
       title: "Verknüpfungsprozess"
     error:
@@ -142,7 +142,7 @@ discord:
   field:
     configuration-complete:
       title: "Konfiguration abgeschlossen"
-      description: "Skoice ist jetzt konfiguriert. Gib \"/link\" auf deinem Discord-Server ein, um deinen Discord-Account mit Minecraft zu verknüpfen. Spieler müssen ihre Konten verknüpfen, um den Proximity-Voice-Chat nutzen zu können."
+      description: "Skoice ist jetzt konfiguriert. Gib \"/link\" auf deinem Discord-Server ein, um deinen Discord-Account mit Minecraft zu verknüpfen. Spieler müssen ihre Konten verknüpfen, um den Sprachchat im Nahbereich nutzen zu können."
     incomplete-configuration:
       title: "Unvollständige Konfiguration"
       description: "Skoice ist nicht richtig konfiguriert. Bitte wenden Sie sich an einen Administrator."
