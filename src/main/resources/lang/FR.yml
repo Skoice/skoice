@@ -165,7 +165,7 @@ discord:
       title: "Personnaliser"
       description: "Définissez les distances en fonction de vos préférences personnelles."
     changelog:
-      title: "Skoice 2.1"
+      title: "Skoice 3"
       description: "Pour en savoir plus sur les dernières fonctinnalités de Skoice, [lisez le récapitulatif des nouveautés](https://github.com/Skoice/skoice/discussions/35)."
     upcoming-features:
       title: "Et après ?"

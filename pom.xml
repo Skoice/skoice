@@ -6,7 +6,7 @@
 
     <groupId>net.clementraynaud</groupId>
     <artifactId>skoice</artifactId>
-    <version>2.1</version>
+    <version>3.0</version>
     <packaging>jar</packaging>
 
     <name>skoice</name>
