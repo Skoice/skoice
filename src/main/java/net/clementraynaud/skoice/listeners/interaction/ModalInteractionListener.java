@@ -40,12 +40,8 @@ public class ModalInteractionListener extends ListenerAdapter {
             return;
         }
         if ("new-voice-channel".equals(event.getModalId())) {
-            String categoryName = !event.getValue("category-name").getAsString().isEmpty()
-                    ? event.getValue("category-name").getAsString()
-                    : this.plugin.getLang().getMessage("discord.text-input.category-name.placeholder");
-            String lobbyName = !event.getValue("lobby-name").getAsString().isEmpty()
-                    ? event.getValue("lobby-name").getAsString()
-                    : this.plugin.getLang().getMessage("discord.text-input.lobby-name.placeholder");
+            String categoryName = event.getValue("category-name").getAsString();
+            String lobbyName = event.getValue("lobby-name").getAsString();
             Category category = event.getGuild().createCategory(categoryName).complete();
             String lobbyId = event.getGuild().createVoiceChannel(lobbyName, category).complete().getId();
             this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), lobbyId);
@@ -54,12 +50,10 @@ public class ModalInteractionListener extends ListenerAdapter {
             this.plugin.updateStatus(false, event.getUser());
             event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
         } else if ("customize".equals(event.getModalId())) {
-            int horizontalRadius = !event.getValue("horizontal-radius").getAsString().isEmpty()
-                    && event.getValue("horizontal-radius").getAsString().matches("[0-9]+")
+            int horizontalRadius = event.getValue("horizontal-radius").getAsString().matches("[0-9]+")
                     ? Integer.parseInt(event.getValue("horizontal-radius").getAsString())
                     : 80;
-            int verticalRadius = !event.getValue("vertical-radius").getAsString().isEmpty()
-                    && event.getValue("vertical-radius").getAsString().matches("[0-9]+")
+            int verticalRadius = event.getValue("vertical-radius").getAsString().matches("[0-9]+")
                     ? Integer.parseInt(event.getValue("vertical-radius").getAsString())
                     : 40;
             this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), horizontalRadius);

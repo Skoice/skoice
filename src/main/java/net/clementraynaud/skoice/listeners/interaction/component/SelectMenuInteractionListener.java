@@ -90,15 +90,13 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                                 TextInput categoryName = TextInput.create("category-name",
                                                 this.plugin.getLang().getMessage("discord.text-input.category-name.label"),
                                                 TextInputStyle.SHORT)
-                                        .setPlaceholder(this.plugin.getLang().getMessage("discord.text-input.category-name.placeholder"))
-                                        .setRequired(false)
+                                        .setValue(this.plugin.getLang().getMessage("discord.text-input.category-name.default-value"))
                                         .setRequiredRange(1, 25)
                                         .build();
                                 TextInput lobbyName = TextInput.create("lobby-name",
                                                 this.plugin.getLang().getMessage("discord.text-input.lobby-name.label"),
                                                 TextInputStyle.SHORT)
-                                        .setPlaceholder(this.plugin.getLang().getMessage("discord.text-input.lobby-name.placeholder"))
-                                        .setRequired(false)
+                                        .setValue(this.plugin.getLang().getMessage("discord.text-input.lobby-name.default-value"))
                                         .setRequiredRange(1, 25)
                                         .build();
                                 Modal modal = Modal.create("new-voice-channel",

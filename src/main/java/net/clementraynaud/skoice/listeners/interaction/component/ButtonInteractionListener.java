@@ -69,15 +69,13 @@ public class ButtonInteractionListener extends ListenerAdapter {
                         TextInput horizontalRadius = TextInput.create("horizontal-radius",
                                         this.plugin.getLang().getMessage("discord.text-input.horizontal-radius.label"),
                                         TextInputStyle.SHORT)
-                                .setPlaceholder(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))
-                                .setRequired(false)
+                                .setValue(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))
                                 .setRequiredRange(1, 3)
                                 .build();
                         TextInput verticalRadius = TextInput.create("vertical-radius",
                                         this.plugin.getLang().getMessage("discord.text-input.vertical-radius.label"),
                                         TextInputStyle.SHORT)
-                                .setPlaceholder(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))
-                                .setRequired(false)
+                                .setValue(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))
                                 .setRequiredRange(1, 3)
                                 .build();
                         Modal modal = Modal.create("customize",

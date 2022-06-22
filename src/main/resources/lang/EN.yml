@@ -213,10 +213,10 @@ discord:
   text-input:
     category-name:
       label: "Category Name"
-      placeholder: "Proximity Voice Chat"
+      default-value: "Proximity Voice Chat"
     lobby-name:
       label: "Lobby Name"
-      placeholder: "Lobby"
+      default-value: "Lobby"
     horizontal-radius:
       label: "Horizontal Radius"
     vertical-radius:

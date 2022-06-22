@@ -213,10 +213,10 @@ discord:
   text-input:
     category-name:
       label: "Nom de la catégorie"
-      placeholder: "Chat vocal de proximité"
+      default-value: "Chat vocal de proximité"
     lobby-name:
       label: "Nom du salon vocal principal"
-      placeholder: "Salon vocal principal"
+      default-value: "Salon vocal principal"
     horizontal-radius:
       label: "Rayon horizontal"
     vertical-radius:
