@@ -19,7 +19,6 @@
 
 package net.clementraynaud.skoice.listeners.message;
 
-import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -37,7 +36,6 @@ public class MessageDeleteListener extends ListenerAdapter {
     public void onMessageDelete(@NotNull MessageDeleteEvent event) {
         if (this.configurationMenu.getMessageId().equals(event.getMessageId())) {
             this.configurationMenu.clearConfig();
-            ButtonInteractionListener.getDiscordIdAxis().clear();
         }
     }
 }

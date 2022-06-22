@@ -88,20 +88,21 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                         } else {
                             if ("new-voice-channel".equals(event.getSelectedOptions().get(0).getValue())) {
                                 TextInput categoryName = TextInput.create("category-name",
-                                                this.plugin.getLang().getMessage("discord.modal.new-voice-channel.category-name.label"),
+                                                this.plugin.getLang().getMessage("discord.text-input.category-name.label"),
                                                 TextInputStyle.SHORT)
-                                        .setPlaceholder(this.plugin.getLang().getMessage("discord.modal.new-voice-channel.category-name.placeholder"))
+                                        .setPlaceholder(this.plugin.getLang().getMessage("discord.text-input.category-name.placeholder"))
                                         .setRequired(false)
                                         .setRequiredRange(1, 25)
                                         .build();
                                 TextInput lobbyName = TextInput.create("lobby-name",
-                                                this.plugin.getLang().getMessage("discord.modal.new-voice-channel.lobby-name.label"),
+                                                this.plugin.getLang().getMessage("discord.text-input.lobby-name.label"),
                                                 TextInputStyle.SHORT)
-                                        .setPlaceholder(this.plugin.getLang().getMessage("discord.modal.new-voice-channel.lobby-name.placeholder"))
+                                        .setPlaceholder(this.plugin.getLang().getMessage("discord.text-input.lobby-name.placeholder"))
                                         .setRequired(false)
                                         .setRequiredRange(1, 25)
                                         .build();
-                                Modal modal = Modal.create("new-voice-channel", this.plugin.getLang().getMessage("discord.modal.new-voice-channel.title"))
+                                Modal modal = Modal.create("new-voice-channel",
+                                                this.plugin.getLang().getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.label"))
                                         .addActionRows(ActionRow.of(categoryName), ActionRow.of(lobbyName))
                                         .build();
                                 event.replyModal(modal).queue();
@@ -132,8 +133,6 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                         this.plugin.getConfiguration().saveFile();
                         this.plugin.updateStatus(false, event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
-                    } else if ("customize".equals(event.getSelectedOptions().get(0).getValue())) {
-                        event.editMessage(this.plugin.getBot().getMenu("mode").build(true)).queue();
                     }
                     break;
                 case "action-bar-alert":

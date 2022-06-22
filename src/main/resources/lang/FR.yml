@@ -100,6 +100,7 @@ discord:
       alternative-description: "Laissez-nous choisir les meilleures réglages pour votre utilisation personnelle de Skoice. Vous pourrez toujours personnaliser les distances plus tard."
       select-menu:
         placeholder: "Veuillez sélectionner un mode."
+        alternative-placeholder: "Vous utilisez actuellement des distances personnalisées."
         select-option:
           vanilla-mode:
             label: "Mode standard"
@@ -107,16 +108,6 @@ discord:
           minigame-mode:
             label: "Mode mini-jeu"
             description: "Rayon horizontal : 40 blocs — Rayon vertical : 20 blocs"
-          customize:
-            label: "Personnaliser"
-            description: "Définissez les distances de 1 à 1000 blocs."
-            alternative-description: "Rayon horizontal: %s blocs — Rayon vertical: %s blocs"
-    horizontal-radius:
-      title: "Rayon horizontal"
-      description: "Il s'agit de la distance horizontale maximale entre les joueurs."
-    vertical-radius:
-      title: "Rayon vertical"
-      description: "Il s'agit de la distance verticale maximale entre les joueurs."
     advanced-settings:
       title: "Réglages avancés"
       description: "Gérez d'autres paramètres."
@@ -173,9 +164,6 @@ discord:
     customize:
       title: "Personnaliser"
       description: "Définissez les distances en fonction de vos préférences personnelles."
-    enter-a-value:
-      title: "Entrez une valeur"
-      description: "Cette option est actuellement définie sur %s blocs.\nLa valeur doit être comprise entre 1 et 1000."
     changelog:
       title: "Skoice 2.1"
       description: "Pour en savoir plus sur les dernières fonctinnalités de Skoice, [lisez le récapitulatif des nouveautés](https://github.com/Skoice/skoice/discussions/35)."
@@ -222,13 +210,15 @@ discord:
     too-many-options:
       label: "Trop d'options"
       description: "Skoice est incapable de charger plus d'options."
-  modal:
-    new-voice-channel:
-      title: "Nouveau salon vocal"
-      category-name:
-        label: "Nom de la catégorie"
-        placeholder: "Chat vocal de proximité"
-      lobby-name:
-        label: "Nom du salon vocal principal"
-        placeholder: "Salon vocal principal"
+  text-input:
+    category-name:
+      label: "Nom de la catégorie"
+      placeholder: "Chat vocal de proximité"
+    lobby-name:
+      label: "Nom du salon vocal principal"
+      placeholder: "Salon vocal principal"
+    horizontal-radius:
+      label: "Rayon horizontal"
+    vertical-radius:
+      label: "Rayon vertical"
   communication-lost: "Communication perdue."

@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.listeners.message;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -35,25 +34,10 @@ public class MessageReceivedListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.isFromGuild()) {
-            if (event.getAuthor().equals(event.getJDA().getSelfUser())) {
-                if (!event.getMessage().isEphemeral()) {
-                    this.plugin.getConfigurationMenu().store(event.getMessage());
-                }
-            } else if (ButtonInteractionListener.getDiscordIdAxis().containsKey(event.getAuthor().getId())
-                    && event.getMessage().getContentRaw().length() <= 4
-                    && event.getMessage().getContentRaw().matches("[0-9]+")) {
-                int value = Integer.parseInt(event.getMessage().getContentRaw());
-                if (value >= 1 && value <= 1000) {
-                    event.getMessage().delete().queue();
-                    String axis = ButtonInteractionListener.getDiscordIdAxis().get(event.getAuthor().getId());
-                    this.plugin.getConfiguration().getFile().set(axis, value);
-                    this.plugin.getConfiguration().saveFile();
-                    this.plugin.getConfigurationMenu().retrieveMessage()
-                            .editMessage(this.plugin.getBot().getMenu(axis)
-                                    .build(this.plugin.getConfiguration().getFile().getString(axis))).queue();
-                }
-            }
+        if (event.isFromGuild()
+                && event.getAuthor().equals(event.getJDA().getSelfUser())
+                && !event.getMessage().isEphemeral()) {
+            this.plugin.getConfigurationMenu().store(event.getMessage());
         } else if (event.isFromType(ChannelType.PRIVATE)
                 && !event.getAuthor().getId().equals(event.getJDA().getSelfUser().getApplicationId())) {
             event.getMessage().reply(this.plugin.getBot().getMenu("illegal-interaction").build()).queue();

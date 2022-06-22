@@ -73,20 +73,6 @@ mode:
     - vanilla-mode
     - minigame-mode
     - customize
-horizontal-radius:
-  emoji: left_right_arrow
-  type: default
-  style: primary
-  parent: mode
-  fields:
-    - enter-a-value
-vertical-radius:
-  emoji: arrow_up_down
-  type: default
-  style: primary
-  parent: mode
-  fields:
-    - enter-a-value
 advanced-settings:
   emoji: wrench
   type: default

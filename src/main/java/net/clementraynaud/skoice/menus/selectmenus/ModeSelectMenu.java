@@ -33,16 +33,12 @@ public class ModeSelectMenu extends SelectMenu {
 
     private static final String VANILLA_MODE_ID = "vanilla-mode";
     private static final String MINIGAME_MODE_ID = "minigame-mode";
-    private static final String CUSTOMIZE_ID = "customize";
 
     private final Skoice plugin;
 
-    private final boolean customizeRadius;
-
-    public ModeSelectMenu(Skoice plugin, boolean customizeRadius) {
+    public ModeSelectMenu(Skoice plugin) {
         super(plugin.getLang(), false);
         this.plugin = plugin;
-        this.customizeRadius = customizeRadius;
     }
 
     @Override
@@ -53,38 +49,19 @@ public class ModeSelectMenu extends SelectMenu {
                 SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.label"), ModeSelectMenu.MINIGAME_MODE_ID)
                         .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.description"))
                         .withEmoji(MenuEmoji.CROSSED_SWORDS.get())));
-        if (this.plugin.getBot().isReady()) {
-            String defaultValue;
-            if (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 80
-                    && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 40
-                    && !this.customizeRadius) {
-                defaultValue = ModeSelectMenu.VANILLA_MODE_ID;
-                modes.add(SelectOption.of(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
-                        .withDescription(this.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.description"))
-                        .withEmoji(MenuEmoji.PENCIL2.get()));
-            } else if (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 40
-                    && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 20
-                    && !this.customizeRadius) {
-                defaultValue = ModeSelectMenu.MINIGAME_MODE_ID;
-                modes.add(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
-                        .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.description"))
-                        .withEmoji(MenuEmoji.PENCIL2.get()));
-            } else {
-                defaultValue = ModeSelectMenu.CUSTOMIZE_ID;
-                modes.add(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.label"), ModeSelectMenu.CUSTOMIZE_ID)
-                        .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.customize.alternative-description",
-                                this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()),
-                                this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString())))
-                        .withEmoji(MenuEmoji.PENCIL2.get()));
-            }
-            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("mode-selection")
-                    .setPlaceholder(super.lang.getMessage("discord.menu.mode.select-menu.placeholder"))
-                    .addOptions(modes)
-                    .setDefaultValues(Collections.singleton(defaultValue)).build();
-        } else {
-            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("mode-selection")
-                    .setPlaceholder(super.lang.getMessage("discord.menu.mode.select-menu.placeholder"))
-                    .addOptions(modes).build();
+        String defaultValue = null;
+        if (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 80
+                && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 40) {
+            defaultValue = ModeSelectMenu.VANILLA_MODE_ID;
+        } else if (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 40
+                && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 20) {
+            defaultValue = ModeSelectMenu.MINIGAME_MODE_ID;
         }
+        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("mode-selection")
+                .setPlaceholder(!this.plugin.getBot().isReady()
+                        ? super.lang.getMessage("discord.menu.mode.select-menu.placeholder")
+                        : super.lang.getMessage("discord.menu.mode.select-menu.alternative-placeholder"))
+                .addOptions(modes)
+                .setDefaultValues(defaultValue != null ? Collections.singleton(defaultValue) : Collections.emptyList()).build();
     }
 }

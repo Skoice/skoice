@@ -48,13 +48,9 @@ public class Menu {
         this.fields = menu.getStringList("fields").toArray(new String[0]);
     }
 
-    public Message build(boolean customizeRadius, String... args) {
-        return new MessageBuilder().setEmbeds(this.getEmbed(args))
-                .setActionRows(this.getActionRows(customizeRadius)).build();
-    }
-
     public Message build(String... args) {
-        return this.build(false, args);
+        return new MessageBuilder().setEmbeds(this.getEmbed(args))
+                .setActionRows(this.getActionRows()).build();
     }
 
     private String getTitle(boolean withEmoji) {
@@ -111,7 +107,7 @@ public class Menu {
         return embed.build();
     }
 
-    private List<ActionRow> getActionRows(boolean customizeRadius) {
+    private List<ActionRow> getActionRows() {
         switch (this.name) {
             case "server":
                 this.selectMenu = new ServerSelectMenu(this.plugin);
@@ -120,7 +116,7 @@ public class Menu {
                 this.selectMenu = new LobbySelectMenu(this.plugin);
                 break;
             case "mode":
-                this.selectMenu = new ModeSelectMenu(this.plugin, customizeRadius);
+                this.selectMenu = new ModeSelectMenu(this.plugin);
                 break;
             case "language":
                 this.selectMenu = new LanguageSelectMenu(this.plugin);
@@ -136,16 +132,16 @@ public class Menu {
                                 .getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString()), false);
                 break;
             default:
-                List<Button> buttons = this.getButtons(customizeRadius);
+                List<Button> buttons = this.getButtons();
                 if (!buttons.isEmpty()) {
                     return Collections.singletonList(ActionRow.of(buttons));
                 }
                 return Collections.emptyList();
         }
-        return Arrays.asList(ActionRow.of(this.selectMenu.get()), ActionRow.of(this.getButtons(customizeRadius)));
+        return Arrays.asList(ActionRow.of(this.selectMenu.get()), ActionRow.of(this.getButtons()));
     }
 
-    private List<Button> getButtons(boolean customizeRadius) {
+    private List<Button> getButtons() {
         List<Button> buttons = new ArrayList<>();
         if (this.parent != null && this.plugin.getBot().isReady()) {
             buttons.add(Button.secondary(this.parent, "← " + this.plugin.getLang().getMessage("discord.button-label.back")));
@@ -153,7 +149,7 @@ public class Menu {
         if (this.selectMenu != null && this.selectMenu.isRefreshable()) {
             buttons.add(Button.primary(this.name, "⟳ " + this.plugin.getLang().getMessage("discord.button-label.refresh")));
         }
-        buttons.addAll(this.getAdditionalButtons(customizeRadius));
+        buttons.addAll(this.getAdditionalButtons());
         if (!"mode".equals(this.name)) {
             for (Menu menu : this.plugin.getBot().getMenus().values()) {
                 if (menu.parent != null && menu.parent.equals(this.name)) {
@@ -184,7 +180,7 @@ public class Menu {
         return buttons;
     }
 
-    private List<Button> getAdditionalButtons(boolean customizeRadius) {
+    private List<Button> getAdditionalButtons() {
         if ("incomplete-configuration-server-manager".equals(this.name)) {
             return Collections.singletonList(Button.primary("resume-configuration",
                             this.plugin.getLang().getMessage("discord.button-label.resume-configuration"))
@@ -194,23 +190,11 @@ public class Menu {
                     + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
                     + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
                     .withEmoji(this.emoji.get()));
-        } else if ("mode".equals(this.name) && this.isModeCustomizable(customizeRadius)) {
-            Menu horizontalRadiusMenu = this.plugin.getBot().getMenu("horizontal-radius");
-            Menu verticalRadiusMenu = this.plugin.getBot().getMenu("vertical-radius");
-            return Arrays.asList(Button.primary(horizontalRadiusMenu.name, horizontalRadiusMenu.getTitle(false))
-                            .withEmoji(horizontalRadiusMenu.emoji.get()),
-                    Button.primary(verticalRadiusMenu.name, verticalRadiusMenu.getTitle(false))
-                            .withEmoji(verticalRadiusMenu.emoji.get()));
+        } else if ("mode".equals(this.name) && this.plugin.getBot().isReady()) {
+            return Collections.singletonList(Button.primary("customize",
+                            this.plugin.getLang().getMessage("discord.field.customize.title"))
+                    .withEmoji(MenuEmoji.PENCIL2.get()));
         }
         return Collections.emptyList();
-    }
-
-    private boolean isModeCustomizable(boolean customizeRadius) {
-        return this.plugin.getBot().isReady() &&
-                (customizeRadius
-                        || (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) != 80
-                        && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) != 40)
-                        || (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) != 40
-                        && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) != 20));
     }
 }

@@ -37,9 +37,6 @@ changelog:
 upcoming-features:
   emoji: calendar_spiral
   inline: false
-enter-a-value:
-  emoji: keyboard
-  inline: false
 account-linked:
   emoji: heavy_check_mark
   inline: false

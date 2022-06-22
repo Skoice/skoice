@@ -21,7 +21,6 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
-import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildMessageChannel;
@@ -80,7 +79,6 @@ public class ConfigurationMenu {
                     .getString(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.MESSAGE_ID))).complete();
         } catch (ErrorResponseException e) {
             this.clearConfig();
-            ButtonInteractionListener.getDiscordIdAxis().clear();
         }
         return null;
     }

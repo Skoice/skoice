@@ -100,6 +100,7 @@ discord:
       alternative-description: "Let us choose the best settings for your personal use of Skoice. You will still be able to customize the distances later."
       select-menu:
         placeholder: "Please select a mode."
+        alternative-placeholder: "You are currently using customized distances."
         select-option:
           vanilla-mode:
             label: "Vanilla Mode"
@@ -107,16 +108,6 @@ discord:
           minigame-mode:
             label: "Minigame Mode"
             description: "Horizontal Radius: 40 blocks — Vertical Radius: 20 blocks"
-          customize:
-            label: "Customize"
-            description: "Set distances from 1 to 1000 blocks."
-            alternative-description: "Horizontal Radius: %s blocks — Vertical Radius: %s blocks"
-    horizontal-radius:
-      title: "Horizontal Radius"
-      description: "This is the maximum horizontal distance between players."
-    vertical-radius:
-      title: "Vertical Radius"
-      description: "This is the maximum vertical distance between players."
     advanced-settings:
       title: "Advanced Settings"
       description: "Manage other parameters."
@@ -173,9 +164,6 @@ discord:
     customize:
       title: "Customize"
       description: "Set distances according to your personal preferences."
-    enter-a-value:
-      title: "Enter a value"
-      description: "This setting is currently set to %s blocks. The value must be between 1 and 1000."
     changelog:
       title: "Skoice 2.1"
       description: "To learn about the latest features of Skoice, [read the changelog](https://github.com/Skoice/skoice/discussions/35)."
@@ -222,13 +210,15 @@ discord:
     too-many-options:
       label: "Too Many Options"
       description: "Skoice is unabled to load more options."
-  modal:
-    new-voice-channel:
-      title: "New Voice Channel"
-      category-name:
-        label: "Category Name"
-        placeholder: "Proximity Voice Chat"
-      lobby-name:
-        label: "Lobby Name"
-        placeholder: "Lobby"
+  text-input:
+    category-name:
+      label: "Category Name"
+      placeholder: "Proximity Voice Chat"
+    lobby-name:
+      label: "Lobby Name"
+      placeholder: "Lobby"
+    horizontal-radius:
+      label: "Horizontal Radius"
+    vertical-radius:
+      label: "Vertical Radius"
   communication-lost: "Communication lost."

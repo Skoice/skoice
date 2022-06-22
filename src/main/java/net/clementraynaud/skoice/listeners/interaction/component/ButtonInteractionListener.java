@@ -26,13 +26,15 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.Modal;
+import net.dv8tion.jda.api.interactions.components.text.TextInput;
+import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ButtonInteractionListener extends ListenerAdapter {
-
-    private static final Map<String, String> discordIdAxis = new HashMap<>();
 
     private final Skoice plugin;
 
@@ -63,20 +65,27 @@ public class ButtonInteractionListener extends ListenerAdapter {
                         }
                     } else if (!this.plugin.getBot().isReady() && !"language".equals(buttonId)) {
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+                    } else if ("customize".equals(buttonId)) {
+                        TextInput horizontalRadius = TextInput.create("horizontal-radius",
+                                        this.plugin.getLang().getMessage("discord.text-input.horizontal-radius.label"),
+                                        TextInputStyle.SHORT)
+                                .setPlaceholder(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))
+                                .setRequired(false)
+                                .setRequiredRange(1, 3)
+                                .build();
+                        TextInput verticalRadius = TextInput.create("vertical-radius",
+                                        this.plugin.getLang().getMessage("discord.text-input.vertical-radius.label"),
+                                        TextInputStyle.SHORT)
+                                .setPlaceholder(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))
+                                .setRequired(false)
+                                .setRequiredRange(1, 3)
+                                .build();
+                        Modal modal = Modal.create("customize",
+                                        this.plugin.getLang().getMessage("discord.field.customize.title"))
+                                .addActionRows(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
+                                .build();
+                        event.replyModal(modal).queue();
                     } else {
-                        if ("mode".equals(buttonId)) {
-                            ButtonInteractionListener.discordIdAxis.remove(member.getId());
-                        } else if ("horizontal-radius".equals(buttonId)) {
-                            ButtonInteractionListener.discordIdAxis.put(member.getId(), ConfigurationField.HORIZONTAL_RADIUS.toString());
-                            event.editMessage(this.plugin.getBot().getMenu(buttonId)
-                                    .build(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))).queue();
-                            return;
-                        } else if ("vertical-radius".equals(buttonId)) {
-                            ButtonInteractionListener.discordIdAxis.put(member.getId(), ConfigurationField.VERTICAL_RADIUS.toString());
-                            event.editMessage(this.plugin.getBot().getMenu(buttonId)
-                                    .build(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))).queue();
-                            return;
-                        }
                         event.editMessage(this.plugin.getBot().getMenu(buttonId).build()).queue();
                     }
                 } else if ("resume-configuration".equals(event.getButton().getId())) {
@@ -86,9 +95,5 @@ public class ButtonInteractionListener extends ListenerAdapter {
         } else {
             event.reply(this.plugin.getBot().getMenu("access-denied").build()).setEphemeral(true).queue();
         }
-    }
-
-    public static Map<String, String> getDiscordIdAxis() {
-        return ButtonInteractionListener.discordIdAxis;
     }
 }
