@@ -27,7 +27,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class OutdatedConfiguration {
 
@@ -52,6 +55,10 @@ public class OutdatedConfiguration {
             this.convertOldRadius();
             this.convertOldLinks();
             this.plugin.getConfiguration().saveFile();
+            try {
+                this.plugin.getConfiguration().getFile().loadFromString(this.plugin.getConfiguration().getFile().saveToString());
+            } catch (InvalidConfigurationException ignored) {
+            }
             try {
                 Files.delete(outdatedConfig.toPath());
             } catch (IOException ignored) {
