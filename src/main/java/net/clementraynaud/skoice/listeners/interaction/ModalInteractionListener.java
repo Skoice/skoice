@@ -51,9 +51,11 @@ public class ModalInteractionListener extends ListenerAdapter {
             event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
         } else if ("customize".equals(event.getModalId())) {
             int horizontalRadius = event.getValue("horizontal-radius").getAsString().matches("[0-9]+")
+                    && Integer.parseInt(event.getValue("horizontal-radius").getAsString()) >= 1
                     ? Integer.parseInt(event.getValue("horizontal-radius").getAsString())
                     : 80;
             int verticalRadius = event.getValue("vertical-radius").getAsString().matches("[0-9]+")
+                    && Integer.parseInt(event.getValue("vertical-radius").getAsString()) >= 1
                     ? Integer.parseInt(event.getValue("vertical-radius").getAsString())
                     : 40;
             this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
