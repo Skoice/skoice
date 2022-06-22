@@ -46,7 +46,7 @@ minecraft:
       account-unlinked: "%s Du hast &adeinen Minecraft-Account&7 von Discord entkoppelt."
       account-not-linked: "%s Du hast &cdeinen Minecraft-Account&7 nicht mit Discord verknüpft. Gib \"&e/link&7\" auf unserem Discord-Server ein, um ihn zu verknüpfen."
       account-already-linked: "%s Du hast &cdeinen Minecraft-Account&7 bereits mit Discord verknüpft. Gib \"&e/skoice unlink&7\" ein, um die Verknüpfung zu lösen."
-      connected-to-proximity-voice-chat: "%s Du bist &ajetzt verbunden&7 mit dem Sprachchat im Nahbereich. Für ein besseres Erlebnis kannst du \"&eStreamer-Modus&7\" in deinem Discord-Client aktivieren.
+      connected-to-proximity-voice-chat: "%s Du bist &ajetzt verbunden&7 mit dem Sprachchat im Nahbereich. Für ein besseres Erlebnis kannst du \"&eStreamer-Modus&7\" in deinem Discord-Client aktivieren."
       disconnected-from-proximity-voice-chat: "%s Die Verbindung zum Sprachchat im Nahbereich ist &cjetzt unterbrochen&7."
     error:
       no-parameter: "%s Sie haben &ckein Argument angegeben&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice <%s>&7\" ein."
@@ -100,6 +100,7 @@ discord:
       alternative-description: "Lassen Sie uns die besten Einstellungen für Ihre persönliche Nutzung von Skoice wählen. Sie können die Entfernungen auch später noch anpassen."
       select-menu:
         placeholder: "Bitte wählen Sie einen Modus."
+        alternative-placeholder: "You are currently using customized distances."
         select-option:
           vanilla-mode:
             label: "Vanille-Modus"
@@ -107,16 +108,6 @@ discord:
           minigame-mode:
             label: "Minigame-Modus"
             description: "Horizontaler Radius: 40 Blöcke - Vertikaler Radius: 20 Blöcke"
-          customize:
-            label: "Anpassen"
-            description: "Stellen Sie Entfernungen von 1 bis 1000 Blöcken ein."
-            alternative-description: "Horizontaler Radius: %s Blöcke - Vertikaler Radius: %s Blöcke"
-    horizontal-radius:
-      title: "Horizontaler Radius"
-      description: "Dies ist der maximale horizontale Abstand zwischen den Spielern."
-    vertical-radius:
-      title: "Vertikaler Radius"
-      description: "Dies ist der maximale vertikale Abstand zwischen den Spielern."
     advanced-settings:
       title: "Erweiterte Einstellungen"
       description: "Verwalten Sie andere Parameter."
@@ -173,11 +164,8 @@ discord:
     customize:
       title: "Anpassen"
       description: "Stellen Sie die Entfernungen nach Ihren persönlichen Vorlieben ein."
-    enter-a-value:
-      title: "Einen Wert eingeben"
-      description: "Diese Einstellung ist derzeit auf %s Blöcke eingestellt. Der Wert muss zwischen 1 und 1000 liegen."
     changelog:
-      title: "Skoice 2.1"
+      title: "Skoice 3"
       description: "Um mehr über die neuesten Funktionen von Skoice zu erfahren, [lesen Sie das Changelog](https://github.com/Skoice/skoice/discussions/35)."
     upcoming-features:
       title: "Was kommt als Nächstes?"
@@ -222,6 +210,15 @@ discord:
     too-many-options:
       label: "Zu viele Optionen"
       description: "Skoice ist nicht aktiviert, um mehr Optionen zu laden."
-  default-category-name: "Sprachchat im Nahbereich"
-  default-lobby-name: "Lobby"
+  text-input:
+    category-name:
+      label: "Category Name"
+      placeholder: "Sprachchat im Nahbereich"
+    lobby-name:
+      label: "Lobby Name"
+      placeholder: "Lobby"
+    horizontal-radius:
+      label: "Horizontaler Radius"
+    vertical-radius:
+      label: "Vertikaler Radius"
   communication-lost: "Kommunikation verloren."
