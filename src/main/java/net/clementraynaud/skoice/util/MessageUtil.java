@@ -24,10 +24,13 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 
-public interface MessageUtil {
+public final class MessageUtil {
+
+    private MessageUtil() {
+    }
 
     @SuppressWarnings("deprecation")
-    static void setHoverEvent(TextComponent message, String hover) {
+    public static void setHoverEvent(TextComponent message, String hover) {
         try {
             message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(hover)));
         } catch (NoClassDefFoundError e) {

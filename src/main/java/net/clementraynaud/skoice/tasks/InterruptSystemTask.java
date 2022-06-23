@@ -26,7 +26,7 @@ import net.dv8tion.jda.internal.utils.tuple.Pair;
 
 import java.util.concurrent.CompletableFuture;
 
-public class InterruptSystemTask implements Task {
+public class InterruptSystemTask {
 
     private final Configuration configuration;
 
@@ -34,7 +34,6 @@ public class InterruptSystemTask implements Task {
         this.configuration = configuration;
     }
 
-    @Override
     public void run() {
         for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.getAwaitingMoves().values()) {
             value.getRight().cancel(true);

@@ -40,7 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-public class UpdateNetworksTask implements Task {
+public class UpdateNetworksTask {
 
     private static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
 
@@ -52,7 +52,6 @@ public class UpdateNetworksTask implements Task {
         this.plugin = plugin;
     }
 
-    @Override
     public void run() {
         if (!this.lock.tryLock()) {
             return;

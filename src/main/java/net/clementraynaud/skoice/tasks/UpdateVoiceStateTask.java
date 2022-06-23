@@ -28,7 +28,7 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.List;
 
-public class UpdateVoiceStateTask implements Task {
+public class UpdateVoiceStateTask {
 
     private final Configuration configuration;
     private final TempFileStorage tempFileStorage;
@@ -42,7 +42,6 @@ public class UpdateVoiceStateTask implements Task {
         this.channel = channel;
     }
 
-    @Override
     public void run() {
         if (this.member.getVoiceState() == null || this.configuration.getLobby() == null) {
             return;
