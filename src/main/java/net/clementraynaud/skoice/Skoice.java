@@ -51,8 +51,8 @@ public class Skoice extends JavaPlugin {
 
     private Lang lang;
     private Configuration configuration;
-    private LinksFileStorage linksDataFile;
-    private TempFileStorage tempDataFile;
+    private LinksFileStorage linksFileStorage;
+    private TempFileStorage tempFileStorage;
     private Bot bot;
     private ConfigurationMenu configurationMenu;
     private EligiblePlayers eligiblePlayers;
@@ -68,11 +68,11 @@ public class Skoice extends JavaPlugin {
         this.lang = new Lang();
         this.lang.load(LangInfo.valueOf(this.configuration.getFile().getString(ConfigurationField.LANG.toString())));
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
-        this.linksDataFile = new LinksFileStorage(this);
-        this.linksDataFile.load();
+        this.linksFileStorage = new LinksFileStorage(this);
+        this.linksFileStorage.load();
         new OutdatedConfiguration(this).update();
-        this.tempDataFile = new TempFileStorage(this);
-        this.tempDataFile.load();
+        this.tempFileStorage = new TempFileStorage(this);
+        this.tempFileStorage.load();
         this.eligiblePlayers = new EligiblePlayers();
         this.bot = new Bot(this);
         this.bot.connect();
@@ -179,11 +179,11 @@ public class Skoice extends JavaPlugin {
     }
 
     public LinksFileStorage getLinksFileStorage() {
-        return this.linksDataFile;
+        return this.linksFileStorage;
     }
 
     public TempFileStorage getTempFileStorage() {
-        return this.tempDataFile;
+        return this.tempFileStorage;
     }
 
     public Bot getBot() {

@@ -31,13 +31,13 @@ import java.util.List;
 public class UpdateVoiceStateTask implements Task {
 
     private final Configuration configuration;
-    private final TempFileStorage tempDataFile;
+    private final TempFileStorage tempFileStorage;
     private final Member member;
     private final VoiceChannel channel;
 
-    public UpdateVoiceStateTask(Configuration configuration, TempFileStorage tempDataFile, Member member, VoiceChannel channel) {
+    public UpdateVoiceStateTask(Configuration configuration, TempFileStorage tempFileStorage, Member member, VoiceChannel channel) {
         this.configuration = configuration;
-        this.tempDataFile = tempDataFile;
+        this.tempFileStorage = tempFileStorage;
         this.member = member;
         this.channel = channel;
     }
@@ -55,18 +55,18 @@ public class UpdateVoiceStateTask implements Task {
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.configuration.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
-                List<String> mutedUsers = this.tempDataFile.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
+                List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
                 mutedUsers.add(this.member.getId());
-                this.tempDataFile.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
-                this.tempDataFile.saveFile();
+                this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
+                this.tempFileStorage.saveFile();
             }
         } else if (!isLobby) {
-            List<String> mutedUsers = this.tempDataFile.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
+            List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
             if (mutedUsers.contains(this.member.getId())) {
                 this.member.mute(false).queue();
                 mutedUsers.remove(this.member.getId());
-                this.tempDataFile.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
-                this.tempDataFile.saveFile();
+                this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
+                this.tempFileStorage.saveFile();
             }
         }
     }
