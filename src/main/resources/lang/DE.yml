@@ -213,10 +213,10 @@ discord:
   text-input:
     category-name:
       label: "Name der Kategorie"
-      placeholder: "Sprachchat im Nahbereich"
+      default-value: "Sprachchat im Nahbereich"
     lobby-name:
       label: "Name der Lobby"
-      placeholder: "Lobby"
+      default-value: "Lobby"
     horizontal-radius:
       label: "Horizontaler Radius"
     vertical-radius:
