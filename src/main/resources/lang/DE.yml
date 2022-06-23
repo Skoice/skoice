@@ -100,7 +100,7 @@ discord:
       alternative-description: "Lassen Sie uns die besten Einstellungen für Ihre persönliche Nutzung von Skoice wählen. Sie können die Entfernungen auch später noch anpassen."
       select-menu:
         placeholder: "Bitte wählen Sie einen Modus."
-        alternative-placeholder: "You are currently using customized distances."
+        alternative-placeholder: "Sie verwenden derzeit benutzerdefinierte Entfernungen."
         select-option:
           vanilla-mode:
             label: "Vanille-Modus"
@@ -212,10 +212,10 @@ discord:
       description: "Skoice ist nicht aktiviert, um mehr Optionen zu laden."
   text-input:
     category-name:
-      label: "Category Name"
+      label: "Name der Kategorie"
       placeholder: "Sprachchat im Nahbereich"
     lobby-name:
-      label: "Lobby Name"
+      label: "Name der Lobby"
       placeholder: "Lobby"
     horizontal-radius:
       label: "Horizontaler Radius"
