@@ -69,7 +69,7 @@ public class UpdateNetworksTask implements Task {
             for (UUID minecraftId : oldEligiblePlayers) {
                 Player player = Bukkit.getPlayer(minecraftId);
                 if (player != null) {
-                    Member member = this.plugin.getConfiguration().getMember(player.getUniqueId());
+                    Member member = this.plugin.getLinks().getMember(player.getUniqueId());
                     if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {
                         AudioChannel audioChannel = member.getVoiceState().getChannel();
                         if (audioChannel instanceof VoiceChannel) {
@@ -100,7 +100,7 @@ public class UpdateNetworksTask implements Task {
                 }
                 members.addAll(voiceChannel.getMembers());
             }
-            Map<String, String> links = new HashMap<>(this.plugin.getConfiguration().getLinks());
+            Map<String, String> links = new HashMap<>(this.plugin.getLinks().getMap());
             for (Member member : members) {
                 String minecraftId = MapUtil.getKeyFromValue(links, member.getId());
                 Network playerNetwork = minecraftId != null ? Network.getNetworks().stream()
@@ -192,7 +192,7 @@ public class UpdateNetworksTask implements Task {
                         && DistanceUtil.getVerticalDistance(p.getLocation(),
                         player.getLocation()) <= this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()))
                 .filter(p -> {
-                    Member member = this.plugin.getConfiguration().getMember(p.getUniqueId());
+                    Member member = this.plugin.getLinks().getMember(p.getUniqueId());
                     return member != null && member.getVoiceState() != null
                             && member.getVoiceState().getChannel() instanceof VoiceChannel
                             && ((VoiceChannel) member.getVoiceState().getChannel()).getParentCategory() != null

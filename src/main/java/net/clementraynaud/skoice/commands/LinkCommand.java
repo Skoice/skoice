@@ -24,7 +24,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +47,7 @@ public class LinkCommand extends ListenerAdapter {
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 return;
             }
-            if (this.plugin.getConfiguration().getLinks().containsValue(event.getUser().getId())) {
+            if (this.plugin.getLinks().getMap().containsValue(event.getUser().getId())) {
                 event.reply(this.plugin.getBot().getMenu("account-already-linked").build()).setEphemeral(true).queue();
                 return;
             }

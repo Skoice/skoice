@@ -22,15 +22,10 @@ package net.clementraynaud.skoice.config;
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class Configuration {
 
@@ -62,45 +57,6 @@ public class Configuration {
         }
         this.file.set(ConfigurationField.TOKEN.toString(), Base64.getEncoder().encodeToString(tokenBytes));
         this.saveFile();
-    }
-
-    public void linkUser(String minecraftId, String discordId) {
-        this.file.set(ConfigurationField.LINKS + "." + minecraftId, discordId);
-        this.saveFile();
-    }
-
-    public void unlinkUser(String minecraftId) {
-        this.file.set(ConfigurationField.LINKS + "." + minecraftId, null);
-        this.saveFile();
-    }
-
-    public Map<String, String> getLinks() {
-        Map<String, String> castedLinks = new HashMap<>();
-        if (this.file.isSet(ConfigurationField.LINKS.toString())) {
-            Map<String, Object> links = new HashMap<>(this.file.getConfigurationSection(ConfigurationField.LINKS.toString())
-                    .getValues(false));
-            for (Map.Entry<String, Object> entry : links.entrySet()) {
-                castedLinks.put(entry.getKey(), entry.getValue().toString());
-            }
-        }
-        return castedLinks;
-    }
-
-    public Member getMember(UUID minecraftId) {
-        String discordId = this.getLinks().get(minecraftId.toString());
-        if (discordId == null) {
-            return null;
-        }
-        Guild guild = this.getGuild();
-        if (guild == null) {
-            return null;
-        }
-        Member member = null;
-        try {
-            member = guild.retrieveMemberById(discordId).complete();
-        } catch (ErrorResponseException ignored) {
-        }
-        return member;
     }
 
     public VoiceChannel getLobby() {

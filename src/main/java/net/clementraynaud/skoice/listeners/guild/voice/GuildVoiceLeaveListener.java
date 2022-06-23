@@ -49,7 +49,7 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
                 || !voiceChannel.getParentCategory().equals(this.plugin.getConfiguration().getCategory())) {
             return;
         }
-        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getConfiguration().getLinks(), event.getMember().getId());
+        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinks().getMap(), event.getMember().getId());
         if (minecraftId == null) {
             return;
         }

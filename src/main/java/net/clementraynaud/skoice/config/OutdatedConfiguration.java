@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.config;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.system.Links;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -53,10 +54,10 @@ public class OutdatedConfiguration {
             this.convertOldToken();
             this.convertOldData("mainVoiceChannelID", ConfigurationField.LOBBY_ID.toString());
             this.convertOldRadius();
-            this.convertOldLinks();
             this.plugin.getConfiguration().saveFile();
+            this.convertOldLinks();
             try {
-                this.plugin.getConfiguration().getFile().loadFromString(this.plugin.getConfiguration().getFile().saveToString());
+                this.plugin.getLinks().getFile().loadFromString(this.plugin.getLinks().getFile().saveToString());
             } catch (InvalidConfigurationException ignored) {
             }
             try {
@@ -97,8 +98,9 @@ public class OutdatedConfiguration {
             for (int i = 0; i < subkeys.size(); i += 2) {
                 links.put(iterator.next(), iterator.next());
             }
-            links.putAll(this.plugin.getConfiguration().getLinks());
-            this.plugin.getConfiguration().getFile().set(ConfigurationField.LINKS.toString(), links);
+            links.putAll(this.plugin.getLinks().getMap());
+            this.plugin.getLinks().getFile().set(Links.FIELD, links);
+            this.plugin.getLinks().saveFile();
         }
     }
 

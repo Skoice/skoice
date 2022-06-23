@@ -258,7 +258,7 @@ public class Bot {
     }
 
     public void checkMemberStatus(Member member) {
-        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getConfiguration().getLinks(), member.getId());
+        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinks().getMap(), member.getId());
         if (minecraftId == null) {
             member.getUser().openPrivateChannel().complete()
                     .sendMessage(this.menus.get("account-not-linked").build())

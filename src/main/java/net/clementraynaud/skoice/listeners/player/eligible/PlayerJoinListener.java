@@ -41,7 +41,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         this.plugin.getEligiblePlayers().add(player.getUniqueId());
-        Member member = this.plugin.getConfiguration().getMember(player.getUniqueId());
+        Member member = this.plugin.getLinks().getMember(player.getUniqueId());
         if (member != null) {
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {

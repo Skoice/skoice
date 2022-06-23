@@ -28,7 +28,6 @@ public enum ConfigurationField {
     VERTICAL_RADIUS,
     ACTION_BAR_ALERT,
     CHANNEL_VISIBILITY,
-    LINKS,
     MUTED_USERS_ID,
     CONFIG_MENU,
     MESSAGE_ID,
