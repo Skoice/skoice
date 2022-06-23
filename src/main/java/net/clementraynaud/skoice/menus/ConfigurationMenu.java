@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.TempFileStorage;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildMessageChannel;
@@ -61,22 +62,22 @@ public class ConfigurationMenu {
     }
 
     public Message retrieveMessage() {
-        if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.CONFIG_MENU.toString())) {
+        if (!this.plugin.getTempFileStorage().getFile().contains(TempFileStorage.CONFIG_MENU_FIELD)) {
             return null;
         }
-        Guild guild = this.plugin.getBot().getJDA().getGuildById(this.plugin.getConfiguration().getFile()
-                .getString(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.GUILD_ID)));
+        Guild guild = this.plugin.getBot().getJDA().getGuildById(this.plugin.getTempFileStorage().getFile()
+                .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.GUILD_ID_FIELD));
         if (guild == null) {
             return null;
         }
-        GuildMessageChannel channel = guild.getChannelById(GuildMessageChannel.class, this.plugin.getConfiguration().getFile()
-                .getString(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.TEXT_CHANNEL_ID)));
+        GuildMessageChannel channel = guild.getChannelById(GuildMessageChannel.class, this.plugin.getTempFileStorage().getFile()
+                .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.CHANNEL_ID_FIELD));
         if (channel == null) {
             return null;
         }
         try {
-            return channel.retrieveMessageById(this.plugin.getConfiguration().getFile()
-                    .getString(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.MESSAGE_ID))).complete();
+            return channel.retrieveMessageById(this.plugin.getTempFileStorage().getFile()
+                    .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.MESSAGE_ID_FIELD)).complete();
         } catch (ErrorResponseException e) {
             this.clearConfig();
         }
@@ -91,20 +92,17 @@ public class ConfigurationMenu {
     }
 
     public void store(Message message) {
-        this.plugin.getConfiguration().getFile()
-                .set(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.GUILD_ID),
-                        message.getGuild().getId());
-        this.plugin.getConfiguration().getFile()
-                .set(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.TEXT_CHANNEL_ID),
-                        message.getGuildChannel().getId());
-        this.plugin.getConfiguration().getFile()
-                .set(ConfigurationField.getPath(ConfigurationField.CONFIG_MENU, ConfigurationField.MESSAGE_ID),
-                        message.getId());
-        this.plugin.getConfiguration().saveFile();
+        this.plugin.getTempFileStorage().getFile()
+                .set(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.GUILD_ID_FIELD, message.getGuild().getId());
+        this.plugin.getTempFileStorage().getFile()
+                .set(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.CHANNEL_ID_FIELD, message.getGuildChannel().getId());
+        this.plugin.getTempFileStorage().getFile()
+                .set(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.MESSAGE_ID_FIELD, message.getId());
+        this.plugin.getTempFileStorage().saveFile();
     }
 
     public void clearConfig() {
-        this.plugin.getConfiguration().getFile().set(ConfigurationField.CONFIG_MENU.toString(), null);
-        this.plugin.getConfiguration().saveFile();
+        this.plugin.getTempFileStorage().getFile().set(TempFileStorage.CONFIG_MENU_FIELD, null);
+        this.plugin.getTempFileStorage().saveFile();
     }
 }

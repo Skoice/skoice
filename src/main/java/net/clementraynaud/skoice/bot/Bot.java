@@ -258,7 +258,7 @@ public class Bot {
     }
 
     public void checkMemberStatus(Member member) {
-        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinks().getMap(), member.getId());
+        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksFileStorage().getLinks(), member.getId());
         if (minecraftId == null) {
             member.getUser().openPrivateChannel().complete()
                     .sendMessage(this.menus.get("account-not-linked").build())
@@ -277,7 +277,7 @@ public class Bot {
         if (guild != null) {
             for (VoiceChannel channel : guild.getVoiceChannels()) {
                 for (Member member : channel.getMembers()) {
-                    new UpdateVoiceStateTask(this.plugin.getConfiguration(), member, channel).run();
+                    new UpdateVoiceStateTask(this.plugin.getConfiguration(), this.plugin.getTempFileStorage(), member, channel).run();
                 }
             }
         }

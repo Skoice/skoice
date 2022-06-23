@@ -47,7 +47,7 @@ public class LinkCommand extends ListenerAdapter {
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 return;
             }
-            if (this.plugin.getLinks().getMap().containsValue(event.getUser().getId())) {
+            if (this.plugin.getLinksFileStorage().getLinks().containsValue(event.getUser().getId())) {
                 event.reply(this.plugin.getBot().getMenu("account-already-linked").build()).setEphemeral(true).queue();
                 return;
             }

@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.config;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.system.Links;
+import net.clementraynaud.skoice.storage.LinksFileStorage;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -57,7 +57,7 @@ public class OutdatedConfiguration {
             this.plugin.getConfiguration().saveFile();
             this.convertOldLinks();
             try {
-                this.plugin.getLinks().getFile().loadFromString(this.plugin.getLinks().getFile().saveToString());
+                this.plugin.getLinksFileStorage().getFile().loadFromString(this.plugin.getLinksFileStorage().getFile().saveToString());
             } catch (InvalidConfigurationException ignored) {
             }
             try {
@@ -98,9 +98,9 @@ public class OutdatedConfiguration {
             for (int i = 0; i < subkeys.size(); i += 2) {
                 links.put(iterator.next(), iterator.next());
             }
-            links.putAll(this.plugin.getLinks().getMap());
-            this.plugin.getLinks().getFile().set(Links.FIELD, links);
-            this.plugin.getLinks().saveFile();
+            links.putAll(this.plugin.getLinksFileStorage().getLinks());
+            this.plugin.getLinksFileStorage().getFile().set(LinksFileStorage.LINKS_FIELD, links);
+            this.plugin.getLinksFileStorage().saveFile();
         }
     }
 

@@ -49,7 +49,7 @@ public class LinkArgument extends Argument {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
             return;
         }
-        if (super.plugin.getLinks().getMap().containsKey(player.getUniqueId().toString())) {
+        if (super.plugin.getLinksFileStorage().getLinks().containsKey(player.getUniqueId().toString())) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-already-linked"));
             return;
         }
@@ -69,7 +69,7 @@ public class LinkArgument extends Argument {
         if (member == null) {
             return;
         }
-        super.plugin.getLinks().linkUser(player.getUniqueId().toString(), discordId);
+        super.plugin.getLinksFileStorage().linkUser(player.getUniqueId().toString(), discordId);
         LinkCommand.getDiscordIdCode().values().remove(this.arg);
         member.getUser().openPrivateChannel().complete()
                 .sendMessage(this.plugin.getBot().getMenu("account-linked").build())

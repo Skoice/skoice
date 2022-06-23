@@ -32,7 +32,8 @@ import net.clementraynaud.skoice.listeners.player.eligible.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.player.eligible.PlayerTeleportListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.system.EligiblePlayers;
-import net.clementraynaud.skoice.system.Links;
+import net.clementraynaud.skoice.storage.LinksFileStorage;
+import net.clementraynaud.skoice.storage.TempFileStorage;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
@@ -50,7 +51,8 @@ public class Skoice extends JavaPlugin {
 
     private Lang lang;
     private Configuration configuration;
-    private Links links;
+    private LinksFileStorage linksDataFile;
+    private TempFileStorage tempDataFile;
     private Bot bot;
     private ConfigurationMenu configurationMenu;
     private EligiblePlayers eligiblePlayers;
@@ -66,9 +68,11 @@ public class Skoice extends JavaPlugin {
         this.lang = new Lang();
         this.lang.load(LangInfo.valueOf(this.configuration.getFile().getString(ConfigurationField.LANG.toString())));
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
-        this.links = new Links(this);
-        this.links.load();
+        this.linksDataFile = new LinksFileStorage(this);
+        this.linksDataFile.load();
         new OutdatedConfiguration(this).update();
+        this.tempDataFile = new TempFileStorage(this);
+        this.tempDataFile.load();
         this.eligiblePlayers = new EligiblePlayers();
         this.bot = new Bot(this);
         this.bot.connect();
@@ -174,8 +178,12 @@ public class Skoice extends JavaPlugin {
         return this.configuration;
     }
 
-    public Links getLinks() {
-        return this.links;
+    public LinksFileStorage getLinksFileStorage() {
+        return this.linksDataFile;
+    }
+
+    public TempFileStorage getTempFileStorage() {
+        return this.tempDataFile;
     }
 
     public Bot getBot() {

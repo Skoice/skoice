@@ -17,71 +17,39 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.system;
+package net.clementraynaud.skoice.storage;
 
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Links {
+public class LinksFileStorage extends FileStorage {
 
-    public static final String FIELD = "links";
+    public static final String LINKS_FIELD = "links";
 
-    private File linksFile;
-    private final YamlConfiguration file = new YamlConfiguration();
-
-    private final Skoice plugin;
-
-    public Links(Skoice plugin) {
-        this.plugin = plugin;
-    }
-
-    public void load() {
-        this.linksFile = new File(this.plugin.getDataFolder() + File.separator + "links.yml");
-        if (!this.linksFile.exists()) {
-            this.plugin.saveResource("links.yml", false);
-        }
-        try {
-            this.file.load(this.linksFile);
-        } catch (IOException | InvalidConfigurationException ignored) {
-        }
-    }
-
-    public FileConfiguration getFile() {
-        return this.file;
-    }
-
-    public void saveFile() {
-        try {
-            this.file.save(this.linksFile);
-        } catch (IOException ignored) {
-        }
+    public LinksFileStorage(Skoice plugin) {
+        super(plugin, "links");
     }
 
     public void linkUser(String minecraftId, String discordId) {
-        this.file.set(Links.FIELD + "." + minecraftId, discordId);
+        super.yaml.set(LinksFileStorage.LINKS_FIELD + "." + minecraftId, discordId);
         this.saveFile();
     }
 
     public void unlinkUser(String minecraftId) {
-        this.file.set(Links.FIELD + "." + minecraftId, null);
+        super.yaml.set(LinksFileStorage.LINKS_FIELD + "." + minecraftId, null);
         this.saveFile();
     }
 
-    public Map<String, String> getMap() {
+    public Map<String, String> getLinks() {
         Map<String, String> castedLinks = new HashMap<>();
-        if (this.file.isSet(Links.FIELD)) {
-            Map<String, Object> links = new HashMap<>(this.file.getConfigurationSection(Links.FIELD)
+        if (super.yaml.isSet(LinksFileStorage.LINKS_FIELD)) {
+            Map<String, Object> links = new HashMap<>(super.yaml.getConfigurationSection(LinksFileStorage.LINKS_FIELD)
                     .getValues(false));
             for (Map.Entry<String, Object> entry : links.entrySet()) {
                 castedLinks.put(entry.getKey(), entry.getValue().toString());
@@ -91,11 +59,11 @@ public class Links {
     }
 
     public Member getMember(UUID minecraftId) {
-        String discordId = this.getMap().get(minecraftId.toString());
+        String discordId = this.getLinks().get(minecraftId.toString());
         if (discordId == null) {
             return null;
         }
-        Guild guild = this.plugin.getConfiguration().getGuild();
+        Guild guild = super.plugin.getConfiguration().getGuild();
         if (guild == null) {
             return null;
         }

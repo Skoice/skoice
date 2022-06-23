@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.config.Configuration;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.TempFileStorage;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.PermissionOverride;
@@ -31,11 +31,13 @@ import java.util.List;
 public class UpdateVoiceStateTask implements Task {
 
     private final Configuration configuration;
+    private final TempFileStorage tempDataFile;
     private final Member member;
     private final VoiceChannel channel;
 
-    public UpdateVoiceStateTask(Configuration configuration, Member member, VoiceChannel channel) {
+    public UpdateVoiceStateTask(Configuration configuration, TempFileStorage tempDataFile, Member member, VoiceChannel channel) {
         this.configuration = configuration;
+        this.tempDataFile = tempDataFile;
         this.member = member;
         this.channel = channel;
     }
@@ -53,18 +55,18 @@ public class UpdateVoiceStateTask implements Task {
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.configuration.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
-                List<String> mutedUsers = this.configuration.getFile().getStringList(ConfigurationField.MUTED_USERS_ID.toString());
+                List<String> mutedUsers = this.tempDataFile.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
                 mutedUsers.add(this.member.getId());
-                this.configuration.getFile().set(ConfigurationField.MUTED_USERS_ID.toString(), mutedUsers);
-                this.configuration.saveFile();
+                this.tempDataFile.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
+                this.tempDataFile.saveFile();
             }
         } else if (!isLobby) {
-            List<String> mutedUsers = this.configuration.getFile().getStringList(ConfigurationField.MUTED_USERS_ID.toString());
+            List<String> mutedUsers = this.tempDataFile.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
             if (mutedUsers.contains(this.member.getId())) {
                 this.member.mute(false).queue();
                 mutedUsers.remove(this.member.getId());
-                this.configuration.getFile().set(ConfigurationField.MUTED_USERS_ID.toString(), mutedUsers);
-                this.configuration.saveFile();
+                this.tempDataFile.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
+                this.tempDataFile.saveFile();
             }
         }
     }
