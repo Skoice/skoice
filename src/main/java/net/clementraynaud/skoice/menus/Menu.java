@@ -143,7 +143,7 @@ public class Menu {
 
     private List<Button> getButtons() {
         List<Button> buttons = new ArrayList<>();
-        if (this.parent != null && this.plugin.getBot().isReady()) {
+        if (this.parent != null && (this.plugin.getBot().isReady() || "language".equals(this.name))) {
             buttons.add(Button.secondary(this.parent, "← " + this.plugin.getLang().getMessage("discord.button-label.back")));
         }
         if (this.selectMenu != null && this.selectMenu.isRefreshable()) {
