@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -51,8 +52,13 @@ public class PlayerJoinListener implements Listener {
                 } catch (NoSuchMethodError e) {
                     player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-command"));
                 }
-            } else if (!this.plugin.getBot().isReady()) {
-                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
+            } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {
+                if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
+                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild",
+                            this.plugin.getBot().getJDA().getSelfUser().getApplicationId()));
+                } else {
+                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
+                }
             }
         }
     }

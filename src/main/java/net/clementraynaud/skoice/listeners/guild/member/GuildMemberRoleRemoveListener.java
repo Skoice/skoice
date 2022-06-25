@@ -37,7 +37,7 @@ public class GuildMemberRoleRemoveListener extends ListenerAdapter {
         if (event.getMember().equals(event.getGuild().getSelfMember())
                 && !event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)
                 && event.getRoles().stream().anyMatch(role -> role.hasPermission(Permission.ADMINISTRATOR))) {
-            this.plugin.updateStatus(false);
+            this.plugin.getListenerManager().update();
         }
     }
 }

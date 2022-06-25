@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.AudioChannel;
@@ -45,7 +46,7 @@ public class LinkArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        if (!super.plugin.getBot().isReady() || super.plugin.getBot().getJDA() == null) {
+        if (super.plugin.getBot().getStatus() != BotStatus.READY || super.plugin.getBot().getJDA() == null) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
             return;
         }

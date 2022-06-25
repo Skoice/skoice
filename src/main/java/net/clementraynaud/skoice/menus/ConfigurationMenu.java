@@ -20,9 +20,8 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.storage.TempFileStorage;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.Message;
@@ -38,14 +37,13 @@ public class ConfigurationMenu {
 
     public Message update() {
         Menu menu;
-        if (this.plugin.getBot().isOnMultipleGuilds()) {
+        if (this.plugin.getBot().getStatus() == BotStatus.MULTIPLE_GUILDS) {
             menu = this.plugin.getBot().getMenu("server");
-        } else if (!this.plugin.getBot().getJDA().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+        } else if (this.plugin.getBot().getStatus() == BotStatus.MISSING_PERMISSION) {
             menu = this.plugin.getBot().getMenu("permissions");
-        } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
+        } else if (this.plugin.getBot().getStatus() == BotStatus.NO_LOBBY_ID) {
             menu = this.plugin.getBot().getMenu("lobby");
-        } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
-                || !this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
+        } else if (this.plugin.getBot().getStatus() == BotStatus.NO_RADIUS) {
             menu = this.plugin.getBot().getMenu("mode");
         } else {
             menu = this.plugin.getBot().getMenu("settings");

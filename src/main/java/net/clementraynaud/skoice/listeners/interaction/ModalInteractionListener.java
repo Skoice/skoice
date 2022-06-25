@@ -47,7 +47,7 @@ public class ModalInteractionListener extends ListenerAdapter {
             this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), lobbyId);
             this.plugin.getConfiguration().saveFile();
             new InterruptSystemTask(this.plugin.getConfiguration()).run();
-            this.plugin.updateStatus(false, event.getUser());
+            this.plugin.getListenerManager().update(event.getUser());
             event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
         } else if ("customize".equals(event.getModalId())) {
             int horizontalRadius = event.getValue("horizontal-radius").getAsString().matches("[0-9]+")

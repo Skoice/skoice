@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.interaction.component;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.Menu;
 import net.dv8tion.jda.api.Permission;
@@ -59,11 +60,11 @@ public class ButtonInteractionListener extends ListenerAdapter {
                 if (this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
                     if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
                         event.getMessage().delete().queue();
-                        if (!this.plugin.getBot().isReady()) {
+                        if (this.plugin.getBot().getStatus() != BotStatus.READY) {
                             event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").build())
                                     .setEphemeral(true).queue();
                         }
-                    } else if (!this.plugin.getBot().isReady() && !"language".equals(buttonId)) {
+                    } else if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     } else if ("customize".equals(buttonId)) {
                         TextInput horizontalRadius = TextInput.create("horizontal-radius",

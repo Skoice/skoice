@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.Category;
@@ -64,7 +65,7 @@ public class LobbySelectMenu extends SelectMenu {
                     .withDescription(super.lang.getMessage("discord.select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
-        if (this.plugin.getBot().isReady()) {
+        if (this.plugin.getBot().getStatus() == BotStatus.READY) {
             return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("lobby-selection")
                     .addOptions(options)
                     .setDefaultValues(Collections.singleton(this.plugin.getConfiguration().getFile().getString(ConfigurationField.LOBBY_ID.toString()))).build();

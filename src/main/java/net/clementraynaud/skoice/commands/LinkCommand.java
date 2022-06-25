@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -42,7 +43,7 @@ public class LinkCommand extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if ("link".equals(event.getName())) {
-            if (!this.plugin.getBot().isReady()) {
+            if (this.plugin.getBot().getStatus() != BotStatus.READY) {
                 event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
                 return;

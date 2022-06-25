@@ -43,7 +43,7 @@ public class ChannelDeleteListener extends ListenerAdapter {
         }
         if (event.getChannel().getId().equals(this.plugin.getConfiguration().getFile().getString(ConfigurationField.LOBBY_ID.toString()))) {
             this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), null);
-            this.plugin.updateStatus(false);
+            this.plugin.getListenerManager().update();
             User user = event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
             if (user != null && !user.isBot()) {
                 user.openPrivateChannel().complete()

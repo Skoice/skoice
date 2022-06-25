@@ -13,7 +13,7 @@ logger:
     no-radius: "Radius not set. Type \"/configure\" on your Discord server to set up Skoice."
   error:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "You did not grant your bot the permission to register commands on your Discord server. Open this link to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "You did not grant your bot the permission to register commands on your Discord server. Open this link to add it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."
     discord-api-timed-out: "Discord seems to be experiencing an outage. Find more information here: https://discordstatus.com."
   exception:
@@ -28,6 +28,7 @@ minecraft:
         - "&7.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
       bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
       no-token: "%s You have &cnot provided a token&7."
+      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this link to invite it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
       bot-connected: "%s Your bot is &anow connected&7."
       bot-connected-incomplete-configuration-discord: "%s Your bot is &anow connected&7. Type \"&e/configure&7\" on your Discord server to set it up."
       bot-already-connected: "%s You have &aupdated the token&7. Restart your Minecraft server to connect your bot."
@@ -133,7 +134,7 @@ discord:
   field:
     configuration-complete:
       title: "Configuration Complete"
-      description: "Skoice is now configured. Type \"/link\" on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
+      description: "Skoice is now configured. Type `/link` on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     incomplete-configuration:
       title: "Incomplete Configuration"
       description: "Skoice is not configured correctly. Please contact an administrator."

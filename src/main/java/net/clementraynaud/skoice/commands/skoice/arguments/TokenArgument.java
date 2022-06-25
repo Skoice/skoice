@@ -44,7 +44,7 @@ public class TokenArgument extends Argument {
         if (super.plugin.getBot().getJDA() == null) {
             super.plugin.getBot().connect(this.sender);
             if (super.plugin.getBot().getJDA() != null) {
-                super.plugin.getBot().setup(false, this.sender);
+                super.plugin.getBot().setup(this.sender);
             }
         } else {
             this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.bot-already-connected"));

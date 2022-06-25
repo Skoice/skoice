@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
@@ -58,7 +59,7 @@ public class ModeSelectMenu extends SelectMenu {
             defaultValue = ModeSelectMenu.MINIGAME_MODE_ID;
         }
         return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("mode-selection")
-                .setPlaceholder(!this.plugin.getBot().isReady()
+                .setPlaceholder(this.plugin.getBot().getStatus() != BotStatus.READY
                         ? super.lang.getMessage("discord.menu.mode.select-menu.placeholder")
                         : super.lang.getMessage("discord.menu.mode.select-menu.alternative-placeholder"))
                 .addOptions(modes)

@@ -76,7 +76,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     this.plugin.getConfiguration().getFile().set(ConfigurationField.LANG.toString(), event.getSelectedOptions().get(0).getValue());
                     this.plugin.getConfiguration().saveFile();
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
-                    this.plugin.updateStatus(false);
+                    this.plugin.getListenerManager().update();
                     new BotCommands(this.plugin).register(event.getGuild());
                     event.editMessage(this.plugin.getBot().getMenu("language").build()).queue();
                     break;
@@ -111,7 +111,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                                             event.getSelectedOptions().get(0).getValue());
                                     this.plugin.getConfiguration().saveFile();
                                     new InterruptSystemTask(this.plugin.getConfiguration()).run();
-                                    this.plugin.updateStatus(false, event.getUser());
+                                    this.plugin.getListenerManager().update(event.getUser());
                                 }
                                 event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                             }
@@ -123,13 +123,13 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                         this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), 80);
                         this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 40);
                         this.plugin.getConfiguration().saveFile();
-                        this.plugin.updateStatus(false, event.getUser());
+                        this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     } else if ("minigame-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), 40);
                         this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 20);
                         this.plugin.getConfiguration().saveFile();
-                        this.plugin.updateStatus(false, event.getUser());
+                        this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     }
                     break;

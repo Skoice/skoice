@@ -41,12 +41,12 @@ public class RoleUpdatePermissionsListener extends ListenerAdapter {
             if (event.getOldPermissions().contains(Permission.ADMINISTRATOR)
                     && !event.getNewPermissions().contains(Permission.ADMINISTRATOR)
                     && !event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                this.plugin.updateStatus(false);
+                this.plugin.getListenerManager().update();
             } else if (!event.getOldPermissions().contains(Permission.ADMINISTRATOR)
                     && event.getNewPermissions().contains(Permission.ADMINISTRATOR)
                     && event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                 event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
-                this.plugin.updateStatus(false);
+                this.plugin.getListenerManager().update();
                 this.plugin.getConfigurationMenu().retrieveMessage()
                         .editMessage(this.plugin.getConfigurationMenu().update()).queue();
             }

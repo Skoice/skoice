@@ -1,6 +1,7 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.LobbySelectMenu;
@@ -59,7 +60,7 @@ public class Menu {
     }
 
     private String getDescription(boolean shortened) {
-        if (!this.plugin.getBot().isReady() && this.plugin.getLang().contains("discord.menu." + this.parentName + ".alternative-description")) {
+        if (this.plugin.getBot().getStatus() != BotStatus.READY && this.plugin.getLang().contains("discord.menu." + this.parentName + ".alternative-description")) {
             return this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".alternative-description");
         } else if (shortened && this.plugin.getLang().contains("discord.menu." + this.parentName + ".shortened-description")) {
             return this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".shortened-description");
@@ -77,7 +78,7 @@ public class Menu {
         if (this.getDescription(false) != null) {
             embed.setDescription(this.getDescription(false));
         }
-        if (this.plugin.getBot().isReady()) {
+        if (this.plugin.getBot().getStatus() == BotStatus.READY) {
             StringBuilder author = new StringBuilder();
             String parentMenu = this.parent;
             while (parentMenu != null) {
@@ -96,7 +97,7 @@ public class Menu {
         }
         int startIndex = 0;
         for (String field : this.fields) {
-            if ("customize".equals(field) && !this.plugin.getBot().isReady()) {
+            if ("customize".equals(field) && this.plugin.getBot().getStatus() != BotStatus.READY) {
                 break;
             }
             MenuField menuField = this.plugin.getBot().getField(field);
@@ -143,7 +144,7 @@ public class Menu {
 
     private List<Button> getButtons() {
         List<Button> buttons = new ArrayList<>();
-        if (this.parent != null && (this.plugin.getBot().isReady() || "language".equals(this.name))) {
+        if (this.parent != null && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.name))) {
             buttons.add(Button.secondary(this.parent, "← " + this.plugin.getLang().getMessage("discord.button-label.back")));
         }
         if (this.selectMenu != null && this.selectMenu.isRefreshable()) {
@@ -162,7 +163,7 @@ public class Menu {
             }
         }
         if (this.type == MenuType.DEFAULT) {
-            if (this.plugin.getBot().isReady()) {
+            if (this.plugin.getBot().getStatus() == BotStatus.READY) {
                 buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID,
                                 this.plugin.getLang().getMessage("discord.button-label.close"))
                         .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.get()));
@@ -190,7 +191,7 @@ public class Menu {
                     + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
                     + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
                     .withEmoji(this.emoji.get()));
-        } else if ("mode".equals(this.name) && this.plugin.getBot().isReady()) {
+        } else if ("mode".equals(this.name) && this.plugin.getBot().getStatus() == BotStatus.READY) {
             return Collections.singletonList(Button.primary("customize",
                             this.plugin.getLang().getMessage("discord.field.customize.title"))
                     .withEmoji(MenuEmoji.PENCIL2.get()));

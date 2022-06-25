@@ -20,6 +20,8 @@
 package net.clementraynaud.skoice.listeners;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotCommands;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.ReconnectedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -35,10 +37,15 @@ public class ReconnectedListener extends ListenerAdapter {
     @Override
     public void onReconnected(@NotNull ReconnectedEvent event) {
         this.plugin.getConfigurationMenu().delete();
-        this.plugin.getBot().updateGuildUniquenessStatus();
         this.plugin.getBot().checkForValidLobby();
+        this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
+            new BotCommands(this.plugin).register(guild);
+            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+                guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
+            }
+        });
         this.plugin.getBot().checkForUnlinkedUsersInLobby();
         this.plugin.getBot().updateVoiceState();
-        this.plugin.updateStatus(false);
+        this.plugin.getListenerManager().update();
     }
 }

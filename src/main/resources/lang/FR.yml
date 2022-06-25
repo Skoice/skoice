@@ -13,7 +13,7 @@ logger:
     no-radius: "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
   error:
     missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord (\"applications.commands\"). Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord (\"applications.commands\"). Ouvrez ce lien pour l'ajouter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."
     discord-api-timed-out: "Discord semble subir une panne. Retrouvez plus d'informations ici : https://discordstatus.com."
   exception:
@@ -28,6 +28,7 @@ minecraft:
         - "&7.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
       bot-creation-link: " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Veuillez de suivre les instructions sur cette page : &bhttps://github.com/Skoice/skoice/wiki&7.\n&8• &7Quand vous aurez récupéré son token, tapez \"&e/skoice token&7\" suivi du token.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
       no-token: "%s Vous n'avez &cpas fourni de token&7."
+      no-guild: "%s Votre bot n'est &cpas sur un serveur Discord&7. Ouvrez ce lien pour l'inviter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
       bot-connected: "%s Votre bot est &adésormais connecté&7."
       bot-connected-incomplete-configuration-discord: "%s Votre bot est &adésormais connecté&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
       bot-already-connected: "%s Vous avez &amis à jour le token&7. Redémarrez votre serveur Minecraft pour connecter votre bot."
@@ -44,7 +45,7 @@ minecraft:
       invalid-code: "%s Vous n'avez &cpas fourni de code valide&7. Tapez \"&e/link&7\" sur notre serveur Discord pour en recevoir un."
       account-linked: "%s Vous avez &alié votre compte Minecraft &7à Discord."
       account-unlinked: "%s Vous avez &adelié votre compte Minecraft &7de Discord."
-      account-not-linked: "%s Vous n'avez &cpas lié votre compte Minecraft &à Discord. Tapez \"&e/link&7\" sur notre serveur Discord pour le lier."
+      account-not-linked: "%s Vous n'avez &cpas lié votre compte Minecraft &7à Discord. Tapez \"&e/link&7\" sur notre serveur Discord pour le lier."
       account-already-linked: "%s Vous avez &cdéjà lié votre compte Minecraft &7à Discord. Tapez \"&e/skoice unlink&7\" pour le délier."
       connected-to-proximity-voice-chat: "%s Vous êtes &adésormais connecté &7au chat vocal de proximité. Pour une meilleure expérience, vous pouvez activer le \"&eMode streamer&7\" dans votre client Discord."
       disconnected-from-proximity-voice-chat: "%s Vous êtes &cdésormais déconnecté &7du chat vocal de proximité."
@@ -133,7 +134,7 @@ discord:
   field:
     configuration-complete:
       title: "Configuration terminée"
-      description: "Skoice est désormais configuré. Tapez \"/link\" sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
+      description: "Skoice est désormais configuré. Tapez `/link` sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
     incomplete-configuration:
       title: "Configuration non terminée"
       description: "Skoice n'est pas configuré correctement. Veuillez contacter un administrateur."

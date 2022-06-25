@@ -17,23 +17,9 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.guild;
+package net.clementraynaud.skoice.bot;
 
-import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+public enum BotStatus {
 
-public class GuildLeaveListener extends ListenerAdapter {
-
-    private final Skoice plugin;
-
-    public GuildLeaveListener(Skoice plugin) {
-        this.plugin = plugin;
-    }
-
-    @Override
-    public void onGuildLeave(@NotNull GuildLeaveEvent event) {
-        this.plugin.getListenerManager().update();
-    }
+    UNCHECKED, NO_TOKEN, NO_GUILD, MULTIPLE_GUILDS, MISSING_PERMISSION, NO_LOBBY_ID, NO_RADIUS, READY
 }

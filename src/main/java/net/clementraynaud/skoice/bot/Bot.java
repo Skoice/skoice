@@ -20,29 +20,9 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.commands.ConfigureCommand;
-import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.config.ConfigurationField;
-import net.clementraynaud.skoice.listeners.channel.network.ChannelDeleteListener;
-import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleAddListener;
-import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleRemoveListener;
-import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceJoinListener;
-import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceLeaveListener;
-import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceMoveListener;
-import net.clementraynaud.skoice.listeners.interaction.ModalInteractionListener;
-import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
-import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.listeners.interaction.component.SelectMenuInteractionListener;
-import net.clementraynaud.skoice.listeners.ReconnectedListener;
-import net.clementraynaud.skoice.listeners.channel.lobby.update.ChannelUpdateParentListener;
-import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
-import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
-import net.clementraynaud.skoice.listeners.message.MessageDeleteListener;
-import net.clementraynaud.skoice.listeners.message.MessageReceivedListener;
-import net.clementraynaud.skoice.commands.LinkCommand;
-import net.clementraynaud.skoice.commands.UnlinkCommand;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
@@ -88,8 +68,7 @@ public class Bot {
     private final Map<String, Menu> menus = new LinkedHashMap<>();
 
     private JDA jda;
-    private boolean isReady;
-    private boolean isOnMultipleGuilds;
+    private BotStatus status;
 
     private final Skoice plugin;
 
@@ -141,10 +120,9 @@ public class Bot {
         }
     }
 
-    public void setup(boolean startup, CommandSender sender) {
+    public void setup(CommandSender sender) {
         this.setDefaultAvatar();
         this.plugin.getConfigurationMenu().delete();
-        this.updateGuildUniquenessStatus();
         this.checkForValidLobby();
         this.jda.getGuilds().forEach(guild -> {
             new BotCommands(this.plugin).register(guild);
@@ -152,7 +130,7 @@ public class Bot {
                 guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
             }
         });
-        this.registerPermanentListeners();
+        this.plugin.getListenerManager().registerPermanentBotListeners();
         Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                         Bukkit.getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
@@ -175,14 +153,21 @@ public class Bot {
         this.loadMenus();
         this.checkForUnlinkedUsersInLobby();
         this.updateVoiceState();
-        this.plugin.updateStatus(startup);
+        this.plugin.getListenerManager().update();
         if (sender != null && this.jda != null) {
-            if (this.isReady) {
+            if (this.getStatus() == BotStatus.READY) {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected"));
+            } else if (this.getStatus() == BotStatus.NO_GUILD) {
+                sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild",
+                        this.getJDA().getSelfUser().getApplicationId()));
             } else {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected-incomplete-configuration-discord"));
             }
         }
+    }
+
+    public void setup() {
+        this.setup(null);
     }
 
     private void setDefaultAvatar() {
@@ -196,56 +181,12 @@ public class Bot {
         }
     }
 
-    public void updateGuildUniquenessStatus() {
-        this.isOnMultipleGuilds = this.jda.getGuilds().size() > 1;
-    }
-
     public void checkForValidLobby() {
         if (this.plugin.getConfiguration().getLobby() == null
                 && this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
             this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), null);
             this.plugin.getConfiguration().saveFile();
         }
-    }
-
-    private void registerPermanentListeners() {
-        this.jda.addEventListener(
-                new ReconnectedListener(this.plugin),
-                new GuildJoinListener(this.plugin),
-                new GuildLeaveListener(this.plugin),
-                new GuildMemberRoleAddListener(this.plugin),
-                new GuildMemberRoleRemoveListener(this.plugin),
-                new RoleUpdatePermissionsListener(this.plugin),
-                new MessageReceivedListener(this.plugin),
-                new MessageDeleteListener(this.plugin.getConfigurationMenu()),
-                new net.clementraynaud.skoice.listeners.channel.lobby.ChannelDeleteListener(this.plugin),
-                new ChannelUpdateParentListener(this.plugin),
-                new ConfigureCommand(this.plugin),
-                new InviteCommand(this.plugin),
-                new LinkCommand(this.plugin),
-                new UnlinkCommand(this.plugin),
-                new ButtonInteractionListener(this.plugin),
-                new SelectMenuInteractionListener(this.plugin),
-                new ModalInteractionListener(this.plugin)
-        );
-    }
-
-    public void registerListeners() {
-        this.getJDA().addEventListener(
-                new GuildVoiceJoinListener(this.plugin),
-                new GuildVoiceLeaveListener(this.plugin),
-                new GuildVoiceMoveListener(this.plugin),
-                new ChannelDeleteListener()
-        );
-    }
-
-    public void unregisterListeners() {
-        this.getJDA().removeEventListener(
-                new GuildVoiceJoinListener(this.plugin),
-                new GuildVoiceLeaveListener(this.plugin),
-                new GuildVoiceMoveListener(this.plugin),
-                new ChannelDeleteListener()
-        );
     }
 
     public void checkForUnlinkedUsersInLobby() {
@@ -301,9 +242,9 @@ public class Bot {
 
     public void updateActivity() {
         Activity activity = this.getJDA().getPresence().getActivity();
-        if (this.isReady() && !Objects.equals(activity, Activity.listening("/link"))) {
+        if (this.getStatus() == BotStatus.READY && !Objects.equals(activity, Activity.listening("/link"))) {
             this.getJDA().getPresence().setActivity(Activity.listening("/link"));
-        } else if (!this.isReady() && !Objects.equals(activity, Activity.listening("/configure"))) {
+        } else if (this.getStatus() != BotStatus.READY && !Objects.equals(activity, Activity.listening("/configure"))) {
             this.getJDA().getPresence().setActivity(Activity.listening("/configure"));
         }
     }
@@ -336,16 +277,12 @@ public class Bot {
         return this.jda;
     }
 
-    public void setReady(boolean ready) {
-        this.isReady = ready;
+    public void setStatus(BotStatus status) {
+        this.status = status;
     }
 
-    public boolean isReady() {
-        return this.isReady;
-    }
-
-    public boolean isOnMultipleGuilds() {
-        return this.isOnMultipleGuilds;
+    public BotStatus getStatus() {
+        return this.status;
     }
 
     public MenuField getField(String field) {
