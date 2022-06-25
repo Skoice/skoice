@@ -48,6 +48,9 @@ public class LobbySelectMenu extends SelectMenu {
             categories.add(voiceChannel.getParentCategory());
         }
         List<SelectOption> options = new ArrayList<>();
+        options.add(SelectOption.of(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
+                .withDescription(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.description"))
+                .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.get()));
         int optionIndex = 0;
         while (optionIndex < 23 && voiceChannels.size() > optionIndex) {
             if (voiceChannels.get(optionIndex).getParentCategory() != null) {
@@ -57,9 +60,6 @@ public class LobbySelectMenu extends SelectMenu {
             }
             optionIndex++;
         }
-        options.add(SelectOption.of(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
-                .withDescription(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.description"))
-                .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.get()));
         if (options.size() == 23) {
             options.add(SelectOption.of(super.lang.getMessage("discord.select-option.too-many-options.label"), "refresh")
                     .withDescription(super.lang.getMessage("discord.select-option.too-many-options.description"))
