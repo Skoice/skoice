@@ -24,8 +24,8 @@ import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.config.Configuration;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.config.OutdatedConfiguration;
-import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.storage.LinksFileStorage;
 import net.clementraynaud.skoice.storage.TempFileStorage;
@@ -46,7 +46,6 @@ public class Skoice extends JavaPlugin {
     private ListenerManager listenerManager;
     private Bot bot;
     private ConfigurationMenu configurationMenu;
-
     private Updater updater;
 
     @Override
