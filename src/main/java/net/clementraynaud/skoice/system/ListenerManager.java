@@ -101,15 +101,15 @@ public class ListenerManager {
     private void registerEligiblePlayerListeners() {
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this.plugin), this.plugin);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this.plugin), this.plugin);
-        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(this.plugin.getEligiblePlayers()), this.plugin);
-        Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(this.plugin.getEligiblePlayers()), this.plugin);
+        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this.plugin);
+        Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this.plugin);
     }
 
     private void unregisterEligiblePlayerListeners() {
         HandlerList.unregisterAll(new PlayerJoinListener(this.plugin));
         HandlerList.unregisterAll(new PlayerQuitListener(this.plugin));
-        HandlerList.unregisterAll(new PlayerMoveListener(this.plugin.getEligiblePlayers()));
-        HandlerList.unregisterAll(new PlayerTeleportListener(this.plugin.getEligiblePlayers()));
+        HandlerList.unregisterAll(new PlayerMoveListener());
+        HandlerList.unregisterAll(new PlayerTeleportListener());
     }
 
     public void registerPermanentBotListeners() {

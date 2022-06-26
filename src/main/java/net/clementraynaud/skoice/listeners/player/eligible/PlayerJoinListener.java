@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.player.eligible;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -40,7 +41,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        this.plugin.getEligiblePlayers().add(player.getUniqueId());
+        UpdateNetworksTask.getEligiblePlayers().add(player.getUniqueId());
         Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
         if (member != null) {
             GuildVoiceState voiceState = member.getVoiceState();

@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 
 public class UpdateNetworksTask {
 
+    private static final Set<UUID> eligiblePlayers = new HashSet<>();
     private static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
 
     private final ReentrantLock lock = new ReentrantLock();
@@ -63,8 +64,8 @@ public class UpdateNetworksTask {
             }
             this.muteMembers(mainVoiceChannel);
             Network.getNetworks().removeIf(network -> network.getChannel() == null && network.isInitialized());
-            Set<UUID> oldEligiblePlayers = this.plugin.getEligiblePlayers().copy();
-            this.plugin.getEligiblePlayers().clear();
+            Set<UUID> oldEligiblePlayers = new HashSet<>(UpdateNetworksTask.eligiblePlayers);
+            UpdateNetworksTask.eligiblePlayers.clear();
             for (UUID minecraftId : oldEligiblePlayers) {
                 Player player = Bukkit.getPlayer(minecraftId);
                 if (player != null) {
@@ -217,6 +218,10 @@ public class UpdateNetworksTask {
                 }
             }
         }
+    }
+
+    public static Set<UUID> getEligiblePlayers() {
+        return UpdateNetworksTask.eligiblePlayers;
     }
 
     public static Map<String, Pair<String, CompletableFuture<Void>>> getAwaitingMoves() {

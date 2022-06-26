@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.listeners.player.eligible;
 
-import net.clementraynaud.skoice.system.EligiblePlayers;
+import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,14 +27,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class PlayerMoveListener implements Listener {
 
-    private final EligiblePlayers eligiblePlayers;
-
-    public PlayerMoveListener(EligiblePlayers eligiblePlayers) {
-        this.eligiblePlayers = eligiblePlayers;
-    }
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerMove(PlayerMoveEvent event) {
-        this.eligiblePlayers.add(event.getPlayer().getUniqueId());
+        UpdateNetworksTask.getEligiblePlayers().add(event.getPlayer().getUniqueId());
     }
 }

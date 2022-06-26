@@ -27,7 +27,6 @@ import net.clementraynaud.skoice.config.OutdatedConfiguration;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
-import net.clementraynaud.skoice.system.EligiblePlayers;
 import net.clementraynaud.skoice.storage.LinksFileStorage;
 import net.clementraynaud.skoice.storage.TempFileStorage;
 import net.clementraynaud.skoice.system.ListenerManager;
@@ -47,7 +46,6 @@ public class Skoice extends JavaPlugin {
     private ListenerManager listenerManager;
     private Bot bot;
     private ConfigurationMenu configurationMenu;
-    private EligiblePlayers eligiblePlayers;
 
     private Updater updater;
 
@@ -66,7 +64,6 @@ public class Skoice extends JavaPlugin {
         this.tempFileStorage = new TempFileStorage(this);
         this.tempFileStorage.load();
         this.listenerManager = new ListenerManager(this);
-        this.eligiblePlayers = new EligiblePlayers();
         this.bot = new Bot(this);
         this.bot.connect();
         this.configurationMenu = new ConfigurationMenu(this);
@@ -115,10 +112,6 @@ public class Skoice extends JavaPlugin {
 
     public ConfigurationMenu getConfigurationMenu() {
         return this.configurationMenu;
-    }
-
-    public EligiblePlayers getEligiblePlayers() {
-        return this.eligiblePlayers;
     }
 
     public Updater getUpdater() {
