@@ -54,7 +54,7 @@ public class UnlinkCommand extends ListenerAdapter {
                     if (voiceState != null) {
                         AudioChannel voiceChannel = voiceState.getChannel();
                         if (voiceChannel != null && voiceChannel.equals(this.plugin.getConfiguration().getVoiceChannel())) {
-                            player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
+                            player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
                         }
                     }
                 }

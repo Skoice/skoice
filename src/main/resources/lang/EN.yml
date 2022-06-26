@@ -47,8 +47,9 @@ minecraft:
       account-unlinked: "%s You have &aunlinked your Minecraft account &7from Discord."
       account-not-linked: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on our Discord server to link it."
       account-already-linked: "%s You have &calready linked your Minecraft account &7to Discord. Type \"&e/skoice unlink&7\" to unlink it."
-      connected-to-proximity-voice-chat: "%s You are &anow connected &7to the proximity voice chat. For a better experience, you can enable \"&eStreamer Mode&7\" in your Discord client."
-      disconnected-from-proximity-voice-chat: "%s You are &cnow disconnected &7from the proximity voice chat."
+      connected: "%s You are &anow connected &7to the proximity voice chat. For a better experience, you can enable \"&eStreamer Mode&7\" in your Discord client."
+      not-connected: "%s You are &cnot connected &7to the proximity voice chat. Join the voice channel \"&e%s&7\" on our Discord server to use it."
+      disconnected: "%s You are &cnow disconnected &7from the proximity voice chat."
     error:
       no-parameter: "%s You have &cnot provided an argument&7. To use this command, type \"&e/skoice <%s>&7\"."
       invalid-parameter: "%s You have &cnot provided a valid argument&7. To use this command, type \"&e/skoice <%s>&7\"."
@@ -176,7 +177,7 @@ discord:
       description: "Type `/skoice link %s` in game to complete the process."
     account-linked:
       title: "Account Linked"
-      description: "Your Discord account has been linked to Minecraft."
+      description: "Your Discord account has been linked to Minecraft. Join the voice channel %s on our Discord server to use the proximity voice chat."
     account-unlinked:
       title: "Account Unlinked"
       description: "Your Discord account has been unlinked from Minecraft."

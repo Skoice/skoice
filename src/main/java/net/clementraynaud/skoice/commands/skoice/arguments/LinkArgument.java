@@ -26,6 +26,7 @@ import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
@@ -72,15 +73,18 @@ public class LinkArgument extends Argument {
         }
         super.plugin.getLinksFileStorage().linkUser(player.getUniqueId().toString(), discordId);
         LinkCommand.getDiscordIdCode().values().remove(this.arg);
+        VoiceChannel mainVoiceChannel = super.plugin.getConfiguration().getVoiceChannel();
         member.getUser().openPrivateChannel().complete()
-                .sendMessage(this.plugin.getBot().getMenu("account-linked").build())
+                .sendMessage(this.plugin.getBot().getMenu("account-linked").build(mainVoiceChannel.getAsMention()))
                 .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
         player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
         GuildVoiceState voiceState = member.getVoiceState();
         if (voiceState != null) {
             AudioChannel audioChannel = voiceState.getChannel();
-            if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getVoiceChannel())) {
-                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
+            if (audioChannel != null && audioChannel.equals(mainVoiceChannel)) {
+                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.connected"));
+            } else {
+                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.not-connected", mainVoiceChannel.getName()));
             }
         }
     }

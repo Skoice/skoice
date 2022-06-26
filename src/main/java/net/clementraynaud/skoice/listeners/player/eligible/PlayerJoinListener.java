@@ -47,7 +47,7 @@ public class PlayerJoinListener implements Listener {
             if (voiceState != null) {
                 AudioChannel audioChannel = voiceState.getChannel();
                 if (audioChannel != null && audioChannel.equals(this.plugin.getConfiguration().getVoiceChannel())) {
-                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
+                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
                 }
             }
         }

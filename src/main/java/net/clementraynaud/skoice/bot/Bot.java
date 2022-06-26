@@ -208,7 +208,7 @@ public class Bot {
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
                 this.plugin.getEligiblePlayers().add(player.getUniqueId());
-                player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
+                player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
             }
         }
     }
