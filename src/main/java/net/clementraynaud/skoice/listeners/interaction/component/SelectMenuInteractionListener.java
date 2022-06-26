@@ -80,11 +80,11 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     new BotCommands(this.plugin).register(event.getGuild());
                     event.editMessage(this.plugin.getBot().getMenu("language").build()).queue();
                     break;
-                case "lobby-selection":
+                case "voice-channel-selection":
                     Guild guild = event.getGuild();
                     if (guild != null) {
                         if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
-                            event.editMessage(this.plugin.getBot().getMenu("lobby").build()).queue();
+                            event.editMessage(this.plugin.getBot().getMenu("voice-channel").build()).queue();
                         } else {
                             if ("new-voice-channel".equals(event.getSelectedOptions().get(0).getValue())) {
                                 TextInput categoryName = TextInput.create("category-name",
@@ -93,21 +93,21 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                                         .setValue(this.plugin.getLang().getMessage("discord.text-input.category-name.default-value"))
                                         .setRequiredRange(1, 25)
                                         .build();
-                                TextInput lobbyName = TextInput.create("lobby-name",
-                                                this.plugin.getLang().getMessage("discord.text-input.lobby-name.label"),
+                                TextInput voiceChannelName = TextInput.create("voice-channel-name",
+                                                this.plugin.getLang().getMessage("discord.text-input.voice-channel-name.label"),
                                                 TextInputStyle.SHORT)
-                                        .setValue(this.plugin.getLang().getMessage("discord.text-input.lobby-name.default-value"))
+                                        .setValue(this.plugin.getLang().getMessage("discord.text-input.voice-channel-name.default-value"))
                                         .setRequiredRange(1, 25)
                                         .build();
                                 Modal modal = Modal.create("new-voice-channel",
-                                                this.plugin.getLang().getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.label"))
-                                        .addActionRows(ActionRow.of(categoryName), ActionRow.of(lobbyName))
+                                                this.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.label"))
+                                        .addActionRows(ActionRow.of(categoryName), ActionRow.of(voiceChannelName))
                                         .build();
                                 event.replyModal(modal).queue();
                             } else {
-                                VoiceChannel lobby = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
-                                if (lobby != null && lobby.getParentCategory() != null) {
-                                    this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(),
+                                VoiceChannel voiceChannel = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
+                                if (voiceChannel != null && voiceChannel.getParentCategory() != null) {
+                                    this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(),
                                             event.getSelectedOptions().get(0).getValue());
                                     this.plugin.getConfiguration().saveFile();
                                     new InterruptSystemTask(this.plugin.getConfiguration()).run();

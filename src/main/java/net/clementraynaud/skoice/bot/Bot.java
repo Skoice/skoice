@@ -123,7 +123,7 @@ public class Bot {
     public void setup(CommandSender sender) {
         this.setDefaultAvatar();
         this.plugin.getConfigurationMenu().delete();
-        this.checkForValidLobby();
+        this.checkForValidVoiceChannel();
         this.jda.getGuilds().forEach(guild -> {
             new BotCommands(this.plugin).register(guild);
             if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
@@ -151,7 +151,7 @@ public class Bot {
         );
         this.retrieveNetworks();
         this.loadMenus();
-        this.checkForUnlinkedUsersInLobby();
+        this.checkForUnlinkedUsers();
         this.updateVoiceState();
         this.plugin.getListenerManager().update();
         if (sender != null && this.jda != null) {
@@ -181,18 +181,18 @@ public class Bot {
         }
     }
 
-    public void checkForValidLobby() {
-        if (this.plugin.getConfiguration().getLobby() == null
-                && this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
-            this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), null);
+    public void checkForValidVoiceChannel() {
+        if (this.plugin.getConfiguration().getVoiceChannel() == null
+                && this.plugin.getConfiguration().getFile().contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
+            this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
             this.plugin.getConfiguration().saveFile();
         }
     }
 
-    public void checkForUnlinkedUsersInLobby() {
-        VoiceChannel lobby = this.plugin.getConfiguration().getLobby();
-        if (lobby != null) {
-            for (Member member : lobby.getMembers()) {
+    public void checkForUnlinkedUsers() {
+        VoiceChannel voiceChannel = this.plugin.getConfiguration().getVoiceChannel();
+        if (voiceChannel != null) {
+            for (Member member : voiceChannel.getMembers()) {
                 this.checkMemberStatus(member);
             }
         }
@@ -257,9 +257,9 @@ public class Bot {
                 this.status = BotStatus.MISSING_PERMISSION;
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission",
                         this.getJDA().getSelfUser().getApplicationId()));
-            } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
-                this.status = BotStatus.NO_LOBBY_ID;
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-lobby-id"));
+            } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
+                this.status = BotStatus.NO_VOICE_CHANNEL;
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-voice-channel"));
             } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
                     || !this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
                 this.status = BotStatus.NO_RADIUS;

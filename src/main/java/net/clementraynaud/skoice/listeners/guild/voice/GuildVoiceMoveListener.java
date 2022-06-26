@@ -63,7 +63,7 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
                         .filter(network -> network.contains(player.getPlayer().getUniqueId()))
                         .forEach(network -> network.remove(player.getPlayer()));
             }
-        } else if (event.getChannelJoined().equals(this.plugin.getConfiguration().getLobby())
+        } else if (event.getChannelJoined().equals(this.plugin.getConfiguration().getVoiceChannel())
                 && Network.getNetworks().stream().noneMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
             this.plugin.getBot().checkMemberStatus(event.getMember());
         }

@@ -43,11 +43,11 @@ public class UpdateVoiceStateTask {
     }
 
     public void run() {
-        if (this.member.getVoiceState() == null || this.configuration.getLobby() == null) {
+        if (this.member.getVoiceState() == null || this.configuration.getVoiceChannel() == null) {
             return;
         }
-        boolean isLobby = this.channel.getId().equals(this.configuration.getLobby().getId());
-        if (isLobby && !this.member.getVoiceState().isGuildMuted()) {
+        boolean isMainVoiceChannel = this.channel.getId().equals(this.configuration.getVoiceChannel().getId());
+        if (isMainVoiceChannel && !this.member.getVoiceState().isGuildMuted()) {
             PermissionOverride override = this.channel.getPermissionOverride(this.channel.getGuild().getPublicRole());
             if (override != null && override.getDenied().contains(Permission.VOICE_SPEAK)
                     && this.member.hasPermission(this.channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
@@ -59,7 +59,7 @@ public class UpdateVoiceStateTask {
                 this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
                 this.tempFileStorage.saveFile();
             }
-        } else if (!isLobby) {
+        } else if (!isMainVoiceChannel) {
             List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
             if (mutedUsers.contains(this.member.getId())) {
                 this.member.mute(false).queue();

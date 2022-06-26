@@ -57,7 +57,7 @@ public class UnlinkArgument extends Argument {
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 AudioChannel audioChannel = voiceState.getChannel();
-                if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getLobby())
+                if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getVoiceChannel())
                         || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
                     player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
                 }

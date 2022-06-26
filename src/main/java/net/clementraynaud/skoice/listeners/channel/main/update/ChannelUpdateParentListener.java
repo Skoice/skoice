@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.channel.lobby.update;
+package net.clementraynaud.skoice.listeners.channel.main.update;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
@@ -41,8 +41,8 @@ public class ChannelUpdateParentListener extends ListenerAdapter {
         if (!event.getChannelType().isAudio()) {
             return;
         }
-        if (event.getChannel().getId().equals(this.plugin.getConfiguration().getFile().getString(ConfigurationField.LOBBY_ID.toString()))) {
-            this.plugin.getConfiguration().getFile().set(ConfigurationField.LOBBY_ID.toString(), null);
+        if (event.getChannel().getId().equals(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))) {
+            this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
             this.plugin.getListenerManager().update();
             User user = event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
             if (user != null && !user.isBot()) {

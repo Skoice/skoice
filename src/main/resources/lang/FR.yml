@@ -9,7 +9,7 @@ logger:
     no-token: "Token non défini. Rejoignez votre serveur Minecraft pour configurer Skoice."
     no-guild: "Votre bot n'est pas sur un serveur Discord. Ouvrez ce lien pour l'inviter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     multiple-guilds: "Votre bot est sur plusieurs serveurs Discord. Tapez \"/configure\" sur votre serveur Discord pour en choisir un."
-    no-lobby-id: "Salon vocal principal non défini. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
+    no-voice-channel: "Salon vocal non défini. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
     no-radius: "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
   error:
     missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
@@ -85,8 +85,8 @@ discord:
     permissions:
       title: "Permissions"
       description: "Afin de fonctionner correctement, votre bot doit avoir la permission \"Administrateur\" sur votre serveur Discord."
-    lobby:
-      title: "Salon vocal principal"
+    voice-channel:
+      title: "Salon vocal"
       description: "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité. Il doit se trouver dans une catégorie."
       shortened-description: "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité."
       select-menu:
@@ -217,10 +217,10 @@ discord:
   text-input:
     category-name:
       label: "Nom de la catégorie"
+      default-value: "Skoice"
+    voice-channel-name:
+      label: "Nom du salon vocal"
       default-value: "Chat vocal de proximité"
-    lobby-name:
-      label: "Nom du salon vocal principal"
-      default-value: "Salon vocal principal"
     horizontal-radius:
       label: "Rayon horizontal"
     vertical-radius:

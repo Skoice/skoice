@@ -41,8 +41,8 @@ public class ConfigurationMenu {
             menu = this.plugin.getBot().getMenu("server");
         } else if (this.plugin.getBot().getStatus() == BotStatus.MISSING_PERMISSION) {
             menu = this.plugin.getBot().getMenu("permissions");
-        } else if (this.plugin.getBot().getStatus() == BotStatus.NO_LOBBY_ID) {
-            menu = this.plugin.getBot().getMenu("lobby");
+        } else if (this.plugin.getBot().getStatus() == BotStatus.NO_VOICE_CHANNEL) {
+            menu = this.plugin.getBot().getMenu("voice-channel");
         } else if (this.plugin.getBot().getStatus() == BotStatus.NO_RADIUS) {
             menu = this.plugin.getBot().getMenu("mode");
         } else {

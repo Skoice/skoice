@@ -4,7 +4,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.LobbySelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.VoiceChannelSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ModeSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ServerSelectMenu;
@@ -113,8 +113,8 @@ public class Menu {
             case "server":
                 this.selectMenu = new ServerSelectMenu(this.plugin);
                 break;
-            case "lobby":
-                this.selectMenu = new LobbySelectMenu(this.plugin);
+            case "voice-channel":
+                this.selectMenu = new VoiceChannelSelectMenu(this.plugin);
                 break;
             case "mode":
                 this.selectMenu = new ModeSelectMenu(this.plugin);

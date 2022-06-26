@@ -41,7 +41,7 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
         }
         VoiceChannel voiceChannel = (VoiceChannel) event.getChannelJoined();
         new UpdateVoiceStateTask(this.plugin.getConfiguration(), this.plugin.getTempFileStorage(), event.getMember(), voiceChannel).run();
-        if (event.getChannelJoined().equals(this.plugin.getConfiguration().getLobby())) {
+        if (event.getChannelJoined().equals(this.plugin.getConfiguration().getVoiceChannel())) {
             this.plugin.getBot().checkMemberStatus(event.getMember());
         }
     }

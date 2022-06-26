@@ -23,7 +23,7 @@ public enum ConfigurationField {
 
     TOKEN,
     LANG,
-    LOBBY_ID,
+    VOICE_CHANNEL_ID,
     HORIZONTAL_RADIUS,
     VERTICAL_RADIUS,
     ACTION_BAR_ALERT,

@@ -38,15 +38,15 @@ public class InterruptSystemTask {
         for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.getAwaitingMoves().values()) {
             value.getRight().cancel(true);
         }
-        boolean isLobbySet = this.configuration.getLobby() != null;
+        boolean isVoiceChannelSet = this.configuration.getVoiceChannel() != null;
         for (Network network : Network.getNetworks()) {
-            if (isLobbySet) {
+            if (isVoiceChannelSet) {
                 for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
                     Member member = network.getChannel().getMembers().get(i);
                     if (i + 1 < network.getChannel().getMembers().size()) {
-                        member.getGuild().moveVoiceMember(member, this.configuration.getLobby()).queue();
+                        member.getGuild().moveVoiceMember(member, this.configuration.getVoiceChannel()).queue();
                     } else {
-                        member.getGuild().moveVoiceMember(member, this.configuration.getLobby()).complete();
+                        member.getGuild().moveVoiceMember(member, this.configuration.getVoiceChannel()).complete();
                     }
                 }
             }

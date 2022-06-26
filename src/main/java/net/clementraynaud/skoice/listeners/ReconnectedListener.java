@@ -37,14 +37,14 @@ public class ReconnectedListener extends ListenerAdapter {
     @Override
     public void onReconnected(@NotNull ReconnectedEvent event) {
         this.plugin.getConfigurationMenu().delete();
-        this.plugin.getBot().checkForValidLobby();
+        this.plugin.getBot().checkForValidVoiceChannel();
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
             new BotCommands(this.plugin).register(guild);
             if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                 guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
             }
         });
-        this.plugin.getBot().checkForUnlinkedUsersInLobby();
+        this.plugin.getBot().checkForUnlinkedUsers();
         this.plugin.getBot().updateVoiceState();
         this.plugin.getListenerManager().update();
     }

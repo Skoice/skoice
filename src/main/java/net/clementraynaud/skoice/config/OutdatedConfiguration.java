@@ -52,7 +52,7 @@ public class OutdatedConfiguration {
                 return;
             }
             this.convertOldToken();
-            this.convertOldData("mainVoiceChannelID", ConfigurationField.LOBBY_ID.toString());
+            this.convertOldData("mainVoiceChannelID", ConfigurationField.VOICE_CHANNEL_ID.toString());
             this.convertOldRadius();
             this.plugin.getConfiguration().saveFile();
             this.convertOldLinks();

@@ -9,7 +9,7 @@ logger:
     no-token: "Token not set. Join your Minecraft server to set up Skoice."
     no-guild: "Your bot is not on a Discord server. Open this link to invite it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     multiple-guilds: "Your bot is on multiple Discord servers. Type \"/configure\" on your Discord server to choose one."
-    no-lobby-id: "Lobby not set. Type \"/configure\" on your Discord server to set up Skoice."
+    no-voice-channel: "Voice channel not set. Type \"/configure\" on your Discord server to set up Skoice."
     no-radius: "Radius not set. Type \"/configure\" on your Discord server to set up Skoice."
   error:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
@@ -85,8 +85,8 @@ discord:
     permissions:
       title: "Permissions"
       description: "In order to work properly, your bot must have the \"Administrator\" permission on your Discord server."
-    lobby:
-      title: "Lobby"
+    voice-channel:
+      title: "Voice Channel"
       description: "Select the channel players have to join to use the proximity voice chat. It must be in a category."
       shortened-description: "Select the channel players have to join to use the proximity voice chat."
       select-menu:
@@ -143,7 +143,7 @@ discord:
       description: "Type `/configure` on your Discord server to complete the configuration and use Skoice."
     incomplete-configuration-alternative-server-manager:
       title: "Incomplete Configuration"
-      description: "You have either moved or deleted the lobby. Type `/configure` on your Discord server to complete the configuration and use Skoice."
+      description: "You have either moved or deleted the main voice channel. Type `/configure` on your Discord server to complete the configuration and use Skoice."
     download:
       title: "Download"
       description: "[Get the plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server."
@@ -217,10 +217,10 @@ discord:
   text-input:
     category-name:
       label: "Category Name"
+      default-value: "Skoice"
+    voice-channel-name:
+      label: "Voice Channel Name"
       default-value: "Proximity Voice Chat"
-    lobby-name:
-      label: "Lobby Name"
-      default-value: "Lobby"
     horizontal-radius:
       label: "Horizontal Radius"
     vertical-radius:

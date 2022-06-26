@@ -25,9 +25,8 @@ import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
-import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.listeners.ReconnectedListener;
-import net.clementraynaud.skoice.listeners.channel.lobby.update.ChannelUpdateParentListener;
+import net.clementraynaud.skoice.listeners.channel.main.update.ChannelUpdateParentListener;
 import net.clementraynaud.skoice.listeners.channel.network.ChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
 import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
@@ -47,7 +46,6 @@ import net.clementraynaud.skoice.listeners.player.eligible.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.player.eligible.PlayerTeleportListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
@@ -124,7 +122,7 @@ public class ListenerManager {
                 new RoleUpdatePermissionsListener(this.plugin),
                 new MessageReceivedListener(this.plugin),
                 new MessageDeleteListener(this.plugin.getConfigurationMenu()),
-                new net.clementraynaud.skoice.listeners.channel.lobby.ChannelDeleteListener(this.plugin),
+                new net.clementraynaud.skoice.listeners.channel.main.ChannelDeleteListener(this.plugin),
                 new ChannelUpdateParentListener(this.plugin),
                 new ConfigureCommand(this.plugin),
                 new InviteCommand(this.plugin),

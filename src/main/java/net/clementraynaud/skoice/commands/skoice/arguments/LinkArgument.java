@@ -79,7 +79,7 @@ public class LinkArgument extends Argument {
         GuildVoiceState voiceState = member.getVoiceState();
         if (voiceState != null) {
             AudioChannel audioChannel = voiceState.getChannel();
-            if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getLobby())) {
+            if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getVoiceChannel())) {
                 player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.connected-to-proximity-voice-chat"));
             }
         }

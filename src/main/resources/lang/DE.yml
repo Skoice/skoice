@@ -9,7 +9,7 @@ logger:
     no-token: "Token nicht gesetzt. Tritt deinem Minecraft-Server bei, um Skoice einzurichten."
     no-guild: "Ihr Bot befindet sich nicht auf einem Discord-Server. Öffne diesen Link, um ihn einzuladen: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     multiple-guilds: "Dein Bot befindet sich auf mehreren Discord-Servern. Tippe \"/configure\" auf deinem Discord-Server ein, um einen auszuwählen."
-    no-lobby-id: "Lobby nicht eingestellt. Tippe \"/configure\" auf deinem Discord-Server ein, um Skoice einzurichten."
+    no-voice-channel: "Sprachkanal nicht eingestellt. Tippe \"/configure\" auf deinem Discord-Server ein, um Skoice einzurichten."
     no-radius: "Radius nicht eingestellt. Tippe \"/configure\" auf deinem Discord-Server ein, um Skoice einzurichten."
   error:
     missing-permission: "Sie haben Ihrem Bot nicht die Berechtigung \"Administrator\" auf Ihrem Discord-Server erteilt. Öffne diesen Link, um sie hinzuzufügen: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
@@ -85,8 +85,8 @@ discord:
     permissions:
       title: "Berechtigungen"
       description: "Um richtig zu funktionieren, muss dein Bot die Berechtigung \"Administrator\" auf deinem Discord-Server haben."
-    lobby:
-      title: "Lobby"
+    voice-channel:
+      title: "Sprachkanal"
       description: "Wählen Sie den Kanal, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen. Er muss sich in einer Kategorie befinden."
       shortened-description: "Wählen Sie den Kanal, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen."
       select-menu:
@@ -143,7 +143,7 @@ discord:
       description: "Geben Sie `/configure` auf Ihrem Discord-Server ein, um die Konfiguration abzuschließen und Skoice zu verwenden."
     incomplete-configuration-alternative-server-manager:
       title: "Unvollständige Konfiguration"
-      description: "Sie haben die Lobby entweder verschoben oder gelöscht. Geben Sie `/configure` auf Ihrem Discord-Server ein, um die Konfiguration abzuschließen und Skoice zu verwenden."
+      description: "Sie haben den Hauptsprachkanal entweder verschoben oder gelöscht. Geben Sie `/configure` auf Ihrem Discord-Server ein, um die Konfiguration abzuschließen und Skoice zu verwenden."
     download:
       title: "Herunterladen"
       description: "[Holen Sie sich das Plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) und installieren Sie es auf Ihrem Minecraft-Server."
@@ -217,10 +217,10 @@ discord:
   text-input:
     category-name:
       label: "Name der Kategorie"
+      default-value: "Skoice"
+    voice-channel-name:
+      label: "Name des Sprachkanals"
       default-value: "Sprachchat im Nahbereich"
-    lobby-name:
-      label: "Name der Lobby"
-      default-value: "Lobby"
     horizontal-radius:
       label: "Horizontaler Radius"
     vertical-radius:

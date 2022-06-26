@@ -58,7 +58,7 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
             Network.getNetworks().stream()
                     .filter(network -> network.contains(player.getPlayer()))
                     .forEach(network -> network.remove(player.getPlayer()));
-            if (event.getChannelLeft().equals(this.plugin.getConfiguration().getLobby())
+            if (event.getChannelLeft().equals(this.plugin.getConfiguration().getVoiceChannel())
                     || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected-from-proximity-voice-chat"));
             }

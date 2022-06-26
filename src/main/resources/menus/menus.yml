@@ -63,7 +63,7 @@ error:
     fields:
       - illegal-value
 
-lobby:
+voice-channel:
   emoji: sound
   type: default
   style: primary

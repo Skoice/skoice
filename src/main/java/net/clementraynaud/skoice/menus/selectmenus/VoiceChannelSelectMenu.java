@@ -31,11 +31,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class LobbySelectMenu extends SelectMenu {
+public class VoiceChannelSelectMenu extends SelectMenu {
 
     private final Skoice plugin;
 
-    public LobbySelectMenu(Skoice plugin) {
+    public VoiceChannelSelectMenu(Skoice plugin) {
         super(plugin.getLang(), true);
         this.plugin = plugin;
     }
@@ -48,8 +48,8 @@ public class LobbySelectMenu extends SelectMenu {
             categories.add(voiceChannel.getParentCategory());
         }
         List<SelectOption> options = new ArrayList<>();
-        options.add(SelectOption.of(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
-                .withDescription(super.lang.getMessage("discord.menu.lobby.select-menu.select-option.new-voice-channel.description"))
+        options.add(SelectOption.of(super.lang.getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
+                .withDescription(super.lang.getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.description"))
                 .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.get()));
         int optionIndex = 0;
         while (optionIndex < 23 && voiceChannels.size() > optionIndex) {
@@ -66,12 +66,12 @@ public class LobbySelectMenu extends SelectMenu {
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
         if (this.plugin.getBot().getStatus() == BotStatus.READY) {
-            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("lobby-selection")
+            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("voice-channel-selection")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(this.plugin.getConfiguration().getFile().getString(ConfigurationField.LOBBY_ID.toString()))).build();
+                    .setDefaultValues(Collections.singleton(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))).build();
         } else {
-            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("lobby-selection")
-                    .setPlaceholder(super.lang.getMessage("discord.menu.lobby.select-menu.placeholder"))
+            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("voice-channel-selection")
+                    .setPlaceholder(super.lang.getMessage("discord.menu.voice-channel.select-menu.placeholder"))
                     .addOptions(options).build();
         }
     }

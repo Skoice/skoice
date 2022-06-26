@@ -57,11 +57,11 @@ public class UpdateNetworksTask {
             return;
         }
         try {
-            VoiceChannel lobby = this.plugin.getConfiguration().getLobby();
-            if (lobby == null) {
+            VoiceChannel mainVoiceChannel = this.plugin.getConfiguration().getVoiceChannel();
+            if (mainVoiceChannel == null) {
                 return;
             }
-            this.muteMembers(lobby);
+            this.muteMembers(mainVoiceChannel);
             Network.getNetworks().removeIf(network -> network.getChannel() == null && network.isInitialized());
             Set<UUID> oldEligiblePlayers = this.plugin.getEligiblePlayers().copy();
             this.plugin.getEligiblePlayers().clear();
@@ -73,8 +73,8 @@ public class UpdateNetworksTask {
                         AudioChannel audioChannel = member.getVoiceState().getChannel();
                         if (audioChannel instanceof VoiceChannel) {
                             VoiceChannel voiceChannel = (VoiceChannel) audioChannel;
-                            boolean isLobby = voiceChannel == this.plugin.getConfiguration().getLobby();
-                            if (!isLobby && (voiceChannel.getParentCategory() == null
+                            boolean isMainVoiceChannel = voiceChannel == mainVoiceChannel;
+                            if (!isMainVoiceChannel && (voiceChannel.getParentCategory() == null
                                     || voiceChannel.getParentCategory() != this.plugin.getConfiguration().getCategory())) {
                                 Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(member.getId());
                                 if (pair != null) {
@@ -91,7 +91,7 @@ public class UpdateNetworksTask {
                     }
                 }
             }
-            Set<Member> members = new HashSet<>(lobby.getMembers());
+            Set<Member> members = new HashSet<>(mainVoiceChannel.getMembers());
             for (Network network : Network.getNetworks()) {
                 VoiceChannel voiceChannel = network.getChannel();
                 if (voiceChannel == null) {
@@ -112,7 +112,7 @@ public class UpdateNetworksTask {
                     }
                     shouldBeInChannel = playerNetwork.getChannel();
                 } else {
-                    shouldBeInChannel = lobby;
+                    shouldBeInChannel = mainVoiceChannel;
                 }
                 Pair<String, CompletableFuture<Void>> awaitingMove = UpdateNetworksTask.awaitingMoves.get(member.getId());
                 if (awaitingMove != null && awaitingMove.getLeft().equals(shouldBeInChannel.getId())) {
@@ -136,13 +136,13 @@ public class UpdateNetworksTask {
         }
     }
 
-    private void muteMembers(VoiceChannel lobby) {
-        Role publicRole = lobby.getGuild().getPublicRole();
-        PermissionOverride lobbyPublicRoleOverride = lobby.getPermissionOverride(publicRole);
-        if (lobbyPublicRoleOverride == null) {
-            lobby.upsertPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
-        } else if (!lobbyPublicRoleOverride.getDenied().contains(Permission.VOICE_SPEAK)) {
-            lobbyPublicRoleOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
+    private void muteMembers(VoiceChannel voiceChannel) {
+        Role publicRole = voiceChannel.getGuild().getPublicRole();
+        PermissionOverride permissionOverride = voiceChannel.getPermissionOverride(publicRole);
+        if (permissionOverride == null) {
+            voiceChannel.upsertPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
+        } else if (!permissionOverride.getDenied().contains(Permission.VOICE_SPEAK)) {
+            permissionOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
         }
     }
 

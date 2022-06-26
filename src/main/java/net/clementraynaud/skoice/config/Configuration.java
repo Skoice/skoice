@@ -59,28 +59,28 @@ public class Configuration {
         this.saveFile();
     }
 
-    public VoiceChannel getLobby() {
+    public VoiceChannel getVoiceChannel() {
         if (this.plugin.getBot().getJDA() == null) {
             return null;
         }
-        String lobbyId = this.file.getString(ConfigurationField.LOBBY_ID.toString());
-        if (lobbyId == null) {
+        String voiceChannelId = this.file.getString(ConfigurationField.VOICE_CHANNEL_ID.toString());
+        if (voiceChannelId == null) {
             return null;
         }
-        VoiceChannel lobby = this.plugin.getBot().getJDA().getVoiceChannelById(lobbyId);
-        return lobby != null && lobby.getParentCategory() != null ? lobby : null;
+        VoiceChannel voiceChannel = this.plugin.getBot().getJDA().getVoiceChannelById(voiceChannelId);
+        return voiceChannel != null && voiceChannel.getParentCategory() != null ? voiceChannel : null;
     }
 
     public Category getCategory() {
         if (this.plugin.getBot().getJDA() == null) {
             return null;
         }
-        VoiceChannel lobby = this.getLobby();
-        return lobby != null ? lobby.getParentCategory() : null;
+        VoiceChannel voiceChannel = this.getVoiceChannel();
+        return voiceChannel != null ? voiceChannel.getParentCategory() : null;
     }
 
     public Guild getGuild() {
-        VoiceChannel lobby = this.getLobby();
-        return lobby != null ? lobby.getGuild() : null;
+        VoiceChannel voiceChannel = this.getVoiceChannel();
+        return voiceChannel != null ? voiceChannel.getGuild() : null;
     }
 }
