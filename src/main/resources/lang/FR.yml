@@ -195,6 +195,9 @@ discord:
     illegal-interaction:
       title: "Interaction interdite"
       description: "Vous pouvez seulement interagir avec le bot sur un serveur Discord."
+    illegal-value:
+      title: "Valeur interdite"
+      description: "Les valeurs doivent être des nombres entiers supérieurs à 0."
   button-label:
     back: "Retour"
     refresh: "Rafraîchir"

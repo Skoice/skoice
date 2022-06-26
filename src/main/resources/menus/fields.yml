@@ -61,3 +61,6 @@ too-many-interactions:
 illegal-interaction:
   emoji: x
   inline: false
+illegal-value:
+  emoji: x
+  inline: false

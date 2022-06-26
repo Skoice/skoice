@@ -58,6 +58,10 @@ error:
     type: error
     fields:
       - illegal-interaction
+  illegal-value:
+    type: error
+    fields:
+      - illegal-value
 
 lobby:
   emoji: sound

@@ -195,6 +195,9 @@ discord:
     illegal-interaction:
       title: "Unzulässige Interaktion"
       description: "Sie können mit dem Bot nur auf einem Discord-Server interagieren."
+    illegal-value:
+      title: "Unzulässige Wert"
+      description: "Die Werte müssen ganze Zahlen größer als 0 sein."
   button-label:
     back: "Zurück"
     refresh: "Auffrischen"

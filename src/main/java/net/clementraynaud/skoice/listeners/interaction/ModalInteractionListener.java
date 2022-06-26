@@ -50,18 +50,22 @@ public class ModalInteractionListener extends ListenerAdapter {
             this.plugin.getListenerManager().update(event.getUser());
             event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
         } else if ("customize".equals(event.getModalId())) {
-            int horizontalRadius = event.getValue("horizontal-radius").getAsString().matches("[0-9]+")
-                    && Integer.parseInt(event.getValue("horizontal-radius").getAsString()) >= 1
-                    ? Integer.parseInt(event.getValue("horizontal-radius").getAsString())
-                    : 80;
-            int verticalRadius = event.getValue("vertical-radius").getAsString().matches("[0-9]+")
-                    && Integer.parseInt(event.getValue("vertical-radius").getAsString()) >= 1
-                    ? Integer.parseInt(event.getValue("vertical-radius").getAsString())
-                    : 40;
-            this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
-            this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), verticalRadius);
-            this.plugin.getConfiguration().saveFile();
-            event.editMessage(this.plugin.getBot().getMenu("mode").build()).queue();
+            int horizontalRadius = 0;
+            int verticalRadius = 0;
+            if (event.getValue("horizontal-radius").getAsString().matches("[0-9]+")) {
+                horizontalRadius = Integer.parseInt(event.getValue("horizontal-radius").getAsString());
+            }
+            if (event.getValue("vertical-radius").getAsString().matches("[0-9]+")) {
+                verticalRadius = Integer.parseInt(event.getValue("vertical-radius").getAsString());
+            }
+            if (horizontalRadius == 0 || verticalRadius == 0) {
+                event.reply(this.plugin.getBot().getMenu("illegal-value").build()).setEphemeral(true).queue();
+            } else {
+                this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
+                this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), verticalRadius);
+                this.plugin.getConfiguration().saveFile();
+                event.editMessage(this.plugin.getBot().getMenu("mode").build()).queue();
+            }
         }
     }
 }

@@ -195,6 +195,9 @@ discord:
     illegal-interaction:
       title: "Illegal Interaction"
       description: "You can only interact with the bot on a Discord server."
+    illegal-value:
+      title: "Illegal Value"
+      description: "Values must be whole numbers greater than 0."
   button-label:
     back: "Back"
     refresh: "Refresh"
