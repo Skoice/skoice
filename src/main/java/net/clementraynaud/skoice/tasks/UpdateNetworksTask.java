@@ -27,14 +27,23 @@ import net.clementraynaud.skoice.util.DistanceUtil;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.AudioChannel;
+import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.PermissionOverride;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
@@ -51,6 +60,14 @@ public class UpdateNetworksTask {
 
     public UpdateNetworksTask(Skoice plugin) {
         this.plugin = plugin;
+    }
+
+    public static Set<UUID> getEligiblePlayers() {
+        return UpdateNetworksTask.eligiblePlayers;
+    }
+
+    public static Map<String, Pair<String, CompletableFuture<Void>>> getAwaitingMoves() {
+        return UpdateNetworksTask.awaitingMoves;
     }
 
     public void run() {
@@ -218,13 +235,5 @@ public class UpdateNetworksTask {
                 }
             }
         }
-    }
-
-    public static Set<UUID> getEligiblePlayers() {
-        return UpdateNetworksTask.eligiblePlayers;
-    }
-
-    public static Map<String, Pair<String, CompletableFuture<Void>>> getAwaitingMoves() {
-        return UpdateNetworksTask.awaitingMoves;
     }
 }

@@ -82,7 +82,7 @@ public class Lang {
         String[] strings = this.messages.contains(path)
                 ? this.messages.getStringList(path).toArray(new String[0])
                 : this.englishMessages.getStringList(path).toArray(new String[0]);
-        ComponentBuilder message = new ComponentBuilder(ChatColor.translateAlternateColorCodes( '&',
+        ComponentBuilder message = new ComponentBuilder(ChatColor.translateAlternateColorCodes('&',
                 String.format(strings[0], Lang.CHAT_PREFIX)));
         for (int i = 0; i < components.length; i++) {
             message.append(components[i])

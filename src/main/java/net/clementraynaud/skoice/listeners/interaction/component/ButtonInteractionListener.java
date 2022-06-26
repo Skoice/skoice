@@ -32,9 +32,6 @@ import net.dv8tion.jda.api.interactions.components.Modal;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ButtonInteractionListener extends ListenerAdapter {
 
     private final Skoice plugin;

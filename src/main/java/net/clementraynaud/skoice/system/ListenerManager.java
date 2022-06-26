@@ -54,9 +54,8 @@ import org.bukkit.event.HandlerList;
 
 public class ListenerManager {
 
-    private boolean startup = true;
-
     private final Skoice plugin;
+    private boolean startup = true;
 
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;

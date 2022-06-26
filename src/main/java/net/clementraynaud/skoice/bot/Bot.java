@@ -21,10 +21,10 @@ package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
-import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.menus.Menu;
-import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
+import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.ConfigurationUtils;
 import net.clementraynaud.skoice.util.MapUtil;
@@ -66,11 +66,9 @@ public class Bot {
 
     private final Map<String, MenuField> fields = new HashMap<>();
     private final Map<String, Menu> menus = new LinkedHashMap<>();
-
+    private final Skoice plugin;
     private JDA jda;
     private BotStatus status;
-
-    private final Skoice plugin;
 
     public Bot(Skoice plugin) {
         this.plugin = plugin;

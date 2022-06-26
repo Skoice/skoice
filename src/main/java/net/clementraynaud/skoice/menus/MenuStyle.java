@@ -21,5 +21,6 @@ package net.clementraynaud.skoice.menus;
 
 public enum MenuStyle {
 
-    PRIMARY, SECONDARY
+    PRIMARY,
+    SECONDARY
 }

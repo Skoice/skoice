@@ -29,7 +29,12 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Network {
@@ -37,11 +42,9 @@ public class Network {
     private static final double FALLOFF = 2.5;
 
     private static final Set<Network> networks = ConcurrentHashMap.newKeySet();
-
-    private boolean initialized = false;
-
     private final Configuration configuration;
     private final Set<UUID> players;
+    private boolean initialized = false;
     private String channel;
 
     public Network(Configuration configuration, String channel) {
@@ -53,6 +56,10 @@ public class Network {
     public Network(Configuration configuration, Set<UUID> players) {
         this.configuration = configuration;
         this.players = players;
+    }
+
+    public static Set<Network> getNetworks() {
+        return Network.networks;
     }
 
     public void build() {
@@ -167,9 +174,5 @@ public class Network {
 
     public boolean isInitialized() {
         return this.initialized;
-    }
-
-    public static Set<Network> getNetworks() {
-        return Network.networks;
     }
 }

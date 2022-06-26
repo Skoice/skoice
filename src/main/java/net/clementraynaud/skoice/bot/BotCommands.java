@@ -27,7 +27,9 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BotCommands {
 
@@ -41,13 +43,13 @@ public class BotCommands {
         guild.updateCommands().addCommands(this.getCommands())
                 .queue(null, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
                         e -> {
-                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
-                            this.plugin.getBot().getJDA().getSelfUser().getApplicationId()));
-                    try {
-                        guild.leave().queue();
-                    } catch (ErrorResponseException ignored) {
-                    }
-                }));
+                            this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
+                                    this.plugin.getBot().getJDA().getSelfUser().getApplicationId()));
+                            try {
+                                guild.leave().queue();
+                            } catch (ErrorResponseException ignored) {
+                            }
+                        }));
     }
 
     private Set<SlashCommandData> getCommands() {

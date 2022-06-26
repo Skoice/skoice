@@ -37,14 +37,6 @@ public enum ArgumentInfo {
         this.restrictedToOperators = restrictedToOperators;
     }
 
-    public boolean isAllowedInConsole() {
-        return this.allowedInConsole;
-    }
-
-    public boolean isRestrictedToOperators() {
-        return this.restrictedToOperators;
-    }
-
     public static ArgumentInfo get(String option) {
         return Stream.of(ArgumentInfo.values())
                 .filter(value -> value.toString().equalsIgnoreCase(option))
@@ -66,5 +58,13 @@ public enum ArgumentInfo {
                 .map(Enum::toString)
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
+    }
+
+    public boolean isAllowedInConsole() {
+        return this.allowedInConsole;
+    }
+
+    public boolean isRestrictedToOperators() {
+        return this.restrictedToOperators;
     }
 }

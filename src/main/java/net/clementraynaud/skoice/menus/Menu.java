@@ -4,11 +4,11 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.VoiceChannelSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ModeSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ServerSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ToggleSelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.VoiceChannelSelectMenu;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -188,8 +188,8 @@ public class Menu {
                     .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
         } else if ("permissions".equals(this.name)) {
             return Collections.singletonList(Button.link("https://discord.com/api/oauth2/authorize?client_id="
-                    + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
-                    + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
+                            + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
+                            + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
                     .withEmoji(this.emoji.get()));
         } else if ("mode".equals(this.name) && this.plugin.getBot().getStatus() == BotStatus.READY) {
             return Collections.singletonList(Button.primary("customize",

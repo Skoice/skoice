@@ -30,9 +30,8 @@ import java.util.TimerTask;
 
 public class ConfigureCommand extends ListenerAdapter {
 
-    private boolean configureCommandCooldown = false;
-
     private final Skoice plugin;
+    private boolean configureCommandCooldown = false;
 
     public ConfigureCommand(Skoice plugin) {
         this.plugin = plugin;

@@ -40,6 +40,10 @@ public class LinkCommand extends ListenerAdapter {
         this.plugin = plugin;
     }
 
+    public static Map<String, String> getDiscordIdCode() {
+        return LinkCommand.discordIdCode;
+    }
+
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if ("link".equals(event.getName())) {
@@ -60,9 +64,5 @@ public class LinkCommand extends ListenerAdapter {
             LinkCommand.discordIdCode.put(event.getUser().getId(), code);
             event.reply(this.plugin.getBot().getMenu("verification-code").build(code)).setEphemeral(true).queue();
         }
-    }
-
-    public static Map<String, String> getDiscordIdCode() {
-        return LinkCommand.discordIdCode;
     }
 }
