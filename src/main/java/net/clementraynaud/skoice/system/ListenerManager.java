@@ -66,7 +66,7 @@ public class ListenerManager {
 
     public void update(User user) {
         boolean wasBotReady = this.plugin.getBot().getStatus() == BotStatus.READY;
-        this.updateStatus();
+        this.plugin.getBot().updateStatus();
         if (this.startup) {
             this.startup = false;
             if (this.plugin.getBot().getStatus() == BotStatus.READY) {
@@ -98,37 +98,6 @@ public class ListenerManager {
 
     public void update() {
         this.update(null);
-    }
-
-    private void updateStatus() {
-        this.plugin.getBot().setStatus(BotStatus.UNCHECKED);
-        if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
-            this.plugin.getBot().setStatus(BotStatus.NO_TOKEN);
-            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
-        } else if (this.plugin.getBot().getJDA() != null) {
-            if (this.plugin.getBot().getJDA().getGuilds().isEmpty()) {
-                this.plugin.getBot().setStatus(BotStatus.NO_GUILD);
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-guild",
-                        this.plugin.getBot().getJDA().getSelfUser().getApplicationId()));
-            } else if (this.plugin.getBot().getJDA().getGuilds().size() > 1) {
-                this.plugin.getBot().setStatus(BotStatus.MULTIPLE_GUILDS);
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
-            } else if (!this.plugin.getBot().getJDA().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                this.plugin.getBot().setStatus(BotStatus.MISSING_PERMISSION);
-                this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission",
-                        this.plugin.getBot().getJDA().getSelfUser().getApplicationId()));
-            } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
-                this.plugin.getBot().setStatus(BotStatus.NO_LOBBY_ID);
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-lobby-id"));
-            } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
-                    || !this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
-                this.plugin.getBot().setStatus(BotStatus.NO_RADIUS);
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-radius"));
-            } else {
-                this.plugin.getBot().setStatus(BotStatus.READY);
-            }
-            this.plugin.getBot().updateActivity();
-        }
     }
 
     private void registerEligiblePlayerListeners() {

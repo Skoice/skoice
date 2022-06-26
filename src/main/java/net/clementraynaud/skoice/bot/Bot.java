@@ -240,6 +240,37 @@ public class Bot {
         }
     }
 
+    public void updateStatus() {
+        this.status = BotStatus.UNCHECKED;
+        if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
+            this.status = BotStatus.NO_TOKEN;
+            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
+        } else if (this.getJDA() != null) {
+            if (this.getJDA().getGuilds().isEmpty()) {
+                this.status = BotStatus.NO_GUILD;
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-guild",
+                        this.getJDA().getSelfUser().getApplicationId()));
+            } else if (this.getJDA().getGuilds().size() > 1) {
+                this.status = BotStatus.MULTIPLE_GUILDS;
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
+            } else if (!this.getJDA().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+                this.status = BotStatus.MISSING_PERMISSION;
+                this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission",
+                        this.getJDA().getSelfUser().getApplicationId()));
+            } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.LOBBY_ID.toString())) {
+                this.status = BotStatus.NO_LOBBY_ID;
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-lobby-id"));
+            } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
+                    || !this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
+                this.status = BotStatus.NO_RADIUS;
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-radius"));
+            } else {
+                this.status = BotStatus.READY;
+            }
+            this.updateActivity();
+        }
+    }
+
     public void updateActivity() {
         Activity activity = this.getJDA().getPresence().getActivity();
         if (this.getStatus() == BotStatus.READY && !Objects.equals(activity, Activity.listening("/link"))) {
@@ -275,10 +306,6 @@ public class Bot {
 
     public JDA getJDA() {
         return this.jda;
-    }
-
-    public void setStatus(BotStatus status) {
-        this.status = status;
     }
 
     public BotStatus getStatus() {
