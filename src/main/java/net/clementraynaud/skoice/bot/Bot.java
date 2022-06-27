@@ -156,8 +156,21 @@ public class Bot {
             if (this.getStatus() == BotStatus.READY) {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected"));
             } else if (this.getStatus() == BotStatus.NO_GUILD) {
-                sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild",
-                        this.getJDA().getSelfUser().getApplicationId()));
+                try {
+                    TextComponent invitePage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
+                    MessageUtil.setHoverEvent(invitePage,
+                            this.plugin.getLang().getMessage("minecraft.interaction.link",
+                                    "https://discord.com/api/oauth2/authorize?client_id="
+                                            + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
+                                            + "&permissions=8&scope=bot%20applications.commands"));
+                    invitePage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
+                            "https://discord.com/api/oauth2/authorize?client_id="
+                                    + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
+                                    + "&permissions=8&scope=bot%20applications.commands"));
+                    sender.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", invitePage));
+                } catch (NoSuchMethodError e) {
+                    sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild"));
+                }
             } else {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected-incomplete-configuration-discord"));
             }
