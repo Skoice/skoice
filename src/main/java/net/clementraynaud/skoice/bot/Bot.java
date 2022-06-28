@@ -169,7 +169,8 @@ public class Bot {
                                     + "&permissions=8&scope=bot%20applications.commands"));
                     sender.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", invitePage));
                 } catch (NoSuchMethodError e) {
-                    sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild"));
+                    sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild",
+                            this.plugin.getBot().getJDA().getSelfUser().getApplicationId()));
                 }
             } else {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected-incomplete-configuration-discord"));

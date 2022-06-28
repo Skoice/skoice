@@ -67,7 +67,8 @@ public class PlayerJoinListener implements Listener {
                                         + "&permissions=8&scope=bot%20applications.commands"));
                         player.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", invitePage));
                     } catch (NoSuchMethodError e) {
-                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild"));
+                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild"),
+                                this.plugin.getBot().getJDA().getSelfUser().getApplicationId());
                     }
                 } else {
                     player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
