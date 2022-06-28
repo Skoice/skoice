@@ -26,7 +26,7 @@ minecraft:
         - " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on "
         - "&7.\n&8• &7When you have retrieved its token, put it "
         - "&7.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
-      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
       no-token: "%s You have &cnot provided a token&7."
       no-guild-interactive:
         - "%s Your bot is &cnot on a Discord server&7. Open "
