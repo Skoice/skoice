@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.menus;
 
-import net.dv8tion.jda.api.entities.Emoji;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 
 public enum MenuEmoji {
 
