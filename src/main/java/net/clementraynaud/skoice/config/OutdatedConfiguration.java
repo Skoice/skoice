@@ -64,6 +64,7 @@ public class OutdatedConfiguration {
                 Files.delete(outdatedConfig.toPath());
             } catch (IOException ignored) {
             }
+            this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
         }
     }
 
