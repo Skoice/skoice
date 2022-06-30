@@ -26,7 +26,7 @@ import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
 import net.clementraynaud.skoice.listeners.ReconnectedListener;
-import net.clementraynaud.skoice.listeners.channel.main.update.ChannelUpdateParentListener;
+import net.clementraynaud.skoice.listeners.channel.main.GenericChannelEvent;
 import net.clementraynaud.skoice.listeners.channel.network.ChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
 import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
@@ -121,8 +121,7 @@ public class ListenerManager {
                 new RoleUpdatePermissionsListener(this.plugin),
                 new MessageReceivedListener(this.plugin),
                 new MessageDeleteListener(this.plugin.getConfigurationMenu()),
-                new net.clementraynaud.skoice.listeners.channel.main.ChannelDeleteListener(this.plugin),
-                new ChannelUpdateParentListener(this.plugin),
+                new GenericChannelEvent(this.plugin),
                 new ConfigureCommand(this.plugin),
                 new InviteCommand(this.plugin),
                 new LinkCommand(this.plugin),

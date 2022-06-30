@@ -14,7 +14,7 @@ logger:
     no-radius: "Radius nicht eingestellt. Tippe \"/configure\" auf deinem Discord-Server ein, um Skoice einzurichten."
   error:
     missing-permission: "Sie haben Ihrem Bot nicht die Berechtigung \"Administrator\" auf Ihrem Discord-Server erteilt. Öffne diesen Link, um sie hinzuzufügen: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "Du hast deinem Bot nicht die Erlaubnis gegeben, Befehle auf deinem Discord-Server zu registrieren. Öffne diesen Link, um ihn hinzuzufügen: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "Du hast deinem Bot nicht die Erlaubnis gegeben, Befehle auf deinem Discord-Server zu registrieren. Öffne diesen Link, um ihn hinzuzufügen und starte deinen Minecraft-Server neu: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Ihr Bot konnte keine Verbindung herstellen. Um das Token zu aktualisieren, geben Sie \"/skoice token\" gefolgt vom neuen Token ein."
     discord-api-timed-out: "Discord scheint eine Störung zu haben. Weitere Informationen finden Sie hier: https://discordstatus.com."
   exception:

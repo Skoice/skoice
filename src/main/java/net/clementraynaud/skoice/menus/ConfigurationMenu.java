@@ -83,9 +83,9 @@ public class ConfigurationMenu {
     }
 
     public void delete() {
-        Message configurationMessage = this.retrieveMessage();
-        if (configurationMessage != null) {
-            configurationMessage.delete().queue();
+        Message message = this.retrieveMessage();
+        if (message != null) {
+            message.delete().queue();
         }
     }
 

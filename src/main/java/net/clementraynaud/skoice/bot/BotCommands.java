@@ -42,14 +42,8 @@ public class BotCommands {
     public void register(Guild guild) {
         guild.updateCommands().addCommands(this.getCommands())
                 .queue(null, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
-                        e -> {
-                            this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
-                                    this.plugin.getBot().getJDA().getSelfUser().getApplicationId()));
-                            try {
-                                guild.leave().queue();
-                            } catch (ErrorResponseException ignored) {
-                            }
-                        }));
+                        e -> this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
+                                this.plugin.getBot().getJDA().getSelfUser().getApplicationId()))));
     }
 
     private Set<SlashCommandData> getCommands() {

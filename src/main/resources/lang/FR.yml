@@ -14,7 +14,7 @@ logger:
     no-radius: "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
   error:
     missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord (\"applications.commands\"). Ouvrez ce lien pour l'ajouter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord. Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."
     discord-api-timed-out: "Discord semble subir une panne. Retrouvez plus d'informations ici : https://discordstatus.com."
   exception:

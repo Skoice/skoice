@@ -14,7 +14,7 @@ logger:
     no-radius: "Radius not set. Type \"/configure\" on your Discord server to set up Skoice."
   error:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "You did not grant your bot the permission to register commands on your Discord server. Open this link to add it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "You did not grant your bot the permission to register commands on your Discord server. Open this link to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."
     discord-api-timed-out: "Discord seems to be experiencing an outage. Find more information here: https://discordstatus.com."
   exception:

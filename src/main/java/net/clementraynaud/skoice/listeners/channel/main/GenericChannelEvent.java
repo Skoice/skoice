@@ -24,20 +24,30 @@ import net.clementraynaud.skoice.config.ConfigurationField;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
+import net.dv8tion.jda.api.events.channel.update.ChannelUpdateParentEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
-public class ChannelDeleteListener extends ListenerAdapter {
+public class GenericChannelEvent extends ListenerAdapter {
 
     private final Skoice plugin;
 
-    public ChannelDeleteListener(Skoice plugin) {
+    public GenericChannelEvent(Skoice plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public void onChannelDelete(ChannelDeleteEvent event) {
+        this.checkForValidVoiceChannel(event);
+    }
+
+    @Override
+    public void onChannelUpdateParent(ChannelUpdateParentEvent event) {
+        this.checkForValidVoiceChannel(event);
+    }
+    
+    private void checkForValidVoiceChannel(net.dv8tion.jda.api.events.channel.GenericChannelEvent event) {
         if (!event.getChannelType().isAudio()) {
             return;
         }
