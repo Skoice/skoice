@@ -28,7 +28,7 @@ minecraft:
         - "&7.\n&8• &7Quand vous aurez récupéré son token, entrez-le "
         - "&7.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
       bot-creation-link: " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Veuillez de suivre les instructions sur cette page : &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Quand vous aurez récupéré son token, tapez \"&e/skoice connect&7\" suivi du token.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
-      no-token: "%s Vous n'avez &cpas fourni de token&7."
+      no-token: "%s Vous n'avez &cpas fourni de token&7. Pour utiliser cette commande, tapez \"&e/skoice connect&7\" suivi du token."
       no-guild-interactive:
         - "%s Votre bot n'est &cpas sur un serveur Discord&7. Ouvrez "
         - " &7pour l'inviter."
@@ -55,8 +55,8 @@ minecraft:
       not-connected: "%s Vous n'êtes &cpas connecté &7au chat vocal de proximité. Rejoignez le salon vocal \"&e%s&7\" sur notre serveur Discord pour l'utiliser."
       disconnected: "%s Vous êtes &cdésormais déconnecté &7du chat vocal de proximité."
     error:
-      no-parameter: "%s Vous n'avez &cpas fourni un argument&7. Pour utiliser cette commande, tapez \"&e/skoice <%s>&7\"."
-      invalid-parameter: "%s Vous n'avez &cpas fourni un argument valide&7. Pour utiliser cette commande, tapez \"&e/skoice <%s>&7\"."
+      no-parameter: "%s Vous n'avez &cpas fourni un argument&7. Pour utiliser cette commande, tapez \"&e/skoice %s&7\"."
+      invalid-parameter: "%s Vous n'avez &cpas fourni un argument valide&7. Pour utiliser cette commande, tapez \"&e/skoice %s&7\"."
       illegal-executor: "%s Cette commande est &cseulement exécutable &7par les joueurs."
       missing-permission: "%s Cette commande est &cseulement exécutable &7par les opérateurs."
       discord-api-timed-out-interactive:

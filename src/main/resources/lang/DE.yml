@@ -28,7 +28,7 @@ minecraft:
         - "&7.\n&8• &7Wenn Sie den Token abgerufen haben, setzen Sie ihn "
         - "&7.\n&8• &7Geben Sie anschließend auf Ihrem Discord-Server \"&e/configure&7\" ein, um zum nächsten Schritt zu gelangen.\n "
       bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7Zuerst müssen Sie einen Bot erstellen und ihn zu Ihrem Discord-Server einladen. Bitte folgen Sie den Anweisungen auf dieser Seite: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Wenn Sie das Token abgerufen haben, geben Sie \"&e/skoice connect&7\" gefolgt von dem Token ein.\n&8• &7Sobald dies geschehen ist, geben Sie \"&e/configure&7\" auf Ihrem Discord-Server ein, um zum nächsten Schritt zu gelangen.\n "
-      no-token: "%s Sie haben &cnicht einen Token zur Verfügung gestellt&7."
+      no-token: "%s Sie haben &cnicht einen Token zur Verfügung gestellt&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice connect&7\" gefolgt von dem Token ein."
       no-guild-interactive:
         - "%s %s Ihr Bot befindet sich &cnicht auf einem Discord-Server&7. Öffne "
         - " &7, um ihn einzuladen."
@@ -55,8 +55,8 @@ minecraft:
       not-connected: "%s Die Verbindung zum Sprachchat im Nahbereich wird &cnicht hergestellt7. Treten Sie dem Sprachkanal \"&e%s&7\" auf unserem Discord-Server ein, um ihn zu nutzen."
       disconnected: "%s Die Verbindung zum Sprachchat im Nahbereich ist &cjetzt unterbrochen&7."
     error:
-      no-parameter: "%s Sie haben &ckein Argument angegeben&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice <%s>&7\" ein."
-      invalid-parameter: "%s Sie haben &ckein gültiges Argument angegeben&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice <%s>&7\" ein."
+      no-parameter: "%s Sie haben &ckein Argument angegeben&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice %s&7\" ein."
+      invalid-parameter: "%s Sie haben &ckein gültiges Argument angegeben&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice %s&7\" ein."
       illegal-executor: "%s Dieser Befehl ist &cnur von Spielern ausführbar&7."
       missing-permission: "%s Dieser Befehl ist &cnur&è von Operatoren ausführbar."
       discord-api-timed-out-interactive:
