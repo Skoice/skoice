@@ -41,8 +41,6 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -86,8 +84,6 @@ public class Bot {
             }
             try {
                 this.jda = JDABuilder.createDefault(new String(base64TokenBytes))
-                        .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                        .setMemberCachePolicy(MemberCachePolicy.ALL)
                         .build()
                         .awaitReady();
                 this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connected"));
