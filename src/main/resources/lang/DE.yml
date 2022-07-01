@@ -15,7 +15,7 @@ logger:
   error:
     missing-permission: "Sie haben Ihrem Bot nicht die Berechtigung \"Administrator\" auf Ihrem Discord-Server erteilt. Öffne diesen Link, um sie hinzuzufügen: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     missing-access: "Du hast deinem Bot nicht die Erlaubnis gegeben, Befehle auf deinem Discord-Server zu registrieren. Öffne diesen Link, um ihn hinzuzufügen und starte deinen Minecraft-Server neu: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    bot-could-not-connect: "Ihr Bot konnte keine Verbindung herstellen. Um das Token zu aktualisieren, geben Sie \"/skoice token\" gefolgt vom neuen Token ein."
+    bot-could-not-connect: "Ihr Bot konnte keine Verbindung herstellen. Um das Token zu aktualisieren, geben Sie \"/skoice connect\" gefolgt vom neuen Token ein."
     discord-api-timed-out: "Discord scheint eine Störung zu haben. Weitere Informationen finden Sie hier: https://discordstatus.com."
   exception:
     unexpected-value: "Unerwarteter Wert: %s"
@@ -27,7 +27,7 @@ minecraft:
         - " \n%s Konfiguration (&fBot-Erstellung&7)\n \n&8• &7Zuerst müssen Sie einen Bot erstellen und ihn zu Ihrem Discord-Server einladen. Bitte folgen Sie den Anweisungen auf "
         - "&7.\n&8• &7Wenn Sie den Token abgerufen haben, setzen Sie ihn "
         - "&7.\n&8• &7Geben Sie anschließend auf Ihrem Discord-Server \"&e/configure&7\" ein, um zum nächsten Schritt zu gelangen.\n "
-      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7Zuerst müssen Sie einen Bot erstellen und ihn zu Ihrem Discord-Server einladen. Bitte folgen Sie den Anweisungen auf dieser Seite: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Wenn Sie das Token abgerufen haben, geben Sie \"&e/skoice token&7\" gefolgt von dem Token ein.\n&8• &7Sobald dies geschehen ist, geben Sie \"&e/configure&7\" auf Ihrem Discord-Server ein, um zum nächsten Schritt zu gelangen.\n "
+      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7Zuerst müssen Sie einen Bot erstellen und ihn zu Ihrem Discord-Server einladen. Bitte folgen Sie den Anweisungen auf dieser Seite: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Wenn Sie das Token abgerufen haben, geben Sie \"&e/skoice connect&7\" gefolgt von dem Token ein.\n&8• &7Sobald dies geschehen ist, geben Sie \"&e/configure&7\" auf Ihrem Discord-Server ein, um zum nächsten Schritt zu gelangen.\n "
       no-token: "%s Sie haben &cnicht einen Token zur Verfügung gestellt&7."
       no-guild-interactive:
         - "%s %s Ihr Bot befindet sich &cnicht auf einem Discord-Server&7. Öffne "

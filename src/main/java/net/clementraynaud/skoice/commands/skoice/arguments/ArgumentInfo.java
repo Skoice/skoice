@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 
 public enum ArgumentInfo {
     CONFIGURE(false, true),
-    TOKEN(true, true),
+    CONNECT(true, true),
     LINK(false, false),
     UNLINK(false, false);
 
