@@ -213,7 +213,7 @@ discord:
     default:
       description: "Ta opcja jest wybrana domyślnie."
     enabled:
-      label: "Wyłączone"
+      label: "Włączone"
     disabled:
       label: "Wyłączone"
     too-many-options:
