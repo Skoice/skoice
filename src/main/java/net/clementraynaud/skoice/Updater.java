@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +41,16 @@ public class Updater {
     public void checkVersion() {
         this.getVersion(version -> {
             if (!this.plugin.getDescription().getVersion().equals(version)) {
-                this.plugin.getLogger().warning(String.format(this.plugin.getLang().getMessage("logger.warning.outdated-version"),
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
+                        this.plugin.getDescription().getVersion(), version));
+            }
+        });
+    }
+
+    public void checkVersionInGame(Player player) {
+        this.getVersion(version -> {
+            if (!this.plugin.getDescription().getVersion().equals(version)) {
+                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.outdated-version",
                         this.plugin.getDescription().getVersion(), version));
             }
         });

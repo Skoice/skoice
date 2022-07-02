@@ -15,7 +15,7 @@ logger:
   error:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     missing-access: "You did not grant your bot the permission to register commands on your Discord server. Open this link to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."
+    bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice connect\" followed by the new token."
     discord-api-timed-out: "Discord seems to be experiencing an outage. Find more information here: https://discordstatus.com."
   exception:
     unexpected-value: "Unexpected value: %s"
@@ -23,12 +23,13 @@ logger:
 minecraft:
   chat:
     configuration:
+      outdated-version: "%s You are &cusing an outdated ersion &7(&e%s&7). Download the latest version (&e%s&7) here: &bhttps://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861&7."
       bot-creation-interactive:
         - " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on "
         - "&7.\n&8• &7When you have retrieved its token, put it "
         - "&7.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
-      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
-      no-token: "%s You have &cnot provided a token&7."
+      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7When you have retrieved its token, type \"&e/skoice connect&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+      no-token: "%s You have &cnot provided a token&7. To use this command, type \"&e/skoice connect&7\" followed by the token."
       no-guild-interactive:
         - "%s Your bot is &cnot on a Discord server&7. Open "
         - " &7to invite it."
@@ -55,8 +56,8 @@ minecraft:
       not-connected: "%s You are &cnot connected &7to the proximity voice chat. Join the voice channel \"&e%s&7\" on our Discord server to use it."
       disconnected: "%s You are &cnow disconnected &7from the proximity voice chat."
     error:
-      no-parameter: "%s You have &cnot provided an argument&7. To use this command, type \"&e/skoice <%s>&7\"."
-      invalid-parameter: "%s You have &cnot provided a valid argument&7. To use this command, type \"&e/skoice <%s>&7\"."
+      no-parameter: "%s You have &cnot provided an argument&7. To use this command, type \"&e/skoice %s&7\"."
+      invalid-parameter: "%s You have &cnot provided a valid argument&7. To use this command, type \"&e/skoice %s&7\"."
       illegal-executor: "%s This command is &conly executable &7by players."
       missing-permission: "%s This command is &conly executable &7by operators."
       discord-api-timed-out-interactive:

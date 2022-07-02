@@ -22,7 +22,11 @@ package net.clementraynaud.skoice.listeners.player;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.util.MessageUtil;
+import net.dv8tion.jda.api.entities.AudioChannel;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
+import net.dv8tion.jda.api.entities.Member;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -43,35 +47,37 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.isOp()) {
-            if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString()) || this.plugin.getBot().getJDA() == null) {
-                try {
-                    TextComponent configureCommand = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.here"));
-                    MessageUtil.setHoverEvent(configureCommand, this.plugin.getLang().getMessage("minecraft.interaction.execute", "/skoice configure"));
-                    configureCommand.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/skoice configure"));
-                    player.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", configureCommand));
-                } catch (NoSuchMethodError e) {
-                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-command"));
-                }
-            } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-                if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
+            this.plugin.getUpdater().checkVersionInGame(player);
+        }
+        if (this.plugin.getBot().getStatus() != BotStatus.READY) {
+            if (player.isOp()) {
+                if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString()) || this.plugin.getBot().getJDA() == null) {
                     try {
-                        TextComponent invitePage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
-                        MessageUtil.setHoverEvent(invitePage,
-                                this.plugin.getLang().getMessage("minecraft.interaction.link",
-                                        "https://discord.com/api/oauth2/authorize?client_id="
-                                                + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
-                                                + "&permissions=8&scope=bot%20applications.commands"));
-                        invitePage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
-                                "https://discord.com/api/oauth2/authorize?client_id="
-                                        + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
-                                        + "&permissions=8&scope=bot%20applications.commands"));
-                        player.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", invitePage));
+                        TextComponent configureCommand = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.here"));
+                        MessageUtil.setHoverEvent(configureCommand, this.plugin.getLang().getMessage("minecraft.interaction.execute", "/skoice configure"));
+                        configureCommand.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/skoice configure"));
+                        player.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", configureCommand));
                     } catch (NoSuchMethodError e) {
-                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild"),
-                                this.plugin.getBot().getJDA().getSelfUser().getApplicationId());
+                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-command"));
                     }
-                } else {
-                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
+                } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {
+                    if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
+                        this.plugin.getBot().sendNoGuildAlert(player);
+                    } else {
+                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
+                    }
+                }
+            }
+        } else {
+            UpdateNetworksTask.getEligiblePlayers().add(player.getUniqueId());
+            Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
+            if (member != null) {
+                GuildVoiceState voiceState = member.getVoiceState();
+                if (voiceState != null) {
+                    AudioChannel audioChannel = voiceState.getChannel();
+                    if (audioChannel != null && audioChannel.equals(this.plugin.getConfiguration().getVoiceChannel())) {
+                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
+                    }
                 }
             }
         }
