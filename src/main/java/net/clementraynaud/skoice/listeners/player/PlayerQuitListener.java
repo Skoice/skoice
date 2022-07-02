@@ -1,5 +1,6 @@
 /*
  * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -17,18 +18,28 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.player.eligible;
+package net.clementraynaud.skoice.listeners.player;
 
-import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.system.Network;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerTeleportListener implements Listener {
+public class PlayerQuitListener implements Listener {
+
+    private final Skoice plugin;
+
+    public PlayerQuitListener(Skoice plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPlayerTeleport(PlayerTeleportEvent event) {
-        UpdateNetworksTask.getEligiblePlayers().add(event.getPlayer().getUniqueId());
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> Network.getNetworks().stream()
+                .filter(network -> network.contains(event.getPlayer().getUniqueId()))
+                .forEach(network -> network.remove(event.getPlayer().getUniqueId())));
     }
 }

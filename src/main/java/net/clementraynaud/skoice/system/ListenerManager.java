@@ -40,10 +40,10 @@ import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteracti
 import net.clementraynaud.skoice.listeners.interaction.component.SelectMenuInteractionListener;
 import net.clementraynaud.skoice.listeners.message.MessageDeleteListener;
 import net.clementraynaud.skoice.listeners.message.MessageReceivedListener;
-import net.clementraynaud.skoice.listeners.player.eligible.PlayerJoinListener;
-import net.clementraynaud.skoice.listeners.player.eligible.PlayerMoveListener;
-import net.clementraynaud.skoice.listeners.player.eligible.PlayerQuitListener;
-import net.clementraynaud.skoice.listeners.player.eligible.PlayerTeleportListener;
+import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
+import net.clementraynaud.skoice.listeners.player.PlayerMoveListener;
+import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
+import net.clementraynaud.skoice.listeners.player.PlayerTeleportListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.User;
@@ -66,14 +66,12 @@ public class ListenerManager {
         this.plugin.getBot().updateStatus();
         if (this.startup) {
             this.startup = false;
+            Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this.plugin), this.plugin);
             if (this.plugin.getBot().getStatus() == BotStatus.READY) {
                 this.registerEligiblePlayerListeners();
                 this.registerBotListeners();
-            } else {
-                Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this.plugin), this.plugin);
             }
         } else if (!wasBotReady && this.plugin.getBot().getStatus() == BotStatus.READY) {
-            HandlerList.unregisterAll(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this.plugin));
             this.registerEligiblePlayerListeners();
             this.registerBotListeners();
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
@@ -85,7 +83,6 @@ public class ListenerManager {
         } else if (wasBotReady && this.plugin.getBot().getStatus() != BotStatus.READY) {
             this.plugin.getConfigurationMenu().delete();
             this.unregisterEligiblePlayerListeners();
-            Bukkit.getPluginManager().registerEvents(new net.clementraynaud.skoice.listeners.player.PlayerJoinListener(this.plugin), this.plugin);
             if (this.plugin.getBot().getJDA() != null) {
                 this.unregisterBotListeners();
             }
@@ -98,14 +95,12 @@ public class ListenerManager {
     }
 
     private void registerEligiblePlayerListeners() {
-        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this.plugin), this.plugin);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this.plugin), this.plugin);
         Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this.plugin);
         Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this.plugin);
     }
 
     private void unregisterEligiblePlayerListeners() {
-        HandlerList.unregisterAll(new PlayerJoinListener(this.plugin));
         HandlerList.unregisterAll(new PlayerQuitListener(this.plugin));
         HandlerList.unregisterAll(new PlayerMoveListener());
         HandlerList.unregisterAll(new PlayerTeleportListener());

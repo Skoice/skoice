@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 
 public enum ArgumentInfo {
     CONFIGURE(false, true),
-    TOKEN(true, true),
+    CONNECT(true, true),
     LINK(false, false),
     UNLINK(false, false);
 
@@ -52,12 +52,26 @@ public enum ArgumentInfo {
                 .collect(Collectors.toSet());
     }
 
-    public static Set<String> getConsoleAllowedList() {
+    public static String getJoinedList(boolean restrictedToOperators) {
+        Set<String> list = ArgumentInfo.getList(restrictedToOperators);
+        return list.size() == 1
+                ? String.join("/", list)
+                : "<" + String.join("/", list) + ">";
+    }
+
+    private static Set<String> getConsoleAllowedList() {
         return Stream.of(ArgumentInfo.values())
                 .filter(arg -> arg.allowedInConsole)
                 .map(Enum::toString)
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
+    }
+
+    public static String getJoinedConsoleAllowedList() {
+        Set<String> consoleAllowedList = ArgumentInfo.getConsoleAllowedList();
+        return consoleAllowedList.size() == 1
+                ? String.join("/", consoleAllowedList)
+                : "<" + String.join("/", consoleAllowedList) + ">";
     }
 
     public boolean isAllowedInConsole() {

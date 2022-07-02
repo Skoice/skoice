@@ -23,7 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.ConfigureArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.TokenArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.ConnectArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.UnlinkArgument;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -35,6 +35,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SkoiceCommand implements CommandExecutor, TabCompleter {
@@ -55,24 +56,20 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         if (args.length == 0) {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.no-parameter",
-                                String.join("/", ArgumentInfo.getList(sender.isOp()))));
+                        .getMessage("minecraft.chat.error.no-parameter", ArgumentInfo.getJoinedList(sender.isOp())));
             } else {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.no-parameter",
-                                String.join("/", ArgumentInfo.getConsoleAllowedList())));
+                        .getMessage("minecraft.chat.error.no-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
             }
             return true;
         }
         if (ArgumentInfo.get(args[0]) == null) {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.invalid-parameter",
-                                String.join("/", ArgumentInfo.getList(sender.isOp()))));
+                        .getMessage("minecraft.chat.error.invalid-parameter", ArgumentInfo.getJoinedList(sender.isOp())));
             } else {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.invalid-parameter",
-                                String.join("/", ArgumentInfo.getConsoleAllowedList())));
+                        .getMessage("minecraft.chat.error.invalid-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
             }
             return true;
         }
@@ -81,8 +78,8 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
             case CONFIGURE:
                 new ConfigureArgument(this.plugin, sender).run();
                 break;
-            case TOKEN:
-                new TokenArgument(this.plugin, sender, arg).run();
+            case CONNECT:
+                new ConnectArgument(this.plugin, sender, arg).run();
                 break;
             case LINK:
                 new LinkArgument(this.plugin, sender, arg).run();
