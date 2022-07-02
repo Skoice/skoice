@@ -23,6 +23,7 @@ logger:
 minecraft:
   chat:
     configuration:
+      outdated-version: "%s You are &cusing an outdated ersion &7(&e%s&7). Download the latest version (&e%s&7) here: &bhttps://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861&7."
       bot-creation-interactive:
         - " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on "
         - "&7.\n&8• &7When you have retrieved its token, put it "

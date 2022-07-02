@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.player.eligible;
+package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import org.bukkit.event.EventHandler;
