@@ -78,9 +78,14 @@ public class Bot {
 
     public void connect(CommandSender sender) {
         if (this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
-            byte[] base64TokenBytes = Base64.getDecoder().decode(this.plugin.getConfiguration().getFile().getString(ConfigurationField.TOKEN.toString()));
-            for (int i = 0; i < base64TokenBytes.length; i++) {
-                base64TokenBytes[i]--;
+            byte[] base64TokenBytes;
+            try {
+                base64TokenBytes = Base64.getDecoder().decode(this.plugin.getConfiguration().getFile().getString(ConfigurationField.TOKEN.toString()));
+                for (int i = 0; i < base64TokenBytes.length; i++) {
+                    base64TokenBytes[i]--;
+                }
+            } catch (IllegalArgumentException e) {
+                base64TokenBytes = new byte[0];
             }
             try {
                 this.jda = JDABuilder.createDefault(new String(base64TokenBytes))
