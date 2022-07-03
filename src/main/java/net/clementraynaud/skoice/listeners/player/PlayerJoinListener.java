@@ -35,8 +35,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.concurrent.CompletableFuture;
-
 public class PlayerJoinListener implements Listener {
 
     private final Skoice plugin;
@@ -72,7 +70,7 @@ public class PlayerJoinListener implements Listener {
             }
         } else {
             UpdateNetworksTask.getEligiblePlayers().add(player.getUniqueId());
-            CompletableFuture.runAsync(() -> {
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
                 Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
                 if (member != null) {
                     GuildVoiceState voiceState = member.getVoiceState();
