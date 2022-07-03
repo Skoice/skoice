@@ -43,7 +43,6 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -126,8 +125,8 @@ public class Bot {
             }
         });
         this.plugin.getListenerManager().registerPermanentBotListeners();
-        Bukkit.getScheduler().runTaskLater(this.plugin, () ->
-                        Bukkit.getScheduler().runTaskTimerAsynchronously(
+        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
+                        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
                                 new UpdateNetworksTask(this.plugin)::run,
                                 0,
@@ -135,8 +134,8 @@ public class Bot {
                         ),
                 0
         );
-        Bukkit.getScheduler().runTaskLater(this.plugin, () ->
-                        Bukkit.getScheduler().runTaskTimerAsynchronously(
+        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
+                        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
                                 this.plugin.getUpdater()::checkVersion,
                                 Bot.TICKS_BETWEEN_VERSION_CHECKING,
@@ -195,11 +194,12 @@ public class Bot {
     public void checkMemberStatus(Member member) {
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksFileStorage().getLinks(), member.getId());
         if (minecraftId == null) {
-            member.getUser().openPrivateChannel().complete()
-                    .sendMessage(this.menus.get("account-not-linked").build())
-                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
+            member.getUser().openPrivateChannel().queue(channel ->
+                    channel.sendMessage(this.menus.get("account-not-linked").build())
+                            .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
+            );
         } else {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));
+            OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
                 UpdateNetworksTask.getEligiblePlayers().add(player.getUniqueId());
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));

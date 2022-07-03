@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.listeners.interaction;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
-import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -42,9 +41,12 @@ public class ModalInteractionListener extends ListenerAdapter {
         if ("new-voice-channel".equals(event.getModalId())) {
             String categoryName = event.getValue("category-name").getAsString();
             String voiceChannelName = event.getValue("voice-channel-name").getAsString();
-            Category category = event.getGuild().createCategory(categoryName).complete();
-            String voiceChannelId = event.getGuild().createVoiceChannel(voiceChannelName, category).complete().getId();
-            this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), voiceChannelId);
+            event.getGuild().createCategory(categoryName).queue(category -> {
+                event.getGuild().createVoiceChannel(voiceChannelName, category).queue(channel -> {
+                    String voiceChannelId = channel.getId();
+                    this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), voiceChannelId);
+                });
+            });
             this.plugin.getConfiguration().saveFile();
             new InterruptSystemTask(this.plugin.getConfiguration()).run();
             this.plugin.getListenerManager().update(event.getUser());

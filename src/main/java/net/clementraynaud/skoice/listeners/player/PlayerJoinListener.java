@@ -35,6 +35,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.concurrent.CompletableFuture;
+
 public class PlayerJoinListener implements Listener {
 
     private final Skoice plugin;
@@ -70,16 +72,18 @@ public class PlayerJoinListener implements Listener {
             }
         } else {
             UpdateNetworksTask.getEligiblePlayers().add(player.getUniqueId());
-            Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
-            if (member != null) {
-                GuildVoiceState voiceState = member.getVoiceState();
-                if (voiceState != null) {
-                    AudioChannel audioChannel = voiceState.getChannel();
-                    if (audioChannel != null && audioChannel.equals(this.plugin.getConfiguration().getVoiceChannel())) {
-                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
+            CompletableFuture.runAsync(() -> {
+                Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
+                if (member != null) {
+                    GuildVoiceState voiceState = member.getVoiceState();
+                    if (voiceState != null) {
+                        AudioChannel audioChannel = voiceState.getChannel();
+                        if (audioChannel != null && audioChannel.equals(this.plugin.getConfiguration().getVoiceChannel())) {
+                            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
+                        }
                     }
                 }
-            }
+            });
         }
     }
 }

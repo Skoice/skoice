@@ -22,8 +22,8 @@ package net.clementraynaud.skoice.commands.skoice;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.ConfigureArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.ConnectArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.UnlinkArgument;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -35,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SkoiceCommand implements CommandExecutor, TabCompleter {

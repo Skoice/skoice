@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -38,7 +37,7 @@ public class PlayerQuitListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> Network.getNetworks().stream()
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> Network.getNetworks().stream()
                 .filter(network -> network.contains(event.getPlayer().getUniqueId()))
                 .forEach(network -> network.remove(event.getPlayer().getUniqueId())));
     }

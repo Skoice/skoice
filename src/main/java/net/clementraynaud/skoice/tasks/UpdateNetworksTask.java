@@ -36,7 +36,6 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -84,7 +83,7 @@ public class UpdateNetworksTask {
             Set<UUID> oldEligiblePlayers = new HashSet<>(UpdateNetworksTask.eligiblePlayers);
             UpdateNetworksTask.eligiblePlayers.clear();
             for (UUID minecraftId : oldEligiblePlayers) {
-                Player player = Bukkit.getPlayer(minecraftId);
+                Player player = this.plugin.getServer().getPlayer(minecraftId);
                 if (player != null) {
                     Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
                     if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {

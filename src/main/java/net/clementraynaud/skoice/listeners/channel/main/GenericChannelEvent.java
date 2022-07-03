@@ -46,7 +46,7 @@ public class GenericChannelEvent extends ListenerAdapter {
     public void onChannelUpdateParent(ChannelUpdateParentEvent event) {
         this.checkForValidVoiceChannel(event);
     }
-    
+
     private void checkForValidVoiceChannel(net.dv8tion.jda.api.events.channel.GenericChannelEvent event) {
         if (!event.getChannelType().isAudio()) {
             return;
@@ -54,12 +54,15 @@ public class GenericChannelEvent extends ListenerAdapter {
         if (event.getChannel().getId().equals(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))) {
             this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
             this.plugin.getListenerManager().update();
-            User user = event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).complete().get(0).getUser();
-            if (user != null && !user.isBot()) {
-                user.openPrivateChannel().complete()
-                        .sendMessage(this.plugin.getBot().getMenu("incomplete-configuration-alternative-server-manager").build())
-                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
-            }
+            event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).queue(auditLogEntries -> {
+                User user = auditLogEntries.get(0).getUser();
+                if (user != null && !user.isBot()) {
+                    user.openPrivateChannel().queue(channel ->
+                            channel.sendMessage(this.plugin.getBot().getMenu("incomplete-configuration-alternative-server-manager").build())
+                                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
+                    );
+                }
+            });
         }
     }
 }

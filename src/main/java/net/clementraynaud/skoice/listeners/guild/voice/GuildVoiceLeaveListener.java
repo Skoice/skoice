@@ -26,7 +26,6 @@ import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
@@ -53,7 +52,7 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
         if (minecraftId == null) {
             return;
         }
-        OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));
+        OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
         if (player.isOnline() && player.getPlayer() != null) {
             Network.getNetworks().stream()
                     .filter(network -> network.contains(player.getPlayer()))
