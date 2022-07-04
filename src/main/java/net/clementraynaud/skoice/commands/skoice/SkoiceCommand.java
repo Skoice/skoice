@@ -22,8 +22,8 @@ package net.clementraynaud.skoice.commands.skoice;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.ConfigureArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.ConnectArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.TokenArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.UnlinkArgument;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -77,8 +77,8 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
             case CONFIGURE:
                 new ConfigureArgument(this.plugin, sender).run();
                 break;
-            case CONNECT:
-                new ConnectArgument(this.plugin, sender, arg).run();
+            case TOKEN:
+                new TokenArgument(this.plugin, sender, arg).run();
                 break;
             case LINK:
                 new LinkArgument(this.plugin, sender, arg).run();
