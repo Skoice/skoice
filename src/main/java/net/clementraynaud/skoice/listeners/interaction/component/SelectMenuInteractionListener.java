@@ -61,7 +61,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                 case "server-selection":
                     if (this.plugin.getBot().getJDA().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
                         for (SelectOption server : event.getComponent().getOptions()) {
-                            if (!event.getGuild().getId().equals(server.getValue())
+                            if (!event.getSelectedOptions().get(0).getValue().equals(server.getValue())
                                     && this.plugin.getBot().getJDA().getGuilds().contains(this.plugin.getBot().getJDA().getGuildById(server.getValue()))) {
                                 try {
                                     this.plugin.getBot().getJDA().getGuildById(server.getValue()).leave()
