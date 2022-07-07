@@ -64,7 +64,7 @@ public class Updater {
 
         try (FileOutputStream outputStream = new FileOutputStream(fileName + fileSuffix)) {
             outputStream.getChannel()
-                    .transferFrom(Channels.newChannel(new URL("https://api.spiget.org/v2/resources/" + this.resourceId + "/download")
+                    .transferFrom(Channels.newChannel(new URL("https://api.spiget.org/v2/resources/" + this.resourceId + "/versions/latest/download")
                             .openStream()), 0, Long.MAX_VALUE);
 
             new File(fileName).delete();
