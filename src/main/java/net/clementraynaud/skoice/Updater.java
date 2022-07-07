@@ -19,11 +19,12 @@
 
 package net.clementraynaud.skoice;
 
-import org.bukkit.entity.Player;
-
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.channels.Channels;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
@@ -40,17 +41,7 @@ public class Updater {
     public void checkVersion() {
         this.getVersion(version -> {
             if (!this.plugin.getDescription().getVersion().equals(version)) {
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                        this.plugin.getDescription().getVersion(), version));
-            }
-        });
-    }
-
-    public void checkVersionInGame(Player player) {
-        this.getVersion(version -> {
-            if (!this.plugin.getDescription().getVersion().equals(version)) {
-                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.outdated-version",
-                        this.plugin.getDescription().getVersion(), version));
+                this.update(version);
             }
         });
     }
@@ -65,5 +56,26 @@ public class Updater {
             } catch (IOException ignored) {
             }
         });
+    }
+
+    private void update(String version) {
+        String fileName = this.plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+        String fileSuffix = "-temp";
+
+        try (FileOutputStream outputStream = new FileOutputStream(fileName + fileSuffix)) {
+            outputStream.getChannel()
+                    .transferFrom(Channels.newChannel(new URL("https://api.spiget.org/v2/resources/" + this.resourceId + "/download")
+                            .openStream()), 0, Long.MAX_VALUE);
+
+            new File(fileName).delete();
+            new File(fileName + fileSuffix).renameTo(new File(fileName));
+
+            // TODO : Add a message to the console
+        } catch (IOException e) {
+            new File(fileName + fileSuffix).delete();
+
+            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
+                    this.plugin.getDescription().getVersion(), version));
+        }
     }
 }

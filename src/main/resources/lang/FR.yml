@@ -23,7 +23,6 @@ logger:
 minecraft:
   chat:
     configuration:
-      outdated-version: "%s Vous &cutilisez une version obsolète &7(&e%s&7). Téléchargez la dernière version (&e%s&7) ici : &bhttps://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861&7."
       bot-creation-interactive:
         - " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Veuillez de suivre les instructions sur "
         - "&7.\n&8• &7Quand vous aurez récupéré son token, entrez-le "

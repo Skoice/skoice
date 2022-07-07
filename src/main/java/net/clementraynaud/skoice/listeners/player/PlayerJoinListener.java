@@ -46,9 +46,6 @@ public class PlayerJoinListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (player.isOp()) {
-            this.plugin.getUpdater().checkVersionInGame(player);
-        }
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
             if (player.isOp()) {
                 if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString()) || this.plugin.getBot().getJDA() == null) {
