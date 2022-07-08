@@ -19,8 +19,9 @@
 
 package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.lang.Lang;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
+import net.clementraynaud.skoice.util.ConfigurationUtils;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 
 import java.util.Collections;
@@ -31,25 +32,25 @@ public class ToggleSelectMenu extends SelectMenu {
     private static final String DISABLED_OPTION_ID = "false";
 
     private final String componentId;
-    private final boolean selectedValue;
-    private final boolean defaultValue;
 
-    public ToggleSelectMenu(Lang lang, String componentId, boolean selectedValue, boolean defaultValue) {
-        super(lang, false);
+    public ToggleSelectMenu(Skoice plugin, String componentId) {
+        super(plugin, false);
         this.componentId = componentId;
-        this.selectedValue = selectedValue;
-        this.defaultValue = defaultValue;
     }
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
+        boolean selectedValue = this.plugin.getConfiguration().getFile()
+                .getBoolean(this.componentId);
+        boolean defaultValue = ConfigurationUtils.loadResource(this.getClass().getName(), "config.yml")
+                .getBoolean(this.componentId);
         return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create(this.componentId)
-                .addOptions(SelectOption.of(super.lang.getMessage("discord.select-option.enabled.label"), ToggleSelectMenu.ENABLED_OPTION_ID)
-                                .withDescription(this.defaultValue ? super.lang.getMessage("discord.select-option.default.description") : null)
+                .addOptions(SelectOption.of(super.plugin.getLang().getMessage("discord.select-option.enabled.label"), ToggleSelectMenu.ENABLED_OPTION_ID)
+                                .withDescription(defaultValue ? super.plugin.getLang().getMessage("discord.select-option.default.description") : null)
                                 .withEmoji(MenuEmoji.HEAVY_CHECK_MARK.get()),
-                        SelectOption.of(super.lang.getMessage("discord.select-option.disabled.label"), ToggleSelectMenu.DISABLED_OPTION_ID)
-                                .withDescription(!this.defaultValue ? super.lang.getMessage("discord.select-option.default.description") : null)
+                        SelectOption.of(super.plugin.getLang().getMessage("discord.select-option.disabled.label"), ToggleSelectMenu.DISABLED_OPTION_ID)
+                                .withDescription(!defaultValue ? super.plugin.getLang().getMessage("discord.select-option.default.description") : null)
                                 .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.get()))
-                .setDefaultValues(Collections.singleton(String.valueOf(this.selectedValue))).build();
+                .setDefaultValues(Collections.singleton(String.valueOf(selectedValue))).build();
     }
 }

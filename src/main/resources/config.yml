@@ -2,4 +2,4 @@
 
 lang: EN
 action-bar-alert: true
-channel-visibility: false
+channel-visibility: true

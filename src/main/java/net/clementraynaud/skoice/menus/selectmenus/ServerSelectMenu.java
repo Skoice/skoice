@@ -29,16 +29,13 @@ import java.util.List;
 
 public class ServerSelectMenu extends SelectMenu {
 
-    private final Skoice plugin;
-
     public ServerSelectMenu(Skoice plugin) {
-        super(plugin.getLang(), true);
-        this.plugin = plugin;
+        super(plugin, true);
     }
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<Guild> servers = new ArrayList<>(this.plugin.getBot().getJDA().getGuilds());
+        List<Guild> servers = new ArrayList<>(super.plugin.getBot().getJDA().getGuilds());
         List<SelectOption> options = new ArrayList<>();
         int optionIndex = 0;
         while (optionIndex < 24 && servers.size() > optionIndex) {
@@ -47,12 +44,12 @@ public class ServerSelectMenu extends SelectMenu {
             optionIndex++;
         }
         if (options.size() == 24) {
-            options.add(SelectOption.of(super.lang.getMessage("discord.select-option.too-many-options.label"), "refresh")
-                    .withDescription(super.lang.getMessage("discord.select-option.too-many-options.description"))
+            options.add(SelectOption.of(super.plugin.getLang().getMessage("discord.select-option.too-many-options.label"), "refresh")
+                    .withDescription(super.plugin.getLang().getMessage("discord.select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
         return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("server-selection")
-                .setPlaceholder(super.lang.getMessage("discord.menu.server.select-menu.placeholder"))
+                .setPlaceholder(super.plugin.getLang().getMessage("discord.menu.server.select-menu.placeholder"))
                 .addOptions(options).build();
     }
 }

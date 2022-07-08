@@ -123,14 +123,8 @@ public class Menu {
                 this.selectMenu = new LanguageSelectMenu(this.plugin);
                 break;
             case "action-bar-alert":
-                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name,
-                        this.plugin.getConfiguration().getFile()
-                                .getBoolean(ConfigurationField.ACTION_BAR_ALERT.toString()), true);
-                break;
             case "channel-visibility":
-                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name,
-                        this.plugin.getConfiguration().getFile()
-                                .getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString()), false);
+                this.selectMenu = new ToggleSelectMenu(this.plugin, this.name);
                 break;
             default:
                 List<Button> buttons = this.getButtons();

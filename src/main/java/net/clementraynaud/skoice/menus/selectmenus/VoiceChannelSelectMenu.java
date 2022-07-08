@@ -33,23 +33,20 @@ import java.util.List;
 
 public class VoiceChannelSelectMenu extends SelectMenu {
 
-    private final Skoice plugin;
-
     public VoiceChannelSelectMenu(Skoice plugin) {
-        super(plugin.getLang(), true);
-        this.plugin = plugin;
+        super(plugin, true);
     }
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<VoiceChannel> voiceChannels = new ArrayList<>(this.plugin.getBot().getJDA().getVoiceChannels());
+        List<VoiceChannel> voiceChannels = new ArrayList<>(super.plugin.getBot().getJDA().getVoiceChannels());
         List<Category> categories = new ArrayList<>();
         for (VoiceChannel voiceChannel : voiceChannels) {
             categories.add(voiceChannel.getParentCategory());
         }
         List<SelectOption> options = new ArrayList<>();
-        options.add(SelectOption.of(super.lang.getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
-                .withDescription(super.lang.getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.description"))
+        options.add(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
+                .withDescription(super.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.description"))
                 .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.get()));
         int optionIndex = 0;
         while (optionIndex < 23 && voiceChannels.size() > optionIndex) {
@@ -61,17 +58,17 @@ public class VoiceChannelSelectMenu extends SelectMenu {
             optionIndex++;
         }
         if (options.size() == 23) {
-            options.add(SelectOption.of(super.lang.getMessage("discord.select-option.too-many-options.label"), "refresh")
-                    .withDescription(super.lang.getMessage("discord.select-option.too-many-options.description"))
+            options.add(SelectOption.of(super.plugin.getLang().getMessage("discord.select-option.too-many-options.label"), "refresh")
+                    .withDescription(super.plugin.getLang().getMessage("discord.select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
-        if (this.plugin.getBot().getStatus() == BotStatus.READY) {
+        if (super.plugin.getBot().getStatus() == BotStatus.READY) {
             return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("voice-channel-selection")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))).build();
+                    .setDefaultValues(Collections.singleton(super.plugin.getConfiguration().getFile().getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))).build();
         } else {
             return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("voice-channel-selection")
-                    .setPlaceholder(super.lang.getMessage("discord.menu.voice-channel.select-menu.placeholder"))
+                    .setPlaceholder(super.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.placeholder"))
                     .addOptions(options).build();
         }
     }
