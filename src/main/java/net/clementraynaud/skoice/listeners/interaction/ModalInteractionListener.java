@@ -41,13 +41,11 @@ public class ModalInteractionListener extends ListenerAdapter {
         if ("new-voice-channel".equals(event.getModalId())) {
             String categoryName = event.getValue("category-name").getAsString();
             String voiceChannelName = event.getValue("voice-channel-name").getAsString();
-            event.getGuild().createCategory(categoryName).queue(category -> {
-                event.getGuild().createVoiceChannel(voiceChannelName, category).queue(channel -> {
-                    String voiceChannelId = channel.getId();
-                    this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), voiceChannelId);
-                });
-            });
-            this.plugin.getConfiguration().saveFile();
+            event.getGuild().createCategory(categoryName).queue(category ->
+                    event.getGuild().createVoiceChannel(voiceChannelName, category).queue(channel -> {
+                        this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), channel.getId());
+                        this.plugin.getConfiguration().saveFile();
+                    }));
             new InterruptSystemTask(this.plugin.getConfiguration()).run();
             this.plugin.getListenerManager().update(event.getUser());
             event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
