@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice;
 
 import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.config.Configuration;
 import net.clementraynaud.skoice.config.ConfigurationField;
@@ -45,6 +46,7 @@ public class Skoice extends JavaPlugin {
     private TempFileStorage tempFileStorage;
     private ListenerManager listenerManager;
     private Bot bot;
+    private BotCommands botCommands;
     private ConfigurationMenu configurationMenu;
     private Updater updater;
 
@@ -66,6 +68,7 @@ public class Skoice extends JavaPlugin {
         this.bot = new Bot(this);
         this.bot.connect();
         this.configurationMenu = new ConfigurationMenu(this);
+        this.botCommands = new BotCommands(this);
         if (this.bot.getJDA() != null) {
             this.bot.setup();
         } else {
@@ -107,6 +110,10 @@ public class Skoice extends JavaPlugin {
 
     public Bot getBot() {
         return this.bot;
+    }
+
+    public BotCommands getBotCommands() {
+        return this.botCommands;
     }
 
     public ConfigurationMenu getConfigurationMenu() {

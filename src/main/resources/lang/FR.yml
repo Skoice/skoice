@@ -14,7 +14,7 @@ logger:
     no-radius: "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
   error:
     missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur votre serveur Discord. Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur \"%s\". Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."
     discord-api-timed-out: "Discord semble subir une panne. Retrouvez plus d'informations ici : https://discordstatus.com."
   exception:
@@ -37,6 +37,7 @@ minecraft:
       bot-connected-incomplete-configuration-discord: "%s Votre bot est &adésormais connecté&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
       bot-already-connected: "%s Vous avez &amis à jour le token&7. Redémarrez votre serveur Minecraft pour connecter votre bot."
       bot-could-not-connect: "%s Votre bot &cn'a pas pu se connecter&7. Essayez de nouveau avec un token valide."
+      missing-access: "%s Votre bot n'a &cpas la permission de déclarer des commandes &7sur \"&e%s&7\". Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice n'est &cpas configuré correctement&7. Veuillez contacter un administrateur."
       incomplete-configuration-operator-interactive:
         - "%s Skoice n'est &cpas configuré correctement&7. Cliquez "

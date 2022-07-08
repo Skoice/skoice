@@ -14,7 +14,7 @@ logger:
     no-radius: "Radius nicht eingestellt. Tippe \"/configure\" auf deinem Discord-Server ein, um Skoice einzurichten."
   error:
     missing-permission: "Sie haben Ihrem Bot nicht die Berechtigung \"Administrator\" auf Ihrem Discord-Server erteilt. Öffne diesen Link, um sie hinzuzufügen: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "Du hast deinem Bot nicht die Erlaubnis gegeben, Befehle auf deinem Discord-Server zu registrieren. Öffne diesen Link, um ihn hinzuzufügen und starte deinen Minecraft-Server neu: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "Du hast deinem Bot nicht die Erlaubnis gegeben, Befehle auf \"%s\" zu registrieren. Öffne diesen Link, um ihn hinzuzufügen und starte deinen Minecraft-Server neu: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Ihr Bot konnte keine Verbindung herstellen. Um das Token zu aktualisieren, geben Sie \"/skoice token\" gefolgt vom neuen Token ein."
     discord-api-timed-out: "Discord scheint eine Störung zu haben. Weitere Informationen finden Sie hier: https://discordstatus.com."
   exception:
@@ -36,6 +36,7 @@ minecraft:
       bot-connected: "%s Ihr Bot ist &ajetzt verbunden&7."
       bot-connected-incomplete-configuration-discord: "%s Dein Bot ist &ajetzt verbunden&7. Gib \"&e/configure&7\" auf deinem Discord-Server ein, um ihn einzurichten."
       bot-already-connected: "%s Sie haben &aden Token aktualisiert&7. Starte deinen Minecraft-Server neu, um deinen Bot zu verbinden."
+      missing-access: "%s Your bot does &cnot have the permission to register commands &7on \"&e%s&7\". Open this link to add it and restart your Minecraft server: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       bot-could-not-connect: "%s Ihr Bot &ckonnte keine Verbindung herstellen&7. Versuchen Sie es erneut mit einem gültigen Token."
       incomplete-configuration: "%s Skoice ist &cnicht korrekt konfiguriert&7. Bitte wenden Sie sich an einen Administrator."
       incomplete-configuration-operator-interactive:

@@ -39,7 +39,7 @@ public class ReconnectedListener extends ListenerAdapter {
         this.plugin.getConfigurationMenu().delete();
         this.plugin.getBot().checkForValidVoiceChannel();
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
-            new BotCommands(this.plugin).register(guild);
+            this.plugin.getBotCommands().register(guild);
             if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                 guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
             }

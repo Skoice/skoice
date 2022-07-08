@@ -123,12 +123,7 @@ public class Bot {
         this.setDefaultAvatar();
         this.plugin.getConfigurationMenu().delete();
         this.checkForValidVoiceChannel();
-        this.jda.getGuilds().forEach(guild -> {
-            new BotCommands(this.plugin).register(guild);
-            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
-            }
-        });
+        this.jda.getGuilds().forEach(guild -> this.plugin.getBotCommands().register(guild, sender));
         this.plugin.getListenerManager().registerPermanentBotListeners();
         this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
                         this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(

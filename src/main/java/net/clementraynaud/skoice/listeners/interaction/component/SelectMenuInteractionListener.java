@@ -77,7 +77,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     this.plugin.getConfiguration().saveFile();
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                     this.plugin.getListenerManager().update();
-                    new BotCommands(this.plugin).register(event.getGuild());
+                    this.plugin.getBotCommands().register(event.getGuild());
                     event.editMessage(this.plugin.getBot().getMenu("language").build()).queue();
                     break;
                 case "voice-channel-selection":
