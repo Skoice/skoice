@@ -45,10 +45,10 @@ public class ModalInteractionListener extends ListenerAdapter {
                     event.getGuild().createVoiceChannel(voiceChannelName, category).queue(channel -> {
                         this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), channel.getId());
                         this.plugin.getConfiguration().saveFile();
+                        new InterruptSystemTask(this.plugin.getConfiguration()).run();
+                        this.plugin.getListenerManager().update(event.getUser());
+                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     }));
-            new InterruptSystemTask(this.plugin.getConfiguration()).run();
-            this.plugin.getListenerManager().update(event.getUser());
-            event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
         } else if ("customize".equals(event.getModalId())) {
             int horizontalRadius = 0;
             int verticalRadius = 0;
