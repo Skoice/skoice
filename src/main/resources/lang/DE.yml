@@ -2,7 +2,8 @@ logger:
   info:
     plugin-enabled: "Plugin aktiviert."
     plugin-disabled: "Plugin deaktiviert."
-    plugin-updated: "Sie verwenden jetzt Skoice 3. Damit Ihr Bot richtig funktioniert, folgen Sie unserem Migrationsleitfaden hier: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
+    plugin-updated: "Skoice wurde auf die neueste Version aktualisiert."
+    skoice-3: "Sie verwenden jetzt Skoice 3. Damit Ihr Bot richtig funktioniert, folgen Sie unserem Migrationsleitfaden hier: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
     configuration-complete: "Skoice ist jetzt konfiguriert. Gib \"/link\" auf deinem Discord-Server ein, um deinen Discord-Account mit Minecraft zu verknüpfen. Spieler müssen ihre Konten verknüpfen, um den Sprachchat im Nahbereich zu nutzen."
     bot-connected: "Ihr Bot ist verbunden."
   warning:

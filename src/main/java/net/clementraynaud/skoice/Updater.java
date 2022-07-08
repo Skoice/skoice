@@ -71,7 +71,7 @@ public class Updater {
                 new File(fileName).delete();
                 new File(fileName + fileSuffix).renameTo(new File(fileName));
 
-                // TODO : Add a message to the console
+                this.plugin.getLogger().info("logger.info.plugin-updated");
             } catch (IOException e) {
                 new File(fileName + fileSuffix).delete();
 

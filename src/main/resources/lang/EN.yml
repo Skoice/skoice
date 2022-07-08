@@ -2,7 +2,8 @@ logger:
   info:
     plugin-enabled: "Plugin enabled."
     plugin-disabled: "Plugin disabled."
-    plugin-updated: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
+    plugin-updated: "Skoice has been updated to the latest version."
+    skoice-3: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
     configuration-complete: "Skoice is now configured. Type \"/link\" on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     bot-connected: "Your bot is connected."
   warning:
