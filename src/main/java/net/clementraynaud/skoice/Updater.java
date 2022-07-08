@@ -62,20 +62,22 @@ public class Updater {
         String fileName = this.plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
         String fileSuffix = "-temp";
 
-        try (FileOutputStream outputStream = new FileOutputStream(fileName + fileSuffix)) {
-            outputStream.getChannel()
-                    .transferFrom(Channels.newChannel(new URL("https://api.spiget.org/v2/resources/" + this.resourceId + "/versions/latest/download")
-                            .openStream()), 0, Long.MAX_VALUE);
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            try (FileOutputStream outputStream = new FileOutputStream(fileName + fileSuffix)) {
+                outputStream.getChannel()
+                        .transferFrom(Channels.newChannel(new URL("https://api.spiget.org/v2/resources/" + this.resourceId + "/versions/latest/download")
+                                .openStream()), 0, Long.MAX_VALUE);
 
-            new File(fileName).delete();
-            new File(fileName + fileSuffix).renameTo(new File(fileName));
+                new File(fileName).delete();
+                new File(fileName + fileSuffix).renameTo(new File(fileName));
 
-            // TODO : Add a message to the console
-        } catch (IOException e) {
-            new File(fileName + fileSuffix).delete();
+                // TODO : Add a message to the console
+            } catch (IOException e) {
+                new File(fileName + fileSuffix).delete();
 
-            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                    this.plugin.getDescription().getVersion(), version));
-        }
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
+                        this.plugin.getDescription().getVersion(), version));
+            }
+        });
     }
 }
