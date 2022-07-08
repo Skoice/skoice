@@ -2,7 +2,7 @@ logger:
   info:
     plugin-enabled: "Plugin activé."
     plugin-disabled: "Plugin désactivé."
-    plugin-updated: "Skoice a été mis à jour vers la version la plus récente."
+    plugin-updated: "Skoice a été mis à jour vers la version la plus récente. Veuillez redémarrer votre serveur Minecraft pour appliquer les changements."
     skoice-3: "Vous utilisez désormais Skoice 3. Pour que votre bot fonctionne correctement, suivez notre guide de migration ici : https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
     configuration-complete: "Skoice est désormais configuré. Tapez \"/link\" sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
     bot-connected: "Vour bot est connecté."
