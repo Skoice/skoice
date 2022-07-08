@@ -25,10 +25,10 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Veuillez de suivre les instructions sur "
+        - " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Si vous possédez déjà un bot, vous devez en créer un nouveau. Veuillez de suivre les instructions sur "
         - "&7.\n&8• &7Quand vous aurez récupéré son token, entrez-le "
         - "&7.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
-      bot-creation-link: " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Veuillez de suivre les instructions sur cette page : &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Quand vous aurez récupéré son token, tapez \"&e/skoice token&7\" suivi du token.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
+      bot-creation-link: " \n%s Configuration (&fCréation du bot&7)\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Si vous possédez déjà un bot, vous devez en créer un nouveau. Veuillez de suivre les instructions sur cette page : &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Quand vous aurez récupéré son token, tapez \"&e/skoice token&7\" suivi du token.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
       no-token: "%s Vous n'avez &cpas fourni de token&7. Pour utiliser cette commande, tapez \"&e/skoice token&7\" suivi du token."
       no-guild-interactive:
         - "%s Votre bot n'est &cpas sur un serveur Discord&7. Ouvrez "
