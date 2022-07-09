@@ -75,7 +75,7 @@ public class Skoice extends JavaPlugin {
             this.listenerManager.update();
         }
         new SkoiceCommand(this).init();
-        this.updater = new Updater(this, Skoice.RESSOURCE_ID);
+        this.updater = new Updater(this, Skoice.RESSOURCE_ID, this.getFile().getAbsolutePath());
         this.updater.checkVersion();
     }
 
