@@ -17,7 +17,7 @@ logger:
     missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     missing-access: "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur \"%s\". Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."
-    discord-api-timed-out: "Discord semble subir une panne. Retrouvez plus d'informations ici : https://discordstatus.com."
+    bot-timed-out: "Un problème a empêché votre bot de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord ici : https://discordstatus.com."
   exception:
     unexpected-value: "Valeur inattendue : %s"
 
@@ -61,10 +61,10 @@ minecraft:
       invalid-parameter: "%s Vous n'avez &cpas fourni un argument valide&7. Pour utiliser cette commande, tapez \"&e/skoice %s&7\"."
       illegal-executor: "%s Cette commande est &cseulement exécutable &7par les joueurs."
       missing-permission: "%s Cette commande est &cseulement exécutable &7par les opérateurs."
-      discord-api-timed-out-interactive:
-        - "%s Discord semble &csubir une panne&7. Retrouvez plus d'informations sur "
+      bot-timed-out-interactive:
+        - "%s Un problème a &cempêché votre bot &7de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord sur "
         - "&7."
-      discord-api-timed-out-link: "%s Discord semble &csubir une panne&7. Retrouvez plus d'informations ici : &bhttps://discordstatus.com&7."
+      bot-timed-out-link: "%s Un problème a &cempêché votre bot &7de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord ici : &bhttps://discordstatus.com&7."
   action-bar:
     alert: "&c⚠ &7Vous vous &céloignez &7des joueurs à proximité."
   interaction:

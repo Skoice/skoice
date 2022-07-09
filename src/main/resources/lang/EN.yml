@@ -17,7 +17,7 @@ logger:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     missing-access: "You did not grant your bot the permission to register commands on \"%s\". Open this link to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."
-    discord-api-timed-out: "Discord seems to be experiencing an outage. Find more information here: https://discordstatus.com."
+    bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: https://discordstatus.com."
   exception:
     unexpected-value: "Unexpected value: %s"
 
@@ -61,10 +61,10 @@ minecraft:
       invalid-parameter: "%s You have &cnot provided a valid argument&7. To use this command, type \"&e/skoice %s&7\"."
       illegal-executor: "%s This command is &conly executable &7by players."
       missing-permission: "%s This command is &conly executable &7by operators."
-      discord-api-timed-out-interactive:
-        - "%s Discord seems to &cbe experiencing an outage&7. Find more information on "
+      bot-timed-out-interactive:
+        - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
         - "&7."
-      discord-api-timed-out-link: "%s Discord seems to &cbe experiencing an outage&7. Find more information here: &bhttps://discordstatus.com&7."
+      bot-timed-out-link: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages here: &bhttps://discordstatus.com&7."
   action-bar:
     alert: "&c⚠ &7You are &cmoving away &7from near players."
   interaction:

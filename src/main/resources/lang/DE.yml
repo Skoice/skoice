@@ -17,7 +17,7 @@ logger:
     missing-permission: "Sie haben Ihrem Bot nicht die Berechtigung \"Administrator\" auf Ihrem Discord-Server erteilt. Öffne diesen Link, um sie hinzuzufügen: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     missing-access: "Du hast deinem Bot nicht die Erlaubnis gegeben, Befehle auf \"%s\" zu registrieren. Öffne diesen Link, um ihn hinzuzufügen und starte deinen Minecraft-Server neu: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Ihr Bot konnte keine Verbindung herstellen. Um das Token zu aktualisieren, geben Sie \"/skoice token\" gefolgt vom neuen Token ein."
-    discord-api-timed-out: "Discord scheint eine Störung zu haben. Weitere Informationen finden Sie hier: https://discordstatus.com."
+    bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: https://discordstatus.com."
   exception:
     unexpected-value: "Unerwarteter Wert: %s"
 
@@ -61,10 +61,10 @@ minecraft:
       invalid-parameter: "%s Sie haben &ckein gültiges Argument angegeben&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice %s&7\" ein."
       illegal-executor: "%s Dieser Befehl ist &cnur von Spielern ausführbar&7."
       missing-permission: "%s Dieser Befehl ist &cnur&è von Operatoren ausführbar."
-      discord-api-timed-out-interactive:
-        - "%s Discord scheint &ceine Störung zu haben&7. Weitere Informationen finden Sie unter "
+      bot-timed-out-interactive:
+        - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
         - "&7."
-      discord-api-timed-out-link: "%s Discord scheint &ceine Störung zu haben&7. Weitere Informationen finden Sie hier: &bhttps://discordstatus.com&7."
+      bot-timed-out-link: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages here: &bhttps://discordstatus.com&7."
   action-bar:
     alert: "&c⚠ &7Sie &centfernen sich&7 von nahen Spielern."
   interaction:

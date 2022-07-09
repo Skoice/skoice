@@ -102,16 +102,16 @@ public class Bot {
                 }
             } catch (ErrorResponseException e) {
                 if (sender == null) {
-                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.discord-api-timed-out"));
+                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));
                 } else {
                     try {
                         TextComponent discordStatusPage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
                         MessageUtil.setHoverEvent(discordStatusPage,
                                 this.plugin.getLang().getMessage("minecraft.interaction.link", "https://discordstatus.com"));
                         discordStatusPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discordstatus.com"));
-                        sender.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.discord-api-timed-out-interactive", discordStatusPage));
+                        sender.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out-interactive", discordStatusPage));
                     } catch (NoSuchMethodError e2) {
-                        sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.discord-api-timed-out-link"));
+                        sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out-link"));
                     }
                 }
             } catch (IllegalStateException | InterruptedException ignored) {
