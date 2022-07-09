@@ -61,19 +61,14 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                 case "server-selection":
                     if (this.plugin.getBot().getJDA().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
                         for (SelectOption server : event.getComponent().getOptions()) {
-                            if (this.plugin.getBot().getJDA().getGuilds().contains(this.plugin.getBot().getJDA().getGuildById(server.getValue()))) {
-                                if (event.getSelectedOptions().get(0).getValue().equals(server.getValue())) {
-                                    this.plugin.getConfigurationMenu().delete();
-                                    try {
-                                        this.plugin.getBot().getJDA().getGuildById(server.getValue()).leave().queue();
-                                    } catch (ErrorResponseException ignored) {
-                                    }
+                            Guild guild = this.plugin.getBot().getJDA().getGuildById(server.getValue());
+                            if (guild != null && !event.getSelectedOptions().get(0).getValue().equals(server.getValue())) {
+                                if (event.getGuild().getId().equals(server.getValue())) {
+                                    this.plugin.getConfigurationMenu().retrieveMessage().delete().queue(success ->
+                                            guild.leave().queue());
                                 } else {
-                                    try {
-                                        this.plugin.getBot().getJDA().getGuildById(server.getValue()).leave()
-                                                .queue(success -> event.editMessage(this.plugin.getConfigurationMenu().update()).queue());
-                                    } catch (ErrorResponseException ignored) {
-                                    }
+                                    guild.leave().queue(success ->
+                                            event.editMessage(this.plugin.getConfigurationMenu().update()).queue());
                                 }
                             }
                         }
