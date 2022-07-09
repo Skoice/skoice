@@ -64,8 +64,9 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                             Guild guild = this.plugin.getBot().getJDA().getGuildById(server.getValue());
                             if (guild != null && !event.getSelectedOptions().get(0).getValue().equals(server.getValue())) {
                                 if (event.getGuild().getId().equals(server.getValue())) {
-                                    this.plugin.getConfigurationMenu().retrieveMessage().delete().queue(success ->
-                                            guild.leave().queue());
+                                    this.plugin.getConfigurationMenu().retrieveMessage().queue(message ->
+                                            message.delete().queue(success ->
+                                                    guild.leave().queue()));
                                 } else {
                                     guild.leave().queue(success ->
                                             event.editMessage(this.plugin.getConfigurationMenu().update()).queue());

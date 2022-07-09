@@ -26,6 +26,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.requests.RestAction;
 
 public class ConfigurationMenu {
 
@@ -52,14 +53,14 @@ public class ConfigurationMenu {
     }
 
     public String getMessageId() {
-        Message message = this.retrieveMessage();
+        Message message = this.retrieveMessage().complete();
         if (message != null) {
             return message.getId();
         }
         return "";
     }
 
-    public Message retrieveMessage() {
+    public RestAction<Message> retrieveMessage() {
         if (!this.plugin.getTempFileStorage().getFile().contains(TempFileStorage.CONFIG_MENU_FIELD)) {
             return null;
         }
@@ -75,7 +76,7 @@ public class ConfigurationMenu {
         }
         try {
             return channel.retrieveMessageById(this.plugin.getTempFileStorage().getFile()
-                    .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.MESSAGE_ID_FIELD)).complete();
+                    .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.MESSAGE_ID_FIELD));
         } catch (ErrorResponseException e) {
             this.clearConfig();
         }
@@ -83,10 +84,7 @@ public class ConfigurationMenu {
     }
 
     public void delete() {
-        Message message = this.retrieveMessage();
-        if (message != null) {
-            message.delete().queue();
-        }
+        this.retrieveMessage().queue(message -> message.delete().queue());
     }
 
     public void store(Message message) {
