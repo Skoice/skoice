@@ -33,7 +33,7 @@ public class TokenArgument extends Argument {
 
     @Override
     public void run() {
-        if (!this.canExecuteCommand()) {
+        if (this.cannotBeExecuted()) {
             return;
         }
         if (this.arg.isEmpty()) {

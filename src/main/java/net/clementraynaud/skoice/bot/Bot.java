@@ -45,6 +45,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -296,24 +297,38 @@ public class Bot {
     private void loadMenus() {
         this.loadMenuFields();
         YamlConfiguration menusYaml = ConfigurationUtils.loadResource(this.getClass().getName(), "menus/menus.yml");
+        if (menusYaml == null) {
+            return;
+        }
         for (String menu : menusYaml.getKeys(false)) {
-            if ("configuration".equals(menu) || "linking-process".equals(menu) || "error".equals(menu)) {
-                for (String subMenu : menusYaml.getConfigurationSection(menu).getKeys(false)) {
-                    if (!"emoji".equals(subMenu)) {
-                        this.menus.put(subMenu, new Menu(this.plugin,
-                                menusYaml.getConfigurationSection(menu + "." + subMenu)));
+            ConfigurationSection menuSection  = menusYaml.getConfigurationSection(menu);
+            if (menuSection != null) {
+                if ("configuration".equals(menu) || "linking-process".equals(menu) || "error".equals(menu)) {
+                    for (String subMenu : menuSection.getKeys(false)) {
+                        if (!"emoji".equals(subMenu)) {
+                            ConfigurationSection subMenuSection = menusYaml.getConfigurationSection(menu + "." + subMenu);
+                            if (subMenuSection != null) {
+                                this.menus.put(subMenu, new Menu(this.plugin, subMenuSection));
+                            }
+                        }
                     }
+                } else {
+                    this.menus.put(menu, new Menu(this.plugin, menuSection));
                 }
-            } else {
-                this.menus.put(menu, new Menu(this.plugin, menusYaml.getConfigurationSection(menu)));
             }
         }
     }
 
     private void loadMenuFields() {
         YamlConfiguration fieldsYaml = ConfigurationUtils.loadResource(this.getClass().getName(), "menus/fields.yml");
+        if (fieldsYaml == null) {
+            return;
+        }
         for (String field : fieldsYaml.getKeys(false)) {
-            this.fields.put(field, new MenuField(this.plugin, fieldsYaml.getConfigurationSection(field)));
+            ConfigurationSection fieldSection = fieldsYaml.getConfigurationSection(field);
+            if (fieldSection != null) {
+                this.fields.put(field, new MenuField(this.plugin, fieldSection));
+            }
         }
     }
 

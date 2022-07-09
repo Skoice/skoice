@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.config;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.LinksFileStorage;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -69,10 +70,11 @@ public class OutdatedConfiguration {
     }
 
     private void convertOldToken() {
-        if (this.oldData.contains("token")
-                && !this.oldData.getString("token").isEmpty()
+        String oldToken = this.oldData.getString("token");
+        if (oldToken != null
+                && !oldToken.isEmpty()
                 && !this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
-            this.plugin.getConfiguration().setToken(this.oldData.getString("token"));
+            this.plugin.getConfiguration().setToken(oldToken);
         }
     }
 
@@ -92,9 +94,10 @@ public class OutdatedConfiguration {
     }
 
     private void convertOldLinks() {
-        if (this.oldData.getConfigurationSection("Data") != null) {
+        ConfigurationSection dataSection = this.oldData.getConfigurationSection("Data");
+        if (dataSection != null) {
             Map<String, String> links = new HashMap<>();
-            Set<String> subkeys = this.oldData.getConfigurationSection("Data").getKeys(false);
+            Set<String> subkeys = dataSection.getKeys(false);
             Iterator<String> iterator = subkeys.iterator();
             for (int i = 0; i < subkeys.size(); i += 2) {
                 links.put(iterator.next(), iterator.next());
@@ -106,8 +109,9 @@ public class OutdatedConfiguration {
     }
 
     private void convertOldData(String oldField, String newField) {
-        if (this.oldData.contains(oldField)
-                && !this.oldData.getString(oldField).isEmpty()
+        String oldFieldValue = this.oldData.getString(oldField);
+        if (oldFieldValue != null
+                && !oldFieldValue.isEmpty()
                 && !this.plugin.getConfiguration().getFile().contains(newField)) {
             this.plugin.getConfiguration().getFile().set(newField, this.oldData.get(oldField));
         }

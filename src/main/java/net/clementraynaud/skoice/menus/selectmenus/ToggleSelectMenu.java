@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.util.ConfigurationUtils;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.Collections;
 
@@ -40,10 +41,12 @@ public class ToggleSelectMenu extends SelectMenu {
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        boolean selectedValue = this.plugin.getConfiguration().getFile()
-                .getBoolean(this.componentId);
-        boolean defaultValue = ConfigurationUtils.loadResource(this.getClass().getName(), "config.yml")
-                .getBoolean(this.componentId);
+        boolean selectedValue = this.plugin.getConfiguration().getFile().getBoolean(this.componentId);
+        YamlConfiguration configuration = ConfigurationUtils.loadResource(this.getClass().getName(), "config.yml");
+        if (configuration == null) {
+            return null;
+        }
+        boolean defaultValue = configuration.getBoolean(this.componentId);
         return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create(this.componentId)
                 .addOptions(SelectOption.of(super.plugin.getLang().getMessage("discord.select-option.enabled.label"), ToggleSelectMenu.ENABLED_OPTION_ID)
                                 .withDescription(defaultValue ? super.plugin.getLang().getMessage("discord.select-option.default.description") : null)

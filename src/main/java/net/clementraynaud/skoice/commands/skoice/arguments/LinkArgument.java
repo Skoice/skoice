@@ -43,7 +43,7 @@ public class LinkArgument extends Argument {
 
     @Override
     public void run() {
-        if (!this.canExecuteCommand()) {
+        if (this.cannotBeExecuted()) {
             return;
         }
         Player player = (Player) this.sender;

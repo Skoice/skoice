@@ -21,7 +21,6 @@ package net.clementraynaud.skoice.listeners.role.update;
 
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.role.update.RoleUpdatePermissionsEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 

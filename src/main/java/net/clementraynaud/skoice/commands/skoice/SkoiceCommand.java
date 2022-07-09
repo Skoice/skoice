@@ -28,6 +28,7 @@ import net.clementraynaud.skoice.commands.skoice.arguments.UnlinkArgument;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -46,8 +47,11 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
     }
 
     public void init() {
-        this.plugin.getCommand("skoice").setExecutor(this);
-        this.plugin.getCommand("skoice").setTabCompleter(this);
+        PluginCommand skoiceCommand = this.plugin.getCommand("skoice");
+        if (skoiceCommand != null) {
+            skoiceCommand.setExecutor(this);
+            skoiceCommand.setTabCompleter(this);
+        }
     }
 
     @Override

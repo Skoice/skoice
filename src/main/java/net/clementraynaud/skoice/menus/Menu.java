@@ -2,7 +2,6 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ModeSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
@@ -90,8 +89,9 @@ public class Menu {
         }
         if (!"mode".equals(this.name)) {
             for (Menu menu : this.plugin.getBot().getMenus().values()) {
-                if (menu.parent != null && menu.parent.equals(this.name)) {
-                    embed.addField(menu.getTitle(true), menu.getDescription(true), true);
+                String description = menu.getDescription(true);
+                if (menu.parent != null && menu.parent.equals(this.name) && description != null) {
+                    embed.addField(menu.getTitle(true), description, true);
                 }
             }
         }
