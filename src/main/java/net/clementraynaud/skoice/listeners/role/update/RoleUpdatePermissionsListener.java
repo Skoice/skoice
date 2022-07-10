@@ -21,7 +21,6 @@ package net.clementraynaud.skoice.listeners.role.update;
 
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.role.update.RoleUpdatePermissionsEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -48,10 +47,8 @@ public class RoleUpdatePermissionsListener extends ListenerAdapter {
                     && event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                 event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
                 this.plugin.getListenerManager().update();
-                Message message = this.plugin.getConfigurationMenu().retrieveMessage();
-                if (message != null) {
-                    message.editMessage(this.plugin.getConfigurationMenu().update()).queue();
-                }
+                this.plugin.getConfigurationMenu().retrieveMessage(message ->
+                        message.editMessage(this.plugin.getConfigurationMenu().update()).queue());
             }
         }
     }

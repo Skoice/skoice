@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.listeners;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.BotCommands;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.ReconnectedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -39,7 +38,7 @@ public class ReconnectedListener extends ListenerAdapter {
         this.plugin.getConfigurationMenu().delete();
         this.plugin.getBot().checkForValidVoiceChannel();
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
-            new BotCommands(this.plugin).register(guild);
+            this.plugin.getBotCommands().register(guild);
             if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                 guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
             }

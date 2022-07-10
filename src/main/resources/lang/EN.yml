@@ -2,7 +2,8 @@ logger:
   info:
     plugin-enabled: "Plugin enabled."
     plugin-disabled: "Plugin disabled."
-    plugin-updated: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
+    plugin-updated: "Skoice has been updated to the latest version. Please restart your Minecraft server to apply changes."
+    skoice-3: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
     configuration-complete: "Skoice is now configured. Type \"/link\" on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     bot-connected: "Your bot is connected."
   warning:
@@ -14,22 +15,21 @@ logger:
     no-radius: "Radius not set. Type \"/configure\" on your Discord server to set up Skoice."
   error:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "You did not grant your bot the permission to register commands on your Discord server. Open this link to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice connect\" followed by the new token."
-    discord-api-timed-out: "Discord seems to be experiencing an outage. Find more information here: https://discordstatus.com."
+    missing-access: "You did not grant your bot the permission to register commands on \"%s\". Open this link to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."
+    bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: https://discordstatus.com."
   exception:
     unexpected-value: "Unexpected value: %s"
 
 minecraft:
   chat:
     configuration:
-      outdated-version: "%s You are &cusing an outdated ersion &7(&e%s&7). Download the latest version (&e%s&7) here: &bhttps://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861&7."
       bot-creation-interactive:
-        - " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on "
+        - " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
         - "&7.\n&8• &7When you have retrieved its token, put it "
         - "&7.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
-      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7When you have retrieved its token, type \"&e/skoice connect&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
-      no-token: "%s You have &cnot provided a token&7. To use this command, type \"&e/skoice connect&7\" followed by the token."
+      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+      no-token: "%s You have &cnot provided a token&7. To use this command, type \"&e/skoice token&7\" followed by the token."
       no-guild-interactive:
         - "%s Your bot is &cnot on a Discord server&7. Open "
         - " &7to invite it."
@@ -38,6 +38,7 @@ minecraft:
       bot-connected-incomplete-configuration-discord: "%s Your bot is &anow connected&7. Type \"&e/configure&7\" on your Discord server to set it up."
       bot-already-connected: "%s You have &aupdated the token&7. Restart your Minecraft server to connect your bot."
       bot-could-not-connect: "%s Your bot &ccould not connect&7. Try again with a valid token."
+      missing-access: "%s Your bot does &cnot have the permission to register commands &7on \"&e%s&7\". Open this link to add it and restart your Minecraft server: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice is &cnot configured correctly&7. Please contact an administrator."
       incomplete-configuration-operator-interactive:
         - "%s Skoice is &cnot configured correctly&7. Click "
@@ -60,10 +61,10 @@ minecraft:
       invalid-parameter: "%s You have &cnot provided a valid argument&7. To use this command, type \"&e/skoice %s&7\"."
       illegal-executor: "%s This command is &conly executable &7by players."
       missing-permission: "%s This command is &conly executable &7by operators."
-      discord-api-timed-out-interactive:
-        - "%s Discord seems to &cbe experiencing an outage&7. Find more information on "
+      bot-timed-out-interactive:
+        - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
         - "&7."
-      discord-api-timed-out-link: "%s Discord seems to &cbe experiencing an outage&7. Find more information here: &bhttps://discordstatus.com&7."
+      bot-timed-out-link: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages here: &bhttps://discordstatus.com&7."
   action-bar:
     alert: "&c⚠ &7You are &cmoving away &7from near players."
   interaction:

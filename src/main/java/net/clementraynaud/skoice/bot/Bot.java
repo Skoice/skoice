@@ -43,9 +43,9 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -79,9 +79,14 @@ public class Bot {
 
     public void connect(CommandSender sender) {
         if (this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
-            byte[] base64TokenBytes = Base64.getDecoder().decode(this.plugin.getConfiguration().getFile().getString(ConfigurationField.TOKEN.toString()));
-            for (int i = 0; i < base64TokenBytes.length; i++) {
-                base64TokenBytes[i]--;
+            byte[] base64TokenBytes;
+            try {
+                base64TokenBytes = Base64.getDecoder().decode(this.plugin.getConfiguration().getFile().getString(ConfigurationField.TOKEN.toString()));
+                for (int i = 0; i < base64TokenBytes.length; i++) {
+                    base64TokenBytes[i]--;
+                }
+            } catch (IllegalArgumentException e) {
+                base64TokenBytes = new byte[0];
             }
             try {
                 this.jda = JDABuilder.createDefault(new String(base64TokenBytes))
@@ -98,16 +103,16 @@ public class Bot {
                 }
             } catch (ErrorResponseException e) {
                 if (sender == null) {
-                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.discord-api-timed-out"));
+                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));
                 } else {
                     try {
                         TextComponent discordStatusPage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
                         MessageUtil.setHoverEvent(discordStatusPage,
                                 this.plugin.getLang().getMessage("minecraft.interaction.link", "https://discordstatus.com"));
                         discordStatusPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discordstatus.com"));
-                        sender.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.discord-api-timed-out-interactive", discordStatusPage));
+                        sender.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out-interactive", discordStatusPage));
                     } catch (NoSuchMethodError e2) {
-                        sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.discord-api-timed-out-link"));
+                        sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out-link"));
                     }
                 }
             } catch (IllegalStateException | InterruptedException ignored) {
@@ -119,15 +124,10 @@ public class Bot {
         this.setDefaultAvatar();
         this.plugin.getConfigurationMenu().delete();
         this.checkForValidVoiceChannel();
-        this.jda.getGuilds().forEach(guild -> {
-            new BotCommands(this.plugin).register(guild);
-            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
-            }
-        });
+        this.jda.getGuilds().forEach(guild -> this.plugin.getBotCommands().register(guild, sender));
         this.plugin.getListenerManager().registerPermanentBotListeners();
-        Bukkit.getScheduler().runTaskLater(this.plugin, () ->
-                        Bukkit.getScheduler().runTaskTimerAsynchronously(
+        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
+                        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
                                 new UpdateNetworksTask(this.plugin)::run,
                                 0,
@@ -135,8 +135,8 @@ public class Bot {
                         ),
                 0
         );
-        Bukkit.getScheduler().runTaskLater(this.plugin, () ->
-                        Bukkit.getScheduler().runTaskTimerAsynchronously(
+        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
+                        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
                                 this.plugin.getUpdater()::checkVersion,
                                 Bot.TICKS_BETWEEN_VERSION_CHECKING,
@@ -195,11 +195,12 @@ public class Bot {
     public void checkMemberStatus(Member member) {
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksFileStorage().getLinks(), member.getId());
         if (minecraftId == null) {
-            member.getUser().openPrivateChannel().complete()
-                    .sendMessage(this.menus.get("account-not-linked").build())
-                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
+            member.getUser().openPrivateChannel().queue(channel ->
+                    channel.sendMessage(this.menus.get("account-not-linked").build())
+                            .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
+            );
         } else {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));
+            OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
                 UpdateNetworksTask.getEligiblePlayers().add(player.getUniqueId());
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
@@ -296,24 +297,38 @@ public class Bot {
     private void loadMenus() {
         this.loadMenuFields();
         YamlConfiguration menusYaml = ConfigurationUtils.loadResource(this.getClass().getName(), "menus/menus.yml");
+        if (menusYaml == null) {
+            return;
+        }
         for (String menu : menusYaml.getKeys(false)) {
-            if ("configuration".equals(menu) || "linking-process".equals(menu) || "error".equals(menu)) {
-                for (String subMenu : menusYaml.getConfigurationSection(menu).getKeys(false)) {
-                    if (!"emoji".equals(subMenu)) {
-                        this.menus.put(subMenu, new Menu(this.plugin,
-                                menusYaml.getConfigurationSection(menu + "." + subMenu)));
+            ConfigurationSection menuSection  = menusYaml.getConfigurationSection(menu);
+            if (menuSection != null) {
+                if ("configuration".equals(menu) || "linking-process".equals(menu) || "error".equals(menu)) {
+                    for (String subMenu : menuSection.getKeys(false)) {
+                        if (!"emoji".equals(subMenu)) {
+                            ConfigurationSection subMenuSection = menusYaml.getConfigurationSection(menu + "." + subMenu);
+                            if (subMenuSection != null) {
+                                this.menus.put(subMenu, new Menu(this.plugin, subMenuSection));
+                            }
+                        }
                     }
+                } else {
+                    this.menus.put(menu, new Menu(this.plugin, menuSection));
                 }
-            } else {
-                this.menus.put(menu, new Menu(this.plugin, menusYaml.getConfigurationSection(menu)));
             }
         }
     }
 
     private void loadMenuFields() {
         YamlConfiguration fieldsYaml = ConfigurationUtils.loadResource(this.getClass().getName(), "menus/fields.yml");
+        if (fieldsYaml == null) {
+            return;
+        }
         for (String field : fieldsYaml.getKeys(false)) {
-            this.fields.put(field, new MenuField(this.plugin, fieldsYaml.getConfigurationSection(field)));
+            ConfigurationSection fieldSection = fieldsYaml.getConfigurationSection(field);
+            if (fieldSection != null) {
+                this.fields.put(field, new MenuField(this.plugin, fieldSection));
+            }
         }
     }
 

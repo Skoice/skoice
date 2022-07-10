@@ -22,9 +22,9 @@ package net.clementraynaud.skoice.listeners.interaction;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
-import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.modals.ModalMapping;
 
 public class ModalInteractionListener extends ListenerAdapter {
 
@@ -40,23 +40,34 @@ public class ModalInteractionListener extends ListenerAdapter {
             return;
         }
         if ("new-voice-channel".equals(event.getModalId())) {
-            String categoryName = event.getValue("category-name").getAsString();
-            String voiceChannelName = event.getValue("voice-channel-name").getAsString();
-            Category category = event.getGuild().createCategory(categoryName).complete();
-            String voiceChannelId = event.getGuild().createVoiceChannel(voiceChannelName, category).complete().getId();
-            this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), voiceChannelId);
-            this.plugin.getConfiguration().saveFile();
-            new InterruptSystemTask(this.plugin.getConfiguration()).run();
-            this.plugin.getListenerManager().update(event.getUser());
-            event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+            ModalMapping categoryValue = event.getValue("category-name");
+            ModalMapping voiceChannelValue = event.getValue("voice-channel-name");
+            if (categoryValue == null || voiceChannelValue == null) {
+                return;
+            }
+            String categoryName = categoryValue.getAsString();
+            String voiceChannelName = voiceChannelValue.getAsString();
+            event.getGuild().createCategory(categoryName).queue(category ->
+                    event.getGuild().createVoiceChannel(voiceChannelName, category).queue(channel -> {
+                        this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), channel.getId());
+                        this.plugin.getConfiguration().saveFile();
+                        new InterruptSystemTask(this.plugin.getConfiguration()).run();
+                        this.plugin.getListenerManager().update(event.getUser());
+                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+                    }));
         } else if ("customize".equals(event.getModalId())) {
             int horizontalRadius = 0;
             int verticalRadius = 0;
-            if (event.getValue("horizontal-radius").getAsString().matches("[0-9]+")) {
-                horizontalRadius = Integer.parseInt(event.getValue("horizontal-radius").getAsString());
+            ModalMapping horizontalRadiusValue = event.getValue("horizontal-radius");
+            ModalMapping verticalRadiusValue = event.getValue("vertical-radius");
+            if (horizontalRadiusValue == null || verticalRadiusValue == null) {
+                return;
             }
-            if (event.getValue("vertical-radius").getAsString().matches("[0-9]+")) {
-                verticalRadius = Integer.parseInt(event.getValue("vertical-radius").getAsString());
+            if (horizontalRadiusValue.getAsString().matches("[0-9]+")) {
+                horizontalRadius = Integer.parseInt(horizontalRadiusValue.getAsString());
+            }
+            if (verticalRadiusValue.getAsString().matches("[0-9]+")) {
+                verticalRadius = Integer.parseInt(verticalRadiusValue.getAsString());
             }
             if (horizontalRadius == 0 || verticalRadius == 0) {
                 event.reply(this.plugin.getBot().getMenu("illegal-value").build()).setEphemeral(true).queue();

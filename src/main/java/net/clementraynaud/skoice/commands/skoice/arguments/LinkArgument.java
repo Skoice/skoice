@@ -43,7 +43,7 @@ public class LinkArgument extends Argument {
 
     @Override
     public void run() {
-        if (!this.canExecuteCommand()) {
+        if (this.cannotBeExecuted()) {
             return;
         }
         Player player = (Player) this.sender;
@@ -74,9 +74,10 @@ public class LinkArgument extends Argument {
         super.plugin.getLinksFileStorage().linkUser(player.getUniqueId().toString(), discordId);
         LinkCommand.getDiscordIdCode().values().remove(this.arg);
         VoiceChannel mainVoiceChannel = super.plugin.getConfiguration().getVoiceChannel();
-        member.getUser().openPrivateChannel().complete()
-                .sendMessage(this.plugin.getBot().getMenu("account-linked").build(mainVoiceChannel.getAsMention()))
-                .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
+        member.getUser().openPrivateChannel().queue(channel ->
+                channel.sendMessage(this.plugin.getBot().getMenu("account-linked").build(mainVoiceChannel.getAsMention()))
+                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
+        );
         player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
         GuildVoiceState voiceState = member.getVoiceState();
         if (voiceState != null) {

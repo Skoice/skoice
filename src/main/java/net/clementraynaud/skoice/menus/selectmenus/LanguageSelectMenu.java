@@ -30,11 +30,8 @@ import java.util.List;
 
 public class LanguageSelectMenu extends SelectMenu {
 
-    private final Skoice plugin;
-
     public LanguageSelectMenu(Skoice plugin) {
-        super(plugin.getLang(), false);
-        this.plugin = plugin;
+        super(plugin, false);
     }
 
     @Override
@@ -43,12 +40,12 @@ public class LanguageSelectMenu extends SelectMenu {
         for (LangInfo option : LangInfo.values()) {
             options.add(SelectOption.of(option.getFullName(), option.name())
                     .withDescription(option.name().equals(LangInfo.EN.name())
-                            ? super.lang.getMessage("discord.select-option.default.description")
+                            ? super.plugin.getLang().getMessage("discord.select-option.default.description")
                             : null)
                     .withEmoji(option.getEmoji()));
         }
         return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("language-selection")
                 .addOptions(options)
-                .setDefaultValues(Collections.singleton(this.plugin.getConfiguration().getFile().getString(ConfigurationField.LANG.toString()))).build();
+                .setDefaultValues(Collections.singleton(super.plugin.getConfiguration().getFile().getString(ConfigurationField.LANG.toString()))).build();
     }
 }

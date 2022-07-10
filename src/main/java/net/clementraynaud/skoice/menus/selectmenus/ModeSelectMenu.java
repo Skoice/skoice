@@ -35,33 +35,30 @@ public class ModeSelectMenu extends SelectMenu {
     private static final String VANILLA_MODE_ID = "vanilla-mode";
     private static final String MINIGAME_MODE_ID = "minigame-mode";
 
-    private final Skoice plugin;
-
     public ModeSelectMenu(Skoice plugin) {
-        super(plugin.getLang(), false);
-        this.plugin = plugin;
+        super(plugin, false);
     }
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.label"), ModeSelectMenu.VANILLA_MODE_ID)
-                        .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.description"))
+        List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.label"), ModeSelectMenu.VANILLA_MODE_ID)
+                        .withDescription(super.plugin.getLang().getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.description"))
                         .withEmoji(MenuEmoji.MAP.get()),
-                SelectOption.of(super.lang.getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.label"), ModeSelectMenu.MINIGAME_MODE_ID)
-                        .withDescription(super.lang.getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.description"))
+                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.label"), ModeSelectMenu.MINIGAME_MODE_ID)
+                        .withDescription(super.plugin.getLang().getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.description"))
                         .withEmoji(MenuEmoji.CROSSED_SWORDS.get())));
         String defaultValue = null;
-        if (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 80
-                && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 40) {
+        if (super.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 80
+                && super.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 40) {
             defaultValue = ModeSelectMenu.VANILLA_MODE_ID;
-        } else if (this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 40
-                && this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 20) {
+        } else if (super.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 40
+                && super.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 20) {
             defaultValue = ModeSelectMenu.MINIGAME_MODE_ID;
         }
         return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("mode-selection")
-                .setPlaceholder(this.plugin.getBot().getStatus() != BotStatus.READY
-                        ? super.lang.getMessage("discord.menu.mode.select-menu.placeholder")
-                        : super.lang.getMessage("discord.menu.mode.select-menu.alternative-placeholder"))
+                .setPlaceholder(super.plugin.getBot().getStatus() != BotStatus.READY
+                        ? super.plugin.getLang().getMessage("discord.menu.mode.select-menu.placeholder")
+                        : super.plugin.getLang().getMessage("discord.menu.mode.select-menu.alternative-placeholder"))
                 .addOptions(modes)
                 .setDefaultValues(defaultValue != null ? Collections.singleton(defaultValue) : Collections.emptyList()).build();
     }

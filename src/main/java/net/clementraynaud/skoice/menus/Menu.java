@@ -2,7 +2,6 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ModeSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
@@ -90,8 +89,9 @@ public class Menu {
         }
         if (!"mode".equals(this.name)) {
             for (Menu menu : this.plugin.getBot().getMenus().values()) {
-                if (menu.parent != null && menu.parent.equals(this.name)) {
-                    embed.addField(menu.getTitle(true), menu.getDescription(true), true);
+                String description = menu.getDescription(true);
+                if (menu.parent != null && menu.parent.equals(this.name) && description != null) {
+                    embed.addField(menu.getTitle(true), description, true);
                 }
             }
         }
@@ -123,14 +123,8 @@ public class Menu {
                 this.selectMenu = new LanguageSelectMenu(this.plugin);
                 break;
             case "action-bar-alert":
-                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name,
-                        this.plugin.getConfiguration().getFile()
-                                .getBoolean(ConfigurationField.ACTION_BAR_ALERT.toString()), true);
-                break;
             case "channel-visibility":
-                this.selectMenu = new ToggleSelectMenu(this.plugin.getLang(), this.name,
-                        this.plugin.getConfiguration().getFile()
-                                .getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString()), false);
+                this.selectMenu = new ToggleSelectMenu(this.plugin, this.name);
                 break;
             default:
                 List<Button> buttons = this.getButtons();
