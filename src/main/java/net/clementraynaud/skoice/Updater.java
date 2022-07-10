@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.channels.Channels;
+import java.nio.file.Files;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
@@ -78,7 +79,10 @@ public class Updater {
             } catch (IOException e) {
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
                         this.plugin.getDescription().getVersion(), version));
-                update.delete();
+                try {
+                    Files.delete(update.getAbsoluteFile().toPath());
+                } catch (IOException ignored) {
+                }
             }
         });
     }
