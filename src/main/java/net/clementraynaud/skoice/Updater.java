@@ -71,7 +71,7 @@ public class Updater {
 
             try (FileOutputStream outputStream = new FileOutputStream(update)) {
                 outputStream.getChannel()
-                        .transferFrom(Channels.newChannel(new URL("https://api.spiget.org/v2/resources/" + this.resourceId + "/versions/latest/download")
+                        .transferFrom(Channels.newChannel(new URL("https://clementraynaud.net/files/skoice-latest/Skoice.jar")
                                 .openStream()), 0, Long.MAX_VALUE);
                 this.downloadedVersion = version;
                 this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
