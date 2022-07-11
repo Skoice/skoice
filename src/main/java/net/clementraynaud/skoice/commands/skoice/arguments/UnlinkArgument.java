@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
@@ -37,7 +38,7 @@ public class UnlinkArgument extends Argument {
 
     @Override
     public void run() {
-        if (this.cannotBeExecuted()) {
+        if (!this.canExecuteCommand()) {
             return;
         }
         Player player = (Player) this.sender;
@@ -47,21 +48,20 @@ public class UnlinkArgument extends Argument {
             return;
         }
         super.plugin.getLinksFileStorage().unlinkUser(player.getUniqueId().toString());
+        Member member;
         try {
-            super.plugin.getConfiguration().getGuild().retrieveMemberById(discordId).queue(member -> {
-                member.getUser().openPrivateChannel().queue(channel ->
-                        channel.sendMessage(this.plugin.getBot().getMenu("account-unlinked").build())
-                                .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
-                );
-                GuildVoiceState voiceState = member.getVoiceState();
-                if (voiceState != null) {
-                    AudioChannel audioChannel = voiceState.getChannel();
-                    if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getVoiceChannel())
-                            || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
-                        player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
-                    }
+            member = super.plugin.getConfiguration().getGuild().retrieveMemberById(discordId).complete();
+            member.getUser().openPrivateChannel().complete()
+                    .sendMessage(this.plugin.getBot().getMenu("account-unlinked").build())
+                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
+            GuildVoiceState voiceState = member.getVoiceState();
+            if (voiceState != null) {
+                AudioChannel audioChannel = voiceState.getChannel();
+                if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getVoiceChannel())
+                        || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
+                    player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
                 }
-            });
+            }
         } catch (ErrorResponseException ignored) {
         }
         player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));

@@ -25,6 +25,7 @@ import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
@@ -46,7 +47,7 @@ public class UnlinkCommand extends ListenerAdapter {
             } else {
                 this.plugin.getLinksFileStorage().unlinkUser(minecraftId);
                 event.reply(this.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
-                OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
+                OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(minecraftId));
                 if (player.isOnline() && player.getPlayer() != null) {
                     player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
                     GuildVoiceState voiceState = event.getMember().getVoiceState();

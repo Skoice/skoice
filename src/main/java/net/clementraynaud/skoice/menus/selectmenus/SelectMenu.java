@@ -19,16 +19,16 @@
 
 package net.clementraynaud.skoice.menus.selectmenus;
 
-import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.lang.Lang;
 
 public abstract class SelectMenu {
 
-    protected final Skoice plugin;
+    protected final Lang lang;
 
     private final boolean isRefreshable;
 
-    protected SelectMenu(Skoice plugin, boolean isRefreshable) {
-        this.plugin = plugin;
+    protected SelectMenu(Lang lang, boolean isRefreshable) {
+        this.lang = lang;
         this.isRefreshable = isRefreshable;
     }
 

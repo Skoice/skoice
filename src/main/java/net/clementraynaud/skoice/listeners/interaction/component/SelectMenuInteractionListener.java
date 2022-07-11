@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.interaction.component;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
@@ -28,6 +29,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.Modal;
@@ -59,15 +61,12 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                 case "server-selection":
                     if (this.plugin.getBot().getJDA().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
                         for (SelectOption server : event.getComponent().getOptions()) {
-                            Guild guild = this.plugin.getBot().getJDA().getGuildById(server.getValue());
-                            if (guild != null && !event.getSelectedOptions().get(0).getValue().equals(server.getValue())) {
-                                if (event.getGuild().getId().equals(server.getValue())) {
-                                    this.plugin.getConfigurationMenu().retrieveMessage(message ->
-                                            message.delete().queue(success ->
-                                                    guild.leave().queue()));
-                                } else {
-                                    guild.leave().queue(success ->
-                                            event.editMessage(this.plugin.getConfigurationMenu().update()).queue());
+                            if (!event.getGuild().getId().equals(server.getValue())
+                                    && this.plugin.getBot().getJDA().getGuilds().contains(this.plugin.getBot().getJDA().getGuildById(server.getValue()))) {
+                                try {
+                                    this.plugin.getBot().getJDA().getGuildById(server.getValue()).leave()
+                                            .queue(success -> event.editMessage(this.plugin.getConfigurationMenu().update()).queue());
+                                } catch (ErrorResponseException ignored) {
                                 }
                             }
                         }
@@ -78,7 +77,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     this.plugin.getConfiguration().saveFile();
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                     this.plugin.getListenerManager().update();
-                    this.plugin.getBotCommands().register(event.getGuild());
+                    new BotCommands(this.plugin).register(event.getGuild());
                     event.editMessage(this.plugin.getBot().getMenu("language").build()).queue();
                     break;
                 case "voice-channel-selection":

@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.guild;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotCommands;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -34,7 +35,7 @@ public class GuildJoinListener extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
-        this.plugin.getBotCommands().register(event.getGuild());
+        new BotCommands(this.plugin).register(event.getGuild());
         this.plugin.getListenerManager().update();
     }
 }

@@ -20,13 +20,12 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -40,26 +39,11 @@ public class BotCommands {
         this.plugin = plugin;
     }
 
-    public void register(Guild guild, CommandSender sender) {
-        guild.updateCommands().addCommands(this.getCommands())
-                .queue(success -> {
-                    if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                        guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
-                    }
-                    }, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
-                        e -> {
-                            String applicationId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
-                            this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
-                                    guild.getName(), applicationId));
-                            if (sender != null) {
-                                sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.missing-access",
-                                        guild.getName(), applicationId));
-                            }
-                        }));
-    }
-
     public void register(Guild guild) {
-        this.register(guild, null);
+        guild.updateCommands().addCommands(this.getCommands())
+                .queue(null, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
+                        e -> this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
+                                this.plugin.getBot().getJDA().getSelfUser().getApplicationId()))));
     }
 
     private Set<SlashCommandData> getCommands() {

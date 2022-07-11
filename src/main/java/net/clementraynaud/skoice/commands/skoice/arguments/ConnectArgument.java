@@ -22,18 +22,18 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 import net.clementraynaud.skoice.Skoice;
 import org.bukkit.command.CommandSender;
 
-public class TokenArgument extends Argument {
+public class ConnectArgument extends Argument {
 
     private final String arg;
 
-    public TokenArgument(Skoice plugin, CommandSender sender, String arg) {
-        super(plugin, sender, ArgumentInfo.TOKEN.isAllowedInConsole(), ArgumentInfo.TOKEN.isRestrictedToOperators());
+    public ConnectArgument(Skoice plugin, CommandSender sender, String arg) {
+        super(plugin, sender, ArgumentInfo.CONNECT.isAllowedInConsole(), ArgumentInfo.CONNECT.isRestrictedToOperators());
         this.arg = arg;
     }
 
     @Override
     public void run() {
-        if (this.cannotBeExecuted()) {
+        if (!this.canExecuteCommand()) {
             return;
         }
         if (this.arg.isEmpty()) {

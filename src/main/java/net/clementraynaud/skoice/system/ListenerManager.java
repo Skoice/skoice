@@ -49,6 +49,7 @@ import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
+import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 
 public class ListenerManager {
@@ -65,7 +66,7 @@ public class ListenerManager {
         this.plugin.getBot().updateStatus();
         if (this.startup) {
             this.startup = false;
-            this.plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.plugin), this.plugin);
+            Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this.plugin), this.plugin);
             if (this.plugin.getBot().getStatus() == BotStatus.READY) {
                 this.registerEligiblePlayerListeners();
                 this.registerBotListeners();
@@ -75,10 +76,9 @@ public class ListenerManager {
             this.registerBotListeners();
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
             if (user != null) {
-                user.openPrivateChannel().queue(channel ->
-                        channel.sendMessage(this.plugin.getBot().getMenu("configuration-complete").build())
-                                .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
-                );
+                user.openPrivateChannel().complete()
+                        .sendMessage(this.plugin.getBot().getMenu("configuration-complete").build())
+                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
             }
         } else if (wasBotReady && this.plugin.getBot().getStatus() != BotStatus.READY) {
             this.plugin.getConfigurationMenu().delete();
@@ -95,9 +95,9 @@ public class ListenerManager {
     }
 
     private void registerEligiblePlayerListeners() {
-        this.plugin.getServer().getPluginManager().registerEvents(new PlayerQuitListener(this.plugin), this.plugin);
-        this.plugin.getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this.plugin);
-        this.plugin.getServer().getPluginManager().registerEvents(new PlayerTeleportListener(), this.plugin);
+        Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this.plugin), this.plugin);
+        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this.plugin);
+        Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this.plugin);
     }
 
     private void unregisterEligiblePlayerListeners() {

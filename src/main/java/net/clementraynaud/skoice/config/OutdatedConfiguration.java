@@ -21,7 +21,6 @@ package net.clementraynaud.skoice.config;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.LinksFileStorage;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -65,16 +64,15 @@ public class OutdatedConfiguration {
                 Files.delete(outdatedConfig.toPath());
             } catch (IOException ignored) {
             }
-            this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.skoice-3"));
+            this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
         }
     }
 
     private void convertOldToken() {
-        String oldToken = this.oldData.getString("token");
-        if (oldToken != null
-                && !oldToken.isEmpty()
+        if (this.oldData.contains("token")
+                && !this.oldData.getString("token").isEmpty()
                 && !this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
-            this.plugin.getConfiguration().setToken(oldToken);
+            this.plugin.getConfiguration().setToken(this.oldData.getString("token"));
         }
     }
 
@@ -94,10 +92,9 @@ public class OutdatedConfiguration {
     }
 
     private void convertOldLinks() {
-        ConfigurationSection dataSection = this.oldData.getConfigurationSection("Data");
-        if (dataSection != null) {
+        if (this.oldData.getConfigurationSection("Data") != null) {
             Map<String, String> links = new HashMap<>();
-            Set<String> subkeys = dataSection.getKeys(false);
+            Set<String> subkeys = this.oldData.getConfigurationSection("Data").getKeys(false);
             Iterator<String> iterator = subkeys.iterator();
             for (int i = 0; i < subkeys.size(); i += 2) {
                 links.put(iterator.next(), iterator.next());
@@ -109,9 +106,8 @@ public class OutdatedConfiguration {
     }
 
     private void convertOldData(String oldField, String newField) {
-        String oldFieldValue = this.oldData.getString(oldField);
-        if (oldFieldValue != null
-                && !oldFieldValue.isEmpty()
+        if (this.oldData.contains(oldField)
+                && !this.oldData.getString(oldField).isEmpty()
                 && !this.plugin.getConfiguration().getFile().contains(newField)) {
             this.plugin.getConfiguration().getFile().set(newField, this.oldData.get(oldField));
         }

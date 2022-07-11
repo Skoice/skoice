@@ -29,7 +29,6 @@ import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Category;
-import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.Role;
@@ -37,6 +36,7 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -84,7 +84,7 @@ public class UpdateNetworksTask {
             Set<UUID> oldEligiblePlayers = new HashSet<>(UpdateNetworksTask.eligiblePlayers);
             UpdateNetworksTask.eligiblePlayers.clear();
             for (UUID minecraftId : oldEligiblePlayers) {
-                Player player = this.plugin.getServer().getPlayer(minecraftId);
+                Player player = Bukkit.getPlayer(minecraftId);
                 if (player != null) {
                     Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
                     if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {
@@ -140,8 +140,7 @@ public class UpdateNetworksTask {
                         && !awaitingMove.getRight().cancel(false)) {
                     continue;
                 }
-                GuildVoiceState voiceState = member.getVoiceState();
-                if (voiceState != null && voiceState.getChannel() != shouldBeInChannel) {
+                if (member.getVoiceState().getChannel() != shouldBeInChannel) {
                     UpdateNetworksTask.awaitingMoves.put(member.getId(), Pair.of(
                             shouldBeInChannel.getId(),
                             this.plugin.getConfiguration().getGuild().moveVoiceMember(member, shouldBeInChannel)

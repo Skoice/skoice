@@ -23,7 +23,6 @@ import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,9 +48,9 @@ public class LinksFileStorage extends FileStorage {
 
     public Map<String, String> getLinks() {
         Map<String, String> castedLinks = new HashMap<>();
-        ConfigurationSection linksSection = super.yaml.getConfigurationSection(LinksFileStorage.LINKS_FIELD);
-        if (linksSection != null) {
-            Map<String, Object> links = new HashMap<>(linksSection.getValues(false));
+        if (super.yaml.isSet(LinksFileStorage.LINKS_FIELD)) {
+            Map<String, Object> links = new HashMap<>(super.yaml.getConfigurationSection(LinksFileStorage.LINKS_FIELD)
+                    .getValues(false));
             for (Map.Entry<String, Object> entry : links.entrySet()) {
                 castedLinks.put(entry.getKey(), entry.getValue().toString());
             }

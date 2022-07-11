@@ -46,6 +46,9 @@ public class PlayerJoinListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        if (player.isOp()) {
+            this.plugin.getUpdater().checkVersionInGame(player);
+        }
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
             if (player.isOp()) {
                 if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString()) || this.plugin.getBot().getJDA() == null) {
@@ -67,18 +70,16 @@ public class PlayerJoinListener implements Listener {
             }
         } else {
             UpdateNetworksTask.getEligiblePlayers().add(player.getUniqueId());
-            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
-                if (member != null) {
-                    GuildVoiceState voiceState = member.getVoiceState();
-                    if (voiceState != null) {
-                        AudioChannel audioChannel = voiceState.getChannel();
-                        if (audioChannel != null && audioChannel.equals(this.plugin.getConfiguration().getVoiceChannel())) {
-                            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
-                        }
+            Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
+            if (member != null) {
+                GuildVoiceState voiceState = member.getVoiceState();
+                if (voiceState != null) {
+                    AudioChannel audioChannel = voiceState.getChannel();
+                    if (audioChannel != null && audioChannel.equals(this.plugin.getConfiguration().getVoiceChannel())) {
+                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
                     }
                 }
-            });
+            }
         }
     }
 }

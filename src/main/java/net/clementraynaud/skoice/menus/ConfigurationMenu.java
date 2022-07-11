@@ -25,10 +25,7 @@ import net.clementraynaud.skoice.storage.TempFileStorage;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.exceptions.ErrorHandler;
-import net.dv8tion.jda.api.requests.ErrorResponse;
-
-import java.util.function.Consumer;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 public class ConfigurationMenu {
 
@@ -55,38 +52,41 @@ public class ConfigurationMenu {
     }
 
     public String getMessageId() {
-        String messageId = this.plugin.getTempFileStorage().getFile()
-                .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.MESSAGE_ID_FIELD);
-        if (messageId != null) {
-            return messageId;
+        Message message = this.retrieveMessage();
+        if (message != null) {
+            return message.getId();
         }
         return "";
     }
 
-    public void retrieveMessage(Consumer<Message> success) {
-        String guildId = this.plugin.getTempFileStorage().getFile()
-                .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.GUILD_ID_FIELD);
-        String channelId = this.plugin.getTempFileStorage().getFile()
-                .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.CHANNEL_ID_FIELD);
-        String messageId = this.plugin.getTempFileStorage().getFile()
-                .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.MESSAGE_ID_FIELD);
-        if (guildId == null || channelId == null || messageId == null) {
-            return;
+    public Message retrieveMessage() {
+        if (!this.plugin.getTempFileStorage().getFile().contains(TempFileStorage.CONFIG_MENU_FIELD)) {
+            return null;
         }
-        Guild guild = this.plugin.getBot().getJDA().getGuildById(guildId);
+        Guild guild = this.plugin.getBot().getJDA().getGuildById(this.plugin.getTempFileStorage().getFile()
+                .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.GUILD_ID_FIELD));
         if (guild == null) {
-            return;
+            return null;
         }
-        GuildMessageChannel channel = guild.getChannelById(GuildMessageChannel.class, channelId);
+        GuildMessageChannel channel = guild.getChannelById(GuildMessageChannel.class, this.plugin.getTempFileStorage().getFile()
+                .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.CHANNEL_ID_FIELD));
         if (channel == null) {
-            return;
+            return null;
         }
-        channel.retrieveMessageById(messageId).queue(success,
-                new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.clearConfig()));
+        try {
+            return channel.retrieveMessageById(this.plugin.getTempFileStorage().getFile()
+                    .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.MESSAGE_ID_FIELD)).complete();
+        } catch (ErrorResponseException e) {
+            this.clearConfig();
+        }
+        return null;
     }
 
     public void delete() {
-        this.retrieveMessage(message -> message.delete().queue());
+        Message message = this.retrieveMessage();
+        if (message != null) {
+            message.delete().queue();
+        }
     }
 
     public void store(Message message) {
