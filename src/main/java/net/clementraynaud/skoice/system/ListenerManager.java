@@ -54,10 +54,25 @@ import org.bukkit.event.HandlerList;
 public class ListenerManager {
 
     private final Skoice plugin;
+    private final PlayerQuitListener playerQuitListener;
+    private final PlayerMoveListener playerMoveListener;
+    private final PlayerTeleportListener playerTeleportListener;
+    private final GuildVoiceJoinListener guildVoiceJoinListener;
+    private final GuildVoiceLeaveListener guildVoiceLeaveListener;
+    private final GuildVoiceMoveListener guildVoiceMoveListener;
+    private final ChannelDeleteListener channelDeleteListener;
+
     private boolean startup = true;
 
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;
+        this.playerQuitListener = new PlayerQuitListener(this.plugin);
+        this.playerMoveListener = new PlayerMoveListener();
+        this.playerTeleportListener = new PlayerTeleportListener();
+        this.guildVoiceJoinListener = new GuildVoiceJoinListener(this.plugin);
+        this.guildVoiceLeaveListener = new GuildVoiceLeaveListener(this.plugin);
+        this.guildVoiceMoveListener = new GuildVoiceMoveListener(this.plugin);
+        this.channelDeleteListener = new ChannelDeleteListener();
     }
 
     public void update(User user) {
@@ -95,15 +110,15 @@ public class ListenerManager {
     }
 
     private void registerEligiblePlayerListeners() {
-        this.plugin.getServer().getPluginManager().registerEvents(new PlayerQuitListener(this.plugin), this.plugin);
-        this.plugin.getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this.plugin);
-        this.plugin.getServer().getPluginManager().registerEvents(new PlayerTeleportListener(), this.plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(this.playerQuitListener, this.plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(this.playerMoveListener, this.plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(this.playerTeleportListener, this.plugin);
     }
 
     private void unregisterEligiblePlayerListeners() {
-        HandlerList.unregisterAll(new PlayerQuitListener(this.plugin));
-        HandlerList.unregisterAll(new PlayerMoveListener());
-        HandlerList.unregisterAll(new PlayerTeleportListener());
+        HandlerList.unregisterAll(this.playerQuitListener);
+        HandlerList.unregisterAll(this.playerMoveListener);
+        HandlerList.unregisterAll(this.playerTeleportListener);
     }
 
     public void registerPermanentBotListeners() {
@@ -129,19 +144,19 @@ public class ListenerManager {
 
     public void registerBotListeners() {
         this.plugin.getBot().getJDA().addEventListener(
-                new GuildVoiceJoinListener(this.plugin),
-                new GuildVoiceLeaveListener(this.plugin),
-                new GuildVoiceMoveListener(this.plugin),
-                new ChannelDeleteListener()
+                this.guildVoiceJoinListener,
+                this.guildVoiceLeaveListener,
+                this.guildVoiceMoveListener,
+                this.channelDeleteListener
         );
     }
 
     private void unregisterBotListeners() {
         this.plugin.getBot().getJDA().removeEventListener(
-                new GuildVoiceJoinListener(this.plugin),
-                new GuildVoiceLeaveListener(this.plugin),
-                new GuildVoiceMoveListener(this.plugin),
-                new ChannelDeleteListener()
+                this.guildVoiceJoinListener,
+                this.guildVoiceLeaveListener,
+                this.guildVoiceMoveListener,
+                this.channelDeleteListener
         );
     }
 }
