@@ -301,7 +301,7 @@ public class Bot {
             return;
         }
         for (String menu : menusYaml.getKeys(false)) {
-            ConfigurationSection menuSection  = menusYaml.getConfigurationSection(menu);
+            ConfigurationSection menuSection = menusYaml.getConfigurationSection(menu);
             if (menuSection != null) {
                 if ("configuration".equals(menu) || "linking-process".equals(menu) || "error".equals(menu)) {
                     for (String subMenu : menuSection.getKeys(false)) {

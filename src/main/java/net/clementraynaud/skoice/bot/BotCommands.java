@@ -46,7 +46,7 @@ public class BotCommands {
                     if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                         guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
                     }
-                    }, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
+                }, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
                         e -> {
                             String applicationId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
                             this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
