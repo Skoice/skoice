@@ -32,13 +32,11 @@ import java.util.function.Consumer;
 public class Updater {
 
     private final Skoice plugin;
-    private final int resourceId;
     private final String pluginPath;
     private String downloadedVersion;
 
-    public Updater(Skoice plugin, int resourceId, String pluginPath) {
+    public Updater(Skoice plugin, String pluginPath) {
         this.plugin = plugin;
-        this.resourceId = resourceId;
         this.pluginPath = pluginPath;
     }
 
@@ -52,7 +50,7 @@ public class Updater {
 
     private void getVersion(final Consumer<String> consumer) {
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-            try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId)
+            try (InputStream inputStream = new URL("https://clementraynaud.net/files/skoice-latest/version")
                     .openStream(); Scanner scanner = new Scanner(inputStream)) {
                 if (scanner.hasNext()) {
                     consumer.accept(scanner.next());

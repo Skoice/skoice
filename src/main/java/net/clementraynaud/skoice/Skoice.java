@@ -38,7 +38,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Skoice extends JavaPlugin {
 
     private static final int SERVICE_ID = 11380;
-    private static final int RESSOURCE_ID = 82861;
 
     private Lang lang;
     private Configuration configuration;
@@ -75,7 +74,7 @@ public class Skoice extends JavaPlugin {
             this.listenerManager.update();
         }
         new SkoiceCommand(this).init();
-        this.updater = new Updater(this, Skoice.RESSOURCE_ID, this.getFile().getAbsolutePath());
+        this.updater = new Updater(this, this.getFile().getAbsolutePath());
         this.updater.checkVersion();
     }
 
