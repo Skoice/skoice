@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.listeners.message;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
 
 public class MessageDeleteListener extends ListenerAdapter {
 
@@ -33,7 +32,7 @@ public class MessageDeleteListener extends ListenerAdapter {
     }
 
     @Override
-    public void onMessageDelete(@NotNull MessageDeleteEvent event) {
+    public void onMessageDelete(MessageDeleteEvent event) {
         if (this.configurationMenu.getMessageId().equals(event.getMessageId())) {
             this.configurationMenu.clearConfig();
         }

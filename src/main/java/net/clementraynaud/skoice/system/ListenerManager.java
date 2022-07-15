@@ -32,6 +32,7 @@ import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
 import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleAddListener;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleRemoveListener;
+import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceGuildMuteListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceJoinListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceLeaveListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceMoveListener;
@@ -58,6 +59,7 @@ public class ListenerManager {
     private final PlayerMoveListener playerMoveListener;
     private final PlayerTeleportListener playerTeleportListener;
     private final GuildVoiceJoinListener guildVoiceJoinListener;
+    private final GuildVoiceGuildMuteListener guildVoiceGuildMuteListener;
     private final GuildVoiceLeaveListener guildVoiceLeaveListener;
     private final GuildVoiceMoveListener guildVoiceMoveListener;
     private final ChannelDeleteListener channelDeleteListener;
@@ -70,6 +72,7 @@ public class ListenerManager {
         this.playerMoveListener = new PlayerMoveListener();
         this.playerTeleportListener = new PlayerTeleportListener();
         this.guildVoiceJoinListener = new GuildVoiceJoinListener(this.plugin);
+        this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
         this.guildVoiceLeaveListener = new GuildVoiceLeaveListener(this.plugin);
         this.guildVoiceMoveListener = new GuildVoiceMoveListener(this.plugin);
         this.channelDeleteListener = new ChannelDeleteListener();
@@ -145,6 +148,7 @@ public class ListenerManager {
     public void registerBotListeners() {
         this.plugin.getBot().getJDA().addEventListener(
                 this.guildVoiceJoinListener,
+                this.guildVoiceGuildMuteListener,
                 this.guildVoiceLeaveListener,
                 this.guildVoiceMoveListener,
                 this.channelDeleteListener
@@ -154,6 +158,7 @@ public class ListenerManager {
     private void unregisterBotListeners() {
         this.plugin.getBot().getJDA().removeEventListener(
                 this.guildVoiceJoinListener,
+                this.guildVoiceGuildMuteListener,
                 this.guildVoiceLeaveListener,
                 this.guildVoiceMoveListener,
                 this.channelDeleteListener

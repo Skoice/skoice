@@ -156,12 +156,15 @@ public class UpdateNetworksTask {
     }
 
     private void muteMembers(VoiceChannel voiceChannel) {
+        voiceChannel.getRolePermissionOverrides().forEach(override -> {
+            if (!override.getDenied().contains(Permission.VOICE_SPEAK)) {
+                override.getManager().deny(Permission.VOICE_SPEAK).queue();
+            }
+        });
         Role publicRole = voiceChannel.getGuild().getPublicRole();
         PermissionOverride permissionOverride = voiceChannel.getPermissionOverride(publicRole);
         if (permissionOverride == null) {
             voiceChannel.upsertPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
-        } else if (!permissionOverride.getDenied().contains(Permission.VOICE_SPEAK)) {
-            permissionOverride.getManager().deny(Permission.VOICE_SPEAK).queue();
         }
     }
 

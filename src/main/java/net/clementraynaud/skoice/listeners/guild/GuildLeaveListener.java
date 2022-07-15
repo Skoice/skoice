@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.listeners.guild;
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
 
 public class GuildLeaveListener extends ListenerAdapter {
 
@@ -33,7 +32,7 @@ public class GuildLeaveListener extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildLeave(@NotNull GuildLeaveEvent event) {
+    public void onGuildLeave(GuildLeaveEvent event) {
         this.plugin.getListenerManager().update();
     }
 }

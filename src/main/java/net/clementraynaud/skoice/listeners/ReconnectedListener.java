@@ -23,7 +23,6 @@ import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.ReconnectedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
 
 public class ReconnectedListener extends ListenerAdapter {
 
@@ -34,7 +33,7 @@ public class ReconnectedListener extends ListenerAdapter {
     }
 
     @Override
-    public void onReconnected(@NotNull ReconnectedEvent event) {
+    public void onReconnected(ReconnectedEvent event) {
         this.plugin.getConfigurationMenu().delete();
         this.plugin.getBot().checkForValidVoiceChannel();
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {

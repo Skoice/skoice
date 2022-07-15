@@ -22,12 +22,11 @@ package net.clementraynaud.skoice.listeners.channel.network;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
 
 public class ChannelDeleteListener extends ListenerAdapter {
 
     @Override
-    public void onChannelDelete(@NotNull ChannelDeleteEvent event) {
+    public void onChannelDelete(ChannelDeleteEvent event) {
         if (!event.getChannelType().isAudio()) {
             return;
         }
