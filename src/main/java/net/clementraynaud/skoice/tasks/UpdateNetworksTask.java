@@ -29,6 +29,7 @@ import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.PermissionOverride;
@@ -89,7 +90,7 @@ public class UpdateNetworksTask {
                     Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
                     if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {
                         AudioChannel audioChannel = member.getVoiceState().getChannel();
-                        if (audioChannel instanceof VoiceChannel) {
+                        if (audioChannel.getType() == ChannelType.VOICE) {
                             VoiceChannel voiceChannel = (VoiceChannel) audioChannel;
                             boolean isMainVoiceChannel = voiceChannel == mainVoiceChannel;
                             if (!isMainVoiceChannel && (voiceChannel.getParentCategory() == null

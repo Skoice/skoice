@@ -23,6 +23,7 @@ package net.clementraynaud.skoice.listeners.guild.voice;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.MapUtil;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -40,7 +41,7 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
-        if (!(event.getChannelLeft() instanceof VoiceChannel)) {
+        if (event.getChannelLeft().getType() != ChannelType.VOICE) {
             return;
         }
         VoiceChannel voiceChannel = (VoiceChannel) event.getChannelLeft();

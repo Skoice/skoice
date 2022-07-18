@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -36,7 +37,7 @@ public class GuildVoiceJoinListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
-        if (!(event.getChannelJoined() instanceof VoiceChannel)) {
+        if (event.getChannelJoined().getType() != ChannelType.VOICE) {
             return;
         }
         VoiceChannel voiceChannel = (VoiceChannel) event.getChannelJoined();

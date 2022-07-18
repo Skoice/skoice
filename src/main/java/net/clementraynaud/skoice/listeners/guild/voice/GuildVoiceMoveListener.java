@@ -24,6 +24,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -41,12 +42,12 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
-        if (!(event.getChannelJoined() instanceof VoiceChannel)) {
+        if (event.getChannelJoined().getType() != ChannelType.VOICE) {
             return;
         }
         VoiceChannel voiceChannelJoined = (VoiceChannel) event.getChannelJoined();
         new UpdateVoiceStateTask(this.plugin.getConfiguration(), this.plugin.getTempFileStorage(), event.getMember(), voiceChannelJoined).run();
-        if (!(event.getChannelLeft() instanceof VoiceChannel)) {
+        if (event.getChannelLeft().getType() != ChannelType.VOICE) {
             return;
         }
         VoiceChannel voiceChannelLeft = (VoiceChannel) event.getChannelLeft();

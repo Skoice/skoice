@@ -6,7 +6,7 @@
 
     <groupId>net.clementraynaud</groupId>
     <artifactId>skoice</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.4</version>
     <packaging>jar</packaging>
 
     <name>skoice</name>
@@ -99,7 +99,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-alpha.13</version>
+            <version>5.0.0-alpha.16</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
