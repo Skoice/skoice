@@ -47,23 +47,20 @@ public class UnlinkArgument extends Argument {
             return;
         }
         super.plugin.getLinksFileStorage().unlinkUser(player.getUniqueId().toString());
-        try {
-            super.plugin.getConfiguration().getGuild().retrieveMemberById(discordId).queue(member -> {
-                member.getUser().openPrivateChannel().queue(channel ->
-                        channel.sendMessage(this.plugin.getBot().getMenu("account-unlinked").build())
-                                .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
-                );
-                GuildVoiceState voiceState = member.getVoiceState();
-                if (voiceState != null) {
-                    AudioChannel audioChannel = voiceState.getChannel();
-                    if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getVoiceChannel())
-                            || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
-                        player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
-                    }
+        super.plugin.getConfiguration().getGuild().retrieveMemberById(discordId).queue(member -> {
+            member.getUser().openPrivateChannel().queue(channel ->
+                    channel.sendMessage(this.plugin.getBot().getMenu("account-unlinked").build())
+                            .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
+            );
+            GuildVoiceState voiceState = member.getVoiceState();
+            if (voiceState != null) {
+                AudioChannel audioChannel = voiceState.getChannel();
+                if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getVoiceChannel())
+                        || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
+                    player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
                 }
-            });
-        } catch (ErrorResponseException ignored) {
-        }
+            }
+        }, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MEMBER));
         player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
     }
 }

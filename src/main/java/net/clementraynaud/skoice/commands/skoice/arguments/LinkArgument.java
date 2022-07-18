@@ -25,7 +25,6 @@ import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
@@ -67,27 +66,27 @@ public class LinkArgument extends Argument {
         if (discordId == null) {
             return;
         }
-        Member member = super.plugin.getConfiguration().getGuild().getMemberById(discordId);
-        if (member == null) {
-            return;
-        }
-        super.plugin.getLinksFileStorage().linkUser(player.getUniqueId().toString(), discordId);
-        LinkCommand.getDiscordIdCode().values().remove(this.arg);
-        VoiceChannel mainVoiceChannel = super.plugin.getConfiguration().getVoiceChannel();
-        member.getUser().openPrivateChannel().queue(channel ->
-                channel.sendMessage(this.plugin.getBot().getMenu("account-linked").build(mainVoiceChannel.getAsMention()))
-                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
-        );
-        player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
-        GuildVoiceState voiceState = member.getVoiceState();
-        if (voiceState != null) {
-            AudioChannel audioChannel = voiceState.getChannel();
-            if (audioChannel != null && audioChannel.equals(mainVoiceChannel)) {
-                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.connected"));
-            } else {
-                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.not-connected", mainVoiceChannel.getName()));
+        super.plugin.getConfiguration().getGuild().retrieveMemberById(discordId).queue(member -> {
+            super.plugin.getLinksFileStorage().linkUser(player.getUniqueId().toString(), discordId);
+            LinkCommand.getDiscordIdCode().values().remove(this.arg);
+            VoiceChannel mainVoiceChannel = super.plugin.getConfiguration().getVoiceChannel();
+            member.getUser().openPrivateChannel().queue(channel ->
+                    channel.sendMessage(this.plugin.getBot().getMenu("account-linked").build(mainVoiceChannel.getAsMention()))
+                            .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
+            );
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
+            GuildVoiceState voiceState = member.getVoiceState();
+            if (voiceState != null) {
+                AudioChannel audioChannel = voiceState.getChannel();
+                if (audioChannel != null && audioChannel.equals(mainVoiceChannel)) {
+                    player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.connected"));
+                } else {
+                    player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.not-connected", mainVoiceChannel.getName()));
+                }
             }
-        }
+        }, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, e -> {
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.invalid-code"));
+        }));
     }
 
 }
