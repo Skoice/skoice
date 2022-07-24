@@ -47,7 +47,7 @@ public class UnlinkArgument extends Argument {
             return;
         }
         super.plugin.getLinksFileStorage().unlinkUser(player.getUniqueId().toString());
-        super.plugin.getConfiguration().getGuild().retrieveMemberById(discordId).queue(member -> {
+        super.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
             member.getUser().openPrivateChannel().queue(channel ->
                     channel.sendMessage(this.plugin.getBot().getMenu("account-unlinked").build())
                             .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))

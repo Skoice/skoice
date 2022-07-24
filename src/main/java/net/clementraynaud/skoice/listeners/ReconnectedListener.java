@@ -43,6 +43,7 @@ public class ReconnectedListener extends ListenerAdapter {
             }
         });
         this.plugin.getBot().checkForUnlinkedUsers();
+        this.plugin.getBot().updateGuild();
         this.plugin.getBot().updateVoiceState();
         this.plugin.getListenerManager().update();
     }

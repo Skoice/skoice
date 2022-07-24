@@ -145,7 +145,7 @@ public class UpdateNetworksTask {
                 if (voiceState != null && voiceState.getChannel() != shouldBeInChannel) {
                     UpdateNetworksTask.awaitingMoves.put(member.getId(), Pair.of(
                             shouldBeInChannel.getId(),
-                            this.plugin.getConfiguration().getGuild().moveVoiceMember(member, shouldBeInChannel)
+                            this.plugin.getBot().getGuild().moveVoiceMember(member, shouldBeInChannel)
                                     .submit().whenCompleteAsync((v, t) -> UpdateNetworksTask.awaitingMoves.remove(member.getId()))
                     ));
                 }
@@ -224,7 +224,7 @@ public class UpdateNetworksTask {
                 .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
         if (!playersWithinRange.isEmpty() && category.getChannels().size() != 50) {
             playersWithinRange.add(player.getUniqueId());
-            Network network = new Network(this.plugin.getConfiguration(), playersWithinRange);
+            Network network = new Network(this.plugin, playersWithinRange);
             network.build();
             Network.getNetworks().add(network);
         }

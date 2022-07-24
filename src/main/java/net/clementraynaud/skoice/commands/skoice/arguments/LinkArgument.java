@@ -66,7 +66,7 @@ public class LinkArgument extends Argument {
         if (discordId == null) {
             return;
         }
-        super.plugin.getConfiguration().getGuild().retrieveMemberById(discordId).queue(member -> {
+        super.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
             super.plugin.getLinksFileStorage().linkUser(player.getUniqueId().toString(), discordId);
             LinkCommand.getDiscordIdCode().values().remove(this.arg);
             VoiceChannel mainVoiceChannel = super.plugin.getConfiguration().getVoiceChannel();

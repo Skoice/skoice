@@ -64,7 +64,7 @@ public class LinksFileStorage extends FileStorage {
         if (discordId == null) {
             return null;
         }
-        Guild guild = super.plugin.getConfiguration().getGuild();
+        Guild guild = super.plugin.getBot().getGuild();
         if (guild == null) {
             return null;
         }

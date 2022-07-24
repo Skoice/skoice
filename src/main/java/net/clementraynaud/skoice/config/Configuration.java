@@ -21,7 +21,6 @@ package net.clementraynaud.skoice.config;
 
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.entities.Category;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -77,10 +76,5 @@ public class Configuration {
         }
         VoiceChannel voiceChannel = this.getVoiceChannel();
         return voiceChannel != null ? voiceChannel.getParentCategory() : null;
-    }
-
-    public Guild getGuild() {
-        VoiceChannel voiceChannel = this.getVoiceChannel();
-        return voiceChannel != null ? voiceChannel.getGuild() : null;
     }
 }

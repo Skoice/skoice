@@ -55,6 +55,7 @@ import java.net.URL;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -68,6 +69,7 @@ public class Bot {
     private final Skoice plugin;
     private JDA jda;
     private BotStatus status;
+    private String guildId;
 
     public Bot(Skoice plugin) {
         this.plugin = plugin;
@@ -124,6 +126,7 @@ public class Bot {
         this.setDefaultAvatar();
         this.plugin.getConfigurationMenu().delete();
         this.checkForValidVoiceChannel();
+        this.updateGuild();
         this.jda.getGuilds().forEach(guild -> this.plugin.getBotCommands().register(guild, sender));
         this.plugin.getListenerManager().registerPermanentBotListeners();
         this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
@@ -208,8 +211,13 @@ public class Bot {
         }
     }
 
+    public void updateGuild() {
+        List<Guild> guilds = this.jda.getGuilds();
+        this.guildId = guilds.size() == 1 ? guilds.get(0).getId() : null;
+    }
+
     public void updateVoiceState() {
-        Guild guild = this.plugin.getConfiguration().getGuild();
+        Guild guild = this.plugin.getBot().getGuild();
         if (guild != null) {
             for (VoiceChannel channel : guild.getVoiceChannels()) {
                 for (Member member : channel.getMembers()) {
@@ -231,7 +239,7 @@ public class Bot {
                             return false;
                         }
                     })
-                    .forEach(channel -> Network.getNetworks().add(new Network(this.plugin.getConfiguration(), channel.getId())));
+                    .forEach(channel -> Network.getNetworks().add(new Network(this.plugin, channel.getId())));
         }
     }
 
@@ -241,14 +249,17 @@ public class Bot {
             this.status = BotStatus.NO_TOKEN;
             this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
         } else if (this.getJDA() != null) {
-            if (this.getJDA().getGuilds().isEmpty()) {
-                this.status = BotStatus.NO_GUILD;
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-guild",
-                        this.getJDA().getSelfUser().getApplicationId()));
-            } else if (this.getJDA().getGuilds().size() > 1) {
-                this.status = BotStatus.MULTIPLE_GUILDS;
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
-            } else if (!this.getJDA().getGuilds().get(0).getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+            if (this.guildId == null) {
+                List<Guild> guilds = this.getJDA().getGuilds();
+                if (guilds.isEmpty()) {
+                    this.status = BotStatus.NO_GUILD;
+                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-guild",
+                            this.getJDA().getSelfUser().getApplicationId()));
+                } else if (guilds.size() > 1) {
+                    this.status = BotStatus.MULTIPLE_GUILDS;
+                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
+                }
+            } else if (!this.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                 this.status = BotStatus.MISSING_PERMISSION;
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission",
                         this.getJDA().getSelfUser().getApplicationId()));
@@ -338,6 +349,13 @@ public class Bot {
 
     public BotStatus getStatus() {
         return this.status;
+    }
+
+    public Guild getGuild() {
+        if (this.guildId == null) {
+            return null;
+        }
+        return this.jda.getGuildById(this.guildId);
     }
 
     public MenuField getField(String field) {
