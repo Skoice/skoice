@@ -21,7 +21,6 @@
 package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.Configuration;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.util.DistanceUtil;
 import net.dv8tion.jda.api.Permission;

@@ -24,7 +24,6 @@ import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
-import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
