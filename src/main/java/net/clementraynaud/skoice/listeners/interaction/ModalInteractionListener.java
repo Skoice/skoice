@@ -74,7 +74,7 @@ public class ModalInteractionListener extends ListenerAdapter {
             } else {
                 this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
                 this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
-                event.editMessage(this.plugin.getBot().getMenu("mode").build()).queue();
+                event.editMessage(this.plugin.getBot().getMenu("range").build()).queue();
             }
         }
     }

@@ -120,12 +120,12 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     }
                     break;
                 case "mode-selection":
-                    if ("vanilla-mode".equals(event.getSelectedOptions().get(0).getValue())) {
+                    if ("long-range-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
                         this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 40);
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
-                    } else if ("minigame-mode".equals(event.getSelectedOptions().get(0).getValue())) {
+                    } else if ("short-range-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 40);
                         this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 20);
                         this.plugin.getListenerManager().update(event.getUser());

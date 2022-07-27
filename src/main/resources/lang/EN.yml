@@ -117,19 +117,19 @@ discord:
           new-voice-channel:
             label: "New Voice Channel"
             description: "Skoice will automatically set up a voice channel."
-    mode:
-      title: "Mode"
+    range:
+      title: "Range"
       description: "Select a mode or customize the distances."
       alternative-description: "Let us choose the best settings for your personal use of Skoice. You will still be able to customize the distances later."
       select-menu:
         placeholder: "Please select a mode."
         alternative-placeholder: "You are currently using customized distances."
         select-option:
-          vanilla-mode:
-            label: "Vanilla Mode"
+          long-range-mode:
+            label: "Long-Range Mode"
             description: "Horizontal Radius: 80 blocks — Vertical Radius: 40 blocks"
-          minigame-mode:
-            label: "Minigame Mode"
+          short-range-mode:
+            label: "Short-Range Mode"
             description: "Horizontal Radius: 40 blocks — Vertical Radius: 20 blocks"
     advanced-settings:
       title: "Advanced Settings"
@@ -178,12 +178,12 @@ discord:
     contributing:
       title: "Contributing"
       description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/Skoice/skoice)!"
-    vanilla-mode:
-      title: "Vanilla Mode"
-      description: "Choose this mode if you plan to play open world game modes (longer distances)."
-    minigame-mode:
-      title: "Minigame Mode"
-      description: "Choose this mode if you plan to play game modes that only require a limited area (shorter distances)."
+    long-range-mode:
+      title: "Long-Range Mode"
+      description: "Choose this mode if you plan to play open world game modes."
+    short-range-mode:
+      title: "Short-Range Mode"
+      description: "Choose this mode if you plan to play game modes that only require a limited area."
     customize:
       title: "Customize"
       description: "Set distances according to your personal preferences."

@@ -47,7 +47,7 @@ public class ConfigurationMenu {
         } else if (this.plugin.getBot().getStatus() == BotStatus.NO_VOICE_CHANNEL) {
             menu = this.plugin.getBot().getMenu("voice-channel");
         } else if (this.plugin.getBot().getStatus() == BotStatus.NO_RADIUS) {
-            menu = this.plugin.getBot().getMenu("mode");
+            menu = this.plugin.getBot().getMenu("range");
         } else {
             menu = this.plugin.getBot().getMenu("settings");
         }

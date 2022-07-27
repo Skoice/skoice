@@ -30,35 +30,35 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ModeSelectMenu extends SelectMenu {
+public class RangeSelectMenu extends SelectMenu {
 
-    private static final String VANILLA_MODE_ID = "vanilla-mode";
-    private static final String MINIGAME_MODE_ID = "minigame-mode";
+    private static final String LONG_RANGE_MODE_ID = "long-range-mode";
+    private static final String SHORT_RANGE_MODE_ID = "short-range-mode";
 
-    public ModeSelectMenu(Skoice plugin) {
+    public RangeSelectMenu(Skoice plugin) {
         super(plugin, false);
     }
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.label"), ModeSelectMenu.VANILLA_MODE_ID)
-                        .withDescription(super.plugin.getLang().getMessage("discord.menu.mode.select-menu.select-option.vanilla-mode.description"))
-                        .withEmoji(MenuEmoji.MAP.get()),
-                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.label"), ModeSelectMenu.MINIGAME_MODE_ID)
-                        .withDescription(super.plugin.getLang().getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.description"))
-                        .withEmoji(MenuEmoji.CROSSED_SWORDS.get())));
+        List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.long-range-mode.label"), RangeSelectMenu.LONG_RANGE_MODE_ID)
+                        .withDescription(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.long-range-mode.description"))
+                        .withEmoji(MenuEmoji.BUSTS_IN_SILHOUETTE.get()),
+                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.short-range-mode.label"), RangeSelectMenu.SHORT_RANGE_MODE_ID)
+                        .withDescription(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.short-range-mode.description"))
+                        .withEmoji(MenuEmoji.BUSTS_IN_SILHOUETTE.get())));
         String defaultValue = null;
         if (super.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString()) == 80
                 && super.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()) == 40) {
-            defaultValue = ModeSelectMenu.VANILLA_MODE_ID;
+            defaultValue = RangeSelectMenu.LONG_RANGE_MODE_ID;
         } else if (super.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString()) == 40
                 && super.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()) == 20) {
-            defaultValue = ModeSelectMenu.MINIGAME_MODE_ID;
+            defaultValue = RangeSelectMenu.SHORT_RANGE_MODE_ID;
         }
         return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("mode-selection")
                 .setPlaceholder(super.plugin.getBot().getStatus() != BotStatus.READY
-                        ? super.plugin.getLang().getMessage("discord.menu.mode.select-menu.placeholder")
-                        : super.plugin.getLang().getMessage("discord.menu.mode.select-menu.alternative-placeholder"))
+                        ? super.plugin.getLang().getMessage("discord.menu.range.select-menu.placeholder")
+                        : super.plugin.getLang().getMessage("discord.menu.range.select-menu.alternative-placeholder"))
                 .addOptions(modes)
                 .setDefaultValues(defaultValue != null ? Collections.singleton(defaultValue) : Collections.emptyList()).build();
     }

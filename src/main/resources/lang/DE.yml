@@ -117,19 +117,19 @@ discord:
           new-voice-channel:
             label: "Neuer Sprachkanal"
             description: "Skoice wird automatisch einen Sprachkanal einrichten."
-    mode:
-      title: "Modus"
+    range:
+      title: "Reichweite"
       description: "Wählen Sie einen Modus oder passen Sie die Entfernungen an."
       alternative-description: "Lassen Sie uns die besten Einstellungen für Ihre persönliche Nutzung von Skoice wählen. Sie können die Entfernungen auch später noch anpassen."
       select-menu:
         placeholder: "Bitte wählen Sie einen Modus."
         alternative-placeholder: "Sie verwenden derzeit benutzerdefinierte Entfernungen."
         select-option:
-          vanilla-mode:
-            label: "Vanille-Modus"
+          long-range-mode:
+            label: "Langstrecken-Modus"
             description: "Horizontaler Radius: 80 Blöcke - Vertikaler Radius: 40 Blöcke"
-          minigame-mode:
-            label: "Minigame-Modus"
+          short-range-mode:
+            label: "Kurzstrecken-Modus"
             description: "Horizontaler Radius: 40 Blöcke - Vertikaler Radius: 20 Blöcke"
     advanced-settings:
       title: "Erweiterte Einstellungen"
@@ -178,12 +178,12 @@ discord:
     contributing:
       title: "Beitragen"
       description: "Möchten Sie uns helfen, die Zukunft von Skoice zu gestalten? [Beitragen auf unserer GitHub-Seite](https://github.com/Skoice/skoice)!"
-    vanilla-mode:
-      title: "Vanille-Modus"
-      description: "Wählen Sie diesen Modus, wenn Sie die Spielmodi der offenen Welt (längere Strecken) spielen möchten."
-    minigame-mode:
-      title: "Minigame-Modus"
-      description: "Wählen Sie diesen Modus, wenn Sie Spielmodi spielen möchten, die nur einen begrenzten Bereich (kürzere Entfernungen) erfordern."
+    long-range-mode:
+      title: "Langstrecken-Modus"
+      description: "Wählen Sie diesen Modus, wenn Sie die Spielmodi der offenen Welt spielen möchten."
+    short-range-mode:
+      title: "Kurzstrecken-Modus"
+      description: "Wählen Sie diesen Modus, wenn Sie Spielmodi spielen möchten, die nur einen begrenzten Bereich erfordern."
     customize:
       title: "Anpassen"
       description: "Stellen Sie die Entfernungen nach Ihren persönlichen Vorlieben ein."

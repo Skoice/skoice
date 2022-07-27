@@ -117,19 +117,19 @@ discord:
           new-voice-channel:
             label: "Nouveau salon vocal"
             description: "Skoice configurera automatiquement un salon vocal."
-    mode:
-      title: "Mode"
+    range:
+      title: "Portée"
       description: "Sélectionnez un mode ou personnalisez les distances."
       alternative-description: "Laissez-nous choisir les meilleures réglages pour votre utilisation personnelle de Skoice. Vous pourrez toujours personnaliser les distances plus tard."
       select-menu:
         placeholder: "Veuillez sélectionner un mode."
         alternative-placeholder: "Vous utilisez actuellement des distances personnalisées."
         select-option:
-          vanilla-mode:
-            label: "Mode standard"
+          long-range-mode:
+            label: "Mode longue portée"
             description: "Rayon horizontal : 80 blocs — Rayon vertical : 40 blocs"
-          minigame-mode:
-            label: "Mode mini-jeu"
+          short-range-mode:
+            label: "Mode courte portée"
             description: "Rayon horizontal : 40 blocs — Rayon vertical : 20 blocs"
     advanced-settings:
       title: "Réglages avancés"
@@ -178,12 +178,12 @@ discord:
     contributing:
       title: "Contribuer"
       description: "Envie de nous aider à façonner l'avenir de Skoice ? [Contribuez sur notre page GitHub](https://github.com/Skoice/skoice) !"
-    vanilla-mode:
-      title: "Mode standard"
-      description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu en monde ouvert (distances plus longues)."
-    minigame-mode:
-      title: "Mode mini-jeu"
-      description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu qui requièrent seulement une zone limitée (distances plus courtes)."
+    long-range-mode:
+      title: "Mode longue portée"
+      description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu en monde ouvert."
+    short-range-mode:
+      title: "Mode courte portée"
+      description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu qui requièrent seulement une zone limitée."
     customize:
       title: "Personnaliser"
       description: "Définissez les distances en fonction de vos préférences personnelles."

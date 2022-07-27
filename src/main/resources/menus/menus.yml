@@ -85,14 +85,14 @@ voice-channel:
   type: default
   style: primary
   parent: settings
-mode:
-  emoji: video_game
+range:
+  emoji: straight_ruler
   type: default
   style: primary
   parent: settings
   fields:
-    - vanilla-mode
-    - minigame-mode
+    - long-range-mode
+    - short-range-mode
     - customize
 advanced-settings:
   emoji: wrench

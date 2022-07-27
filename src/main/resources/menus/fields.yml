@@ -39,11 +39,11 @@ troubleshooting:
 contributing:
   emoji: hammer
   inline: false
-vanilla-mode:
-  emoji: map
+long-range-mode:
+  emoji: busts_in_silhouette
   inline: true
-minigame-mode:
-  emoji: crossed_swords
+short-range-mode:
+  emoji: busts_in_silhouette
   inline: true
 customize:
   emoji: pencil2

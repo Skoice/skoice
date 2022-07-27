@@ -22,7 +22,7 @@ package net.clementraynaud.skoice.menus;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.ModeSelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.RangeSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ServerSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ToggleSelectMenu;
@@ -106,7 +106,7 @@ public class Menu {
             }
             embed.setAuthor(author.toString());
         }
-        if (!"mode".equals(this.name)) {
+        if (!"range".equals(this.name)) {
             for (Menu menu : this.plugin.getBot().getMenus().values()) {
                 String description = menu.getDescription(true);
                 if (menu.parent != null && menu.parent.equals(this.name) && description != null) {
@@ -135,8 +135,8 @@ public class Menu {
             case "voice-channel":
                 this.selectMenu = new VoiceChannelSelectMenu(this.plugin);
                 break;
-            case "mode":
-                this.selectMenu = new ModeSelectMenu(this.plugin);
+            case "range":
+                this.selectMenu = new RangeSelectMenu(this.plugin);
                 break;
             case "language":
                 this.selectMenu = new LanguageSelectMenu(this.plugin);
@@ -164,7 +164,7 @@ public class Menu {
             buttons.add(Button.primary(this.name, "⟳ " + this.plugin.getLang().getMessage("discord.button-label.refresh")));
         }
         buttons.addAll(this.getAdditionalButtons());
-        if (!"mode".equals(this.name)) {
+        if (!"range".equals(this.name)) {
             for (Menu menu : this.plugin.getBot().getMenus().values()) {
                 if (menu.parent != null && menu.parent.equals(this.name)) {
                     buttons.add(menu.style == MenuStyle.PRIMARY
@@ -204,7 +204,7 @@ public class Menu {
                             + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
                             + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
                     .withEmoji(this.emoji.get()));
-        } else if ("mode".equals(this.name) && this.plugin.getBot().getStatus() == BotStatus.READY) {
+        } else if ("range".equals(this.name) && this.plugin.getBot().getStatus() == BotStatus.READY) {
             return Collections.singletonList(Button.primary("customize",
                             this.plugin.getLang().getMessage("discord.field.customize.title"))
                     .withEmoji(MenuEmoji.PENCIL2.get()));
