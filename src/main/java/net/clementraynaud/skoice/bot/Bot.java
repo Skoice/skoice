@@ -125,7 +125,7 @@ public class Bot {
     public void setup(CommandSender sender) {
         this.setDefaultAvatar();
         this.plugin.getConfigurationMenu().delete();
-        this.checkForValidVoiceChannel();
+        this.plugin.getConfiguration().eraseInvalidVoiceChannelId();
         this.updateGuild();
         this.jda.getGuilds().forEach(guild -> this.plugin.getBotCommands().register(guild, sender));
         this.plugin.getListenerManager().registerPermanentBotListeners();
@@ -149,10 +149,10 @@ public class Bot {
         );
         this.retrieveNetworks();
         this.loadMenus();
-        this.checkForUnlinkedUsers();
         this.updateVoiceState();
         this.plugin.getListenerManager().update();
-        if (sender != null && this.jda != null) {
+        this.checkForUnlinkedUsers();
+        if (sender != null) {
             if (this.getStatus() == BotStatus.READY) {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected"));
             } else if (this.getStatus() == BotStatus.NO_GUILD) {
@@ -178,19 +178,13 @@ public class Bot {
         }
     }
 
-    public void checkForValidVoiceChannel() {
-        if (this.plugin.getConfiguration().getVoiceChannel() == null
-                && this.plugin.getConfiguration().getFile().contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
-            this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
-            this.plugin.getConfiguration().saveFile();
-        }
-    }
-
     public void checkForUnlinkedUsers() {
-        VoiceChannel voiceChannel = this.plugin.getConfiguration().getVoiceChannel();
-        if (voiceChannel != null) {
-            for (Member member : voiceChannel.getMembers()) {
-                this.checkMemberStatus(member);
+        if (this.getStatus() == BotStatus.READY) {
+            VoiceChannel voiceChannel = this.plugin.getConfiguration().getVoiceChannel();
+            if (voiceChannel != null) {
+                for (Member member : voiceChannel.getMembers()) {
+                    this.checkMemberStatus(member);
+                }
             }
         }
     }
@@ -199,7 +193,7 @@ public class Bot {
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksFileStorage().getLinks(), member.getId());
         if (minecraftId == null) {
             member.getUser().openPrivateChannel().queue(channel ->
-                    channel.sendMessage(this.menus.get("account-not-linked").build())
+                    channel.sendMessage(this.menus.get("account-not-linked").build(this.plugin.getBot().getGuild().getName()))
                             .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
             );
         } else {

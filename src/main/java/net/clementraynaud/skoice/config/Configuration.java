@@ -70,6 +70,14 @@ public class Configuration {
         return voiceChannel != null && voiceChannel.getParentCategory() != null ? voiceChannel : null;
     }
 
+    public void eraseInvalidVoiceChannelId() {
+        if (this.getVoiceChannel() == null
+                && this.file.contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
+            this.file.set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
+            this.saveFile();
+        }
+    }
+
     public Category getCategory() {
         if (this.plugin.getBot().getJDA() == null) {
             return null;

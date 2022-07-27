@@ -55,11 +55,13 @@ public class LinkArgument extends Argument {
             return;
         }
         if (this.arg.isEmpty()) {
-            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.no-code"));
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.no-code",
+                    this.plugin.getBot().getGuild().getName()));
             return;
         }
         if (!LinkCommand.getDiscordIdCode().containsValue(this.arg)) {
-            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.invalid-code"));
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.invalid-code",
+                    this.plugin.getBot().getGuild().getName()));
             return;
         }
         String discordId = MapUtil.getKeyFromValue(LinkCommand.getDiscordIdCode(), this.arg);
@@ -71,7 +73,8 @@ public class LinkArgument extends Argument {
             LinkCommand.getDiscordIdCode().values().remove(this.arg);
             VoiceChannel mainVoiceChannel = super.plugin.getConfiguration().getVoiceChannel();
             member.getUser().openPrivateChannel().queue(channel ->
-                    channel.sendMessage(this.plugin.getBot().getMenu("account-linked").build(mainVoiceChannel.getAsMention()))
+                    channel.sendMessage(this.plugin.getBot().getMenu("account-linked")
+                                    .build(mainVoiceChannel.getAsMention(), this.plugin.getBot().getGuild().getName()))
                             .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
             );
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
@@ -81,12 +84,13 @@ public class LinkArgument extends Argument {
                 if (audioChannel != null && audioChannel.equals(mainVoiceChannel)) {
                     player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.connected"));
                 } else {
-                    player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.not-connected", mainVoiceChannel.getName()));
+                    player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.not-connected",
+                            mainVoiceChannel.getName(),
+                            this.plugin.getBot().getGuild().getName()));
                 }
             }
-        }, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, e -> {
-            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.invalid-code"));
-        }));
+        }, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, e ->
+                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.invalid-code"))));
     }
 
 }

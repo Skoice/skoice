@@ -32,7 +32,7 @@ logger:
     no-radius: "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
   error:
     missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur \"%s\". Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "Vous n'avez pas accordé à votre bot la permission de déclarer des commandes sur le serveur Discord \"%s\". Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."
     bot-timed-out: "Un problème a empêché votre bot de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord ici : https://discordstatus.com."
   exception:
@@ -55,7 +55,7 @@ minecraft:
       bot-connected-incomplete-configuration-discord: "%s Votre bot est &adésormais connecté&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
       bot-already-connected: "%s Vous avez &amis à jour le token&7. Redémarrez votre serveur Minecraft pour connecter votre bot."
       bot-could-not-connect: "%s Votre bot &cn'a pas pu se connecter&7. Essayez de nouveau avec un token valide."
-      missing-access: "%s Votre bot n'a &cpas la permission de déclarer des commandes &7sur \"&e%s&7\". Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
+      missing-access: "%s Votre bot n'a &cpas la permission de déclarer des commandes &7sur le serveur Discord \"&e%s&7\". Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice n'est &cpas configuré correctement&7. Veuillez contacter un administrateur."
       incomplete-configuration-operator-interactive:
         - "%s Skoice n'est &cpas configuré correctement&7. Cliquez "
@@ -64,14 +64,14 @@ minecraft:
       incomplete-configuration-operator-discord: "%s Skoice n'est &cpas configuré correctement&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
       already-configured: "%s Skoice est &cdéjà configuré&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour mettre à jour ses réglages."
     player:
-      no-code: "%s Vous n'avez &cpas fourni de code&7. Tapez \"&e/link&7\" sur notre serveur Discord pour en recevoir un."
-      invalid-code: "%s Vous n'avez &cpas fourni de code valide&7. Tapez \"&e/link&7\" sur notre serveur Discord pour en recevoir un."
+      no-code: "%s Vous n'avez &cpas fourni de code&7. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour en recevoir un."
+      invalid-code: "%s Vous n'avez &cpas fourni de code valide&7. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour en recevoir un."
       account-linked: "%s Vous avez &alié votre compte Minecraft &7à Discord."
       account-unlinked: "%s Vous avez &adelié votre compte Minecraft &7de Discord."
-      account-not-linked: "%s Vous n'avez &cpas lié votre compte Minecraft &7à Discord. Tapez \"&e/link&7\" sur notre serveur Discord pour le lier."
+      account-not-linked: "%s Vous n'avez &cpas lié votre compte Minecraft &7à Discord. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour le lier."
       account-already-linked: "%s Vous avez &cdéjà lié votre compte Minecraft &7à Discord. Tapez \"&e/skoice unlink&7\" pour le délier."
       connected: "%s Vous êtes &adésormais connecté &7au chat vocal de proximité. Pour une meilleure expérience, vous pouvez activer le \"&eMode streamer&7\" dans votre client Discord."
-      not-connected: "%s Vous n'êtes &cpas connecté &7au chat vocal de proximité. Rejoignez le salon vocal \"&e%s&7\" sur notre serveur Discord pour l'utiliser."
+      not-connected: "%s Vous n'êtes &cpas connecté &7au chat vocal de proximité. Rejoignez le salon vocal \"&e%s&7\" sur le serveur Discord \"&e%s&7\" pour l'utiliser."
       disconnected: "%s Vous êtes &cdésormais déconnecté &7du chat vocal de proximité."
     error:
       no-parameter: "%s Vous n'avez &cpas fourni un argument&7. Pour utiliser cette commande, tapez \"&e/skoice %s&7\"."
@@ -200,13 +200,13 @@ discord:
       description: "Tapez `/skoice link %s` en jeu pour terminer la procédure."
     account-linked:
       title: "Compte lié"
-      description: "Votre compte Discord a été lié à Minecraft. Rejoignez le salon vocal %s pour utiliser le chat vocal de proximité."
+      description: "Votre compte Discord a été lié à Minecraft. Rejoignez le salon vocal %s sur le serveur Discord \"%s\" pour utiliser le chat vocal de proximité."
     account-unlinked:
       title: "Compte délié"
       description: "Votre compte Discord a été délié de Minecraft."
     account-not-linked:
       title: "Compte non lié"
-      description: "Votre compte Discord n'est pas lié à Minecraft.\nTapez `/link` sur notre serveur Discord pour le lier."
+      description: "Votre compte Discord n'est pas lié à Minecraft.\nTapez `/link` sur le serveur Discord \"%s\" pour le lier."
     account-already-linked:
       title: "Compte déjà lié"
       description: "Votre compte Discord est déjà lié à Minecraft\nTapez `/unlink` pour le délier."

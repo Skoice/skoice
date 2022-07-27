@@ -22,9 +22,7 @@ package net.clementraynaud.skoice.commands;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.HashMap;
@@ -49,7 +47,7 @@ public class LinkCommand extends ListenerAdapter {
         if ("link".equals(event.getName())) {
             if (this.plugin.getBot().getStatus() != BotStatus.READY) {
                 event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
-                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
+                        .setEphemeral(true).queue();
                 return;
             }
             if (this.plugin.getLinksFileStorage().getLinks().containsValue(event.getUser().getId())) {

@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
@@ -40,9 +41,14 @@ public class UnlinkArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
+        if (super.plugin.getBot().getStatus() != BotStatus.READY || super.plugin.getBot().getJDA() == null) {
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
+            return;
+        }
         String discordId = super.plugin.getLinksFileStorage().getLinks().get(player.getUniqueId().toString());
         if (discordId == null) {
-            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked"));
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked",
+                    this.plugin.getBot().getGuild().getName()));
             return;
         }
         super.plugin.getLinksFileStorage().unlinkUser(player.getUniqueId().toString());
