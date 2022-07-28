@@ -81,6 +81,10 @@ public class Bot {
 
     public void connect(CommandSender sender) {
         if (this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
+            this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connecting"));
+            if (sender != null) {
+                sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connecting"));
+            }
             byte[] base64TokenBytes;
             try {
                 base64TokenBytes = Base64.getDecoder().decode(this.plugin.getConfiguration().getFile().getString(ConfigurationField.TOKEN.toString()));
@@ -96,17 +100,15 @@ public class Bot {
                         .awaitReady();
                 this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connected"));
             } catch (LoginException e) {
-                if (sender == null) {
-                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
-                } else {
+                this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
+                if (sender != null) {
                     sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-could-not-connect"));
                     this.plugin.getConfiguration().getFile().set(ConfigurationField.TOKEN.toString(), null);
                     this.plugin.getConfiguration().saveFile();
                 }
             } catch (ErrorResponseException e) {
-                if (sender == null) {
-                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));
-                } else {
+                this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));
+                if (sender != null) {
                     try {
                         TextComponent discordStatusPage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
                         MessageUtil.setHoverEvent(discordStatusPage,

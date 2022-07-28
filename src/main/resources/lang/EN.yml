@@ -22,6 +22,7 @@ logger:
     plugin-updated: "Skoice has been updated to the latest version. Please restart your Minecraft server to apply changes."
     skoice-3: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
     configuration-complete: "Skoice is now configured. Type \"/link\" on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
+    bot-connecting: "Your bot is attempting to connect."
     bot-connected: "Your bot is connected."
   warning:
     outdated-version: "You are using an outdated version (%s). Download the latest version (%s) here: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
@@ -51,6 +52,7 @@ minecraft:
         - "%s Your bot is &cnot on a Discord server&7. Open "
         - " &7to invite it."
       no-guild: "%s Your bot is &cnot on a Discord server&7. Open this link to invite it: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
+      bot-connecting: "%s Your bot is &aattempting to connect&7."
       bot-connected: "%s Your bot is &anow connected&7."
       bot-connected-incomplete-configuration-discord: "%s Your bot is &anow connected&7. Type \"&e/configure&7\" on your Discord server to set it up."
       bot-already-connected: "%s You have &aupdated the token&7. Restart your Minecraft server to connect your bot."
