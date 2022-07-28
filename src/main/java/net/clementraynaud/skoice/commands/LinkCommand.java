@@ -57,7 +57,7 @@ public class LinkCommand extends ListenerAdapter {
             LinkCommand.discordIdCode.remove(event.getUser().getId());
             String code;
             do {
-                code = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+                code = RandomStringUtils.randomNumeric(6);
             } while (LinkCommand.discordIdCode.containsValue(code));
             LinkCommand.discordIdCode.put(event.getUser().getId(), code);
             event.reply(this.plugin.getBot().getMenu("verification-code").build(code)).setEphemeral(true).queue();
