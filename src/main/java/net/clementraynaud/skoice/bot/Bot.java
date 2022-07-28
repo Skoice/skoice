@@ -43,6 +43,7 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bstats.charts.SimplePie;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -271,6 +272,7 @@ public class Bot {
             }
             this.updateActivity();
         }
+        this.updateStatusChart();
     }
 
     public void updateActivity() {
@@ -280,6 +282,12 @@ public class Bot {
         } else if (this.getStatus() != BotStatus.READY && !Objects.equals(activity, Activity.listening("/configure"))) {
             this.getJDA().getPresence().setActivity(Activity.listening("/configure"));
         }
+    }
+
+    private void updateStatusChart() {
+        this.plugin.getMetrics().addCustomChart(new SimplePie("botStatus", () ->
+                this.getStatus().toString()
+        ));
     }
 
     public void sendNoGuildAlert(Player player) {

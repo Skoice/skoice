@@ -23,7 +23,6 @@ import net.clementraynaud.skoice.config.Configuration;
 import net.clementraynaud.skoice.storage.TempFileStorage;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.List;

@@ -33,8 +33,12 @@ import net.clementraynaud.skoice.storage.TempFileStorage;
 import net.clementraynaud.skoice.system.ListenerManager;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.DrilldownPie;
 import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Skoice extends JavaPlugin {
 
@@ -49,25 +53,12 @@ public class Skoice extends JavaPlugin {
     private BotCommands botCommands;
     private ConfigurationMenu configurationMenu;
     private Updater updater;
+    private Metrics metrics;
 
     @Override
     public void onEnable() {
-        Metrics metrics = new Metrics(this, Skoice.SERVICE_ID);
-        metrics.addCustomChart(new SimplePie("lang", () ->
-                LangInfo.valueOf(this.getConfiguration().getFile().getString(ConfigurationField.LANG.toString())).getFullName())
-        );
-        metrics.addCustomChart(new SimplePie("actionBarAlert", () ->
-                this.getConfiguration().getFile().getString(ConfigurationField.ACTION_BAR_ALERT.toString()))
-        );
-        metrics.addCustomChart(new SimplePie("channelVisibility", () ->
-                this.getConfiguration().getFile().getString(ConfigurationField.CHANNEL_VISIBILITY.toString()))
-        );
-        metrics.addCustomChart(new SimplePie("horizontalRadius", () ->
-                this.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))
-        );
-        metrics.addCustomChart(new SimplePie("verticalRadius", () ->
-                this.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))
-        );
+        this.metrics = new Metrics(this, Skoice.SERVICE_ID);
+        this.updateCharts();
         this.saveDefaultConfig();
         this.configuration = new Configuration(this);
         this.configuration.init();
@@ -101,6 +92,40 @@ public class Skoice extends JavaPlugin {
             this.bot.getJDA().shutdown();
         }
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));
+    }
+
+    private void updateCharts() {
+        this.metrics.addCustomChart(new SimplePie("lang", () ->
+                LangInfo.valueOf(this.getConfiguration().getFile().getString(ConfigurationField.LANG.toString())).getFullName()
+        ));
+        this.metrics.addCustomChart(new SimplePie("actionBarAlert", () ->
+                this.getConfiguration().getFile().getString(ConfigurationField.ACTION_BAR_ALERT.toString())
+        ));
+        this.metrics.addCustomChart(new SimplePie("channelVisibility", () ->
+                this.getConfiguration().getFile().getString(ConfigurationField.CHANNEL_VISIBILITY.toString())
+        ));
+        this.metrics.addCustomChart(new SimplePie("horizontalRadius", () ->
+                this.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString())
+        ));
+        this.metrics.addCustomChart(new SimplePie("verticalRadius", () ->
+                this.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString())
+        ));
+        this.metrics.addCustomChart(new DrilldownPie("linkedUsers", () -> {
+            Map<String, Map<String, Integer>> map = new HashMap<>();
+            int linkedUsers = this.linksFileStorage.getLinks().size();
+            Map<String, Integer> entry = new HashMap<>();
+            entry.put(Integer.toString(linkedUsers), 1);
+            if (linkedUsers < 10) {
+                map.put("0-9", entry);
+            } else if (linkedUsers < 50) {
+                map.put("10-49", entry);
+            } else if (linkedUsers < 100) {
+                map.put("50-99", entry);
+            } else {
+                map.put("100+", entry);
+            }
+            return map;
+        }));
     }
 
     public Lang getLang() {
@@ -137,5 +162,9 @@ public class Skoice extends JavaPlugin {
 
     public Updater getUpdater() {
         return this.updater;
+    }
+
+    public Metrics getMetrics() {
+        return this.metrics;
     }
 }
