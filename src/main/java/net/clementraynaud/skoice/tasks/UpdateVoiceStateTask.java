@@ -54,9 +54,11 @@ public class UpdateVoiceStateTask {
                     && this.channel.getGuild().getSelfMember().hasPermission(this.configuration.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
                 List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
-                mutedUsers.add(this.member.getId());
-                this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
-                this.tempFileStorage.saveFile();
+                if (!mutedUsers.contains(this.member.getId())) {
+                    mutedUsers.add(this.member.getId());
+                    this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
+                    this.tempFileStorage.saveFile();
+                }
             }
         } else {
             List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);

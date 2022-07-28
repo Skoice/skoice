@@ -77,7 +77,7 @@ public class Lang {
                 System.arraycopy(args, 0, newArgs, 1, args.length);
                 return String.format(ChatColor.translateAlternateColorCodes('&', message), (Object[]) newArgs);
             } else if (path.startsWith("minecraft.interaction.")) {
-                return String.format(ChatColor.translateAlternateColorCodes('&',message), (Object[]) args);
+                return String.format(ChatColor.translateAlternateColorCodes('&', message), (Object[]) args);
             }
         }
         return String.format(message, (Object[]) args);
