@@ -111,6 +111,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                                     this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(),
                                             event.getSelectedOptions().get(0).getValue());
                                     this.plugin.getConfiguration().saveFile();
+                                    this.plugin.getBot().updateVoiceState();
                                     new InterruptSystemTask(this.plugin.getConfiguration()).run();
                                     this.plugin.getListenerManager().update(event.getUser());
                                 }
