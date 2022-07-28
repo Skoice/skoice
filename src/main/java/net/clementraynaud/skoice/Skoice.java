@@ -33,6 +33,7 @@ import net.clementraynaud.skoice.storage.TempFileStorage;
 import net.clementraynaud.skoice.system.ListenerManager;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Skoice extends JavaPlugin {
@@ -51,7 +52,22 @@ public class Skoice extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        new Metrics(this, Skoice.SERVICE_ID);
+        Metrics metrics = new Metrics(this, Skoice.SERVICE_ID);
+        metrics.addCustomChart(new SimplePie("lang", () ->
+                LangInfo.valueOf(this.getConfiguration().getFile().getString(ConfigurationField.LANG.toString())).getFullName())
+        );
+        metrics.addCustomChart(new SimplePie("actionBarAlert", () ->
+                this.getConfiguration().getFile().getString(ConfigurationField.ACTION_BAR_ALERT.toString()))
+        );
+        metrics.addCustomChart(new SimplePie("channelVisibility", () ->
+                this.getConfiguration().getFile().getString(ConfigurationField.CHANNEL_VISIBILITY.toString()))
+        );
+        metrics.addCustomChart(new SimplePie("horizontalRadius", () ->
+                this.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))
+        );
+        metrics.addCustomChart(new SimplePie("verticalRadius", () ->
+                this.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))
+        );
         this.saveDefaultConfig();
         this.configuration = new Configuration(this);
         this.configuration.init();
