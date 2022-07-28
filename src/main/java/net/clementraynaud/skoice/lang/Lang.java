@@ -28,6 +28,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.util.Arrays;
+
 public class Lang {
 
     private static final String CHAT_PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "•" + ChatColor.GRAY;
@@ -67,13 +69,16 @@ public class Lang {
         if (message == null) {
             return null;
         }
-        if (path.startsWith("minecraft.chat.")) {
-            String[] newArgs = new String[args.length + 1];
-            newArgs[0] = Lang.CHAT_PREFIX;
-            System.arraycopy(args, 0, newArgs, 1, args.length);
-            return ChatColor.translateAlternateColorCodes('&', String.format(message, (Object[]) newArgs));
-        } else if (path.startsWith("minecraft.interaction.")) {
-            return ChatColor.translateAlternateColorCodes('&', String.format(message, (Object[]) args));
+        if (path.startsWith("minecraft.")) {
+            args = Arrays.stream(args).map(ChatColor::stripColor).toArray(String[]::new);
+            if (path.startsWith("minecraft.chat.")) {
+                String[] newArgs = new String[args.length + 1];
+                newArgs[0] = Lang.CHAT_PREFIX;
+                System.arraycopy(args, 0, newArgs, 1, args.length);
+                return String.format(ChatColor.translateAlternateColorCodes('&', message), (Object[]) newArgs);
+            } else if (path.startsWith("minecraft.interaction.")) {
+                return String.format(ChatColor.translateAlternateColorCodes('&',message), (Object[]) args);
+            }
         }
         return String.format(message, (Object[]) args);
     }
