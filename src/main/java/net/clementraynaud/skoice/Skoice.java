@@ -92,18 +92,22 @@ public class Skoice extends JavaPlugin {
     private void addCustomCharts() {
         Metrics metrics = new Metrics(this, Skoice.SERVICE_ID);
         metrics.addCustomChart(new SimplePie("lang", () ->
-                LangInfo.valueOf(this.getConfiguration().getFile().getString(ConfigurationField.LANG.toString())).getFullName()
+                LangInfo.valueOf(this.configuration.getFile().getString(ConfigurationField.LANG.toString())).getFullName()
         ));
         metrics.addCustomChart(new SimplePie("actionBarAlert", () ->
-                this.getConfiguration().getFile().getString(ConfigurationField.ACTION_BAR_ALERT.toString())
+                this.configuration.getFile().getString(ConfigurationField.ACTION_BAR_ALERT.toString())
         ));
         metrics.addCustomChart(new SimplePie("channelVisibility", () ->
-                this.getConfiguration().getFile().getString(ConfigurationField.CHANNEL_VISIBILITY.toString())
+                this.configuration.getFile().getString(ConfigurationField.CHANNEL_VISIBILITY.toString())
         ));
-        int horizontalRadius = this.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString());
-        metrics.addCustomChart(ChartUtils.createDrilldownPie("horizontalRadius", horizontalRadius, 0, 10, 11));
-        int verticalRadius = this.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString());
-        metrics.addCustomChart(ChartUtils.createDrilldownPie("verticalRadius", verticalRadius, 0, 10, 11));
+        if (this.configuration.getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
+            int horizontalRadius = this.configuration.getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString());
+            metrics.addCustomChart(ChartUtils.createDrilldownPie("horizontalRadius", horizontalRadius, 0, 10, 11));
+        }
+        if (this.configuration.getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
+            int verticalRadius = this.configuration.getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString());
+            metrics.addCustomChart(ChartUtils.createDrilldownPie("verticalRadius", verticalRadius, 0, 10, 11));
+        }
         int linkedUsers = this.linksFileStorage.getLinks().size();
         metrics.addCustomChart(ChartUtils.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
         metrics.addCustomChart(new SimplePie("botStatus", () ->
