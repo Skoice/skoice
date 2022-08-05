@@ -38,18 +38,18 @@ public class LinksFileStorage extends FileStorage {
     }
 
     public void linkUser(String minecraftId, String discordId) {
-        super.yaml.set(LinksFileStorage.LINKS_FIELD + "." + minecraftId, discordId);
-        this.saveFile();
+        super.set(LinksFileStorage.LINKS_FIELD + "." + minecraftId, discordId);
+        this.save();
     }
 
     public void unlinkUser(String minecraftId) {
-        super.yaml.set(LinksFileStorage.LINKS_FIELD + "." + minecraftId, null);
-        this.saveFile();
+        super.set(LinksFileStorage.LINKS_FIELD + "." + minecraftId, null);
+        this.save();
     }
 
     public Map<String, String> getLinks() {
         Map<String, String> castedLinks = new HashMap<>();
-        ConfigurationSection linksSection = super.yaml.getConfigurationSection(LinksFileStorage.LINKS_FIELD);
+        ConfigurationSection linksSection = super.getConfigurationSection(LinksFileStorage.LINKS_FIELD);
         if (linksSection != null) {
             Map<String, Object> links = new HashMap<>(linksSection.getValues(false));
             for (Map.Entry<String, Object> entry : links.entrySet()) {

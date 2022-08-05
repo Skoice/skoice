@@ -55,10 +55,10 @@ public class OutdatedConfiguration {
             this.convertOldToken();
             this.convertOldData("mainVoiceChannelID", ConfigurationField.VOICE_CHANNEL_ID.toString());
             this.convertOldRadius();
-            this.plugin.getConfiguration().saveFile();
+            this.plugin.getConfiguration().save();
             this.convertOldLinks();
             try {
-                this.plugin.getLinksFileStorage().getFile().loadFromString(this.plugin.getLinksFileStorage().getFile().saveToString());
+                this.plugin.getLinksFileStorage().loadFromString(this.plugin.getLinksFileStorage().saveToString());
             } catch (InvalidConfigurationException ignored) {
             }
             try {
@@ -103,8 +103,8 @@ public class OutdatedConfiguration {
                 links.put(iterator.next(), iterator.next());
             }
             links.putAll(this.plugin.getLinksFileStorage().getLinks());
-            this.plugin.getLinksFileStorage().getFile().set(LinksFileStorage.LINKS_FIELD, links);
-            this.plugin.getLinksFileStorage().saveFile();
+            this.plugin.getLinksFileStorage().set(LinksFileStorage.LINKS_FIELD, links);
+            this.plugin.getLinksFileStorage().save();
         }
     }
 

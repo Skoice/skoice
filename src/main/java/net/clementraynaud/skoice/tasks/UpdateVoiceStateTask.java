@@ -52,20 +52,20 @@ public class UpdateVoiceStateTask {
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.configuration.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
-                List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
+                List<String> mutedUsers = this.tempFileStorage.getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
                 if (!mutedUsers.contains(this.member.getId())) {
                     mutedUsers.add(this.member.getId());
-                    this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
-                    this.tempFileStorage.saveFile();
+                    this.tempFileStorage.set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
+                    this.tempFileStorage.save();
                 }
             }
         } else {
-            List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
+            List<String> mutedUsers = this.tempFileStorage.getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
             if (mutedUsers.contains(this.member.getId())) {
                 this.member.mute(false).queue();
                 mutedUsers.remove(this.member.getId());
-                this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
-                this.tempFileStorage.saveFile();
+                this.tempFileStorage.set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
+                this.tempFileStorage.save();
             }
         }
     }

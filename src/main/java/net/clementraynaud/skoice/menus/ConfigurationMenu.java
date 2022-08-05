@@ -55,7 +55,7 @@ public class ConfigurationMenu {
     }
 
     public String getMessageId() {
-        String messageId = this.plugin.getTempFileStorage().getFile()
+        String messageId = this.plugin.getTempFileStorage()
                 .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.MESSAGE_ID_FIELD);
         if (messageId != null) {
             return messageId;
@@ -64,11 +64,11 @@ public class ConfigurationMenu {
     }
 
     public void retrieveMessage(Consumer<Message> success) {
-        String guildId = this.plugin.getTempFileStorage().getFile()
+        String guildId = this.plugin.getTempFileStorage()
                 .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.GUILD_ID_FIELD);
-        String channelId = this.plugin.getTempFileStorage().getFile()
+        String channelId = this.plugin.getTempFileStorage()
                 .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.CHANNEL_ID_FIELD);
-        String messageId = this.plugin.getTempFileStorage().getFile()
+        String messageId = this.plugin.getTempFileStorage()
                 .getString(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.MESSAGE_ID_FIELD);
         if (guildId == null || channelId == null || messageId == null) {
             return;
@@ -90,17 +90,17 @@ public class ConfigurationMenu {
     }
 
     public void store(Message message) {
-        this.plugin.getTempFileStorage().getFile()
+        this.plugin.getTempFileStorage()
                 .set(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.GUILD_ID_FIELD, message.getGuild().getId());
-        this.plugin.getTempFileStorage().getFile()
+        this.plugin.getTempFileStorage()
                 .set(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.CHANNEL_ID_FIELD, message.getGuildChannel().getId());
-        this.plugin.getTempFileStorage().getFile()
+        this.plugin.getTempFileStorage()
                 .set(TempFileStorage.CONFIG_MENU_FIELD + "." + TempFileStorage.MESSAGE_ID_FIELD, message.getId());
-        this.plugin.getTempFileStorage().saveFile();
+        this.plugin.getTempFileStorage().save();
     }
 
     public void clearConfig() {
-        this.plugin.getTempFileStorage().getFile().set(TempFileStorage.CONFIG_MENU_FIELD, null);
-        this.plugin.getTempFileStorage().saveFile();
+        this.plugin.getTempFileStorage().set(TempFileStorage.CONFIG_MENU_FIELD, null);
+        this.plugin.getTempFileStorage().save();
     }
 }

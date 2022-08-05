@@ -104,7 +104,7 @@ public class Bot {
                 if (sender != null) {
                     sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-could-not-connect"));
                     this.plugin.getConfiguration().getFile().set(ConfigurationField.TOKEN.toString(), null);
-                    this.plugin.getConfiguration().saveFile();
+                    this.plugin.getConfiguration().save();
                 }
             } catch (ErrorResponseException e) {
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));

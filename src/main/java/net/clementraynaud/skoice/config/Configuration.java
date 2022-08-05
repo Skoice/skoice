@@ -38,14 +38,14 @@ public class Configuration {
 
     public void init() {
         this.file.options().copyDefaults(true);
-        this.saveFile();
+        this.save();
     }
 
     public FileConfiguration getFile() {
         return this.file;
     }
 
-    public void saveFile() {
+    public void save() {
         this.plugin.saveConfig();
     }
 
@@ -55,7 +55,7 @@ public class Configuration {
             tokenBytes[i]++;
         }
         this.file.set(ConfigurationField.TOKEN.toString(), Base64.getEncoder().encodeToString(tokenBytes));
-        this.saveFile();
+        this.save();
     }
 
     public VoiceChannel getVoiceChannel() {
@@ -74,7 +74,7 @@ public class Configuration {
         if (this.getVoiceChannel() == null
                 && this.file.contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
             this.file.set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
-            this.saveFile();
+            this.save();
         }
     }
 

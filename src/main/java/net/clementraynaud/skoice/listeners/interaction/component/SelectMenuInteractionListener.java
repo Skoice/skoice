@@ -75,7 +75,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     break;
                 case "language-selection":
                     this.plugin.getConfiguration().getFile().set(ConfigurationField.LANG.toString(), event.getSelectedOptions().get(0).getValue());
-                    this.plugin.getConfiguration().saveFile();
+                    this.plugin.getConfiguration().save();
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                     this.plugin.getListenerManager().update();
                     this.plugin.getBotCommands().register(event.getGuild());
@@ -110,7 +110,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                                 if (voiceChannel != null && voiceChannel.getParentCategory() != null) {
                                     this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(),
                                             event.getSelectedOptions().get(0).getValue());
-                                    this.plugin.getConfiguration().saveFile();
+                                    this.plugin.getConfiguration().save();
                                     this.plugin.getBot().updateVoiceState();
                                     new InterruptSystemTask(this.plugin.getConfiguration()).run();
                                     this.plugin.getListenerManager().update(event.getUser());
@@ -124,13 +124,13 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     if ("vanilla-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), 80);
                         this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 40);
-                        this.plugin.getConfiguration().saveFile();
+                        this.plugin.getConfiguration().save();
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     } else if ("minigame-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), 40);
                         this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 20);
-                        this.plugin.getConfiguration().saveFile();
+                        this.plugin.getConfiguration().save();
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     }
@@ -141,7 +141,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfiguration().getFile().set(ConfigurationField.ACTION_BAR_ALERT.toString(), false);
                     }
-                    this.plugin.getConfiguration().saveFile();
+                    this.plugin.getConfiguration().save();
                     event.editMessage(this.plugin.getBot().getMenu("action-bar-alert").build()).queue();
                     break;
                 case "channel-visibility":
@@ -150,7 +150,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfiguration().getFile().set(ConfigurationField.CHANNEL_VISIBILITY.toString(), false);
                     }
-                    this.plugin.getConfiguration().saveFile();
+                    this.plugin.getConfiguration().save();
                     event.editMessage(this.plugin.getBot().getMenu("channel-visibility").build()).queue();
                     break;
                 default:
