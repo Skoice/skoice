@@ -65,7 +65,8 @@ public class VoiceChannelSelectMenu extends SelectMenu {
         if (super.plugin.getBot().getStatus() == BotStatus.READY) {
             return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("voice-channel-selection")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(super.plugin.getConfiguration().getFile().getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))).build();
+                    .setDefaultValues(Collections.singleton(super.plugin.getConfiguration()
+                            .getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))).build();
         } else {
             return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("voice-channel-selection")
                     .setPlaceholder(super.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.placeholder"))

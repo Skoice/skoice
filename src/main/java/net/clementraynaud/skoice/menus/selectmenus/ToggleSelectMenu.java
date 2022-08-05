@@ -41,7 +41,7 @@ public class ToggleSelectMenu extends SelectMenu {
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        boolean selectedValue = this.plugin.getConfiguration().getFile().getBoolean(this.componentId);
+        boolean selectedValue = this.plugin.getConfiguration().getBoolean(this.componentId);
         YamlConfiguration configuration = ConfigurationUtils.loadResource(this.getClass().getName(), "config.yml");
         if (configuration == null) {
             return null;

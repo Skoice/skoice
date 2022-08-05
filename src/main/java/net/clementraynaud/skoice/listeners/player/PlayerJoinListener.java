@@ -48,7 +48,7 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
             if (player.isOp()) {
-                if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString()) || this.plugin.getBot().getJDA() == null) {
+                if (!this.plugin.getConfiguration().contains(ConfigurationField.TOKEN.toString()) || this.plugin.getBot().getJDA() == null) {
                     try {
                         TextComponent configureCommand = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.here"));
                         MessageUtil.setHoverEvent(configureCommand, this.plugin.getLang().getMessage("minecraft.interaction.execute", "/skoice configure"));

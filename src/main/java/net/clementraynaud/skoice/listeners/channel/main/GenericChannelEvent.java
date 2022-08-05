@@ -51,8 +51,8 @@ public class GenericChannelEvent extends ListenerAdapter {
         if (!event.getChannelType().isAudio()) {
             return;
         }
-        if (event.getChannel().getId().equals(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))) {
-            this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
+        if (event.getChannel().getId().equals(this.plugin.getConfiguration().getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))) {
+            this.plugin.getConfiguration().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
             this.plugin.getListenerManager().update();
             event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).queue(auditLogEntries -> {
                 User user = auditLogEntries.get(0).getUser();

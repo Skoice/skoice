@@ -40,7 +40,7 @@ public class FileStorage extends YamlConfiguration {
     }
 
     public void load() {
-        this.file = new File(this.plugin.getDataFolder() + java.io.File.separator + this.fileName + ".yml");
+        this.file = new File(this.plugin.getDataFolder(), this.fileName + ".yml");
         try {
             if (this.file.exists() || this.file.createNewFile()) {
                 this.load(this.file);

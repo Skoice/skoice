@@ -22,27 +22,22 @@ package net.clementraynaud.skoice.config;
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.Base64;
 
-public class Configuration {
+public class Configuration extends YamlConfiguration {
 
     private final Skoice plugin;
-    private final FileConfiguration file;
 
     public Configuration(Skoice plugin) {
         this.plugin = plugin;
-        this.file = this.plugin.getConfig();
     }
 
     public void init() {
-        this.file.options().copyDefaults(true);
+        this.setDefaults(this.plugin.getConfig());
+        this.options().copyDefaults(true);
         this.save();
-    }
-
-    public FileConfiguration getFile() {
-        return this.file;
     }
 
     public void save() {
@@ -54,7 +49,7 @@ public class Configuration {
         for (int i = 0; i < tokenBytes.length; i++) {
             tokenBytes[i]++;
         }
-        this.file.set(ConfigurationField.TOKEN.toString(), Base64.getEncoder().encodeToString(tokenBytes));
+        this.set(ConfigurationField.TOKEN.toString(), Base64.getEncoder().encodeToString(tokenBytes));
         this.save();
     }
 
@@ -62,7 +57,7 @@ public class Configuration {
         if (this.plugin.getBot().getJDA() == null) {
             return null;
         }
-        String voiceChannelId = this.file.getString(ConfigurationField.VOICE_CHANNEL_ID.toString());
+        String voiceChannelId = this.getString(ConfigurationField.VOICE_CHANNEL_ID.toString());
         if (voiceChannelId == null) {
             return null;
         }
@@ -72,8 +67,8 @@ public class Configuration {
 
     public void eraseInvalidVoiceChannelId() {
         if (this.getVoiceChannel() == null
-                && this.file.contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
-            this.file.set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
+                && this.contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
+            this.set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
             this.save();
         }
     }

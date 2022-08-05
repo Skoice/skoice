@@ -57,7 +57,7 @@ public class Skoice extends JavaPlugin {
         this.configuration = new Configuration(this);
         this.configuration.init();
         this.lang = new Lang();
-        this.lang.load(LangInfo.valueOf(this.configuration.getFile().getString(ConfigurationField.LANG.toString())));
+        this.lang.load(LangInfo.valueOf(this.configuration.getString(ConfigurationField.LANG.toString())));
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
         this.linksFileStorage = new LinksFileStorage(this);
         this.linksFileStorage.load();
@@ -92,20 +92,20 @@ public class Skoice extends JavaPlugin {
     private void addCustomCharts() {
         Metrics metrics = new Metrics(this, Skoice.SERVICE_ID);
         metrics.addCustomChart(new SimplePie("lang", () ->
-                LangInfo.valueOf(this.configuration.getFile().getString(ConfigurationField.LANG.toString())).getFullName()
+                LangInfo.valueOf(this.configuration.getString(ConfigurationField.LANG.toString())).getFullName()
         ));
         metrics.addCustomChart(new SimplePie("actionBarAlert", () ->
-                this.configuration.getFile().getString(ConfigurationField.ACTION_BAR_ALERT.toString())
+                this.configuration.getString(ConfigurationField.ACTION_BAR_ALERT.toString())
         ));
         metrics.addCustomChart(new SimplePie("channelVisibility", () ->
-                this.configuration.getFile().getString(ConfigurationField.CHANNEL_VISIBILITY.toString())
+                this.configuration.getString(ConfigurationField.CHANNEL_VISIBILITY.toString())
         ));
-        if (this.configuration.getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
-            int horizontalRadius = this.configuration.getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString());
+        if (this.configuration.contains(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
+            int horizontalRadius = this.configuration.getInt(ConfigurationField.HORIZONTAL_RADIUS.toString());
             metrics.addCustomChart(ChartUtils.createDrilldownPie("horizontalRadius", horizontalRadius, 0, 10, 11));
         }
-        if (this.configuration.getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
-            int verticalRadius = this.configuration.getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString());
+        if (this.configuration.contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
+            int verticalRadius = this.configuration.getInt(ConfigurationField.VERTICAL_RADIUS.toString());
             metrics.addCustomChart(ChartUtils.createDrilldownPie("verticalRadius", verticalRadius, 0, 10, 11));
         }
         int linkedUsers = this.linksFileStorage.getLinks().size();

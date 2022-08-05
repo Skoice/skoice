@@ -40,7 +40,7 @@ public class ConfigureArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        if (super.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString()) && super.plugin.getBot().getJDA() != null) {
+        if (super.plugin.getConfiguration().contains(ConfigurationField.TOKEN.toString()) && super.plugin.getBot().getJDA() != null) {
             if (super.plugin.getBot().getStatus() == BotStatus.READY) {
                 player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.already-configured"));
             } else {
