@@ -24,9 +24,9 @@ import org.bstats.charts.DrilldownPie;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class ChartUtils {
+public final class ChartUtil {
 
-    private ChartUtils() {
+    private ChartUtil() {
     }
 
     public static DrilldownPie createDrilldownPie(String chartId, int value, int min, int interval, int slices) {

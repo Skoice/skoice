@@ -32,7 +32,7 @@ import net.clementraynaud.skoice.storage.LinksFileStorage;
 import net.clementraynaud.skoice.storage.TempFileStorage;
 import net.clementraynaud.skoice.system.ListenerManager;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
-import net.clementraynaud.skoice.util.ChartUtils;
+import net.clementraynaud.skoice.util.ChartUtil;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -102,14 +102,14 @@ public class Skoice extends JavaPlugin {
         ));
         if (this.configuration.contains(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
             int horizontalRadius = this.configuration.getInt(ConfigurationField.HORIZONTAL_RADIUS.toString());
-            metrics.addCustomChart(ChartUtils.createDrilldownPie("horizontalRadius", horizontalRadius, 0, 10, 11));
+            metrics.addCustomChart(ChartUtil.createDrilldownPie("horizontalRadius", horizontalRadius, 0, 10, 11));
         }
         if (this.configuration.contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
             int verticalRadius = this.configuration.getInt(ConfigurationField.VERTICAL_RADIUS.toString());
-            metrics.addCustomChart(ChartUtils.createDrilldownPie("verticalRadius", verticalRadius, 0, 10, 11));
+            metrics.addCustomChart(ChartUtil.createDrilldownPie("verticalRadius", verticalRadius, 0, 10, 11));
         }
         int linkedUsers = this.linksFileStorage.getLinks().size();
-        metrics.addCustomChart(ChartUtils.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
+        metrics.addCustomChart(ChartUtil.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
         metrics.addCustomChart(new SimplePie("botStatus", () ->
                 this.bot.getStatus().toString()
         ));

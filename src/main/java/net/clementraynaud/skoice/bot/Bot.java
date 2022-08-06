@@ -26,7 +26,7 @@ import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
-import net.clementraynaud.skoice.util.ConfigurationUtils;
+import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.clementraynaud.skoice.util.MessageUtil;
 import net.dv8tion.jda.api.JDA;
@@ -303,7 +303,7 @@ public class Bot {
 
     private void loadMenus() {
         this.loadMenuFields();
-        YamlConfiguration menusYaml = ConfigurationUtils.loadResource(this.getClass().getName(), "menus/menus.yml");
+        YamlConfiguration menusYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "menus/menus.yml");
         if (menusYaml == null) {
             return;
         }
@@ -327,7 +327,7 @@ public class Bot {
     }
 
     private void loadMenuFields() {
-        YamlConfiguration fieldsYaml = ConfigurationUtils.loadResource(this.getClass().getName(), "menus/fields.yml");
+        YamlConfiguration fieldsYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "menus/fields.yml");
         if (fieldsYaml == null) {
             return;
         }

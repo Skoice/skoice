@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.lang;
 
-import net.clementraynaud.skoice.util.ConfigurationUtils;
+import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -39,11 +39,11 @@ public class Lang {
 
     public void load(LangInfo langInfo) {
         if (this.englishMessages == null) {
-            this.englishMessages = ConfigurationUtils.loadResource(this.getClass().getName(), "lang/" + LangInfo.EN + ".yml");
+            this.englishMessages = ConfigurationUtil.loadResource(this.getClass().getName(), "lang/" + LangInfo.EN + ".yml");
         }
         this.messages = new YamlConfiguration();
         if (langInfo != LangInfo.EN) {
-            this.messages = ConfigurationUtils.loadResource(this.getClass().getName(), "lang/" + langInfo + ".yml");
+            this.messages = ConfigurationUtil.loadResource(this.getClass().getName(), "lang/" + langInfo + ".yml");
         }
     }
 

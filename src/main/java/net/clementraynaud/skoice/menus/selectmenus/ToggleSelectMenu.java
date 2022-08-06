@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
-import net.clementraynaud.skoice.util.ConfigurationUtils;
+import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -42,7 +42,7 @@ public class ToggleSelectMenu extends SelectMenu {
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
         boolean selectedValue = this.plugin.getConfiguration().getBoolean(this.componentId);
-        YamlConfiguration configuration = ConfigurationUtils.loadResource(this.getClass().getName(), "config.yml");
+        YamlConfiguration configuration = ConfigurationUtil.loadResource(this.getClass().getName(), "config.yml");
         if (configuration == null) {
             return null;
         }
