@@ -74,7 +74,7 @@ public class Network {
                 .addPermissionOverride(guild.getSelfMember(),
                         Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS),
                         Collections.emptyList())
-                .setBitrate(guild.getMaxBitrate())
+                .setBitrate(this.plugin.getConfiguration().getVoiceChannel().getBitrate())
                 .queue(voiceChannel -> {
                     this.channel = voiceChannel.getId();
                     this.initialized = true;
