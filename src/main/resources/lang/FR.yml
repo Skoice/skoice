@@ -23,7 +23,7 @@ logger:
     skoice-3: "Vous utilisez désormais Skoice 3. Pour que votre bot fonctionne correctement, suivez notre guide de migration ici : https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
     configuration-complete: "Skoice est désormais configuré. Tapez \"/link\" sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
     bot-connecting: "Votre bot tente de se connecter."
-    bot-connected: "Vour bot est connecté."
+    bot-connected: "Votre bot est connecté."
   warning:
     outdated-version: "Vous utilisez une version obsolète (%s). Téléchargez la dernière version (%s) ici : https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
     no-token: "Token non défini. Rejoignez votre serveur Minecraft pour configurer Skoice."
