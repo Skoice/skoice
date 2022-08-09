@@ -35,7 +35,7 @@ logger:
     missing-permission: "Sie haben Ihrem Bot nicht die Berechtigung \"Administrator\" auf Ihrem Discord-Server erteilt. Öffne diesen Link, um sie hinzuzufügen: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     missing-access: "Du hast deinem Bot nicht die Erlaubnis gegeben, Befehle auf dem Discord-Server \"%s\" zu registrieren. Öffne diesen Link, um ihn hinzuzufügen und starte deinen Minecraft-Server neu: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Ihr Bot konnte keine Verbindung herstellen. Um das Token zu aktualisieren, geben Sie \"/skoice token\" gefolgt vom neuen Token ein."
-    bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: https://discordstatus.com."
+    bot-timed-out: "Ihr Bot konnte sich aufgrund eines Problems nicht verbinden. Überprüfen Sie den Status Ihrer Netzwerkverbindung und suchen Sie nach aktuellen Discord-Ausfällen hier: https://discordstatus.com."
   exception:
     unexpected-value: "Unerwarteter Wert: %s"
 
@@ -49,7 +49,7 @@ minecraft:
       bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7Zuerst müssen Sie einen Bot erstellen und ihn zu Ihrem Discord-Server einladen. Wenn Sie bereits einen Bot besitzen, müssen Sie einen neuen erstellen. Bitte folgen Sie den Anweisungen auf dieser Seite: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Wenn Sie das Token abgerufen haben, geben Sie \"&e/skoice token&7\" gefolgt von dem Token ein.\n&8• &7Sobald dies geschehen ist, geben Sie \"&e/configure&7\" auf Ihrem Discord-Server ein, um zum nächsten Schritt zu gelangen.\n "
       no-token: "%s Sie haben &cnicht einen Token zur Verfügung gestellt&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice token&7\" gefolgt von dem Token ein."
       no-guild-interactive:
-        - "%s %s Ihr Bot befindet sich &cnicht auf einem Discord-Server&7. Öffne "
+        - "%s Ihr Bot befindet sich &cnicht auf einem Discord-Server&7. Öffne "
         - " &7, um ihn einzuladen."
       no-guild: "%s Ihr Bot befindet sich &cnicht auf einem Discord-Server&7. Öffne diesen Link, um ihn einzuladen: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       bot-connecting: "%s Ihr Bot &aversucht sich zu verbinden&7."
@@ -57,7 +57,7 @@ minecraft:
       bot-connected-incomplete-configuration-discord: "%s Dein Bot ist &ajetzt verbunden&7. Gib \"&e/configure&7\" auf deinem Discord-Server ein, um ihn einzurichten."
       bot-already-connected: "%s Sie haben &aden Token aktualisiert&7. Starte deinen Minecraft-Server neu, um deinen Bot zu verbinden."
       bot-could-not-connect: "%s Ihr Bot &ckonnte keine Verbindung herstellen&7. Versuchen Sie es erneut mit einem gültigen Token."
-      missing-access: "%s Your bot does &cnot have the permission to register commands &7on the Discord server \"&e%s&7\". Open this link to add it and restart your Minecraft server: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
+      missing-access: "%s Dein Bot hat &cnicht die Erlaubnis, Befehle zu registrieren &7auf dem Discord-Server \"&e%s&7\". Öffne diesen Link, um ihn hinzuzufügen und starte deinen Minecraft-Server neu: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice ist &cnicht korrekt konfiguriert&7. Bitte wenden Sie sich an einen Administrator."
       incomplete-configuration-operator-interactive:
         - "%s Skoice ist &cnicht richtig konfiguriert&7. Klicken Sie auf "
@@ -79,11 +79,11 @@ minecraft:
       no-parameter: "%s Sie haben &ckein Argument angegeben&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice %s&7\" ein."
       invalid-parameter: "%s Sie haben &ckein gültiges Argument angegeben&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice %s&7\" ein."
       illegal-executor: "%s Dieser Befehl ist &cnur von Spielern ausführbar&7."
-      missing-permission: "%s Dieser Befehl ist &cnur&è von Operatoren ausführbar."
+      missing-permission: "%s Dieser Befehl ist &cnur &7von Operatoren ausführbar."
       bot-timed-out-interactive:
-        - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
+        - "%s Ein Problem &chat deinen Bot &7daran gehindert, sich zu verbinden. Überprüfen Sie den Status Ihrer Netzwerkverbindung und suchen Sie nach kürzlichen Discord-Ausfällen auf "
         - "&7."
-      bot-timed-out-link: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages here: &bhttps://discordstatus.com&7."
+      bot-timed-out-link: "%s Ein Problem &chat deinen Bot &7daran gehindert, sich zu verbinden. Überprüfen Sie Ihren Netzwerkverbindungsstatus und suchen Sie nach aktuellen Discord-Ausfällen hier: &bhttps://discordstatus.com&7."
   action-bar:
     alert: "&c⚠ &7Sie &centfernen sich&7 von nahen Spielern."
   interaction:
