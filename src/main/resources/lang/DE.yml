@@ -113,7 +113,7 @@ discord:
       description: "Um richtig zu funktionieren, muss dein Bot die Berechtigung \"Administrator\" auf deinem Discord-Server haben."
     voice-channel:
       title: "Sprachkanal"
-      description: "Wählen Sie den Kanal, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen. Er muss sich in einer Kategorie befinden."
+      description: "Wählen Sie den Kanal, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen. Er muss sich in einer Kategorie befinden. Passen Sie die Bitrate an, um die Audioqualität des Sprachchats im Nahbereich zu steuern."
       shortened-description: "Wählen Sie den Kanal, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen."
       select-menu:
         placeholder: "Bitte wählen Sie einen Sprachkanal."

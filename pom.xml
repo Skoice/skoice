@@ -6,7 +6,7 @@
 
     <groupId>net.clementraynaud</groupId>
     <artifactId>skoice</artifactId>
-    <version>3.0.4</version>
+    <version>3.0.5</version>
     <packaging>jar</packaging>
 
     <name>skoice</name>
@@ -37,7 +37,11 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>${project.groupId}.skoice.util</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.dv8tion</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>

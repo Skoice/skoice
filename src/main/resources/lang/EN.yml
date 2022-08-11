@@ -113,7 +113,7 @@ discord:
       description: "In order to work properly, your bot must have the \"Administrator\" permission on your Discord server."
     voice-channel:
       title: "Voice Channel"
-      description: "Select the channel players have to join to use the proximity voice chat. It must be in a category."
+      description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Adjust its bitrate to manage the audio quality of the proximity voice chat."
       shortened-description: "Select the channel players have to join to use the proximity voice chat."
       select-menu:
         placeholder: "Please select a voice channel."

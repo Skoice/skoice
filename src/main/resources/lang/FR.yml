@@ -113,7 +113,7 @@ discord:
       description: "Afin de fonctionner correctement, votre bot doit avoir la permission \"Administrateur\" sur votre serveur Discord."
     voice-channel:
       title: "Salon vocal"
-      description: "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité. Il doit se trouver dans une catégorie."
+      description: "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité. Il doit se trouver dans une catégorie. Ajustez son débit binaire pour gérer la qualité audio du chat vocal de proximité."
       shortened-description: "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité."
       select-menu:
         placeholder: "Veuillez sélectionner un salon vocal."
