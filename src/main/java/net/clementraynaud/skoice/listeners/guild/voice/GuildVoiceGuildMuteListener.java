@@ -42,7 +42,7 @@ public class GuildVoiceGuildMuteListener extends ListenerAdapter {
         }
         VoiceChannel voiceChannel = (VoiceChannel) event.getMember().getVoiceState().getChannel();
         if (this.plugin.getConfiguration().getVoiceChannel().equals(voiceChannel) && !event.isGuildMuted()
-                && this.plugin.getTempFileStorage().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD).contains(event.getMember().getId())) {
+                && this.plugin.getTempFileStorage().getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD).contains(event.getMember().getId())) {
             event.getMember().mute(true).queue();
         }
     }

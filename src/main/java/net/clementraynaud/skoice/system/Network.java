@@ -64,7 +64,7 @@ public class Network {
 
     public void build() {
         Guild guild = this.plugin.getBot().getGuild();
-        List<Permission> deniedPermissions = this.plugin.getConfiguration().getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString())
+        List<Permission> deniedPermissions = this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString())
                 ? Arrays.asList(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS)
                 : Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
         this.plugin.getConfiguration().getCategory().createVoiceChannel(UUID.randomUUID().toString())
@@ -87,9 +87,9 @@ public class Network {
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration()
+                .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration().getFile()
                         .getInt(ConfigurationField.VERTICAL_RADIUS.toString())
-                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration()
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration().getFile()
                         .getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()));
     }
 
@@ -98,9 +98,9 @@ public class Network {
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .filter(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration()
+                .filter(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration().getFile()
                         .getInt(ConfigurationField.VERTICAL_RADIUS.toString()) + Network.FALLOFF
-                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration()
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration().getFile()
                         .getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) + Network.FALLOFF)
                 .toArray(Player[]::new));
         if (this.players.size() > matches.size()) {
@@ -111,9 +111,9 @@ public class Network {
                     .toArray(Player[]::new);
             for (Player otherPlayer : otherPlayers) {
                 if (matches.stream()
-                        .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.plugin.getConfiguration()
+                        .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.plugin.getConfiguration().getFile()
                                 .getInt(ConfigurationField.VERTICAL_RADIUS.toString()) + Network.FALLOFF
-                                && DistanceUtil.getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.plugin.getConfiguration()
+                                && DistanceUtil.getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.plugin.getConfiguration().getFile()
                                 .getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) + Network.FALLOFF)) {
                     return true;
                 }

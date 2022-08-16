@@ -80,14 +80,14 @@ public class Bot {
     }
 
     public void connect(CommandSender sender) {
-        if (this.plugin.getConfiguration().contains(ConfigurationField.TOKEN.toString())) {
+        if (this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connecting"));
             if (sender != null) {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connecting"));
             }
             byte[] base64TokenBytes;
             try {
-                base64TokenBytes = Base64.getDecoder().decode(this.plugin.getConfiguration().getString(ConfigurationField.TOKEN.toString()));
+                base64TokenBytes = Base64.getDecoder().decode(this.plugin.getConfiguration().getFile().getString(ConfigurationField.TOKEN.toString()));
                 for (int i = 0; i < base64TokenBytes.length; i++) {
                     base64TokenBytes[i]--;
                 }
@@ -103,8 +103,8 @@ public class Bot {
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
                 if (sender != null) {
                     sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-could-not-connect"));
-                    this.plugin.getConfiguration().set(ConfigurationField.TOKEN.toString(), null);
-                    this.plugin.getConfiguration().save();
+                    this.plugin.getConfiguration().getFile().set(ConfigurationField.TOKEN.toString(), null);
+                    this.plugin.getConfiguration().saveFile();
                 }
             } catch (ErrorResponseException e) {
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));
@@ -241,7 +241,7 @@ public class Bot {
 
     public void updateStatus() {
         this.status = BotStatus.UNCHECKED;
-        if (!this.plugin.getConfiguration().contains(ConfigurationField.TOKEN.toString())) {
+        if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
             this.status = BotStatus.NO_TOKEN;
             this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
         } else if (this.getJDA() != null) {
@@ -259,11 +259,11 @@ public class Bot {
                 this.status = BotStatus.MISSING_PERMISSION;
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission",
                         this.getJDA().getSelfUser().getApplicationId()));
-            } else if (!this.plugin.getConfiguration().contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
+            } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
                 this.status = BotStatus.NO_VOICE_CHANNEL;
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-voice-channel"));
-            } else if (!this.plugin.getConfiguration().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
-                    || !this.plugin.getConfiguration().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
+            } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
+                    || !this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
                 this.status = BotStatus.NO_RADIUS;
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-radius"));
             } else {

@@ -49,8 +49,8 @@ public class ModalInteractionListener extends ListenerAdapter {
             String voiceChannelName = voiceChannelValue.getAsString();
             event.getGuild().createCategory(categoryName).queue(category ->
                     event.getGuild().createVoiceChannel(voiceChannelName, category).queue(channel -> {
-                        this.plugin.getConfiguration().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), channel.getId());
-                        this.plugin.getConfiguration().save();
+                        this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), channel.getId());
+                        this.plugin.getConfiguration().saveFile();
                         new InterruptSystemTask(this.plugin.getConfiguration()).run();
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
@@ -72,9 +72,9 @@ public class ModalInteractionListener extends ListenerAdapter {
             if (horizontalRadius == 0 || verticalRadius == 0) {
                 event.reply(this.plugin.getBot().getMenu("illegal-value").build()).setEphemeral(true).queue();
             } else {
-                this.plugin.getConfiguration().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
-                this.plugin.getConfiguration().set(ConfigurationField.VERTICAL_RADIUS.toString(), verticalRadius);
-                this.plugin.getConfiguration().save();
+                this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
+                this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), verticalRadius);
+                this.plugin.getConfiguration().saveFile();
                 event.editMessage(this.plugin.getBot().getMenu("mode").build()).queue();
             }
         }

@@ -22,25 +22,30 @@ package net.clementraynaud.skoice.config;
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Base64;
 
-public class Configuration extends YamlConfiguration {
+public class Configuration {
 
     private final Skoice plugin;
+    private final FileConfiguration file;
 
     public Configuration(Skoice plugin) {
         this.plugin = plugin;
+        this.file = this.plugin.getConfig();
     }
 
     public void init() {
-        this.setDefaults(this.plugin.getConfig());
-        this.options().copyDefaults(true);
-        this.save();
+        this.file.options().copyDefaults(true);
+        this.saveFile();
     }
 
-    public void save() {
+    public FileConfiguration getFile() {
+        return this.file;
+    }
+
+    public void saveFile() {
         this.plugin.saveConfig();
     }
 
@@ -49,15 +54,15 @@ public class Configuration extends YamlConfiguration {
         for (int i = 0; i < tokenBytes.length; i++) {
             tokenBytes[i]++;
         }
-        this.set(ConfigurationField.TOKEN.toString(), Base64.getEncoder().encodeToString(tokenBytes));
-        this.save();
+        this.file.set(ConfigurationField.TOKEN.toString(), Base64.getEncoder().encodeToString(tokenBytes));
+        this.saveFile();
     }
 
     public VoiceChannel getVoiceChannel() {
         if (this.plugin.getBot().getJDA() == null) {
             return null;
         }
-        String voiceChannelId = this.getString(ConfigurationField.VOICE_CHANNEL_ID.toString());
+        String voiceChannelId = this.file.getString(ConfigurationField.VOICE_CHANNEL_ID.toString());
         if (voiceChannelId == null) {
             return null;
         }
@@ -67,9 +72,9 @@ public class Configuration extends YamlConfiguration {
 
     public void eraseInvalidVoiceChannelId() {
         if (this.getVoiceChannel() == null
-                && this.contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
-            this.set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
-            this.save();
+                && this.file.contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
+            this.file.set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
+            this.saveFile();
         }
     }
 

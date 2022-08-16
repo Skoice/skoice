@@ -103,7 +103,7 @@ public class UpdateNetworksTask {
                             }
                         }
                         this.updateNetworksAroundPlayer(player);
-                        if (this.plugin.getConfiguration().getBoolean(ConfigurationField.ACTION_BAR_ALERT.toString())) {
+                        if (this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.ACTION_BAR_ALERT.toString())) {
                             this.sendActionBarAlert(player);
                         }
                         this.createNetworkIfNeeded(player);
@@ -210,9 +210,9 @@ public class UpdateNetworksTask {
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
                 .filter(p -> DistanceUtil.getHorizontalDistance(p.getLocation(),
-                        player.getLocation()) <= this.plugin.getConfiguration().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString())
+                        player.getLocation()) <= this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString())
                         && DistanceUtil.getVerticalDistance(p.getLocation(),
-                        player.getLocation()) <= this.plugin.getConfiguration().getInt(ConfigurationField.VERTICAL_RADIUS.toString()))
+                        player.getLocation()) <= this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()))
                 .filter(p -> {
                     Member member = this.plugin.getLinksFileStorage().getMember(p.getUniqueId());
                     return member != null && member.getVoiceState() != null

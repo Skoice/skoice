@@ -46,7 +46,6 @@ public class LanguageSelectMenu extends SelectMenu {
         }
         return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("language-selection")
                 .addOptions(options)
-                .setDefaultValues(Collections.singleton(super.plugin.getConfiguration()
-                        .getString(ConfigurationField.LANG.toString()))).build();
+                .setDefaultValues(Collections.singleton(super.plugin.getConfiguration().getFile().getString(ConfigurationField.LANG.toString()))).build();
     }
 }
