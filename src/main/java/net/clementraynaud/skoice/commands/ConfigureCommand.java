@@ -25,11 +25,9 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class ConfigureCommand extends ListenerAdapter {
 
+    private static final long COOLDOWN = 100L;
     private final Skoice plugin;
     private boolean configureCommandCooldown = false;
 
@@ -49,13 +47,9 @@ public class ConfigureCommand extends ListenerAdapter {
                     this.plugin.getConfigurationMenu().delete();
                     event.reply(this.plugin.getConfigurationMenu().update()).queue();
                     this.configureCommandCooldown = true;
-                    new Timer().schedule(new TimerTask() {
-
-                        @Override
-                        public void run() {
-                            ConfigureCommand.this.configureCommandCooldown = false;
-                        }
-                    }, 5000);
+                    this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
+                            this.configureCommandCooldown = false, ConfigureCommand.COOLDOWN
+                    );
                 }
             } else {
                 event.reply(this.plugin.getBot().getMenu("access-denied").build())
