@@ -46,12 +46,10 @@ minecraft:
         - " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
         - "&7.\n&8• &7When you have retrieved its token, put it "
         - "&7.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
-      bot-creation-link: " \n%s Configuration (&fBot Creation&7)\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
       no-token: "%s You have &cnot provided a token&7. To use this command, type \"&e/skoice token&7\" followed by the token."
       no-guild-interactive:
         - "%s Your bot is &cnot on a Discord server&7. Open "
         - " &7to invite it."
-      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this link to invite it: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       bot-connecting: "%s Your bot is &aattempting to connect&7."
       bot-connected: "%s Your bot is &anow connected&7."
       bot-connected-incomplete-configuration-discord: "%s Your bot is &anow connected&7. Type \"&e/configure&7\" on your Discord server to set it up."
@@ -62,7 +60,6 @@ minecraft:
       incomplete-configuration-operator-interactive:
         - "%s Skoice is &cnot configured correctly&7. Click "
         - " &7to set it up."
-      incomplete-configuration-operator-command: "%s Skoice is &cnot configured correctly&7. Type \"&e/skoice configure&7\" to set it up."
       incomplete-configuration-operator-discord: "%s Skoice is &cnot configured correctly&7. Type \"&e/configure&7\" on your Discord server to set it up."
       already-configured: "%s Skoice is &calready configured&7. Type \"&e/configure&7\" on your Discord server to update its settings."
     player:
@@ -83,7 +80,6 @@ minecraft:
       bot-timed-out-interactive:
         - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
         - "&7."
-      bot-timed-out-link: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages here: &bhttps://discordstatus.com&7."
   action-bar:
     alert: "&c⚠ &7You are &cmoving away &7from near players."
   interaction:
@@ -143,7 +139,7 @@ discord:
       description: "Choose the language used to display messages."
     action-bar-alert:
       title: "Action Bar Alert"
-      description: "Toggle the alert sent to players who are moving away before they get disconnected from their current voice channel. This feature is only supported on servers that run Minecraft 1.10 or later."
+      description: "Toggle the alert sent to players who are moving away before they get disconnected from their current voice channel."
       shortened-description: "Toggle the alert sent to players who are moving away before they get disconnected from their current voice channel."
     channel-visibility:
       title: "Channel Visibility"

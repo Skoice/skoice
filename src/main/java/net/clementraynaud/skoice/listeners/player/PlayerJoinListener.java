@@ -23,12 +23,10 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
-import net.clementraynaud.skoice.util.MessageUtil;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -49,14 +47,11 @@ public class PlayerJoinListener implements Listener {
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
             if (player.isOp()) {
                 if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString()) || this.plugin.getBot().getJDA() == null) {
-                    try {
-                        TextComponent configureCommand = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.here"));
-                        MessageUtil.setHoverEvent(configureCommand, this.plugin.getLang().getMessage("minecraft.interaction.execute", "/skoice configure"));
-                        configureCommand.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/skoice configure"));
-                        player.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", configureCommand));
-                    } catch (NoSuchMethodError e) {
-                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-command"));
-                    }
+                    this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
+                                    .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.execute", "/skoice configure")))
+                                    .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure"))
+                            )
+                    );
                 } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {
                     if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
                         this.plugin.getBot().sendNoGuildAlert(player);

@@ -22,9 +22,7 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.config.ConfigurationField;
-import net.clementraynaud.skoice.util.MessageUtil;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -47,17 +45,15 @@ public class ConfigureArgument extends Argument {
                 player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
             }
         } else {
-            try {
-                TextComponent tutorialPage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
-                MessageUtil.setHoverEvent(tutorialPage, this.plugin.getLang().getMessage("minecraft.interaction.link", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice"));
-                tutorialPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice"));
-                TextComponent tokenCommand = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.here"));
-                MessageUtil.setHoverEvent(tokenCommand, this.plugin.getLang().getMessage("minecraft.interaction.shortcut", "/skoice token"));
-                tokenCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/skoice token "));
-                player.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-creation-interactive", tutorialPage, tokenCommand));
-            } catch (NoSuchMethodError e) {
-                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.bot-creation-link"));
-            }
+            this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-creation-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
+                                    .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")))
+                                    .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice"))
+                            ,
+                            this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
+                                    .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.shortcut", "/skoice token")))
+                                    .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice token "))
+                    )
+            );
         }
     }
 }

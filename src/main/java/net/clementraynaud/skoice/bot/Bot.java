@@ -28,7 +28,6 @@ import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.clementraynaud.skoice.util.MapUtil;
-import net.clementraynaud.skoice.util.MessageUtil;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -41,8 +40,7 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -109,15 +107,11 @@ public class Bot {
             } catch (ErrorResponseException e) {
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));
                 if (sender != null) {
-                    try {
-                        TextComponent discordStatusPage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
-                        MessageUtil.setHoverEvent(discordStatusPage,
-                                this.plugin.getLang().getMessage("minecraft.interaction.link", "https://discordstatus.com"));
-                        discordStatusPage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discordstatus.com"));
-                        sender.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out-interactive", discordStatusPage));
-                    } catch (NoSuchMethodError e2) {
-                        sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out-link"));
-                    }
+                    this.plugin.adventure().sender(sender).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
+                                    .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", "https://discordstatus.com")))
+                                    .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discordstatus.com"))
+                            )
+                    );
                 }
             } catch (IllegalStateException | InterruptedException ignored) {
             }
@@ -283,22 +277,18 @@ public class Bot {
     }
 
     public void sendNoGuildAlert(Player player) {
-        try {
-            TextComponent invitePage = new TextComponent(this.plugin.getLang().getMessage("minecraft.interaction.this-page"));
-            MessageUtil.setHoverEvent(invitePage,
-                    this.plugin.getLang().getMessage("minecraft.interaction.link",
-                            "https://discord.com/api/oauth2/authorize?client_id="
-                                    + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
-                                    + "&permissions=8&scope=bot%20applications.commands"));
-            invitePage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
-                    "https://discord.com/api/oauth2/authorize?client_id="
-                            + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
-                            + "&permissions=8&scope=bot%20applications.commands"));
-            player.spigot().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", invitePage));
-        } catch (NoSuchMethodError e) {
-            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild"),
-                    this.plugin.getBot().getJDA().getSelfUser().getApplicationId());
-        }
+        this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
+                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link",
+                                "https://discord.com/api/oauth2/authorize?client_id="
+                                        + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
+                                        + "&permissions=8&scope=bot%20applications.commands"))
+                        )
+                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discord.com/api/oauth2/authorize?client_id="
+                                + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
+                                + "&permissions=8&scope=bot%20applications.commands")
+                        )
+                )
+        );
     }
 
     private void loadMenus() {

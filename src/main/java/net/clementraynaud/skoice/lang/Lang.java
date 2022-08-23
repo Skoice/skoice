@@ -20,10 +20,8 @@
 package net.clementraynaud.skoice.lang;
 
 import net.clementraynaud.skoice.util.ConfigurationUtil;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -62,6 +60,14 @@ public class Lang {
         return message;
     }
 
+    public Component getComponentMessage(String path) {
+        return Component.text(ChatColor.translateAlternateColorCodes('&', this.getMessage(path)));
+    }
+
+    public Component getComponentMessage(String path, String... args) {
+        return Component.text(ChatColor.translateAlternateColorCodes('&', this.getMessage(path, args)));
+    }
+
     public String getMessage(String path, String... args) {
         String message = this.messages.contains(path)
                 ? this.messages.getString(path)
@@ -83,17 +89,18 @@ public class Lang {
         return String.format(message, (Object[]) args);
     }
 
-    public BaseComponent[] getMessage(String path, TextComponent... components) {
+    public Component getMessage(String path, Component... components) {
         String[] strings = this.messages.contains(path)
                 ? this.messages.getStringList(path).toArray(new String[0])
                 : this.englishMessages.getStringList(path).toArray(new String[0]);
-        ComponentBuilder message = new ComponentBuilder(ChatColor.translateAlternateColorCodes('&',
+        TextComponent.Builder message = Component.text().content(ChatColor.translateAlternateColorCodes('&',
                 String.format(strings[0], Lang.CHAT_PREFIX)));
         for (int i = 0; i < components.length; i++) {
             message.append(components[i])
-                    .append(ChatColor.translateAlternateColorCodes('&', strings[i + 1])).event((HoverEvent) null);
+                    .append(Component.text(ChatColor.translateAlternateColorCodes('&', strings[i + 1]))
+                            .hoverEvent(null));
         }
-        return message.create();
+        return message.build();
     }
 
     public boolean contains(String path) {
