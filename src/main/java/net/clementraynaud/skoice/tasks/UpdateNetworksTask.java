@@ -36,8 +36,8 @@ import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -189,15 +189,17 @@ public class UpdateNetworksTask {
     }
 
     private void sendActionBarAlert(Player player) {
-        try {
-            Network.getNetworks().stream()
-                    .filter(network -> network.contains(player.getUniqueId()))
-                    .filter(network -> network.canPlayerStayConnected(player))
-                    .filter(network -> !network.canPlayerBeAdded(player))
-                    .forEach(network -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                            new TextComponent(this.plugin.getLang().getMessage("minecraft.action-bar.alert"))));
-        } catch (NoSuchMethodError ignored) {
-        }
+        Network.getNetworks().stream()
+                .filter(network -> network.contains(player.getUniqueId()))
+                .filter(network -> network.canPlayerStayConnected(player))
+                .filter(network -> !network.canPlayerBeAdded(player))
+                .forEach(network -> this.plugin.adventure().player(player).sendActionBar(
+                                Component.text(ChatColor.translateAlternateColorCodes('&',
+                                                this.plugin.getLang().getMessage("minecraft.action-bar.alert")
+                                        )
+                                )
+                        )
+                );
     }
 
     private void createNetworkIfNeeded(Player player) {

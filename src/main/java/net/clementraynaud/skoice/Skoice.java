@@ -33,6 +33,7 @@ import net.clementraynaud.skoice.storage.TempFileStorage;
 import net.clementraynaud.skoice.system.ListenerManager;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.util.ChartUtil;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -50,6 +51,7 @@ public class Skoice extends JavaPlugin {
     private BotCommands botCommands;
     private ConfigurationMenu configurationMenu;
     private Updater updater;
+    private BukkitAudiences adventure;
 
     @Override
     public void onEnable() {
@@ -69,6 +71,7 @@ public class Skoice extends JavaPlugin {
         this.bot.connect();
         this.configurationMenu = new ConfigurationMenu(this);
         this.botCommands = new BotCommands(this);
+        this.adventure = BukkitAudiences.create(this);
         if (this.bot.getJDA() != null) {
             this.bot.setup();
         } else {
@@ -80,6 +83,10 @@ public class Skoice extends JavaPlugin {
         this.updater.checkVersion();
     }
 
+    public BukkitAudiences adventure() {
+        return this.adventure;
+    }
+
     @Override
     public void onDisable() {
         if (this.bot.getJDA() != null) {
@@ -87,6 +94,9 @@ public class Skoice extends JavaPlugin {
             this.bot.getJDA().shutdown();
         }
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));
+        if (this.adventure != null) {
+            this.adventure.close();
+        }
     }
 
     private void addCustomCharts() {

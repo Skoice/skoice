@@ -43,6 +43,10 @@
                             <pattern>net.dv8tion</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
@@ -115,6 +119,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.1.2</version>
         </dependency>
     </dependencies>
 </project>
