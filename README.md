@@ -15,9 +15,9 @@ To download our plugin, please [head to our Spigot page](https://www.spigotmc.or
 Skoice is supported on servers that run any Minecraft version from 1.8 to 1.19.
 
 You can use Skoice on the following server software:
-- **Spigot** (or derivative like **Paper**)
-- **Fabric** (using [Cardboard](https://cardboardpowered.org/))
-- **Forge** (using hybrid server software)
+- [Spigot](https://www.spigotmc.org/wiki/buildtools/) (or derivative like [Paper](https://papermc.io/downloads))
+- [Fabric](https://fabricmc.net/use/installer/) (using [Cardboard](https://cardboardpowered.org/))
+- Forge (using hybrid server software)
 
 Skoice was built for Java Edition players but if your server allows Bedrock Edition players (with [GeyserMC](https://geysermc.org/) for example), then they will be able to use Skoice fine.
 
