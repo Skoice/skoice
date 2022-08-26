@@ -61,7 +61,7 @@ public class UpdateVoiceStateTask {
             }
         } else {
             List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
-            if (mutedUsers.contains(this.member.getId())) {
+            if (mutedUsers.contains(this.member.getId()) || this.member.hasPermission(Permission.VOICE_MUTE_OTHERS)) {
                 this.member.mute(false).queue();
                 mutedUsers.remove(this.member.getId());
                 this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);

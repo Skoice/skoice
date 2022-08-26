@@ -22,9 +22,12 @@ package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.TempFileStorage;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceGuildMuteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.util.List;
 
 public class GuildVoiceGuildMuteListener extends ListenerAdapter {
 
@@ -41,9 +44,18 @@ public class GuildVoiceGuildMuteListener extends ListenerAdapter {
             return;
         }
         VoiceChannel voiceChannel = (VoiceChannel) event.getMember().getVoiceState().getChannel();
-        if (this.plugin.getConfiguration().getVoiceChannel().equals(voiceChannel) && !event.isGuildMuted()
-                && this.plugin.getTempFileStorage().getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD).contains(event.getMember().getId())) {
-            event.getMember().mute(true).queue();
+        if (this.plugin.getConfiguration().getVoiceChannel().equals(voiceChannel) && !event.isGuildMuted()) {
+            if (event.getMember().hasPermission(Permission.VOICE_MUTE_OTHERS)) {
+                event.getMember().mute(true).queue();
+                List<String> mutedUsers = this.plugin.getTempFileStorage().getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
+                if (!mutedUsers.contains(event.getMember().getId())) {
+                    mutedUsers.add(event.getMember().getId());
+                    this.plugin.getTempFileStorage().getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
+                    this.plugin.getTempFileStorage().saveFile();
+                }
+            } else if (this.plugin.getTempFileStorage().getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD).contains(event.getMember().getId())) {
+                event.getMember().mute(true).queue();
+            }
         }
     }
 }
