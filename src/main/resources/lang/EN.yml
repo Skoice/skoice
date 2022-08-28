@@ -56,7 +56,7 @@ minecraft:
       bot-already-connected: "%s You have &aupdated the token&7. Restart your Minecraft server to connect your bot."
       bot-could-not-connect: "%s Your bot &ccould not connect&7. Try again with a valid token."
       missing-access: "%s Your bot does &cnot have the permission to register commands &7on the Discord server \"&e%s&7\". Open this link to add it and restart your Minecraft server: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
-      incomplete-configuration: "%s Skoice is &cnot configured correctly&7. Please contact an administrator."
+      incomplete-configuration: "%s Skoice is &cnot configured correctly&7. Please contact an administrator of the server."
       incomplete-configuration-operator-interactive:
         - "%s Skoice is &cnot configured correctly&7. Click "
         - " &7to set it up."
@@ -159,7 +159,7 @@ discord:
       description: "Skoice is now configured. Type `/link` on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     incomplete-configuration:
       title: "Incomplete Configuration"
-      description: "Skoice is not configured correctly. Please contact an administrator."
+      description: "Skoice is not configured correctly. Please contact an administrator of the server."
     incomplete-configuration-server-manager:
       title: "Incomplete Configuration"
       description: "Type `/configure` on your Discord server to complete the configuration and use Skoice."

@@ -56,7 +56,7 @@ minecraft:
       bot-already-connected: "%s Vous avez &amis à jour le token&7. Redémarrez votre serveur Minecraft pour connecter votre bot."
       bot-could-not-connect: "%s Votre bot &cn'a pas pu se connecter&7. Essayez de nouveau avec un token valide."
       missing-access: "%s Votre bot n'a &cpas la permission de déclarer des commandes &7sur le serveur Discord \"&e%s&7\". Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
-      incomplete-configuration: "%s Skoice n'est &cpas configuré correctement&7. Veuillez contacter un administrateur."
+      incomplete-configuration: "%s Skoice n'est &cpas configuré correctement&7. Veuillez contacter un administrateur du serveur."
       incomplete-configuration-operator-interactive:
         - "%s Skoice n'est &cpas configuré correctement&7. Cliquez "
         - " &7pour le configurer."
@@ -159,7 +159,7 @@ discord:
       description: "Skoice est désormais configuré. Tapez `/link` sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
     incomplete-configuration:
       title: "Configuration non terminée"
-      description: "Skoice n'est pas configuré correctement. Veuillez contacter un administrateur."
+      description: "Skoice n'est pas configuré correctement. Veuillez contacter un administrateur du serveur."
     incomplete-configuration-server-manager:
       title: "Configuration non terminée"
       description: "Tapez `/configure` sur votre serveur Discord pour terminer la configuration and utiliser Skoice."
