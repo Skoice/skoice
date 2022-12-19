@@ -64,9 +64,11 @@ public class Network {
 
     public void build() {
         Guild guild = this.plugin.getBot().getGuild();
-        List<Permission> deniedPermissions = this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString())
-                ? Arrays.asList(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS)
-                : Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_MOVE_OTHERS);
+        List<Permission> deniedPermissions = Arrays.asList(
+                this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString())
+                        ? Permission.VOICE_CONNECT
+                        : Permission.VIEW_CHANNEL,
+                Permission.VOICE_MOVE_OTHERS);
         this.plugin.getConfiguration().getCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(guild.getPublicRole(),
                         Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
