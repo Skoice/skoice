@@ -70,4 +70,8 @@ public class YamlFile extends YamlConfiguration {
         super.set(path, value);
         this.save();
     }
+
+    public void remove(String path) {
+        this.set(path, null);
+    }
 }

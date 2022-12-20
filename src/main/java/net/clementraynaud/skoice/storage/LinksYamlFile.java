@@ -42,7 +42,7 @@ public class LinksYamlFile extends YamlFile {
     }
 
     public void unlinkUser(String minecraftId) {
-        super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, null);
+        super.remove(LinksYamlFile.LINKS_FIELD + "." + minecraftId);
     }
 
     public Map<String, String> getLinks() {

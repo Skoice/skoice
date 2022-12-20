@@ -72,7 +72,7 @@ public class ConfigYamlFile extends YamlFile {
     public void eraseInvalidVoiceChannelId() {
         if (this.getVoiceChannel() == null
                 && this.contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
-            this.set(ConfigField.VOICE_CHANNEL_ID.toString(), null);
+            this.remove(ConfigField.VOICE_CHANNEL_ID.toString());
         }
     }
 
