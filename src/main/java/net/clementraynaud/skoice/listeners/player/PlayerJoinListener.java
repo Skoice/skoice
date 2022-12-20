@@ -46,7 +46,7 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
             if (player.isOp()) {
-                if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString()) || this.plugin.getBot().getJDA() == null) {
+                if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
                     this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
                                     .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.execute", "/skoice configure")))
                                     .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure"))

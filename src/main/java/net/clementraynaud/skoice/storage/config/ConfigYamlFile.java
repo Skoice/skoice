@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.storage.config;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.storage.YamlFile;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.dv8tion.jda.api.entities.Category;
@@ -56,7 +57,7 @@ public class ConfigYamlFile extends YamlFile {
     }
 
     public VoiceChannel getVoiceChannel() {
-        if (this.plugin.getBot().getJDA() == null) {
+        if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
             return null;
         }
         String voiceChannelId = this.getString(ConfigField.VOICE_CHANNEL_ID.toString());
@@ -67,7 +68,7 @@ public class ConfigYamlFile extends YamlFile {
         return voiceChannel != null && voiceChannel.getParentCategory() != null ? voiceChannel : null;
     }
 
-    public void eraseInvalidVoiceChannelId() {
+    public void removeInvalidVoiceChannelId() {
         if (this.getVoiceChannel() == null
                 && this.contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
             this.remove(ConfigField.VOICE_CHANNEL_ID.toString());
@@ -75,7 +76,7 @@ public class ConfigYamlFile extends YamlFile {
     }
 
     public Category getCategory() {
-        if (this.plugin.getBot().getJDA() == null) {
+        if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
             return null;
         }
         VoiceChannel voiceChannel = this.getVoiceChannel();

@@ -21,8 +21,7 @@ package net.clementraynaud.skoice.bot;
 
 public enum BotStatus {
 
-    UNCHECKED,
-    NO_TOKEN,
+    NOT_CONNECTED,
     NO_GUILD,
     MULTIPLE_GUILDS,
     MISSING_PERMISSION,

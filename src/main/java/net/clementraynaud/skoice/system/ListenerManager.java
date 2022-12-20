@@ -101,7 +101,7 @@ public class ListenerManager {
         } else if (wasBotReady && this.plugin.getBot().getStatus() != BotStatus.READY) {
             this.plugin.getConfigurationMenu().delete();
             this.unregisterEligiblePlayerListeners();
-            if (this.plugin.getBot().getJDA() != null) {
+            if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
                 this.unregisterBotListeners();
             }
             new InterruptSystemTask(this.plugin.getConfigYamlFile()).run();

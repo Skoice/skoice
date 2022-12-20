@@ -120,7 +120,7 @@ public class Bot {
     public void setup(CommandSender sender) {
         this.setDefaultAvatar();
         this.plugin.getConfigurationMenu().delete();
-        this.plugin.getConfigYamlFile().eraseInvalidVoiceChannelId();
+        this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
         this.updateGuild();
         this.jda.getGuilds().forEach(guild -> this.plugin.getBotCommands().register(guild, sender));
         this.plugin.getListenerManager().registerPermanentBotListeners();
@@ -233,11 +233,12 @@ public class Bot {
     }
 
     public void updateStatus() {
-        this.status = BotStatus.UNCHECKED;
-        if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
-            this.status = BotStatus.NO_TOKEN;
-            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
-        } else if (this.getJDA() != null) {
+        if (this.jda == null) {
+            this.status = BotStatus.NOT_CONNECTED;
+            if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
+            }
+        } else {
             if (this.guildId == null) {
                 List<Guild> guilds = this.getJDA().getGuilds();
                 if (guilds.isEmpty()) {
@@ -333,6 +334,9 @@ public class Bot {
     }
 
     public BotStatus getStatus() {
+        if (this.jda == null && this.status != BotStatus.NOT_CONNECTED) {
+            this.status = BotStatus.NOT_CONNECTED;
+        }
         return this.status;
     }
 

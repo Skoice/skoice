@@ -46,7 +46,7 @@ public class LinkArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        if (super.plugin.getBot().getStatus() != BotStatus.READY || super.plugin.getBot().getJDA() == null) {
+        if (super.plugin.getBot().getStatus() != BotStatus.READY) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
             return;
         }

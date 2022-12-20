@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import org.bukkit.command.CommandSender;
 
 public class TokenArgument extends Argument {
@@ -41,7 +42,7 @@ public class TokenArgument extends Argument {
             return;
         }
         super.plugin.getConfigYamlFile().setToken(this.arg);
-        if (super.plugin.getBot().getJDA() == null) {
+        if (super.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
             super.plugin.getBot().connect(this.sender);
             if (super.plugin.getBot().getJDA() != null) {
                 super.plugin.getBot().setup(this.sender);
