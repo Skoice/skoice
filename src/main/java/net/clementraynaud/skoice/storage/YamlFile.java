@@ -71,6 +71,12 @@ public class YamlFile extends YamlConfiguration {
         this.save();
     }
 
+    public void setDefault(String path, Object value) {
+        if (!this.isSet(path)) {
+            this.set(path, value);
+        }
+    }
+
     public void remove(String path) {
         this.set(path, null);
     }

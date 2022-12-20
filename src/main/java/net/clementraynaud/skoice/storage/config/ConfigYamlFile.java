@@ -43,9 +43,7 @@ public class ConfigYamlFile extends YamlFile {
         }
         Map<String, Object> defaultValues = new HashMap<>(defaultConfiguration.getValues(false));
         for (Map.Entry<String, Object> entry : defaultValues.entrySet()) {
-            if (!this.isSet(entry.getKey())) {
-                this.set(entry.getKey(), entry.getValue());
-            }
+            this.setDefault(entry.getKey(), entry.getValue());
         }
     }
 

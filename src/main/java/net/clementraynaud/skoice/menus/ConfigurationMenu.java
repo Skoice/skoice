@@ -99,6 +99,6 @@ public class ConfigurationMenu {
     }
 
     public void clearConfig() {
-        this.plugin.getTempYamlFile().set(TempYamlFile.CONFIG_MENU_FIELD, null);
+        this.plugin.getTempYamlFile().remove(TempYamlFile.CONFIG_MENU_FIELD);
     }
 }
