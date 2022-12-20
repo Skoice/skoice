@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -65,7 +65,8 @@ public class VoiceChannelSelectMenu extends SelectMenu {
         if (super.plugin.getBot().getStatus() == BotStatus.READY) {
             return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("voice-channel-selection")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(super.plugin.getConfiguration().getFile().getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))).build();
+                    .setDefaultValues(Collections.singleton(super.plugin.getConfigYamlFile()
+                            .getString(ConfigField.VOICE_CHANNEL_ID.toString()))).build();
         } else {
             return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("voice-channel-selection")
                     .setPlaceholder(super.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.placeholder"))

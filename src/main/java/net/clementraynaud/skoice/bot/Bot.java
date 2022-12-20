@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.system.Network;
@@ -78,14 +78,14 @@ public class Bot {
     }
 
     public void connect(CommandSender sender) {
-        if (this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
+        if (this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connecting"));
             if (sender != null) {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connecting"));
             }
             byte[] base64TokenBytes;
             try {
-                base64TokenBytes = Base64.getDecoder().decode(this.plugin.getConfiguration().getFile().getString(ConfigurationField.TOKEN.toString()));
+                base64TokenBytes = Base64.getDecoder().decode(this.plugin.getConfigYamlFile().getString(ConfigField.TOKEN.toString()));
                 for (int i = 0; i < base64TokenBytes.length; i++) {
                     base64TokenBytes[i]--;
                 }
@@ -101,8 +101,8 @@ public class Bot {
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
                 if (sender != null) {
                     sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-could-not-connect"));
-                    this.plugin.getConfiguration().getFile().set(ConfigurationField.TOKEN.toString(), null);
-                    this.plugin.getConfiguration().saveFile();
+                    this.plugin.getConfigYamlFile().set(ConfigField.TOKEN.toString(), null);
+                    this.plugin.getConfigYamlFile().save();
                 }
             } catch (ErrorResponseException e) {
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));
@@ -121,7 +121,7 @@ public class Bot {
     public void setup(CommandSender sender) {
         this.setDefaultAvatar();
         this.plugin.getConfigurationMenu().delete();
-        this.plugin.getConfiguration().eraseInvalidVoiceChannelId();
+        this.plugin.getConfigYamlFile().eraseInvalidVoiceChannelId();
         this.updateGuild();
         this.jda.getGuilds().forEach(guild -> this.plugin.getBotCommands().register(guild, sender));
         this.plugin.getListenerManager().registerPermanentBotListeners();
@@ -176,7 +176,7 @@ public class Bot {
 
     public void checkForUnlinkedUsers() {
         if (this.getStatus() == BotStatus.READY) {
-            VoiceChannel voiceChannel = this.plugin.getConfiguration().getVoiceChannel();
+            VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
             if (voiceChannel != null) {
                 for (Member member : voiceChannel.getMembers()) {
                     this.checkMemberStatus(member);
@@ -186,7 +186,7 @@ public class Bot {
     }
 
     public void checkMemberStatus(Member member) {
-        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksFileStorage().getLinks(), member.getId());
+        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
         if (minecraftId == null) {
             member.getUser().openPrivateChannel().queue(channel ->
                     channel.sendMessage(this.menus.get("account-not-linked").build(this.plugin.getBot().getGuild().getName()))
@@ -211,14 +211,14 @@ public class Bot {
         if (guild != null) {
             for (VoiceChannel channel : guild.getVoiceChannels()) {
                 for (Member member : channel.getMembers()) {
-                    new UpdateVoiceStateTask(this.plugin.getConfiguration(), this.plugin.getTempFileStorage(), member, channel).run();
+                    new UpdateVoiceStateTask(this.plugin.getConfigYamlFile(), this.plugin.getTempYamlFile(), member, channel).run();
                 }
             }
         }
     }
 
     private void retrieveNetworks() {
-        Category category = this.plugin.getConfiguration().getCategory();
+        Category category = this.plugin.getConfigYamlFile().getCategory();
         if (category != null) {
             category.getVoiceChannels().stream()
                     .filter(channel -> {
@@ -235,7 +235,7 @@ public class Bot {
 
     public void updateStatus() {
         this.status = BotStatus.UNCHECKED;
-        if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
+        if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
             this.status = BotStatus.NO_TOKEN;
             this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
         } else if (this.getJDA() != null) {
@@ -253,11 +253,11 @@ public class Bot {
                 this.status = BotStatus.MISSING_PERMISSION;
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission",
                         this.getJDA().getSelfUser().getApplicationId()));
-            } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
+            } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
                 this.status = BotStatus.NO_VOICE_CHANNEL;
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-voice-channel"));
-            } else if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())
-                    || !this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
+            } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.HORIZONTAL_RADIUS.toString())
+                    || !this.plugin.getConfigYamlFile().contains(ConfigField.VERTICAL_RADIUS.toString())) {
                 this.status = BotStatus.NO_RADIUS;
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-radius"));
             } else {

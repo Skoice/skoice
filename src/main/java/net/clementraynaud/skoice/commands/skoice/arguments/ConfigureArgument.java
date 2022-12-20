@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,7 +38,7 @@ public class ConfigureArgument extends Argument {
             return;
         }
         Player player = (Player) this.sender;
-        if (super.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString()) && super.plugin.getBot().getJDA() != null) {
+        if (super.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString()) && super.plugin.getBot().getJDA() != null) {
             if (super.plugin.getBot().getStatus() == BotStatus.READY) {
                 player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.already-configured"));
             } else {

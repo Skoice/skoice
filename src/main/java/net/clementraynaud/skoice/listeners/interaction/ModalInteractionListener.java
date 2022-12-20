@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -49,9 +49,9 @@ public class ModalInteractionListener extends ListenerAdapter {
             String voiceChannelName = voiceChannelValue.getAsString();
             event.getGuild().createCategory(categoryName).queue(category ->
                     event.getGuild().createVoiceChannel(voiceChannelName, category).queue(channel -> {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), channel.getId());
-                        this.plugin.getConfiguration().saveFile();
-                        new InterruptSystemTask(this.plugin.getConfiguration()).run();
+                        this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
+                        this.plugin.getConfigYamlFile().save();
+                        new InterruptSystemTask(this.plugin.getConfigYamlFile()).run();
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     }));
@@ -72,9 +72,9 @@ public class ModalInteractionListener extends ListenerAdapter {
             if (horizontalRadius == 0 || verticalRadius == 0) {
                 event.reply(this.plugin.getBot().getMenu("illegal-value").build()).setEphemeral(true).queue();
             } else {
-                this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
-                this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), verticalRadius);
-                this.plugin.getConfiguration().saveFile();
+                this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
+                this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
+                this.plugin.getConfigYamlFile().save();
                 event.editMessage(this.plugin.getBot().getMenu("mode").build()).queue();
             }
         }

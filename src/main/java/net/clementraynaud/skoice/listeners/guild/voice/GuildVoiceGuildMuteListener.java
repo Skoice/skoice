@@ -21,7 +21,7 @@
 package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.storage.TempFileStorage;
+import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceGuildMuteEvent;
@@ -44,16 +44,16 @@ public class GuildVoiceGuildMuteListener extends ListenerAdapter {
             return;
         }
         VoiceChannel voiceChannel = (VoiceChannel) event.getMember().getVoiceState().getChannel();
-        if (this.plugin.getConfiguration().getVoiceChannel().equals(voiceChannel) && !event.isGuildMuted()) {
+        if (this.plugin.getConfigYamlFile().getVoiceChannel().equals(voiceChannel) && !event.isGuildMuted()) {
             if (event.getMember().hasPermission(Permission.VOICE_MUTE_OTHERS)) {
                 event.getMember().mute(true).queue();
-                List<String> mutedUsers = this.plugin.getTempFileStorage().getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
+                List<String> mutedUsers = this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);
                 if (!mutedUsers.contains(event.getMember().getId())) {
                     mutedUsers.add(event.getMember().getId());
-                    this.plugin.getTempFileStorage().getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
-                    this.plugin.getTempFileStorage().saveFile();
+                    this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
+                    this.plugin.getTempYamlFile().save();
                 }
-            } else if (this.plugin.getTempFileStorage().getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD).contains(event.getMember().getId())) {
+            } else if (this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD).contains(event.getMember().getId())) {
                 event.getMember().mute(true).queue();
             }
         }

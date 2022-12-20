@@ -17,36 +17,37 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.config;
+package net.clementraynaud.skoice.storage.config;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.storage.YamlFile;
+import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Configuration {
+public class ConfigYamlFile extends YamlFile {
 
-    private final Skoice plugin;
-    private final FileConfiguration file;
-
-    public Configuration(Skoice plugin) {
-        this.plugin = plugin;
-        this.file = this.plugin.getConfig();
+    public ConfigYamlFile(Skoice plugin) {
+        super(plugin, "config");
     }
 
-    public void init() {
-        this.file.options().copyDefaults(true);
-        this.saveFile();
-    }
-
-    public FileConfiguration getFile() {
-        return this.file;
-    }
-
-    public void saveFile() {
-        this.plugin.saveConfig();
+    public void saveDefaultValues() {
+        YamlConfiguration defaultConfiguration = ConfigurationUtil.loadResource(this.getClass().getName(), "config.yml");
+        if (defaultConfiguration == null) {
+            return;
+        }
+        Map<String, Object> defaultValues = new HashMap<>(defaultConfiguration.getValues(false));
+        for (Map.Entry<String, Object> entry : defaultValues.entrySet()) {
+            if (!this.isSet(entry.getKey())) {
+                this.set(entry.getKey(), entry.getValue());
+            }
+        }
+        this.save();
     }
 
     public void setToken(String token) {
@@ -54,15 +55,15 @@ public class Configuration {
         for (int i = 0; i < tokenBytes.length; i++) {
             tokenBytes[i]++;
         }
-        this.file.set(ConfigurationField.TOKEN.toString(), Base64.getEncoder().encodeToString(tokenBytes));
-        this.saveFile();
+        this.set(ConfigField.TOKEN.toString(), Base64.getEncoder().encodeToString(tokenBytes));
+        this.save();
     }
 
     public VoiceChannel getVoiceChannel() {
         if (this.plugin.getBot().getJDA() == null) {
             return null;
         }
-        String voiceChannelId = this.file.getString(ConfigurationField.VOICE_CHANNEL_ID.toString());
+        String voiceChannelId = this.getString(ConfigField.VOICE_CHANNEL_ID.toString());
         if (voiceChannelId == null) {
             return null;
         }
@@ -72,9 +73,9 @@ public class Configuration {
 
     public void eraseInvalidVoiceChannelId() {
         if (this.getVoiceChannel() == null
-                && this.file.contains(ConfigurationField.VOICE_CHANNEL_ID.toString())) {
-            this.file.set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
-            this.saveFile();
+                && this.contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
+            this.set(ConfigField.VOICE_CHANNEL_ID.toString(), null);
+            this.save();
         }
     }
 

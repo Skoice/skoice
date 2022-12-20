@@ -26,7 +26,7 @@ import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
 import net.clementraynaud.skoice.listeners.ReconnectedListener;
-import net.clementraynaud.skoice.listeners.channel.main.GenericChannelEvent;
+import net.clementraynaud.skoice.listeners.channel.main.GenericChannelListener;
 import net.clementraynaud.skoice.listeners.channel.network.ChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
 import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
@@ -104,7 +104,7 @@ public class ListenerManager {
             if (this.plugin.getBot().getJDA() != null) {
                 this.unregisterBotListeners();
             }
-            new InterruptSystemTask(this.plugin.getConfiguration()).run();
+            new InterruptSystemTask(this.plugin.getConfigYamlFile()).run();
         }
     }
 
@@ -134,7 +134,7 @@ public class ListenerManager {
                 new RoleUpdatePermissionsListener(this.plugin),
                 new MessageReceivedListener(this.plugin),
                 new MessageDeleteListener(this.plugin.getConfigurationMenu()),
-                new GenericChannelEvent(this.plugin),
+                new GenericChannelListener(this.plugin),
                 new ConfigureCommand(this.plugin),
                 new InviteCommand(this.plugin),
                 new LinkCommand(this.plugin),

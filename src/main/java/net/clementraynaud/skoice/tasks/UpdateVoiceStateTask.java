@@ -19,8 +19,8 @@
 
 package net.clementraynaud.skoice.tasks;
 
-import net.clementraynaud.skoice.config.Configuration;
-import net.clementraynaud.skoice.storage.TempFileStorage;
+import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
+import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -29,43 +29,43 @@ import java.util.List;
 
 public class UpdateVoiceStateTask {
 
-    private final Configuration configuration;
-    private final TempFileStorage tempFileStorage;
+    private final ConfigYamlFile configYamlFile;
+    private final TempYamlFile tempYamlFile;
     private final Member member;
     private final VoiceChannel channel;
 
-    public UpdateVoiceStateTask(Configuration configuration, TempFileStorage tempFileStorage, Member member, VoiceChannel channel) {
-        this.configuration = configuration;
-        this.tempFileStorage = tempFileStorage;
+    public UpdateVoiceStateTask(ConfigYamlFile configYamlFile, TempYamlFile tempYamlFile, Member member, VoiceChannel channel) {
+        this.configYamlFile = configYamlFile;
+        this.tempYamlFile = tempYamlFile;
         this.member = member;
         this.channel = channel;
     }
 
     public void run() {
-        if (this.member.getVoiceState() == null || this.configuration.getVoiceChannel() == null) {
+        if (this.member.getVoiceState() == null || this.configYamlFile.getVoiceChannel() == null) {
             return;
         }
-        boolean isMainVoiceChannel = this.channel.getId().equals(this.configuration.getVoiceChannel().getId());
+        boolean isMainVoiceChannel = this.channel.getId().equals(this.configYamlFile.getVoiceChannel().getId());
         if (isMainVoiceChannel) {
             if (!this.member.getVoiceState().isGuildMuted()
                     && this.member.hasPermission(this.channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
-                    && this.channel.getGuild().getSelfMember().hasPermission(this.configuration.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
+                    && this.channel.getGuild().getSelfMember().hasPermission(this.configYamlFile.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
-                List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
+                List<String> mutedUsers = this.tempYamlFile.getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);
                 if (!mutedUsers.contains(this.member.getId())) {
                     mutedUsers.add(this.member.getId());
-                    this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
-                    this.tempFileStorage.saveFile();
+                    this.tempYamlFile.set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
+                    this.tempYamlFile.save();
                 }
             }
         } else {
-            List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
+            List<String> mutedUsers = this.tempYamlFile.getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);
             if (mutedUsers.contains(this.member.getId()) || this.member.hasPermission(Permission.VOICE_MUTE_OTHERS)) {
                 this.member.mute(false).queue();
                 mutedUsers.remove(this.member.getId());
-                this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
-                this.tempFileStorage.saveFile();
+                this.tempYamlFile.set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
+                this.tempYamlFile.save();
             }
         }
     }

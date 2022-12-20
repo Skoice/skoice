@@ -22,14 +22,14 @@ package net.clementraynaud.skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
-import net.clementraynaud.skoice.config.Configuration;
-import net.clementraynaud.skoice.config.ConfigurationField;
-import net.clementraynaud.skoice.config.OutdatedConfiguration;
+import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
+import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.storage.config.OutdatedConfig;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
-import net.clementraynaud.skoice.storage.LinksFileStorage;
-import net.clementraynaud.skoice.storage.TempFileStorage;
+import net.clementraynaud.skoice.storage.LinksYamlFile;
+import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.system.ListenerManager;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.util.ChartUtil;
@@ -43,9 +43,9 @@ public class Skoice extends JavaPlugin {
     private static final int SERVICE_ID = 11380;
 
     private Lang lang;
-    private Configuration configuration;
-    private LinksFileStorage linksFileStorage;
-    private TempFileStorage tempFileStorage;
+    private ConfigYamlFile configYamlFile;
+    private LinksYamlFile linksYamlFile;
+    private TempYamlFile tempYamlFile;
     private ListenerManager listenerManager;
     private Bot bot;
     private BotCommands botCommands;
@@ -56,16 +56,17 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
-        this.configuration = new Configuration(this);
-        this.configuration.init();
+        this.configYamlFile = new ConfigYamlFile(this);
+        this.configYamlFile.load();
+        this.configYamlFile.saveDefaultValues();
         this.lang = new Lang();
-        this.lang.load(LangInfo.valueOf(this.configuration.getFile().getString(ConfigurationField.LANG.toString())));
+        this.lang.load(LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())));
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
-        this.linksFileStorage = new LinksFileStorage(this);
-        this.linksFileStorage.load();
-        new OutdatedConfiguration(this).update();
-        this.tempFileStorage = new TempFileStorage(this);
-        this.tempFileStorage.load();
+        this.linksYamlFile = new LinksYamlFile(this);
+        this.linksYamlFile.load();
+        new OutdatedConfig(this).update();
+        this.tempYamlFile = new TempYamlFile(this);
+        this.tempYamlFile.load();
         this.listenerManager = new ListenerManager(this);
         this.bot = new Bot(this);
         this.bot.connect();
@@ -90,7 +91,7 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onDisable() {
         if (this.bot.getJDA() != null) {
-            new InterruptSystemTask(this.configuration).run();
+            new InterruptSystemTask(this.configYamlFile).run();
             this.bot.getJDA().shutdown();
         }
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));
@@ -102,23 +103,23 @@ public class Skoice extends JavaPlugin {
     private void addCustomCharts() {
         Metrics metrics = new Metrics(this, Skoice.SERVICE_ID);
         metrics.addCustomChart(new SimplePie("lang", () ->
-                LangInfo.valueOf(this.configuration.getFile().getString(ConfigurationField.LANG.toString())).getFullName()
+                LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName()
         ));
         metrics.addCustomChart(new SimplePie("actionBarAlert", () ->
-                this.configuration.getFile().getString(ConfigurationField.ACTION_BAR_ALERT.toString())
+                this.configYamlFile.getString(ConfigField.ACTION_BAR_ALERT.toString())
         ));
         metrics.addCustomChart(new SimplePie("channelVisibility", () ->
-                this.configuration.getFile().getString(ConfigurationField.CHANNEL_VISIBILITY.toString())
+                this.configYamlFile.getString(ConfigField.CHANNEL_VISIBILITY.toString())
         ));
-        if (this.configuration.getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
-            int horizontalRadius = this.configuration.getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString());
+        if (this.configYamlFile.contains(ConfigField.HORIZONTAL_RADIUS.toString())) {
+            int horizontalRadius = this.configYamlFile.getInt(ConfigField.HORIZONTAL_RADIUS.toString());
             metrics.addCustomChart(ChartUtil.createDrilldownPie("horizontalRadius", horizontalRadius, 0, 10, 11));
         }
-        if (this.configuration.getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
-            int verticalRadius = this.configuration.getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString());
+        if (this.configYamlFile.contains(ConfigField.VERTICAL_RADIUS.toString())) {
+            int verticalRadius = this.configYamlFile.getInt(ConfigField.VERTICAL_RADIUS.toString());
             metrics.addCustomChart(ChartUtil.createDrilldownPie("verticalRadius", verticalRadius, 0, 10, 11));
         }
-        int linkedUsers = this.linksFileStorage.getLinks().size();
+        int linkedUsers = this.linksYamlFile.getLinks().size();
         metrics.addCustomChart(ChartUtil.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
         metrics.addCustomChart(new SimplePie("botStatus", () ->
                 this.bot.getStatus().toString()
@@ -129,16 +130,16 @@ public class Skoice extends JavaPlugin {
         return this.lang;
     }
 
-    public Configuration getConfiguration() {
-        return this.configuration;
+    public ConfigYamlFile getConfigYamlFile() {
+        return this.configYamlFile;
     }
 
-    public LinksFileStorage getLinksFileStorage() {
-        return this.linksFileStorage;
+    public LinksYamlFile getLinksYamlFile() {
+        return this.linksYamlFile;
     }
 
-    public TempFileStorage getTempFileStorage() {
-        return this.tempFileStorage;
+    public TempYamlFile getTempYamlFile() {
+        return this.tempYamlFile;
     }
 
     public ListenerManager getListenerManager() {

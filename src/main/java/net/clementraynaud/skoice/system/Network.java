@@ -21,7 +21,7 @@
 package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.util.DistanceUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -65,18 +65,18 @@ public class Network {
     public void build() {
         Guild guild = this.plugin.getBot().getGuild();
         List<Permission> deniedPermissions = Arrays.asList(
-                this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.CHANNEL_VISIBILITY.toString())
+                this.plugin.getConfigYamlFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.toString())
                         ? Permission.VOICE_CONNECT
                         : Permission.VIEW_CHANNEL,
                 Permission.VOICE_MOVE_OTHERS);
-        this.plugin.getConfiguration().getCategory().createVoiceChannel(UUID.randomUUID().toString())
+        this.plugin.getConfigYamlFile().getCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(guild.getPublicRole(),
                         Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
                         deniedPermissions)
                 .addPermissionOverride(guild.getSelfMember(),
                         Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS),
                         Collections.emptyList())
-                .setBitrate(this.plugin.getConfiguration().getVoiceChannel().getBitrate())
+                .setBitrate(this.plugin.getConfigYamlFile().getVoiceChannel().getBitrate())
                 .queue(voiceChannel -> {
                     this.channel = voiceChannel.getId();
                     this.initialized = true;
@@ -89,10 +89,10 @@ public class Network {
                 .filter(Objects::nonNull)
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration().getFile()
-                        .getInt(ConfigurationField.VERTICAL_RADIUS.toString())
-                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration().getFile()
-                        .getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()));
+                .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfigYamlFile()
+                        .getInt(ConfigField.VERTICAL_RADIUS.toString())
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfigYamlFile()
+                        .getInt(ConfigField.HORIZONTAL_RADIUS.toString()));
     }
 
     public boolean canPlayerStayConnected(Player player) {
@@ -100,10 +100,10 @@ public class Network {
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .filter(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration().getFile()
-                        .getInt(ConfigurationField.VERTICAL_RADIUS.toString()) + Network.FALLOFF
-                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfiguration().getFile()
-                        .getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) + Network.FALLOFF)
+                .filter(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfigYamlFile()
+                        .getInt(ConfigField.VERTICAL_RADIUS.toString()) + Network.FALLOFF
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfigYamlFile()
+                        .getInt(ConfigField.HORIZONTAL_RADIUS.toString()) + Network.FALLOFF)
                 .toArray(Player[]::new));
         if (this.players.size() > matches.size()) {
             Player[] otherPlayers = this.players.stream()
@@ -113,10 +113,10 @@ public class Network {
                     .toArray(Player[]::new);
             for (Player otherPlayer : otherPlayers) {
                 if (matches.stream()
-                        .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.plugin.getConfiguration().getFile()
-                                .getInt(ConfigurationField.VERTICAL_RADIUS.toString()) + Network.FALLOFF
-                                && DistanceUtil.getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.plugin.getConfiguration().getFile()
-                                .getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) + Network.FALLOFF)) {
+                        .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.plugin.getConfigYamlFile()
+                                .getInt(ConfigField.VERTICAL_RADIUS.toString()) + Network.FALLOFF
+                                && DistanceUtil.getHorizontalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.plugin.getConfigYamlFile()
+                                .getInt(ConfigField.HORIZONTAL_RADIUS.toString()) + Network.FALLOFF)) {
                     return true;
                 }
             }

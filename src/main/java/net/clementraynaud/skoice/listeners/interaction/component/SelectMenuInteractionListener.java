@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.listeners.interaction.component;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
@@ -74,8 +74,8 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     }
                     break;
                 case "language-selection":
-                    this.plugin.getConfiguration().getFile().set(ConfigurationField.LANG.toString(), event.getSelectedOptions().get(0).getValue());
-                    this.plugin.getConfiguration().saveFile();
+                    this.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), event.getSelectedOptions().get(0).getValue());
+                    this.plugin.getConfigYamlFile().save();
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                     this.plugin.getListenerManager().update();
                     this.plugin.getBotCommands().register(event.getGuild());
@@ -108,11 +108,11 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                             } else {
                                 VoiceChannel voiceChannel = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                                 if (voiceChannel != null && voiceChannel.getParentCategory() != null) {
-                                    this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(),
+                                    this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(),
                                             event.getSelectedOptions().get(0).getValue());
-                                    this.plugin.getConfiguration().saveFile();
+                                    this.plugin.getConfigYamlFile().save();
                                     this.plugin.getBot().updateVoiceState();
-                                    new InterruptSystemTask(this.plugin.getConfiguration()).run();
+                                    new InterruptSystemTask(this.plugin.getConfigYamlFile()).run();
                                     this.plugin.getListenerManager().update(event.getUser());
                                 }
                                 event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
@@ -122,35 +122,35 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     break;
                 case "mode-selection":
                     if ("vanilla-mode".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), 80);
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 40);
-                        this.plugin.getConfiguration().saveFile();
+                        this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
+                        this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 40);
+                        this.plugin.getConfigYamlFile().save();
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     } else if ("minigame-mode".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), 40);
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 20);
-                        this.plugin.getConfiguration().saveFile();
+                        this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 40);
+                        this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 20);
+                        this.plugin.getConfigYamlFile().save();
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     }
                     break;
                 case "action-bar-alert":
                     if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.ACTION_BAR_ALERT.toString(), true);
+                        this.plugin.getConfigYamlFile().set(ConfigField.ACTION_BAR_ALERT.toString(), true);
                     } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.ACTION_BAR_ALERT.toString(), false);
+                        this.plugin.getConfigYamlFile().set(ConfigField.ACTION_BAR_ALERT.toString(), false);
                     }
-                    this.plugin.getConfiguration().saveFile();
+                    this.plugin.getConfigYamlFile().save();
                     event.editMessage(this.plugin.getBot().getMenu("action-bar-alert").build()).queue();
                     break;
                 case "channel-visibility":
                     if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.CHANNEL_VISIBILITY.toString(), true);
+                        this.plugin.getConfigYamlFile().set(ConfigField.CHANNEL_VISIBILITY.toString(), true);
                     } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.CHANNEL_VISIBILITY.toString(), false);
+                        this.plugin.getConfigYamlFile().set(ConfigField.CHANNEL_VISIBILITY.toString(), false);
                     }
-                    this.plugin.getConfiguration().saveFile();
+                    this.plugin.getConfigYamlFile().save();
                     event.editMessage(this.plugin.getBot().getMenu("channel-visibility").build()).queue();
                     break;
                 default:

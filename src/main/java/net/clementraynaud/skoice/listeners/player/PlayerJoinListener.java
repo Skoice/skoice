@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
@@ -46,7 +46,7 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
             if (player.isOp()) {
-                if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString()) || this.plugin.getBot().getJDA() == null) {
+                if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString()) || this.plugin.getBot().getJDA() == null) {
                     this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
                                     .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.execute", "/skoice configure")))
                                     .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure"))
@@ -63,12 +63,12 @@ public class PlayerJoinListener implements Listener {
         } else {
             UpdateNetworksTask.getEligiblePlayers().add(player.getUniqueId());
             this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
+                Member member = this.plugin.getLinksYamlFile().getMember(player.getUniqueId());
                 if (member != null) {
                     GuildVoiceState voiceState = member.getVoiceState();
                     if (voiceState != null) {
                         AudioChannel audioChannel = voiceState.getChannel();
-                        if (audioChannel != null && audioChannel.equals(this.plugin.getConfiguration().getVoiceChannel())) {
+                        if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
                             player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
                         }
                     }

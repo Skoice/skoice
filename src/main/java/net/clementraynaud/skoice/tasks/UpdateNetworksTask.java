@@ -21,7 +21,7 @@
 package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.DistanceUtil;
 import net.clementraynaud.skoice.util.MapUtil;
@@ -76,7 +76,7 @@ public class UpdateNetworksTask {
             return;
         }
         try {
-            VoiceChannel mainVoiceChannel = this.plugin.getConfiguration().getVoiceChannel();
+            VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
             if (mainVoiceChannel == null) {
                 return;
             }
@@ -87,14 +87,14 @@ public class UpdateNetworksTask {
             for (UUID minecraftId : oldEligiblePlayers) {
                 Player player = this.plugin.getServer().getPlayer(minecraftId);
                 if (player != null) {
-                    Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
+                    Member member = this.plugin.getLinksYamlFile().getMember(player.getUniqueId());
                     if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {
                         AudioChannel audioChannel = member.getVoiceState().getChannel();
                         if (audioChannel.getType() == ChannelType.VOICE) {
                             VoiceChannel voiceChannel = (VoiceChannel) audioChannel;
                             boolean isMainVoiceChannel = voiceChannel == mainVoiceChannel;
                             if (!isMainVoiceChannel && (voiceChannel.getParentCategory() == null
-                                    || voiceChannel.getParentCategory() != this.plugin.getConfiguration().getCategory())) {
+                                    || voiceChannel.getParentCategory() != this.plugin.getConfigYamlFile().getCategory())) {
                                 Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(member.getId());
                                 if (pair != null) {
                                     pair.getRight().cancel(false);
@@ -103,7 +103,7 @@ public class UpdateNetworksTask {
                             }
                         }
                         this.updateNetworksAroundPlayer(player);
-                        if (this.plugin.getConfiguration().getFile().getBoolean(ConfigurationField.ACTION_BAR_ALERT.toString())) {
+                        if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.ACTION_BAR_ALERT.toString())) {
                             this.sendActionBarAlert(player);
                         }
                         this.createNetworkIfNeeded(player);
@@ -118,7 +118,7 @@ public class UpdateNetworksTask {
                 }
                 members.addAll(voiceChannel.getMembers());
             }
-            Map<String, String> links = new HashMap<>(this.plugin.getLinksFileStorage().getLinks());
+            Map<String, String> links = new HashMap<>(this.plugin.getLinksYamlFile().getLinks());
             for (Member member : members) {
                 String minecraftId = MapUtil.getKeyFromValue(links, member.getId());
                 Network playerNetwork = minecraftId != null ? Network.getNetworks().stream()
@@ -206,17 +206,17 @@ public class UpdateNetworksTask {
         Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers().stream()
                 .filter(p -> !p.isDead())
                 .collect(Collectors.toSet());
-        Category category = this.plugin.getConfiguration().getCategory();
+        Category category = this.plugin.getConfigYamlFile().getCategory();
         Set<UUID> playersWithinRange = alivePlayers.stream()
                 .filter(p -> Network.getNetworks().stream().noneMatch(network -> network.contains(p)))
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
                 .filter(p -> DistanceUtil.getHorizontalDistance(p.getLocation(),
-                        player.getLocation()) <= this.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString())
+                        player.getLocation()) <= this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString())
                         && DistanceUtil.getVerticalDistance(p.getLocation(),
-                        player.getLocation()) <= this.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()))
+                        player.getLocation()) <= this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()))
                 .filter(p -> {
-                    Member member = this.plugin.getLinksFileStorage().getMember(p.getUniqueId());
+                    Member member = this.plugin.getLinksYamlFile().getMember(p.getUniqueId());
                     return member != null && member.getVoiceState() != null
                             && member.getVoiceState().getChannel() instanceof VoiceChannel
                             && ((VoiceChannel) member.getVoiceState().getChannel()).getParentCategory() != null

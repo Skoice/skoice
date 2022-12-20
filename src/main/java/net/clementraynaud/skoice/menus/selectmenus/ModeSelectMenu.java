@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 
@@ -48,11 +48,11 @@ public class ModeSelectMenu extends SelectMenu {
                         .withDescription(super.plugin.getLang().getMessage("discord.menu.mode.select-menu.select-option.minigame-mode.description"))
                         .withEmoji(MenuEmoji.CROSSED_SWORDS.get())));
         String defaultValue = null;
-        if (super.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 80
-                && super.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 40) {
+        if (super.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString()) == 80
+                && super.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()) == 40) {
             defaultValue = ModeSelectMenu.VANILLA_MODE_ID;
-        } else if (super.plugin.getConfiguration().getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString()) == 40
-                && super.plugin.getConfiguration().getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString()) == 20) {
+        } else if (super.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString()) == 40
+                && super.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()) == 20) {
             defaultValue = ModeSelectMenu.MINIGAME_MODE_ID;
         }
         return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("mode-selection")

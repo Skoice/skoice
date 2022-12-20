@@ -50,7 +50,7 @@ public class LinkCommand extends ListenerAdapter {
                         .setEphemeral(true).queue();
                 return;
             }
-            if (this.plugin.getLinksFileStorage().getLinks().containsValue(event.getUser().getId())) {
+            if (this.plugin.getLinksYamlFile().getLinks().containsValue(event.getUser().getId())) {
                 event.reply(this.plugin.getBot().getMenu("account-already-linked").build()).setEphemeral(true).queue();
                 return;
             }

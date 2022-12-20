@@ -20,20 +20,21 @@
 package net.clementraynaud.skoice.listeners.channel.main;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
+import net.dv8tion.jda.api.events.channel.GenericChannelEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateParentEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
-public class GenericChannelEvent extends ListenerAdapter {
+public class GenericChannelListener extends ListenerAdapter {
 
     private final Skoice plugin;
 
-    public GenericChannelEvent(Skoice plugin) {
+    public GenericChannelListener(Skoice plugin) {
         this.plugin = plugin;
     }
 
@@ -47,12 +48,13 @@ public class GenericChannelEvent extends ListenerAdapter {
         this.checkForValidVoiceChannel(event);
     }
 
-    private void checkForValidVoiceChannel(net.dv8tion.jda.api.events.channel.GenericChannelEvent event) {
+    private void checkForValidVoiceChannel(GenericChannelEvent event) {
         if (!event.getChannelType().isAudio()) {
             return;
         }
-        if (event.getChannel().getId().equals(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))) {
-            this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), null);
+        if (event.getChannel().getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))) {
+            this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), null);
+            this.plugin.getConfigYamlFile().save();
             this.plugin.getListenerManager().update();
             event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).queue(auditLogEntries -> {
                 User user = auditLogEntries.get(0).getUser();

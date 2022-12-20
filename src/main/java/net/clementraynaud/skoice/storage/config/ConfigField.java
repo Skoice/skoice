@@ -17,19 +17,20 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.storage;
+package net.clementraynaud.skoice.storage.config;
 
-import net.clementraynaud.skoice.Skoice;
+public enum ConfigField {
 
-public class TempFileStorage extends FileStorage {
+    TOKEN,
+    LANG,
+    VOICE_CHANNEL_ID,
+    HORIZONTAL_RADIUS,
+    VERTICAL_RADIUS,
+    ACTION_BAR_ALERT,
+    CHANNEL_VISIBILITY;
 
-    public static final String CONFIG_MENU_FIELD = "config-menu";
-    public static final String GUILD_ID_FIELD = "guild-id";
-    public static final String CHANNEL_ID_FIELD = "channel-id";
-    public static final String MESSAGE_ID_FIELD = "message-id";
-    public static final String MUTED_USERS_ID_FIELD = "muted-users-id";
-
-    public TempFileStorage(Skoice plugin) {
-        super(plugin, "temp");
+    @Override
+    public String toString() {
+        return this.name().toLowerCase().replace("_", "-");
     }
 }

@@ -35,7 +35,7 @@ public class ReconnectedListener extends ListenerAdapter {
     @Override
     public void onReconnected(ReconnectedEvent event) {
         this.plugin.getConfigurationMenu().delete();
-        this.plugin.getConfiguration().eraseInvalidVoiceChannelId();
+        this.plugin.getConfigYamlFile().eraseInvalidVoiceChannelId();
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
             this.plugin.getBotCommands().register(guild);
             if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {

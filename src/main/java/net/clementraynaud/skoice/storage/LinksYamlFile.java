@@ -29,27 +29,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class LinksFileStorage extends FileStorage {
+public class LinksYamlFile extends YamlFile {
 
     public static final String LINKS_FIELD = "links";
 
-    public LinksFileStorage(Skoice plugin) {
+    public LinksYamlFile(Skoice plugin) {
         super(plugin, "links");
     }
 
     public void linkUser(String minecraftId, String discordId) {
-        super.yaml.set(LinksFileStorage.LINKS_FIELD + "." + minecraftId, discordId);
-        this.saveFile();
+        super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
+        this.save();
     }
 
     public void unlinkUser(String minecraftId) {
-        super.yaml.set(LinksFileStorage.LINKS_FIELD + "." + minecraftId, null);
-        this.saveFile();
+        super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, null);
+        this.save();
     }
 
     public Map<String, String> getLinks() {
         Map<String, String> castedLinks = new HashMap<>();
-        ConfigurationSection linksSection = super.yaml.getConfigurationSection(LinksFileStorage.LINKS_FIELD);
+        ConfigurationSection linksSection = super.getConfigurationSection(LinksYamlFile.LINKS_FIELD);
         if (linksSection != null) {
             Map<String, Object> links = new HashMap<>(linksSection.getValues(false));
             for (Map.Entry<String, Object> entry : links.entrySet()) {

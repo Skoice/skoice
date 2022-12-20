@@ -17,10 +17,10 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.config;
+package net.clementraynaud.skoice.storage.config;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.storage.LinksFileStorage;
+import net.clementraynaud.skoice.storage.LinksYamlFile;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,18 +34,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class OutdatedConfiguration {
+public class OutdatedConfig {
 
     private final FileConfiguration oldData = new YamlConfiguration();
 
     private final Skoice plugin;
 
-    public OutdatedConfiguration(Skoice plugin) {
+    public OutdatedConfig(Skoice plugin) {
         this.plugin = plugin;
     }
 
     public void update() {
-        File outdatedConfig = new File(this.plugin.getDataFolder() + File.separator + "data.yml");
+        File outdatedConfig = new File(this.plugin.getDataFolder(), "data.yml");
         if (outdatedConfig.exists()) {
             try {
                 this.oldData.load(outdatedConfig);
@@ -53,12 +53,12 @@ public class OutdatedConfiguration {
                 return;
             }
             this.convertOldToken();
-            this.convertOldData("mainVoiceChannelID", ConfigurationField.VOICE_CHANNEL_ID.toString());
+            this.convertOldData("mainVoiceChannelID", ConfigField.VOICE_CHANNEL_ID.toString());
             this.convertOldRadius();
-            this.plugin.getConfiguration().saveFile();
+            this.plugin.getConfigYamlFile().save();
             this.convertOldLinks();
             try {
-                this.plugin.getLinksFileStorage().getFile().loadFromString(this.plugin.getLinksFileStorage().getFile().saveToString());
+                this.plugin.getLinksYamlFile().loadFromString(this.plugin.getLinksYamlFile().saveToString());
             } catch (InvalidConfigurationException ignored) {
             }
             try {
@@ -73,22 +73,22 @@ public class OutdatedConfiguration {
         String oldToken = this.oldData.getString("token");
         if (oldToken != null
                 && !oldToken.isEmpty()
-                && !this.plugin.getConfiguration().getFile().contains(ConfigurationField.TOKEN.toString())) {
-            this.plugin.getConfiguration().setToken(oldToken);
+                && !this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
+            this.plugin.getConfigYamlFile().setToken(oldToken);
         }
     }
 
     private void convertOldRadius() {
         if (this.oldData.contains("distance.type")
                 && "custom".equals(this.oldData.getString("distance.type"))) {
-            this.convertOldData("distance.horizontalStrength", ConfigurationField.HORIZONTAL_RADIUS.toString());
-            this.convertOldData("distance.verticalStrength", ConfigurationField.VERTICAL_RADIUS.toString());
+            this.convertOldData("distance.horizontalStrength", ConfigField.HORIZONTAL_RADIUS.toString());
+            this.convertOldData("distance.verticalStrength", ConfigField.VERTICAL_RADIUS.toString());
         } else {
-            if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
-                this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), 80);
+            if (!this.plugin.getConfigYamlFile().contains(ConfigField.HORIZONTAL_RADIUS.toString())) {
+                this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
             }
-            if (!this.plugin.getConfiguration().getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
-                this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 40);
+            if (!this.plugin.getConfigYamlFile().contains(ConfigField.VERTICAL_RADIUS.toString())) {
+                this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 40);
             }
         }
     }
@@ -102,9 +102,9 @@ public class OutdatedConfiguration {
             for (int i = 0; i < subkeys.size(); i += 2) {
                 links.put(iterator.next(), iterator.next());
             }
-            links.putAll(this.plugin.getLinksFileStorage().getLinks());
-            this.plugin.getLinksFileStorage().getFile().set(LinksFileStorage.LINKS_FIELD, links);
-            this.plugin.getLinksFileStorage().saveFile();
+            links.putAll(this.plugin.getLinksYamlFile().getLinks());
+            this.plugin.getLinksYamlFile().set(LinksYamlFile.LINKS_FIELD, links);
+            this.plugin.getLinksYamlFile().save();
         }
     }
 
@@ -112,8 +112,8 @@ public class OutdatedConfiguration {
         String oldFieldValue = this.oldData.getString(oldField);
         if (oldFieldValue != null
                 && !oldFieldValue.isEmpty()
-                && !this.plugin.getConfiguration().getFile().contains(newField)) {
-            this.plugin.getConfiguration().getFile().set(newField, this.oldData.get(oldField));
+                && !this.plugin.getConfigYamlFile().contains(newField)) {
+            this.plugin.getConfigYamlFile().set(newField, this.oldData.get(oldField));
         }
     }
 }

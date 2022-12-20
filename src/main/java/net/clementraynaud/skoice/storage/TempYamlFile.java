@@ -17,20 +17,19 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.config;
+package net.clementraynaud.skoice.storage;
 
-public enum ConfigurationField {
+import net.clementraynaud.skoice.Skoice;
 
-    TOKEN,
-    LANG,
-    VOICE_CHANNEL_ID,
-    HORIZONTAL_RADIUS,
-    VERTICAL_RADIUS,
-    ACTION_BAR_ALERT,
-    CHANNEL_VISIBILITY;
+public class TempYamlFile extends YamlFile {
 
-    @Override
-    public String toString() {
-        return this.name().toLowerCase().replace("_", "-");
+    public static final String CONFIG_MENU_FIELD = "config-menu";
+    public static final String GUILD_ID_FIELD = "guild-id";
+    public static final String CHANNEL_ID_FIELD = "channel-id";
+    public static final String MESSAGE_ID_FIELD = "message-id";
+    public static final String MUTED_USERS_ID_FIELD = "muted-users-id";
+
+    public TempYamlFile(Skoice plugin) {
+        super(plugin, "temp");
     }
 }

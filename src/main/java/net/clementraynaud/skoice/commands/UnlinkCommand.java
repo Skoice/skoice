@@ -46,14 +46,14 @@ public class UnlinkCommand extends ListenerAdapter {
                         .setEphemeral(true).queue();
                 return;
             }
-            String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksFileStorage().getLinks(), event.getUser().getId());
+            String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), event.getUser().getId());
             if (minecraftId == null) {
                 event.reply(this.plugin.getBot().getMenu("account-not-linked")
                                 .build(this.plugin.getBot().getGuild().getName()))
                         .setEphemeral(true).queue();
                 return;
             }
-            this.plugin.getLinksFileStorage().unlinkUser(minecraftId);
+            this.plugin.getLinksYamlFile().unlinkUser(minecraftId);
             event.reply(this.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
             OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
@@ -61,7 +61,7 @@ public class UnlinkCommand extends ListenerAdapter {
                 GuildVoiceState voiceState = event.getMember().getVoiceState();
                 if (voiceState != null) {
                     AudioChannel voiceChannel = voiceState.getChannel();
-                    if (voiceChannel != null && voiceChannel.equals(this.plugin.getConfiguration().getVoiceChannel())) {
+                    if (voiceChannel != null && voiceChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
                         player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
                     }
                 }

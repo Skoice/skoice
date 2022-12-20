@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.tasks;
 
-import net.clementraynaud.skoice.config.Configuration;
+import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
@@ -28,25 +28,25 @@ import java.util.concurrent.CompletableFuture;
 
 public class InterruptSystemTask {
 
-    private final Configuration configuration;
+    private final ConfigYamlFile configYamlFile;
 
-    public InterruptSystemTask(Configuration configuration) {
-        this.configuration = configuration;
+    public InterruptSystemTask(ConfigYamlFile configYamlFile) {
+        this.configYamlFile = configYamlFile;
     }
 
     public void run() {
         for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.getAwaitingMoves().values()) {
             value.getRight().cancel(true);
         }
-        boolean isVoiceChannelSet = this.configuration.getVoiceChannel() != null;
+        boolean isVoiceChannelSet = this.configYamlFile.getVoiceChannel() != null;
         for (Network network : Network.getNetworks()) {
             if (isVoiceChannelSet) {
                 for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
                     Member member = network.getChannel().getMembers().get(i);
                     if (i + 1 < network.getChannel().getMembers().size()) {
-                        member.getGuild().moveVoiceMember(member, this.configuration.getVoiceChannel()).queue();
+                        member.getGuild().moveVoiceMember(member, this.configYamlFile.getVoiceChannel()).queue();
                     } else {
-                        member.getGuild().moveVoiceMember(member, this.configuration.getVoiceChannel()).complete();
+                        member.getGuild().moveVoiceMember(member, this.configYamlFile.getVoiceChannel()).complete();
                     }
                 }
             }

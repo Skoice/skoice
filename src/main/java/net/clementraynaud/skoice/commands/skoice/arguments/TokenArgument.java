@@ -40,7 +40,7 @@ public class TokenArgument extends Argument {
             this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.no-token"));
             return;
         }
-        super.plugin.getConfiguration().setToken(this.arg);
+        super.plugin.getConfigYamlFile().setToken(this.arg);
         if (super.plugin.getBot().getJDA() == null) {
             super.plugin.getBot().connect(this.sender);
             if (super.plugin.getBot().getJDA() != null) {

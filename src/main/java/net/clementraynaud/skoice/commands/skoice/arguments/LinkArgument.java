@@ -50,7 +50,7 @@ public class LinkArgument extends Argument {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
             return;
         }
-        if (super.plugin.getLinksFileStorage().getLinks().containsKey(player.getUniqueId().toString())) {
+        if (super.plugin.getLinksYamlFile().getLinks().containsKey(player.getUniqueId().toString())) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-already-linked"));
             return;
         }
@@ -69,9 +69,9 @@ public class LinkArgument extends Argument {
             return;
         }
         super.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
-            super.plugin.getLinksFileStorage().linkUser(player.getUniqueId().toString(), discordId);
+            super.plugin.getLinksYamlFile().linkUser(player.getUniqueId().toString(), discordId);
             LinkCommand.getDiscordIdCode().values().remove(this.arg);
-            VoiceChannel mainVoiceChannel = super.plugin.getConfiguration().getVoiceChannel();
+            VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
             member.getUser().openPrivateChannel().queue(channel ->
                     channel.sendMessage(this.plugin.getBot().getMenu("account-linked")
                                     .build(mainVoiceChannel.getAsMention(), this.plugin.getBot().getGuild().getName()))

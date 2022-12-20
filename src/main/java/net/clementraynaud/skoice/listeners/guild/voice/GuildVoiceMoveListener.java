@@ -46,14 +46,14 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
             return;
         }
         VoiceChannel voiceChannelJoined = (VoiceChannel) event.getChannelJoined();
-        new UpdateVoiceStateTask(this.plugin.getConfiguration(), this.plugin.getTempFileStorage(), event.getMember(), voiceChannelJoined).run();
+        new UpdateVoiceStateTask(this.plugin.getConfigYamlFile(), this.plugin.getTempYamlFile(), event.getMember(), voiceChannelJoined).run();
         if (event.getChannelLeft().getType() != ChannelType.VOICE) {
             return;
         }
         VoiceChannel voiceChannelLeft = (VoiceChannel) event.getChannelLeft();
-        if (voiceChannelJoined.getParentCategory() != null && !voiceChannelJoined.getParentCategory().equals(this.plugin.getConfiguration().getCategory())
-                && voiceChannelLeft.getParentCategory() != null && voiceChannelLeft.getParentCategory().equals(this.plugin.getConfiguration().getCategory())) {
-            String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksFileStorage().getLinks(), event.getMember().getId());
+        if (voiceChannelJoined.getParentCategory() != null && !voiceChannelJoined.getParentCategory().equals(this.plugin.getConfigYamlFile().getCategory())
+                && voiceChannelLeft.getParentCategory() != null && voiceChannelLeft.getParentCategory().equals(this.plugin.getConfigYamlFile().getCategory())) {
+            String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), event.getMember().getId());
             if (minecraftId == null) {
                 return;
             }
@@ -63,7 +63,7 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
                         .filter(network -> network.contains(player.getPlayer().getUniqueId()))
                         .forEach(network -> network.remove(player.getPlayer()));
             }
-        } else if (event.getChannelJoined().equals(this.plugin.getConfiguration().getVoiceChannel())
+        } else if (event.getChannelJoined().equals(this.plugin.getConfigYamlFile().getVoiceChannel())
                 && Network.getNetworks().stream().noneMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
             this.plugin.getBot().checkMemberStatus(event.getMember());
         }
