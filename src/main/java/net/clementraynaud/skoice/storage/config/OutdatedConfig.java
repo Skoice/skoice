@@ -55,7 +55,6 @@ public class OutdatedConfig {
             this.convertOldToken();
             this.convertOldData("mainVoiceChannelID", ConfigField.VOICE_CHANNEL_ID.toString());
             this.convertOldRadius();
-            this.plugin.getConfigYamlFile().save();
             this.convertOldLinks();
             try {
                 this.plugin.getLinksYamlFile().loadFromString(this.plugin.getLinksYamlFile().saveToString());
@@ -104,7 +103,6 @@ public class OutdatedConfig {
             }
             links.putAll(this.plugin.getLinksYamlFile().getLinks());
             this.plugin.getLinksYamlFile().set(LinksYamlFile.LINKS_FIELD, links);
-            this.plugin.getLinksYamlFile().save();
         }
     }
 

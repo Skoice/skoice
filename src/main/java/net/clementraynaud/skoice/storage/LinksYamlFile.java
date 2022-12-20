@@ -39,12 +39,10 @@ public class LinksYamlFile extends YamlFile {
 
     public void linkUser(String minecraftId, String discordId) {
         super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
-        this.save();
     }
 
     public void unlinkUser(String minecraftId) {
         super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, null);
-        this.save();
     }
 
     public Map<String, String> getLinks() {

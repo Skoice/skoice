@@ -96,11 +96,9 @@ public class ConfigurationMenu {
                 .set(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.CHANNEL_ID_FIELD, message.getGuildChannel().getId());
         this.plugin.getTempYamlFile()
                 .set(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.MESSAGE_ID_FIELD, message.getId());
-        this.plugin.getTempYamlFile().save();
     }
 
     public void clearConfig() {
         this.plugin.getTempYamlFile().set(TempYamlFile.CONFIG_MENU_FIELD, null);
-        this.plugin.getTempYamlFile().save();
     }
 }

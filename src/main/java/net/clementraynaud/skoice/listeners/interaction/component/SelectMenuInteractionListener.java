@@ -75,7 +75,6 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     break;
                 case "language-selection":
                     this.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), event.getSelectedOptions().get(0).getValue());
-                    this.plugin.getConfigYamlFile().save();
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                     this.plugin.getListenerManager().update();
                     this.plugin.getBotCommands().register(event.getGuild());
@@ -110,7 +109,6 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                                 if (voiceChannel != null && voiceChannel.getParentCategory() != null) {
                                     this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(),
                                             event.getSelectedOptions().get(0).getValue());
-                                    this.plugin.getConfigYamlFile().save();
                                     this.plugin.getBot().updateVoiceState();
                                     new InterruptSystemTask(this.plugin.getConfigYamlFile()).run();
                                     this.plugin.getListenerManager().update(event.getUser());
@@ -124,13 +122,11 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     if ("vanilla-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
                         this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 40);
-                        this.plugin.getConfigYamlFile().save();
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     } else if ("minigame-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 40);
                         this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 20);
-                        this.plugin.getConfigYamlFile().save();
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     }
@@ -141,7 +137,6 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.ACTION_BAR_ALERT.toString(), false);
                     }
-                    this.plugin.getConfigYamlFile().save();
                     event.editMessage(this.plugin.getBot().getMenu("action-bar-alert").build()).queue();
                     break;
                 case "channel-visibility":
@@ -150,7 +145,6 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.CHANNEL_VISIBILITY.toString(), false);
                     }
-                    this.plugin.getConfigYamlFile().save();
                     event.editMessage(this.plugin.getBot().getMenu("channel-visibility").build()).queue();
                     break;
                 default:

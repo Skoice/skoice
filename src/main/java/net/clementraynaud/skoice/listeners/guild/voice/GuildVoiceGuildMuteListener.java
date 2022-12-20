@@ -51,7 +51,6 @@ public class GuildVoiceGuildMuteListener extends ListenerAdapter {
                 if (!mutedUsers.contains(event.getMember().getId())) {
                     mutedUsers.add(event.getMember().getId());
                     this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
-                    this.plugin.getTempYamlFile().save();
                 }
             } else if (this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD).contains(event.getMember().getId())) {
                 event.getMember().mute(true).queue();

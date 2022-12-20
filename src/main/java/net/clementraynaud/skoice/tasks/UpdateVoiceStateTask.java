@@ -56,7 +56,6 @@ public class UpdateVoiceStateTask {
                 if (!mutedUsers.contains(this.member.getId())) {
                     mutedUsers.add(this.member.getId());
                     this.tempYamlFile.set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
-                    this.tempYamlFile.save();
                 }
             }
         } else {
@@ -65,7 +64,6 @@ public class UpdateVoiceStateTask {
                 this.member.mute(false).queue();
                 mutedUsers.remove(this.member.getId());
                 this.tempYamlFile.set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
-                this.tempYamlFile.save();
             }
         }
     }

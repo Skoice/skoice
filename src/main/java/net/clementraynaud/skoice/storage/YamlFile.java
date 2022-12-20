@@ -22,6 +22,8 @@ package net.clementraynaud.skoice.storage;
 import net.clementraynaud.skoice.Skoice;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,5 +63,11 @@ public class YamlFile extends YamlConfiguration {
             this.save(this.file);
         } catch (IOException ignored) {
         }
+    }
+
+    @Override
+    public void set(@NotNull String path, @Nullable Object value) {
+        super.set(path, value);
+        this.save();
     }
 }

@@ -50,7 +50,6 @@ public class ModalInteractionListener extends ListenerAdapter {
             event.getGuild().createCategory(categoryName).queue(category ->
                     event.getGuild().createVoiceChannel(voiceChannelName, category).queue(channel -> {
                         this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
-                        this.plugin.getConfigYamlFile().save();
                         new InterruptSystemTask(this.plugin.getConfigYamlFile()).run();
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
@@ -74,7 +73,6 @@ public class ModalInteractionListener extends ListenerAdapter {
             } else {
                 this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
                 this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
-                this.plugin.getConfigYamlFile().save();
                 event.editMessage(this.plugin.getBot().getMenu("mode").build()).queue();
             }
         }

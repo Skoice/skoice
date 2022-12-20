@@ -47,7 +47,6 @@ public class ConfigYamlFile extends YamlFile {
                 this.set(entry.getKey(), entry.getValue());
             }
         }
-        this.save();
     }
 
     public void setToken(String token) {
@@ -56,7 +55,6 @@ public class ConfigYamlFile extends YamlFile {
             tokenBytes[i]++;
         }
         this.set(ConfigField.TOKEN.toString(), Base64.getEncoder().encodeToString(tokenBytes));
-        this.save();
     }
 
     public VoiceChannel getVoiceChannel() {
@@ -75,7 +73,6 @@ public class ConfigYamlFile extends YamlFile {
         if (this.getVoiceChannel() == null
                 && this.contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
             this.set(ConfigField.VOICE_CHANNEL_ID.toString(), null);
-            this.save();
         }
     }
 
