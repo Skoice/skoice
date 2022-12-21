@@ -32,6 +32,7 @@ import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
 import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleAddListener;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleRemoveListener;
+import net.clementraynaud.skoice.listeners.guild.override.GenericPermissionOverrideListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceGuildMuteListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceJoinListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceLeaveListener;
@@ -135,6 +136,7 @@ public class ListenerManager {
                 new MessageReceivedListener(this.plugin),
                 new MessageDeleteListener(this.plugin.getConfigurationMenu()),
                 new GenericChannelListener(this.plugin),
+                new GenericPermissionOverrideListener(this.plugin),
                 new ConfigureCommand(this.plugin),
                 new InviteCommand(this.plugin),
                 new LinkCommand(this.plugin),

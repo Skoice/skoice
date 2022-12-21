@@ -26,14 +26,11 @@ import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.DistanceUtil;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.clementraynaud.skoice.util.PlayerUtil;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.PermissionOverride;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 import net.kyori.adventure.text.Component;
@@ -80,7 +77,6 @@ public class UpdateNetworksTask {
             if (mainVoiceChannel == null) {
                 return;
             }
-            this.muteMembers(mainVoiceChannel);
             Network.getNetworks().removeIf(network -> network.getChannel() == null && network.isInitialized());
             Set<UUID> oldEligiblePlayers = new HashSet<>(UpdateNetworksTask.eligiblePlayers);
             UpdateNetworksTask.eligiblePlayers.clear();
@@ -153,19 +149,6 @@ public class UpdateNetworksTask {
             this.deleteEmptyNetworks();
         } finally {
             this.lock.unlock();
-        }
-    }
-
-    private void muteMembers(VoiceChannel voiceChannel) {
-        voiceChannel.getRolePermissionOverrides().forEach(override -> {
-            if (!override.getDenied().contains(Permission.VOICE_SPEAK)) {
-                override.getManager().deny(Permission.VOICE_SPEAK).queue();
-            }
-        });
-        Role publicRole = voiceChannel.getGuild().getPublicRole();
-        PermissionOverride permissionOverride = voiceChannel.getPermissionOverride(publicRole);
-        if (permissionOverride == null) {
-            voiceChannel.upsertPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
         }
     }
 

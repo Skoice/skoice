@@ -68,7 +68,8 @@ public class Network {
                 this.plugin.getConfigYamlFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.toString())
                         ? Permission.VOICE_CONNECT
                         : Permission.VIEW_CHANNEL,
-                Permission.VOICE_MOVE_OTHERS);
+                Permission.VOICE_MOVE_OTHERS
+        );
         this.plugin.getConfigYamlFile().getCategory().createVoiceChannel(UUID.randomUUID().toString())
                 .addPermissionOverride(guild.getPublicRole(),
                         Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),

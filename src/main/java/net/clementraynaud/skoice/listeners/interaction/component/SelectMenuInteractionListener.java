@@ -112,6 +112,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                                     this.plugin.getBot().updateVoiceState();
                                     new InterruptSystemTask(this.plugin.getConfigYamlFile()).run();
                                     this.plugin.getListenerManager().update(event.getUser());
+                                    this.plugin.getBot().muteMembers();
                                 }
                                 event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                             }

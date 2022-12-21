@@ -36,6 +36,8 @@ import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.PermissionOverride;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
@@ -146,6 +148,7 @@ public class Bot {
         this.loadMenus();
         this.updateVoiceState();
         this.plugin.getListenerManager().update();
+        this.muteMembers();
         this.checkForUnlinkedUsers();
         if (sender != null) {
             if (this.getStatus() == BotStatus.READY) {
@@ -173,13 +176,31 @@ public class Bot {
         }
     }
 
+    public void muteMembers() {
+        VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+        if (voiceChannel == null) {
+            return;
+        }
+        voiceChannel.getRolePermissionOverrides().forEach(override -> {
+            if (!override.getDenied().contains(Permission.VOICE_SPEAK)) {
+                override.getManager().deny(Permission.VOICE_SPEAK).queue();
+            }
+        });
+        Role publicRole = voiceChannel.getGuild().getPublicRole();
+        PermissionOverride permissionOverride = voiceChannel.getPermissionOverride(publicRole);
+        if (permissionOverride == null) {
+            voiceChannel.upsertPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
+        }
+    }
+
     public void checkForUnlinkedUsers() {
         if (this.getStatus() == BotStatus.READY) {
             VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
-            if (voiceChannel != null) {
-                for (Member member : voiceChannel.getMembers()) {
-                    this.checkMemberStatus(member);
-                }
+            if (voiceChannel == null) {
+                return;
+            }
+            for (Member member : voiceChannel.getMembers()) {
+                this.checkMemberStatus(member);
             }
         }
     }
@@ -207,11 +228,12 @@ public class Bot {
 
     public void updateVoiceState() {
         Guild guild = this.plugin.getBot().getGuild();
-        if (guild != null) {
-            for (VoiceChannel channel : guild.getVoiceChannels()) {
-                for (Member member : channel.getMembers()) {
-                    new UpdateVoiceStateTask(this.plugin.getConfigYamlFile(), this.plugin.getTempYamlFile(), member, channel).run();
-                }
+        if (guild == null) {
+            return;
+        }
+        for (VoiceChannel channel : guild.getVoiceChannels()) {
+            for (Member member : channel.getMembers()) {
+                new UpdateVoiceStateTask(this.plugin.getConfigYamlFile(), this.plugin.getTempYamlFile(), member, channel).run();
             }
         }
     }
