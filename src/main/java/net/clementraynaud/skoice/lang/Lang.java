@@ -76,7 +76,9 @@ public class Lang {
             return null;
         }
         if (path.startsWith("minecraft.")) {
-            args = Arrays.stream(args).map(ChatColor::stripColor).toArray(String[]::new);
+            args = Arrays.stream(args)
+                    .map(arg -> arg.replace(String.valueOf(ChatColor.COLOR_CHAR), ""))
+                    .toArray(String[]::new);
             if (path.startsWith("minecraft.chat.")) {
                 String[] newArgs = new String[args.length + 1];
                 newArgs[0] = Lang.CHAT_PREFIX;
