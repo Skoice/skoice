@@ -61,7 +61,7 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
             if (player.isOnline() && player.getPlayer() != null) {
                 Network.getNetworks().stream()
                         .filter(network -> network.contains(player.getPlayer().getUniqueId()))
-                        .forEach(network -> network.remove(player.getPlayer()));
+                        .forEach(network -> network.remove(UUID.fromString(minecraftId)));
             }
         } else if (event.getChannelJoined().equals(this.plugin.getConfigYamlFile().getVoiceChannel())
                 && Network.getNetworks().stream().noneMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {

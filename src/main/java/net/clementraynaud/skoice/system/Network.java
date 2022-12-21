@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.util.DistanceUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -133,23 +134,18 @@ public class Network {
     }
 
     public void clear() {
+        UpdateNetworksTask.getPlayersInNetworks().removeAll(this.players);
         this.players.clear();
     }
 
     public void add(UUID minecraftId) {
         this.players.add(minecraftId);
-    }
-
-    public void remove(Player player) {
-        this.players.remove(player.getUniqueId());
+        UpdateNetworksTask.getPlayersInNetworks().add(minecraftId);
     }
 
     public void remove(UUID minecraftId) {
         this.players.remove(minecraftId);
-    }
-
-    public boolean contains(Player player) {
-        return this.players.contains(player.getUniqueId());
+        UpdateNetworksTask.getPlayersInNetworks().remove(minecraftId);
     }
 
     public boolean contains(UUID minecraftId) {
