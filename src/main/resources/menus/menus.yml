@@ -86,7 +86,7 @@ voice-channel:
   style: primary
   parent: settings
 range:
-  emoji: straight_ruler
+  emoji: busts_in_silhouette
   type: default
   style: primary
   parent: settings
@@ -105,7 +105,7 @@ language:
   style: secondary
   parent: settings
 action-bar-alert:
-  emoji: exclamation
+  emoji: bell
   type: default
   style: primary
   parent: advanced-settings

@@ -40,10 +40,10 @@ contributing:
   emoji: hammer
   inline: false
 long-range-mode:
-  emoji: busts_in_silhouette
+  emoji: loud_sound
   inline: true
 short-range-mode:
-  emoji: busts_in_silhouette
+  emoji: sound
   inline: true
 customize:
   emoji: pencil2

@@ -43,10 +43,10 @@ public class RangeSelectMenu extends SelectMenu {
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
         List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.long-range-mode.label"), RangeSelectMenu.LONG_RANGE_MODE_ID)
                         .withDescription(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.long-range-mode.description"))
-                        .withEmoji(MenuEmoji.BUSTS_IN_SILHOUETTE.get()),
+                        .withEmoji(MenuEmoji.LOUD_SOUND.get()),
                 SelectOption.of(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.short-range-mode.label"), RangeSelectMenu.SHORT_RANGE_MODE_ID)
                         .withDescription(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.short-range-mode.description"))
-                        .withEmoji(MenuEmoji.BUSTS_IN_SILHOUETTE.get())));
+                        .withEmoji(MenuEmoji.SOUND.get())));
         String defaultValue = null;
         if (super.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString()) == 80
                 && super.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()) == 40) {

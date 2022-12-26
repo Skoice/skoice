@@ -24,6 +24,7 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 public enum MenuEmoji {
 
     ARROW_FORWARD("U+25B6"),
+    BELL("U+1F514"),
     BUSTS_IN_SILHOUETTE("U+1F465"),
     CALENDAR_SPIRAL("U+1F5D3"),
     CARD_BOX("U+1F5C3"),
@@ -31,7 +32,6 @@ public enum MenuEmoji {
     CLIPBOARD("U+1F4CB"),
     CLOCK3("U+1F552"),
     ENVELOPE("U+2709"),
-    EXCLAMATION("U+2757"),
     FILE_CABINET("U+1F5C4"),
     GEAR("U+2699"),
     GLOBE_WITH_MERIDIANS("U+1F310"),
@@ -43,13 +43,13 @@ public enum MenuEmoji {
     INBOX_TRAY("U+1F4E5"),
     KEY("U+1F511"),
     LINK("U+1F517"),
+    LOUD_SOUND("U+1F50A"),
     MAG("U+1F50D"),
     NEWSPAPER("U+1F4F0"),
     NO_ENTRY("U+26D4"),
     PENCIL2("U+270F"),
     SCREWDRIVER("U+1FA9B"),
     SOUND("U+1F509"),
-    STRAIGHT_RULER("U+1F4CF"),
     WARNING("U+26A0"),
     WRENCH("U+1F527"),
     X("U+274C");
