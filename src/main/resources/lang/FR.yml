@@ -137,6 +137,16 @@ discord:
     language:
       title: "Langue"
       description: "Choisissez la langue utilisée pour afficher les messages."
+    login-reminder:
+      title: "Rappel à la connexion"
+      description: "Activez ou désactivez le message envoyé aux joueurs non liés lorsqu'ils se connectent à votre serveur Minecraft."
+      select-menu:
+        always-remind:
+          label: "Toujours rappeler"
+        remind-once:
+          label: "Rappeler une fois"
+        never-remind:
+          label: "Ne jamais rappeler"
     action-bar-alert:
       title: "Alerte dans la barre d'action"
       description: "Activez ou désactivez l'alerte envoyée aux joueurs qui s'éloignent avant qu'ils soient déconnectés de leur salon vocal actuel."

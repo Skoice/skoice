@@ -137,6 +137,16 @@ discord:
     language:
       title: "Sprache"
       description: "Wählen Sie die Sprache, in der die Meldungen angezeigt werden sollen."
+    login-reminder:
+      title: "Login Reminder"
+      description: "Toggle the message sent to unlinked players when they log in to your Minecraft server."
+      select-menu:
+        always-remind:
+          label: "Always Remind"
+        remind-once:
+          label: "Remind Once"
+        never-remind:
+          label: "Never Remind"
     action-bar-alert:
       title: "Aktionsleisten-Alarm"
       description: "Schaltet den Alarm für Spieler ein, die sich entfernen, bevor sie von ihrem aktuellen Sprachkanal getrennt werden."
