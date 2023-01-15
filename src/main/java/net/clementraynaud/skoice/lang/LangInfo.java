@@ -28,7 +28,8 @@ public enum LangInfo {
     DE("Deutsch", "U+1F1E9U+1F1EA"),
     RU("Русский", "U+1F1F7U+1F1FA"),
     PL("Polski", "U+1F1F5U+1F1F1"),
-    NO("Norsk", "U+1F1F3U+1F1F4");
+    NO("Norsk", "U+1F1F3U+1F1F4"),
+    DA("Dansk", "U+1F1E9U+1F1F0");
 
     private final String fullName;
     private final String unicode;
