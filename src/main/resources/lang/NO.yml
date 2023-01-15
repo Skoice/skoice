@@ -1,0 +1,260 @@
+# Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#
+# This file is part of Skoice.
+#
+# Skoice is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Skoice is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
+
+logger:
+  info:
+    plugin-enabled: "Plugin aktivert."
+    plugin-disabled: "Plugin deaktivert."
+    plugin-updated: "Skoice har blitt oppdatert til nyeste versjon. Vendligst restart din Minecraft server for å aktivere endringene."
+    skoice-3: "Du bruker nå Skoice 3. For å få botten til å funkere ordentlig kan du følge vår overførings guide her: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
+    configuration-complete: "Skoice er nå konfigurert. Skriv \"/link\" på din Discord server for å linke din Discord bruker til Minecraft. Spillere må linke brukerene sine for å kunne bruke proximity voice chatten."
+    bot-connecting: "Din bot prøver å koble til."
+    bot-connected: "Din bot er koblet til."
+  warning:
+    outdated-version: "Du bruker en utdatert versjon (%s). Last ned nyeste versjon (%s) her: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
+    no-token: "Din token er ikke satt. Logg på din Minecraft server for å sette opp Skoice."
+    no-guild: "Din bot er ikke på en Discord server. Åpne denne linken for å invitere den: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    multiple-guilds: "Din bot er på flere Discord servere. Skriv \"/configure\" på din Discord server for å velge en."
+    no-voice-channel: "Du har ikke spesifisert en voice channel. Skriv \"/configure\" på din Discord server for å sette opp Skoice."
+    no-radius: "Radius er ikke satt. Skriv \"/configure\" på din Discord server for å sette opp Skoice."
+  error:
+    missing-permission: "Du ga ikke Discord botten \"Administrator\" tilgang. Åpne denne linken for å legge den til: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "Du ga ikke Discord botten din på serveren \"%s\", tilgang til å registrere kommandoer. Åpne denne linken for å legge den til og restart Minecraft serveren din: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    bot-could-not-connect: "Din bot kunne ikke koble til. For å oppdatere din token, skriv \"/skoice token\" etterfult av din nye token."
+    bot-timed-out: "Ett problem hindrer botten din ifra å koble til. Sjekk din nettverks tilkobling og se etter om Discord har problemer her: https://discordstatus.com."
+  exception:
+    unexpected-value: "Uforventet verdi: %s"
+
+minecraft:
+  chat:
+    configuration:
+      bot-creation-interactive:
+        - " \n%s Konfigurasjon (&fBot oprettelse&7)\n\n&8• &7Først trenger du å lage en bot og invitere den til din Discord server. Om du allerede har en bot må du lage en ny en. Vendligst følg instruksjonene på "
+        - "&7.\n&8• &7Når du har motatt tokenen putt den "
+        - "&7.\n&8• &7Når du er ferdig skriv, \"&e/configure&7\" på din Discord server for å gå til neste steg. "
+      no-token: "%s Du har &cikke spesifisert en token&7. Hvis du vil bruke denne kommandoen, skriv \"&e/skoice token&7\" etterfulgt av token."
+      no-guild-interactive:
+        - "%s Botten din er &cikke på en Discord-server&7. Åpne "
+        - " &7å invitere den."
+      bot-connecting: "%s Din bot prøver å koble til."
+      bot-connected: "%s Din bot er &anå tilkoblet&7."
+      bot-connected-incomplete-configuration-discord: "%s Din bot er &anå tilkoblet&7. Skriv \"&e/configure&7\" på din Discord server for å sette den opp."
+      bot-already-connected: "%s Du har &oppdatert din token&7. Restart din Minecraft server for å koble til din bot."
+      bot-could-not-connect: "%s Din bot &ckunne ikke koble til &7. Prøv igjen med en gyldig token."
+      missing-access: "%s Du ga ikke Discord botten din på serveren \"%s\", tilgang til å registrere kommandoer. Åpne denne linken for å legge den til og restart Minecraft serveren din: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+      incomplete-configuration: "%s Skoice er &cikke konfigurert riktig&7. Vennligst kontakt en administrator."
+      incomplete-configuration-operator-interactive:
+        - "%s Skoice er &cikke konfigurert riktig&7. Klikk "
+        - " &7for å sette den opp."
+      incomplete-configuration-operator-discord: "%s Skoice er &cikke konfigurert riktig &7. Skriv \"&e/skoice configure&7\" på Discord for å sette den opp."
+      already-configured: "%s Skoice er &callerede konfigurert&7. Skriv \"&e/configure&7\" på din Discord server for å oppdatere innstillingene."
+    player:
+      no-code: "%s Du har &cikke gitt en kode&7. Skriv inn \"&e/link&7\" på Discord-serveren \"&e%s&7\" for å motta en."
+      invalid-code: "%s Du har &cikke gitt en kode&7. Skriv inn \"&e/link&7\" på Discord-serveren \"&e%s&7\" for å motta en."
+      account-linked: "%s Du har &alinket din Minecraft konto &7til Discord."
+      account-unlinked: "%s Du har &aunlinket din Minecraft konto &7fra Discord."
+      account-not-linked: "%s Du har &cikke koblet din Minecraft konto &7til Discord. Skriv \"&/link&7\" på Discord-serveren \"&e%s&7\" for å koble den."
+      account-already-linked: "%s Du har &callerede koblet din Minecraft konto &7til Discord. Skriv \"&e/skoice unlink&7\" for å koble den fra."
+      connected: "%s Du er &anå koblet til proximity chat. For en bedre opplevelse kan du aktivere \"&eStreamer Mode&7\" på Discord."
+      not-connected: "%s Du er &cikke koblet til proximity chatten. Bli med i talekanalen \"&e%s&7\" på Discord-serveren \"&e%s&7\" for å bruke den."
+      disconnected: "%s Du er &cnå frakoblet &7fra proximity chat."
+    error:
+      no-parameter: "%s Du har &cikke levert ett argument&7. For å bruke denne kommandoen, skriv \"&e/skoice %s&7\"."
+      invalid-parameter: "%s Du har &cikke inkludert ett argument&7. For å bruke denne kommandoen, skriv \"&e/skoice %s&7\"."
+      illegal-executor: "%s Denne kommandoen er &cbare kjørbar &7av spillere."
+      missing-permission: "%s Denne kommandoen er &cbare kjørbar &7av spillere."
+      bot-timed-out-interactive:
+        - "%s Ett problem hindrer botten din &7ifra å koble til. Sjekk din nettverks tilkobling og se etter om Discord har problemer her "
+        - "&7."
+  action-bar:
+    alert: "&c⚠ &7Du beveger deg bort &7fra nære spillere."
+  interaction:
+    here: "&bhær"
+    this-page: "&bdenne siden"
+    execute: "&8☀ &bUtfør: &7%s"
+    shortcut: "&8☀ &bShortcut: &7%s"
+    link: "&8☀ &bÅpne i nettleser: &7%s"
+
+discord:
+  command-description:
+    configure: "Konfigurer Skoice."
+    link: "Koble Discord-kontoen din til Minecraft."
+    unlink: "Koble fra Discord kontoen din fra Minecraft."
+    invite: "Få proximity tale chat på serveren din."
+  menu:
+    footer: "Proximity stemmechat tilbys av Skoice."
+    configuration:
+      title: "Konfigurasjon"
+    server:
+      title: "Server"
+      description: "For å fungere skikkelig, kan ikke boten din finnes på flere Discord-servere. Velg serveren hvor du vil at proximity skal være aktiv. Boten din vil automatisk forlate den/de andre."
+      select-menu:
+        placeholder: "Vennligst velg en server."
+    permissions:
+      title: "Tillatelser"
+      description: "For å fungere skikkelig, må boten din ha \"Administrator\" tillatelse på Discord-serveren din."
+    voice-channel:
+      title: "Talekanal navn"
+      description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Adjust its bitrate to manage the audio quality of the proximity voice chat."
+      shortened-description: "Velg kanalen spillere må delta i for å bruke proximity chat."
+      select-menu:
+        placeholder: "Velg en talekanal."
+        select-option:
+          new-voice-channel:
+            label: "Ny Talekanal"
+            description: "Skoice vil automatisk sette opp en talekanal."
+    range:
+      title: "Range"
+      description: "Select a mode or customize the distances."
+      alternative-description: "Let us choose the best settings for your personal use of Skoice. You will still be able to customize the distances later."
+      select-menu:
+        placeholder: "Please select a mode."
+        alternative-placeholder: "You are currently using customized distances."
+        select-option:
+          long-range-mode:
+            label: "Long-Range Mode"
+            description: "Horizontal Radius: 80 blocks — Vertical Radius: 40 blocks"
+          short-range-mode:
+            label: "Short-Range Mode"
+            description: "Horizontal Radius: 40 blocks — Vertical Radius: 20 blocks"
+    advanced-settings:
+      title: "Avanserte innstillinger"
+      description: "Behandle andre parametere."
+    language:
+      title: "Språk"
+      description: "Velg språket som skal vises for meldinger."
+    login-reminder:
+      title: "Login Reminder"
+      description: "Toggle the message sent to unlinked players when they log in to your Minecraft server."
+      select-menu:
+        always-remind:
+          label: "Always Remind"
+        remind-once:
+          label: "Remind Once"
+        never-remind:
+          label: "Never Remind"
+    action-bar-alert:
+      title: "Action Bar Varsling"
+      description: "Varsling sendes til spillere som flytter bort før de kobles fra sin nåværende talekanal."
+      shortened-description: "Slå av eller på varselen som sendes til spillere som flytter bort før de kobles fra sin nåværende talekanal."
+    channel-visibility:
+      title: "Kanal synlighet"
+      description: "Slå av/på synligheten til de midlertidige kanalene skapt av Skoice."
+    changelog:
+      title: "Hva er nytt?"
+      description: "Oppdag de nyeste og kommende funksjonene i Skoice."
+    skoice-proximity-voice-chat:
+      title: "Skoice: Proximity chat"
+    linking-process:
+      title: "Koble Prosess"
+    error:
+      title: "Feil"
+  field:
+    configuration-complete:
+      title: "Konfigurasjon fullført"
+      description: "Skoice er nå konfigurert. Skriv \"/link\" på din Discord server for å linke din Discord bruker til Minecraft. Spillere må linke brukerene sine for å kunne bruke proximity voice chatten."
+    incomplete-configuration:
+      title: "Ufullstendig konfigurasjon"
+      description: "Skoice er ikke riktig konfigurert. Vennligst kontakt en administrator."
+    incomplete-configuration-server-manager:
+      title: "Ufullstendig konfigurasjon"
+      description: "Skriv `/configure` på din Discord-server for å fullføre konfigurasjonen og bruke Skoice."
+    incomplete-configuration-alternative-server-manager:
+      title: "Ufullstendig konfigurasjon"
+      description: "Du har enten flyttet eller slettet den viktigste talekanalen. Skriv `/configure` på Discord-serveren din for å fullføre konfigurasjonen og bruke Skoice."
+    download:
+      title: "Nedlast"
+      description: "[Få plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) og installer den på din Minecraftserver."
+    donating:
+      title: "Donere"
+      description: "Skoice er en fri programvare. Hvis du liker det, kan du hjelpe oss ved å [donating](https://paypal.me/whitelines)."
+    troubleshooting:
+      title: "Feilsøking"
+      description: "Har du problemer? [Bli med i vår Discord-server](https://discord.gg/h3Tgccc)!"
+    contributing:
+      title: "Bidra"
+      description: "Interessert med å hjelpe oss å forme fremtiden til Skoice? [Bidra på vår GitHub-side](https://github.com/Skoice/skoice)!"
+    long-range-mode:
+      title: "Long-Range Mode"
+      description: "Choose this mode if you plan to play open world game modes."
+    short-range-mode:
+      title: "Short-Range Mode"
+      description: "Choose this mode if you plan to play game modes that only require a limited area."
+    customize:
+      title: "Tilpass"
+      description: "Angi avstander i henhold til dine personlige innstillinger."
+    changelog:
+      title: "Skoice 3"
+      description: "For å lære om de nyeste funksjonene i Skoice, [les endringsloggen](https://github.com/Skoice/skoice/discussions/35)."
+    upcoming-features:
+      title: "Hva skjer videre?"
+      description: "For å oppdage de kommende funksjonene til Skoice, [ta en titt på våre langsiktige planer](https://github.com/Skoice/skoice/discussions/33)."
+    verification-code:
+      title: "Bekreftelseskode"
+      description: "Skriv `/skoice link %s` i spillet for å fullføre prosessen."
+    account-linked:
+      title: "Konto Koblet"
+      description: "Din Discord konto har blitt koblet til Minecraft. Bli med i talekanalen %s på Discord-serveren \"%s\" for å bruke proximity talesamtalen."
+    account-unlinked:
+      title: "Konto Frakoblet"
+      description: "Discord kontoen din har blitt koblet fra Minecraft."
+    account-not-linked:
+      title: "Konto Ikke Koblet Til"
+      description: "Discord kontoen din er ikke koblet til Minecraft. Skriv `/link` på Discord-serveren en\"%sfor å koble den til."
+    account-already-linked:
+      title: "Konto allerede koblet"
+      description: "Discord kontoen er allerede koblet til Minecraft. Skriv `/unlink` for å koble den av."
+    access-denied:
+      title: "Ingen tilgang"
+      description: "Du har ikke tilgang til å utføre denne handlingen."
+    too-many-interactions:
+      title: "For mange interaksjoner"
+      description: "Du utfører kommandoer for fort."
+    illegal-interaction:
+      title: "Ingen tilgang"
+      description: "Du kan bare samhandle med boten på en Discord-server."
+    illegal-value:
+      title: "Ulovlig verdi"
+      description: "Verdier må være hele tall større enn 0."
+  button-label:
+    back: "Tilbake"
+    refresh: "Oppdater"
+    close: "Lukk"
+    configure-later: "Konfigurer Senere"
+    resume-configuration: "Gjenoppta konfigurasjonen"
+  select-option:
+    default:
+      description: "Dette valget er valgt som standard."
+    enabled:
+      label: "Aktivert"
+    disabled:
+      label: "Deaktivert"
+    too-many-options:
+      label: "For mange alternativer"
+      description: "Skoice klarer ikke å laste flere alternativer."
+  text-input:
+    category-name:
+      label: "Kategori Navn"
+      default-value: "Skoice"
+    voice-channel-name:
+      label: "Talekanal navn"
+      default-value: "Proximity stemme chat"
+    horizontal-radius:
+      label: "Horisontal Radius"
+    vertical-radius:
+      label: "Vertikal radius"
+  communication-lost: "Kommunikasjon tapt."
