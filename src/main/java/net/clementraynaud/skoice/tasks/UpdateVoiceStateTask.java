@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -19,8 +19,8 @@
 
 package net.clementraynaud.skoice.tasks;
 
-import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
 import net.clementraynaud.skoice.storage.TempYamlFile;
+import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;

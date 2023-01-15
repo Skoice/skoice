@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -22,14 +22,14 @@ package net.clementraynaud.skoice;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
-import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
-import net.clementraynaud.skoice.storage.config.ConfigField;
-import net.clementraynaud.skoice.storage.config.OutdatedConfig;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.storage.LinksYamlFile;
 import net.clementraynaud.skoice.storage.TempYamlFile;
+import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
+import net.clementraynaud.skoice.storage.config.OutdatedConfig;
 import net.clementraynaud.skoice.system.ListenerManager;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.util.ChartUtil;
