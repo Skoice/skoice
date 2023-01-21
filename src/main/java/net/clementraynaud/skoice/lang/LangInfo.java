@@ -24,13 +24,13 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 public enum LangInfo {
 
     EN("English", "U+1F1ECU+1F1E7"),
-    FR("Français", "U+1F1EBU+1F1F7"),
-    DE("Deutsch", "U+1F1E9U+1F1EA"),
-    RU("Русский", "U+1F1F7U+1F1FA"),
-    PL("Polski", "U+1F1F5U+1F1F1"),
-    NO("Norsk", "U+1F1F3U+1F1F4"),
     DA("Dansk", "U+1F1E9U+1F1F0"),
-    PT("Português", "U+1F1F5U+1F1F9");
+    DE("Deutsch", "U+1F1E9U+1F1EA"),
+    FR("Français", "U+1F1EBU+1F1F7"),
+    NO("Norsk", "U+1F1F3U+1F1F4"),
+    PL("Polski", "U+1F1F5U+1F1F1"),
+    PT("Português", "U+1F1F5U+1F1F9"),
+    RU("Русский", "U+1F1F7U+1F1FA");
 
     private final String fullName;
     private final String unicode;
