@@ -140,7 +140,7 @@
         <dependency>
             <groupId>com.tcoded</groupId>
             <artifactId>FoliaLib</artifactId>
-            <version>0.2.3</version>
+            <version>0.2.3-legacy-support</version>
         </dependency>
     </dependencies>
 </project>
