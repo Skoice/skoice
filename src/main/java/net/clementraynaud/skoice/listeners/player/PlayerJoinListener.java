@@ -62,7 +62,7 @@ public class PlayerJoinListener implements Listener {
             }
         } else {
             UpdateNetworksTask.getEligiblePlayers().add(player.getUniqueId());
-            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            this.plugin.getFoliaLib().getImpl().runAsync(() -> {
                 Member member = this.plugin.getLinksFileStorage().getMember(player.getUniqueId());
                 if (member != null) {
                     GuildVoiceState voiceState = member.getVoiceState();

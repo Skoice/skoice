@@ -37,7 +37,7 @@ public class PlayerQuitListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> Network.getNetworks().stream()
+        this.plugin.getFoliaLib().getImpl().runAsync(() -> Network.getNetworks().stream()
                 .filter(network -> network.contains(event.getPlayer().getUniqueId()))
                 .forEach(network -> network.remove(event.getPlayer().getUniqueId())));
     }

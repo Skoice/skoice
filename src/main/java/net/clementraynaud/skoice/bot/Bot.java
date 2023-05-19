@@ -57,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class Bot {
 
@@ -125,23 +126,21 @@ public class Bot {
         this.updateGuild();
         this.jda.getGuilds().forEach(guild -> this.plugin.getBotCommands().register(guild, sender));
         this.plugin.getListenerManager().registerPermanentBotListeners();
-        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
-                        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
-                                this.plugin,
-                                new UpdateNetworksTask(this.plugin)::run,
-                                0,
-                                10
-                        ),
-                0
+        this.plugin.getFoliaLib().getImpl().runNextTick(() ->
+                  this.plugin.getFoliaLib().getImpl().runTimerAsync(
+                            new UpdateNetworksTask(this.plugin)::run,
+                            0,
+                            500,
+                            TimeUnit.MILLISECONDS
+                  )
         );
-        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
-                        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
-                                this.plugin,
-                                this.plugin.getUpdater()::checkVersion,
-                                Bot.TICKS_BETWEEN_VERSION_CHECKING,
-                                Bot.TICKS_BETWEEN_VERSION_CHECKING
-                        ),
-                0
+        this.plugin.getFoliaLib().getImpl().runNextTick(() ->
+                this.plugin.getFoliaLib().getImpl().runTimerAsync(
+                        this.plugin.getUpdater()::checkVersion,
+                        Bot.TICKS_BETWEEN_VERSION_CHECKING*50,
+                        Bot.TICKS_BETWEEN_VERSION_CHECKING*50,
+                        TimeUnit.MILLISECONDS
+                )
         );
         this.retrieveNetworks();
         this.loadMenus();

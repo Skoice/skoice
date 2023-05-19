@@ -51,6 +51,14 @@
                             <pattern>kotlin</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>kotlin</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.tcoded</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
@@ -137,7 +145,6 @@
             <groupId>com.tcoded</groupId>
             <artifactId>FoliaLib</artifactId>
             <version>0.2.3</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

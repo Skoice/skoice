@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice;
 
+import com.tcoded.folialib.FoliaLib;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
@@ -52,9 +53,11 @@ public class Skoice extends JavaPlugin {
     private ConfigurationMenu configurationMenu;
     private Updater updater;
     private BukkitAudiences adventure;
+    private FoliaLib foliaLib;
 
     @Override
     public void onEnable() {
+        this.foliaLib = new FoliaLib(this);
         this.saveDefaultConfig();
         this.configuration = new Configuration(this);
         this.configuration.init();
@@ -159,5 +162,9 @@ public class Skoice extends JavaPlugin {
 
     public Updater getUpdater() {
         return this.updater;
+    }
+
+    public FoliaLib getFoliaLib() {
+        return  this.foliaLib;
     }
 }
