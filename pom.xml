@@ -52,10 +52,6 @@
                             <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>kotlin</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>com.tcoded</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
                         </relocation>
