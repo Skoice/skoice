@@ -154,9 +154,6 @@ discord:
     channel-visibility:
       title: "Visibilité des salons"
       description: "Rendez visibles ou invisibles les salons temporaires créés par Skoice."
-    changelog:
-      title: "Quoi de neuf ?"
-      description: "Découvrez les dernières et futures fonctionnalités de Skoice."
     skoice-proximity-voice-chat:
       title: "Skoice : Chat vocal de proximité"
     linking-process:
@@ -197,12 +194,6 @@ discord:
     customize:
       title: "Personnaliser"
       description: "Définissez les distances en fonction de vos préférences personnelles."
-    changelog:
-      title: "Skoice 3"
-      description: "Pour en savoir plus sur les dernières fonctinnalités de Skoice, [lisez le récapitulatif des nouveautés](https://github.com/Skoice/skoice/discussions/35)."
-    upcoming-features:
-      title: "Et après ?"
-      description: "Pour découvrir les futures fonctionnalités de Skoice, [jetez un coup d'œil à nos projets à long terme](https://github.com/Skoice/skoice/discussions/33)."
     verification-code:
       title: "Code de vérification"
       description: "Tapez `/skoice link %s` en jeu pour terminer la procédure."

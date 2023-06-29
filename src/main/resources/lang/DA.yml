@@ -154,9 +154,6 @@ discord:
     channel-visibility:
       title: "Kanal synlighed"
       description: "Skift synligheden af de midlertidige kanaler der bliver oprettet af Skoice."
-    changelog:
-      title: "Hvad er nyt?"
-      description: "Opdag de seneste og kommende features i Skoice."
     skoice-proximity-voice-chat:
       title: "Skoice: Proximity Voice Chat"
     linking-process:
@@ -197,12 +194,6 @@ discord:
     customize:
       title: "Tilpas"
       description: "Indstil afstande efter dine personlige præferencer."
-    changelog:
-      title: "Skoice 3"
-      description: "Lær om de seneste funktioner i Skoice ved at [læse changeloggen](https://github.com/Skoice/skoice/discussions/35)."
-    upcoming-features:
-      title: "Hvad er næste trin?"
-      description: "For at opdage kommende funktioner i Skoice, [kig på vores langsigtede planer](https://github.com/Skoice/skoice/discussions/33)."
     verification-code:
       title: "Bekræftelseskode"
       description: "Skriv `/skoice link %s` i spillet for at fuldføre processen."

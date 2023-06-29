@@ -114,15 +114,6 @@ channel-visibility:
   type: default
   style: primary
   parent: advanced-settings
-changelog:
-  emoji: newspaper
-  type: default
-  style: secondary
-  parent: advanced-settings
-  fields:
-    - changelog
-    - upcoming-features
-    - contributing
 server:
   emoji: file_cabinet
   type: default

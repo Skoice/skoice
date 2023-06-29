@@ -48,12 +48,6 @@ short-range-mode:
 customize:
   emoji: pencil2
   inline: true
-changelog:
-  emoji: clipboard
-  inline: false
-upcoming-features:
-  emoji: calendar_spiral
-  inline: false
 account-linked:
   emoji: heavy_check_mark
   inline: false

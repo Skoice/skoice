@@ -154,9 +154,6 @@ discord:
     channel-visibility:
       title: "Видимость канала"
       description: "Переключение видимости временных каналов, созданных Skoice."
-    changelog:
-      title: "Что нового?"
-      description: "Узнайте о последних и предстоящих возможностях Skoice."
     skoice-proximity-voice-chat:
       title: "Skoice: голосовой чат"
     linking-process:
@@ -197,12 +194,6 @@ discord:
     customize:
       title: "Настроить"
       description: "Установите расстояния в соответствии с вашими личными предпочтениями."
-    changelog:
-      title: "Skoice 3"
-      description: "Чтобы узнать о последних функциях Skoice, [прочтите список изменений](https://github.com/Skoice/skoice/discussions/35)."
-    upcoming-features:
-      title: "Что дальше?"
-      description: "Чтобы узнать о предстоящих особенностях Skoice, [посмотрите на наши долгосрочные планы](https://github.com/Skoice/skoice/discussions/33)."
     verification-code:
       title: "Проверочный код"
       description: "Для завершения процесса введите `/skoice link %s` в игре."
