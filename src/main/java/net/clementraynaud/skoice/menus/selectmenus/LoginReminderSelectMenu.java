@@ -41,15 +41,15 @@ public class LoginReminderSelectMenu extends SelectMenu {
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.connection-reminder.select-menu.always-remind.label"), String.valueOf(LoginReminderSelectMenu.ALWAYS_REMIND))
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.login-reminder.select-menu.always-remind.label"), String.valueOf(LoginReminderSelectMenu.ALWAYS_REMIND))
                         .withEmoji(MenuEmoji.REPEAT.get()),
-                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.connection-reminder.select-menu.remind-once.label"), String.valueOf(LoginReminderSelectMenu.REMIND_ONCE))
+                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.login-reminder.select-menu.remind-once.label"), String.valueOf(LoginReminderSelectMenu.REMIND_ONCE))
                         .withDescription(super.plugin.getLang().getMessage("discord.select-option.default.description"))
                         .withEmoji(MenuEmoji.REPEAT_ONE.get()),
-                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.connection-reminder.select-menu.never-remind.label"), String.valueOf(LoginReminderSelectMenu.NEVER_REMIND))
+                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.login-reminder.select-menu.never-remind.label"), String.valueOf(LoginReminderSelectMenu.NEVER_REMIND))
                         .withEmoji(MenuEmoji.MUTE.get())));
         String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_REMINDER.toString());
-        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("connection-reminder-selection")
+        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("login-reminder-selection")
                 .addOptions(options)
                 .setDefaultValues(Collections.singleton(defaultValue)).build();
     }
