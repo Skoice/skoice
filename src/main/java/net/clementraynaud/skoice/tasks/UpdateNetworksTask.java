@@ -88,21 +88,20 @@ public class UpdateNetworksTask {
                         AudioChannel audioChannel = member.getVoiceState().getChannel();
                         if (audioChannel.getType() == ChannelType.VOICE) {
                             VoiceChannel voiceChannel = (VoiceChannel) audioChannel;
-                            boolean isMainVoiceChannel = voiceChannel == mainVoiceChannel;
-                            if (!isMainVoiceChannel && (voiceChannel.getParentCategory() == null
-                                    || voiceChannel.getParentCategory() != this.plugin.getConfigYamlFile().getCategory())) {
+                            if (voiceChannel != mainVoiceChannel
+                                    && Network.getNetworks().stream().noneMatch(network -> network.getChannel().equals(voiceChannel))) {
                                 Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(member.getId());
                                 if (pair != null) {
                                     pair.getRight().cancel(false);
                                 }
-                                continue;
+                            } else {
+                                this.updateNetworksAroundPlayer(player);
+                                if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.ACTION_BAR_ALERT.toString())) {
+                                    this.sendActionBarAlert(player);
+                                }
+                                this.createNetworkIfNeeded(player);
                             }
                         }
-                        this.updateNetworksAroundPlayer(player);
-                        if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.ACTION_BAR_ALERT.toString())) {
-                            this.sendActionBarAlert(player);
-                        }
-                        this.createNetworkIfNeeded(player);
                     }
                 }
             }
@@ -189,7 +188,6 @@ public class UpdateNetworksTask {
         Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers().stream()
                 .filter(p -> !p.isDead())
                 .collect(Collectors.toSet());
-        Category category = this.plugin.getConfigYamlFile().getCategory();
         Set<UUID> playersWithinRange = alivePlayers.stream()
                 .filter(p -> Network.getNetworks().stream().noneMatch(network -> network.contains(p)))
                 .filter(p -> !p.equals(player))
@@ -200,14 +198,18 @@ public class UpdateNetworksTask {
                         player.getLocation()) <= this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()))
                 .filter(p -> {
                     Member member = this.plugin.getLinksYamlFile().getMember(p.getUniqueId());
-                    return member != null && member.getVoiceState() != null
-                            && member.getVoiceState().getChannel() instanceof VoiceChannel
-                            && ((VoiceChannel) member.getVoiceState().getChannel()).getParentCategory() != null
-                            && ((VoiceChannel) member.getVoiceState().getChannel()).getParentCategory().equals(category);
+                    if (member != null
+                            && member.getVoiceState() != null
+                            && member.getVoiceState().getChannel() instanceof VoiceChannel) {
+                        VoiceChannel voiceChannel = (VoiceChannel) member.getVoiceState().getChannel();
+                        return this.plugin.getConfigYamlFile().getVoiceChannel().equals(voiceChannel)
+                                || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel));
+                    }
+                    return false;
                 })
                 .map(Player::getUniqueId)
                 .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
-        if (!playersWithinRange.isEmpty() && category.getChannels().size() != 50) {
+        if (!playersWithinRange.isEmpty() && this.plugin.getConfigYamlFile().getCategory().getChannels().size() != 50) {
             playersWithinRange.add(player.getUniqueId());
             Network network = new Network(this.plugin, playersWithinRange);
             network.build();

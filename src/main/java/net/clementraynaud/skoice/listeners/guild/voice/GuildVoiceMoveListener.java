@@ -47,24 +47,36 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
         }
         VoiceChannel voiceChannelJoined = (VoiceChannel) event.getChannelJoined();
         new UpdateVoiceStateTask(this.plugin, event.getMember(), voiceChannelJoined).run();
+
         if (event.getChannelLeft().getType() != ChannelType.VOICE) {
             return;
         }
         VoiceChannel voiceChannelLeft = (VoiceChannel) event.getChannelLeft();
-        if (voiceChannelJoined.getParentCategory() != null && !voiceChannelJoined.getParentCategory().equals(this.plugin.getConfigYamlFile().getCategory())
-                && voiceChannelLeft.getParentCategory() != null && voiceChannelLeft.getParentCategory().equals(this.plugin.getConfigYamlFile().getCategory())) {
+
+        VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+
+        if (Network.getNetworks().stream().noneMatch(network -> network.getChannel().equals(voiceChannelJoined))) {
             String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), event.getMember().getId());
             if (minecraftId == null) {
                 return;
             }
             OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
-                Network.getNetworks().stream()
-                        .filter(network -> network.contains(player.getPlayer().getUniqueId()))
-                        .forEach(network -> network.remove(player.getPlayer()));
+                if (Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannelLeft))) {
+                    Network.getNetworks().stream()
+                            .filter(network -> network.contains(player.getPlayer().getUniqueId()))
+                            .forEach(network -> network.remove(player.getPlayer()));
+                    if (!voiceChannelJoined.equals(mainVoiceChannel)) {
+                        player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+                    }
+                } else if (voiceChannelLeft.equals(mainVoiceChannel)) {
+                    player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+                }
             }
-        } else if (event.getChannelJoined().equals(this.plugin.getConfigYamlFile().getVoiceChannel())
-                && Network.getNetworks().stream().noneMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
+        }
+
+        if (voiceChannelJoined.equals(mainVoiceChannel)
+                && Network.getNetworks().stream().noneMatch(network -> network.getChannel().equals(voiceChannelLeft))) {
             this.plugin.getBot().checkMemberStatus(event.getMember());
         }
     }

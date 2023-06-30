@@ -45,8 +45,8 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
             return;
         }
         VoiceChannel voiceChannel = (VoiceChannel) event.getChannelLeft();
-        if (voiceChannel.getParentCategory() == null
-                || !voiceChannel.getParentCategory().equals(this.plugin.getConfigYamlFile().getCategory())) {
+        if (!voiceChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())
+                && Network.getNetworks().stream().noneMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
             return;
         }
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), event.getMember().getId());
@@ -58,10 +58,7 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
             Network.getNetworks().stream()
                     .filter(network -> network.contains(player.getPlayer()))
                     .forEach(network -> network.remove(player.getPlayer()));
-            if (event.getChannelLeft().equals(this.plugin.getConfigYamlFile().getVoiceChannel())
-                    || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
-                player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
-            }
+            player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
         }
     }
 }
