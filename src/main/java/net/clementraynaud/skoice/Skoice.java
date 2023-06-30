@@ -106,7 +106,7 @@ public class Skoice extends JavaPlugin {
                 LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName()
         ));
         metrics.addCustomChart(new SimplePie("tooltips", () ->
-                LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName()
+                LangInfo.valueOf(this.configYamlFile.getString(ConfigField.TOOLTIPS.toString())).getFullName()
         ));
         metrics.addCustomChart(new SimplePie("loginReminder", () ->
                 this.configYamlFile.getString(ConfigField.LOGIN_REMINDER.toString())

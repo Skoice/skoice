@@ -108,7 +108,7 @@ public class Bot {
             } catch (ErrorResponseException e) {
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));
                 if (sender != null) {
-                    if (this.plugin.getConfigYamlFile().getBoolean("tooltips")) {
+                    if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
                         this.plugin.adventure().sender(sender).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
                                         .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", "https://discordstatus.com")))
                                         .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discordstatus.com"))
@@ -303,7 +303,7 @@ public class Bot {
     }
 
     public void sendNoGuildAlert(Player player) {
-        if (this.plugin.getConfigYamlFile().getBoolean("tooltips")) {
+        if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
             this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
                             .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link",
                                     "https://discord.com/api/oauth2/authorize?client_id="

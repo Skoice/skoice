@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
@@ -46,7 +47,7 @@ public class PlayerJoinListener implements Listener {
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
             if (player.isOp()) {
                 if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
-                    if (this.plugin.getConfigYamlFile().getBoolean("tooltips")) {
+                    if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
                         this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
                                         .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.execute", "/skoice configure")))
                                         .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure"))

@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import org.bukkit.command.CommandSender;
 
 public class TooltipsArgument extends Argument {
@@ -35,11 +36,11 @@ public class TooltipsArgument extends Argument {
             return;
         }
 
-        if (super.plugin.getConfigYamlFile().getBoolean("tooltips")) {
-            super.plugin.getConfigYamlFile().set("tooltips", false);
+        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
+            super.plugin.getConfigYamlFile().set(ConfigField.TOOLTIPS.toString(), false);
             this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.tooltips-disabled"));
         } else {
-            super.plugin.getConfigYamlFile().set("tooltips", true);
+            super.plugin.getConfigYamlFile().set(ConfigField.TOOLTIPS.toString(), true);
             this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.tooltips-enabled"));
         }
     }
