@@ -199,7 +199,7 @@ discord:
       description: "Geben Sie `/skoice link %s` im Spiel ein, um den Vorgang abzuschließen."
     account-linked:
       title: "Verbundenes Konto"
-      description: "Dein Discord-Account wurde mit Minecraft verknüpft. Treten Sie dem Sprachkanal %s auf dem Discord-Server \"%s\" ein, um den Sprachchat im Nahbereich zu nutzen."
+      description: "Dein Discord-Account wurde mit Minecraft verknüpft. Treten Sie dem Sprachkanal %s bei, um den Sprachchat in unmittelbarer Nähe zu nutzen."
     account-unlinked:
       title: "Unverknüpftes Konto"
       description: "Dein Discord-Account wurde von Minecraft entkoppelt."

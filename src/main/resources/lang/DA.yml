@@ -199,7 +199,7 @@ discord:
       description: "Skriv `/skoice link %s` i spillet for at fuldføre processen."
     account-linked:
       title: "Konto Linket"
-      description: "Din Discord konto er blevet linket til Minecraft. Join stemme kanalen %s på Discord serveren \"%s\" for at bruge proximity voice chat."
+      description: "Din Discord konto er blevet linket til Minecraft. Join stemme kanalen %s for at bruge proximity voice chat."
     account-unlinked:
       title: "Konto Afbrudt"
       description: "Din Discord konto er blevet afbrudt fra Minecraft."

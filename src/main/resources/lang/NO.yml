@@ -199,7 +199,7 @@ discord:
       description: "Skriv `/skoice link %s` i spillet for å fullføre prosessen."
     account-linked:
       title: "Konto Koblet"
-      description: "Din Discord konto har blitt koblet til Minecraft. Bli med i talekanalen %s på Discord-serveren \"%s\" for å bruke proximity talesamtalen."
+      description: "Din Discord konto har blitt koblet til Minecraft. Bli med i talekanalen %s for å bruke proximity talesamtalen."
     account-unlinked:
       title: "Konto Frakoblet"
       description: "Discord kontoen din har blitt koblet fra Minecraft."

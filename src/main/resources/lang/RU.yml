@@ -199,7 +199,7 @@ discord:
       description: "Для завершения процесса введите `/skoice link %s` в игре."
     account-linked:
       title: "Аккаунт привязан"
-      description: "Ваш аккаунт Discord был привязан к Minecraft. Присоединитесь к голосовому каналу %s на Discord сервере \"%s\", чтобы использовать голосовой чат."
+      description: "Ваш аккаунт Discord был привязан к Minecraft. Присоединитесь к голосовому каналу %s, чтобы использовать голосовой чат."
     account-unlinked:
       title: "Аккаунт отвязан"
       description: "Ваш аккаунт Discord был отвязан от Minecraft."

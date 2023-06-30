@@ -199,7 +199,7 @@ discord:
       description: "Type `/skoice link %s` in game to complete the process."
     account-linked:
       title: "Account Linked"
-      description: "Your Discord account has been linked to Minecraft. Join the voice channel %s on the Discord server \"%s\" to use the proximity voice chat."
+      description: "Your Discord account has been linked to Minecraft. Join the voice channel %s to use the proximity voice chat."
     account-unlinked:
       title: "Account Unlinked"
       description: "Your Discord account has been unlinked from Minecraft."

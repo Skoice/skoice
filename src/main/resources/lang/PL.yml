@@ -199,7 +199,7 @@ discord:
       description: "Wpisz `/skoice link %s` w grze aby dokończyć proces."
     account-linked:
       title: "Konto Połączone"
-      description: "Twoje konto Discord zostało połączone z Minecraft. Dołącz do kanału głosowego %s na serwerze Discord \"%s\", aby użyć zbliżeniowego czatu głosowego."
+      description: "Twoje konto Discord zostało połączone z Minecraft. Dołącz do kanału głosowego %s, aby użyć zbliżeniowego czatu głosowego."
     account-unlinked:
       title: "Konto Odłączone"
       description: "Twoje konto discord zostało odłączone od minecraft."

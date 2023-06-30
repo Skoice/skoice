@@ -199,7 +199,7 @@ discord:
       description: "Tapez `/skoice link %s` en jeu pour terminer la procédure."
     account-linked:
       title: "Compte lié"
-      description: "Votre compte Discord a été lié à Minecraft. Rejoignez le salon vocal %s sur le serveur Discord \"%s\" pour utiliser le chat vocal de proximité."
+      description: "Votre compte Discord a été lié à Minecraft. Rejoignez le salon vocal %s pour utiliser le chat vocal de proximité."
     account-unlinked:
       title: "Compte délié"
       description: "Votre compte Discord a été délié de Minecraft."
