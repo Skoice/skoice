@@ -19,8 +19,8 @@
 
 package net.clementraynaud.skoice.tasks;
 
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.TempYamlFile;
-import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -29,41 +29,43 @@ import java.util.List;
 
 public class UpdateVoiceStateTask {
 
-    private final ConfigYamlFile configYamlFile;
-    private final TempYamlFile tempYamlFile;
+    private final Skoice plugin;
     private final Member member;
     private final VoiceChannel channel;
 
-    public UpdateVoiceStateTask(ConfigYamlFile configYamlFile, TempYamlFile tempYamlFile, Member member, VoiceChannel channel) {
-        this.configYamlFile = configYamlFile;
-        this.tempYamlFile = tempYamlFile;
+    public UpdateVoiceStateTask(Skoice plugin, Member member, VoiceChannel channel) {
+        this.plugin = plugin;
         this.member = member;
         this.channel = channel;
     }
 
     public void run() {
-        if (this.member.getVoiceState() == null || this.configYamlFile.getVoiceChannel() == null) {
+        if (this.member.getVoiceState() == null || this.plugin.getConfigYamlFile().getVoiceChannel() == null) {
             return;
         }
-        boolean isMainVoiceChannel = this.channel.getId().equals(this.configYamlFile.getVoiceChannel().getId());
+        boolean isMainVoiceChannel = this.channel.getId().equals(this.plugin.getConfigYamlFile().getVoiceChannel().getId());
         if (isMainVoiceChannel) {
             if (!this.member.getVoiceState().isGuildMuted()
                     && this.member.hasPermission(this.channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
-                    && this.channel.getGuild().getSelfMember().hasPermission(this.configYamlFile.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
+                    && this.channel.getGuild().getSelfMember().hasPermission(this.plugin.getConfigYamlFile().getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
-                List<String> mutedUsers = this.tempYamlFile.getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);
+                List<String> mutedUsers = this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);
                 if (!mutedUsers.contains(this.member.getId())) {
                     mutedUsers.add(this.member.getId());
-                    this.tempYamlFile.set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
+                    this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
                 }
             }
         } else {
-            List<String> mutedUsers = this.tempYamlFile.getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);
+            VoiceChannel afkChannel = this.plugin.getBot().getGuild().getAfkChannel();
+            if (afkChannel != null && this.channel.getId().equals(afkChannel.getId())) {
+                return;
+            }
+            List<String> mutedUsers = this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);
             if (mutedUsers.contains(this.member.getId()) || this.member.hasPermission(Permission.VOICE_MUTE_OTHERS)) {
                 this.member.mute(false).queue();
                 mutedUsers.remove(this.member.getId());
-                this.tempYamlFile.set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
+                this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
             }
         }
     }

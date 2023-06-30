@@ -46,7 +46,7 @@ public class GuildVoiceMoveListener extends ListenerAdapter {
             return;
         }
         VoiceChannel voiceChannelJoined = (VoiceChannel) event.getChannelJoined();
-        new UpdateVoiceStateTask(this.plugin.getConfigYamlFile(), this.plugin.getTempYamlFile(), event.getMember(), voiceChannelJoined).run();
+        new UpdateVoiceStateTask(this.plugin, event.getMember(), voiceChannelJoined).run();
         if (event.getChannelLeft().getType() != ChannelType.VOICE) {
             return;
         }

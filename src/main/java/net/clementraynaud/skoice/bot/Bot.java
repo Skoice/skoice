@@ -237,7 +237,7 @@ public class Bot {
         }
         for (VoiceChannel channel : guild.getVoiceChannels()) {
             for (Member member : channel.getMembers()) {
-                new UpdateVoiceStateTask(this.plugin.getConfigYamlFile(), this.plugin.getTempYamlFile(), member, channel).run();
+                new UpdateVoiceStateTask(this.plugin, member, channel).run();
             }
         }
     }
