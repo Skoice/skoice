@@ -56,7 +56,6 @@ public class Network {
     public Network(Skoice plugin, Set<UUID> players) {
         this.plugin = plugin;
         this.players = players;
-        UpdateNetworksTask.getPlayersInNetworks().addAll(players);
     }
 
     public static Set<Network> getNetworks() {
