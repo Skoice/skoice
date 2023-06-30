@@ -74,7 +74,7 @@ public class LinkArgument extends Argument {
             VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
             member.getUser().openPrivateChannel().queue(channel ->
                     channel.sendMessage(this.plugin.getBot().getMenu("account-linked")
-                                    .build(mainVoiceChannel.getAsMention(), this.plugin.getBot().getGuild().getName()))
+                                    .build(mainVoiceChannel.getAsMention()))
                             .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
             );
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
