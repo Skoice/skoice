@@ -30,6 +30,7 @@ Once you have downloaded our plugin, simply drop the file in the `plugins` folde
 ### Minecraft
 
 - `/skoice configure`: Get instructions to begin the configuration process (requires operator privileges).
+- `/skoice tooltips`: Toggle interactive messages, useful on Bedrock Edition or when tooltips are disabled in Minecraft settings (requires operator privileges).
 - `/skoice token <token>`: Link a Discord bot to your Minecraft server (requires operator privileges).
 - `/skoice link <code>`: Link your Minecraft account to Discord.
 - `/skoice unlink`: Unlink your Minecraft account from Discord.

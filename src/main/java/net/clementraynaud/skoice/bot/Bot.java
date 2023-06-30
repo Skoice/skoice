@@ -108,11 +108,15 @@ public class Bot {
             } catch (ErrorResponseException e) {
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));
                 if (sender != null) {
-                    this.plugin.adventure().sender(sender).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
-                                    .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", "https://discordstatus.com")))
-                                    .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discordstatus.com"))
-                            )
-                    );
+                    if (this.plugin.getConfigYamlFile().getBoolean("tooltips")) {
+                        this.plugin.adventure().sender(sender).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
+                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", "https://discordstatus.com")))
+                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discordstatus.com"))
+                                )
+                        );
+                    } else {
+                        sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out"));
+                    }
                 }
             } catch (IllegalStateException | InterruptedException ignored) {
             }
@@ -299,18 +303,23 @@ public class Bot {
     }
 
     public void sendNoGuildAlert(Player player) {
-        this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
-                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link",
-                                "https://discord.com/api/oauth2/authorize?client_id="
-                                        + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
-                                        + "&permissions=8&scope=bot%20applications.commands"))
-                        )
-                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discord.com/api/oauth2/authorize?client_id="
-                                + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
-                                + "&permissions=8&scope=bot%20applications.commands")
-                        )
-                )
-        );
+        if (this.plugin.getConfigYamlFile().getBoolean("tooltips")) {
+            this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
+                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link",
+                                    "https://discord.com/api/oauth2/authorize?client_id="
+                                            + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
+                                            + "&permissions=8&scope=bot%20applications.commands"))
+                            )
+                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discord.com/api/oauth2/authorize?client_id="
+                                    + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
+                                    + "&permissions=8&scope=bot%20applications.commands")
+                            )
+                    )
+            );
+        } else {
+            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild",
+                    this.plugin.getBot().getJDA().getSelfUser().getApplicationId()));
+        }
     }
 
     private void loadMenus() {

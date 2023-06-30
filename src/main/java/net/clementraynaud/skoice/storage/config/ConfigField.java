@@ -23,6 +23,7 @@ public enum ConfigField {
 
     TOKEN,
     LANG,
+    TOOLTIPS,
     VOICE_CHANNEL_ID,
     HORIZONTAL_RADIUS,
     VERTICAL_RADIUS,

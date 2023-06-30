@@ -38,14 +38,18 @@ public class ConfigureArgument extends Argument {
         }
         Player player = (Player) this.sender;
         if (super.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
-            this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-creation-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
-                                    .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")))
-                                    .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")),
-                            this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
-                                    .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.shortcut", "/skoice token")))
-                                    .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice token "))
-                    )
-            );
+            if (super.plugin.getConfigYamlFile().getBoolean("tooltips")) {
+                this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-creation-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
+                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")))
+                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")),
+                                this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
+                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.shortcut", "/skoice token")))
+                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice token "))
+                        )
+                );
+            } else {
+                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.bot-creation"));
+            }
         } else {
             if (super.plugin.getBot().getStatus() == BotStatus.READY) {
                 player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.already-configured"));

@@ -46,11 +46,15 @@ public class PlayerJoinListener implements Listener {
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
             if (player.isOp()) {
                 if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
-                    this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
-                                    .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.execute", "/skoice configure")))
-                                    .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure"))
-                            )
-                    );
+                    if (this.plugin.getConfigYamlFile().getBoolean("tooltips")) {
+                        this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
+                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.execute", "/skoice configure")))
+                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure"))
+                                )
+                        );
+                    } else {
+                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator"));
+                    }
                 } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {
                     if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
                         this.plugin.getBot().sendNoGuildAlert(player);
