@@ -37,9 +37,9 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -50,7 +50,6 @@ import java.util.stream.Collectors;
 public class UpdateNetworksTask {
 
     private static final Set<UUID> eligiblePlayers = new HashSet<>();
-    private static final Set<UUID> playersInNetworks = new HashSet<>();
     private static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
 
     private final ReentrantLock lock = new ReentrantLock();
@@ -63,10 +62,6 @@ public class UpdateNetworksTask {
 
     public static Set<UUID> getEligiblePlayers() {
         return UpdateNetworksTask.eligiblePlayers;
-    }
-
-    public static Set<UUID> getPlayersInNetworks() {
-        return UpdateNetworksTask.playersInNetworks;
     }
 
     public static Map<String, Pair<String, CompletableFuture<Void>>> getAwaitingMoves() {
@@ -111,16 +106,20 @@ public class UpdateNetworksTask {
                     }
                 }
             }
-            Set<UUID> players = new HashSet<>(UpdateNetworksTask.playersInNetworks);
-            players.addAll(mainVoiceChannel.getMembers().stream()
-                    .map(member -> MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId()))
-                    .filter(Objects::nonNull)
-                    .map(UUID::fromString)
-                    .collect(Collectors.toSet()));
-            for (UUID minecraftId : players) {
-                Network playerNetwork = Network.getNetworks().stream()
-                        .filter(network -> network.contains(minecraftId))
-                        .findAny().orElse(null);
+            Set<Member> members = new HashSet<>(mainVoiceChannel.getMembers());
+            for (Network network : Network.getNetworks()) {
+                VoiceChannel voiceChannel = network.getChannel();
+                if (voiceChannel == null) {
+                    continue;
+                }
+                members.addAll(voiceChannel.getMembers());
+            }
+            Map<String, String> links = new HashMap<>(this.plugin.getLinksYamlFile().getLinks());
+            for (Member member : members) {
+                String minecraftId = MapUtil.getKeyFromValue(links, member.getId());
+                Network playerNetwork = minecraftId != null ? Network.getNetworks().stream()
+                        .filter(n -> n.contains(UUID.fromString(minecraftId)))
+                        .findAny().orElse(null) : null;
                 VoiceChannel shouldBeInChannel;
                 if (playerNetwork != null) {
                     if (playerNetwork.getChannel() == null) {
@@ -130,7 +129,6 @@ public class UpdateNetworksTask {
                 } else {
                     shouldBeInChannel = mainVoiceChannel;
                 }
-                Member member = this.plugin.getLinksYamlFile().getMember(minecraftId);
                 Pair<String, CompletableFuture<Void>> awaitingMove = UpdateNetworksTask.awaitingMoves.get(member.getId());
                 if (awaitingMove != null && awaitingMove.getLeft().equals(shouldBeInChannel.getId())) {
                     continue;
@@ -193,7 +191,7 @@ public class UpdateNetworksTask {
                 .collect(Collectors.toSet());
         Category category = this.plugin.getConfigYamlFile().getCategory();
         Set<UUID> playersWithinRange = alivePlayers.stream()
-                .filter(p -> Network.getNetworks().stream().noneMatch(network -> network.contains(p.getUniqueId())))
+                .filter(p -> Network.getNetworks().stream().noneMatch(network -> network.contains(p)))
                 .filter(p -> !p.equals(player))
                 .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
                 .filter(p -> DistanceUtil.getHorizontalDistance(p.getLocation(),
@@ -218,7 +216,7 @@ public class UpdateNetworksTask {
     }
 
     private void deleteEmptyNetworks() {
-        for (Network network : Network.getNetworks()) {
+        for (Network network : new HashSet<>(Network.getNetworks())) {
             if (network.isEmpty()) {
                 VoiceChannel voiceChannel = network.getChannel();
                 if (voiceChannel != null && voiceChannel.getMembers().isEmpty()) {

@@ -56,8 +56,8 @@ public class GuildVoiceLeaveListener extends ListenerAdapter {
         OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
         if (player.isOnline() && player.getPlayer() != null) {
             Network.getNetworks().stream()
-                    .filter(network -> network.contains(UUID.fromString(minecraftId)))
-                    .forEach(network -> network.remove(UUID.fromString(minecraftId)));
+                    .filter(network -> network.contains(player.getPlayer()))
+                    .forEach(network -> network.remove(player.getPlayer()));
             if (event.getChannelLeft().equals(this.plugin.getConfigYamlFile().getVoiceChannel())
                     || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(event.getChannelLeft()))) {
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
