@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.Collections;
@@ -47,7 +48,7 @@ public class ToggleSelectMenu extends SelectMenu {
             return null;
         }
         boolean defaultValue = configuration.getBoolean(this.componentId);
-        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create(this.componentId)
+        return StringSelectMenu.create(this.componentId)
                 .addOptions(SelectOption.of(super.plugin.getLang().getMessage("discord.select-option.enabled.label"), ToggleSelectMenu.ENABLED_OPTION_ID)
                                 .withDescription(defaultValue ? super.plugin.getLang().getMessage("discord.select-option.default.description") : null)
                                 .withEmoji(MenuEmoji.HEAVY_CHECK_MARK.get()),

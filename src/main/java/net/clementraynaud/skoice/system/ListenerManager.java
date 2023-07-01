@@ -25,7 +25,7 @@ import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
-import net.clementraynaud.skoice.listeners.ReconnectedListener;
+import net.clementraynaud.skoice.listeners.SessionRecreateListener;
 import net.clementraynaud.skoice.listeners.channel.main.GenericChannelListener;
 import net.clementraynaud.skoice.listeners.channel.network.ChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
@@ -34,12 +34,10 @@ import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleAddListen
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleRemoveListener;
 import net.clementraynaud.skoice.listeners.guild.override.GenericPermissionOverrideListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceGuildMuteListener;
-import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceJoinListener;
-import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceLeaveListener;
-import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceMoveListener;
+import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceUpdateListener;
 import net.clementraynaud.skoice.listeners.interaction.ModalInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
-import net.clementraynaud.skoice.listeners.interaction.component.SelectMenuInteractionListener;
+import net.clementraynaud.skoice.listeners.interaction.component.StringSelectInteractionListener;
 import net.clementraynaud.skoice.listeners.message.MessageDeleteListener;
 import net.clementraynaud.skoice.listeners.message.MessageReceivedListener;
 import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
@@ -59,10 +57,8 @@ public class ListenerManager {
     private final PlayerQuitListener playerQuitListener;
     private final PlayerMoveListener playerMoveListener;
     private final PlayerTeleportListener playerTeleportListener;
-    private final GuildVoiceJoinListener guildVoiceJoinListener;
     private final GuildVoiceGuildMuteListener guildVoiceGuildMuteListener;
-    private final GuildVoiceLeaveListener guildVoiceLeaveListener;
-    private final GuildVoiceMoveListener guildVoiceMoveListener;
+    private final GuildVoiceUpdateListener guildVoiceUpdateListener;
     private final ChannelDeleteListener channelDeleteListener;
 
     private boolean startup = true;
@@ -72,10 +68,8 @@ public class ListenerManager {
         this.playerQuitListener = new PlayerQuitListener(this.plugin);
         this.playerMoveListener = new PlayerMoveListener();
         this.playerTeleportListener = new PlayerTeleportListener();
-        this.guildVoiceJoinListener = new GuildVoiceJoinListener(this.plugin);
         this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
-        this.guildVoiceLeaveListener = new GuildVoiceLeaveListener(this.plugin);
-        this.guildVoiceMoveListener = new GuildVoiceMoveListener(this.plugin);
+        this.guildVoiceUpdateListener = new GuildVoiceUpdateListener(this.plugin);
         this.channelDeleteListener = new ChannelDeleteListener();
     }
 
@@ -127,7 +121,7 @@ public class ListenerManager {
 
     public void registerPermanentBotListeners() {
         this.plugin.getBot().getJDA().addEventListener(
-                new ReconnectedListener(this.plugin),
+                new SessionRecreateListener(this.plugin),
                 new GuildJoinListener(this.plugin),
                 new GuildLeaveListener(this.plugin),
                 new GuildMemberRoleAddListener(this.plugin),
@@ -142,27 +136,23 @@ public class ListenerManager {
                 new LinkCommand(this.plugin),
                 new UnlinkCommand(this.plugin),
                 new ButtonInteractionListener(this.plugin),
-                new SelectMenuInteractionListener(this.plugin),
+                new StringSelectInteractionListener(this.plugin),
                 new ModalInteractionListener(this.plugin)
         );
     }
 
     public void registerBotListeners() {
         this.plugin.getBot().getJDA().addEventListener(
-                this.guildVoiceJoinListener,
                 this.guildVoiceGuildMuteListener,
-                this.guildVoiceLeaveListener,
-                this.guildVoiceMoveListener,
+                this.guildVoiceUpdateListener,
                 this.channelDeleteListener
         );
     }
 
     private void unregisterBotListeners() {
         this.plugin.getBot().getJDA().removeEventListener(
-                this.guildVoiceJoinListener,
                 this.guildVoiceGuildMuteListener,
-                this.guildVoiceLeaveListener,
-                this.guildVoiceMoveListener,
+                this.guildVoiceUpdateListener,
                 this.channelDeleteListener
         );
     }

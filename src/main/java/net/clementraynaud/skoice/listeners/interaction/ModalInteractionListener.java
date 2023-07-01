@@ -25,6 +25,7 @@ import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.modals.ModalMapping;
+import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 public class ModalInteractionListener extends ListenerAdapter {
 
@@ -74,7 +75,7 @@ public class ModalInteractionListener extends ListenerAdapter {
             } else {
                 this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
                 this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
-                event.editMessage(this.plugin.getBot().getMenu("range").build()).queue();
+                event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("range").build())).queue();
             }
         }
     }

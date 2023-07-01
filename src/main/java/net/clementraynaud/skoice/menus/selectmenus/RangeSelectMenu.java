@@ -24,6 +24,7 @@ import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +56,7 @@ public class RangeSelectMenu extends SelectMenu {
                 && super.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()) == 20) {
             defaultValue = RangeSelectMenu.SHORT_RANGE_MODE_ID;
         }
-        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("mode-selection")
+        return StringSelectMenu.create("mode-selection")
                 .setPlaceholder(super.plugin.getBot().getStatus() != BotStatus.READY
                         ? super.plugin.getLang().getMessage("discord.menu.range.select-menu.placeholder")
                         : super.plugin.getLang().getMessage("discord.menu.range.select-menu.alternative-placeholder"))

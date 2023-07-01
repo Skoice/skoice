@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.listeners.guild.override;
 
 import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.override.GenericPermissionOverrideEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 

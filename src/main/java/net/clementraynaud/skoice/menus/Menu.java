@@ -28,11 +28,11 @@ import net.clementraynaud.skoice.menus.selectmenus.ServerSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ToggleSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.VoiceChannelSelectMenu;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -67,9 +67,9 @@ public class Menu {
         this.fields = menu.getStringList("fields").toArray(new String[0]);
     }
 
-    public Message build(String... args) {
-        return new MessageBuilder().setEmbeds(this.getEmbed(args))
-                .setActionRows(this.getActionRows()).build();
+    public MessageCreateData build(String... args) {
+        return new MessageCreateBuilder().setEmbeds(this.getEmbed(args))
+                .setComponents(this.getActionRows()).build();
     }
 
     private String getTitle(boolean withEmoji) {

@@ -28,9 +28,11 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.Modal;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
+import net.dv8tion.jda.api.interactions.modals.Modal;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
+import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 public class ButtonInteractionListener extends ListenerAdapter {
 
@@ -82,10 +84,10 @@ public class ButtonInteractionListener extends ListenerAdapter {
                                 .build();
                         event.replyModal(modal).queue();
                     } else {
-                        event.editMessage(this.plugin.getBot().getMenu(buttonId).build()).queue();
+                        event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu(buttonId).build())).queue();
                     }
                 } else if ("resume-configuration".equals(event.getButton().getId())) {
-                    event.reply(this.plugin.getConfigurationMenu().update()).queue();
+                    event.reply(MessageCreateData.fromEditData(this.plugin.getConfigurationMenu().update())).queue();
                 }
             }
         } else {

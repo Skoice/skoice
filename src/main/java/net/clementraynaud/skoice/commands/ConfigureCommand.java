@@ -24,6 +24,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 public class ConfigureCommand extends ListenerAdapter {
 
@@ -45,7 +46,7 @@ public class ConfigureCommand extends ListenerAdapter {
                             .setEphemeral(true).queue();
                 } else {
                     this.plugin.getConfigurationMenu().delete();
-                    event.reply(this.plugin.getConfigurationMenu().update()).queue();
+                    event.reply(MessageCreateData.fromEditData(this.plugin.getConfigurationMenu().update())).queue();
                     this.configureCommandCooldown = true;
                     this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
                             this.configureCommandCooldown = false, ConfigureCommand.COOLDOWN

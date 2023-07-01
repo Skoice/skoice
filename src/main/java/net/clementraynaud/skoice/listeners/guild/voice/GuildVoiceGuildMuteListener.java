@@ -23,7 +23,7 @@ package net.clementraynaud.skoice.listeners.guild.voice;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceGuildMuteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -39,12 +39,11 @@ public class GuildVoiceGuildMuteListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceGuildMute(GuildVoiceGuildMuteEvent event) {
-        if (event.getMember().getVoiceState() != null
-                && !(event.getMember().getVoiceState().getChannel() instanceof VoiceChannel)) {
+        if (event.getMember().getVoiceState() == null) {
             return;
         }
-        VoiceChannel voiceChannel = (VoiceChannel) event.getMember().getVoiceState().getChannel();
-        if (this.plugin.getConfigYamlFile().getVoiceChannel().equals(voiceChannel) && !event.isGuildMuted()) {
+        AudioChannel audioChannel = event.getMember().getVoiceState().getChannel();
+        if (this.plugin.getConfigYamlFile().getVoiceChannel().equals(audioChannel) && !event.isGuildMuted()) {
             if (event.getMember().hasPermission(Permission.VOICE_MUTE_OTHERS)) {
                 event.getMember().mute(true).queue();
                 List<String> mutedUsers = this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);

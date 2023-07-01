@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +50,7 @@ public class LoginReminderSelectMenu extends SelectMenu {
                 SelectOption.of(super.plugin.getLang().getMessage("discord.menu.login-reminder.select-menu.never-remind.label"), String.valueOf(LoginReminderSelectMenu.NEVER_REMIND))
                         .withEmoji(MenuEmoji.MUTE.get())));
         String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_REMINDER.toString());
-        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("login-reminder-selection")
+        return StringSelectMenu.create("login-reminder-selection")
                 .addOptions(options)
                 .setDefaultValues(Collections.singleton(defaultValue)).build();
     }

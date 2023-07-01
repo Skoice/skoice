@@ -26,11 +26,11 @@ import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.util.DistanceUtil;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.clementraynaud.skoice.util.PlayerUtil;
-import net.dv8tion.jda.api.entities.AudioChannel;
-import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -199,8 +199,9 @@ public class UpdateNetworksTask {
                     Member member = this.plugin.getLinksYamlFile().getMember(p.getUniqueId());
                     if (member != null
                             && member.getVoiceState() != null
-                            && member.getVoiceState().getChannel() instanceof VoiceChannel) {
-                        VoiceChannel voiceChannel = (VoiceChannel) member.getVoiceState().getChannel();
+                            && member.getVoiceState().getChannel() != null
+                            && member.getVoiceState().getChannel().getType() == ChannelType.VOICE) {
+                        VoiceChannel voiceChannel = member.getVoiceState().getChannel().asVoiceChannel();
                         return this.plugin.getConfigYamlFile().getVoiceChannel().equals(voiceChannel)
                                 || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel));
                     }

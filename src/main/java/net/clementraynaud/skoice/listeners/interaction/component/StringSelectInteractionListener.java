@@ -26,25 +26,26 @@ import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEvent;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.Modal;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
+import net.dv8tion.jda.api.interactions.modals.Modal;
+import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
-public class SelectMenuInteractionListener extends ListenerAdapter {
+public class StringSelectInteractionListener extends ListenerAdapter {
 
     private final Skoice plugin;
 
-    public SelectMenuInteractionListener(Skoice plugin) {
+    public StringSelectInteractionListener(Skoice plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public void onSelectMenuInteraction(SelectMenuInteractionEvent event) {
+    public void onStringSelectInteraction(StringSelectInteractionEvent event) {
         if (!event.getMessage().getAuthor().equals(event.getJDA().getSelfUser()) || event.getGuild() == null) {
             return;
         }
@@ -78,13 +79,13 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                     this.plugin.getListenerManager().update();
                     this.plugin.getBotCommands().register(event.getGuild());
-                    event.editMessage(this.plugin.getBot().getMenu("language").build()).queue();
+                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("language").build())).queue();
                     break;
                 case "voice-channel-selection":
                     Guild guild = event.getGuild();
                     if (guild != null) {
                         if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
-                            event.editMessage(this.plugin.getBot().getMenu("voice-channel").build()).queue();
+                            event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue();
                         } else {
                             if ("new-voice-channel".equals(event.getSelectedOptions().get(0).getValue())) {
                                 TextInput categoryName = TextInput.create("category-name",
@@ -138,7 +139,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.ACTION_BAR_ALERT.toString(), false);
                     }
-                    event.editMessage(this.plugin.getBot().getMenu("action-bar-alert").build()).queue();
+                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("action-bar-alert").build())).queue();
                     break;
                 case "channel-visibility":
                     if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
@@ -146,7 +147,7 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                     } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.CHANNEL_VISIBILITY.toString(), false);
                     }
-                    event.editMessage(this.plugin.getBot().getMenu("channel-visibility").build()).queue();
+                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("channel-visibility").build())).queue();
                     break;
                 default:
                     throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));

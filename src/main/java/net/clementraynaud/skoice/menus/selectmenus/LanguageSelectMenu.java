@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +45,7 @@ public class LanguageSelectMenu extends SelectMenu {
                             : null)
                     .withEmoji(option.getEmoji()));
         }
-        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("language-selection")
+        return StringSelectMenu.create("language-selection")
                 .addOptions(options)
                 .setDefaultValues(Collections.singleton(super.plugin.getConfigYamlFile()
                         .getString(ConfigField.LANG.toString()))).build();

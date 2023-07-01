@@ -23,10 +23,11 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
+import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 import java.util.function.Consumer;
 
@@ -38,7 +39,7 @@ public class ConfigurationMenu {
         this.plugin = plugin;
     }
 
-    public Message update() {
+    public MessageEditData update() {
         Menu menu;
         if (this.plugin.getBot().getStatus() == BotStatus.MULTIPLE_GUILDS) {
             menu = this.plugin.getBot().getMenu("server");
@@ -51,7 +52,7 @@ public class ConfigurationMenu {
         } else {
             menu = this.plugin.getBot().getMenu("settings");
         }
-        return menu.build();
+        return MessageEditData.fromCreateData(menu.build());
     }
 
     public String getMessageId() {
