@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners;
+package net.clementraynaud.skoice.listeners.session;
 
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.Permission;

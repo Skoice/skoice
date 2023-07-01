@@ -25,7 +25,7 @@ import net.clementraynaud.skoice.commands.ConfigureCommand;
 import net.clementraynaud.skoice.commands.InviteCommand;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.commands.UnlinkCommand;
-import net.clementraynaud.skoice.listeners.SessionRecreateListener;
+import net.clementraynaud.skoice.listeners.session.SessionRecreateListener;
 import net.clementraynaud.skoice.listeners.channel.main.GenericChannelListener;
 import net.clementraynaud.skoice.listeners.channel.network.ChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
