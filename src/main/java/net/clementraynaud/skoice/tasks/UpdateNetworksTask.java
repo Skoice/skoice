@@ -218,12 +218,12 @@ public class UpdateNetworksTask {
     }
 
     private void deleteEmptyNetworks() {
-        for (Network network : new HashSet<>(Network.getNetworks())) {
+        for (Network network : Network.getNetworks()) {
             if (network.isEmpty()) {
                 VoiceChannel voiceChannel = network.getChannel();
                 if (voiceChannel != null && voiceChannel.getMembers().isEmpty()) {
-                    voiceChannel.delete().reason(this.plugin.getLang().getMessage("discord.communication-lost")).queue();
                     Network.getNetworks().remove(network);
+                    voiceChannel.delete().reason(this.plugin.getLang().getMessage("discord.communication-lost")).queue();
                 }
             }
         }

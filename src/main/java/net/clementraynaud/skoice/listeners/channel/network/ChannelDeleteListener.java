@@ -30,7 +30,6 @@ public class ChannelDeleteListener extends ListenerAdapter {
         if (!event.getChannelType().isAudio()) {
             return;
         }
-        Network.getNetworks().removeIf(network -> network.getChannel() != null
-                && event.getChannel().getId().equals(network.getChannel().getId()));
+        Network.getNetworks().removeIf(network -> event.getChannel().getId().equals(network.getChannelId()));
     }
 }

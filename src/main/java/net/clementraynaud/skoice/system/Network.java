@@ -45,12 +45,12 @@ public class Network {
     private final Skoice plugin;
     private final Set<UUID> players;
     private boolean initialized = false;
-    private String channel;
+    private String channelId;
 
-    public Network(Skoice plugin, String channel) {
+    public Network(Skoice plugin, String channelId) {
         this.plugin = plugin;
         this.players = Collections.emptySet();
-        this.channel = channel;
+        this.channelId = channelId;
     }
 
     public Network(Skoice plugin, Set<UUID> players) {
@@ -79,7 +79,7 @@ public class Network {
                         Collections.emptyList())
                 .setBitrate(this.plugin.getConfigYamlFile().getVoiceChannel().getBitrate())
                 .queue(voiceChannel -> {
-                    this.channel = voiceChannel.getId();
+                    this.channelId = voiceChannel.getId();
                     this.initialized = true;
                 }, e -> Network.getNetworks().remove(this));
     }
@@ -165,14 +165,18 @@ public class Network {
     }
 
     public VoiceChannel getChannel() {
-        if (this.channel == null || this.channel.isEmpty()) {
+        if (this.channelId == null || this.channelId.isEmpty()) {
             return null;
         }
         Guild guild = this.plugin.getBot().getGuild();
         if (guild != null) {
-            return guild.getVoiceChannelById(this.channel);
+            return guild.getVoiceChannelById(this.channelId);
         }
         return null;
+    }
+
+    public String getChannelId() {
+        return this.channelId;
     }
 
     public boolean isInitialized() {
