@@ -51,7 +51,7 @@ public class ModalInteractionListener extends ListenerAdapter {
             event.getGuild().createCategory(categoryName).queue(category ->
                     event.getGuild().createVoiceChannel(voiceChannelName, category).queue(channel -> {
                         this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
-                        new InterruptSystemTask(this.plugin.getConfigYamlFile()).run();
+                        new InterruptSystemTask(this.plugin).run();
                         this.plugin.getListenerManager().update(event.getUser());
                         this.plugin.getBot().muteMembers();
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();

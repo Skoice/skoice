@@ -117,7 +117,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                                     this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(),
                                             event.getSelectedOptions().get(0).getValue());
                                     this.plugin.getBot().updateVoiceState();
-                                    new InterruptSystemTask(this.plugin.getConfigYamlFile()).run();
+                                    new InterruptSystemTask(this.plugin).run();
                                     this.plugin.getListenerManager().update(event.getUser());
                                     this.plugin.getBot().muteMembers();
                                 }

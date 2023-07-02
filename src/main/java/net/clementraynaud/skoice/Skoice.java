@@ -91,7 +91,7 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onDisable() {
         if (this.bot.getJDA() != null) {
-            new InterruptSystemTask(this.configYamlFile).run();
+            new InterruptSystemTask(this).run();
             this.bot.getJDA().shutdown();
         }
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));

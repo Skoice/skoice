@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.tasks;
 
-import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
@@ -28,29 +28,29 @@ import java.util.concurrent.CompletableFuture;
 
 public class InterruptSystemTask {
 
-    private final ConfigYamlFile configYamlFile;
+    private final Skoice plugin;
 
-    public InterruptSystemTask(ConfigYamlFile configYamlFile) {
-        this.configYamlFile = configYamlFile;
+    public InterruptSystemTask(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     public void run() {
         for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.getAwaitingMoves().values()) {
             value.getRight().cancel(true);
         }
-        boolean isVoiceChannelSet = this.configYamlFile.getVoiceChannel() != null;
+        boolean isVoiceChannelSet = this.plugin.getConfigYamlFile().getVoiceChannel() != null;
         for (Network network : Network.getNetworks()) {
             if (isVoiceChannelSet) {
                 for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
                     Member member = network.getChannel().getMembers().get(i);
                     if (i + 1 < network.getChannel().getMembers().size()) {
-                        member.getGuild().moveVoiceMember(member, this.configYamlFile.getVoiceChannel()).queue();
+                        member.getGuild().moveVoiceMember(member, this.plugin.getConfigYamlFile().getVoiceChannel()).queue();
                     } else {
-                        member.getGuild().moveVoiceMember(member, this.configYamlFile.getVoiceChannel()).complete();
+                        member.getGuild().moveVoiceMember(member, this.plugin.getConfigYamlFile().getVoiceChannel()).complete();
                     }
                 }
             }
-            network.getChannel().delete().queue();
+            network.getChannel().delete().reason(this.plugin.getLang().getMessage("discord.communication-lost")).queue();
             network.clear();
         }
         Network.getNetworks().clear();

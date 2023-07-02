@@ -99,7 +99,7 @@ public class ListenerManager {
             if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
                 this.unregisterBotListeners();
             }
-            new InterruptSystemTask(this.plugin.getConfigYamlFile()).run();
+            new InterruptSystemTask(this.plugin).run();
         }
     }
 
