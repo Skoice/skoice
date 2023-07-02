@@ -27,7 +27,6 @@ import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class IncludedPlayersSelectMenu extends SelectMenu {
@@ -38,16 +37,16 @@ public class IncludedPlayersSelectMenu extends SelectMenu {
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.included-players.select-menu.spectators-included.label"), ConfigField.SPECTATORS_INCLUDED.toString())
-                        .withEmoji(MenuEmoji.GHOST.get()),
-                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.included-players.select-menu.corpses-included.label"), ConfigField.CORPSES_INCLUDED.toString())
-                        .withEmoji(MenuEmoji.SKULL.get())));
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.included-players.select-menu.corpses-included.label"), ConfigField.CORPSES_INCLUDED.toString())
+                        .withEmoji(MenuEmoji.SKULL.get()),
+                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.included-players.select-menu.spectators-included.label"), ConfigField.SPECTATORS_INCLUDED.toString())
+                        .withEmoji(MenuEmoji.GHOST.get())));
         List<String> defaultValues = new ArrayList<>();
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString())) {
-            defaultValues.add(ConfigField.SPECTATORS_INCLUDED.toString());
-        }
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.CORPSES_INCLUDED.toString())) {
             defaultValues.add(ConfigField.CORPSES_INCLUDED.toString());
+        }
+        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString())) {
+            defaultValues.add(ConfigField.SPECTATORS_INCLUDED.toString());
         }
         return StringSelectMenu.create("included-players-selection")
                 .setPlaceholder(super.plugin.getLang().getMessage("discord.menu.included-players.select-menu.placeholder"))

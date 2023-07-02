@@ -4,6 +4,6 @@ lang: EN
 login-reminder: 1
 action-bar-alert: true
 tooltips: true
-spectators-included: false
 corpses-included: false
+spectators-included: false
 channel-visibility: true

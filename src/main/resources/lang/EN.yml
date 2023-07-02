@@ -161,10 +161,10 @@ discord:
       description: "Choose whether or not some types of players are included in the proximity voice chat."
       select-menu:
         placeholder: "Please select the desired types of players."
-        spectators-included:
-          label: "Spectators"
         corpses-included:
           label: "Corpses"
+        spectators-included:
+          label: "Spectators"
     channel-visibility:
       title: "Channel Visibility"
       description: "Toggle the visibility of the temporary channels created by Skoice."
