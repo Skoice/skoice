@@ -150,7 +150,6 @@ discord:
     action-bar-alert:
       title: "Aktionsleisten-Alarm"
       description: "Schaltet den Alarm für Spieler ein, die sich entfernen, bevor sie von ihrem aktuellen Sprachkanal getrennt werden."
-      shortened-description: "Schaltet den Alarm für Spieler ein, die sich entfernen, bevor sie von ihrem aktuellen Sprachkanal getrennt werden."
     channel-visibility:
       title: "Sichtbarkeit der Kanäle"
       description: "Schaltet die Sichtbarkeit der von Skoice erstellten temporären Kanäle um."

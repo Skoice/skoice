@@ -156,7 +156,6 @@ discord:
     action-bar-alert:
       title: "Action Bar Alert"
       description: "Toggle the alert sent to players who are moving away before they get disconnected from their current voice channel."
-      shortened-description: "Toggle the alert sent to players who are moving away before they get disconnected from their current voice channel."
     included-players:
       title: "Included Players"
       description: "Choose whether or not some types of players are included in the proximity voice chat."

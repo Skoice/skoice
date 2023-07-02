@@ -150,7 +150,6 @@ discord:
     action-bar-alert:
       title: "Alerta na Barra de Ações (Action Bar)"
       description: "Enviar um alerta para jogadores que se distanciam demais antes de serem desconectados do canal de voz atual."
-      shortened-description: "Enviar um alerta para jogadores que se distanciam demais antes de serem desconectados do canal de voz atual."
     channel-visibility:
       title: "Visibilidade do Canal"
       description: "Definir a visibilidade de canais temporários criados pelo Skoice."

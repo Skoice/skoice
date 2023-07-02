@@ -150,7 +150,6 @@ discord:
     action-bar-alert:
       title: "Action Bar Advarsel"
       description: "Slå advarslen til/fra der sendes til spillere der bevæger sig væk før de bliver koblet fra deres nuværende stemmekanal."
-      shortened-description: "Slå advarslen til/fra der sendes til spillere der bevæger sig væk før de bliver koblet fra deres nuværende stemmekanal."
     channel-visibility:
       title: "Kanal synlighed"
       description: "Skift synligheden af de midlertidige kanaler der bliver oprettet af Skoice."

@@ -150,7 +150,6 @@ discord:
     action-bar-alert:
       title: "Alert paska działań"
       description: "Wyłącz alert wysyłany do graczy, którzy się oddalają, zanim zostaną odłączeni od bieżącego kanału głosowego."
-      shortened-description: "Wyłącz alert wysyłany do graczy, którzy się oddalają, zanim zostaną odłączeni od bieżącego kanału głosowego."
     channel-visibility:
       title: "Widoczność kanały"
       description: "Przełącz widoczność tymczasowych kanałow utworzonych przez Skoice."

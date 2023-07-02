@@ -150,7 +150,6 @@ discord:
     action-bar-alert:
       title: "Action Bar Varsling"
       description: "Varsling sendes til spillere som flytter bort før de kobles fra sin nåværende talekanal."
-      shortened-description: "Slå av eller på varselen som sendes til spillere som flytter bort før de kobles fra sin nåværende talekanal."
     channel-visibility:
       title: "Kanal synlighet"
       description: "Slå av/på synligheten til de midlertidige kanalene skapt av Skoice."
