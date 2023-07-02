@@ -36,6 +36,9 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StringSelectInteractionListener extends ListenerAdapter {
 
     private final Skoice plugin;
@@ -56,6 +59,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
             String componentId = event.getComponentId();
+
             switch (componentId) {
                 case "server-selection":
                     if (this.plugin.getBot().getJDA().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
@@ -74,6 +78,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         }
                     }
                     break;
+
                 case "language-selection":
                     this.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), event.getSelectedOptions().get(0).getValue());
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
@@ -81,6 +86,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     this.plugin.getBotCommands().register(event.getGuild());
                     event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("language").build())).queue();
                     break;
+
                 case "voice-channel-selection":
                     Guild guild = event.getGuild();
                     if (guild != null) {
@@ -120,6 +126,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         }
                     }
                     break;
+
                 case "mode-selection":
                     if ("long-range-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
@@ -133,6 +140,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     }
                     break;
+
                 case "action-bar-alert":
                     if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.ACTION_BAR_ALERT.toString(), true);
@@ -141,6 +149,15 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     }
                     event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("action-bar-alert").build())).queue();
                     break;
+
+                case "included-players-selection":
+                    List<SelectOption> options = new ArrayList<>(event.getComponent().getOptions());
+                    options.removeAll(event.getSelectedOptions());
+                    options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
+                    event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
+                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("included-players").build())).queue();
+                    break;
+
                 case "channel-visibility":
                     if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.CHANNEL_VISIBILITY.toString(), true);
@@ -149,9 +166,11 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     }
                     event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("channel-visibility").build())).queue();
                     break;
+
                 default:
                     throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));
             }
+
         } else {
             event.reply(this.plugin.getBot().getMenu("access-denied").build()).setEphemeral(true).queue();
         }
