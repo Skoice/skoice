@@ -80,7 +80,7 @@ public class ButtonInteractionListener extends ListenerAdapter {
                                 .build();
                         Modal modal = Modal.create("customize",
                                         this.plugin.getLang().getMessage("discord.field.customize.title"))
-                                .addActionRows(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
+                                .addComponents(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
                                 .build();
                         event.replyModal(modal).queue();
                     } else {

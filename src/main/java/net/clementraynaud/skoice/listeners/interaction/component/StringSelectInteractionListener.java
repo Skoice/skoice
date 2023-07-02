@@ -102,7 +102,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                                         .build();
                                 Modal modal = Modal.create("new-voice-channel",
                                                 this.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.label"))
-                                        .addActionRows(ActionRow.of(categoryName), ActionRow.of(voiceChannelName))
+                                        .addComponents(ActionRow.of(categoryName), ActionRow.of(voiceChannelName))
                                         .build();
                                 event.replyModal(modal).queue();
                             } else {
