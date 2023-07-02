@@ -263,3 +263,4 @@ discord:
     vertical-radius:
       label: "Vertical Radius"
   communication-lost: "Communication lost."
+  system-interrupted: "System interrupted."

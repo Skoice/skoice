@@ -50,7 +50,7 @@ public class InterruptSystemTask {
                     }
                 }
             }
-            network.getChannel().delete().reason(this.plugin.getLang().getMessage("discord.communication-lost")).queue();
+            network.getChannel().delete().reason(this.plugin.getLang().getMessage("discord.system-interrupted")).queue();
             network.clear();
         }
         Network.getNetworks().clear();
