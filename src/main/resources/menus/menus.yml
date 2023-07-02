@@ -109,6 +109,11 @@ action-bar-alert:
   type: default
   style: primary
   parent: advanced-settings
+included-players:
+  emoji: bust_in_silhouette
+  type: default
+  style: primary
+  parent: advanced-settings
 channel-visibility:
   emoji: mag
   type: default

@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.menus.selectmenus.IncludedPlayersSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.RangeSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
@@ -140,6 +141,9 @@ public class Menu {
                 break;
             case "language":
                 this.selectMenu = new LanguageSelectMenu(this.plugin);
+                break;
+            case "included-players":
+                this.selectMenu = new IncludedPlayersSelectMenu(this.plugin);
                 break;
             case "action-bar-alert":
             case "channel-visibility":

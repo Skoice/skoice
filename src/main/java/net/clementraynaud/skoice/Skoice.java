@@ -105,14 +105,20 @@ public class Skoice extends JavaPlugin {
         metrics.addCustomChart(new SimplePie("lang", () ->
                 LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName()
         ));
-        metrics.addCustomChart(new SimplePie("tooltips", () ->
-                this.configYamlFile.getString(ConfigField.TOOLTIPS.toString())
-        ));
         metrics.addCustomChart(new SimplePie("loginReminder", () ->
                 this.configYamlFile.getString(ConfigField.LOGIN_REMINDER.toString())
         ));
         metrics.addCustomChart(new SimplePie("actionBarAlert", () ->
                 this.configYamlFile.getString(ConfigField.ACTION_BAR_ALERT.toString())
+        ));
+        metrics.addCustomChart(new SimplePie("tooltips", () ->
+                this.configYamlFile.getString(ConfigField.TOOLTIPS.toString())
+        ));
+        metrics.addCustomChart(new SimplePie("spectators-included", () ->
+                this.configYamlFile.getString(ConfigField.SPECTATORS_INCLUDED.toString())
+        ));
+        metrics.addCustomChart(new SimplePie("corpses-included", () ->
+                this.configYamlFile.getString(ConfigField.CORPSES_INCLUDED.toString())
         ));
         metrics.addCustomChart(new SimplePie("channelVisibility", () ->
                 this.configYamlFile.getString(ConfigField.CHANNEL_VISIBILITY.toString())
