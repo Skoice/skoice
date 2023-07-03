@@ -111,7 +111,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
             if (player.isOnline() && player.getPlayer() != null) {
                 if (Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannelLeft))) {
                     Network.getNetworks().stream()
-                            .filter(network -> network.contains(player.getPlayer().getUniqueId()))
+                            .filter(network -> network.contains(player.getPlayer()))
                             .forEach(network -> network.remove(player.getPlayer()));
                     if (!voiceChannelJoined.equals(mainVoiceChannel)) {
                         player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));

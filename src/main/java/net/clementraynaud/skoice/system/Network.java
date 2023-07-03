@@ -26,24 +26,24 @@ import net.clementraynaud.skoice.util.DistanceUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class Network {
 
     private static final double FALLOFF = 2.5;
 
     private static final Set<Network> networks = ConcurrentHashMap.newKeySet();
+
     private final Skoice plugin;
-    private final Set<UUID> players;
+    private final Set<LinkedPlayer> players;
     private boolean initialized = false;
     private String channelId;
 
@@ -53,7 +53,7 @@ public class Network {
         this.channelId = channelId;
     }
 
-    public Network(Skoice plugin, Set<UUID> players) {
+    public Network(Skoice plugin, Set<LinkedPlayer> players) {
         this.plugin = plugin;
         this.players = players;
     }
@@ -84,34 +84,41 @@ public class Network {
                 }, e -> Network.getNetworks().remove(this));
     }
 
-    public boolean canPlayerBeAdded(Player player) {
+    public boolean canPlayerBeAdded(LinkedPlayer player) {
+        if (!player.isStateEligible()) {
+            return false;
+        }
         return this.players.stream()
-                .map(Bukkit::getPlayer)
-                .filter(Objects::nonNull)
-                .filter(p -> !p.equals(player))
-                .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfigYamlFile()
+                .filter(LinkedPlayer::isStateEligible)
+                .map(LinkedPlayer::getBukkitPlayer)
+                .filter(p -> !p.equals(player.getBukkitPlayer()))
+                .filter(p -> p.getWorld().getName().equals(player.getBukkitPlayer().getWorld().getName()))
+                .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getBukkitPlayer().getLocation()) <= this.plugin.getConfigYamlFile()
                         .getInt(ConfigField.VERTICAL_RADIUS.toString())
-                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfigYamlFile()
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getBukkitPlayer().getLocation()) <= this.plugin.getConfigYamlFile()
                         .getInt(ConfigField.HORIZONTAL_RADIUS.toString()));
     }
 
-    public boolean canPlayerStayConnected(Player player) {
-        List<Player> matches = Arrays.asList(this.players.stream()
-                .map(Bukkit::getPlayer)
-                .filter(Objects::nonNull)
-                .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .filter(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfigYamlFile()
+    public boolean canPlayerStayConnected(LinkedPlayer player) {
+        if (!player.isStateEligible()) {
+            return false;
+        }
+        Set<Player> matches = this.players.stream()
+                .filter(LinkedPlayer::isStateEligible)
+                .map(LinkedPlayer::getBukkitPlayer)
+                .filter(p -> p.getWorld().getName().equals(player.getBukkitPlayer().getWorld().getName()))
+                .filter(p -> DistanceUtil.getVerticalDistance(p.getLocation(), player.getBukkitPlayer().getLocation()) <= this.plugin.getConfigYamlFile()
                         .getInt(ConfigField.VERTICAL_RADIUS.toString()) + Network.FALLOFF
-                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getLocation()) <= this.plugin.getConfigYamlFile()
+                        && DistanceUtil.getHorizontalDistance(p.getLocation(), player.getBukkitPlayer().getLocation()) <= this.plugin.getConfigYamlFile()
                         .getInt(ConfigField.HORIZONTAL_RADIUS.toString()) + Network.FALLOFF)
-                .toArray(Player[]::new));
+                .collect(Collectors.toSet());
         if (this.players.size() > matches.size()) {
-            Player[] otherPlayers = this.players.stream()
-                    .map(Bukkit::getPlayer)
-                    .filter(Objects::nonNull)
+            Set<Player> otherPlayers = this.players.stream()
+                    .filter(LinkedPlayer::isStateEligible)
+                    .map(LinkedPlayer::getBukkitPlayer)
+                    .filter(p -> p.getWorld().getName().equals(player.getBukkitPlayer().getWorld().getName()))
                     .filter(p -> !matches.contains(p))
-                    .toArray(Player[]::new);
+                    .collect(Collectors.toSet());
             for (Player otherPlayer : otherPlayers) {
                 if (matches.stream()
                         .anyMatch(p -> DistanceUtil.getVerticalDistance(p.getLocation(), otherPlayer.getLocation()) <= this.plugin.getConfigYamlFile()
@@ -136,24 +143,24 @@ public class Network {
         this.players.clear();
     }
 
-    public void add(UUID minecraftId) {
-        this.players.add(minecraftId);
+    public void add(LinkedPlayer player) {
+        this.players.add(player);
+    }
+
+    public void remove(LinkedPlayer player) {
+        this.players.remove(player);
     }
 
     public void remove(Player player) {
-        this.players.remove(player.getUniqueId());
+        this.players.removeIf(p -> p.getBukkitPlayer().equals(player));
     }
 
-    public void remove(UUID minecraftId) {
-        this.players.remove(minecraftId);
+    public boolean contains(LinkedPlayer player) {
+        return this.players.contains(player);
     }
 
     public boolean contains(Player player) {
-        return this.players.contains(player.getUniqueId());
-    }
-
-    public boolean contains(UUID minecraftId) {
-        return this.players.contains(minecraftId);
+        return this.players.stream().anyMatch(p -> p.getBukkitPlayer().equals(player));
     }
 
     public int size() {
@@ -173,10 +180,6 @@ public class Network {
             return guild.getVoiceChannelById(this.channelId);
         }
         return null;
-    }
-
-    public String getChannelId() {
-        return this.channelId;
     }
 
     public boolean isInitialized() {

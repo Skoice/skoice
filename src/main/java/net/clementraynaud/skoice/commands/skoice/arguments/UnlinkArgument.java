@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
@@ -40,18 +41,22 @@ public class UnlinkArgument extends Argument {
         if (this.cannotBeExecuted()) {
             return;
         }
+
         Player player = (Player) this.sender;
         if (super.plugin.getBot().getStatus() != BotStatus.READY) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
             return;
         }
+
         String discordId = super.plugin.getLinksYamlFile().getLinks().get(player.getUniqueId().toString());
         if (discordId == null) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked",
                     this.plugin.getBot().getGuild().getName()));
             return;
         }
+
         super.plugin.getLinksYamlFile().unlinkUser(player.getUniqueId().toString());
+        LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(player));
         super.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
             member.getUser().openPrivateChannel().queue(channel ->
                     channel.sendMessage(this.plugin.getBot().getMenu("account-unlinked").build())

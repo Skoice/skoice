@@ -20,9 +20,11 @@
 package net.clementraynaud.skoice.storage;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
@@ -43,6 +45,14 @@ public class LinksYamlFile extends YamlFile {
 
     public void unlinkUser(String minecraftId) {
         super.remove(LinksYamlFile.LINKS_FIELD + "." + minecraftId);
+
+        OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
+        if (!player.isOnline() || player.getPlayer() == null) {
+            return;
+        }
+        Network.getNetworks().stream()
+                .filter(network -> network.contains(player.getPlayer()))
+                .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(player.getPlayer()));
     }
 
     public Map<String, String> getLinks() {

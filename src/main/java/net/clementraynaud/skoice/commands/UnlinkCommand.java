@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
@@ -46,6 +47,7 @@ public class UnlinkCommand extends ListenerAdapter {
                         .setEphemeral(true).queue();
                 return;
             }
+
             String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), event.getUser().getId());
             if (minecraftId == null) {
                 event.reply(this.plugin.getBot().getMenu("account-not-linked")
@@ -53,8 +55,11 @@ public class UnlinkCommand extends ListenerAdapter {
                         .setEphemeral(true).queue();
                 return;
             }
+
             this.plugin.getLinksYamlFile().unlinkUser(minecraftId);
+            LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getMember().equals(event.getMember()));
             event.reply(this.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
+
             OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));

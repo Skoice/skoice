@@ -23,11 +23,13 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.clementraynaud.skoice.util.MapUtil;
+import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -59,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Bot {
 
@@ -154,6 +157,7 @@ public class Bot {
         this.plugin.getListenerManager().update();
         this.muteMembers();
         this.checkForUnlinkedUsers();
+        this.refreshOnlineLinkedPlayers();
         if (sender != null) {
             if (this.getStatus() == BotStatus.READY) {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected"));
@@ -221,6 +225,18 @@ public class Bot {
             if (player.isOnline() && player.getPlayer() != null) {
                 UpdateNetworksTask.getEligiblePlayers().add(player.getUniqueId());
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
+            }
+        }
+    }
+
+    public void refreshOnlineLinkedPlayers() {
+        LinkedPlayer.getOnlineLinkedPlayers().clear();
+
+        List<Player> onlinePlayers = PlayerUtil.getOnlinePlayers();
+        for (Player player : onlinePlayers) {
+            Member member = this.plugin.getLinksYamlFile().getMember(player.getUniqueId());
+            if (member != null) {
+                LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member));
             }
         }
     }

@@ -21,6 +21,7 @@
 package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,8 +38,9 @@ public class PlayerQuitListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
+        LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(event.getPlayer()));
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> Network.getNetworks().stream()
-                .filter(network -> network.contains(event.getPlayer().getUniqueId()))
-                .forEach(network -> network.remove(event.getPlayer().getUniqueId())));
+                .filter(network -> network.contains(event.getPlayer()))
+                .forEach(network -> network.remove(event.getPlayer())));
     }
 }

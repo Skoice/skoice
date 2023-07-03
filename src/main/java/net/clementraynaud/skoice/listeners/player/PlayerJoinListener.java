@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.listeners.player;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -69,6 +70,7 @@ public class PlayerJoinListener implements Listener {
             this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
                 Member member = this.plugin.getLinksYamlFile().getMember(player.getUniqueId());
                 if (member != null) {
+                    LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member));
                     GuildVoiceState voiceState = member.getVoiceState();
                     if (voiceState != null) {
                         AudioChannel audioChannel = voiceState.getChannel();

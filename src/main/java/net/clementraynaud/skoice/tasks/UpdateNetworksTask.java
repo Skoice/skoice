@@ -22,21 +22,13 @@ package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
-import net.clementraynaud.skoice.util.DistanceUtil;
-import net.clementraynaud.skoice.util.MapUtil;
-import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
-import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -44,7 +36,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
 public class UpdateNetworksTask {
 
@@ -71,39 +62,38 @@ public class UpdateNetworksTask {
         if (!this.lock.tryLock()) {
             return;
         }
+
         try {
             VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
             if (mainVoiceChannel == null) {
                 return;
             }
             Network.getNetworks().removeIf(network -> network.getChannel() == null && network.isInitialized());
-            Set<UUID> oldEligiblePlayers = new HashSet<>(UpdateNetworksTask.eligiblePlayers);
-            UpdateNetworksTask.eligiblePlayers.clear();
-            for (UUID minecraftId : oldEligiblePlayers) {
-                Player player = this.plugin.getServer().getPlayer(minecraftId);
-                if (player != null) {
-                    Member member = this.plugin.getLinksYamlFile().getMember(player.getUniqueId());
-                    if (member != null && member.getVoiceState() != null && member.getVoiceState().getChannel() != null) {
-                        AudioChannel audioChannel = member.getVoiceState().getChannel();
-                        if (audioChannel.getType() == ChannelType.VOICE) {
-                            VoiceChannel voiceChannel = (VoiceChannel) audioChannel;
-                            if (voiceChannel != mainVoiceChannel
-                                    && Network.getNetworks().stream().noneMatch(network -> network.getChannel().equals(voiceChannel))) {
-                                Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(member.getId());
-                                if (pair != null) {
-                                    pair.getRight().cancel(false);
-                                }
-                            } else {
-                                this.updateNetworksAroundPlayer(player);
-                                if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.ACTION_BAR_ALERT.toString())) {
-                                    this.sendActionBarAlert(player);
-                                }
-                                this.createNetworkIfNeeded(player);
-                            }
+
+
+            for (LinkedPlayer linkedPlayer : LinkedPlayer.getOnlineLinkedPlayers()) {
+                if (linkedPlayer.isInMainVoiceChannel() || linkedPlayer.isInAnyNetworkChannel()) {
+                    linkedPlayer.updateNearNetworks();
+                    if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.ACTION_BAR_ALERT.toString())) {
+                        linkedPlayer.sendActionBarAlert();
+                    }
+                    if (linkedPlayer.isStateEligible()
+                            && this.plugin.getConfigYamlFile().getCategory().getChannels().size() != 50) {
+                        Set<LinkedPlayer> playersWithinRange = linkedPlayer.getPlayersWithinRange();
+                        if (!playersWithinRange.isEmpty()) {
+                            playersWithinRange.add(linkedPlayer);
+                            this.createNetwork(playersWithinRange);
                         }
+                    }
+
+                } else {
+                    Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(linkedPlayer.getMember().getId());
+                    if (pair != null) {
+                        pair.getRight().cancel(false);
                     }
                 }
             }
+
             Set<Member> members = new HashSet<>(mainVoiceChannel.getMembers());
             for (Network network : Network.getNetworks()) {
                 VoiceChannel voiceChannel = network.getChannel();
@@ -112,12 +102,19 @@ public class UpdateNetworksTask {
                 }
                 members.addAll(voiceChannel.getMembers());
             }
-            Map<String, String> links = new HashMap<>(this.plugin.getLinksYamlFile().getLinks());
+
             for (Member member : members) {
-                String minecraftId = MapUtil.getKeyFromValue(links, member.getId());
-                Network playerNetwork = minecraftId != null ? Network.getNetworks().stream()
-                        .filter(n -> n.contains(UUID.fromString(minecraftId)))
-                        .findAny().orElse(null) : null;
+                Network playerNetwork = null;
+
+                LinkedPlayer linkedPlayer = LinkedPlayer.getOnlineLinkedPlayers().stream()
+                        .filter(p -> p.getMember().equals(member))
+                        .findFirst().orElse(null);
+                if (linkedPlayer != null) {
+                    playerNetwork = Network.getNetworks().stream()
+                            .filter(network -> network.contains(linkedPlayer))
+                            .findFirst().orElse(null);
+                }
+
                 VoiceChannel shouldBeInChannel;
                 if (playerNetwork != null) {
                     if (playerNetwork.getChannel() == null) {
@@ -127,14 +124,18 @@ public class UpdateNetworksTask {
                 } else {
                     shouldBeInChannel = mainVoiceChannel;
                 }
+
                 Pair<String, CompletableFuture<Void>> awaitingMove = UpdateNetworksTask.awaitingMoves.get(member.getId());
-                if (awaitingMove != null && awaitingMove.getLeft().equals(shouldBeInChannel.getId())) {
-                    continue;
+                if (awaitingMove != null) {
+                    if (awaitingMove.getLeft().equals(shouldBeInChannel.getId())) {
+                        continue;
+                    }
+                    if (!awaitingMove.getLeft().equals(shouldBeInChannel.getId())
+                            && !awaitingMove.getRight().cancel(false)) {
+                        continue;
+                    }
                 }
-                if (awaitingMove != null && !awaitingMove.getLeft().equals(shouldBeInChannel.getId())
-                        && !awaitingMove.getRight().cancel(false)) {
-                    continue;
-                }
+
                 GuildVoiceState voiceState = member.getVoiceState();
                 if (voiceState != null && voiceState.getChannel() != shouldBeInChannel) {
                     UpdateNetworksTask.awaitingMoves.put(member.getId(), Pair.of(
@@ -145,76 +146,16 @@ public class UpdateNetworksTask {
                 }
             }
             this.deleteEmptyNetworks();
+
         } finally {
             this.lock.unlock();
         }
     }
 
-    private void updateNetworksAroundPlayer(Player player) {
-        Network.getNetworks().stream()
-                .filter(network -> network.canPlayerBeAdded(player))
-                .reduce((network1, network2) -> network1.size() > network2.size()
-                        ? network1.engulf(network2)
-                        : network2.engulf(network1))
-                .filter(network -> !network.contains(player.getUniqueId()))
-                .ifPresent(network -> network.add(player.getUniqueId()));
-        Network.getNetworks().stream()
-                .filter(network -> network.contains(player.getUniqueId()))
-                .filter(network -> !network.canPlayerStayConnected(player))
-                .forEach(network -> {
-                    network.remove(player.getUniqueId());
-                    if (network.size() == 1) {
-                        network.clear();
-                    }
-                });
-    }
-
-    private void sendActionBarAlert(Player player) {
-        Network.getNetworks().stream()
-                .filter(network -> network.contains(player.getUniqueId()))
-                .filter(network -> network.canPlayerStayConnected(player))
-                .filter(network -> !network.canPlayerBeAdded(player))
-                .forEach(network -> this.plugin.adventure().player(player).sendActionBar(
-                                Component.text(ChatColor.translateAlternateColorCodes('&',
-                                                this.plugin.getLang().getMessage("minecraft.action-bar.alert")
-                                        )
-                                )
-                        )
-                );
-    }
-
-    private void createNetworkIfNeeded(Player player) {
-        Set<Player> alivePlayers = PlayerUtil.getOnlinePlayers().stream()
-                .filter(p -> !p.isDead())
-                .collect(Collectors.toSet());
-        Set<UUID> playersWithinRange = alivePlayers.stream()
-                .filter(p -> Network.getNetworks().stream().noneMatch(network -> network.contains(p)))
-                .filter(p -> !p.equals(player))
-                .filter(p -> p.getWorld().getName().equals(player.getWorld().getName()))
-                .filter(p -> DistanceUtil.getHorizontalDistance(p.getLocation(),
-                        player.getLocation()) <= this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString())
-                        && DistanceUtil.getVerticalDistance(p.getLocation(),
-                        player.getLocation()) <= this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()))
-                .filter(p -> {
-                    Member member = this.plugin.getLinksYamlFile().getMember(p.getUniqueId());
-                    if (member != null
-                            && member.getVoiceState() != null
-                            && member.getVoiceState().getChannel() != null
-                            && member.getVoiceState().getChannel().getType() == ChannelType.VOICE) {
-                        VoiceChannel voiceChannel = member.getVoiceState().getChannel().asVoiceChannel();
-                        return this.plugin.getConfigYamlFile().getVoiceChannel().equals(voiceChannel)
-                                || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(voiceChannel));
-                    }
-                    return false;
-                })
-                .map(Player::getUniqueId)
-                .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
-        if (!playersWithinRange.isEmpty() && this.plugin.getConfigYamlFile().getCategory().getChannels().size() != 50) {
-            playersWithinRange.add(player.getUniqueId());
-            Network network = new Network(this.plugin, playersWithinRange);
-            network.build();
-            Network.getNetworks().add(network);
-        }
+    private void createNetwork(Set<LinkedPlayer> players) {
+        Network network = new Network(this.plugin, players);
+        network.build();
+        Network.getNetworks().add(network);
     }
 
     private void deleteEmptyNetworks() {
