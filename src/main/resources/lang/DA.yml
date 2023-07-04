@@ -137,7 +137,7 @@ discord:
     language:
       title: "Sprog"
       description: "Vælg sproget der bruges til at vise meddelelser."
-    login-reminder:
+    login-notification:
       title: "Påmindelse ved login"
       description: "Slå beskeden til unlinked spillere til/fra når de logger ind på din Minecraft server."
       select-menu:

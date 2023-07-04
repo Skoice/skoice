@@ -143,8 +143,8 @@ discord:
     language:
       title: "Language"
       description: "Choose the language used to display messages."
-    login-reminder:
-      title: "Login Reminder"
+    login-notification:
+      title: "Login Notification"
       description: "Toggle the message sent to unlinked players when they log in to your Minecraft server."
       select-menu:
         always-remind:
