@@ -47,6 +47,10 @@
                             <pattern>net.kyori</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>kotlin</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
