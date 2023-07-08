@@ -177,7 +177,7 @@ discord:
       description: "[Скачать плагин](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) и установить его на ваш сервер Minecraft."
     donating:
       title: "Пожертвование"
-      description: "Skoice — бесплатный плагин. Если он вам нравится, вы можете помочь нам [donating](https://paypal.me/whitelines)."
+      description: "Skoice — бесплатный плагин. Если он вам нравится, вы можете помочь нам [donating](https://opencollective.com/skoice)."
     troubleshooting:
       title: "Устранение неполадок"
       description: "Возникли проблемы? [Присоединяйтесь к нашему серверу Discord](https://discord.gg/h3Tgccc)!"

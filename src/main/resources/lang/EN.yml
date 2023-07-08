@@ -203,7 +203,7 @@ discord:
       description: "[Get the plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server."
     donating:
       title: "Donating"
-      description: "Skoice is a free software. If you like it, you can help us by [donating](https://paypal.me/whitelines)."
+      description: "Skoice is a free software. If you like it, you can help us by [donating](https://opencollective.com/skoice)."
     troubleshooting:
       title: "Troubleshooting"
       description: "Having issues? [Join our Discord server](https://discord.gg/h3Tgccc)!"

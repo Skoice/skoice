@@ -177,7 +177,7 @@ discord:
       description: "[Hent pluginet](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) og installer det på din Minecraft-server."
     donating:
       title: "Donationer"
-      description: "Skoice er et gratis software. Hvis du kan lide det, kan du hjælpe os ved at [donere](https://paypal.me/whitelines)."
+      description: "Skoice er et gratis software. Hvis du kan lide det, kan du hjælpe os ved at [donere](https://opencollective.com/skoice)."
     troubleshooting:
       title: "Fejlfinding"
       description: "Har du problemer? [Deltag i vores Discord-server](https://discord.gg/h3Tgccc)!"

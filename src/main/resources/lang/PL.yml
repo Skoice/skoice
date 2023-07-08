@@ -177,7 +177,7 @@ discord:
       description: "[Zdobądź plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) i zainstaluj go na swoim serwerze minecraft."
     donating:
       title: "Darowizny"
-      description: "Skoice jest darmowy. Jeśli Ci się podoba, możesz nam pomóc, przekazując [darowiznę](https://paypal.me/whitelines)."
+      description: "Skoice jest darmowy. Jeśli Ci się podoba, możesz nam pomóc, przekazując [darowiznę](https://opencollective.com/skoice)."
     troubleshooting:
       title: "Rozwiązywanie problemów"
       description: "Masz problemy? [Dołącz do naszego serwera discord](https://discord.gg/h3Tgccc)!"

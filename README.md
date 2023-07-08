@@ -48,4 +48,4 @@ If you are experiencing any issues with Skoice, you may want to [join our Discor
 
 ## Donating
 
-Keep in mind that Skoice is a free software. If you like it, you can help us by [donating](https://paypal.me/whitelines).
+Keep in mind that Skoice is a free software. If you like it, you can help us by [donating](https://opencollective.com/skoice).
