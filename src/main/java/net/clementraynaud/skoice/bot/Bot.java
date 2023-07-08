@@ -223,7 +223,6 @@ public class Bot {
         } else {
             OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
-                UpdateNetworksTask.getEligiblePlayers().add(player.getUniqueId());
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
             }
         }

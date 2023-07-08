@@ -32,14 +32,12 @@ import net.dv8tion.jda.internal.utils.tuple.Pair;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class UpdateNetworksTask {
 
-    private static final Set<UUID> eligiblePlayers = new HashSet<>();
     private static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
 
     private final ReentrantLock lock = new ReentrantLock();
@@ -48,10 +46,6 @@ public class UpdateNetworksTask {
 
     public UpdateNetworksTask(Skoice plugin) {
         this.plugin = plugin;
-    }
-
-    public static Set<UUID> getEligiblePlayers() {
-        return UpdateNetworksTask.eligiblePlayers;
     }
 
     public static Map<String, Pair<String, CompletableFuture<Void>>> getAwaitingMoves() {

@@ -41,9 +41,7 @@ import net.clementraynaud.skoice.listeners.interaction.component.StringSelectInt
 import net.clementraynaud.skoice.listeners.message.MessageDeleteListener;
 import net.clementraynaud.skoice.listeners.message.MessageReceivedListener;
 import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
-import net.clementraynaud.skoice.listeners.player.PlayerMoveListener;
 import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
-import net.clementraynaud.skoice.listeners.player.PlayerTeleportListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.User;
@@ -55,8 +53,6 @@ public class ListenerManager {
 
     private final Skoice plugin;
     private final PlayerQuitListener playerQuitListener;
-    private final PlayerMoveListener playerMoveListener;
-    private final PlayerTeleportListener playerTeleportListener;
     private final GuildVoiceGuildMuteListener guildVoiceGuildMuteListener;
     private final GuildVoiceUpdateListener guildVoiceUpdateListener;
     private final ChannelDeleteListener channelDeleteListener;
@@ -65,9 +61,7 @@ public class ListenerManager {
 
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;
-        this.playerQuitListener = new PlayerQuitListener(this.plugin);
-        this.playerMoveListener = new PlayerMoveListener();
-        this.playerTeleportListener = new PlayerTeleportListener();
+        this.playerQuitListener = new PlayerQuitListener();
         this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
         this.guildVoiceUpdateListener = new GuildVoiceUpdateListener(this.plugin);
         this.channelDeleteListener = new ChannelDeleteListener();
@@ -80,11 +74,11 @@ public class ListenerManager {
             this.startup = false;
             this.plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.plugin), this.plugin);
             if (this.plugin.getBot().getStatus() == BotStatus.READY) {
-                this.registerEligiblePlayerListeners();
+                this.registerMinecraftListeners();
                 this.registerBotListeners();
             }
         } else if (!wasBotReady && this.plugin.getBot().getStatus() == BotStatus.READY) {
-            this.registerEligiblePlayerListeners();
+            this.registerMinecraftListeners();
             this.registerBotListeners();
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
             if (user != null) {
@@ -95,7 +89,7 @@ public class ListenerManager {
             }
         } else if (wasBotReady && this.plugin.getBot().getStatus() != BotStatus.READY) {
             this.plugin.getConfigurationMenu().delete();
-            this.unregisterEligiblePlayerListeners();
+            this.unregisterMinecraftListeners();
             if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
                 this.unregisterBotListeners();
             }
@@ -107,16 +101,12 @@ public class ListenerManager {
         this.update(null);
     }
 
-    private void registerEligiblePlayerListeners() {
+    private void registerMinecraftListeners() {
         this.plugin.getServer().getPluginManager().registerEvents(this.playerQuitListener, this.plugin);
-        this.plugin.getServer().getPluginManager().registerEvents(this.playerMoveListener, this.plugin);
-        this.plugin.getServer().getPluginManager().registerEvents(this.playerTeleportListener, this.plugin);
     }
 
-    private void unregisterEligiblePlayerListeners() {
+    private void unregisterMinecraftListeners() {
         HandlerList.unregisterAll(this.playerQuitListener);
-        HandlerList.unregisterAll(this.playerMoveListener);
-        HandlerList.unregisterAll(this.playerTeleportListener);
     }
 
     public void registerPermanentBotListeners() {
