@@ -61,7 +61,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class Bot {
 
@@ -233,10 +232,8 @@ public class Bot {
 
         List<Player> onlinePlayers = PlayerUtil.getOnlinePlayers();
         for (Player player : onlinePlayers) {
-            Member member = this.plugin.getLinksYamlFile().getMember(player.getUniqueId());
-            if (member != null) {
-                LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member));
-            }
+            this.plugin.getLinksYamlFile().retrieveMember(player.getUniqueId(),
+                    member -> LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member)));
         }
     }
 

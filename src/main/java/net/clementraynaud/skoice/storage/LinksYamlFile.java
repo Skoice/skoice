@@ -23,13 +23,17 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class LinksYamlFile extends YamlFile {
 
@@ -82,5 +86,25 @@ public class LinksYamlFile extends YamlFile {
         } catch (ErrorResponseException ignored) {
         }
         return member;
+    }
+
+    public boolean retrieveMember(UUID minecraftId, Consumer<Member> success, Consumer<ErrorResponseException> failure) {
+        String discordId = this.getLinks().get(minecraftId.toString());
+        if (discordId == null) {
+            return false;
+        }
+
+        Guild guild = super.plugin.getBot().getGuild();
+        if (guild == null) {
+            return false;
+        }
+
+        guild.retrieveMemberById(discordId).queue(success,
+                new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, failure));
+        return true;
+    }
+
+    public boolean retrieveMember(UUID minecraftId, Consumer<Member> success) {
+        return this.retrieveMember(minecraftId, success, null);
     }
 }

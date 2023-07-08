@@ -74,14 +74,17 @@ public class ConfigurationMenu {
         if (guildId == null || channelId == null || messageId == null) {
             return;
         }
+
         Guild guild = this.plugin.getBot().getJDA().getGuildById(guildId);
         if (guild == null) {
             return;
         }
+
         GuildMessageChannel channel = guild.getChannelById(GuildMessageChannel.class, channelId);
         if (channel == null) {
             return;
         }
+
         channel.retrieveMessageById(messageId).queue(success,
                 new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.clearConfig()));
     }

@@ -26,7 +26,6 @@ import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.Player;
@@ -69,34 +68,34 @@ public class PlayerJoinListener implements Listener {
                 }
             }
         } else {
-            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                Member member = this.plugin.getLinksYamlFile().getMember(player.getUniqueId());
-                if (member != null) {
-                    LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member));
-                    GuildVoiceState voiceState = member.getVoiceState();
-                    if (voiceState != null) {
-                        AudioChannel audioChannel = voiceState.getChannel();
-                        if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
-                            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
-                        }
-                    }
-
-                } else {
-                    String loginNotificationStatus = this.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString());
-                    if (LoginNotificationSelectMenu.ALWAYS_REMIND.equals(loginNotificationStatus)) {
-                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked",
-                                this.plugin.getBot().getGuild().getName()));
-                    } else if (LoginNotificationSelectMenu.REMIND_ONCE.equals(loginNotificationStatus)) {
-                        List<String> notifiedPlayers = this.plugin.getLoginNotificationYamlFile().getStringList(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD);
-                        if (!notifiedPlayers.contains(player.getUniqueId().toString())) {
-                            notifiedPlayers.add(player.getUniqueId().toString());
-                            this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, notifiedPlayers);
-                            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked-remind-once",
-                                    this.plugin.getBot().getGuild().getName()));
-                        }
+            if (!this.plugin.getLinksYamlFile().retrieveMember(player.getUniqueId(), member -> {
+                LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member));
+                GuildVoiceState voiceState = member.getVoiceState();
+                if (voiceState != null) {
+                    AudioChannel audioChannel = voiceState.getChannel();
+                    if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
+                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
                     }
                 }
-            });
+            }, e -> this.sendLoginNotification(player))) {
+                this.sendLoginNotification(player);
+            }
+        }
+    }
+
+    private void sendLoginNotification(Player player) {
+        String loginNotificationStatus = this.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString());
+        if (LoginNotificationSelectMenu.ALWAYS_REMIND.equals(loginNotificationStatus)) {
+            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked",
+                    this.plugin.getBot().getGuild().getName()));
+        } else if (LoginNotificationSelectMenu.REMIND_ONCE.equals(loginNotificationStatus)) {
+            List<String> notifiedPlayers = this.plugin.getLoginNotificationYamlFile().getStringList(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD);
+            if (!notifiedPlayers.contains(player.getUniqueId().toString())) {
+                notifiedPlayers.add(player.getUniqueId().toString());
+                this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, notifiedPlayers);
+                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked-remind-once",
+                        this.plugin.getBot().getGuild().getName()));
+            }
         }
     }
 }
