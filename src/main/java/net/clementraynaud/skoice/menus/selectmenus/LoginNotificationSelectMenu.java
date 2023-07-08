@@ -32,9 +32,9 @@ import java.util.List;
 
 public class LoginNotificationSelectMenu extends SelectMenu {
 
-    private static final String ALWAYS_REMIND = "always-remind";
-    private static final String REMIND_ONCE = "remind-once";
-    private static final String NEVER_REMIND = "never-remind";
+    public static final String ALWAYS_REMIND = "always-remind";
+    public static final String REMIND_ONCE = "remind-once";
+    public static final String NEVER_REMIND = "never-remind";
 
     public LoginNotificationSelectMenu(Skoice plugin) {
         super(plugin, false);

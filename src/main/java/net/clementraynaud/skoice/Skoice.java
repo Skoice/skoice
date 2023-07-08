@@ -26,6 +26,7 @@ import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.storage.LinksYamlFile;
+import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
@@ -46,6 +47,7 @@ public class Skoice extends JavaPlugin {
     private ConfigYamlFile configYamlFile;
     private LinksYamlFile linksYamlFile;
     private TempYamlFile tempYamlFile;
+    private LoginNotificationYamlFile loginNotificationYamlFile;
     private ListenerManager listenerManager;
     private Bot bot;
     private BotCommands botCommands;
@@ -67,6 +69,8 @@ public class Skoice extends JavaPlugin {
         new OutdatedConfig(this).update();
         this.tempYamlFile = new TempYamlFile(this);
         this.tempYamlFile.load();
+        this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
+        this.loginNotificationYamlFile.load();
         this.listenerManager = new ListenerManager(this);
         this.bot = new Bot(this);
         this.bot.connect();
@@ -152,6 +156,10 @@ public class Skoice extends JavaPlugin {
 
     public TempYamlFile getTempYamlFile() {
         return this.tempYamlFile;
+    }
+
+    public LoginNotificationYamlFile getLoginNotificationYamlFile() {
+        return this.loginNotificationYamlFile;
     }
 
     public ListenerManager getListenerManager() {

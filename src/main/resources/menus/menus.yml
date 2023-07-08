@@ -25,6 +25,10 @@ configuration:
     type: success
     fields:
       - configuration-complete
+  notified-players-cleared:
+    type: success
+    fields:
+      - notified-players-cleared
   incomplete-configuration:
     type: error
     fields:

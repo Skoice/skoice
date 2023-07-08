@@ -56,6 +56,7 @@ public enum MenuEmoji {
     SOUND("U+1F509"),
     SPEECH_BALLOON("U+1F4AC"),
     WARNING("U+26A0"),
+    WASTEBASKET("U+1F5D1"),
     WRENCH("U+1F527"),
     X("U+274C");
 

@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.listeners.interaction.component;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.Menu;
+import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -33,6 +34,8 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
+
+import java.util.Collections;
 
 public class ButtonInteractionListener extends ListenerAdapter {
 
@@ -83,6 +86,10 @@ public class ButtonInteractionListener extends ListenerAdapter {
                                 .addComponents(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
                                 .build();
                         event.replyModal(modal).queue();
+                    } else if ("clear-notified-players".equals(buttonId)) {
+                        this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, Collections.emptyList());
+                        event.reply(this.plugin.getBot().getMenu("notified-players-cleared").build())
+                                .setEphemeral(true).queue();
                     } else {
                         event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu(buttonId).build())).queue();
                     }

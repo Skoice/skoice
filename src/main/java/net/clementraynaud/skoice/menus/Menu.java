@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.menus;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.selectmenus.*;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
@@ -196,20 +197,26 @@ public class Menu {
     }
 
     private List<Button> getAdditionalButtons() {
+        List<Button> additionalButtons = new ArrayList<>();
         if ("incomplete-configuration-server-manager".equals(this.name)) {
-            return Collections.singletonList(Button.primary("resume-configuration",
+            additionalButtons.add(Button.primary("resume-configuration",
                             this.plugin.getLang().getMessage("discord.button-label.resume-configuration"))
                     .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
         } else if ("permissions".equals(this.name)) {
-            return Collections.singletonList(Button.link("https://discord.com/api/oauth2/authorize?client_id="
+            additionalButtons.add(Button.link("https://discord.com/api/oauth2/authorize?client_id="
                             + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
                             + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
                     .withEmoji(this.emoji.get()));
         } else if ("range".equals(this.name) && this.plugin.getBot().getStatus() == BotStatus.READY) {
-            return Collections.singletonList(Button.primary("customize",
+            additionalButtons.add(Button.primary("customize",
                             this.plugin.getLang().getMessage("discord.field.customize.title"))
                     .withEmoji(MenuEmoji.PENCIL2.get()));
+        } else if ("login-notification".equals(this.name)
+                && LoginNotificationSelectMenu.REMIND_ONCE.equals(this.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
+            additionalButtons.add(Button.danger("clear-notified-players",
+                            this.plugin.getLang().getMessage("discord.button-label.clear-notified-players"))
+                    .withEmoji(MenuEmoji.WASTEBASKET.get()));
         }
-        return Collections.emptyList();
+        return additionalButtons;
     }
 }

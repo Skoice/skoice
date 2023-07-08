@@ -72,7 +72,8 @@ minecraft:
       invalid-code: "%s You have &cnot provided a valid code&7. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to receive one."
       account-linked: "%s You have &alinked your Minecraft account &7to Discord."
       account-unlinked: "%s You have &aunlinked your Minecraft account &7from Discord."
-      account-not-linked: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it."
+      account-not-linked: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat."
+      account-not-linked-remind-once: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat. You will not receive this notification again."
       account-already-linked: "%s You have &calready linked your Minecraft account &7to Discord. Type \"&e/skoice unlink&7\" to unlink it."
       connected: "%s You are &anow connected &7to the proximity voice chat. For a better experience, you can enable \"&eStreamer Mode&7\" in your Discord client."
       not-connected: "%s You are &cnot connected &7to the proximity voice chat. Join the voice channel \"&e%s&7\" on the Discord server \"&e%s&7\" to use it."
@@ -181,6 +182,9 @@ discord:
     configuration-complete:
       title: "Configuration Complete"
       description: "Skoice is now configured. Type `/link` on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
+    notified-players-cleared:
+      title: "Notified Players Cleared"
+      description: "You have cleared notified players. Unlinked players that have already received the reminder to link their accounts will now be notified again."
     incomplete-configuration:
       title: "Incomplete Configuration"
       description: "Skoice is not configured correctly. Please contact an administrator of the server."
@@ -222,7 +226,7 @@ discord:
       description: "Your Discord account has been unlinked from Minecraft."
     account-not-linked:
       title: "Account Not Linked"
-      description: "Your Discord account is not linked to Minecraft. Type `/link` on the Discord server \"%s\" to link it."
+      description: "Your Discord account is not linked to Minecraft. Type `/link` on the Discord server \"%s\" to link it and use the proximity voice chat."
     account-already-linked:
       title: "Account Already Linked"
       description: "Your Discord account is already linked to Minecraft. Type `/unlink` to unlink it."
@@ -244,6 +248,7 @@ discord:
     close: "Close"
     configure-later: "Configure Later"
     resume-configuration: "Resume Configuration"
+    clear-notified-players: "Clear Notified Players"
   select-option:
     default:
       description: "This option is selected by default."

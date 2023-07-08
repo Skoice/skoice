@@ -18,6 +18,9 @@
 configuration-complete:
   emoji: heavy_check_mark
   inline: false
+notified-players-cleared:
+  emoji: heavy_check_mark
+  inline: false
 incomplete-configuration:
   emoji: x
   inline: false
