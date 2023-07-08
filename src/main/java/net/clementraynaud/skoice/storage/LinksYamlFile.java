@@ -23,7 +23,6 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
@@ -69,23 +68,6 @@ public class LinksYamlFile extends YamlFile {
             }
         }
         return castedLinks;
-    }
-
-    public Member getMember(UUID minecraftId) {
-        String discordId = this.getLinks().get(minecraftId.toString());
-        if (discordId == null) {
-            return null;
-        }
-        Guild guild = super.plugin.getBot().getGuild();
-        if (guild == null) {
-            return null;
-        }
-        Member member = null;
-        try {
-            member = guild.retrieveMemberById(discordId).complete();
-        } catch (ErrorResponseException ignored) {
-        }
-        return member;
     }
 
     public boolean retrieveMember(UUID minecraftId, Consumer<Member> success, Consumer<ErrorResponseException> failure) {
