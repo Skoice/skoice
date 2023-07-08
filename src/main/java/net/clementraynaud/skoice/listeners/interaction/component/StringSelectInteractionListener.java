@@ -146,15 +146,6 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("login-notification").build())).queue();
                     break;
 
-                case "action-bar-alert":
-                    if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfigYamlFile().set(ConfigField.ACTION_BAR_ALERT.toString(), true);
-                    } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfigYamlFile().set(ConfigField.ACTION_BAR_ALERT.toString(), false);
-                    }
-                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("action-bar-alert").build())).queue();
-                    break;
-
                 case "included-players-selection":
                     List<SelectOption> options = new ArrayList<>(event.getComponent().getOptions());
                     options.removeAll(event.getSelectedOptions());
@@ -163,17 +154,15 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("included-players").build())).queue();
                     break;
 
-                case "channel-visibility":
-                    if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfigYamlFile().set(ConfigField.CHANNEL_VISIBILITY.toString(), true);
-                    } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfigYamlFile().set(ConfigField.CHANNEL_VISIBILITY.toString(), false);
-                    }
-                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("channel-visibility").build())).queue();
-                    break;
-
                 default:
-                    throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));
+                    try {
+                        ConfigField configField = ConfigField.valueOf(componentId.replace("-", "_").toUpperCase());
+                        this.plugin.getConfigYamlFile().set(configField.toString(),
+                                Boolean.valueOf(event.getSelectedOptions().get(0).getValue()));
+                        event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu(componentId).build())).queue();
+                    } catch (IllegalArgumentException e) {
+                        throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));
+                    }
             }
 
         } else {

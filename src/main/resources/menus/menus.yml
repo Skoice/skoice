@@ -123,6 +123,11 @@ action-bar-alert:
   type: default
   style: primary
   parent: in-game-messages
+tooltips:
+  emoji: thought_balloon
+  type: default
+  style: primary
+  parent: in-game-messages
 included-players:
   emoji: bust_in_silhouette
   type: default

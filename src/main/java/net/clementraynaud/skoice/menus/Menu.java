@@ -144,6 +144,7 @@ public class Menu {
                 this.selectMenu = new IncludedPlayersSelectMenu(this.plugin);
                 break;
             case "action-bar-alert":
+            case "tooltips":
             case "channel-visibility":
                 this.selectMenu = new ToggleSelectMenu(this.plugin, this.name);
                 break;
