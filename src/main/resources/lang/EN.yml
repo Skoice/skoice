@@ -143,6 +143,9 @@ discord:
     language:
       title: "Language"
       description: "Choose the language used to display messages."
+    in-game-messages:
+      title: "In-Game Messages"
+      description: "Manage the messages that are sent to players on your Minecraft server."
     login-notification:
       title: "Login Notification"
       description: "Toggle the message sent to unlinked players when they log in to your Minecraft server."

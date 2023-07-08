@@ -141,6 +141,11 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     }
                     break;
 
+                case "login-notification-selection":
+                    this.plugin.getConfigYamlFile().set(ConfigField.LOGIN_NOTIFICATION.toString(), event.getSelectedOptions().get(0).getValue());
+                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("login-notification").build())).queue();
+                    break;
+
                 case "action-bar-alert":
                     if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.ACTION_BAR_ALERT.toString(), true);

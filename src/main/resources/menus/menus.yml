@@ -104,11 +104,21 @@ language:
   type: default
   style: secondary
   parent: settings
-action-bar-alert:
-  emoji: bell
+in-game-messages:
+  emoji: speech_balloon
   type: default
   style: primary
   parent: advanced-settings
+login-notification:
+  emoji: bell
+  type: default
+  style: primary
+  parent: in-game-messages
+action-bar-alert:
+  emoji: exclamation
+  type: default
+  style: primary
+  parent: in-game-messages
 included-players:
   emoji: bust_in_silhouette
   type: default
@@ -126,7 +136,7 @@ permissions:
   emoji: card_box
   type: default
 skoice-proximity-voice-chat:
-  emoji: envelope
+  emoji: information_source
   type: success
   fields:
     - download
