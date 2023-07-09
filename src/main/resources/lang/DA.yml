@@ -43,7 +43,7 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Konfiguration (&fBot oprettelse&7)\n \n&8• &7Først skal du oprette en bot og invitere den til din Discord server. Hvis du allerede ejer en bot, skal du oprette en ny. Følg venligst vejledningen på "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
         - "&7.\n&8• &7Når du har hentet dens token, sæt det "
         - "&7.\n&8• &7Når det er gjort, skriv \"&e/configure&7\" på din Discord server for at gå til næste trin.\n "
       no-token: "%s Du har &cikke angivet et token&7. For at bruge denne kommando, skriv \"&e/skoice token&7\" efterfulgt af token."
@@ -59,7 +59,7 @@ minecraft:
       incomplete-configuration: "%s Skoice er &cikke korrekt konfigureret&7. Kontakt venligst en administrator på serveren."
       incomplete-configuration-operator-interactive:
         - "%s Skoice er &cikke korrekt konfigureret&7. Klik "
-        - " &7for at opsætte den."
+        - " &7to set it up. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       incomplete-configuration-operator-discord: "%s Skoice er &cikke korrekt konfigureret&7. Skriv \"&e/configure&7\" på din Discord server for at opsætte den."
       already-configured: "%s Skoice er &callerede konfigureret&7. Skriv \"&e/configure&7\" på din Discord server for at opdatere dens indstillinger."
     player:
@@ -67,7 +67,6 @@ minecraft:
       invalid-code: "%s Du har &cikke angivet en gyldig kode&7. Skriv \"&e/link&7\" på Discord serveren \"&e%s&7\" for at modtage en."
       account-linked: "%s Du har &atilknyttet din Minecraft konto &7til Discord."
       account-unlinked: "%s Du har &afrakoblet din Minecraft konto &7fra Discord."
-      account-not-linked: "%s Du har &cikke tilknyttet din Minecraft konto &7til Discord. Skriv \"&e/link&7\" på Discord serveren \"&e%s&7\" for at tilknytte den."
       account-already-linked: "%s Du har &callerede tilknyttet din Minecraft konto &7til Discord. Skriv \"&e/skoice unlink&7\" for at frakoble den."
       connected: "%s Du er &anu tilsluttet &7til nærhedsbaseret stemmechat. For en bedre oplevelse, kan du aktivere \"&eStreamer Mode&7\" i din Discord klient."
       not-connected: "%s Du er &cikke tilsluttet &7til nærhedsbaseret stemmechat. Tilslut dig stemmekanalen \"&e%s&7\" på Discord serveren \"&e%s&7\" for at bruge den."
@@ -137,16 +136,6 @@ discord:
     language:
       title: "Sprog"
       description: "Vælg sproget der bruges til at vise meddelelser."
-    login-notification:
-      title: "Påmindelse ved login"
-      description: "Slå beskeden til unlinked spillere til/fra når de logger ind på din Minecraft server."
-      select-menu:
-        always-remind:
-          label: "Altid minde"
-        remind-once:
-          label: "Mind kun en gang"
-        never-remind:
-          label: "Aldrig minde"
     action-bar-alert:
       title: "Action Bar Advarsel"
       description: "Slå advarslen til/fra der sendes til spillere der bevæger sig væk før de bliver koblet fra deres nuværende stemmekanal."
@@ -173,11 +162,9 @@ discord:
       title: "Ufuldstændig konfiguration"
       description: "Du har enten flyttet eller slettet hovedlydkanalen. Skriv `/configure` på din Discord-server for at fuldføre konfigurationen og bruge Skoice."
     download:
-      title: "Download"
       description: "[Hent pluginet](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) og installer det på din Minecraft-server."
     donating:
       title: "Donationer"
-      description: "Skoice er et gratis software. Hvis du kan lide det, kan du hjælpe os ved at [donere](https://opencollective.com/skoice)."
     troubleshooting:
       title: "Fejlfinding"
       description: "Har du problemer? [Deltag i vores Discord-server](https://discord.gg/h3Tgccc)!"
@@ -198,13 +185,11 @@ discord:
       description: "Skriv `/skoice link %s` i spillet for at fuldføre processen."
     account-linked:
       title: "Konto Linket"
-      description: "Din Discord konto er blevet linket til Minecraft. Join stemme kanalen %s for at bruge proximity voice chat."
     account-unlinked:
       title: "Konto Afbrudt"
       description: "Din Discord konto er blevet afbrudt fra Minecraft."
     account-not-linked:
       title: "Konto Ikke Linket"
-      description: "Din Discord konto er ikke linket til Minecraft. Skriv `/link` på Discord serveren \"%s\" for at linke den."
     account-already-linked:
       title: "Konto Allerede Linket"
       description: "Din Discord konto er allerede linket til Minecraft. Skriv `/unlink` for at afbryde linket."

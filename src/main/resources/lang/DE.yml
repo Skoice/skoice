@@ -43,7 +43,7 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Konfiguration (&fBot-Erstellung&7)\n \n&8• &7Zuerst müssen Sie einen Bot erstellen und ihn zu Ihrem Discord-Server einladen. Wenn Sie bereits einen Bot besitzen, müssen Sie einen neuen erstellen. Bitte folgen Sie den Anweisungen auf "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
         - "&7.\n&8• &7Wenn Sie den Token abgerufen haben, setzen Sie ihn "
         - "&7.\n&8• &7Geben Sie anschließend auf Ihrem Discord-Server \"&e/configure&7\" ein, um zum nächsten Schritt zu gelangen.\n "
       no-token: "%s Sie haben &cnicht einen Token zur Verfügung gestellt&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice token&7\" gefolgt von dem Token ein."
@@ -59,7 +59,7 @@ minecraft:
       incomplete-configuration: "%s Skoice ist &cnicht korrekt konfiguriert&7. Bitte wenden Sie sich an einen Administrator des Servers."
       incomplete-configuration-operator-interactive:
         - "%s Skoice ist &cnicht richtig konfiguriert&7. Klicken Sie auf "
-        - " &7, um es einzurichten."
+        - " &7to set it up. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       incomplete-configuration-operator-discord: "%s Skoice ist &cnicht richtig konfiguriert&7. Gib \"&e/configure&7\" auf deinem Discord-Server ein, um es einzurichten."
       already-configured: "%s Skoice ist &cbereits konfiguriert&7. Geben Sie \"&e/configure&7\" auf Ihrem Discord-Server ein, um seine Einstellungen zu aktualisieren."
     player:
@@ -67,7 +67,6 @@ minecraft:
       invalid-code: "%s Sie haben &ckeinen gültigen Code angegeben&7. Geben Sie \"&e/link&7\" auf dem Discord-Server \"&e%s&7\" ein, um einen zu erhalten."
       account-linked: "%s Du hast &adeinen Minecraft-Account&7 mit Discord verknüpft."
       account-unlinked: "%s Du hast &adeinen Minecraft-Account&7 von Discord entkoppelt."
-      account-not-linked: "%s Du hast &cdeinen Minecraft-Account&7 nicht mit Discord verknüpft. Gib \"&e/link&7\" auf dem Discord-Server \"&e%s&7\" ein, um ihn zu verknüpfen."
       account-already-linked: "%s Du hast &cdeinen Minecraft-Account&7 bereits mit Discord verknüpft. Gib \"&e/skoice unlink&7\" ein, um die Verknüpfung zu lösen."
       connected: "%s Du bist &ajetzt verbunden&7 mit dem Sprachchat im Nahbereich. Für ein besseres Erlebnis kannst du \"&eStreamer-Modus&7\" in deinem Discord-Client aktivieren."
       not-connected: "%s Die Verbindung zum Sprachchat im Nahbereich wird &cnicht hergestellt7. Treten Sie dem Sprachkanal \"&e%s&7\" auf dem Discord-Server \"&e%s&7\" ein, um ihn zu nutzen."
@@ -137,16 +136,6 @@ discord:
     language:
       title: "Sprache"
       description: "Wählen Sie die Sprache, in der die Meldungen angezeigt werden sollen."
-    login-reminder:
-      title: "Login Reminder"
-      description: "Toggle the message sent to unlinked players when they log in to your Minecraft server."
-      select-menu:
-        always-remind:
-          label: "Always Remind"
-        remind-once:
-          label: "Remind Once"
-        never-remind:
-          label: "Never Remind"
     action-bar-alert:
       title: "Aktionsleisten-Alarm"
       description: "Schaltet den Alarm für Spieler ein, die sich entfernen, bevor sie von ihrem aktuellen Sprachkanal getrennt werden."
@@ -177,7 +166,6 @@ discord:
       description: "[Holen Sie sich das Plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) und installieren Sie es auf Ihrem Minecraft-Server."
     donating:
       title: "Spenden Sie"
-      description: "Skoice ist eine kostenlose Software. Wenn Sie es mögen, können Sie uns helfen, indem Sie [spenden](https://opencollective.com/skoice)."
     troubleshooting:
       title: "Fehlersuche"
       description: "Haben Sie Probleme? [Treten Sie unserem Discord-Server bei](https://discord.gg/h3Tgccc)!"
@@ -198,13 +186,11 @@ discord:
       description: "Geben Sie `/skoice link %s` im Spiel ein, um den Vorgang abzuschließen."
     account-linked:
       title: "Verbundenes Konto"
-      description: "Dein Discord-Account wurde mit Minecraft verknüpft. Treten Sie dem Sprachkanal %s bei, um den Sprachchat in unmittelbarer Nähe zu nutzen."
     account-unlinked:
       title: "Unverknüpftes Konto"
       description: "Dein Discord-Account wurde von Minecraft entkoppelt."
     account-not-linked:
       title: "Konto nicht verknüpft"
-      description: "Dein Discord-Account ist nicht mit Minecraft verknüpft. Gib `/link` auf dem Discord-Server \"%s\" ein, um ihn zu verknüpfen."
     account-already-linked:
       title: "Bereits verknüpftes Konto"
       description: "Dein Discord-Account ist bereits mit Minecraft verknüpft. Gib `/unlink` ein, um die Verknüpfung zu lösen."
