@@ -22,7 +22,16 @@ api-version: 1.13
 authors: [ carlodrift, Lucas_Cdry ]
 description: Proximity Voice Chat in Minecraft using Discord
 website: ${project.url}
+
 commands:
   skoice:
     usage: /skoice
     description: The command to use Skoice.
+
+permissions:
+  skoice.configure:
+    default: op
+  skoice.link:
+    default: true
+  skoice.unlink:
+    default: true
