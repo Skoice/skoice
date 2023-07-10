@@ -129,7 +129,7 @@ public class LinkedPlayer {
     }
 
     public boolean isCloseEnoughToPlayer(LinkedPlayer linkedPlayer, boolean falloff) {
-        if (this.player.getWorld().getName().equals(linkedPlayer.player.getWorld().getName())) {
+        if (!this.player.getWorld().getName().equals(linkedPlayer.player.getWorld().getName())) {
             return false;
         }
         int horizontalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
