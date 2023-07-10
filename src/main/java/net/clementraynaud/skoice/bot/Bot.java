@@ -64,8 +64,6 @@ import java.util.UUID;
 
 public class Bot {
 
-    private static final int TICKS_BETWEEN_VERSION_CHECKING = 720000;
-
     private final Map<String, MenuField> fields = new HashMap<>();
     private final Map<String, Menu> menus = new LinkedHashMap<>();
     private final Skoice plugin;
@@ -138,15 +136,6 @@ public class Bot {
                                 new UpdateNetworksTask(this.plugin)::run,
                                 0,
                                 10
-                        ),
-                0
-        );
-        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
-                        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
-                                this.plugin,
-                                this.plugin.getUpdater()::checkVersion,
-                                Bot.TICKS_BETWEEN_VERSION_CHECKING,
-                                Bot.TICKS_BETWEEN_VERSION_CHECKING
                         ),
                 0
         );
