@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.listeners.channel.network;
 
-import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -30,6 +30,6 @@ public class ChannelDeleteListener extends ListenerAdapter {
         if (!event.getChannelType().isAudio()) {
             return;
         }
-        Network.getNetworks().removeIf(network -> event.getChannel().equals(network.getChannel()));
+        Networks.getInitialized().removeIf(network -> event.getChannel().equals(network.getChannel()));
     }
 }

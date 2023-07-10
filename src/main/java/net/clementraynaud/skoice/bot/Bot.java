@@ -25,6 +25,7 @@ import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.system.Networks;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
@@ -266,7 +267,7 @@ public class Bot {
                             return false;
                         }
                     })
-                    .forEach(channel -> Network.getNetworks().add(new Network(this.plugin, channel.getId())));
+                    .forEach(channel -> Networks.add(new Network(this.plugin, channel.getId())));
         }
     }
 

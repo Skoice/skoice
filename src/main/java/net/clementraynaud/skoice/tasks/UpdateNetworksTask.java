@@ -24,6 +24,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
@@ -62,39 +63,12 @@ public class UpdateNetworksTask {
             if (mainVoiceChannel == null) {
                 return;
             }
-            Network.getNetworks().removeIf(network -> network.getChannel() == null && network.isInitialized());
 
-
-            for (LinkedPlayer linkedPlayer : LinkedPlayer.getOnlineLinkedPlayers()) {
-                if (linkedPlayer.isInMainVoiceChannel() || linkedPlayer.isInAnyNetworkChannel()) {
-                    linkedPlayer.updateNearNetworks();
-                    if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.ACTION_BAR_ALERT.toString())) {
-                        linkedPlayer.sendActionBarAlert();
-                    }
-                    if (linkedPlayer.isStateEligible()
-                            && this.plugin.getConfigYamlFile().getCategory().getChannels().size() != 50) {
-                        Set<LinkedPlayer> playersWithinRange = linkedPlayer.getPlayersWithinRange();
-                        if (!playersWithinRange.isEmpty()) {
-                            playersWithinRange.add(linkedPlayer);
-                            this.createNetwork(playersWithinRange);
-                        }
-                    }
-
-                } else {
-                    Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(linkedPlayer.getMember().getId());
-                    if (pair != null) {
-                        pair.getRight().cancel(false);
-                    }
-                }
-            }
+            this.manageNetworks();
 
             Set<Member> members = new HashSet<>(mainVoiceChannel.getMembers());
-            for (Network network : Network.getNetworks()) {
-                VoiceChannel voiceChannel = network.getChannel();
-                if (voiceChannel == null) {
-                    continue;
-                }
-                members.addAll(voiceChannel.getMembers());
+            for (Network network : Networks.getInitialized()) {
+                members.addAll(network.getChannel().getMembers());
             }
 
             for (Member member : members) {
@@ -104,61 +78,61 @@ public class UpdateNetworksTask {
                         .filter(p -> p.getMember().equals(member))
                         .findFirst().orElse(null);
                 if (linkedPlayer != null) {
-                    playerNetwork = Network.getNetworks().stream()
+                    playerNetwork = Networks.getAll().stream()
                             .filter(network -> network.contains(linkedPlayer))
                             .findFirst().orElse(null);
                 }
 
                 VoiceChannel shouldBeInChannel;
-                if (playerNetwork != null) {
-                    if (playerNetwork.getChannel() == null) {
-                        continue;
-                    }
+                if (playerNetwork != null && playerNetwork.isInitialized()) {
                     shouldBeInChannel = playerNetwork.getChannel();
                 } else {
                     shouldBeInChannel = mainVoiceChannel;
                 }
 
                 Pair<String, CompletableFuture<Void>> awaitingMove = UpdateNetworksTask.awaitingMoves.get(member.getId());
-                if (awaitingMove != null) {
-                    if (awaitingMove.getLeft().equals(shouldBeInChannel.getId())) {
-                        continue;
+                if (awaitingMove == null
+                        || !awaitingMove.getLeft().equals(shouldBeInChannel.getId()) && awaitingMove.getRight().cancel(false)) {
+                    GuildVoiceState voiceState = member.getVoiceState();
+                    if (voiceState != null && voiceState.getChannel() != shouldBeInChannel) {
+                        UpdateNetworksTask.awaitingMoves.put(member.getId(), Pair.of(
+                                shouldBeInChannel.getId(),
+                                this.plugin.getBot().getGuild().moveVoiceMember(member, shouldBeInChannel)
+                                        .submit().whenCompleteAsync((v, t) -> UpdateNetworksTask.awaitingMoves.remove(member.getId()))
+                        ));
                     }
-                    if (!awaitingMove.getLeft().equals(shouldBeInChannel.getId())
-                            && !awaitingMove.getRight().cancel(false)) {
-                        continue;
-                    }
-                }
-
-                GuildVoiceState voiceState = member.getVoiceState();
-                if (voiceState != null && voiceState.getChannel() != shouldBeInChannel) {
-                    UpdateNetworksTask.awaitingMoves.put(member.getId(), Pair.of(
-                            shouldBeInChannel.getId(),
-                            this.plugin.getBot().getGuild().moveVoiceMember(member, shouldBeInChannel)
-                                    .submit().whenCompleteAsync((v, t) -> UpdateNetworksTask.awaitingMoves.remove(member.getId()))
-                    ));
                 }
             }
-            this.deleteEmptyNetworks();
+
+            Networks.clean();
 
         } finally {
             this.lock.unlock();
         }
     }
 
-    private void createNetwork(Set<LinkedPlayer> players) {
-        Network network = new Network(this.plugin, players);
-        network.build();
-        Network.getNetworks().add(network);
-    }
+    private void manageNetworks() {
+        Networks.getInitialized().removeIf(network -> network.getChannel() == null);
 
-    private void deleteEmptyNetworks() {
-        for (Network network : Network.getNetworks()) {
-            if (network.isEmpty()) {
-                VoiceChannel voiceChannel = network.getChannel();
-                if (voiceChannel != null && voiceChannel.getMembers().isEmpty()) {
-                    Network.getNetworks().remove(network);
-                    voiceChannel.delete().reason(this.plugin.getLang().getMessage("discord.communication-lost")).queue();
+        for (LinkedPlayer linkedPlayer : LinkedPlayer.getOnlineLinkedPlayers()) {
+            if (linkedPlayer.isInMainVoiceChannel() || linkedPlayer.isInAnyNetworkChannel()) {
+                linkedPlayer.updateNearNetworks();
+                if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.ACTION_BAR_ALERT.toString())) {
+                    linkedPlayer.sendActionBarAlert();
+                }
+                if (linkedPlayer.isStateEligible()
+                        && this.plugin.getConfigYamlFile().getCategory().getChannels().size() != 50) {
+                    Set<LinkedPlayer> playersWithinRange = linkedPlayer.getPlayersWithinRange();
+                    if (!playersWithinRange.isEmpty()) {
+                        playersWithinRange.add(linkedPlayer);
+                        new Network(this.plugin, playersWithinRange).build();
+                    }
+                }
+
+            } else {
+                Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(linkedPlayer.getMember().getId());
+                if (pair != null) {
+                    pair.getRight().cancel(false);
                 }
             }
         }

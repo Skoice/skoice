@@ -39,6 +39,8 @@ import java.util.stream.Collectors;
 
 public class LinkedPlayer {
 
+    private static final double FALLOFF = 2.5;
+
     private static final Set<LinkedPlayer> onlineLinkedPlayers = new HashSet<>();
 
     private final Skoice plugin;
@@ -61,7 +63,7 @@ public class LinkedPlayer {
     }
 
     public void sendActionBarAlert() {
-        Network.getNetworks().stream()
+        Networks.getAll().stream()
                 .filter(network -> network.contains(this))
                 .filter(network -> network.canPlayerStayConnected(this))
                 .filter(network -> !network.canPlayerBeAdded(this))
@@ -80,23 +82,19 @@ public class LinkedPlayer {
                 .filter(LinkedPlayer::isInMainVoiceChannel)
                 .filter(p -> !p.equals(this))
                 .filter(LinkedPlayer::isStateEligible)
-                .filter(p -> p.player.getWorld().getName().equals(this.player.getWorld().getName()))
-                .filter(p -> DistanceUtil.getHorizontalDistance(p.player.getLocation(),
-                        this.player.getLocation()) <= this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString())
-                        && DistanceUtil.getVerticalDistance(p.player.getLocation(),
-                        this.player.getLocation()) <= this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()))
+                .filter(p -> p.isCloseEnoughToPlayer(this, false))
                 .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
     }
 
     public void updateNearNetworks() {
-        Network.getNetworks().stream()
+        Networks.getAll().stream()
                 .filter(network -> network.canPlayerBeAdded(this))
                 .reduce((network1, network2) -> network1.size() > network2.size()
                         ? network1.engulf(network2)
                         : network2.engulf(network1))
                 .filter(network -> !network.contains(this))
                 .ifPresent(network -> network.add(this));
-        Network.getNetworks().stream()
+        Networks.getAll().stream()
                 .filter(network -> network.contains(this))
                 .filter(network -> !network.canPlayerStayConnected(this))
                 .forEach(network -> {
@@ -124,13 +122,27 @@ public class LinkedPlayer {
     }
 
     public boolean isInAnyNetwork() {
-        return Network.getNetworks().stream().anyMatch(network -> network.contains(this.getBukkitPlayer()));
+        return Networks.getAll().stream().anyMatch(network -> network.contains(this.getBukkitPlayer()));
     }
 
     public boolean isInAnyNetworkChannel() {
         VoiceChannel voiceChannel = this.getVoiceChannel();
-        return voiceChannel != null && Network.getNetworks().stream()
+        return voiceChannel != null && Networks.getInitialized().stream()
                 .anyMatch(network -> network.getChannel().equals(voiceChannel));
+    }
+
+    public boolean isCloseEnoughToPlayer(LinkedPlayer linkedPlayer, boolean falloff) {
+        if (this.player.getWorld().getName().equals(linkedPlayer.player.getWorld().getName())) {
+            return false;
+        }
+        int horizontalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
+        int verticalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString());
+        if (falloff) {
+            horizontalRadius += LinkedPlayer.FALLOFF;
+            verticalRadius += LinkedPlayer.FALLOFF;
+        }
+        return DistanceUtil.getHorizontalDistance(this.player.getLocation(), linkedPlayer.player.getLocation()) <= horizontalRadius
+                && DistanceUtil.getVerticalDistance(this.player.getLocation(), linkedPlayer.player.getLocation()) <= verticalRadius;
     }
 
     public Player getBukkitPlayer () {

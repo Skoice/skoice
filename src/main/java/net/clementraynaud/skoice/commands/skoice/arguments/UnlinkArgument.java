@@ -22,7 +22,7 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.system.LinkedPlayer;
-import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
@@ -66,7 +66,7 @@ public class UnlinkArgument extends Argument {
             if (voiceState != null) {
                 AudioChannel audioChannel = voiceState.getChannel();
                 if (audioChannel != null && audioChannel.equals(super.plugin.getConfigYamlFile().getVoiceChannel())
-                        || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
+                        || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
                     player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
                 }
             }

@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 
@@ -39,7 +40,7 @@ public class InterruptSystemTask {
             value.getRight().cancel(true);
         }
         boolean isVoiceChannelSet = this.plugin.getConfigYamlFile().getVoiceChannel() != null;
-        for (Network network : Network.getNetworks()) {
+        for (Network network : Networks.getInitialized()) {
             if (isVoiceChannelSet) {
                 for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
                     Member member = network.getChannel().getMembers().get(i);
@@ -50,9 +51,9 @@ public class InterruptSystemTask {
                     }
                 }
             }
-            network.getChannel().delete().reason(this.plugin.getLang().getMessage("discord.system-interrupted")).queue();
             network.clear();
+            network.delete("system-interrupted");
         }
-        Network.getNetworks().clear();
+        Networks.clear();
     }
 }

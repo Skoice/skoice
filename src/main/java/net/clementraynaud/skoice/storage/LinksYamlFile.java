@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.storage;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
@@ -53,7 +53,7 @@ public class LinksYamlFile extends YamlFile {
         if (!player.isOnline() || player.getPlayer() == null) {
             return;
         }
-        Network.getNetworks().stream()
+        Networks.getAll().stream()
                 .filter(network -> network.contains(player.getPlayer()))
                 .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(player.getPlayer()));
     }
