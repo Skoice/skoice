@@ -43,7 +43,7 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Konfiguracja (&fTworzenie bota&7)\n \n&8• &7Najpierw musisz stworzyć bota i zaprosić go na swój serwer Discord. Jeśli masz już bota, musisz stworzyć nowego. Postępuj zgodnie z instrukcjami na "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
         - "&7.\n&8• &7Kiedy dostaniesz jego token, wpisz go "
         - "&7.\n&8• &7Po zakończeniu, wpisz \"&e/configure&7\" na twoim serwerze discord, aby przejść do następnej części.\n "
       no-token: "%s &cNie podałeś tokenu&7."
@@ -59,7 +59,7 @@ minecraft:
       incomplete-configuration: "%s Skoice jest &cźle skonfigurowany&7. Skontaktuj się z administratorem."
       incomplete-configuration-operator-interactive:
         - "%s Skoice jest &cźle skonfigurowany&7. Kliknij "
-        - " &7aby go skonfigurować."
+        - " &7to set it up. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       incomplete-configuration-operator-discord: "%s Skoice jest &cźle skonfigurowany&7. Wpisz \"&e/configure&7\" na twoim serwerze Discord aby go skonfigurować."
       already-configured: "%s Skoice &cjest juz skonfigurowany&7. Wpisz \"&e/configure&7\" na swoim serwerze discord aby zaktualizować jego ustawienia."
     player:
@@ -67,7 +67,6 @@ minecraft:
       invalid-code: "%s &cNie podałeś właściwego kodu&7. Wpisz \"&e/link&7\" na serwerze Discord \"&e%s&7\" aby go otrzymać."
       account-linked: "%s &aPołączyłeś swoje konto minecraft &7do discorda."
       account-unlinked: "%s &aOdłączyłeś swoje konto minecraft &7od discorda."
-      account-not-linked: "%s &cNie połączyłeś swojego konta Minecraft &7 do Disocrda. Wpisz \"&e/link&7\" na serwerze Discord \"&e%s&7\" aby je połączyć."
       account-already-linked: "%s Twoje konto minecraft &cjest już połączone &7do discorda. Wpisz \"&e/skoice unlink&7\" aby je odłączyć."
       connected: "%s Jesteś teraz &apołączony &7do zbliżeniowego czatu głosowego. Dla lepszych wrażeń, możesz włączyć \"&eTryb streamera&7\" w swojej aplikacji discorda."
       not-connected: "%s &cNie jesteś połączony &7do zbliżeniowego czatu głosowego. Dołącz do kanału głosowego \"&e%s&7\" na serwerze Discord \"&e%s&7\", aby go użyć."
@@ -137,16 +136,6 @@ discord:
     language:
       title: "Język"
       description: "Wybierz język używany do wyświetlania wiadomości."
-    login-reminder:
-      title: "Login Reminder"
-      description: "Toggle the message sent to unlinked players when they log in to your Minecraft server."
-      select-menu:
-        always-remind:
-          label: "Always Remind"
-        remind-once:
-          label: "Remind Once"
-        never-remind:
-          label: "Never Remind"
     action-bar-alert:
       title: "Alert paska działań"
       description: "Wyłącz alert wysyłany do graczy, którzy się oddalają, zanim zostaną odłączeni od bieżącego kanału głosowego."
@@ -177,7 +166,6 @@ discord:
       description: "[Zdobądź plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) i zainstaluj go na swoim serwerze minecraft."
     donating:
       title: "Darowizny"
-      description: "Skoice jest darmowy. Jeśli Ci się podoba, możesz nam pomóc, przekazując [darowiznę](https://opencollective.com/skoice)."
     troubleshooting:
       title: "Rozwiązywanie problemów"
       description: "Masz problemy? [Dołącz do naszego serwera discord](https://discord.gg/h3Tgccc)!"
@@ -198,13 +186,11 @@ discord:
       description: "Wpisz `/skoice link %s` w grze aby dokończyć proces."
     account-linked:
       title: "Konto Połączone"
-      description: "Twoje konto Discord zostało połączone z Minecraft. Dołącz do kanału głosowego %s, aby użyć zbliżeniowego czatu głosowego."
     account-unlinked:
       title: "Konto Odłączone"
       description: "Twoje konto discord zostało odłączone od minecraft."
     account-not-linked:
       title: "Konto nie podłączone"
-      description: "Twoje konto Discord nie jest połączone z Minecraft. Wpisz `/link` na serwerze Discord \"%s\", aby je połączyć."
     account-already-linked:
       title: "Konto już podłączone"
       description: "Twoje konto minecraft jest już połączone do konta discord. Wpisz `/unlink` aby je odłączyć."

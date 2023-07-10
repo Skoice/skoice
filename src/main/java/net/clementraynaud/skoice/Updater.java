@@ -31,6 +31,8 @@ import java.util.function.Consumer;
 
 public class Updater {
 
+    private static final long TICKS_BETWEEN_VERSION_CHECKING = 720000L;
+    private static final long TICKS_BEFORE_VERSION_CHECKING = 1200L;
     private final Skoice plugin;
     private final String pluginPath;
     private String downloadedVersion;
@@ -38,9 +40,15 @@ public class Updater {
     public Updater(Skoice plugin, String pluginPath) {
         this.plugin = plugin;
         this.pluginPath = pluginPath;
+        this.plugin.getServer().getScheduler().runTaskTimer(
+                this.plugin,
+                this::checkVersion,
+                Updater.TICKS_BEFORE_VERSION_CHECKING,
+                Updater.TICKS_BETWEEN_VERSION_CHECKING
+        );
     }
 
-    public void checkVersion() {
+    private void checkVersion() {
         this.getVersion(version -> {
             if (version != null && !this.plugin.getDescription().getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
                 this.update(version);

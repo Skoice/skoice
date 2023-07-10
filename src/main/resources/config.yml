@@ -7,3 +7,4 @@ tooltips: true
 corpses-included: false
 spectators-included: false
 channel-visibility: true
+server-id:

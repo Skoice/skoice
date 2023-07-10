@@ -43,7 +43,7 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \nКонфигурация %s (&fСоздание бота&7)\n \n&8• &7Сначала вам нужно создать бота и пригласить его на ваш сервер Discord. Если у вас уже есть бот, вы должны создать нового. Пожалуйста, следуйте инструкциям на "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
         - "&7.\n&8• &7Когда вы получили токен, поместите его "
         - "&7.\n&8• &7После этого, введите \"&e/configure&7\" на вашем сервере Discord, чтобы перейти к следующему шагу.\n "
       no-token: "%s Вы &cне указали токен&7. Чтобы использовать эту команду, введите \"&e/skoice token&7\", а затем токен бота."
@@ -59,7 +59,7 @@ minecraft:
       incomplete-configuration: "%s Skoice &cнастроен некорректно&7. Пожалуйста, обратитесь к администратору."
       incomplete-configuration-operator-interactive:
         - "%s Skoice &cнастроен некорректно&7. Нажмите "
-        - " &7чтобы настроить его."
+        - " &7to set it up. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       incomplete-configuration-operator-discord: "%s Skoice &cне настроен корректно&7. Введите \"&e/configure&7\" на вашем сервере Discord, чтобы настроить его."
       already-configured: "%s Skoice &cуже настроен&7. Введите \"&e/configure&7\" на вашем сервере Discord, чтобы обновить настройки."
     player:
@@ -67,7 +67,6 @@ minecraft:
       invalid-code: "%s Вы указали &cневерный код&7. Введите \"&e/link&7\" на сервере Discord \"&e%s&7\", чтобы его получить."
       account-linked: "%s Вы &aуспешно привязали ваш аккаунт Minecraft &7к Discord."
       account-unlinked: "%s Вы &aотвязали ваш аккаунт Minecraft &7от Discord."
-      account-not-linked: "%s Вы &cне привязали ваш аккаунт Minecraft &7к Discord. Введите \"&e/link&7\" на сервере Discord \"&e%s&7\", чтобы привязать его."
       account-already-linked: "%s Вы &cуже привязали аккаунт Minecraft &7к Discord. Введите \"&e/skoice unlink&7\", чтобы отвязать его."
       connected: "%s Вы &aприсоединились &7к голосовому чату. Для лучшего опыта вы можете включить \"&eРежим стримера&7\" в настройках Discord."
       not-connected: "%s Вы &cне подключены &7к голосовому чату. Присоединитесь к каналу \"&e%s&7\" на сервере Discord \"&e%s&7\"."
@@ -86,7 +85,7 @@ minecraft:
     here: "&bздесь"
     this-page: "&bэта страница"
     execute: "&8☀ &bВыполнить: &7%s"
-    shortcut: "&8☀ &bShortcut: &7%s"
+    shortcut: "&8☀ &bСокращение: &7%s"
     link: "&8☀ &bОткрыть в браузере: &7%s"
 
 discord:
@@ -118,35 +117,25 @@ discord:
             label: "Новый голосовой канал"
             description: "Skoice автоматически настроит голосовой канал."
     range:
-      title: "Range"
-      description: "Select a mode or customize the distances."
-      alternative-description: "Let us choose the best settings for your personal use of Skoice. You will still be able to customize the distances later."
+      title: "Дальность"
+      description: "Выбери режим или настрой дистанцию."
+      alternative-description: "Позвольте нам выбрать лучшие настройки для вашего личного использования Skoice. Вы по-прежнему сможете настроить расстояния позже."
       select-menu:
-        placeholder: "Please select a mode."
-        alternative-placeholder: "You are currently using customized distances."
+        placeholder: "Пожалуйста, выберите режим."
+        alternative-placeholder: "Вы сейчас используете пользовательские дистанции."
         select-option:
           long-range-mode:
-            label: "Long-Range Mode"
-            description: "Horizontal Radius: 80 blocks — Vertical Radius: 40 blocks"
+            label: "Режим Длинного-Дальности"
+            description: "Горизонтальный Радиус: 80 блоков — Вертикальный Радиус: 40 блоков"
           short-range-mode:
-            label: "Short-Range Mode"
-            description: "Horizontal Radius: 40 blocks — Vertical Radius: 20 blocks"
+            label: "Короткий-Дальний режим"
+            description: "Горизонтальный Радиус: 40 блоков — Вертикальный Радиус: 20 блоков"
     advanced-settings:
       title: "Расширенные настройки"
       description: "Управлять другими параметрами."
     language:
       title: "Язык"
       description: "Выберите язык отображения сообщений."
-    login-reminder:
-      title: "Login Reminder"
-      description: "Toggle the message sent to unlinked players when they log in to your Minecraft server."
-      select-menu:
-        always-remind:
-          label: "Always Remind"
-        remind-once:
-          label: "Remind Once"
-        never-remind:
-          label: "Never Remind"
     action-bar-alert:
       title: "Уведомление в экшн-баре"
       description: "Включить/отключить уведомление, отправляемое игрокам, когда они выходят из радиуса голосового чата перед отключением от голосового канала."
@@ -177,7 +166,6 @@ discord:
       description: "[Скачать плагин](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) и установить его на ваш сервер Minecraft."
     donating:
       title: "Пожертвование"
-      description: "Skoice — бесплатный плагин. Если он вам нравится, вы можете помочь нам [donating](https://opencollective.com/skoice)."
     troubleshooting:
       title: "Устранение неполадок"
       description: "Возникли проблемы? [Присоединяйтесь к нашему серверу Discord](https://discord.gg/h3Tgccc)!"
@@ -185,11 +173,11 @@ discord:
       title: "Помощь проекту"
       description: "Хотите помочь нам сформировать будущее Skoice? [Внести свой вклад на GitHub](https://github.com/Skoice/skoice)!"
     long-range-mode:
-      title: "Long-Range Mode"
-      description: "Choose this mode if you plan to play open world game modes."
+      title: "Режим Длинного-Дальности"
+      description: "Выберите этот режим, если вы планируете играть в открытые режимы игры."
     short-range-mode:
-      title: "Short-Range Mode"
-      description: "Choose this mode if you plan to play game modes that only require a limited area."
+      title: "Режим Короткой-Дальности"
+      description: "Выберите этот режим, если планируете играть в игровые режимы, требующие только ограниченной площади."
     customize:
       title: "Настроить"
       description: "Установите расстояния в соответствии с вашими личными предпочтениями."
@@ -198,13 +186,11 @@ discord:
       description: "Для завершения процесса введите `/skoice link %s` в игре."
     account-linked:
       title: "Аккаунт привязан"
-      description: "Ваш аккаунт Discord был привязан к Minecraft. Присоединитесь к голосовому каналу %s, чтобы использовать голосовой чат."
     account-unlinked:
       title: "Аккаунт отвязан"
       description: "Ваш аккаунт Discord был отвязан от Minecraft."
     account-not-linked:
       title: "Аккаунт не привязан"
-      description: "Ваша учётная запись Discord не связана с Minecraft. Введите `/link` на Discord сервере \"%s\", чтобы привязать ее."
     account-already-linked:
       title: "Аккаунт уже привязан"
       description: "Ваша учётная запись Discord уже связана с Minecraft. Введите `/unlink`, чтобы отвязать ее."

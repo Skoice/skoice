@@ -12,14 +12,14 @@ Skoice is currently available in three languages: English, French and German.
 
 To download our plugin, please [head to our Spigot page](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861). Consider leaving a review if you enjoy our work!
 
-Skoice is supported on servers that run any Minecraft version from 1.8 to 1.19.
+Skoice is supported on servers that run any Minecraft version from 1.8 to 1.20.
 
 You can use Skoice on the following server software:
-- Spigot (or derivative like [Paper](https://papermc.io/downloads))
-- [Fabric](https://fabricmc.net/use/installer/) (using [Cardboard](https://cardboardpowered.org/))
-- Forge (using hybrid server software)
+- Spigot (or derivative like Paper, [Purpur](https://purpurmc.org/downloads))
+- Fabric (using [Cardboard](https://cardboardpowered.org/))
+- Forge (using [Magma](https://magmafoundation.org/) or [Mohist](https://mohistmc.com/))
 
-Skoice was built for Java Edition players but if your server allows Bedrock Edition players (with [GeyserMC](https://geysermc.org/) for example), then they will be able to use Skoice fine.
+If your server allows Bedrock Edition players (with [Geyser](https://geysermc.org/) for example), they can use Skoice just like Java players.
 
 ## Installation
 

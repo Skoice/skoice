@@ -31,7 +31,8 @@ public enum ConfigField {
     TOOLTIPS,
     CORPSES_INCLUDED,
     SPECTATORS_INCLUDED,
-    CHANNEL_VISIBILITY;
+    CHANNEL_VISIBILITY,
+    SERVER_ID;
 
     @Override
     public String toString() {

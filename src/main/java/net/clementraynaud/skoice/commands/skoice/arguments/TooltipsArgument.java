@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import org.bukkit.command.CommandSender;
 

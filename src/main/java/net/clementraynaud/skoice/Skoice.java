@@ -52,7 +52,6 @@ public class Skoice extends JavaPlugin {
     private Bot bot;
     private BotCommands botCommands;
     private ConfigurationMenu configurationMenu;
-    private Updater updater;
     private BukkitAudiences adventure;
 
     @Override
@@ -84,8 +83,7 @@ public class Skoice extends JavaPlugin {
         }
         new SkoiceCommand(this).init();
         this.addCustomCharts();
-        this.updater = new Updater(this, this.getFile().getAbsolutePath());
-        this.updater.checkVersion();
+        new Updater(this, this.getFile().getAbsolutePath());
     }
 
     public BukkitAudiences adventure() {
@@ -176,9 +174,5 @@ public class Skoice extends JavaPlugin {
 
     public ConfigurationMenu getConfigurationMenu() {
         return this.configurationMenu;
-    }
-
-    public Updater getUpdater() {
-        return this.updater;
     }
 }

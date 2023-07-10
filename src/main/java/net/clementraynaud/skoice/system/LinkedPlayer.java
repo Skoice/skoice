@@ -145,11 +145,11 @@ public class LinkedPlayer {
                 && DistanceUtil.getVerticalDistance(this.player.getLocation(), linkedPlayer.player.getLocation()) <= verticalRadius;
     }
 
-    public Player getBukkitPlayer () {
+    public Player getBukkitPlayer() {
         return this.player;
     }
 
-    public Member getMember () {
+    public Member getMember() {
         return this.member;
     }
 }
