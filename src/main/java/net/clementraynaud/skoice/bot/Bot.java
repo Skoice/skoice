@@ -223,7 +223,7 @@ public class Bot {
         List<Player> onlinePlayers = PlayerUtil.getOnlinePlayers();
         for (Player player : onlinePlayers) {
             this.plugin.getLinksYamlFile().retrieveMember(player.getUniqueId(),
-                    member -> LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member)));
+                    member -> LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member.getId())));
         }
     }
 

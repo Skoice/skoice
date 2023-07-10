@@ -79,7 +79,7 @@ public class LinkArgument extends Argument {
                             .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
             );
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
-            LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member));
+            LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, discordId));
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 AudioChannel audioChannel = voiceState.getChannel();

@@ -23,10 +23,7 @@ package net.clementraynaud.skoice.system;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.util.DistanceUtil;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -45,12 +42,12 @@ public class LinkedPlayer {
 
     private final Skoice plugin;
     private final Player player;
-    private final Member member;
+    private final String discordId;
 
-    public LinkedPlayer(Skoice plugin, Player player, Member member) {
+    public LinkedPlayer(Skoice plugin, Player player, String discordId) {
         this.plugin = plugin;
         this.player = player;
-        this.member = member;
+        this.discordId = discordId;
     }
 
     public static Set<LinkedPlayer> getOnlineLinkedPlayers() {
@@ -105,30 +102,30 @@ public class LinkedPlayer {
                 });
     }
 
-    private VoiceChannel getVoiceChannel() {
-        if (this.member.getVoiceState() == null) {
-            return null;
-        }
-        AudioChannelUnion audioChannel = this.member.getVoiceState().getChannel();
-        if (audioChannel == null || audioChannel.getType() != ChannelType.VOICE) {
-            return null;
-        }
-        return audioChannel.asVoiceChannel();
-    }
-
     public boolean isInMainVoiceChannel() {
-        VoiceChannel voiceChannel = this.getVoiceChannel();
-        return voiceChannel != null && voiceChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel());
+        VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+        if (mainVoiceChannel == null) {
+            return false;
+        }
+        return mainVoiceChannel.getMembers().stream().anyMatch(member -> this.discordId.equals(member.getId()));
     }
 
     public boolean isInAnyNetwork() {
         return Networks.getAll().stream().anyMatch(network -> network.contains(this.getBukkitPlayer()));
     }
 
+    public Network getNetwork() {
+        return Networks.getAll().stream()
+                .filter(network -> network.contains(this))
+                .findFirst().orElse(null);
+    }
+
     public boolean isInAnyNetworkChannel() {
-        VoiceChannel voiceChannel = this.getVoiceChannel();
-        return voiceChannel != null && Networks.getInitialized().stream()
-                .anyMatch(network -> network.getChannel().equals(voiceChannel));
+        Network network = this.getNetwork();
+        if (network == null) {
+            return false;
+        }
+        return network.getChannel().getMembers().stream().anyMatch(member -> this.discordId.equals(member.getId()));
     }
 
     public boolean isCloseEnoughToPlayer(LinkedPlayer linkedPlayer, boolean falloff) {
@@ -149,7 +146,7 @@ public class LinkedPlayer {
         return this.player;
     }
 
-    public Member getMember() {
-        return this.member;
+    public String getDiscordId() {
+        return this.discordId;
     }
 }

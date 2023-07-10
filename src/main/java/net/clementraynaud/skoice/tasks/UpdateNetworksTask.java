@@ -75,12 +75,10 @@ public class UpdateNetworksTask {
                 Network playerNetwork = null;
 
                 LinkedPlayer linkedPlayer = LinkedPlayer.getOnlineLinkedPlayers().stream()
-                        .filter(p -> p.getMember().equals(member))
+                        .filter(p -> p.getDiscordId().equals(member.getId()))
                         .findFirst().orElse(null);
                 if (linkedPlayer != null) {
-                    playerNetwork = Networks.getAll().stream()
-                            .filter(network -> network.contains(linkedPlayer))
-                            .findFirst().orElse(null);
+                    playerNetwork = linkedPlayer.getNetwork();
                 }
 
                 VoiceChannel shouldBeInChannel;
@@ -130,7 +128,7 @@ public class UpdateNetworksTask {
                 }
 
             } else {
-                Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(linkedPlayer.getMember().getId());
+                Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(linkedPlayer.getDiscordId());
                 if (pair != null) {
                     pair.getRight().cancel(false);
                 }

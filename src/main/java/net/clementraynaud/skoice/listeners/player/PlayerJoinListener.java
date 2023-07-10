@@ -69,7 +69,7 @@ public class PlayerJoinListener implements Listener {
             }
         } else {
             if (!this.plugin.getLinksYamlFile().retrieveMember(player.getUniqueId(), member -> {
-                LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member));
+                LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member.getId()));
                 GuildVoiceState voiceState = member.getVoiceState();
                 if (voiceState != null) {
                     AudioChannel audioChannel = voiceState.getChannel();
