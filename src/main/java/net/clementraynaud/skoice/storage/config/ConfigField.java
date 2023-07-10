@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.storage.config;
 
 public enum ConfigField {
 
+    SERVER_ID,
     TOKEN,
     LANG,
     VOICE_CHANNEL_ID,
@@ -31,8 +32,7 @@ public enum ConfigField {
     TOOLTIPS,
     CORPSES_INCLUDED,
     SPECTATORS_INCLUDED,
-    CHANNEL_VISIBILITY,
-    SERVER_ID;
+    CHANNEL_VISIBILITY;
 
     @Override
     public String toString() {

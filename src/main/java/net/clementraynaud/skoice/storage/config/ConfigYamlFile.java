@@ -43,17 +43,11 @@ public class ConfigYamlFile extends YamlFile {
         if (defaultConfiguration == null) {
             return;
         }
+        this.setDefault(ConfigField.SERVER_ID.toString(), UUID.randomUUID().toString());
         Map<String, Object> defaultValues = new HashMap<>(defaultConfiguration.getValues(false));
         for (Map.Entry<String, Object> entry : defaultValues.entrySet()) {
             this.setDefault(entry.getKey(), entry.getValue());
         }
-        if (!this.contains(ConfigField.SERVER_ID.toString())) {
-            this.createServerId();
-        }
-    }
-
-    private void createServerId() {
-        this.set(ConfigField.SERVER_ID.toString(), UUID.randomUUID().toString());
     }
 
     public void setToken(String token) {
