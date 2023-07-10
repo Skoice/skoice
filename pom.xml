@@ -40,6 +40,18 @@
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.bstats</shadedPattern>
                         </relocation>
                         <relocation>
+                            <pattern>org.apache</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.apache</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.intellij</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.intellij</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.jetbrains</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.jetbrains</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>net.dv8tion</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.dv8tion</shadedPattern>
                         </relocation>
@@ -50,6 +62,30 @@
                         <relocation>
                             <pattern>kotlin</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.kotlin</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.fasterxml</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.fasterxml</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.iwebpp</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.iwebpp</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.neovisionaries</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.neovisionaries</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>gnu.trove</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.gnu.trove</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>okhttp3</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.okhttp3</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>okio</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.okio</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
