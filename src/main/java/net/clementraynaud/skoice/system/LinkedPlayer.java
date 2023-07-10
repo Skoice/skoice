@@ -122,7 +122,7 @@ public class LinkedPlayer {
 
     public boolean isInAnyNetworkChannel() {
         Network network = this.getNetwork();
-        if (network == null) {
+        if (network == null || !network.isInitialized()) {
             return false;
         }
         return network.getChannel().getMembers().stream().anyMatch(member -> this.discordId.equals(member.getId()));
