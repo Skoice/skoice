@@ -133,11 +133,11 @@ public class LinkedPlayer {
                 .anyMatch(network -> network.getChannel().equals(voiceChannel));
     }
 
-    public Player getBukkitPlayer () {
+    public Player getBukkitPlayer() {
         return this.player;
     }
 
-    public Member getMember () {
+    public Member getMember() {
         return this.member;
     }
 }
