@@ -62,6 +62,7 @@ minecraft:
         - " &7pour le configurer."
       incomplete-configuration-operator-discord: "%s Skoice n'est &cpas configuré correctement&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
       already-configured: "%s Skoice est &cdéjà configuré&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour mettre à jour ses réglages."
+      tooltips-enabled: "%s Vous avez &aactivé les messages interactifs&7."
     player:
       no-code: "%s Vous n'avez &cpas fourni de code&7. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour en recevoir un."
       invalid-code: "%s Vous n'avez &cpas fourni de code valide&7. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour en recevoir un."
@@ -137,9 +138,11 @@ discord:
     language:
       title: "Langue"
       description: "Choisissez la langue utilisée pour afficher les messages."
-    login-reminder:
-      title: "Rappel à la connexion"
-      description: "Activez ou désactivez le message envoyé aux joueurs non liés lorsqu'ils se connectent à votre serveur Minecraft."
+    in-game-messages:
+      title: "Messages en jeu"
+      description: "Gérer les messages qui sont envoyés aux joueurs sur votre serveur Minecraft."
+    login-notification:
+      title: "Notification à la connexion"
       select-menu:
         always-remind:
           label: "Toujours rappeler"
@@ -150,6 +153,16 @@ discord:
     action-bar-alert:
       title: "Alerte dans la barre d'action"
       description: "Activez ou désactivez l'alerte envoyée aux joueurs qui s'éloignent avant qu'ils soient déconnectés de leur salon vocal actuel."
+    tooltips:
+      title: "Infobulles"
+      shortened-description: "Activer les messages interactifs sur votre serveur Minecraft."
+    included-players:
+      title: "Joueurs inclus"
+      select-menu:
+        corpses-included:
+          label: "Morts"
+        spectators-included:
+          label: "Spectateurs"
     channel-visibility:
       title: "Visibilité des salons"
       description: "Rendez visibles ou invisibles les salons temporaires créés par Skoice."
@@ -248,3 +261,4 @@ discord:
     vertical-radius:
       label: "Rayon vertical"
   communication-lost: "Communication perdue."
+  system-interrupted: "Système interrompu."
