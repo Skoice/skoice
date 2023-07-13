@@ -12,14 +12,14 @@ Skoice is currently available in three languages: English, French and German.
 
 To download our plugin, please [head to our Spigot page](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861). Consider leaving a review if you enjoy our work!
 
-Skoice is supported on servers that run any Minecraft version from 1.8 to 1.19.
+Skoice is supported on servers that run any Minecraft version from 1.8 to 1.20.
 
 You can use Skoice on the following server software:
-- [Spigot](https://www.spigotmc.org/wiki/buildtools/) (or derivative like [Paper](https://papermc.io/downloads))
-- [Fabric](https://fabricmc.net/use/installer/) (using [Cardboard](https://cardboardpowered.org/))
-- Forge (using hybrid server software)
+- Spigot (or derivative like Paper, [Purpur](https://purpurmc.org/downloads))
+- Fabric (using [Cardboard](https://cardboardpowered.org/))
+- Forge (using [Magma](https://magmafoundation.org/) or [Mohist](https://mohistmc.com/))
 
-Skoice was built for Java Edition players but if your server allows Bedrock Edition players (with [GeyserMC](https://geysermc.org/) for example), then they will be able to use Skoice fine.
+If your server allows Bedrock Edition players (with [Geyser](https://geysermc.org/) for example), they can use Skoice just like Java players.
 
 ## Installation
 
@@ -30,6 +30,7 @@ Once you have downloaded our plugin, simply drop the file in the `plugins` folde
 ### Minecraft
 
 - `/skoice configure`: Get instructions to begin the configuration process (requires operator privileges).
+- `/skoice tooltips`: Toggle interactive messages, useful on Bedrock Edition or when tooltips are disabled in Minecraft settings (requires operator privileges).
 - `/skoice token <token>`: Link a Discord bot to your Minecraft server (requires operator privileges).
 - `/skoice link <code>`: Link your Minecraft account to Discord.
 - `/skoice unlink`: Unlink your Minecraft account from Discord.
@@ -47,4 +48,4 @@ If you are experiencing any issues with Skoice, you may want to [join our Discor
 
 ## Donating
 
-Keep in mind that Skoice is a free software. If you like it, you can help us by [donating](https://paypal.me/whitelines).
+Keep in mind that Skoice is a free software. If you like it, you can help us by [donating](https://opencollective.com/skoice).
