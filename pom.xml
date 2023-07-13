@@ -76,6 +76,10 @@
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.neovisionaries</shadedPattern>
                         </relocation>
                         <relocation>
+                            <pattern>com.bugsnag</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.bugsnag</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>gnu.trove</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.gnu.trove</shadedPattern>
                         </relocation>
@@ -176,6 +180,11 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bugsnag</groupId>
+            <version>[3.0,4.0)</version>
+            <artifactId>bugsnag</artifactId>
         </dependency>
     </dependencies>
 </project>

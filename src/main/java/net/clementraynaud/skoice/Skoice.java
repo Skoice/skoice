@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice;
 
+import com.bugsnag.Bugsnag;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
@@ -39,9 +40,13 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Skoice extends JavaPlugin {
 
     private static final int SERVICE_ID = 11380;
+    private static final String BUGSNAG_KEY = "";
 
     private Lang lang;
     private ConfigYamlFile configYamlFile;
@@ -83,6 +88,7 @@ public class Skoice extends JavaPlugin {
         }
         new SkoiceCommand(this).init();
         this.addCustomCharts();
+        this.setupBugsnag();
         new Updater(this, this.getFile().getAbsolutePath());
     }
 
@@ -104,40 +110,66 @@ public class Skoice extends JavaPlugin {
 
     private void addCustomCharts() {
         Metrics metrics = new Metrics(this, Skoice.SERVICE_ID);
-        metrics.addCustomChart(new SimplePie("lang", () ->
-                LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName()
-        ));
-        metrics.addCustomChart(new SimplePie("loginNotification", () ->
-                this.configYamlFile.getString(ConfigField.LOGIN_NOTIFICATION.toString())
-        ));
-        metrics.addCustomChart(new SimplePie("actionBarAlert", () ->
-                this.configYamlFile.getString(ConfigField.ACTION_BAR_ALERT.toString())
-        ));
-        metrics.addCustomChart(new SimplePie("tooltips", () ->
-                this.configYamlFile.getString(ConfigField.TOOLTIPS.toString())
-        ));
-        metrics.addCustomChart(new SimplePie("corpses-included", () ->
-                this.configYamlFile.getString(ConfigField.CORPSES_INCLUDED.toString())
-        ));
-        metrics.addCustomChart(new SimplePie("spectators-included", () ->
-                this.configYamlFile.getString(ConfigField.SPECTATORS_INCLUDED.toString())
-        ));
-        metrics.addCustomChart(new SimplePie("channelVisibility", () ->
-                this.configYamlFile.getString(ConfigField.CHANNEL_VISIBILITY.toString())
-        ));
-        if (this.configYamlFile.contains(ConfigField.HORIZONTAL_RADIUS.toString())) {
-            int horizontalRadius = this.configYamlFile.getInt(ConfigField.HORIZONTAL_RADIUS.toString());
-            metrics.addCustomChart(ChartUtil.createDrilldownPie("horizontalRadius", horizontalRadius, 0, 10, 11));
-        }
-        if (this.configYamlFile.contains(ConfigField.VERTICAL_RADIUS.toString())) {
-            int verticalRadius = this.configYamlFile.getInt(ConfigField.VERTICAL_RADIUS.toString());
-            metrics.addCustomChart(ChartUtil.createDrilldownPie("verticalRadius", verticalRadius, 0, 10, 11));
-        }
+        Map<String, ConfigField> configFields = getSharedConfigFields();
+        configFields.forEach((name, field) -> metrics.addCustomChart(new SimplePie(name, () ->
+                this.configYamlFile.getString(field.toString())
+        )));
+
+        Map<String, Integer> intConfigFields = getSharedIntConfigFields();
+        intConfigFields.forEach((name, value) -> metrics.addCustomChart(ChartUtil.createDrilldownPie(name, value, 0, 10, 11)));
+
         int linkedUsers = this.linksYamlFile.getLinks().size();
         metrics.addCustomChart(ChartUtil.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
-        metrics.addCustomChart(new SimplePie("botStatus", () ->
-                this.bot.getStatus().toString()
-        ));
+
+        metrics.addCustomChart(new SimplePie("botStatus", () -> this.bot.getStatus().toString()));
+    }
+
+    private void setupBugsnag() {
+        if (Skoice.BUGSNAG_KEY.isEmpty()) {
+            return;
+        }
+        Bugsnag bugsnag = new Bugsnag(Skoice.BUGSNAG_KEY);
+        bugsnag.setAppVersion(this.getDescription().getVersion());
+
+        bugsnag.addCallback(report -> {
+            report.setUserId(this.configYamlFile.getString(ConfigField.SERVER_ID.toString()));
+            report.addToTab("server", "version", this.getServer().getVersion());
+            report.addToTab("server", "bukkitVersion", this.getServer().getBukkitVersion());
+
+            Map<String, ConfigField> sharedConfigFields = getSharedConfigFields();
+            sharedConfigFields.forEach((name, field) -> report.addToTab("app", name, this.configYamlFile.getString(field.toString())));
+
+            Map<String, Integer> sharedIntConfigFields = getSharedIntConfigFields();
+            sharedIntConfigFields.forEach((name, value) -> report.addToTab("app", name, value));
+
+            int linkedUsers = this.linksYamlFile.getLinks().size();
+            report.addToTab("app", "linkedUsers", linkedUsers);
+
+            report.addToTab("app", "botStatus", this.bot.getStatus().toString());
+        });
+    }
+
+    private Map<String, ConfigField> getSharedConfigFields() {
+        Map<String, ConfigField> fields = new HashMap<>();
+        fields.put("lang", ConfigField.LANG);
+        fields.put("loginNotification", ConfigField.LOGIN_NOTIFICATION);
+        fields.put("actionBarAlert", ConfigField.ACTION_BAR_ALERT);
+        fields.put("tooltips", ConfigField.TOOLTIPS);
+        fields.put("corpsesIncluded", ConfigField.CORPSES_INCLUDED);
+        fields.put("spectatorsIncluded", ConfigField.SPECTATORS_INCLUDED);
+        fields.put("channelVisibility", ConfigField.CHANNEL_VISIBILITY);
+        return fields;
+    }
+
+    private Map<String, Integer> getSharedIntConfigFields() {
+        Map<String, Integer> fields = new HashMap<>();
+        if (this.configYamlFile.contains(ConfigField.HORIZONTAL_RADIUS.toString())) {
+            fields.put("horizontalRadius", this.configYamlFile.getInt(ConfigField.HORIZONTAL_RADIUS.toString()));
+        }
+        if (this.configYamlFile.contains(ConfigField.VERTICAL_RADIUS.toString())) {
+            fields.put("verticalRadius", this.configYamlFile.getInt(ConfigField.VERTICAL_RADIUS.toString()));
+        }
+        return fields;
     }
 
     public Lang getLang() {
