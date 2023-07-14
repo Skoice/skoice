@@ -46,6 +46,7 @@ import java.util.List;
 public class Menu {
 
     public static final String CLOSE_BUTTON_ID = "close";
+    public static final String MESSAGE_NOT_SHOWING_UP = "message-not-showing-up";
 
     private final Skoice plugin;
     private final String name;
@@ -191,6 +192,9 @@ public class Menu {
                                 this.plugin.getLang().getMessage("discord.button-label.close"))
                         .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.get()));
             } else {
+                buttons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
+                                this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
+                        .withEmoji(MenuEmoji.QUESTION.get()));
                 if (!"language".equals(this.name)) {
                     Menu languageMenu = this.plugin.getBot().getMenu("language");
                     buttons.add(Button.secondary(languageMenu.name, languageMenu.getTitle(false))
@@ -224,6 +228,10 @@ public class Menu {
             additionalButtons.add(Button.danger("clear-notified-players",
                             this.plugin.getLang().getMessage("discord.button-label.clear-notified-players"))
                     .withEmoji(MenuEmoji.WASTEBASKET.get()));
+        } else if ("verification-code".equals(this.name)) {
+            additionalButtons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
+                            this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
+                    .withEmoji(MenuEmoji.QUESTION.get()));
         }
         return additionalButtons;
     }

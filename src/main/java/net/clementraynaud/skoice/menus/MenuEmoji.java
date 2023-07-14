@@ -49,6 +49,7 @@ public enum MenuEmoji {
     MUTE("U+1F507"),
     NO_ENTRY("U+26D4"),
     PENCIL2("U+270F"),
+    QUESTION("U+2753"),
     REPEAT("U+1F501"),
     REPEAT_ONE("U+1F502"),
     SCREWDRIVER("U+1FA9B"),

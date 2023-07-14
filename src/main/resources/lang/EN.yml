@@ -252,6 +252,7 @@ discord:
     close: "Close"
     configure-later: "Configure Later"
     resume-configuration: "Resume Configuration"
+    message-not-showing-up: "Message Not Showing Up"
     clear-notified-players: "Clear Notified Players"
   select-option:
     default:
@@ -274,5 +275,6 @@ discord:
       label: "Horizontal Radius"
     vertical-radius:
       label: "Vertical Radius"
+  message-not-showing-up: "If you cannot see the message above, you probably have disabled embeds in Discord settings. To use Skoice properly, you must enable them by following this path: `App Settings › Text & Images › Show embeds and preview website links pasted into chat`."
   communication-lost: "Communication lost."
   system-interrupted: "System interrupted."

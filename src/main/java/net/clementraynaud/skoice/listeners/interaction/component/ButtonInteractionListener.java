@@ -59,7 +59,10 @@ public class ButtonInteractionListener extends ListenerAdapter {
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
             if (event.getButton().getId() != null) {
                 String buttonId = event.getButton().getId();
-                if (this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
+                if (buttonId.equals(Menu.MESSAGE_NOT_SHOWING_UP)) {
+                    event.reply(this.plugin.getLang().getMessage("discord.message-not-showing-up"))
+                            .setEphemeral(true).queue();
+                } else if (this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
                     if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
                         event.getMessage().delete().queue();
                         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
