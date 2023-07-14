@@ -209,7 +209,7 @@ discord:
       description: "Having issues? [Join our Discord server](https://discord.gg/h3Tgccc)!"
     contributing:
       title: "Contributing"
-      description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/Skoice/skoice)!"
+      description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/Skoice/skoice) and [translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
     long-range-mode:
       title: "Long-Range Mode"
       description: "Choose this mode if you plan to play open world game modes."
