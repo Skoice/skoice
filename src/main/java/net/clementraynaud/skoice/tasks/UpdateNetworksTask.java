@@ -1,6 +1,5 @@
 /*
  * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -21,6 +20,7 @@
 package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceUpdateListener;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
@@ -30,7 +30,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -64,26 +63,22 @@ public class UpdateNetworksTask {
                 return;
             }
 
-            this.manageNetworks();
+            this.manageConnectedPlayers();
+            this.manageIsolatedPlayers();
+            this.mergeNetworks();
+            this.manageMoves();
 
-            Set<Member> members = new HashSet<>(mainVoiceChannel.getMembers());
-            for (Network network : Networks.getInitialized()) {
-                members.addAll(network.getChannel().getMembers());
-            }
+            for (Member member : GuildVoiceUpdateListener.getConnectedMembers()) {
+                Network network = null;
 
-            for (Member member : members) {
-                Network playerNetwork = null;
-
-                LinkedPlayer linkedPlayer = LinkedPlayer.getOnlineLinkedPlayers().stream()
-                        .filter(p -> p.getDiscordId().equals(member.getId()))
-                        .findFirst().orElse(null);
+                LinkedPlayer linkedPlayer = LinkedPlayer.fromMemberId(member.getId());
                 if (linkedPlayer != null) {
-                    playerNetwork = linkedPlayer.getNetwork();
+                    network = linkedPlayer.getNetwork();
                 }
 
                 VoiceChannel shouldBeInChannel;
-                if (playerNetwork != null && playerNetwork.isInitialized()) {
-                    shouldBeInChannel = playerNetwork.getChannel();
+                if (network != null && network.isInitialized()) {
+                    shouldBeInChannel = network.getChannel();
                 } else {
                     shouldBeInChannel = mainVoiceChannel;
                 }
@@ -109,30 +104,63 @@ public class UpdateNetworksTask {
         }
     }
 
-    private void manageNetworks() {
-        Networks.getInitialized().removeIf(network -> network.getChannel() == null);
+    private void manageConnectedPlayers() {
+        LinkedPlayer.getOnlineLinkedPlayers().stream()
+                .filter(LinkedPlayer::isInAnyNetwork)
+                .forEach(p -> {
+                    Network network = p.getNetwork();
 
-        for (LinkedPlayer linkedPlayer : LinkedPlayer.getOnlineLinkedPlayers()) {
-            if (linkedPlayer.isInMainVoiceChannel() || linkedPlayer.isInAnyNetworkChannel()) {
-                linkedPlayer.updateNearNetworks();
-                if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.ACTION_BAR_ALERT.toString())) {
-                    linkedPlayer.sendActionBarAlert();
-                }
-                if (linkedPlayer.isStateEligible()
-                        && this.plugin.getConfigYamlFile().getCategory().getChannels().size() != 50) {
-                    Set<LinkedPlayer> playersWithinRange = linkedPlayer.getPlayersWithinRange();
-                    if (!playersWithinRange.isEmpty()) {
-                        playersWithinRange.add(linkedPlayer);
-                        new Network(this.plugin, playersWithinRange).build();
+                    if (!network.canPlayerStayConnected(p)) {
+                        network.remove(p);
+
+                    } else if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.ACTION_BAR_ALERT.toString())
+                            && !network.canPlayerConnect(p)) {
+                        p.sendActionBarAlert();
                     }
-                }
+                });
+    }
 
-            } else {
-                Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(linkedPlayer.getDiscordId());
+    private void manageIsolatedPlayers() {
+        LinkedPlayer.getOnlineLinkedPlayers().stream()
+                .filter(LinkedPlayer::isStateEligible)
+                .filter(LinkedPlayer::isInMainVoiceChannel)
+                .filter(p -> !p.isInAnyNetwork())
+                .forEach(p -> {
+                    Set<LinkedPlayer> playersWithinRange = p.getPlayersWithinRange();
+
+                    if (!playersWithinRange.isEmpty()) {
+                        playersWithinRange.stream()
+                                .filter(LinkedPlayer::isInAnyNetwork)
+                                .findFirst()
+                                .ifPresent(playerInNearNetwork -> playerInNearNetwork.getNetwork().add(p));
+
+                        if (!p.isInAnyNetwork()
+                                && this.plugin.getConfigYamlFile().getCategory().getChannels().size() != 50) {
+                            playersWithinRange.add(p);
+                            new Network(this.plugin, playersWithinRange).build();
+                        }
+                    }
+                });
+    }
+
+    private void mergeNetworks() {
+        Networks.getAll()
+                .forEach(network -> LinkedPlayer.getOnlineLinkedPlayers().stream()
+                        .filter(LinkedPlayer::isInAnyNetwork)
+                        .filter(p -> !p.getNetwork().equals(network))
+                        .filter(network::canPlayerConnect)
+                        .forEach(p -> Networks.merge(network, p.getNetwork()))
+                );
+    }
+
+    private void manageMoves() {
+        LinkedPlayer.getOnlineLinkedPlayers().forEach(p -> {
+            if (!p.isInMainVoiceChannel() && !p.isInAnyNetworkChannel()) {
+                Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(p.getDiscordId());
                 if (pair != null) {
                     pair.getRight().cancel(false);
                 }
             }
-        }
+        });
     }
 }

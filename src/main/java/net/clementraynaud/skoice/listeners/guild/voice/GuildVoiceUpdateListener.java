@@ -1,6 +1,5 @@
 /*
  * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -32,9 +31,13 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.OfflinePlayer;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class GuildVoiceUpdateListener extends ListenerAdapter {
+
+    private static final Set<Member> connectedMembers = new HashSet<>();
 
     private final Skoice plugin;
 
@@ -61,7 +64,11 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         }
         VoiceChannel voiceChannel = audioChannel.asVoiceChannel();
         new UpdateVoiceStateTask(this.plugin, member, voiceChannel).run();
-        if (voiceChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
+
+        VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+        if (voiceChannel.equals(mainVoiceChannel) ||
+                Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
+            GuildVoiceUpdateListener.connectedMembers.add(member);
             this.plugin.getBot().checkMemberStatus(member);
         }
     }
@@ -70,15 +77,19 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         if (audioChannel.getType() != ChannelType.VOICE) {
             return;
         }
+
         VoiceChannel voiceChannel = audioChannel.asVoiceChannel();
         if (!voiceChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())
                 && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannel))) {
+            GuildVoiceUpdateListener.connectedMembers.remove(member);
             return;
         }
+
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
         if (minecraftId == null) {
             return;
         }
+
         OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
         if (player.isOnline() && player.getPlayer() != null) {
             Networks.getAll().stream()
@@ -92,6 +103,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         if (audioChannelJoined.getType() != ChannelType.VOICE) {
             return;
         }
+
         VoiceChannel voiceChannelJoined = audioChannelJoined.asVoiceChannel();
         new UpdateVoiceStateTask(this.plugin, member, voiceChannelJoined).run();
 
@@ -102,29 +114,40 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
 
         VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
 
+        if (voiceChannelJoined.equals(mainVoiceChannel) && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelLeft))
+                || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannelJoined)) && !voiceChannelLeft.equals(mainVoiceChannel)) {
+            GuildVoiceUpdateListener.connectedMembers.add(member);
+            this.plugin.getBot().checkMemberStatus(member);
+        } else if (voiceChannelLeft.equals(mainVoiceChannel) && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelJoined))
+                || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannelLeft)) && !voiceChannelJoined.equals(mainVoiceChannel)) {
+            GuildVoiceUpdateListener.connectedMembers.remove(member);
+        }
+
         if (Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelJoined))) {
             String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
             if (minecraftId == null) {
                 return;
             }
+
             OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
                 if (Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannelLeft))) {
                     Networks.getAll().stream()
                             .filter(network -> network.contains(player.getPlayer()))
                             .forEach(network -> network.remove(player.getPlayer()));
+
                     if (!voiceChannelJoined.equals(mainVoiceChannel)) {
                         player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
                     }
+
                 } else if (voiceChannelLeft.equals(mainVoiceChannel)) {
                     player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
                 }
             }
         }
+    }
 
-        if (voiceChannelJoined.equals(mainVoiceChannel)
-                && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelLeft))) {
-            this.plugin.getBot().checkMemberStatus(member);
-        }
+    public static Set<Member> getConnectedMembers() {
+        return GuildVoiceUpdateListener.connectedMembers;
     }
 }

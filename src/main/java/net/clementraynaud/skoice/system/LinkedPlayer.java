@@ -1,6 +1,5 @@
 /*
  * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -54,52 +53,32 @@ public class LinkedPlayer {
         return LinkedPlayer.onlineLinkedPlayers;
     }
 
+    public static LinkedPlayer fromMemberId(String memberId) {
+        return LinkedPlayer.onlineLinkedPlayers.stream()
+                .filter(p -> p.getDiscordId().equals(memberId))
+                .findFirst().orElse(null);
+    }
+
     public boolean isStateEligible() {
         return (this.plugin.getConfigYamlFile().getBoolean(ConfigField.CORPSES_INCLUDED.toString()) || !this.player.isDead())
                 && (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString()) || this.player.getGameMode() != GameMode.SPECTATOR);
     }
 
     public void sendActionBarAlert() {
-        Networks.getAll().stream()
-                .filter(network -> network.contains(this))
-                .filter(network -> network.canPlayerStayConnected(this))
-                .filter(network -> !network.canPlayerBeAdded(this))
-                .forEach(network -> this.plugin.adventure().player(this.player).sendActionBar(
-                                Component.text(ChatColor.translateAlternateColorCodes('&',
-                                                this.plugin.getLang().getMessage("minecraft.action-bar.alert")
-                                        )
-                                )
-                        )
-                );
+        this.plugin.adventure().player(this.player).sendActionBar(
+                Component.text(ChatColor.translateAlternateColorCodes('&',
+                        this.plugin.getLang().getMessage("minecraft.action-bar.alert")
+                ))
+        );
     }
 
     public Set<LinkedPlayer> getPlayersWithinRange() {
         return LinkedPlayer.getOnlineLinkedPlayers().stream()
-                .filter(p -> !p.isInAnyNetwork())
-                .filter(LinkedPlayer::isInMainVoiceChannel)
+                .filter(p -> p.isInMainVoiceChannel() || p.isInAnyNetworkChannel())
                 .filter(p -> !p.equals(this))
                 .filter(LinkedPlayer::isStateEligible)
                 .filter(p -> p.isCloseEnoughToPlayer(this, false))
                 .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
-    }
-
-    public void updateNearNetworks() {
-        Networks.getAll().stream()
-                .filter(network -> network.canPlayerBeAdded(this))
-                .reduce((network1, network2) -> network1.size() > network2.size()
-                        ? network1.engulf(network2)
-                        : network2.engulf(network1))
-                .filter(network -> !network.contains(this))
-                .ifPresent(network -> network.add(this));
-        Networks.getAll().stream()
-                .filter(network -> network.contains(this))
-                .filter(network -> !network.canPlayerStayConnected(this))
-                .forEach(network -> {
-                    network.remove(this);
-                    if (network.size() == 1) {
-                        network.clear();
-                    }
-                });
     }
 
     public boolean isInMainVoiceChannel() {

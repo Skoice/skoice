@@ -1,6 +1,5 @@
 /*
  * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
  *
  * This file is part of Skoice.
  *
@@ -32,7 +31,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class Network {
 
@@ -76,7 +74,7 @@ public class Network {
                 }, e -> Networks.remove(this));
     }
 
-    public boolean canPlayerBeAdded(LinkedPlayer player) {
+    public boolean canPlayerConnect(LinkedPlayer player) {
         if (!player.isStateEligible()) {
             return false;
         }
@@ -90,30 +88,15 @@ public class Network {
         if (!player.isStateEligible()) {
             return false;
         }
-        Set<LinkedPlayer> matches = this.players.stream()
+        return this.players.stream()
                 .filter(LinkedPlayer::isStateEligible)
                 .filter(p -> p.isCloseEnoughToPlayer(player, true))
-                .collect(Collectors.toSet());
-        if (this.players.size() > matches.size()) {
-            Set<LinkedPlayer> otherPlayers = this.players.stream()
-                    .filter(p -> !matches.contains(p))
-                    .filter(LinkedPlayer::isStateEligible)
-                    .collect(Collectors.toSet());
-            for (LinkedPlayer otherPlayer : otherPlayers) {
-                if (matches.stream()
-                        .anyMatch(p -> p.isCloseEnoughToPlayer(otherPlayer, true))) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        return matches.size() != 1;
+                .anyMatch(p -> !p.equals(player));
     }
 
-    public Network engulf(Network network) {
+    public void engulf(Network network) {
         this.players.addAll(network.players);
         network.players.clear();
-        return this;
     }
 
     public void clear() {
@@ -153,11 +136,11 @@ public class Network {
     }
 
     public boolean isEmpty() {
-        return this.players.isEmpty();
+        return this.players.size() < 2;
     }
 
     public VoiceChannel getChannel() {
-        if (this.channelId == null || this.channelId.isEmpty()) {
+        if (this.channelId == null) {
             return null;
         }
         Guild guild = this.plugin.getBot().getGuild();

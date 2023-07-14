@@ -48,6 +48,14 @@ public final class Networks {
         Networks.networkSet.remove(network);
     }
 
+    public static void merge(Network network1, Network network2) {
+        if (network1.size() > network2.size()) {
+            network1.engulf(network2);
+        } else {
+            network2.engulf(network1);
+        }
+    }
+
     public static void clean() {
         Networks.networkSet.stream()
                 .filter(Network::isEmpty)

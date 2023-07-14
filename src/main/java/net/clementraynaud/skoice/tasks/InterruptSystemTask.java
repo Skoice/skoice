@@ -39,9 +39,10 @@ public class InterruptSystemTask {
         for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.getAwaitingMoves().values()) {
             value.getRight().cancel(true);
         }
-        boolean isVoiceChannelSet = this.plugin.getConfigYamlFile().getVoiceChannel() != null;
+
+        boolean isMainVoiceChannelSet = this.plugin.getConfigYamlFile().getVoiceChannel() != null;
         for (Network network : Networks.getInitialized()) {
-            if (isVoiceChannelSet) {
+            if (isMainVoiceChannelSet) {
                 for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
                     Member member = network.getChannel().getMembers().get(i);
                     if (i + 1 < network.getChannel().getMembers().size()) {
@@ -54,6 +55,7 @@ public class InterruptSystemTask {
             network.clear();
             network.delete("system-interrupted");
         }
+
         Networks.clear();
     }
 }

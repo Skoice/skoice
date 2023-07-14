@@ -48,5 +48,6 @@ public class SessionRecreateListener extends ListenerAdapter {
         this.plugin.getBot().muteMembers();
         this.plugin.getBot().checkForUnlinkedUsers();
         this.plugin.getBot().refreshOnlineLinkedPlayers();
+        this.plugin.getBot().refreshConnectedMembers();
     }
 }
