@@ -15,7 +15,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861</url>
+    <url>https://clementraynaud.net/skoice</url>
 
     <build>
         <plugins>
