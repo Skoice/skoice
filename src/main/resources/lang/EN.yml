@@ -116,7 +116,7 @@ discord:
       description: "In order to work properly, your bot must have the \"Administrator\" permission on your Discord server."
     voice-channel:
       title: "Voice Channel"
-      description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Adjust its bitrate to manage the audio quality of the proximity voice chat."
+      description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Adjust its bitrate to manage the audio quality of the proximity voice chat. Please note that players will automatically be muted in this channel."
       shortened-description: "Select the channel players have to join to use the proximity voice chat."
       select-menu:
         placeholder: "Please select a voice channel."
@@ -149,7 +149,7 @@ discord:
       description: "Manage the messages that are sent to players on your Minecraft server."
     login-notification:
       title: "Login Notification"
-      description: "Toggle the message sent to unlinked players when they log in to your Minecraft server."
+      description: "Toggle the message sent to players who have not linked their accounts when they log in to your Minecraft server."
       select-menu:
         always-remind:
           label: "Always Remind"
@@ -188,7 +188,7 @@ discord:
       description: "Skoice is now configured. Type `/link` on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     notified-players-cleared:
       title: "Notified Players Cleared"
-      description: "You have cleared notified players. Unlinked players that have already received the reminder to link their accounts will now be notified again."
+      description: "You have cleared notified players. Players who have already received the reminder to link their accounts will now be notified again."
     incomplete-configuration:
       title: "Incomplete Configuration"
       description: "Skoice is not configured correctly. Please contact an administrator of the server."
