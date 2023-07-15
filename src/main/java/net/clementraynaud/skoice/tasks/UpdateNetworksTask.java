@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceUpdateListener;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
@@ -30,6 +29,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -68,7 +68,10 @@ public class UpdateNetworksTask {
             this.mergeNetworks();
             this.manageMoves();
 
-            for (Member member : GuildVoiceUpdateListener.getConnectedMembers()) {
+            Set<Member> connectedMembers = new HashSet<>(mainVoiceChannel.getMembers());
+            Networks.getInitialized().forEach(network -> connectedMembers.addAll(network.getChannel().getMembers()));
+
+            for (Member member : connectedMembers) {
                 Network network = null;
 
                 LinkedPlayer linkedPlayer = LinkedPlayer.fromMemberId(member.getId());

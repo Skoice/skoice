@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceUpdateListener;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.storage.config.ConfigField;
@@ -148,7 +147,6 @@ public class Bot {
         this.muteMembers();
         this.checkForUnlinkedUsers();
         this.refreshOnlineLinkedPlayers();
-        this.refreshConnectedMembers();
         if (sender != null) {
             if (this.getStatus() == BotStatus.READY) {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected"));
@@ -227,17 +225,6 @@ public class Bot {
             this.plugin.getLinksYamlFile().retrieveMember(player.getUniqueId(),
                     member -> LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member.getId())));
         }
-    }
-
-    public void refreshConnectedMembers() {
-        GuildVoiceUpdateListener.getConnectedMembers().clear();
-
-        VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
-        if (mainVoiceChannel != null) {
-            GuildVoiceUpdateListener.getConnectedMembers().addAll(mainVoiceChannel.getMembers());
-        }
-
-        Networks.getInitialized().forEach(network -> GuildVoiceUpdateListener.getConnectedMembers().addAll(network.getChannel().getMembers()));
     }
 
     public void updateGuild() {

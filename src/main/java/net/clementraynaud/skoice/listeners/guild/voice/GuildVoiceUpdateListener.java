@@ -31,13 +31,9 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.OfflinePlayer;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 public class GuildVoiceUpdateListener extends ListenerAdapter {
-
-    private static final Set<Member> connectedMembers = new HashSet<>();
 
     private final Skoice plugin;
 
@@ -68,7 +64,6 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
         if (voiceChannel.equals(mainVoiceChannel) ||
                 Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
-            GuildVoiceUpdateListener.connectedMembers.add(member);
             this.plugin.getBot().checkMemberStatus(member);
         }
     }
@@ -81,7 +76,6 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         VoiceChannel voiceChannel = audioChannel.asVoiceChannel();
         if (!voiceChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())
                 && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannel))) {
-            GuildVoiceUpdateListener.connectedMembers.remove(member);
             return;
         }
 
@@ -116,11 +110,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
 
         if (voiceChannelJoined.equals(mainVoiceChannel) && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelLeft))
                 || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannelJoined)) && !voiceChannelLeft.equals(mainVoiceChannel)) {
-            GuildVoiceUpdateListener.connectedMembers.add(member);
             this.plugin.getBot().checkMemberStatus(member);
-        } else if (voiceChannelLeft.equals(mainVoiceChannel) && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelJoined))
-                || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannelLeft)) && !voiceChannelJoined.equals(mainVoiceChannel)) {
-            GuildVoiceUpdateListener.connectedMembers.remove(member);
         }
 
         if (Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelJoined))) {
@@ -145,9 +135,5 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
                 }
             }
         }
-    }
-
-    public static Set<Member> getConnectedMembers() {
-        return GuildVoiceUpdateListener.connectedMembers;
     }
 }
