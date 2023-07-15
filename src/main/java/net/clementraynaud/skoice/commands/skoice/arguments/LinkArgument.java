@@ -37,7 +37,7 @@ public class LinkArgument extends Argument {
     private final String arg;
 
     public LinkArgument(Skoice plugin, CommandSender sender, String arg) {
-        super(plugin, sender, ArgumentInfo.LINK.isAllowedInConsole(), ArgumentInfo.LINK.isRestrictedToOperators());
+        super(plugin, sender, ArgumentInfo.LINK.isAllowedInConsole(), ArgumentInfo.LINK.isPermissionRequired());
         this.arg = arg;
     }
 

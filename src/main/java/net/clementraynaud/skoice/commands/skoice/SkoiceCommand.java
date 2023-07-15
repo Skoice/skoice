@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands.skoice;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.ConfigureArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
@@ -58,7 +59,10 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         if (args.length == 0) {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.no-parameter", ArgumentInfo.getJoinedList(sender.isOp())));
+                        .getMessage("minecraft.chat.error.no-parameter",
+                                ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION))
+                        )
+                );
             } else {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("minecraft.chat.error.no-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
@@ -68,7 +72,10 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         if (ArgumentInfo.get(args[0]) == null) {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.invalid-parameter", ArgumentInfo.getJoinedList(sender.isOp())));
+                        .getMessage("minecraft.chat.error.invalid-parameter",
+                                ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION))
+                        )
+                );
             } else {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("minecraft.chat.error.invalid-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
@@ -101,7 +108,7 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
         if (args.length == 1) {
-            return ArgumentInfo.getList(sender.isOp()).stream()
+            return ArgumentInfo.getList(sender.hasPermission(Argument.MANAGE_PERMISSION)).stream()
                     .filter(arg -> arg.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }

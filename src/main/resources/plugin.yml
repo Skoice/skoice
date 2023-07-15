@@ -29,9 +29,5 @@ commands:
     description: The command to use Skoice.
 
 permissions:
-  skoice.configure:
+  skoice.manage:
     default: op
-  skoice.link:
-    default: true
-  skoice.unlink:
-    default: true

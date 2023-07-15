@@ -25,16 +25,18 @@ import org.bukkit.entity.Player;
 
 public abstract class Argument {
 
+    public static final String MANAGE_PERMISSION = "skoice.manage";
+
     protected final Skoice plugin;
     protected final CommandSender sender;
     protected final boolean allowedInConsole;
-    protected final boolean restrictedToOperators;
+    protected final boolean permissionRequired;
 
-    protected Argument(Skoice plugin, CommandSender sender, boolean allowedInConsole, boolean restrictedToOperators) {
+    protected Argument(Skoice plugin, CommandSender sender, boolean allowedInConsole, boolean permissionRequired) {
         this.plugin = plugin;
         this.sender = sender;
         this.allowedInConsole = allowedInConsole;
-        this.restrictedToOperators = restrictedToOperators;
+        this.permissionRequired = permissionRequired;
     }
 
     protected abstract void run();
@@ -44,7 +46,7 @@ public abstract class Argument {
             this.sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.illegal-executor"));
             return true;
         }
-        if (!this.sender.isOp() && this.restrictedToOperators) {
+        if (this.permissionRequired && !this.sender.hasPermission(Argument.MANAGE_PERMISSION)) {
             this.sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.missing-permission"));
             return true;
         }

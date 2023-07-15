@@ -26,7 +26,7 @@ import org.bukkit.command.CommandSender;
 public class TooltipsArgument extends Argument {
 
     public TooltipsArgument(Skoice plugin, CommandSender sender) {
-        super(plugin, sender, ArgumentInfo.TOOLTIPS.isAllowedInConsole(), ArgumentInfo.TOOLTIPS.isRestrictedToOperators());
+        super(plugin, sender, ArgumentInfo.TOOLTIPS.isAllowedInConsole(), ArgumentInfo.TOOLTIPS.isPermissionRequired());
     }
 
     @Override

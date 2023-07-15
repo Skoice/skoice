@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.menus.selectmenus.LoginNotificationSelectMenu;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
@@ -48,7 +49,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-            if (player.isOp()) {
+            if (player.hasPermission(Argument.MANAGE_PERMISSION)) {
                 if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
                     if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
                         this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
