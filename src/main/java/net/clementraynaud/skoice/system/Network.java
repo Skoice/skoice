@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Network {
 
@@ -88,10 +89,19 @@ public class Network {
         if (!player.isStateEligible()) {
             return false;
         }
-        return this.players.stream()
+        List<LinkedPlayer> playersWithinRange = this.players.stream()
                 .filter(LinkedPlayer::isStateEligible)
                 .filter(p -> p.isCloseEnoughToPlayer(player, true))
-                .anyMatch(p -> !p.equals(player));
+                .collect(Collectors.toList());
+
+        if (this.players.size() > playersWithinRange.size()) {
+            return this.players.stream()
+                    .filter(LinkedPlayer::isStateEligible)
+                    .filter(p -> !playersWithinRange.contains(p))
+                    .anyMatch(p -> playersWithinRange.stream()
+                            .anyMatch(playerWithinRange -> playerWithinRange.isCloseEnoughToPlayer(p, true)));
+        }
+        return playersWithinRange.size() > 1;
     }
 
     public void engulf(Network network) {
