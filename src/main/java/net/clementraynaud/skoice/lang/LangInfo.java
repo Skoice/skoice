@@ -46,14 +46,6 @@ public enum LangInfo {
         this.unicode = unicode;
     }
 
-    public String getFullName() {
-        return this.fullName;
-    }
-
-    public Emoji getEmoji() {
-        return Emoji.fromUnicode(this.unicode);
-    }
-
     public static Set<String> getList() {
         return Stream.of(LangInfo.values())
                 .map(Enum::toString)
@@ -63,5 +55,13 @@ public enum LangInfo {
 
     public static String getJoinedList() {
         return "<" + String.join("/", LangInfo.getList()) + ">";
+    }
+
+    public String getFullName() {
+        return this.fullName;
+    }
+
+    public Emoji getEmoji() {
+        return Emoji.fromUnicode(this.unicode);
     }
 }

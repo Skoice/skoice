@@ -33,7 +33,7 @@ public class Updater {
 
     private static final long TICKS_BETWEEN_VERSION_CHECKING = 720000L;
     private static final long TICKS_BEFORE_VERSION_CHECKING = 1200L;
-    
+
     private final Skoice plugin;
     private final String pluginPath;
     private String downloadedVersion;

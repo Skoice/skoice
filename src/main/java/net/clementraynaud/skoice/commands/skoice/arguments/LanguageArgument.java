@@ -24,7 +24,6 @@ import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.entities.Guild;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class LanguageArgument extends Argument {
 

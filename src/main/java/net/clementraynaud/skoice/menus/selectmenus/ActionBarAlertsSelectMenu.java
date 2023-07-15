@@ -27,7 +27,6 @@ import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ActionBarAlertsSelectMenu extends SelectMenu {

@@ -110,12 +110,12 @@ public class Skoice extends JavaPlugin {
 
     private void addCustomCharts() {
         Metrics metrics = new Metrics(this, Skoice.SERVICE_ID);
-        Map<String, ConfigField> configFields = getSharedConfigFields();
+        Map<String, ConfigField> configFields = this.getSharedConfigFields();
         configFields.forEach((name, field) -> metrics.addCustomChart(new SimplePie(name, () ->
                 this.configYamlFile.getString(field.toString())
         )));
 
-        Map<String, Integer> intConfigFields = getSharedIntConfigFields();
+        Map<String, Integer> intConfigFields = this.getSharedIntConfigFields();
         intConfigFields.forEach((name, value) -> metrics.addCustomChart(ChartUtil.createDrilldownPie(name, value, 0, 10, 11)));
 
         int linkedUsers = this.linksYamlFile.getLinks().size();
@@ -136,10 +136,10 @@ public class Skoice extends JavaPlugin {
             report.addToTab("server", "version", this.getServer().getVersion());
             report.addToTab("server", "bukkitVersion", this.getServer().getBukkitVersion());
 
-            Map<String, ConfigField> sharedConfigFields = getSharedConfigFields();
+            Map<String, ConfigField> sharedConfigFields = this.getSharedConfigFields();
             sharedConfigFields.forEach((name, field) -> report.addToTab("app", name, this.configYamlFile.getString(field.toString())));
 
-            Map<String, Integer> sharedIntConfigFields = getSharedIntConfigFields();
+            Map<String, Integer> sharedIntConfigFields = this.getSharedIntConfigFields();
             sharedIntConfigFields.forEach((name, value) -> report.addToTab("app", name, value));
 
             int linkedUsers = this.linksYamlFile.getLinks().size();

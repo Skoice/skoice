@@ -20,7 +20,14 @@
 package net.clementraynaud.skoice.commands.skoice;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.commands.skoice.arguments.*;
+import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
+import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
+import net.clementraynaud.skoice.commands.skoice.arguments.ConfigureArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.LanguageArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.TokenArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.TooltipsArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.UnlinkArgument;
 import net.clementraynaud.skoice.lang.LangInfo;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
