@@ -136,7 +136,7 @@ discord:
     language:
       title: "Język"
       description: "Wybierz język używany do wyświetlania wiadomości."
-    action-bar-alert:
+    action-bar-alerts:
       title: "Alert paska działań"
       description: "Wyłącz alert wysyłany do graczy, którzy się oddalają, zanim zostaną odłączeni od bieżącego kanału głosowego."
     channel-visibility:

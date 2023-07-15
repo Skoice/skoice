@@ -136,7 +136,7 @@ discord:
     language:
       title: "Sprache"
       description: "Wählen Sie die Sprache, in der die Meldungen angezeigt werden sollen."
-    action-bar-alert:
+    action-bar-alerts:
       title: "Aktionsleisten-Alarm"
       description: "Schaltet den Alarm für Spieler ein, die sich entfernen, bevor sie von ihrem aktuellen Sprachkanal getrennt werden."
     channel-visibility:

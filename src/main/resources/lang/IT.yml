@@ -120,7 +120,7 @@ discord:
     language:
       title: "Lingua"
       description: "Scegli la lingua utilizzata per visualizzare i messaggi."
-    action-bar-alert:
+    action-bar-alerts:
       title: "Allarme azionabile"
       description: "Attiva/disattiva l'avviso inviato ai giocatori che si stanno allontanando prima di disconnettersi dal loro canale vocale corrente."
     channel-visibility:

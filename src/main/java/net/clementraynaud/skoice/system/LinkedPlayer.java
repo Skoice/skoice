@@ -64,10 +64,18 @@ public class LinkedPlayer {
                 && (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString()) || this.player.getGameMode() != GameMode.SPECTATOR);
     }
 
-    public void sendActionBarAlert() {
+    public void sendConnectingAlert() {
         this.plugin.adventure().player(this.player).sendActionBar(
                 Component.text(ChatColor.translateAlternateColorCodes('&',
-                        this.plugin.getLang().getMessage("minecraft.action-bar.alert")
+                        this.plugin.getLang().getMessage("minecraft.action-bar.connecting-alert")
+                ))
+        );
+    }
+
+    public void sendDisconnectingAlert() {
+        this.plugin.adventure().player(this.player).sendActionBar(
+                Component.text(ChatColor.translateAlternateColorCodes('&',
+                        this.plugin.getLang().getMessage("minecraft.action-bar.disconnecting-alert")
                 ))
         );
     }

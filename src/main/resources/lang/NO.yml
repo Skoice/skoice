@@ -121,7 +121,7 @@ discord:
     language:
       title: "Språk"
       description: "Velg språket som skal vises for meldinger."
-    action-bar-alert:
+    action-bar-alerts:
       title: "Action Bar Varsling"
       description: "Varsling sendes til spillere som flytter bort før de kobles fra sin nåværende talekanal."
     channel-visibility:

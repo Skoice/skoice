@@ -153,7 +153,8 @@ public class Skoice extends JavaPlugin {
         Map<String, ConfigField> fields = new HashMap<>();
         fields.put("lang", ConfigField.LANG);
         fields.put("loginNotification", ConfigField.LOGIN_NOTIFICATION);
-        fields.put("actionBarAlert", ConfigField.ACTION_BAR_ALERT);
+        fields.put("connectingAlert", ConfigField.CONNECTING_ALERT);
+        fields.put("disconnectingAlert", ConfigField.DISCONNECTING_ALERT);
         fields.put("tooltips", ConfigField.TOOLTIPS);
         fields.put("corpsesIncluded", ConfigField.CORPSES_INCLUDED);
         fields.put("spectatorsIncluded", ConfigField.SPECTATORS_INCLUDED);

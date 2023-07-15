@@ -88,7 +88,8 @@ minecraft:
         - "&7."
       bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &bhttps://discordstatus.com&7."
   action-bar:
-    alert: "&c⚠ &7You are &cmoving away &7from near players."
+    connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
+    disconnecting-alert: "&c⚠ &7You are &cmoving away &7from near players."
   interaction:
     here: "&bhere"
     this-page: "&bthis page"
@@ -157,9 +158,15 @@ discord:
           label: "Remind Once"
         never-remind:
           label: "Never Remind"
-    action-bar-alert:
-      title: "Action Bar Alert"
-      description: "Toggle the alert sent to players who are moving away before they get disconnected from their current voice channel."
+    action-bar-alerts:
+      title: "Action Bar Alerts"
+      description: "Toggle the alerts sent to players who are using the proximity voice chat."
+      select-menu:
+        placeholder: "Please select the desired alerts."
+        connecting-alert:
+          label: "\"You are near other players. Say hi!\""
+        disconnecting-alert:
+          label: "\"You are moving away from near players.\""
     tooltips:
       title: "Tooltips"
       shortened-description: "Toggle interactive messages on your Minecraft server."

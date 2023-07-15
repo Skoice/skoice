@@ -21,14 +21,7 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.menus.selectmenus.IncludedPlayersSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.LoginNotificationSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.RangeSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.ServerSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.ToggleSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.VoiceChannelSelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.*;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -151,7 +144,9 @@ public class Menu {
             case "included-players":
                 this.selectMenu = new IncludedPlayersSelectMenu(this.plugin);
                 break;
-            case "action-bar-alert":
+            case "action-bar-alerts":
+                this.selectMenu = new ActionBarAlertsSelectMenu(this.plugin);
+                break;
             case "tooltips":
             case "channel-visibility":
                 this.selectMenu = new ToggleSelectMenu(this.plugin, this.name);

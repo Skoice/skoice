@@ -118,8 +118,8 @@ login-notification:
   type: default
   style: primary
   parent: in-game-messages
-action-bar-alert:
-  emoji: exclamation
+action-bar-alerts:
+  emoji: warning
   type: default
   style: primary
   parent: in-game-messages

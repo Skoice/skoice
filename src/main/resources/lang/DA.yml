@@ -136,7 +136,7 @@ discord:
     language:
       title: "Sprog"
       description: "Vælg sproget der bruges til at vise meddelelser."
-    action-bar-alert:
+    action-bar-alerts:
       title: "Action Bar Advarsel"
       description: "Slå advarslen til/fra der sendes til spillere der bevæger sig væk før de bliver koblet fra deres nuværende stemmekanal."
     channel-visibility:

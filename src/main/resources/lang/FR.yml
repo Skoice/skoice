@@ -150,7 +150,7 @@ discord:
           label: "Rappeler une fois"
         never-remind:
           label: "Ne jamais rappeler"
-    action-bar-alert:
+    action-bar-alerts:
       title: "Alerte dans la barre d'action"
       description: "Activez ou désactivez l'alerte envoyée aux joueurs qui s'éloignent avant qu'ils soient déconnectés de leur salon vocal actuel."
     tooltips:

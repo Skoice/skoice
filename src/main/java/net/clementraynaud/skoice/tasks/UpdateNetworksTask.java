@@ -116,9 +116,9 @@ public class UpdateNetworksTask {
                     if (!network.canPlayerStayConnected(p)) {
                         network.remove(p);
 
-                    } else if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.ACTION_BAR_ALERT.toString())
+                    } else if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.DISCONNECTING_ALERT.toString())
                             && !network.canPlayerConnect(p)) {
-                        p.sendActionBarAlert();
+                        p.sendDisconnectingAlert();
                     }
                 });
     }
@@ -135,12 +135,22 @@ public class UpdateNetworksTask {
                         playersWithinRange.stream()
                                 .filter(LinkedPlayer::isInAnyNetwork)
                                 .findFirst()
-                                .ifPresent(playerInNearNetwork -> playerInNearNetwork.getNetwork().add(p));
+                                .ifPresent(playerInNearNetwork -> {
+                                    playerInNearNetwork.getNetwork().add(p);
+
+                                    if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
+                                        p.sendConnectingAlert();
+                                    }
+                                });
 
                         if (!p.isInAnyNetwork()
                                 && this.plugin.getConfigYamlFile().getCategory().getChannels().size() != 50) {
                             playersWithinRange.add(p);
                             new Network(this.plugin, playersWithinRange).build();
+
+                            if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
+                                playersWithinRange.forEach(LinkedPlayer::sendConnectingAlert);
+                            }
                         }
                     }
                 });

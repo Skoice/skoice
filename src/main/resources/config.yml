@@ -2,7 +2,8 @@
 
 lang: EN
 login-notification: remind-once
-action-bar-alert: true
+connecting-alert: false
+disconnecting-alert: true
 tooltips: true
 corpses-included: false
 spectators-included: false

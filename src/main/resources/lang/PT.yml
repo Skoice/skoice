@@ -136,7 +136,7 @@ discord:
     language:
       title: "Idioma"
       description: "Escolha o idioma para as mensagens."
-    action-bar-alert:
+    action-bar-alerts:
       title: "Alerta na Barra de Ações (Action Bar)"
       description: "Enviar um alerta para jogadores que se distanciam demais antes de serem desconectados do canal de voz atual."
     channel-visibility:

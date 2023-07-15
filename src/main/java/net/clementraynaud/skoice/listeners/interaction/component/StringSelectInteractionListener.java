@@ -59,11 +59,12 @@ public class StringSelectInteractionListener extends ListenerAdapter {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
             String componentId = event.getComponentId();
+            List<SelectOption> options = new ArrayList<>(event.getComponent().getOptions());
 
             switch (componentId) {
                 case "server-selection":
                     if (this.plugin.getBot().getJDA().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
-                        for (SelectOption server : event.getComponent().getOptions()) {
+                        for (SelectOption server : options) {
                             Guild guild = this.plugin.getBot().getJDA().getGuildById(server.getValue());
                             if (guild != null && !event.getSelectedOptions().get(0).getValue().equals(server.getValue())) {
                                 if (event.getGuild().getId().equals(server.getValue())) {
@@ -146,8 +147,14 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("login-notification").build())).queue();
                     break;
 
+                case "action-bar-alerts-selection":
+                    options.removeAll(event.getSelectedOptions());
+                    options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
+                    event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
+                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("action-bar-alerts").build())).queue();
+                    break;
+
                 case "included-players-selection":
-                    List<SelectOption> options = new ArrayList<>(event.getComponent().getOptions());
                     options.removeAll(event.getSelectedOptions());
                     options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
                     event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
