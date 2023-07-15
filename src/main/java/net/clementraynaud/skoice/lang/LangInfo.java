@@ -19,7 +19,6 @@
 
 package net.clementraynaud.skoice.lang;
 
-import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 
 import java.util.Set;
