@@ -57,12 +57,12 @@ public class LinkArgument extends Argument {
         }
         if (this.arg.isEmpty()) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.no-code",
-                    this.plugin.getBot().getGuild().getName()));
+                    super.plugin.getBot().getGuild().getName()));
             return;
         }
         if (!LinkCommand.getDiscordIdCode().containsValue(this.arg)) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.invalid-code",
-                    this.plugin.getBot().getGuild().getName()));
+                    super.plugin.getBot().getGuild().getName()));
             return;
         }
         String discordId = MapUtil.getKeyFromValue(LinkCommand.getDiscordIdCode(), this.arg);

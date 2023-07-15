@@ -20,13 +20,8 @@
 package net.clementraynaud.skoice.commands.skoice;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
-import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
-import net.clementraynaud.skoice.commands.skoice.arguments.ConfigureArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.TokenArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.TooltipsArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.UnlinkArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.*;
+import net.clementraynaud.skoice.lang.LangInfo;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -93,6 +88,9 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
             case TOKEN:
                 new TokenArgument(this.plugin, sender, arg).run();
                 break;
+            case LANGUAGE:
+                new LanguageArgument(this.plugin, sender, arg).run();
+                break;
             case LINK:
                 new LinkArgument(this.plugin, sender, arg).run();
                 break;
@@ -110,6 +108,11 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             return ArgumentInfo.getList(sender.hasPermission(Argument.MANAGE_PERMISSION)).stream()
                     .filter(arg -> arg.startsWith(args[0].toLowerCase()))
+                    .collect(Collectors.toList());
+
+        } else if (args.length == 2 && args[0].equals(ArgumentInfo.LANGUAGE.name().toLowerCase())) {
+            return LangInfo.getList().stream()
+                    .filter(arg -> arg.startsWith(args[1].toLowerCase()))
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();

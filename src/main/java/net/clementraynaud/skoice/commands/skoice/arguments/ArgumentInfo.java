@@ -27,6 +27,7 @@ public enum ArgumentInfo {
     CONFIGURE(false, true),
     TOOLTIPS(false, true),
     TOKEN(true, true),
+    LANGUAGE(true, true),
     LINK(false, false),
     UNLINK(false, false);
 

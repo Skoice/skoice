@@ -19,7 +19,12 @@
 
 package net.clementraynaud.skoice.lang;
 
+import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum LangInfo {
 
@@ -48,5 +53,16 @@ public enum LangInfo {
 
     public Emoji getEmoji() {
         return Emoji.fromUnicode(this.unicode);
+    }
+
+    public static Set<String> getList() {
+        return Stream.of(LangInfo.values())
+                .map(Enum::toString)
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
+    }
+
+    public static String getJoinedList() {
+        return "<" + String.join("/", LangInfo.getList()) + ">";
     }
 }
