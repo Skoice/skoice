@@ -304,7 +304,7 @@ public class Bot {
             this.getJDA().getPresence().setActivity(Activity.listening("/configure"));
         }
     }
-
+    
     public void sendIncompleteConfigurationAlert(Player player, boolean sendIfPermissionMissing) {
         if (player.hasPermission(Argument.MANAGE_PERMISSION)) {
             if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {

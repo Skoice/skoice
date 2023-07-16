@@ -152,7 +152,7 @@ discord:
       description: "Choose the language used to display messages."
     in-game-messages:
       title: "In-Game Messages"
-      description: "Manage the messages that are sent to players on your Minecraft server."
+      description: "Manage the messages sent to players on your Minecraft server."
     login-notification:
       title: "Login Notification"
       description: "Toggle the message sent to players who have not linked their accounts when they log in to your Minecraft server."
@@ -178,7 +178,7 @@ discord:
       description: "Toggle interactive messages on your Minecraft server. You may want to disable this setting if your server is running on Bedrock Edition or if tooltips are disabled in Minecraft settings. Only operators can receive interactive messages."
     included-players:
       title: "Included Players"
-      description: "Choose whether or not some types of players are included in the proximity voice chat."
+      description: "Choose the types of players included in the proximity voice chat."
       select-menu:
         placeholder: "Please select the desired types of players."
         corpses-included:
