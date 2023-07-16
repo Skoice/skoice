@@ -52,9 +52,13 @@ public class PlayerJoinListener implements Listener {
             if (player.hasPermission(Argument.MANAGE_PERMISSION)) {
                 if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
                     if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-                        this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
+                        this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive",
+                                this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
                                         .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.execute", "/skoice configure")))
-                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure"))
+                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure")),
+                                this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
+                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.shortcut", "/skoice language")))
+                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice language "))
                                 )
                         );
                     } else {
