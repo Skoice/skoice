@@ -109,7 +109,8 @@ discord:
     unlink: "Unlink your Discord account from Minecraft."
     invite: "Get the proximity voice chat on your server."
   menu:
-    footer: "The proximity voice chat is provided by Skoice."
+    footer: "Want Skoice on your server? Type \"/invite\"!"
+    invite-footer: "Skoice • carlodrift, Lucas_Cdry and contributors"
     configuration:
       title: "Configuration"
     server:
@@ -144,8 +145,8 @@ discord:
           short-range-mode:
             label: "Short-Range Mode"
             description: "Horizontal Radius: 40 blocks — Vertical Radius: 20 blocks"
-    advanced-settings:
-      title: "Advanced Settings"
+    more-settings:
+      title: "More Settings"
       description: "Manage other parameters."
     language:
       title: "Language"

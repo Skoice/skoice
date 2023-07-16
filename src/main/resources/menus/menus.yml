@@ -98,7 +98,7 @@ range:
     - long-range-mode
     - short-range-mode
     - customize
-advanced-settings:
+more-settings:
   emoji: wrench
   type: default
   style: secondary
@@ -112,7 +112,7 @@ in-game-messages:
   emoji: speech_balloon
   type: default
   style: primary
-  parent: advanced-settings
+  parent: more-settings
 login-notification:
   emoji: bell
   type: default
@@ -132,12 +132,12 @@ included-players:
   emoji: bust_in_silhouette
   type: default
   style: primary
-  parent: advanced-settings
+  parent: more-settings
 channel-visibility:
   emoji: mag
   type: default
   style: primary
-  parent: advanced-settings
+  parent: more-settings
 server:
   emoji: file_cabinet
   type: default

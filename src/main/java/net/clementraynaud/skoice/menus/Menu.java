@@ -95,9 +95,16 @@ public class Menu {
 
     private MessageEmbed getEmbed(String... args) {
         EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(true))
-                .setColor(this.type.getColor())
-                .setFooter(this.plugin.getLang().getMessage("discord.menu.footer"),
-                        "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
+                .setColor(this.type.getColor());
+
+        if ("skoice-proximity-voice-chat".equals(this.name)) {
+            embed.setFooter(this.plugin.getLang().getMessage("discord.menu.invite-footer"),
+                    "https://avatars.githubusercontent.com/u/107434569?s=200&v=4");
+        } else {
+            embed.setFooter(this.plugin.getLang().getMessage("discord.menu.footer"),
+                    "https://avatars.githubusercontent.com/u/107434569?s=200&v=4");
+        }
+
         if (this.getDescription(false) != null) {
             embed.setDescription(this.getDescription(false));
         }
