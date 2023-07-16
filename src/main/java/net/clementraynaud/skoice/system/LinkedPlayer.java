@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 public class LinkedPlayer {
 
-    private static final double FALLOFF = 2.5;
+    private static final int FALLOFF = 3;
 
     private static final Set<LinkedPlayer> onlineLinkedPlayers = new HashSet<>();
 
