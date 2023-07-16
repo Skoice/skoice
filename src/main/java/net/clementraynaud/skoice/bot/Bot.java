@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.storage.config.ConfigField;
@@ -304,7 +305,33 @@ public class Bot {
         }
     }
 
-    public void sendNoGuildAlert(Player player) {
+    public void sendIncompleteConfigurationAlert(Player player, boolean sendIfPermissionMissing) {
+        if (player.hasPermission(Argument.MANAGE_PERMISSION)) {
+            if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
+                if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
+                    this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive",
+                                    this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
+                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.execute", "/skoice configure")))
+                                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure")),
+                                    this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
+                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.shortcut", "/skoice language")))
+                                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice language "))
+                            )
+                    );
+                } else {
+                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator"));
+                }
+            } else if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
+                this.plugin.getBot().sendNoGuildAlert(player);
+            } else {
+                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
+            }
+        } else if (sendIfPermissionMissing) {
+            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
+        }
+    }
+
+    private void sendNoGuildAlert(Player player) {
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
             this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
                             .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link",

@@ -21,14 +21,12 @@ package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.menus.selectmenus.LoginNotificationSelectMenu;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -49,29 +47,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-            if (player.hasPermission(Argument.MANAGE_PERMISSION)) {
-                if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
-                    if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-                        this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive",
-                                this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
-                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.execute", "/skoice configure")))
-                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure")),
-                                this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
-                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.shortcut", "/skoice language")))
-                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice language "))
-                                )
-                        );
-                    } else {
-                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator"));
-                    }
-                } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-                    if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
-                        this.plugin.getBot().sendNoGuildAlert(player);
-                    } else {
-                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
-                    }
-                }
-            }
+            this.plugin.getBot().sendIncompleteConfigurationAlert(player, false);
         } else {
             if (!this.plugin.getLinksYamlFile().retrieveMember(player.getUniqueId(), member -> {
                 LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member.getId()));

@@ -44,7 +44,7 @@ public class UnlinkArgument extends Argument {
 
         Player player = (Player) this.sender;
         if (super.plugin.getBot().getStatus() != BotStatus.READY) {
-            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
+            super.plugin.getBot().sendIncompleteConfigurationAlert(player, true);
             return;
         }
 
