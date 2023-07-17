@@ -54,6 +54,8 @@ public class ConfigureArgument extends Argument {
         } else {
             if (super.plugin.getBot().getStatus() == BotStatus.READY) {
                 player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.already-configured"));
+            } else if (super.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
+                super.plugin.getBot().sendNoGuildAlert(player);
             } else {
                 player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
             }

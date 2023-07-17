@@ -304,7 +304,7 @@ public class Bot {
             this.getJDA().getPresence().setActivity(Activity.listening("/configure"));
         }
     }
-    
+
     public void sendIncompleteConfigurationAlert(Player player, boolean sendIfPermissionMissing) {
         if (player.hasPermission(Argument.MANAGE_PERMISSION)) {
             if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
@@ -324,14 +324,14 @@ public class Bot {
             } else if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
                 this.plugin.getBot().sendNoGuildAlert(player);
             } else {
-                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
+                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
             }
         } else if (sendIfPermissionMissing) {
             player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
         }
     }
 
-    private void sendNoGuildAlert(Player player) {
+    public void sendNoGuildAlert(Player player) {
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
             this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
                             .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link",
