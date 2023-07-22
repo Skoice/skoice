@@ -1,20 +1,15 @@
-# Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
-#
-# This file is part of Skoice.
-#
-# Skoice is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Skoice is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
-
+#Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#This file is part of Skoice.
+#Skoice is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#Skoice is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 logger:
   info:
     plugin-enabled: "Плагин включен."
@@ -38,7 +33,6 @@ logger:
     bot-timed-out: "Не удалось подключиться к вашему боту. Проверьте статус подключения к сети и просмотрите недавние перебои в Discord здесь: https://discordstatus.com."
   exception:
     unexpected-value: "Недопустимое значение: %s"
-
 minecraft:
   chat:
     configuration:
@@ -59,7 +53,8 @@ minecraft:
       incomplete-configuration: "%s Skoice &cнастроен некорректно&7. Пожалуйста, обратитесь к администратору."
       incomplete-configuration-operator-interactive:
         - "%s Skoice &cнастроен некорректно&7. Нажмите "
-        - " &7to set it up. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+        - " &7to set it up. You can change the language by clicking "
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       incomplete-configuration-operator-discord: "%s Skoice &cне настроен корректно&7. Введите \"&e/configure&7\" на вашем сервере Discord, чтобы настроить его."
       already-configured: "%s Skoice &cуже настроен&7. Введите \"&e/configure&7\" на вашем сервере Discord, чтобы обновить настройки."
     player:
@@ -75,19 +70,15 @@ minecraft:
       no-parameter: "%s Вы &cне указали аргумент&7. Чтобы использовать эту команду, введите \"&e/skoice %s&7\"."
       invalid-parameter: "%s Вы &cне указали верный аргумент&7. Чтобы использовать эту команду, введите \"&e/skoice %s&7\"."
       illegal-executor: "%s Эта команда &cдоступна только &7для игроков."
-      missing-permission: "%s Эта команда &cдоступна только &7для операторов."
       bot-timed-out-interactive:
         - "%s &cНе удалось подключиться &7к вашему боту. Проверьте статус подключения к сети и просмотрите недавние перебои в Discord здесь "
         - "&7."
-  action-bar:
-    alert: "&c⚠ &7Вы &cуходите &7от ближайших игроков."
   interaction:
     here: "&bздесь"
     this-page: "&bэта страница"
     execute: "&8☀ &bВыполнить: &7%s"
     shortcut: "&8☀ &bСокращение: &7%s"
     link: "&8☀ &bОткрыть в браузере: &7%s"
-
 discord:
   command-description:
     configure: "Настройка Skoice."
@@ -95,7 +86,6 @@ discord:
     unlink: "Отвяжите свою учетную запись Discord от Minecraft."
     invite: "Получите голосовой чат на вашем сервере."
   menu:
-    footer: "Голосовой чат обеспечивается Skoice."
     configuration:
       title: "Конфигурация"
     server:
@@ -108,7 +98,6 @@ discord:
       description: "Чтобы корректно работать, ваш бот должен иметь разрешение \"Администратор\" на вашем сервере Discord."
     voice-channel:
       title: "Голосовой канал"
-      description: "Выберите канал, к которому нужно присоединиться, чтобы использовать голосовой чат. Он должен быть в категории. Настройте его битрейт для управления качеством звука голосового чата."
       shortened-description: "Выберите канал, к которому нужно присоединиться, чтобы использовать голосовой чат."
       select-menu:
         placeholder: "Пожалуйста, выберите голосовой канал."
@@ -130,15 +119,9 @@ discord:
           short-range-mode:
             label: "Короткий-Дальний режим"
             description: "Горизонтальный Радиус: 40 блоков — Вертикальный Радиус: 20 блоков"
-    advanced-settings:
-      title: "Расширенные настройки"
-      description: "Управлять другими параметрами."
     language:
       title: "Язык"
       description: "Выберите язык отображения сообщений."
-    action-bar-alerts:
-      title: "Уведомление в экшн-баре"
-      description: "Включить/отключить уведомление, отправляемое игрокам, когда они выходят из радиуса голосового чата перед отключением от голосового канала."
     channel-visibility:
       title: "Видимость канала"
       description: "Переключение видимости временных каналов, созданных Skoice."
@@ -171,7 +154,6 @@ discord:
       description: "Возникли проблемы? [Присоединяйтесь к нашему серверу Discord](https://discord.gg/h3Tgccc)!"
     contributing:
       title: "Помощь проекту"
-      description: "Хотите помочь нам сформировать будущее Skoice? [Внести свой вклад на GitHub](https://github.com/Skoice/skoice)!"
     long-range-mode:
       title: "Режим Длинного-Дальности"
       description: "Выберите этот режим, если вы планируете играть в открытые режимы игры."

@@ -1,20 +1,15 @@
-# Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
-#
-# This file is part of Skoice.
-#
-# Skoice is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Skoice is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
-
+#Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#This file is part of Skoice.
+#Skoice is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#Skoice is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 logger:
   info:
     plugin-enabled: "Plugin er aktiveret."
@@ -38,7 +33,6 @@ logger:
     bot-timed-out: "Et problem forhindrede din bot i at oprette forbindelse. Tjek din netværkstilstand og led efter seneste Discord outages her: https://discordstatus.com."
   exception:
     unexpected-value: "Uventet værdi: %s"
-
 minecraft:
   chat:
     configuration:
@@ -59,7 +53,8 @@ minecraft:
       incomplete-configuration: "%s Skoice er &cikke korrekt konfigureret&7. Kontakt venligst en administrator på serveren."
       incomplete-configuration-operator-interactive:
         - "%s Skoice er &cikke korrekt konfigureret&7. Klik "
-        - " &7to set it up. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+        - " &7to set it up. You can change the language by clicking "
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       incomplete-configuration-operator-discord: "%s Skoice er &cikke korrekt konfigureret&7. Skriv \"&e/configure&7\" på din Discord server for at opsætte den."
       already-configured: "%s Skoice er &callerede konfigureret&7. Skriv \"&e/configure&7\" på din Discord server for at opdatere dens indstillinger."
     player:
@@ -75,19 +70,15 @@ minecraft:
       no-parameter: "%s Du har &cikke angivet et argument&7. For at bruge denne kommando, skriv \"&e/skoice %s&7\"."
       invalid-parameter: "%s Du har &cikke angivet et gyldigt argument&7. For at bruge denne kommando, skriv \"&e/skoice %s&7\"."
       illegal-executor: "%s Denne kommando kan &ckun udføres &7af spillere."
-      missing-permission: "%s Denne kommando kan &ckun udføres &7af operatører."
       bot-timed-out-interactive:
         - "%s Et problem &cforhindrede din bot &7i at oprette forbindelse. Tjek din netværkstilstand og led efter seneste Discord outages på "
         - "&7."
-  action-bar:
-    alert: "&c⚠ &7Du bevæger dig &cvæk fra nær spillere&7."
   interaction:
     here: "&bher"
     this-page: "&bdenne side"
     execute: "&8☀ &bUdfør: &7%s"
     shortcut: "&8☀ &bGenvej: &7%s"
     link: "&8☀ &bÅbn i webbrowser: &7%s"
-
 discord:
   command-description:
     configure: "Konfigurer Skoice."
@@ -95,7 +86,6 @@ discord:
     unlink: "Frakoble din Discord konto fra Minecraft."
     invite: "Få nærhedsbaseret stemmechat på din server."
   menu:
-    footer: "Nærhedsbaseret stemmechat er leveret af Skoice."
     configuration:
       title: "Konfiguration"
     server:
@@ -108,7 +98,6 @@ discord:
       description: "For at fungere korrekt, skal din bot have tilladelse til \"Administrator\" på din Discord server."
     voice-channel:
       title: "Stemmekanal"
-      description: "Vælg kanalen spillere skal join for at bruge nærhedsbaseret stemmechat. Den skal være i en kategori. Juster dens bitrate for at administrere lydkvaliteten af ​​nærhedsbaseret stemmechat."
       shortened-description: "Vælg kanalen spillere skal join for at bruge nærhedsbaseret stemmechat."
       select-menu:
         placeholder: "Vælg venligst en stemmekanal."
@@ -130,15 +119,9 @@ discord:
           short-range-mode:
             label: "Kort Rækkevidde Tilstand"
             description: "Horizontal Radius: 40 blokke — Vertikal Radius: 20 blokke"
-    advanced-settings:
-      title: "Avancerede Indstillinger"
-      description: "Administrer andre parametre."
     language:
       title: "Sprog"
       description: "Vælg sproget der bruges til at vise meddelelser."
-    action-bar-alerts:
-      title: "Action Bar Advarsel"
-      description: "Slå advarslen til/fra der sendes til spillere der bevæger sig væk før de bliver koblet fra deres nuværende stemmekanal."
     channel-visibility:
       title: "Kanal synlighed"
       description: "Skift synligheden af de midlertidige kanaler der bliver oprettet af Skoice."
@@ -170,7 +153,6 @@ discord:
       description: "Har du problemer? [Deltag i vores Discord-server](https://discord.gg/h3Tgccc)!"
     contributing:
       title: "Bidrag"
-      description: "Interesseret i at hjælpe os med at forme fremtiden for Skoice? [Bidrag på vores GitHub-side](https://github.com/Skoice/skoice)!"
     long-range-mode:
       title: "Lang-række-tilstand"
       description: "Vælg denne tilstand, hvis du planlægger at spille åbne verdens spilmetoder."

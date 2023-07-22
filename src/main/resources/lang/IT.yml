@@ -1,20 +1,15 @@
-# Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
-#
-# This file is part of Skoice.
-#
-# Skoice is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Skoice is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
-#
+#Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#This file is part of Skoice.
+#Skoice is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#Skoice is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 logger:
   info:
     plugin-enabled: "Plugin abilitato."
@@ -37,7 +32,6 @@ logger:
     bot-timed-out: "Un problema ha impedito al tuo bot di connettersi. Controlla lo stato della tua connessione di rete e cerca le recenti interruzioni di Discord qui: https://discordstatus.com."
   exception:
     unexpected-value: "Valore imprevisto: %s"
-
 minecraft:
   chat:
     configuration:
@@ -57,7 +51,8 @@ minecraft:
       incomplete-configuration: "%s Skoice &cnon è configurato correttamente&7. Contattare un amministratore."
       incomplete-configuration-operator-interactive:
         - "%s Skoice &cnon è configurato correttamente&7. Clicca "
-        - " &7to set it up. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+        - " &7to set it up. You can change the language by clicking "
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       incomplete-configuration-operator-discord: "%s Il tuo bot è &aora connesso&7. Digita \"&e/configure&7\" sul tuo server Discord per configurarlo."
       already-configured: "%s Il tuo bot è &aora connesso&7. Digita \"&e/configure&7\" sul tuo server Discord per configurarlo."
     player:
@@ -73,19 +68,15 @@ minecraft:
       no-parameter: "%s &nNon hai fornito un argomento &7. Per usare questo comando, digita \"&e/skoice %s&7\"."
       invalid-parameter: "%s &nNon hai fornito un argomento &7. Per usare questo comando, digita \"&e/skoice %s&7\"."
       illegal-executor: "%s Questo comando è &ceseguibile solo &7dai giocatori."
-      missing-permission: "%s Questo comando è &ceseguibile solo &7dai giocatori."
       bot-timed-out-interactive:
         - "%s Un problema ha impedito al tuo bot di connettersi. Controlla lo stato della tua connessione di rete e cerca le recenti interruzioni di Discord qui "
         - "&7."
-  action-bar:
-    alert: "&c⚠ &7Stai &cmuovendo via &7dai giocatori vicini."
   interaction:
     here: "&bQui"
     this-page: "&bQuesta pagina"
     execute: "&8☀ &bEsegui: &7%s"
     shortcut: "&8☀ &bEsegui: &7%s"
     link: "&8☀ &bApri nel browser web: &7%s"
-
 discord:
   command-description:
     configure: "Configura Skoice."
@@ -93,7 +84,6 @@ discord:
     unlink: "Collega il tuo account Discord a Minecraft."
     invite: "Ottieni la chat vocale di prossimità sul tuo server."
   menu:
-    footer: "La chat vocale di prossimità è fornita da Skoice."
     configuration:
       title: "Impostazioni"
     server:
@@ -106,7 +96,6 @@ discord:
       description: "Per funzionare correttamente, il tuo bot deve avere il permesso \"Administrator\" sul tuo server di Discord."
     voice-channel:
       title: "Canale vocale"
-      description: "Seleziona il canale che i giocatori devono unirsi per usare la chat vocale di prossimità. Deve essere in una categoria. Regola il bitrate per gestire la qualità audio della chat vocale di prossimità."
       shortened-description: "Seleziona il canale che i giocatori devono unirsi per utilizzare la chat vocale di prossimità."
       select-menu:
         placeholder: "Ti preghiamo di selezionare un canale di vendita."
@@ -114,15 +103,9 @@ discord:
           new-voice-channel:
             label: "Canale vocale"
             description: "Skoice imposterà automaticamente un canale vocale."
-    advanced-settings:
-      title: "Impostazioni avanzate"
-      description: "Gestisci altri parametri."
     language:
       title: "Lingua"
       description: "Scegli la lingua utilizzata per visualizzare i messaggi."
-    action-bar-alerts:
-      title: "Allarme azionabile"
-      description: "Attiva/disattiva l'avviso inviato ai giocatori che si stanno allontanando prima di disconnettersi dal loro canale vocale corrente."
     channel-visibility:
       title: "Cambia la visibilità"
       description: "Commuta la visibilità dei canali temporanei creati da Skoice."
@@ -155,7 +138,6 @@ discord:
       description: "Hai dei problemi? [Unisciti al nostro server Discord](https://discord.gg/h3Tgccc)!"
     contributing:
       title: "Contribuisci"
-      description: "Sei interessato ad aiutarci a plasmare il futuro di Skoice? [Contribuisci sulla nostra pagina di GitHub](https://github.com/Skoice/skoice)!"
     customize:
       title: "Personalizza"
       description: "Imposta le distanze in base alle tue preferenze personali."

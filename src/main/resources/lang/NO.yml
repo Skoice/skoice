@@ -1,20 +1,15 @@
-# Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
-#
-# This file is part of Skoice.
-#
-# Skoice is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Skoice is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
-
+#Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#This file is part of Skoice.
+#Skoice is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#Skoice is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 logger:
   info:
     plugin-enabled: "Plugin aktivert."
@@ -38,7 +33,6 @@ logger:
     bot-timed-out: "Ett problem hindrer botten din ifra å koble til. Sjekk din nettverks tilkobling og se etter om Discord har problemer her: https://discordstatus.com."
   exception:
     unexpected-value: "Uforventet verdi: %s"
-
 minecraft:
   chat:
     configuration:
@@ -59,7 +53,8 @@ minecraft:
       incomplete-configuration: "%s Skoice er &cikke konfigurert riktig&7. Vennligst kontakt en administrator."
       incomplete-configuration-operator-interactive:
         - "%s Skoice er &cikke konfigurert riktig&7. Klikk "
-        - " &7to set it up. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+        - " &7to set it up. You can change the language by clicking "
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       incomplete-configuration-operator-discord: "%s Skoice er &cikke konfigurert riktig &7. Skriv \"&e/skoice configure&7\" på Discord for å sette den opp."
       already-configured: "%s Skoice er &callerede konfigurert&7. Skriv \"&e/configure&7\" på din Discord server for å oppdatere innstillingene."
     player:
@@ -75,19 +70,15 @@ minecraft:
       no-parameter: "%s Du har &cikke levert ett argument&7. For å bruke denne kommandoen, skriv \"&e/skoice %s&7\"."
       invalid-parameter: "%s Du har &cikke inkludert ett argument&7. For å bruke denne kommandoen, skriv \"&e/skoice %s&7\"."
       illegal-executor: "%s Denne kommandoen er &cbare kjørbar &7av spillere."
-      missing-permission: "%s Denne kommandoen er &cbare kjørbar &7av spillere."
       bot-timed-out-interactive:
         - "%s Ett problem hindrer botten din &7ifra å koble til. Sjekk din nettverks tilkobling og se etter om Discord har problemer her "
         - "&7."
-  action-bar:
-    alert: "&c⚠ &7Du beveger deg bort &7fra nære spillere."
   interaction:
     here: "&bhær"
     this-page: "&bdenne siden"
     execute: "&8☀ &bUtfør: &7%s"
     shortcut: "&8☀ &bShortcut: &7%s"
     link: "&8☀ &bÅpne i nettleser: &7%s"
-
 discord:
   command-description:
     configure: "Konfigurer Skoice."
@@ -95,7 +86,6 @@ discord:
     unlink: "Koble fra Discord kontoen din fra Minecraft."
     invite: "Få proximity tale chat på serveren din."
   menu:
-    footer: "Proximity stemmechat tilbys av Skoice."
     configuration:
       title: "Konfigurasjon"
     server:
@@ -115,15 +105,9 @@ discord:
           new-voice-channel:
             label: "Ny Talekanal"
             description: "Skoice vil automatisk sette opp en talekanal."
-    advanced-settings:
-      title: "Avanserte innstillinger"
-      description: "Behandle andre parametere."
     language:
       title: "Språk"
       description: "Velg språket som skal vises for meldinger."
-    action-bar-alerts:
-      title: "Action Bar Varsling"
-      description: "Varsling sendes til spillere som flytter bort før de kobles fra sin nåværende talekanal."
     channel-visibility:
       title: "Kanal synlighet"
       description: "Slå av/på synligheten til de midlertidige kanalene skapt av Skoice."
@@ -156,7 +140,6 @@ discord:
       description: "Har du problemer? [Bli med i vår Discord-server](https://discord.gg/h3Tgccc)!"
     contributing:
       title: "Bidra"
-      description: "Interessert med å hjelpe oss å forme fremtiden til Skoice? [Bidra på vår GitHub-side](https://github.com/Skoice/skoice)!"
     customize:
       title: "Tilpass"
       description: "Angi avstander i henhold til dine personlige innstillinger."
