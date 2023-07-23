@@ -39,7 +39,8 @@ public class MessageReceivedListener extends ListenerAdapter {
                 && !event.getMessage().isEphemeral()) {
             this.plugin.getConfigurationMenu().store(event.getMessage());
         } else if (event.isFromType(ChannelType.PRIVATE)
-                && !event.getAuthor().getId().equals(event.getJDA().getSelfUser().getApplicationId())) {
+                && !event.getAuthor().getId().equals(event.getJDA().getSelfUser().getApplicationId())
+                && event.getMessage().getContentRaw().startsWith("/")) {
             event.getMessage().reply(this.plugin.getBot().getMenu("illegal-interaction").build()).queue();
         }
     }
