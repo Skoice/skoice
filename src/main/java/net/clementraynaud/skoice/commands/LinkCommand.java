@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -45,15 +46,22 @@ public class LinkCommand extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if ("link".equals(event.getName())) {
-            if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-                event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
-                        .setEphemeral(true).queue();
+            if (this.plugin.getBot().getStatus() != BotStatus.READY && event.getMember() != null) {
+                if (event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+                    event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").build())
+                            .setEphemeral(true).queue();
+                } else {
+                    event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
+                            .setEphemeral(true).queue();
+                }
                 return;
             }
+
             if (this.plugin.getLinksYamlFile().getLinks().containsValue(event.getUser().getId())) {
                 event.reply(this.plugin.getBot().getMenu("account-already-linked").build()).setEphemeral(true).queue();
                 return;
             }
+
             LinkCommand.discordIdCode.remove(event.getUser().getId());
             String code;
             do {

@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.util.MapUtil;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -42,9 +43,14 @@ public class UnlinkCommand extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if ("unlink".equals(event.getName()) && event.getMember() != null) {
-            if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-                event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
-                        .setEphemeral(true).queue();
+            if (this.plugin.getBot().getStatus() != BotStatus.READY && event.getMember() != null) {
+                if (event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+                    event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").build())
+                            .setEphemeral(true).queue();
+                } else {
+                    event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
+                            .setEphemeral(true).queue();
+                }
                 return;
             }
 
