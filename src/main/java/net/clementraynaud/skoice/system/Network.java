@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -89,19 +90,52 @@ public class Network {
         if (!player.isStateEligible()) {
             return false;
         }
-        List<LinkedPlayer> playersWithinRange = this.players.stream()
+        return this.players.stream()
                 .filter(LinkedPlayer::isStateEligible)
                 .filter(p -> p.isCloseEnoughToPlayer(player, true))
-                .collect(Collectors.toList());
+                .anyMatch(p -> !p.equals(player));
+    }
 
-        if (this.players.size() > playersWithinRange.size()) {
-            return this.players.stream()
-                    .filter(LinkedPlayer::isStateEligible)
-                    .filter(p -> !playersWithinRange.contains(p))
-                    .anyMatch(p -> playersWithinRange.stream()
-                            .anyMatch(playerWithinRange -> playerWithinRange.isCloseEnoughToPlayer(p, true)));
+    public void splitIfSpread() {
+        if (this.size() < 4) {
+            return;
         }
-        return playersWithinRange.size() > 1;
+
+        Set<LinkedPlayer> playersWithinRange = this.getChainingPlayers(this.players.iterator().next());
+        if (playersWithinRange.size() == 1 || playersWithinRange.size() + 1 >= this.size()) {
+            return;
+        }
+
+        Set<LinkedPlayer> playersToExclude;
+        if (this.size() / 2 >= playersWithinRange.size()) {
+            playersToExclude = playersWithinRange;
+        } else {
+            playersToExclude = this.players.stream()
+                    .filter(p -> !playersWithinRange.contains(p))
+                    .collect(Collectors.toSet());
+        }
+        playersToExclude.forEach(this::remove);
+        new Network(this.plugin, playersToExclude).build();
+    }
+
+    private Set<LinkedPlayer> getChainingPlayers(LinkedPlayer startingPoint) {
+        return this.getChainingPlayers(new HashSet<>(Collections.singleton(startingPoint)), Collections.singleton(startingPoint));
+    }
+
+    private Set<LinkedPlayer> getChainingPlayers(Set<LinkedPlayer> chainingPlayers, Set<LinkedPlayer> children) {
+        Set<LinkedPlayer> newChildren = new HashSet<>();
+        children.forEach(p -> p.getPlayersWithinRange().stream()
+                .filter(this::contains)
+                .filter(playerWithingRange -> !chainingPlayers.contains(playerWithingRange))
+                .forEach(newChildren::add)
+        );
+
+        if (newChildren.isEmpty()) {
+            return chainingPlayers;
+        }
+
+        chainingPlayers.addAll(newChildren);
+        return this.getChainingPlayers(chainingPlayers, newChildren);
     }
 
     public void engulf(Network network) {
@@ -146,7 +180,7 @@ public class Network {
     }
 
     public boolean isEmpty() {
-        return this.players.size() < 2;
+        return this.size() < 2;
     }
 
     public VoiceChannel getChannel() {

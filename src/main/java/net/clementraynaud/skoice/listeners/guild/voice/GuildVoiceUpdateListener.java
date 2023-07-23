@@ -109,7 +109,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
 
         if (voiceChannelJoined.equals(mainVoiceChannel) && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelLeft))
-                || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannelJoined)) && !voiceChannelLeft.equals(mainVoiceChannel)) {
+                || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannelJoined)) && !voiceChannelLeft.equals(mainVoiceChannel) && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelLeft))) {
             this.plugin.getBot().checkMemberStatus(member);
         }
 

@@ -64,6 +64,7 @@ public class UpdateNetworksTask {
             }
 
             this.manageConnectedPlayers();
+            this.splitSpreadNetworks();
             this.manageIsolatedPlayers();
             this.mergeNetworks();
             this.manageMoves();
@@ -80,7 +81,10 @@ public class UpdateNetworksTask {
                 }
 
                 VoiceChannel shouldBeInChannel;
-                if (network != null && network.isInitialized()) {
+                if (network != null) {
+                    if (!network.isInitialized()) {
+                        continue;
+                    }
                     shouldBeInChannel = network.getChannel();
                 } else {
                     shouldBeInChannel = mainVoiceChannel;
@@ -121,6 +125,10 @@ public class UpdateNetworksTask {
                         p.sendDisconnectingAlert();
                     }
                 });
+    }
+
+    private void splitSpreadNetworks() {
+        Networks.getAll().forEach(Network::splitIfSpread);
     }
 
     private void manageIsolatedPlayers() {
