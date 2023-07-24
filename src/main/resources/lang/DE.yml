@@ -37,7 +37,7 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
+        - " \n%s Konfiguration: &fBot-Erstellung\n \n&8• &7Zuerst müssen Sie einen Bot erstellen und ihn zu Ihrem Discord-Server einladen. Wenn Sie bereits einen Bot besitzen, müssen Sie einen neuen erstellen. Bitte folgen Sie den Anweisungen auf "
         - "&7.\n&8• &7Wenn Sie den Token abgerufen haben, setzen Sie ihn "
         - "&7.\n&8• &7Geben Sie anschließend auf Ihrem Discord-Server \"&e/configure&7\" ein, um zum nächsten Schritt zu gelangen.\n "
       no-token: "%s Sie haben &cnicht einen Token zur Verfügung gestellt&7. Um diesen Befehl zu verwenden, geben Sie \"&e/skoice token&7\" gefolgt von dem Token ein."
@@ -119,9 +119,37 @@ discord:
           short-range-mode:
             label: "Kurzstrecken-Modus"
             description: "Horizontaler Radius: 40 Blöcke - Vertikaler Radius: 20 Blöcke"
+    more-settings:
+      title: "Weitere Einstellungen"
+      description: "Verwalte andere Parameter."
     language:
       title: "Sprache"
       description: "Wählen Sie die Sprache, in der die Meldungen angezeigt werden sollen."
+    in-game-messages:
+      title: "In-Game Nachrichten"
+      description: "Verwalte die Nachrichten, die Spielern auf dem Minecraft Server geschickt werden."
+    login-notification:
+      title: "Login Benachrichtigung"
+      description: "De/Aktiviere die Nachricht, die Spielern beim Login geschickt wird, wenn sie ihren Account nicht verlinkt haben."
+      select-menu:
+        always-remind:
+          label: "Immer erinnern"
+        remind-once:
+          label: "Einmalig erinnern"
+        never-remind:
+          label: "Nie erinnern"
+    action-bar-alerts:
+      title: "Actionbar Benachrichtigung"
+      description: "De/aktiviere die Benachrichtigungen an Spieler, die den Abstands-basierten Sprachchat nutzen."
+      select-menu:
+        placeholder: "Bitte wähle die gewünschten Benachrichtigungen."
+        connecting-alert:
+          label: "\"Du bist in der Nähe anderer Spieler. Sag Hallo!\""
+        disconnecting-alert:
+          label: "\"Du bewegst dich von den Spielern in der Nähe weg.\""
+    tooltips:
+      title: "Tooltips"
+      shortened-description: "De/aktiviere interaktive Nachrichten auf deinem Minecraft Server."
     channel-visibility:
       title: "Sichtbarkeit der Kanäle"
       description: "Schaltet die Sichtbarkeit der von Skoice erstellten temporären Kanäle um."
