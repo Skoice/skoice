@@ -64,7 +64,8 @@ public class Updater {
                 if (scanner.hasNext()) {
                     consumer.accept(scanner.next());
                 }
-            } catch (IOException ignored) {
+            } catch (IOException exception) {
+                this.plugin.getBugsnag().notify(exception);
             }
         });
     }
@@ -83,13 +84,15 @@ public class Updater {
                 this.downloadedVersion = version;
                 this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
 
-            } catch (IOException e) {
+            } catch (IOException exception) {
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
                         this.plugin.getDescription().getVersion(), version));
                 try {
                     Files.delete(update.getAbsoluteFile().toPath());
-                } catch (IOException ignored) {
+                } catch (IOException exception2) {
+                    this.plugin.getBugsnag().notify(exception2);
                 }
+                this.plugin.getBugsnag().notify(exception);
             }
         });
     }

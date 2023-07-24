@@ -60,6 +60,7 @@ public class Skoice extends JavaPlugin {
     private BotCommands botCommands;
     private ConfigurationMenu configurationMenu;
     private BukkitAudiences adventure;
+    private Bugsnag bugsnag;
 
     @Override
     public void onEnable() {
@@ -139,11 +140,10 @@ public class Skoice extends JavaPlugin {
         if (Skoice.BUGSNAG_KEY.isEmpty()) {
             return;
         }
-        Bugsnag bugsnag = new Bugsnag(Skoice.BUGSNAG_KEY);
-        bugsnag.setAppVersion(this.getDescription().getVersion());
-        bugsnag.startSession();
+        this.bugsnag = new Bugsnag(Skoice.BUGSNAG_KEY);
+        this.bugsnag.setAppVersion(this.getDescription().getVersion());
 
-        bugsnag.addCallback(report -> {
+        this.bugsnag.addCallback(report -> {
             StackTraceElement[] trace = report.getException().getStackTrace();
             boolean reportError = false;
             for (StackTraceElement element : trace) {
@@ -175,6 +175,8 @@ public class Skoice extends JavaPlugin {
             report.addToTab("app", "linkedUsers", linkedUsers);
             report.addToTab("app", "botStatus", this.bot.getStatus().toString());
         });
+
+        this.bugsnag.startSession();
     }
 
     private Set<ConfigField> getSharedConfigFields() {
@@ -234,5 +236,9 @@ public class Skoice extends JavaPlugin {
 
     public ConfigurationMenu getConfigurationMenu() {
         return this.configurationMenu;
+    }
+
+    public Bugsnag getBugsnag() {
+        return this.bugsnag;
     }
 }
