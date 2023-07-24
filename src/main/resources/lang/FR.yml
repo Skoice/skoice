@@ -92,6 +92,7 @@ discord:
     unlink: "Délier votre compte Discord de Minecraft."
     invite: "Obtenir le chat vocal de proximité sur votre serveur."
   menu:
+    invite-footer: "Skoice • carlodrift, Lucas_Cdry et les contributeurs"
     configuration:
       title: "Configuration"
     server:
@@ -114,7 +115,7 @@ discord:
     range:
       title: "Portée"
       description: "Sélectionnez un mode ou personnalisez les distances."
-      alternative-description: "Laissez-nous choisir les meilleures réglages pour votre utilisation personnelle de Skoice. Vous pourrez toujours personnaliser les distances plus tard."
+      alternative-description: "Laissez-nous choisir les meilleurs réglages pour votre utilisation personnelle de Skoice. Vous pourrez toujours personnaliser les distances plus tard."
       select-menu:
         placeholder: "Veuillez sélectionner un mode."
         alternative-placeholder: "Vous utilisez actuellement des distances personnalisées."
@@ -125,6 +126,9 @@ discord:
           short-range-mode:
             label: "Mode courte portée"
             description: "Rayon horizontal : 40 blocs — Rayon vertical : 20 blocs"
+    more-settings:
+      title: "Plus de réglages"
+      description: "Gérer les autres réglages."
     language:
       title: "Langue"
       description: "Choisissez la langue utilisée pour afficher les messages."
@@ -139,6 +143,10 @@ discord:
           label: "Rappeler une fois"
         never-remind:
           label: "Ne jamais rappeler"
+    action-bar-alerts:
+      select-menu:
+        connecting-alert:
+          label: "\"Vous êtes proche d'autres joueurs. Dites bonjour !\""
     tooltips:
       title: "Infobulles"
       shortened-description: "Activer les messages interactifs sur votre serveur Minecraft."
@@ -226,6 +234,7 @@ discord:
     close: "Fermer"
     configure-later: "Configurer plus tard"
     resume-configuration: "Reprendre la configuration"
+    message-not-showing-up: "Message non affiché"
     clear-notified-players: "Effacer les joueurs notifiés"
   select-option:
     default:
