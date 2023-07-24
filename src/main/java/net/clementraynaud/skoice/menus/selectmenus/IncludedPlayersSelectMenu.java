@@ -37,13 +37,13 @@ public class IncludedPlayersSelectMenu extends SelectMenu {
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.included-players.select-menu.corpses-included.label"), ConfigField.CORPSES_INCLUDED.toString())
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.included-players.select-menu.players-on-death-screen-included.label"), ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())
                         .withEmoji(MenuEmoji.SKULL.get()),
                 SelectOption.of(super.plugin.getLang().getMessage("discord.menu.included-players.select-menu.spectators-included.label"), ConfigField.SPECTATORS_INCLUDED.toString())
                         .withEmoji(MenuEmoji.GHOST.get())));
         List<String> defaultValues = new ArrayList<>();
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.CORPSES_INCLUDED.toString())) {
-            defaultValues.add(ConfigField.CORPSES_INCLUDED.toString());
+        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())) {
+            defaultValues.add(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString());
         }
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString())) {
             defaultValues.add(ConfigField.SPECTATORS_INCLUDED.toString());

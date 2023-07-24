@@ -5,6 +5,6 @@ login-notification: remind-once
 connecting-alert: false
 disconnecting-alert: true
 tooltips: true
-corpses-included: false
+players-on-death-screen-included: false
 spectators-included: false
 channel-visibility: true

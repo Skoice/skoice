@@ -145,8 +145,8 @@ discord:
     included-players:
       title: "Joueurs inclus"
       select-menu:
-        corpses-included:
-          label: "Morts"
+        players-on-death-screen-included:
+          label: "Joueurs sur l'écran de mort"
         spectators-included:
           label: "Spectateurs"
     channel-visibility:

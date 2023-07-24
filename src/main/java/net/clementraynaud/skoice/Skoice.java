@@ -183,7 +183,7 @@ public class Skoice extends JavaPlugin {
                 ConfigField.CONNECTING_ALERT,
                 ConfigField.DISCONNECTING_ALERT,
                 ConfigField.TOOLTIPS,
-                ConfigField.CORPSES_INCLUDED,
+                ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED,
                 ConfigField.SPECTATORS_INCLUDED,
                 ConfigField.CHANNEL_VISIBILITY
         ).collect(Collectors.toSet());

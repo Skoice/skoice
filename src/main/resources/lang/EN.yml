@@ -175,8 +175,8 @@ discord:
       description: "Choose the types of players included in the proximity voice chat."
       select-menu:
         placeholder: "Please select the desired types of players."
-        corpses-included:
-          label: "Corpses"
+        players-on-death-screen-included:
+          label: "Players on Death Screen"
         spectators-included:
           label: "Spectators"
     channel-visibility:
