@@ -122,6 +122,9 @@ public class Skoice extends JavaPlugin {
         metrics.addCustomChart(ChartUtil.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
 
         metrics.addCustomChart(new SimplePie("botStatus", () -> this.bot.getStatus().toString()));
+        metrics.addCustomChart(new SimplePie("lang", () ->
+                LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName()
+        ));
     }
 
     private void setupBugsnag() {
@@ -130,8 +133,22 @@ public class Skoice extends JavaPlugin {
         }
         Bugsnag bugsnag = new Bugsnag(Skoice.BUGSNAG_KEY);
         bugsnag.setAppVersion(this.getDescription().getVersion());
+        bugsnag.startSession();
 
         bugsnag.addCallback(report -> {
+            StackTraceElement[] trace = report.getException().getStackTrace();
+            boolean reportError = false;
+            for (StackTraceElement element : trace) {
+                if (element.getClassName().startsWith("net.clementraynaud.skoice")) {
+                    reportError = true;
+                    break;
+                }
+            }
+            if (!reportError) {
+                report.cancel();
+                return;
+            }
+
             report.setUserId(this.configYamlFile.getString(ConfigField.SERVER_ID.toString()));
             report.addToTab("server", "version", this.getServer().getVersion());
             report.addToTab("server", "bukkitVersion", this.getServer().getBukkitVersion());
@@ -144,14 +161,13 @@ public class Skoice extends JavaPlugin {
 
             int linkedUsers = this.linksYamlFile.getLinks().size();
             report.addToTab("app", "linkedUsers", linkedUsers);
-
             report.addToTab("app", "botStatus", this.bot.getStatus().toString());
+            report.addToTab("app", "lang", LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName());
         });
     }
 
     private Map<String, ConfigField> getSharedConfigFields() {
         Map<String, ConfigField> fields = new HashMap<>();
-        fields.put("lang", ConfigField.LANG);
         fields.put("loginNotification", ConfigField.LOGIN_NOTIFICATION);
         fields.put("connectingAlert", ConfigField.CONNECTING_ALERT);
         fields.put("disconnectingAlert", ConfigField.DISCONNECTING_ALERT);
