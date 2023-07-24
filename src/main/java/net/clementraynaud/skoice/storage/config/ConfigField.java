@@ -39,4 +39,19 @@ public enum ConfigField {
     public String toString() {
         return this.name().toLowerCase().replace("_", "-");
     }
+
+    public String toCamelCase() {
+        StringBuilder builder = new StringBuilder();
+        String[] words = this.name().split("_");
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            if (i == 0) {
+                word = word.toLowerCase();
+            } else {
+                word = word.charAt(0) + word.substring(1).toLowerCase();
+            }
+            builder.append(word);
+        }
+        return builder.toString();
+    }
 }

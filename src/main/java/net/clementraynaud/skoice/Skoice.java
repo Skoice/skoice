@@ -40,8 +40,10 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Skoice extends JavaPlugin {
 
@@ -110,21 +112,27 @@ public class Skoice extends JavaPlugin {
 
     private void addCustomCharts() {
         Metrics metrics = new Metrics(this, Skoice.SERVICE_ID);
-        Map<String, ConfigField> configFields = this.getSharedConfigFields();
-        configFields.forEach((name, field) -> metrics.addCustomChart(new SimplePie(name, () ->
-                this.configYamlFile.getString(field.toString())
-        )));
 
-        Map<String, Integer> intConfigFields = this.getSharedIntConfigFields();
-        intConfigFields.forEach((name, value) -> metrics.addCustomChart(ChartUtil.createDrilldownPie(name, value, 0, 10, 11)));
+        this.getSharedConfigFields().forEach(field ->
+                metrics.addCustomChart(new SimplePie(field.toCamelCase(), () ->
+                        this.configYamlFile.getString(field.toString())
+                ))
+        );
+
+        this.getSharedIntConfigFields().forEach(field ->
+                metrics.addCustomChart(ChartUtil.createDrilldownPie(field.toCamelCase(),
+                        this.configYamlFile.getInt(field.toString()), 0, 10, 11)
+                )
+        );
+
+        metrics.addCustomChart(new SimplePie(ConfigField.LANG.toCamelCase(), () ->
+                LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName()
+        ));
 
         int linkedUsers = this.linksYamlFile.getLinks().size();
         metrics.addCustomChart(ChartUtil.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
 
         metrics.addCustomChart(new SimplePie("botStatus", () -> this.bot.getStatus().toString()));
-        metrics.addCustomChart(new SimplePie("lang", () ->
-                LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName()
-        ));
     }
 
     private void setupBugsnag() {
@@ -153,38 +161,41 @@ public class Skoice extends JavaPlugin {
             report.addToTab("server", "version", this.getServer().getVersion());
             report.addToTab("server", "bukkitVersion", this.getServer().getBukkitVersion());
 
-            Map<String, ConfigField> sharedConfigFields = this.getSharedConfigFields();
-            sharedConfigFields.forEach((name, field) -> report.addToTab("app", name, this.configYamlFile.getString(field.toString())));
+            this.getSharedConfigFields().forEach(field ->
+                    report.addToTab("app", field.toCamelCase(), this.configYamlFile.getString(field.toString()))
+            );
 
-            Map<String, Integer> sharedIntConfigFields = this.getSharedIntConfigFields();
-            sharedIntConfigFields.forEach((name, value) -> report.addToTab("app", name, value));
+            this.getSharedIntConfigFields().forEach(field ->
+                    report.addToTab("app", field.toCamelCase(), this.configYamlFile.getInt(field.toString()))
+            );
+
+            report.addToTab("app", ConfigField.LANG.toCamelCase(), LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName());
 
             int linkedUsers = this.linksYamlFile.getLinks().size();
             report.addToTab("app", "linkedUsers", linkedUsers);
             report.addToTab("app", "botStatus", this.bot.getStatus().toString());
-            report.addToTab("app", "lang", LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName());
         });
     }
 
-    private Map<String, ConfigField> getSharedConfigFields() {
-        Map<String, ConfigField> fields = new HashMap<>();
-        fields.put("loginNotification", ConfigField.LOGIN_NOTIFICATION);
-        fields.put("connectingAlert", ConfigField.CONNECTING_ALERT);
-        fields.put("disconnectingAlert", ConfigField.DISCONNECTING_ALERT);
-        fields.put("tooltips", ConfigField.TOOLTIPS);
-        fields.put("corpsesIncluded", ConfigField.CORPSES_INCLUDED);
-        fields.put("spectatorsIncluded", ConfigField.SPECTATORS_INCLUDED);
-        fields.put("channelVisibility", ConfigField.CHANNEL_VISIBILITY);
-        return fields;
+    private Set<ConfigField> getSharedConfigFields() {
+        return Stream.of(
+                ConfigField.LOGIN_NOTIFICATION,
+                ConfigField.CONNECTING_ALERT,
+                ConfigField.DISCONNECTING_ALERT,
+                ConfigField.TOOLTIPS,
+                ConfigField.CORPSES_INCLUDED,
+                ConfigField.SPECTATORS_INCLUDED,
+                ConfigField.CHANNEL_VISIBILITY
+        ).collect(Collectors.toSet());
     }
 
-    private Map<String, Integer> getSharedIntConfigFields() {
-        Map<String, Integer> fields = new HashMap<>();
+    private Set<ConfigField> getSharedIntConfigFields() {
+        Set<ConfigField> fields = new HashSet<>();
         if (this.configYamlFile.contains(ConfigField.HORIZONTAL_RADIUS.toString())) {
-            fields.put("horizontalRadius", this.configYamlFile.getInt(ConfigField.HORIZONTAL_RADIUS.toString()));
+            fields.add(ConfigField.HORIZONTAL_RADIUS);
         }
         if (this.configYamlFile.contains(ConfigField.VERTICAL_RADIUS.toString())) {
-            fields.put("verticalRadius", this.configYamlFile.getInt(ConfigField.VERTICAL_RADIUS.toString()));
+            fields.add(ConfigField.VERTICAL_RADIUS);
         }
         return fields;
     }

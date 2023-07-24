@@ -36,8 +36,6 @@ import java.util.Set;
 
 public class OutdatedConfig {
 
-    private final FileConfiguration oldData = new YamlConfiguration();
-
     private final Skoice plugin;
 
     public OutdatedConfig(Skoice plugin) {
@@ -45,31 +43,38 @@ public class OutdatedConfig {
     }
 
     public void update() {
+        this.convertOldData(this.plugin.getConfigYamlFile(), "action-bar-alert", ConfigField.DISCONNECTING_ALERT, true);
+
         File outdatedConfig = new File(this.plugin.getDataFolder(), "data.yml");
         if (outdatedConfig.exists()) {
+            FileConfiguration oldData = new YamlConfiguration();
             try {
-                this.oldData.load(outdatedConfig);
+                oldData.load(outdatedConfig);
             } catch (IOException | InvalidConfigurationException e) {
                 return;
             }
-            this.convertOldToken();
-            this.convertOldData("mainVoiceChannelID", ConfigField.VOICE_CHANNEL_ID.toString());
-            this.convertOldRadius();
-            this.convertOldLinks();
+
+            this.convertOldToken(oldData);
+            this.convertOldData(oldData, "mainVoiceChannelID", ConfigField.VOICE_CHANNEL_ID, false);
+            this.convertOldRadius(oldData);
+            this.convertOldLinks(oldData);
+
             try {
                 this.plugin.getLinksYamlFile().loadFromString(this.plugin.getLinksYamlFile().saveToString());
             } catch (InvalidConfigurationException ignored) {
             }
+
             try {
                 Files.delete(outdatedConfig.toPath());
             } catch (IOException ignored) {
             }
+
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.skoice-3"));
         }
     }
 
-    private void convertOldToken() {
-        String oldToken = this.oldData.getString("token");
+    private void convertOldToken(FileConfiguration file) {
+        String oldToken = file.getString("token");
         if (oldToken != null
                 && !oldToken.isEmpty()
                 && !this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
@@ -77,23 +82,19 @@ public class OutdatedConfig {
         }
     }
 
-    private void convertOldRadius() {
-        if (this.oldData.contains("distance.type")
-                && "custom".equals(this.oldData.getString("distance.type"))) {
-            this.convertOldData("distance.horizontalStrength", ConfigField.HORIZONTAL_RADIUS.toString());
-            this.convertOldData("distance.verticalStrength", ConfigField.VERTICAL_RADIUS.toString());
+    private void convertOldRadius(FileConfiguration file) {
+        if (file.contains("distance.type")
+                && "custom".equals(file.getString("distance.type"))) {
+            this.convertOldData(file, "distance.horizontalStrength", ConfigField.HORIZONTAL_RADIUS, false);
+            this.convertOldData(file, "distance.verticalStrength", ConfigField.VERTICAL_RADIUS, false);
         } else {
-            if (!this.plugin.getConfigYamlFile().contains(ConfigField.HORIZONTAL_RADIUS.toString())) {
-                this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
-            }
-            if (!this.plugin.getConfigYamlFile().contains(ConfigField.VERTICAL_RADIUS.toString())) {
-                this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 40);
-            }
+            this.plugin.getConfigYamlFile().setDefault(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
+            this.plugin.getConfigYamlFile().setDefault(ConfigField.VERTICAL_RADIUS.toString(), 40);
         }
     }
 
-    private void convertOldLinks() {
-        ConfigurationSection dataSection = this.oldData.getConfigurationSection("Data");
+    private void convertOldLinks(FileConfiguration file) {
+        ConfigurationSection dataSection = file.getConfigurationSection("Data");
         if (dataSection != null) {
             Map<String, String> links = new HashMap<>();
             Set<String> subkeys = dataSection.getKeys(false);
@@ -106,12 +107,16 @@ public class OutdatedConfig {
         }
     }
 
-    private void convertOldData(String oldField, String newField) {
-        String oldFieldValue = this.oldData.getString(oldField);
+    private void convertOldData(FileConfiguration file, String oldField, ConfigField newField, boolean forceReplace) {
+        String oldFieldValue = file.getString(oldField);
         if (oldFieldValue != null
-                && !oldFieldValue.isEmpty()
-                && !this.plugin.getConfigYamlFile().contains(newField)) {
-            this.plugin.getConfigYamlFile().set(newField, this.oldData.get(oldField));
+                && !oldFieldValue.isEmpty()) {
+            if (forceReplace) {
+                this.plugin.getConfigYamlFile().set(newField.toString(), file.get(oldField));
+            } else {
+                this.plugin.getConfigYamlFile().setDefault(newField.toString(), file.get(oldField));
+            }
+            file.set(oldField, null);
         }
     }
 }
