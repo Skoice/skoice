@@ -126,10 +126,6 @@ public class Skoice extends JavaPlugin {
                 )
         );
 
-        metrics.addCustomChart(new SimplePie(ConfigField.LANG.toCamelCase(), () ->
-                LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName()
-        ));
-
         int linkedUsers = this.linksYamlFile.getLinks().size();
         metrics.addCustomChart(ChartUtil.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
 
@@ -181,6 +177,7 @@ public class Skoice extends JavaPlugin {
 
     private Set<ConfigField> getSharedConfigFields() {
         return Stream.of(
+                ConfigField.LANG,
                 ConfigField.LOGIN_NOTIFICATION,
                 ConfigField.CONNECTING_ALERT,
                 ConfigField.DISCONNECTING_ALERT,
