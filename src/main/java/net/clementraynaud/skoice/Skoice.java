@@ -38,6 +38,7 @@ import net.clementraynaud.skoice.util.ChartUtil;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
+import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashSet;
@@ -64,6 +65,10 @@ public class Skoice extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (!this.isMinecraftServerCompatible()) {
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         this.saveDefaultConfig();
         this.configYamlFile = new ConfigYamlFile(this);
         this.configYamlFile.load();
@@ -101,6 +106,9 @@ public class Skoice extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (!this.isMinecraftServerCompatible()) {
+            return;
+        }
         if (this.bot.getJDA() != null) {
             new InterruptSystemTask(this).run();
             this.bot.getJDA().shutdown();
@@ -109,6 +117,15 @@ public class Skoice extends JavaPlugin {
         if (this.adventure != null) {
             this.adventure.close();
         }
+    }
+
+    private boolean isMinecraftServerCompatible() {
+        try {
+            GameMode.SPECTATOR.toString();
+        } catch (NoSuchFieldError exception) {
+            return false;
+        }
+        return true;
     }
 
     private void addCustomCharts() {
