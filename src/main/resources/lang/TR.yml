@@ -1,0 +1,147 @@
+#Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#This file is part of Skoice.
+#Skoice is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#Skoice is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
+logger:
+  info:
+    plugin-enabled: "Eklenti etkinleştirildi."
+    plugin-disabled: "Eklenti devre dışı bırakıldı."
+    plugin-updated: "Skoice son sürüme güncellendi. Lütfen değişiklikleri uygulamak için sunucunuzu yeniden başlatın."
+    skoice-3: "Artık Skoice 3 kullanıyorsun. Botunun düzgün çalışması için \"Skoice 3'e geçme\" rehberimize buradan ulaşabilirsin: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
+    configuration-complete: "Skoice ayarlandı. Minecraft hesabınızı Discord ile bağlamak için Discord sunucunuzda \"/link\" komutunu kullanın. Sesli sohbeti kullanabilmek için hesaplarınızı bağlamanız gerekiyor."
+    bot-connecting: "Botunuz bağlanmaya çalışıyor."
+    bot-connected: "Botunuz bağlandı."
+  warning:
+    outdated-version: "Şu anda eski bir sürüm (%s) kullanıyorsunuz. Buradan son sürümü (%s) indirebilirsiniz: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
+    no-token: "Token belirlenmemiş. Skoice'i kurmak için Minecraft sunucunuza bağlanın."
+    no-guild: "Botunuz bir Discord sunucusunda değil. Bu bağlantıya tıklayarak ekleyebilirsiniz: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    multiple-guilds: "Botunuz birden fazla Discord sunucusunda bulunuyor. Sadece birini seçmek için \"/configure\" komutunu kullanmalısınız."
+    no-voice-channel: "Ses kanalı belirlenmemiş. Discord sunucunuzda \"/configure\" komutunu kullanarak Skoice'i kurabilirsiniz."
+    no-radius: "Konuşma uzaklığı belirlenmemiş. Discord sunucunuzda \"/configure\" komutunu kullanarak Skoice'i kurabilirsiniz."
+  error:
+    missing-permission: "Discord sunucunuzda botunuza \"Yönetici\" yetkisini vermeniz gerekiyor. Bu bağlantıyı kullanarak botunuzu tekrar ekleyin: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "\"%s\" Adındaki Discord sunucunuzda botunuzun slaş komutları kullanmasına izin vermediniz. Bu bağlantıyı kullanarak botunuzu tekrar ekleyin ve Minecraft sunucunuzu yeniden başlatın: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    bot-timed-out: "Bilinmeyen bir sorun botunuzun bağlanmasını engelliyor. İnternet bağlantınızı kontrol edin ve en sonki Discord kesintilerine göz atın: https://discordstatus.com."
+  exception:
+    unexpected-value: "Beklenmeyen değer: %s"
+minecraft:
+  chat:
+    configuration:
+      bot-creation-interactive:
+        - " \n%s Yapılandırma: &fBot Oluşturma\n\n&8• &7İlk olarak, bir bot oluşturmanız ve o botu Discord sunucunuza eklemeniz gerekiyor. Eğer zaten bir bota sahipseniz yeni bir tane oluşturmalısınız. Lütfen adımları takip edin "
+        - "&7.\n&8• &7When you have retrieved its token, put it "
+        - "&7.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+    error:
+      bot-timed-out-interactive:
+        - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
+        - "&7."
+      bot-timed-out: "%s Bir sorun &cbotunuzun &7bağlanmasını engelledi. İnternet bağlantınızı kontrol edin ve en sonki Discord kesintilerine bu sayfadan göz atın: &bhttps://discordstatus.com&7."
+  action-bar:
+    connecting-alert: "&a⚠ &7Diğer oyunculara yakınsın. Merhaba de!"
+    disconnecting-alert: "&c⚠ &7Diğer oyunculardan uzaklaşıyorsun."
+  interaction:
+    here: "&bburda"
+    this-page: "&bbu sayfa"
+discord:
+  command-description:
+    configure: "Skoice'i yapılandır."
+    link: "Discord hesabını Minceraft hesabına bağla."
+    unlink: "Discord hesabınıza bağlı Minecraft hesabımızın bağlantısını kaldır."
+  menu:
+    footer: "Skoice'i kendi sunucunda istermisin? \"/invite\"'ı kullan!"
+    invite-footer: "Skoice • carlodrift, Lucas_Cdry ve katkıda bulunanlar tarafından"
+    configuration:
+      title: "Ayarlar"
+    server:
+      title: "Sunucu"
+      description: "Botunuzun düzgün çalışması için, birden fazla sunucuda kullanılmaması gerekitr. Proximity Voice Chat'in hangi sunucuda aktif olmasını istediğinizi seçin. Bot otomatik olarak diğer sunuculardan ayrılacak."
+      select-menu:
+        placeholder: "Lütfen bir sunucuyu seçin."
+    permissions:
+      title: "İzinler"
+      description: "Botunuzun düzgün çalışması için Discord sunucunuzda \"Yönetici\" iznine ihtiyacı var."
+    voice-channel:
+      title: "Ana Ses Kanalı"
+      description: "Oyuncuların Proximity Voice Chat'i kullanmak için girmesi gereken ses kanalını seçin. Bu kanal bir kategori içinde olmalı. Kanalın bit hızını ayarlayarak porximity chat'in ses kalitesini ayarlayabilirsiniz. Bu kanalda oyuncuların otomatik olarak susturulacağını unutmayın."
+      shortened-description: "Oyuncuların proximity chat'i kullanmak için girmesi gereken ses kanalını seçin."
+      select-menu:
+        placeholder: "Lütfen bir ses kanalını seçin."
+        select-option:
+          new-voice-channel:
+            label: "Yeni Ses Kanalı"
+            description: "Skoice otomatik olarak bir ses kanalına kurulacak."
+    range:
+      title: "Konuşma Mesafesi"
+      description: "Bir mod seçin veya mesafeyi kendiniz koyun."
+      alternative-description: "Skoice'i kendi kullanımınız için en iyi olan ayarları seçmemize izin verin. Daha sonradan mesafeleri yine değiştirebileceksiniz."
+      select-menu:
+        placeholder: "Lütfen bir mod seçin."
+        alternative-placeholder: "Şu anda özelleştirilmiş mesafeler kullanıyorsunuz."
+        select-option:
+          long-range-mode:
+            label: "Uzak-Mesafe Modu"
+            description: "Yatay Mesafe: 80 blok — Dikey Mesafe: 40 blok"
+          short-range-mode:
+            label: "Kısa-Mesafe Modu"
+            description: "Yatay Mesafe: 40 blok — Dikey Mesafe: 20 blok"
+    more-settings:
+      title: "Daha Fazla Ayar"
+      description: "Diğer parametreleri yönet."
+    language:
+      title: "Dil"
+      description: "Mesajları görüntülemek için kullanılacak dili seçin."
+    in-game-messages:
+      title: "Oyun İçi Mesajlar"
+      description: "Minecraft sunucunuzdaki oyunculara gönderilen mesajları yönetin."
+    login-notification:
+      title: "Giriş Bildirimi"
+      description: "Hesapları bağlı olmayan kullanıcıların Minecraft sunucuna girdikleri zaman görecekleri mesajı ayarla."
+      select-menu:
+        always-remind:
+          label: "Her Zaman Hatırlat"
+        remind-once:
+          label: "Sadece Bir Kere Hatırlat"
+        never-remind:
+          label: "Asla Hatırlatma"
+    action-bar-alerts:
+      title: "Durum Barı Bildirimleri"
+      description: "Proximity Voice Chat'i kullanan oyunculara gönderilecek bildirimleri ayarla."
+      select-menu:
+        placeholder: "Lütfen istenen bildirimleri seçin."
+        connecting-alert:
+          label: "\"Diğer oyunculara yakınsın. Merhaba de!\""
+        disconnecting-alert:
+          label: "\"Diğer oyunculardan uzaklaşıyorsun.\""
+    tooltips:
+      title: "İpuçları"
+      shortened-description: "Minecraft sunucundaki interaktif mesajları ayarla."
+    included-players:
+      select-menu:
+        spectators-included:
+          label: "İzleyiciler"
+    channel-visibility:
+      title: "Kanal Görünürlüğü"
+      description: "Skoice tarafından oluşturulan geçici kanalların görünürlüğünü ayarla."
+    error:
+      title: "Hata"
+  field:
+    configuration-complete:
+      title: "Yapılandırma Tamamlandı"
+      description: "Skoice ayarlandı. Minecraft hesabınızı Discord ile bağlamak için Discord sunucunuzda \"/link\" komutunu kullanın. Sesli sohbeti kullanabilmek için hesaplarınızı bağlamanız gerekiyor."
+    incomplete-configuration:
+      title: "Tamamlanmamış Yapılandırma"
+    incomplete-configuration-server-manager:
+      title: "Tamamlanmamış Yapılandırma"
+    incomplete-configuration-alternative-server-manager:
+      title: "Tamamlanmamış Yapılandırma"
+    download:
+      title: "İndir"
+      description: "[Eklentiyi indir](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) ve Minecraft sunucuna kur."
