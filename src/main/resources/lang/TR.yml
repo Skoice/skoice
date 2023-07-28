@@ -29,6 +29,7 @@ logger:
   error:
     missing-permission: "Discord sunucunuzda botunuza \"Yönetici\" yetkisini vermeniz gerekiyor. Bu bağlantıyı kullanarak botunuzu tekrar ekleyin: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     missing-access: "\"%s\" Adındaki Discord sunucunuzda botunuzun slaş komutları kullanmasına izin vermediniz. Bu bağlantıyı kullanarak botunuzu tekrar ekleyin ve Minecraft sunucunuzu yeniden başlatın: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    bot-could-not-connect: "Botun bağlanamadı. Tokeni güncellemek için \"/skoice token <yeniToken>\" komutunu kullanın."
     bot-timed-out: "Bilinmeyen bir sorun botunuzun bağlanmasını engelliyor. İnternet bağlantınızı kontrol edin ve en sonki Discord kesintilerine göz atın: https://discordstatus.com."
   exception:
     unexpected-value: "Beklenmeyen değer: %s"
@@ -37,11 +38,52 @@ minecraft:
     configuration:
       bot-creation-interactive:
         - " \n%s Yapılandırma: &fBot Oluşturma\n\n&8• &7İlk olarak, bir bot oluşturmanız ve o botu Discord sunucunuza eklemeniz gerekiyor. Eğer zaten bir bota sahipseniz yeni bir tane oluşturmalısınız. Lütfen adımları takip edin "
-        - "&7.\n&8• &7When you have retrieved its token, put it "
-        - "&7.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+        - "&7.\n&8• &7Tokeni aldığınızda koyun "
+        - "&7.\n&8• &7Bittikten sonra, Discord sunucunuzda \"&e/configure&7\" komutunu kullanarak sonraki adıma geçin.\n "
+      bot-creation: " \n%s Yapılandırma: &fBot Oluşturma\n \n&8• &7İlk olarak, bir bot oluşturman ve onu Discord sunucuna davet etmen gerekir. Eğer zaten yeni bir botun varsa yeni bir tane oluştur. Bu sayfadaki adımları takip edebilirsin: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Botun tokenini aldıktan sonra \"&e/skoice token <token>&7\" komutunu kullanın.\n&8• &7Yaptıktan sonra Discord sunucunda \"&e/configure&7\" komutunu kullanarak sonraki adıma geç.\n "
+      no-token: "%s Bir token &cbelirtmedin&7. Doğru kullanım: \"&e/skoice token <token>&7\"."
+      no-guild-interactive:
+        - "%s Botun &cbir Discord sunucusunda değil&7. Davet etmek için "
+        - " &7bağlantısına tıklayın."
+      no-guild: "%s Botun &cbir Discord sunucusunda değil&7. Sunucuna eklemek için bu sayfayı aç: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
+      bot-connecting: "%s Botunuz &abağlanmaya çalışıyor&7."
+      bot-connected: "%s Botunuz &abağlandı&7."
+      bot-connected-incomplete-configuration-discord: "%s Botunuz &abağlandı&7. \"&e/configure&7\" komutunu Discord sunucunuzda kullanarak kurun."
+      bot-already-connected: "%s Tokeni &agüncelledin&7. Botuna bağlanmak için Minecraft sunucunu yeniden başlat."
+      bot-could-not-connect: "%s Botun &cbağlanamadı&7. Geçerli bir token ile tekrardan deneyin."
+      missing-access: "%s \"&e%s&7\" Adındaki Discord sunucunuzda botunuzun &cslaş komutları kullanmaya izni yok&7. Bu bağlantıyı kullanarak botunuzu tekrar ekleyin ve Minecraft sunucunuzu yeniden başlatın: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+      incomplete-configuration: "%s Skoice &cdoğru yapılandırılmamış&7. Lütfen sunucunun bir yöneticisi ile görüşün."
+      incomplete-configuration-operator-interactive:
+        - "%s Skoice artık &cdoğru olarak yapılandırıldı&7. Kurmak için "
+        - " &7bağlantısına tıklayın. Dili "
+        - "&7. Bu mesaj ile etkileşime geçemiyorsan \"&e/skoice tooltips&7\" komutunu kullan."
+      incomplete-configuration-operator: "%s Skoice &cdoğru ayarlanmamış&7. \"&e/skoice configure&7\" komutu ile ayarlayabilirsiniz. \"&e/skoice language <dil>&7\" komutunu kullanarak dili değiştirebilirsiniz."
+      incomplete-configuration-operator-discord: "%s Skoice &cdoğru olarak yapılandırılmamış&7. Discord sunucusunda \"&e/configure&7\" komutunu kullanarak yapılandırabilirsin."
+      already-configured: "%s Skoice &czaten ayarlanmış&7. Ayarları güncellemek için Discord sunucusunda \"&e/configure&7\" komutunu kullanabilirsin."
+      tooltips-enabled: "%s İnteraktif mesajları &aetkinleştirdin&7."
+      tooltips-disabled: "%s İnteraktif mesajları &apasifleştirdin&7. Eğer Skoice'i ayarlamaya çalışıyorsan \"&e/skoice configure&7\" komutunu kullan."
+      no-language: "%s Bir dir &cbelirtmedin&7. Doğru kullanım: \"&e/skoice language %s&7\"."
+      invalid-language: "%s Geçerli bir dir &cbelirtmedin&7. Doğru kullanım: \"&e/skoice language %s&7\"."
+      language-already-set: "%s Dil &czaten &7\"&e%s&7\" olarak belirlenmiş."
+      language-updated: "%s Dili \"&e%s&7\" olarak &agüncelledin&7."
+    player:
+      no-code: "%s Bir &ckod belirtmedin&7. \"&e%s&7\" adlı discord sunucusunda \"&e/link&7\" komutunu kullanarak bir tane alabilirsin."
+      invalid-code: "%s Geçerli bir &ckod belirtmedin&7. \"&e%s&7\" adlı discord sunucusunda \"&e/link&7\" komutunu kullanarak bir tane alabilirsin."
+      account-linked: "%s Discord hesabını &aMinecraft hesabın ile bağladın&7."
+      account-unlinked: "%s &7Discord hesabın ile &aMinecraft hesabının bağlantısını kestin&7."
+      account-not-linked: "%s Minecraft hesabın &cDiscord hesabına bağlı değil&7. \"&e%s&7\" adlı Discord sunucusunda \"&e/link&7\" komutunu kullanarak bağlayabilir ve proximity chat'i kullanabilirsin."
+      account-not-linked-remind-once: "%s Minecraft hesabın &cDiscord hesabına bağlı değil&7. \"&e%s&7\" adlı Discord sunucusunda \"&e/link&7\" komutunu kullanarak bağlayabilir ve proximity chat'i kullanabilirsin. Bu bildirimi bir daha almayacaksın."
+      account-already-linked: "%s Discord hesabın ile Minecraft hesabın &czaten bağlı&7. İstersen \"&e/skoice unlink&7\" komutu ile bağlantıyı kaldırabilirsin."
+      connected: "%s Proximity Chat'e &abağlandın&7. Daha iyi bir deneyim için Discord uygulamanda \"&eYayıncı Modu&7\" ayarını açabilirsin."
+      not-connected: "%s Proximity chat'e &cbağlı değilsin&7. \"&e%s&7\" adlı ses kanalına \"&e%s&7\" Discord sunucusunda girerek kullanabilirsin."
+      disconnected: "%s Proximity chat &cbağlantını kestin&7."
     error:
+      no-parameter: "%s Bir &cargüman belitmediniz&7. Doğru kullanım: \"&e/skoice %s&7\"."
+      invalid-parameter: "%s Geçerli bir &cargüman belitmediniz&7. Doğru kullanım: \"&e/skoice %s&7\"."
+      illegal-executor: "%s Bu komut &csadece oyuncular tarafından &7 kullanılabilir."
+      missing-permission: "%s Bu komut sadece \"&eskoice.manage&7\" iznine sahip &coyuncular tarafından &7kullanılabilir."
       bot-timed-out-interactive:
-        - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
+        - "%s Bir sorun botunuzun &cbağlanmasını engelledi &7. İnternet bağlantınızın durumunu kontrol edin ve en sonki Discord kesintilerine göz atın "
         - "&7."
       bot-timed-out: "%s Bir sorun &cbotunuzun &7bağlanmasını engelledi. İnternet bağlantınızı kontrol edin ve en sonki Discord kesintilerine bu sayfadan göz atın: &bhttps://discordstatus.com&7."
   action-bar:
@@ -50,11 +92,15 @@ minecraft:
   interaction:
     here: "&bburda"
     this-page: "&bbu sayfa"
+    execute: "&8☀ &bÇalıştır: &7%s"
+    shortcut: "&8☀ &bKısayol: &7%s"
+    link: "&8☀ &bWeb tarayıcısında aç: &7%s"
 discord:
   command-description:
     configure: "Skoice'i yapılandır."
     link: "Discord hesabını Minceraft hesabına bağla."
     unlink: "Discord hesabınıza bağlı Minecraft hesabımızın bağlantısını kaldır."
+    invite: "Proximity chat'i sunucuna kur."
   menu:
     footer: "Skoice'i kendi sunucunda istermisin? \"/invite\"'ı kullan!"
     invite-footer: "Skoice • carlodrift, Lucas_Cdry ve katkıda bulunanlar tarafından"
@@ -123,25 +169,118 @@ discord:
     tooltips:
       title: "İpuçları"
       shortened-description: "Minecraft sunucundaki interaktif mesajları ayarla."
+      description: "Minecraft sunucundaki interaktif mesajları ayarla. Eğer Minecraft ayarlarında ipuçları kapalı ise beya Bedrock Edition kullanıyorsanız bunu kapatmak isteyebilirsiniz. Sadece yöneticiler interaktif mesajlar alabilir."
     included-players:
+      title: "Dahil Oyuncular"
+      description: "Proximity Chat'i kullanmasını istediğiniz oyuncu türlerini seçin."
       select-menu:
+        placeholder: "Lütfen istenen oyuncu türlerini seçin."
+        players-on-death-screen-included:
+          label: "Ölüm Ekranındaki Oyuncular"
         spectators-included:
           label: "İzleyiciler"
     channel-visibility:
       title: "Kanal Görünürlüğü"
       description: "Skoice tarafından oluşturulan geçici kanalların görünürlüğünü ayarla."
+    skoice-proximity-voice-chat:
+      title: "Skoice: Minecraft'ta Proximity Chat"
+    linking-process:
+      title: "Bağlama İşlemi"
     error:
       title: "Hata"
   field:
     configuration-complete:
       title: "Yapılandırma Tamamlandı"
       description: "Skoice ayarlandı. Minecraft hesabınızı Discord ile bağlamak için Discord sunucunuzda \"/link\" komutunu kullanın. Sesli sohbeti kullanabilmek için hesaplarınızı bağlamanız gerekiyor."
+    notified-players-cleared:
+      title: "Bildirilen Oyuncular Temizlendi"
+      description: "Bildirilen oyuncuları temizledin. Hesaplarını bağlamaları için zaten bildirim almış oyuncular tekrardan bildirilecek."
     incomplete-configuration:
       title: "Tamamlanmamış Yapılandırma"
+      description: "Skoice doğru yapılandırılmamış. Lütfen sunucunun bir yöneticisi ile görüşün."
     incomplete-configuration-server-manager:
       title: "Tamamlanmamış Yapılandırma"
+      description: "Yapılandırmayı tamamlamak ve Skoice'i kullanmak için Discord sunucunuzda `/configure` komutunu kullanın."
     incomplete-configuration-alternative-server-manager:
       title: "Tamamlanmamış Yapılandırma"
+      description: "Ana ses kanalı taşınmış veya silinmiş. `/configure` komutunu Discord sunucunuzda kullanarak Skoice'in yapılandırmasını tamamlayabilir ve kullanabilirsiniz."
     download:
       title: "İndir"
       description: "[Eklentiyi indir](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) ve Minecraft sunucuna kur."
+    donating:
+      title: "Bağış"
+      description: "Skoice ücretsiz bir yazılımdır. Eğer beğenirseniz bize [bağış yaparak](https://opencollective.com/skoice) yardım edebilirsiniz."
+    troubleshooting:
+      title: "Hata Giderme"
+      description: "Sorunmu yaşıyorsunuz? [Discord sunucumuza katılın](https://discord.gg/h3Tgccc)!"
+    contributing:
+      title: "Katkıda bulunma"
+      description: "Skoice'in geleceğini şekillendirmeye ilgilimisiniz! [Github sayfamıza katkıda bulunabilir](https://github.com/Skoice/skoice) veya [Crowdin ile eklentimizi çeşitli dillere çevirebilirsiniz](https://crowdin.com/project/skoice)!"
+    long-range-mode:
+      title: "Uzak-Mesafe Modu"
+      description: "Açık dünya modlarında oynayacaksanız bu modu seçin."
+    short-range-mode:
+      title: "Kısa-Mesafe Modu"
+      description: "Sadece kısıtlı bir alana ihtiyacı olan oyun modlarını oynamayı düşünüyorsanız bu modu seçin."
+    customize:
+      title: "Özelleştir"
+      description: "Mesafeleri kendi tercihlerine göre ayarla."
+    verification-code:
+      title: "Doğrulama Kodu"
+      description: "`/skoice link %s` komutunu kullanın ve doğrulamayı tamamlayın."
+    account-linked:
+      title: "Hesaplar Bağlandı"
+      description: "Discord hesabın Minecraft ile bağlandı. %s ses kanalına girerek proximity chat'i kullanabilirsin."
+    account-unlinked:
+      title: "Bağlantı Kesildi"
+      description: "Discord hesabın ile Minecraft hesabının bağlantısı kesildi."
+    account-not-linked:
+      title: "Hesaplar Bağlı Değil"
+      description: "Discord hesabın Minecraft ile bağlanmamış. \"%s\" adlı Discord sunucusunda `/link` komutunu kullanarak bağlayabilir ve proximity chat'i kullanabilirsin."
+    account-already-linked:
+      title: "Hesap Zaten Bağlanmış"
+      description: "Discord hesabın zaten bir Minecraft hesabına bağlı. İstersen `/unlink` komutu ile bağlantıyı kesebilirsin."
+    access-denied:
+      title: "Erişim Reddedildi"
+      description: "Bu eylemi gerçekleştirmek için gerekli yetkiye sahip değilsin."
+    too-many-interactions:
+      title: "Çok Fazla Komut"
+      description: "Komutları çok hızlı kullanıyorsun."
+    illegal-interaction:
+      title: "Geçersiz Etkileşim"
+      description: "Botu sadece bir Discord sunucunda kullanabilirsin."
+    illegal-value:
+      title: "Geçersiz Değer"
+      description: "Değerler 0'dan büyük bir tam sayı olmalıdır."
+  button-label:
+    back: "Geri"
+    refresh: "Yenile"
+    close: "Kapat"
+    configure-later: "Daha Sonra Yapılandır"
+    resume-configuration: "Yapılandırmaya Devam Et"
+    message-not-showing-up: "Mesaj Görünmüyormu?"
+    clear-notified-players: "Bildirilen Oyuncuları Temizle"
+  select-option:
+    default:
+      description: "Varsayılan Ayar."
+    enabled:
+      label: "Etkinleştirildi"
+    disabled:
+      label: "Pasifleştirildi"
+    too-many-options:
+      label: "Çok Fazla Seçenek"
+      description: "Skoice daha fazla seçenek yükleyemez."
+  text-input:
+    category-name:
+      label: "Kategori Adı"
+      default-value: "Skoice"
+    voice-channel-name:
+      label: "Ses Kanalının Adı"
+      default-value: "Proximity Chat"
+    horizontal-radius:
+      label: "Yatay Mesafe"
+    vertical-radius:
+      label: "Dikey Mesafe"
+  message-not-showing-up: "Eğer yukarıdaki mesajı göremiyorsanız, büyük ihtimalle Discord ayarlarınızdan gömme mesajları kapattınız demektir. Skoice'i düzgün kullanabilmet için bu yoldan gömme mesajları açın: `Uygulama Ayarları › Metin ve Resimler › Sohbete yapıştırılan eklemeleri ve web sitesi önizleme bağlantılarını göster `."
+  communication-lost: "Bağlantı koptu."
+  system-interrupted: "Sistem kesintiye uğradı."
