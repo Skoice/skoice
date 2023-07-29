@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -40,19 +39,24 @@ public class ConfigurationMenu {
     }
 
     public MessageEditData update() {
-        Menu menu;
-        if (this.plugin.getBot().getStatus() == BotStatus.MULTIPLE_GUILDS) {
-            menu = this.plugin.getBot().getMenu("server");
-        } else if (this.plugin.getBot().getStatus() == BotStatus.MISSING_PERMISSION) {
-            menu = this.plugin.getBot().getMenu("permissions");
-        } else if (this.plugin.getBot().getStatus() == BotStatus.NO_VOICE_CHANNEL) {
-            menu = this.plugin.getBot().getMenu("voice-channel");
-        } else if (this.plugin.getBot().getStatus() == BotStatus.NO_RADIUS) {
-            menu = this.plugin.getBot().getMenu("range");
-        } else {
-            menu = this.plugin.getBot().getMenu("settings");
+        String menuId;
+        switch (this.plugin.getBot().getStatus()) {
+            case MULTIPLE_GUILDS:
+                menuId = "server";
+                break;
+            case MISSING_PERMISSION:
+                menuId = "permissions";
+                break;
+            case NO_VOICE_CHANNEL:
+                menuId = "voice-channel";
+                break;
+            case NO_RADIUS:
+                menuId = "range";
+                break;
+            default:
+                menuId = "settings";
         }
-        return MessageEditData.fromCreateData(menu.build());
+        return MessageEditData.fromCreateData(this.plugin.getBot().getMenu(menuId).build());
     }
 
     public String getMessageId() {

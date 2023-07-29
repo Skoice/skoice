@@ -88,7 +88,7 @@ public class ListenerManager {
                 );
             }
         } else if (wasBotReady && this.plugin.getBot().getStatus() != BotStatus.READY) {
-            this.plugin.getConfigurationMenu().delete();
+            this.plugin.getConfigurationMenu().retrieveMessage(message -> message.editMessage(this.plugin.getConfigurationMenu().update()).queue());
             this.unregisterMinecraftListeners();
             if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
                 this.unregisterBotListeners();
