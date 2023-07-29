@@ -170,7 +170,6 @@ public class Skoice extends JavaPlugin {
                 return;
             }
 
-            report.setUserId(this.configYamlFile.getString(ConfigField.SERVER_ID.toString()));
             report.addToTab("server", "version", this.getServer().getVersion());
             report.addToTab("server", "bukkitVersion", this.getServer().getBukkitVersion());
 
@@ -189,7 +188,11 @@ public class Skoice extends JavaPlugin {
             report.addToTab("app", "botStatus", this.bot.getStatus().toString());
         });
 
-        this.bugsnag.startSession();
+        this.bugsnag.setAutoCaptureSessions(false);
+        if (!this.configYamlFile.contains(ConfigField.SESSION_REPORTED.toString())) {
+            this.bugsnag.startSession();
+            this.configYamlFile.set(ConfigField.SESSION_REPORTED.toString(), true);
+        }
     }
 
     private Set<ConfigField> getSharedConfigFields() {

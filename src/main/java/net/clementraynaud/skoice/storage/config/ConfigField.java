@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.storage.config;
 
 public enum ConfigField {
 
-    SERVER_ID,
+    SESSION_REPORTED,
     TOKEN,
     LANG,
     VOICE_CHANNEL_ID,

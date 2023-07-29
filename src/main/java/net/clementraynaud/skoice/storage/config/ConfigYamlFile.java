@@ -43,7 +43,6 @@ public class ConfigYamlFile extends YamlFile {
         if (defaultConfiguration == null) {
             return;
         }
-        this.setDefault(ConfigField.SERVER_ID.toString(), UUID.randomUUID().toString());
         Map<String, Object> defaultValues = new HashMap<>(defaultConfiguration.getValues(false));
         for (Map.Entry<String, Object> entry : defaultValues.entrySet()) {
             this.setDefault(entry.getKey(), entry.getValue());
