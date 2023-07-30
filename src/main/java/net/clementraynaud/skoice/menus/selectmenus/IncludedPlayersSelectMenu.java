@@ -32,7 +32,7 @@ import java.util.List;
 public class IncludedPlayersSelectMenu extends SelectMenu {
 
     public IncludedPlayersSelectMenu(Skoice plugin) {
-        super(plugin, false);
+        super(plugin);
     }
 
     @Override

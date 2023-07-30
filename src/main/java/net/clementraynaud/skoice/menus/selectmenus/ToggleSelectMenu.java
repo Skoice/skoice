@@ -36,7 +36,7 @@ public class ToggleSelectMenu extends SelectMenu {
     private final String componentId;
 
     public ToggleSelectMenu(Skoice plugin, String componentId) {
-        super(plugin, false);
+        super(plugin);
         this.componentId = componentId;
     }
 

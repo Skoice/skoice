@@ -254,7 +254,6 @@ discord:
       description: "Values must be whole numbers greater than 0."
   button-label:
     back: "Back"
-    refresh: "Refresh"
     close: "Close"
     configure-later: "Configure Later"
     resume-configuration: "Resume Configuration"

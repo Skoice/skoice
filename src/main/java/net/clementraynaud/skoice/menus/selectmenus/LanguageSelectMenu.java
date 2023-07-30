@@ -32,7 +32,7 @@ import java.util.List;
 public class LanguageSelectMenu extends SelectMenu {
 
     public LanguageSelectMenu(Skoice plugin) {
-        super(plugin, false);
+        super(plugin);
     }
 
     @Override

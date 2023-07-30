@@ -35,7 +35,7 @@ public class ActionBarAlertsSelectMenu extends SelectMenu {
     public static final String DISCONNECTING_ALERT = "disconnecting-alert";
 
     public ActionBarAlertsSelectMenu(Skoice plugin) {
-        super(plugin, false);
+        super(plugin);
     }
 
     @Override

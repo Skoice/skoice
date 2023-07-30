@@ -35,7 +35,7 @@ import java.util.List;
 public class VoiceChannelSelectMenu extends SelectMenu {
 
     public VoiceChannelSelectMenu(Skoice plugin) {
-        super(plugin, true);
+        super(plugin);
     }
 
     @Override

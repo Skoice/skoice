@@ -87,11 +87,13 @@ public class ListenerManager {
                                 .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
                 );
             }
-        } else if (wasBotReady && this.plugin.getBot().getStatus() != BotStatus.READY) {
+        } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {
             this.plugin.getConfigurationMenu().retrieveMessage(message -> message.editMessage(this.plugin.getConfigurationMenu().update()).queue());
-            this.unregisterMinecraftListeners();
-            if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
-                this.unregisterBotListeners();
+            if (wasBotReady) {
+                this.unregisterMinecraftListeners();
+                if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
+                    this.unregisterBotListeners();
+                }
             }
             new InterruptSystemTask(this.plugin).run();
         }

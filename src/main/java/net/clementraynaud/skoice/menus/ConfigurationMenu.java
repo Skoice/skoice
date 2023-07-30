@@ -33,30 +33,30 @@ import java.util.function.Consumer;
 public class ConfigurationMenu {
 
     private final Skoice plugin;
+    private String menuId;
 
     public ConfigurationMenu(Skoice plugin) {
         this.plugin = plugin;
     }
 
     public MessageEditData update() {
-        String menuId;
         switch (this.plugin.getBot().getStatus()) {
             case MULTIPLE_GUILDS:
-                menuId = "server";
+                this.menuId = "server";
                 break;
             case MISSING_PERMISSION:
-                menuId = "permissions";
+                this.menuId = "permissions";
                 break;
             case NO_VOICE_CHANNEL:
-                menuId = "voice-channel";
+                this.menuId = "voice-channel";
                 break;
             case NO_RADIUS:
-                menuId = "range";
+                this.menuId = "range";
                 break;
             default:
-                menuId = "settings";
+                this.menuId = "settings";
         }
-        return MessageEditData.fromCreateData(this.plugin.getBot().getMenu(menuId).build());
+        return MessageEditData.fromCreateData(this.plugin.getBot().getMenu(this.menuId).build());
     }
 
     public String getMessageId() {
@@ -108,5 +108,13 @@ public class ConfigurationMenu {
 
     public void clearConfig() {
         this.plugin.getTempYamlFile().remove(TempYamlFile.CONFIG_MENU_FIELD);
+    }
+
+    public String getMenuId() {
+        return this.menuId;
+    }
+
+    public void setMenuId(String menuId) {
+        this.menuId = menuId;
     }
 }
