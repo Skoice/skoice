@@ -28,6 +28,7 @@ import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
+import java.util.EnumSet;
 import java.util.function.Consumer;
 
 public class ConfigurationMenu {
@@ -89,8 +90,13 @@ public class ConfigurationMenu {
             return;
         }
 
-        channel.retrieveMessageById(messageId).queue(success,
-                new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.clearConfig()));
+        channel.retrieveMessageById(messageId).queue(
+                success,
+                new ErrorHandler().handle(
+                        EnumSet.of(ErrorResponse.UNKNOWN_MESSAGE, ErrorResponse.MISSING_ACCESS),
+                        e -> this.clearConfig()
+                )
+        );
     }
 
     public void delete() {
