@@ -48,6 +48,7 @@ import java.util.stream.Stream;
 
 public class Skoice extends JavaPlugin {
 
+    private static final String OUTDATED_MINECRAFT_SERVER_ERROR = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
     private static final int SERVICE_ID = 11380;
     private static final String BUGSNAG_KEY = "";
 
@@ -66,6 +67,7 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onEnable() {
         if (!this.isMinecraftServerCompatible()) {
+            this.getLogger().severe(Skoice.OUTDATED_MINECRAFT_SERVER_ERROR);
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
