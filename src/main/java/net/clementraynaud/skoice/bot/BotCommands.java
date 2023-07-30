@@ -57,7 +57,8 @@ public class BotCommands {
                                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.missing-access",
                                         guild.getName(), applicationId));
                             }
-                        }));
+                        })
+                );
     }
 
     public void register(Guild guild) {
