@@ -24,7 +24,7 @@ If your server allows Bedrock Edition players (with [Geyser](https://geysermc.or
 
 ## Installation
 
-Once you have downloaded our plugin, simply drop the file in the `plugins` folder of your Minecraft server and start it. Join the server with an account that has "skoice.manage" permission or operator privileges and follow the instructions that are sent to you.
+Once you have downloaded our plugin, simply drop the file in the `plugins` folder of your Minecraft server and start it. Join the server with an account that has `skoice.manage` permission or operator privileges and follow the instructions that are sent to you.
 
 ## Commands
 
@@ -37,11 +37,11 @@ Once you have downloaded our plugin, simply drop the file in the `plugins` folde
 - `/skoice link <code>`: Link your Minecraft account to Discord.
 - `/skoice unlink`: Unlink your Minecraft account from Discord.
 
-*requires "skoice.manage" permission or operator privileges
+*requires `skoice.manage` permission or operator privileges
 
 ### Discord
 
-- `/configure`: Modify settings (requires "Manage Server" permission).
+- `/configure`: Modify settings (requires `Manage Server` permission).
 - `/link`: Get a code to link your Discord account to Minecraft.
 - `/unlink`: Unlink your Discord account from Minecraft.
 - `/invite`: Get external links related to Skoice.
