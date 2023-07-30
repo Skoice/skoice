@@ -24,7 +24,7 @@ If your server allows Bedrock Edition players (with [Geyser](https://geysermc.or
 
 ## Installation
 
-Once you have downloaded our plugin, simply drop the file in the `plugins` folder of your Minecraft server and start it. Join the server with an account that has operator privileges and follow the instructions that are sent to you.
+Once you have downloaded our plugin, simply drop the file in the `plugins` folder of your Minecraft server and start it. Join the server with an account that has "skoice.manage" permission or operator privileges and follow the instructions that are sent to you.
 
 ## Commands
 
