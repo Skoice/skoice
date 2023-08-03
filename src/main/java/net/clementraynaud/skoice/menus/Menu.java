@@ -41,7 +41,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Menu {
@@ -57,7 +56,6 @@ public class Menu {
     private final MenuStyle style;
     private final String parent;
     private final String[] fields;
-    private SelectMenu selectMenu;
 
     public Menu(Skoice plugin, ConfigurationSection menu) {
         this.plugin = plugin;
@@ -141,48 +139,24 @@ public class Menu {
     }
 
     private List<ActionRow> getActionRows() {
-        switch (this.menuId) {
-            case "server":
-                this.selectMenu = new ServerSelectMenu(this.plugin);
-                break;
-            case "voice-channel":
-                this.selectMenu = new VoiceChannelSelectMenu(this.plugin);
-                break;
-            case "range":
-                this.selectMenu = new RangeSelectMenu(this.plugin);
-                break;
-            case "language":
-                this.selectMenu = new LanguageSelectMenu(this.plugin);
-                break;
-            case "login-notification":
-                this.selectMenu = new LoginNotificationSelectMenu(this.plugin);
-                break;
-            case "included-players":
-                this.selectMenu = new IncludedPlayersSelectMenu(this.plugin);
-                break;
-            case "action-bar-alerts":
-                this.selectMenu = new ActionBarAlertsSelectMenu(this.plugin);
-                break;
-            case "tooltips":
-            case "channel-visibility":
-                this.selectMenu = new ToggleSelectMenu(this.plugin, this.menuId);
-                break;
-            default:
-                List<Button> buttons = this.getButtons();
-                if (!buttons.isEmpty()) {
-                    return Collections.singletonList(ActionRow.of(buttons));
-                }
-                return Collections.emptyList();
+        List<ActionRow> actionRows = new ArrayList<>();
+
+        ActionRow selectMenuActionRow = this.getSelectMenuActionRow();
+        if (selectMenuActionRow != null) {
+            actionRows.add(selectMenuActionRow);
         }
-        return Arrays.asList(ActionRow.of(this.selectMenu.get()), ActionRow.of(this.getButtons()));
+
+        ActionRow mainActionRow = this.getMainActionRow();
+        if (mainActionRow != null) {
+            actionRows.add(mainActionRow);
+        }
+
+        actionRows.add(this.getSecondaryActionRow());
+        return actionRows;
     }
 
-    private List<Button> getButtons() {
-        List<Button> buttons = new ArrayList<>();
-        if (this.parent != null && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.menuId))) {
-            buttons.add(Button.secondary(this.parent, "← " + this.plugin.getLang().getMessage("discord.button-label.back")));
-        }
-        buttons.addAll(this.getAdditionalButtons());
+    private ActionRow getMainActionRow() {
+        List<Button> buttons = new ArrayList<>(this.getAdditionalButtons());
         if (!"range".equals(this.menuId)) {
             for (Menu menu : this.plugin.getBot().getMenus().values()) {
                 if (menu.parent != null && menu.parent.equals(this.menuId)) {
@@ -194,26 +168,44 @@ public class Menu {
                 }
             }
         }
-        if (this.type == MenuType.DEFAULT) {
-            if (this.plugin.getBot().getStatus() == BotStatus.READY) {
-                buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID,
-                                this.plugin.getLang().getMessage("discord.button-label.close"))
-                        .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.get()));
-            } else {
-                buttons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
-                                this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
-                        .withEmoji(MenuEmoji.QUESTION.get()));
-                if (!"language".equals(this.menuId)) {
-                    Menu languageMenu = this.plugin.getBot().getMenu("language");
-                    buttons.add(Button.secondary(languageMenu.menuId, languageMenu.getTitle(false))
-                            .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()));
-                }
-                buttons.add(Button.secondary(Menu.CLOSE_BUTTON_ID,
-                                this.plugin.getLang().getMessage("discord.button-label.configure-later"))
-                        .withEmoji(MenuEmoji.CLOCK3.get()));
-            }
+        if (buttons.isEmpty()) {
+            return null;
         }
-        return buttons;
+        return ActionRow.of(buttons);
+    }
+
+    private ActionRow getSelectMenuActionRow() {
+        SelectMenu selectMenu;
+        switch (this.menuId) {
+            case "server":
+                selectMenu = new ServerSelectMenu(this.plugin);
+                break;
+            case "voice-channel":
+                selectMenu = new VoiceChannelSelectMenu(this.plugin);
+                break;
+            case "range":
+                selectMenu = new RangeSelectMenu(this.plugin);
+                break;
+            case "language":
+                selectMenu = new LanguageSelectMenu(this.plugin);
+                break;
+            case "login-notification":
+                selectMenu = new LoginNotificationSelectMenu(this.plugin);
+                break;
+            case "included-players":
+                selectMenu = new IncludedPlayersSelectMenu(this.plugin);
+                break;
+            case "action-bar-alerts":
+                selectMenu = new ActionBarAlertsSelectMenu(this.plugin);
+                break;
+            case "tooltips":
+            case "channel-visibility":
+                selectMenu = new ToggleSelectMenu(this.plugin, this.menuId);
+                break;
+            default:
+                return null;
+        }
+        return ActionRow.of(selectMenu.get());
     }
 
     private List<Button> getAdditionalButtons() {
@@ -242,5 +234,32 @@ public class Menu {
                     .withEmoji(MenuEmoji.QUESTION.get()));
         }
         return additionalButtons;
+    }
+
+    private ActionRow getSecondaryActionRow() {
+        List<Button> buttons = new ArrayList<>();
+        if (this.parent != null && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.menuId))) {
+            buttons.add(Button.secondary(this.parent, "← " + this.plugin.getLang().getMessage("discord.button-label.back")));
+        }
+        if (this.type == MenuType.DEFAULT) {
+            if (this.plugin.getBot().getStatus() == BotStatus.READY) {
+                buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID,
+                                this.plugin.getLang().getMessage("discord.button-label.close"))
+                        .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.get()));
+            } else {
+                buttons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
+                                this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
+                        .withEmoji(MenuEmoji.QUESTION.get()));
+                if (!"language".equals(this.menuId)) {
+                    Menu languageMenu = this.plugin.getBot().getMenu("language");
+                    buttons.add(Button.secondary(languageMenu.menuId, languageMenu.getTitle(false))
+                            .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()));
+                }
+                buttons.add(Button.secondary(Menu.CLOSE_BUTTON_ID,
+                                this.plugin.getLang().getMessage("discord.button-label.configure-later"))
+                        .withEmoji(MenuEmoji.CLOCK3.get()));
+            }
+        }
+        return ActionRow.of(buttons);
     }
 }
