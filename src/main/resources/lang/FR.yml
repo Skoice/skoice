@@ -57,15 +57,22 @@ minecraft:
         - "%s Skoice n'est &cpas configuré correctement&7. Cliquez "
         - " &7to set it up. You can change the language by clicking "
         - "&7. Si vous ne pouvez pas intéragir avec ce message, tapez \"&e/skoice tooltips&7\"."
+      incomplete-configuration-operator: "%s Skoice is &cnot configured correctly&7. Type \"&e/skoice configure&7\" to set it up. You can change the language with \"&e/skoice language&7\" followed by the language."
       incomplete-configuration-operator-discord: "%s Skoice n'est &cpas configuré correctement&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
       already-configured: "%s Skoice est &cdéjà configuré&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour mettre à jour ses réglages."
       tooltips-enabled: "%s Vous avez &aactivé les messages interactifs&7."
+      tooltips-disabled: "%s You have &adisabled interactive messages&7. If you were trying to configure Skoice, type \"&e/skoice configure&7\"."
+      no-language: "%s You have &cnot provided a language&7. To use this command, type \"&e/skoice language %s&7\"."
+      invalid-language: "%s You have &cnot provided a valid language&7. To use this command, type \"&e/skoice language %s&7\"."
+      language-already-set: "%s The language is &calready set &7to \"&e%s&7\"."
+      language-updated: "%s You have &aupdated the language &7to \"&e%s&7\"."
     player:
       no-code: "%s Vous n'avez &cpas fourni de code&7. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour en recevoir un."
       invalid-code: "%s Vous n'avez &cpas fourni de code valide&7. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour en recevoir un."
       account-linked: "%s Vous avez &alié votre compte Minecraft &7à Discord."
       account-unlinked: "%s Vous avez &adelié votre compte Minecraft &7de Discord."
       account-not-linked: "%s Vous n'avez &cpas lié votre compte Minecraft &7à Discord. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour le lier."
+      account-not-linked-remind-once: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat. You will not receive this notification again."
       account-already-linked: "%s Vous avez &cdéjà lié votre compte Minecraft &7à Discord. Tapez \"&e/skoice unlink&7\" pour le délier."
       connected: "%s Vous êtes &adésormais connecté &7au chat vocal de proximité. Pour une meilleure expérience, vous pouvez activer le \"&eMode streamer&7\" dans votre client Discord."
       not-connected: "%s Vous n'êtes &cpas connecté &7au chat vocal de proximité. Rejoignez le salon vocal \"&e%s&7\" sur le serveur Discord \"&e%s&7\" pour l'utiliser."
@@ -74,11 +81,14 @@ minecraft:
       no-parameter: "%s Vous n'avez &cpas fourni un argument&7. Pour utiliser cette commande, tapez \"&e/skoice %s&7\"."
       invalid-parameter: "%s Vous n'avez &cpas fourni un argument valide&7. Pour utiliser cette commande, tapez \"&e/skoice %s&7\"."
       illegal-executor: "%s Cette commande est &cseulement exécutable &7par les joueurs."
+      missing-permission: "%s This command is &conly executable &7by players with the permission \"&eskoice.manage&7\"."
       bot-timed-out-interactive:
         - "%s Un problème a &cempêché votre bot &7de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord sur "
         - "&7."
+      bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &bhttps://discordstatus.com&7."
   action-bar:
     connecting-alert: "&a⚠ &7Vous êtes &aproche d'autres joueurs&7. Dites bonjour !"
+    disconnecting-alert: "&c⚠ &7You are &cmoving away &7from near players."
   interaction:
     here: "&bici"
     this-page: "&bcette page"
@@ -92,6 +102,7 @@ discord:
     unlink: "Délier votre compte Discord de Minecraft."
     invite: "Obtenir le chat vocal de proximité sur votre serveur."
   menu:
+    footer: "Want Skoice on your server? Type \"/invite\"!"
     invite-footer: "Skoice • carlodrift, Lucas_Cdry et les contributeurs"
     configuration:
       title: "Configuration"
@@ -105,6 +116,7 @@ discord:
       description: "Afin de fonctionner correctement, votre bot doit avoir la permission \"Administrateur\" sur votre serveur Discord."
     voice-channel:
       title: "Salon vocal"
+      description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Adjust its bitrate to manage the audio quality of the proximity voice chat. Please note that players will automatically be muted in this channel."
       shortened-description: "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité."
       select-menu:
         placeholder: "Veuillez sélectionner un salon vocal."
@@ -131,11 +143,14 @@ discord:
       description: "Gérer les autres réglages."
     language:
       title: "Langue"
-      description: "Choisissez la langue utilisée pour afficher les messages."
+      description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
+      shortened-description: "Choose the language used to display messages."
     in-game-messages:
       title: "Messages en jeu"
+      description: "Manage the messages sent to players on your Minecraft server."
     login-notification:
       title: "Notification à la connexion"
+      description: "Toggle the message sent to players who have not linked their accounts when they log in to your Minecraft server."
       select-menu:
         always-remind:
           label: "Toujours rappeler"
@@ -144,15 +159,23 @@ discord:
         never-remind:
           label: "Ne jamais rappeler"
     action-bar-alerts:
+      title: "Action Bar Alerts"
+      description: "Toggle the alerts sent to players who are using the proximity voice chat."
       select-menu:
+        placeholder: "Please select the desired alerts."
         connecting-alert:
           label: "\"Vous êtes proche d'autres joueurs. Dites bonjour !\""
+        disconnecting-alert:
+          label: "\"You are moving away from near players.\""
     tooltips:
       title: "Infobulles"
       shortened-description: "Activer les messages interactifs sur votre serveur Minecraft."
+      description: "Toggle interactive messages on your Minecraft server. You may want to disable this setting if your server is running on Bedrock Edition or if tooltips are disabled in Minecraft settings. Only operators can receive interactive messages."
     included-players:
       title: "Joueurs inclus"
+      description: "Choose the types of players included in the proximity voice chat."
       select-menu:
+        placeholder: "Please select the desired types of players."
         players-on-death-screen-included:
           label: "Joueurs sur l'écran de mort"
         spectators-included:
@@ -172,6 +195,7 @@ discord:
       description: "Skoice est désormais configuré. Tapez `/link` sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
     notified-players-cleared:
       title: "Joueurs notifiés effacés"
+      description: "You have cleared notified players. Players who have already received the reminder to link their accounts will now be notified again."
     incomplete-configuration:
       title: "Configuration non terminée"
       description: "Skoice n'est pas configuré correctement. Veuillez contacter un administrateur du serveur."
@@ -192,6 +216,7 @@ discord:
       description: "Vous rencontrez des problèmes ? [Rejoignez notre serveur Discord](https://discord.gg/h3Tgccc) !"
     contributing:
       title: "Contribuer"
+      description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/Skoice/skoice) and [translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
     long-range-mode:
       title: "Mode longue portée"
       description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu en monde ouvert."
@@ -230,7 +255,6 @@ discord:
       description: "Les valeurs doivent être des nombres entiers supérieurs à 0."
   button-label:
     back: "Retour"
-    refresh: "Rafraîchir"
     close: "Fermer"
     configure-later: "Configurer plus tard"
     resume-configuration: "Reprendre la configuration"
@@ -257,5 +281,6 @@ discord:
       label: "Rayon horizontal"
     vertical-radius:
       label: "Rayon vertical"
+  message-not-showing-up: "If you cannot see the message above, you probably have disabled embeds in Discord settings. To use Skoice properly, you must enable them by following this path: `App Settings › Text & Images › Show embeds and preview website links pasted into chat`."
   communication-lost: "Communication perdue."
   system-interrupted: "Système interrompu."

@@ -143,7 +143,8 @@ discord:
       description: "Diğer parametreleri yönet."
     language:
       title: "Dil"
-      description: "Mesajları görüntülemek için kullanılacak dili seçin."
+      description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
+      shortened-description: "Choose the language used to display messages."
     in-game-messages:
       title: "Oyun İçi Mesajlar"
       description: "Minecraft sunucunuzdaki oyunculara gönderilen mesajları yönetin."
@@ -254,7 +255,6 @@ discord:
       description: "Değerler 0'dan büyük bir tam sayı olmalıdır."
   button-label:
     back: "Geri"
-    refresh: "Yenile"
     close: "Kapat"
     configure-later: "Daha Sonra Yapılandır"
     resume-configuration: "Yapılandırmaya Devam Et"

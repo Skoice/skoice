@@ -16,6 +16,7 @@ logger:
     plugin-disabled: "Плагин отключен."
     plugin-updated: "Skoice был обновлен до последней версии. Пожалуйста, перезапустите ваш сервер Minecraft, чтобы применить изменения."
     skoice-3: "Теперь вы используете Skoice 3. Чтобы заставить бота работать правильно, следуйте нашему руководству по миграции: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
+    configuration-complete: "Skoice is now configured. Type \"/link\" on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     bot-connecting: "Ваш бот подключается."
     bot-connected: "Ваш бот подключен."
   warning:
@@ -70,6 +71,8 @@ minecraft:
       invalid-code: "%s Вы указали &cневерный код&7. Введите \"&e/link&7\" на сервере Discord \"&e%s&7\", чтобы его получить."
       account-linked: "%s Вы &aуспешно привязали ваш аккаунт Minecraft &7к Discord."
       account-unlinked: "%s Вы &aотвязали ваш аккаунт Minecraft &7от Discord."
+      account-not-linked: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat."
+      account-not-linked-remind-once: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat. You will not receive this notification again."
       account-already-linked: "%s Вы &cуже привязали аккаунт Minecraft &7к Discord. Введите \"&e/skoice unlink&7\", чтобы отвязать его."
       connected: "%s Вы &aприсоединились &7к голосовому чату. Для лучшего опыта вы можете включить \"&eРежим стримера&7\" в настройках Discord."
       not-connected: "%s Вы &cне подключены &7к голосовому чату. Присоединитесь к каналу \"&e%s&7\" на сервере Discord \"&e%s&7\"."
@@ -97,6 +100,7 @@ discord:
     configure: "Настройка Skoice."
     link: "Привяжите свою учётную запись Discord к Minecraft."
     unlink: "Отвяжите свою учетную запись Discord от Minecraft."
+    invite: "Get the proximity voice chat on your server."
   menu:
     footer: "Хотите, чтобы Skoice был на вашем сервере? Введите \"/invite\"!"
     invite-footer: "Skoice • carlodrift, Lucas_Cdry и помощники"
@@ -104,6 +108,7 @@ discord:
       title: "Конфигурация"
     server:
       title: "Сервер"
+      description: "In order to work properly, your bot cannot be present on multiple Discord servers. Select the server where you want the proximity voice chat to be active. Your bot will automatically leave the other ones."
       select-menu:
         placeholder: "Пожалуйста, выберите сервер."
     permissions:
@@ -111,6 +116,8 @@ discord:
       description: "Чтобы корректно работать, ваш бот должен иметь разрешение \"Администратор\" на вашем сервере Discord."
     voice-channel:
       title: "Голосовой канал"
+      description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Adjust its bitrate to manage the audio quality of the proximity voice chat. Please note that players will automatically be muted in this channel."
+      shortened-description: "Select the channel players have to join to use the proximity voice chat."
       select-menu:
         placeholder: "Пожалуйста, выберите голосовой канал."
         select-option:
@@ -136,7 +143,8 @@ discord:
       description: "Управление другими параметрами."
     language:
       title: "Язык"
-      description: "Выберите язык отображения сообщений."
+      description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
+      shortened-description: "Choose the language used to display messages."
     in-game-messages:
       title: "Внутриигровые сообщения"
       description: "Управление сообщениями, которые отправляются игрокам на вашем сервере Minecraft."
@@ -152,6 +160,7 @@ discord:
           label: "Никогда не напоминать"
     action-bar-alerts:
       title: "Уведомления в Action Bar"
+      description: "Toggle the alerts sent to players who are using the proximity voice chat."
       select-menu:
         placeholder: "Пожалуйста, выберите желаемые уведомления."
         connecting-alert:
@@ -164,6 +173,7 @@ discord:
       description: "Включите интерактивные сообщения на своем сервере Minecraft. Вы можете отключить этот параметр, если ваш сервер работает на Bedrock Edition или если всплывающие подсказки отключены в настройках Minecraft. Получать интерактивные сообщения могут только операторы."
     included-players:
       title: "Игроки с доступом"
+      description: "Choose the types of players included in the proximity voice chat."
       select-menu:
         placeholder: "Пожалуйста, выберите желаемые типы игроков."
         players-on-death-screen-included:
@@ -173,6 +183,8 @@ discord:
     channel-visibility:
       title: "Видимость канала"
       description: "Переключение видимости временных каналов, созданных Skoice."
+    skoice-proximity-voice-chat:
+      title: "Skoice: Proximity Voice Chat"
     linking-process:
       title: "Процесс привязки"
     error:
@@ -180,6 +192,7 @@ discord:
   field:
     configuration-complete:
       title: "Настройка завершена"
+      description: "Skoice is now configured. Type `/link` on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     notified-players-cleared:
       title: "Очистка списка уведомленных игроков"
       description: "Вы очистили список уведомленных игроков. Игроки, которые уже получили уведомление о привязке своих аккаунтов, теперь будут уведомлены снова."
@@ -218,6 +231,7 @@ discord:
       description: "Для завершения процесса введите `/skoice link %s` в игре."
     account-linked:
       title: "Аккаунт привязан"
+      description: "Your Discord account has been linked to Minecraft. Join the voice channel %s to use the proximity voice chat."
     account-unlinked:
       title: "Аккаунт отвязан"
       description: "Ваш аккаунт Discord был отвязан от Minecraft."
@@ -241,7 +255,6 @@ discord:
       description: "Значения должны быть целыми числами больше 0."
   button-label:
     back: "Назад"
-    refresh: "Обновить"
     close: "Закрыть"
     configure-later: "Настроить позже"
     resume-configuration: "Возобновить настройку"
@@ -263,6 +276,7 @@ discord:
       default-value: "Skoice"
     voice-channel-name:
       label: "Название голосового канала"
+      default-value: "Proximity Voice Chat"
     horizontal-radius:
       label: "Горизонтальный радиус"
     vertical-radius:
