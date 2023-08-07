@@ -24,14 +24,15 @@ import net.clementraynaud.skoice.bot.BotStatus;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class LinkCommand extends ListenerAdapter {
 
     private static final Map<String, String> discordIdCode = new HashMap<>();
+    private static final Random random = new Random();
 
     private final Skoice plugin;
 
@@ -65,7 +66,8 @@ public class LinkCommand extends ListenerAdapter {
             LinkCommand.discordIdCode.remove(event.getUser().getId());
             String code;
             do {
-                code = RandomStringUtils.randomNumeric(6);
+                int number = LinkCommand.random.nextInt(1000000);
+                code = String.format("%06d", number);
             } while (LinkCommand.discordIdCode.containsValue(code));
             LinkCommand.discordIdCode.put(event.getUser().getId(), code);
             event.reply(this.plugin.getBot().getMenu("verification-code").build(code)).setEphemeral(true).queue();
