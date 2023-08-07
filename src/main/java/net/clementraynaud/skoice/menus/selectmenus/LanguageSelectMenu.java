@@ -39,8 +39,8 @@ public class LanguageSelectMenu extends SelectMenu {
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
         List<SelectOption> options = new ArrayList<>();
         for (LangInfo option : LangInfo.values()) {
-            options.add(SelectOption.of(option.getFullName(), option.name())
-                    .withDescription(option.name().equals(LangInfo.EN.name())
+            options.add(SelectOption.of(option.getFullName(), option.toString())
+                    .withDescription(option.toString().equals(LangInfo.EN.toString())
                             ? super.plugin.getLang().getMessage("discord.select-option.default.description")
                             : null)
                     .withEmoji(option.getEmoji()));
