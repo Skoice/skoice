@@ -111,6 +111,9 @@ public class Skoice extends JavaPlugin {
         if (!this.isMinecraftServerCompatible()) {
             return;
         }
+        if (this.bugsnag != null) {
+            this.bugsnag.close();
+        }
         if (this.bot.getJDA() != null) {
             new InterruptSystemTask(this).run();
             this.bot.getJDA().shutdown();
