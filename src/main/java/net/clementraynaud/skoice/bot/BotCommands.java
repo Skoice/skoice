@@ -45,19 +45,19 @@ public class BotCommands {
         this.plugin.getBot().getJDA().updateCommands().addCommands(this.getGlobalCommands()).queue();
         guild.updateCommands().addCommands(this.getGuildCommands())
                 .queue(success -> {
-                    if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                        guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
-                    }
-                }, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
-                        e -> {
-                            String applicationId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
-                            this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
-                                    guild.getName(), applicationId));
-                            if (sender != null) {
-                                sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.missing-access",
-                                        guild.getName(), applicationId));
+                            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+                                guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
                             }
-                        })
+                        }, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
+                                e -> {
+                                    String applicationId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
+                                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
+                                            guild.getName(), applicationId));
+                                    if (sender != null) {
+                                        sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.missing-access",
+                                                guild.getName(), applicationId));
+                                    }
+                                })
                 );
     }
 
