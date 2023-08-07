@@ -64,8 +64,7 @@ public class Updater {
                 if (scanner.hasNext()) {
                     consumer.accept(scanner.next());
                 }
-            } catch (IOException exception) {
-                this.plugin.getBugsnag().notify(exception);
+            } catch (IOException ignored) {
             }
         });
     }
