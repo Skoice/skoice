@@ -31,7 +31,7 @@ import java.util.List;
 public class ServerSelectMenu extends SelectMenu {
 
     public ServerSelectMenu(Skoice plugin) {
-        super(plugin, true);
+        super(plugin);
     }
 
     @Override

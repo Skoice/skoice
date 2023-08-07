@@ -49,13 +49,13 @@ public class LanguageArgument extends Argument {
         try {
             LangInfo language = LangInfo.valueOf(this.arg.toUpperCase());
 
-            if (language.name().equals(super.plugin.getConfigYamlFile().get(ConfigField.LANG.toString()))) {
+            if (language.toString().equals(super.plugin.getConfigYamlFile().get(ConfigField.LANG.toString()))) {
                 this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.language-already-set",
                         language.getFullName()));
                 return;
             }
 
-            super.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), language.name());
+            super.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), language.toString());
             super.plugin.getLang().load(language);
             super.plugin.getListenerManager().update();
 

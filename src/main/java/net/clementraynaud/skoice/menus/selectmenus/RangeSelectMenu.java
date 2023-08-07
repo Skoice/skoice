@@ -37,7 +37,7 @@ public class RangeSelectMenu extends SelectMenu {
     private static final String SHORT_RANGE_MODE_ID = "short-range-mode";
 
     public RangeSelectMenu(Skoice plugin) {
-        super(plugin, false);
+        super(plugin);
     }
 
     @Override

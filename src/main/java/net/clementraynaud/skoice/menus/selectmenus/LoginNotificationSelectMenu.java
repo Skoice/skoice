@@ -37,7 +37,7 @@ public class LoginNotificationSelectMenu extends SelectMenu {
     public static final String NEVER_REMIND = "never-remind";
 
     public LoginNotificationSelectMenu(Skoice plugin) {
-        super(plugin, false);
+        super(plugin);
     }
 
     @Override

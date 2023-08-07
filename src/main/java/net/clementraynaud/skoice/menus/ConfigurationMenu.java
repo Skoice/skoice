@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -29,30 +28,36 @@ import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
+import java.util.EnumSet;
 import java.util.function.Consumer;
 
 public class ConfigurationMenu {
 
     private final Skoice plugin;
+    private String menuId;
 
     public ConfigurationMenu(Skoice plugin) {
         this.plugin = plugin;
     }
 
     public MessageEditData update() {
-        Menu menu;
-        if (this.plugin.getBot().getStatus() == BotStatus.MULTIPLE_GUILDS) {
-            menu = this.plugin.getBot().getMenu("server");
-        } else if (this.plugin.getBot().getStatus() == BotStatus.MISSING_PERMISSION) {
-            menu = this.plugin.getBot().getMenu("permissions");
-        } else if (this.plugin.getBot().getStatus() == BotStatus.NO_VOICE_CHANNEL) {
-            menu = this.plugin.getBot().getMenu("voice-channel");
-        } else if (this.plugin.getBot().getStatus() == BotStatus.NO_RADIUS) {
-            menu = this.plugin.getBot().getMenu("range");
-        } else {
-            menu = this.plugin.getBot().getMenu("settings");
+        switch (this.plugin.getBot().getStatus()) {
+            case MULTIPLE_GUILDS:
+                this.menuId = "server";
+                break;
+            case MISSING_PERMISSION:
+                this.menuId = "permissions";
+                break;
+            case NO_VOICE_CHANNEL:
+                this.menuId = "voice-channel";
+                break;
+            case NO_RADIUS:
+                this.menuId = "range";
+                break;
+            default:
+                this.menuId = "settings";
         }
-        return MessageEditData.fromCreateData(menu.build());
+        return MessageEditData.fromCreateData(this.plugin.getBot().getMenu(this.menuId).build());
     }
 
     public String getMessageId() {
@@ -85,8 +90,13 @@ public class ConfigurationMenu {
             return;
         }
 
-        channel.retrieveMessageById(messageId).queue(success,
-                new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.clearConfig()));
+        channel.retrieveMessageById(messageId).queue(
+                success,
+                new ErrorHandler().handle(
+                        EnumSet.of(ErrorResponse.UNKNOWN_MESSAGE, ErrorResponse.MISSING_ACCESS),
+                        e -> this.clearConfig()
+                )
+        );
     }
 
     public void delete() {
@@ -104,5 +114,13 @@ public class ConfigurationMenu {
 
     public void clearConfig() {
         this.plugin.getTempYamlFile().remove(TempYamlFile.CONFIG_MENU_FIELD);
+    }
+
+    public String getMenuId() {
+        return this.menuId;
+    }
+
+    public void setMenuId(String menuId) {
+        this.menuId = menuId;
     }
 }

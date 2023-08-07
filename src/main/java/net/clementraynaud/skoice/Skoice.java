@@ -48,6 +48,7 @@ import java.util.stream.Stream;
 
 public class Skoice extends JavaPlugin {
 
+    private static final String OUTDATED_MINECRAFT_SERVER_ERROR = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
     private static final int SERVICE_ID = 11380;
     private static final String BUGSNAG_KEY = "";
 
@@ -66,6 +67,7 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onEnable() {
         if (!this.isMinecraftServerCompatible()) {
+            this.getLogger().severe(Skoice.OUTDATED_MINECRAFT_SERVER_ERROR);
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -108,6 +110,9 @@ public class Skoice extends JavaPlugin {
     public void onDisable() {
         if (!this.isMinecraftServerCompatible()) {
             return;
+        }
+        if (this.bugsnag != null) {
+            this.bugsnag.close();
         }
         if (this.bot.getJDA() != null) {
             new InterruptSystemTask(this).run();
@@ -170,7 +175,6 @@ public class Skoice extends JavaPlugin {
                 return;
             }
 
-            report.setUserId(this.configYamlFile.getString(ConfigField.SERVER_ID.toString()));
             report.addToTab("server", "version", this.getServer().getVersion());
             report.addToTab("server", "bukkitVersion", this.getServer().getBukkitVersion());
 
@@ -189,7 +193,11 @@ public class Skoice extends JavaPlugin {
             report.addToTab("app", "botStatus", this.bot.getStatus().toString());
         });
 
-        this.bugsnag.startSession();
+        this.bugsnag.setAutoCaptureSessions(false);
+        if (!this.configYamlFile.contains(ConfigField.SESSION_REPORTED.toString())) {
+            this.bugsnag.startSession();
+            this.configYamlFile.set(ConfigField.SESSION_REPORTED.toString(), true);
+        }
     }
 
     private Set<ConfigField> getSharedConfigFields() {

@@ -117,7 +117,7 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
                     .filter(arg -> arg.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
 
-        } else if (args.length == 2 && args[0].equals(ArgumentInfo.LANGUAGE.name().toLowerCase())) {
+        } else if (args.length == 2 && args[0].equals(ArgumentInfo.LANGUAGE.toString().toLowerCase())) {
             return LangInfo.getList().stream()
                     .filter(arg -> arg.startsWith(args[1].toLowerCase()))
                     .collect(Collectors.toList());

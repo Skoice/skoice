@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.lang;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -110,6 +109,6 @@ public class Lang {
     }
 
     public int getAmountOfArgsRequired(String message) {
-        return StringUtils.countMatches(message, "%s");
+        return message.split("%s").length - 1;
     }
 }
