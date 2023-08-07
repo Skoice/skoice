@@ -25,7 +25,6 @@ import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
-import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.entities.channel.unions.ChannelUnion;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
@@ -51,7 +50,9 @@ public class GenericChannelListener extends ListenerAdapter {
         if (channel.getType() != ChannelType.VOICE) {
             return;
         }
-        this.reloadVoiceChannelMenu(channel.asVoiceChannel());
+        if (channel.asVoiceChannel().getParentCategory() != null) {
+            this.reloadVoiceChannelMenu();
+        }
     }
 
     @Override
@@ -61,7 +62,9 @@ public class GenericChannelListener extends ListenerAdapter {
             return;
         }
         this.checkForValidVoiceChannel(event);
-        this.reloadVoiceChannelMenu(channel.asVoiceChannel());
+        if (channel.asVoiceChannel().getParentCategory() != null) {
+            this.reloadVoiceChannelMenu();
+        }
     }
 
     @Override
@@ -70,7 +73,9 @@ public class GenericChannelListener extends ListenerAdapter {
         if (channel.getType() != ChannelType.VOICE) {
             return;
         }
-        this.reloadVoiceChannelMenu(channel.asVoiceChannel());
+        if (channel.asVoiceChannel().getParentCategory() != null) {
+            this.reloadVoiceChannelMenu();
+        }
     }
 
     @Override
@@ -80,10 +85,8 @@ public class GenericChannelListener extends ListenerAdapter {
             return;
         }
         this.checkForValidVoiceChannel(event);
-        if ("voice-channel".equals(this.plugin.getConfigurationMenu().getMenuId())
-                && this.plugin.getBot().getStatus() == BotStatus.READY) {
-            this.plugin.getConfigurationMenu().retrieveMessage(message ->
-                    message.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue());
+        if (channel.asVoiceChannel().getParentCategory() != null) {
+            this.reloadVoiceChannelMenu();
         }
     }
 
@@ -103,9 +106,8 @@ public class GenericChannelListener extends ListenerAdapter {
         }
     }
 
-    private void reloadVoiceChannelMenu(VoiceChannel voiceChannel) {
-        if (voiceChannel.getParentCategory() != null
-                && "voice-channel".equals(this.plugin.getConfigurationMenu().getMenuId())
+    private void reloadVoiceChannelMenu() {
+        if ("voice-channel".equals(this.plugin.getConfigurationMenu().getMenuId())
                 && this.plugin.getBot().getStatus() == BotStatus.READY) {
             this.plugin.getConfigurationMenu().retrieveMessage(message ->
                     message.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue());
