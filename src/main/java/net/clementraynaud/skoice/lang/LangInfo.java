@@ -33,6 +33,7 @@ public enum LangInfo {
     ES("Español", "U+1F1EAU+1F1F8"),
     FR("Français", "U+1F1EBU+1F1F7"),
     IT("Italiano", "U+1F1EEU+1F1F9"),
+    JA("日本語", "U+1F1EFU+1F1F5"),
     NO("Norsk", "U+1F1F3U+1F1F4"),
     PL("Polski", "U+1F1F5U+1F1F1"),
     PT("Português", "U+1F1F5U+1F1F9"),
