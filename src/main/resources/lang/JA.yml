@@ -143,7 +143,8 @@ discord:
       description: "その他のパラメータを管理します。"
     language:
       title: "言語"
-      description: "メッセージの表示に使用する言語を選択します。"
+      description: "メッセージの表示に使用する言語を選択してください。あなたの言語が無いか不完全ですか？[Crowdinでプライグインを翻訳してください](https://crowdin.com/project/skoice)！"
+      shortened-description: "メッセージの表示に使用する言語を選択してください。"
     in-game-messages:
       title: "ゲーム内メッセージ"
       description: "Minecraftサーバー上でプレイヤーに送信されるメッセージを管理します。"
@@ -254,7 +255,6 @@ discord:
       description: "値は 0 より大きい数値でなければなりません。"
   button-label:
     back: "戻る"
-    refresh: "更新"
     close: "閉じる"
     configure-later: "後で設定"
     resume-configuration: "設定を再開"

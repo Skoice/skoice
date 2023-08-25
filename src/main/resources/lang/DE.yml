@@ -143,8 +143,8 @@ discord:
       description: "Verwalte andere Parameter."
     language:
       title: "Sprache"
-      description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
-      shortened-description: "Choose the language used to display messages."
+      description: "Wähle die Sprache, in der Nachrichten angezeigt werden. Deine Sprache fehlt oder ist nicht vollständig? [Übersetze unser Plugin mit Crowdin](https://crowdin.com/project/skoice)!"
+      shortened-description: "Wähle die Sprache aus, in der Nachrichten angezeigt werden."
     in-game-messages:
       title: "In-Game Nachrichten"
       description: "Verwalte die Nachrichten, die Spielern auf dem Minecraft Server geschickt werden."

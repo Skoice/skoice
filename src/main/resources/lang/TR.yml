@@ -143,8 +143,8 @@ discord:
       description: "Diğer parametreleri yönet."
     language:
       title: "Dil"
-      description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
-      shortened-description: "Choose the language used to display messages."
+      description: "Mesajları göstermek için kullanılacak dili seçin. Kendi diliniz tam değil veya eksikmi? [Crowdin'den kendiniz çevirin](https://crowdin.com/project/skoice)!"
+      shortened-description: "Mesajları göstermek için kullanılacak dili seçin."
     in-game-messages:
       title: "Oyun İçi Mesajlar"
       description: "Minecraft sunucunuzdaki oyunculara gönderilen mesajları yönetin."
