@@ -95,12 +95,14 @@ public class GenericChannelListener extends ListenerAdapter {
             this.plugin.getConfigYamlFile().remove(ConfigField.VOICE_CHANNEL_ID.toString());
             this.plugin.getListenerManager().update();
             event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).queue(auditLogEntries -> {
-                User user = auditLogEntries.get(0).getUser();
-                if (user != null && !user.isBot()) {
-                    user.openPrivateChannel().queue(channel ->
-                            channel.sendMessage(this.plugin.getBot().getMenu("incomplete-configuration-alternative-server-manager").build())
-                                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
-                    );
+                if (!auditLogEntries.isEmpty()) {
+                    User user = auditLogEntries.get(0).getUser();
+                    if (user != null && !user.isBot()) {
+                        user.openPrivateChannel().queue(channel ->
+                                channel.sendMessage(this.plugin.getBot().getMenu("incomplete-configuration-alternative-server-manager").build())
+                                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
+                        );
+                    }
                 }
             });
         }
