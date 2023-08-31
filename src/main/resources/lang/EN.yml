@@ -269,7 +269,7 @@ discord:
       label: "Disabled"
     too-many-options:
       label: "Too Many Options"
-      description: "Skoice is unabled to load more options."
+      description: "Skoice is unable to load more options."
   text-input:
     category-name:
       label: "Category Name"
