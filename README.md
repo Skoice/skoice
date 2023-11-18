@@ -1,4 +1,4 @@
-<img align="right" src="https://avatars.githubusercontent.com/u/107434569?s=200&v=4" height="200" width="200" alt="Skoice logo">
+<img align="right" src="https://github.com/Skoice/skoice/assets/30211659/94ee4b30-ecf0-4348-84e7-c829d7c86280)" height="200" width="200" alt="Skoice logo">
 
 # Skoice: Proximity Voice Chat<br>[![](https://img.shields.io/spiget/downloads/82861?style=flat&labelColor=697EC4&color=7289DA&label=Downloads)](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861) [![](https://img.shields.io/spiget/rating/82861?style=flat&labelColor=697EC4&color=7289DA&label=Rating)](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861) [![](https://img.shields.io/discord/741375523275407461.svg?style=flat&labelColor=697EC4&color=7289DA&label=Discord)](https://discord.gg/h3Tgccc)
 
