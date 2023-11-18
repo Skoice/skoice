@@ -19,8 +19,8 @@
 
 package net.clementraynaud.skoice;
 
-import com.tcoded.folialib.FoliaLib;
 import com.bugsnag.Bugsnag;
+import com.tcoded.folialib.FoliaLib;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;

@@ -111,6 +111,12 @@
                                 <exclude>module-info.class</exclude>
                             </excludes>
                         </filter>
+                        <filter>
+                            <artifact>com.tcoded:FoliaLib</artifact>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </filter>
                     </filters>
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
@@ -193,6 +199,7 @@
             <groupId>com.tcoded</groupId>
             <artifactId>FoliaLib</artifactId>
             <version>0.3.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

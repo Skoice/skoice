@@ -133,13 +133,12 @@ public class Bot {
         this.updateGuild();
         this.jda.getGuilds().forEach(guild -> this.plugin.getBotCommands().register(guild, sender));
         this.plugin.getListenerManager().registerPermanentBotListeners();
-        this.plugin.getFoliaLib().getImpl().runNextTick(() ->
-                  this.plugin.getFoliaLib().getImpl().runTimerAsync(
-                            new UpdateNetworksTask(this.plugin)::run,
-                            0,
-                            500,
-                            TimeUnit.MILLISECONDS
-                  )
+        this.plugin.getFoliaLib().getImpl().runNextTick((wrappedTask) -> this.plugin.getFoliaLib().getImpl().runTimerAsync(
+                        new UpdateNetworksTask(this.plugin)::run,
+                        0,
+                        500,
+                        TimeUnit.MILLISECONDS
+                )
         );
         this.retrieveNetworks();
         this.loadMenus();

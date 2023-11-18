@@ -41,8 +41,7 @@ public class Updater {
     public Updater(Skoice plugin, String pluginPath) {
         this.plugin = plugin;
         this.pluginPath = pluginPath;
-        this.plugin.getServer().getScheduler().runTaskTimer(
-                this.plugin,
+        this.plugin.getFoliaLib().getImpl().runTimer(
                 this::checkVersion,
                 Updater.TICKS_BEFORE_VERSION_CHECKING,
                 Updater.TICKS_BETWEEN_VERSION_CHECKING
@@ -58,7 +57,7 @@ public class Updater {
     }
 
     private void getVersion(final Consumer<String> consumer) {
-        this.plugin.getFoliaLib().getImpl().runAsync(() -> {
+        this.plugin.getFoliaLib().getImpl().runAsync((wrappedTask) -> {
             try (InputStream inputStream = new URL("https://clementraynaud.net/files/skoice-latest/version")
                     .openStream(); Scanner scanner = new Scanner(inputStream)) {
                 if (scanner.hasNext()) {
@@ -73,7 +72,7 @@ public class Updater {
         File update = new File(this.plugin.getServer().getUpdateFolderFile().getAbsolutePath() + File.separator
                 + this.pluginPath.substring(this.pluginPath.lastIndexOf(File.separator) + 1));
 
-        this.plugin.getFoliaLib().getImpl().runAsync(() -> {
+        this.plugin.getFoliaLib().getImpl().runAsync((wrappedTask) -> {
             this.plugin.getServer().getUpdateFolderFile().mkdirs();
 
             try (FileOutputStream outputStream = new FileOutputStream(update)) {
