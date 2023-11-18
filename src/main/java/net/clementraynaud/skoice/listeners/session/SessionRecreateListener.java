@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -17,25 +17,25 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners;
+package net.clementraynaud.skoice.listeners.session;
 
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.events.ReconnectedEvent;
+import net.dv8tion.jda.api.events.session.SessionRecreateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class ReconnectedListener extends ListenerAdapter {
+public class SessionRecreateListener extends ListenerAdapter {
 
     private final Skoice plugin;
 
-    public ReconnectedListener(Skoice plugin) {
+    public SessionRecreateListener(Skoice plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public void onReconnected(ReconnectedEvent event) {
+    public void onSessionRecreate(SessionRecreateEvent event) {
         this.plugin.getConfigurationMenu().delete();
-        this.plugin.getConfiguration().eraseInvalidVoiceChannelId();
+        this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
             this.plugin.getBotCommands().register(guild);
             if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
@@ -45,6 +45,8 @@ public class ReconnectedListener extends ListenerAdapter {
         this.plugin.getBot().updateGuild();
         this.plugin.getBot().updateVoiceState();
         this.plugin.getListenerManager().update();
+        this.plugin.getBot().muteMembers();
         this.plugin.getBot().checkForUnlinkedUsers();
+        this.plugin.getBot().refreshOnlineLinkedPlayers();
     }
 }

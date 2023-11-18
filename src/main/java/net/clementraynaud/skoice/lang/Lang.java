@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.lang;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -76,7 +75,9 @@ public class Lang {
             return null;
         }
         if (path.startsWith("minecraft.")) {
-            args = Arrays.stream(args).map(ChatColor::stripColor).toArray(String[]::new);
+            args = Arrays.stream(args)
+                    .map(arg -> arg.replace(String.valueOf(ChatColor.COLOR_CHAR), ""))
+                    .toArray(String[]::new);
             if (path.startsWith("minecraft.chat.")) {
                 String[] newArgs = new String[args.length + 1];
                 newArgs[0] = Lang.CHAT_PREFIX;
@@ -108,6 +109,6 @@ public class Lang {
     }
 
     public int getAmountOfArgsRequired(String message) {
-        return StringUtils.countMatches(message, "%s");
+        return message.split("%s").length - 1;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -20,55 +20,75 @@
 package net.clementraynaud.skoice;
 
 import com.tcoded.folialib.FoliaLib;
+import com.bugsnag.Bugsnag;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
-import net.clementraynaud.skoice.config.Configuration;
-import net.clementraynaud.skoice.config.ConfigurationField;
-import net.clementraynaud.skoice.config.OutdatedConfiguration;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
-import net.clementraynaud.skoice.storage.LinksFileStorage;
-import net.clementraynaud.skoice.storage.TempFileStorage;
+import net.clementraynaud.skoice.storage.LinksYamlFile;
+import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
+import net.clementraynaud.skoice.storage.TempYamlFile;
+import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
+import net.clementraynaud.skoice.storage.config.OutdatedConfig;
 import net.clementraynaud.skoice.system.ListenerManager;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.util.ChartUtil;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
+import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Skoice extends JavaPlugin {
 
+    private static final String OUTDATED_MINECRAFT_SERVER_ERROR = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
     private static final int SERVICE_ID = 11380;
+    private static final String BUGSNAG_KEY = "";
 
     private Lang lang;
-    private Configuration configuration;
-    private LinksFileStorage linksFileStorage;
-    private TempFileStorage tempFileStorage;
+    private ConfigYamlFile configYamlFile;
+    private LinksYamlFile linksYamlFile;
+    private TempYamlFile tempYamlFile;
+    private LoginNotificationYamlFile loginNotificationYamlFile;
     private ListenerManager listenerManager;
     private Bot bot;
     private BotCommands botCommands;
     private ConfigurationMenu configurationMenu;
-    private Updater updater;
     private BukkitAudiences adventure;
     private FoliaLib foliaLib;
 
+    private Bugsnag bugsnag;
+
     @Override
     public void onEnable() {
+        if (!this.isMinecraftServerCompatible()) {
+            this.getLogger().severe(Skoice.OUTDATED_MINECRAFT_SERVER_ERROR);
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         this.foliaLib = new FoliaLib(this);
         this.saveDefaultConfig();
-        this.configuration = new Configuration(this);
-        this.configuration.init();
+        this.configYamlFile = new ConfigYamlFile(this);
+        this.configYamlFile.load();
+        this.configYamlFile.saveDefaultValues();
         this.lang = new Lang();
-        this.lang.load(LangInfo.valueOf(this.configuration.getFile().getString(ConfigurationField.LANG.toString())));
+        this.lang.load(LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())));
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
-        this.linksFileStorage = new LinksFileStorage(this);
-        this.linksFileStorage.load();
-        new OutdatedConfiguration(this).update();
-        this.tempFileStorage = new TempFileStorage(this);
-        this.tempFileStorage.load();
+        this.linksYamlFile = new LinksYamlFile(this);
+        this.linksYamlFile.load();
+        new OutdatedConfig(this).update();
+        this.tempYamlFile = new TempYamlFile(this);
+        this.tempYamlFile.load();
+        this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
+        this.loginNotificationYamlFile.load();
         this.listenerManager = new ListenerManager(this);
         this.bot = new Bot(this);
         this.bot.connect();
@@ -82,8 +102,8 @@ public class Skoice extends JavaPlugin {
         }
         new SkoiceCommand(this).init();
         this.addCustomCharts();
-        this.updater = new Updater(this, this.getFile().getAbsolutePath());
-        this.updater.checkVersion();
+        this.setupBugsnag();
+        new Updater(this, this.getFile().getAbsolutePath());
     }
 
     public BukkitAudiences adventure() {
@@ -92,8 +112,14 @@ public class Skoice extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (!this.isMinecraftServerCompatible()) {
+            return;
+        }
+        if (this.bugsnag != null) {
+            this.bugsnag.close();
+        }
         if (this.bot.getJDA() != null) {
-            new InterruptSystemTask(this.configuration).run();
+            new InterruptSystemTask(this).run();
             this.bot.getJDA().shutdown();
         }
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));
@@ -102,46 +128,124 @@ public class Skoice extends JavaPlugin {
         }
     }
 
+    private boolean isMinecraftServerCompatible() {
+        try {
+            GameMode.SPECTATOR.toString();
+        } catch (NoSuchFieldError exception) {
+            return false;
+        }
+        return true;
+    }
+
     private void addCustomCharts() {
         Metrics metrics = new Metrics(this, Skoice.SERVICE_ID);
-        metrics.addCustomChart(new SimplePie("lang", () ->
-                LangInfo.valueOf(this.configuration.getFile().getString(ConfigurationField.LANG.toString())).getFullName()
-        ));
-        metrics.addCustomChart(new SimplePie("actionBarAlert", () ->
-                this.configuration.getFile().getString(ConfigurationField.ACTION_BAR_ALERT.toString())
-        ));
-        metrics.addCustomChart(new SimplePie("channelVisibility", () ->
-                this.configuration.getFile().getString(ConfigurationField.CHANNEL_VISIBILITY.toString())
-        ));
-        if (this.configuration.getFile().contains(ConfigurationField.HORIZONTAL_RADIUS.toString())) {
-            int horizontalRadius = this.configuration.getFile().getInt(ConfigurationField.HORIZONTAL_RADIUS.toString());
-            metrics.addCustomChart(ChartUtil.createDrilldownPie("horizontalRadius", horizontalRadius, 0, 10, 11));
-        }
-        if (this.configuration.getFile().contains(ConfigurationField.VERTICAL_RADIUS.toString())) {
-            int verticalRadius = this.configuration.getFile().getInt(ConfigurationField.VERTICAL_RADIUS.toString());
-            metrics.addCustomChart(ChartUtil.createDrilldownPie("verticalRadius", verticalRadius, 0, 10, 11));
-        }
-        int linkedUsers = this.linksFileStorage.getLinks().size();
+
+        this.getSharedConfigFields().forEach(field ->
+                metrics.addCustomChart(new SimplePie(field.toCamelCase(), () ->
+                        this.configYamlFile.getString(field.toString())
+                ))
+        );
+
+        this.getSharedIntConfigFields().forEach(field ->
+                metrics.addCustomChart(ChartUtil.createDrilldownPie(field.toCamelCase(),
+                        this.configYamlFile.getInt(field.toString()), 0, 10, 11)
+                )
+        );
+
+        int linkedUsers = this.linksYamlFile.getLinks().size();
         metrics.addCustomChart(ChartUtil.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
-        metrics.addCustomChart(new SimplePie("botStatus", () ->
-                this.bot.getStatus().toString()
-        ));
+
+        metrics.addCustomChart(new SimplePie("botStatus", () -> this.bot.getStatus().toString()));
+    }
+
+    private void setupBugsnag() {
+        if (Skoice.BUGSNAG_KEY.isEmpty()) {
+            return;
+        }
+        this.bugsnag = new Bugsnag(Skoice.BUGSNAG_KEY);
+        this.bugsnag.setAppVersion(this.getDescription().getVersion());
+
+        this.bugsnag.addCallback(report -> {
+            StackTraceElement[] trace = report.getException().getStackTrace();
+            boolean reportError = false;
+            for (StackTraceElement element : trace) {
+                if (element.getClassName().startsWith("net.clementraynaud.skoice")) {
+                    reportError = true;
+                    break;
+                }
+            }
+            if (!reportError) {
+                report.cancel();
+                return;
+            }
+
+            report.addToTab("server", "version", this.getServer().getVersion());
+            report.addToTab("server", "bukkitVersion", this.getServer().getBukkitVersion());
+
+            this.getSharedConfigFields().forEach(field ->
+                    report.addToTab("app", field.toCamelCase(), this.configYamlFile.getString(field.toString()))
+            );
+
+            this.getSharedIntConfigFields().forEach(field ->
+                    report.addToTab("app", field.toCamelCase(), this.configYamlFile.getInt(field.toString()))
+            );
+
+            report.addToTab("app", ConfigField.LANG.toCamelCase(), LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName());
+
+            int linkedUsers = this.linksYamlFile.getLinks().size();
+            report.addToTab("app", "linkedUsers", linkedUsers);
+            report.addToTab("app", "botStatus", this.bot.getStatus().toString());
+        });
+
+        this.bugsnag.setAutoCaptureSessions(false);
+        if (!this.configYamlFile.contains(ConfigField.SESSION_REPORTED.toString())) {
+            this.bugsnag.startSession();
+            this.configYamlFile.set(ConfigField.SESSION_REPORTED.toString(), true);
+        }
+    }
+
+    private Set<ConfigField> getSharedConfigFields() {
+        return Stream.of(
+                ConfigField.LANG,
+                ConfigField.LOGIN_NOTIFICATION,
+                ConfigField.CONNECTING_ALERT,
+                ConfigField.DISCONNECTING_ALERT,
+                ConfigField.TOOLTIPS,
+                ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED,
+                ConfigField.SPECTATORS_INCLUDED,
+                ConfigField.CHANNEL_VISIBILITY
+        ).collect(Collectors.toSet());
+    }
+
+    private Set<ConfigField> getSharedIntConfigFields() {
+        Set<ConfigField> fields = new HashSet<>();
+        if (this.configYamlFile.contains(ConfigField.HORIZONTAL_RADIUS.toString())) {
+            fields.add(ConfigField.HORIZONTAL_RADIUS);
+        }
+        if (this.configYamlFile.contains(ConfigField.VERTICAL_RADIUS.toString())) {
+            fields.add(ConfigField.VERTICAL_RADIUS);
+        }
+        return fields;
     }
 
     public Lang getLang() {
         return this.lang;
     }
 
-    public Configuration getConfiguration() {
-        return this.configuration;
+    public ConfigYamlFile getConfigYamlFile() {
+        return this.configYamlFile;
     }
 
-    public LinksFileStorage getLinksFileStorage() {
-        return this.linksFileStorage;
+    public LinksYamlFile getLinksYamlFile() {
+        return this.linksYamlFile;
     }
 
-    public TempFileStorage getTempFileStorage() {
-        return this.tempFileStorage;
+    public TempYamlFile getTempYamlFile() {
+        return this.tempYamlFile;
+    }
+
+    public LoginNotificationYamlFile getLoginNotificationYamlFile() {
+        return this.loginNotificationYamlFile;
     }
 
     public ListenerManager getListenerManager() {
@@ -160,8 +264,8 @@ public class Skoice extends JavaPlugin {
         return this.configurationMenu;
     }
 
-    public Updater getUpdater() {
-        return this.updater;
+    public Bugsnag getBugsnag() {
+        return this.bugsnag;
     }
 
     public FoliaLib getFoliaLib() {

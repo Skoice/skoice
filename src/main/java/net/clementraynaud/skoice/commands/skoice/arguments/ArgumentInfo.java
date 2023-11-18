@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -25,16 +25,18 @@ import java.util.stream.Stream;
 
 public enum ArgumentInfo {
     CONFIGURE(false, true),
+    TOOLTIPS(false, true),
     TOKEN(true, true),
+    LANGUAGE(true, true),
     LINK(false, false),
     UNLINK(false, false);
 
     private final boolean allowedInConsole;
-    private final boolean restrictedToOperators;
+    private final boolean permissionRequired;
 
-    ArgumentInfo(boolean allowedInConsole, boolean restrictedToOperators) {
+    ArgumentInfo(boolean allowedInConsole, boolean permissionRequired) {
         this.allowedInConsole = allowedInConsole;
-        this.restrictedToOperators = restrictedToOperators;
+        this.permissionRequired = permissionRequired;
     }
 
     public static ArgumentInfo get(String option) {
@@ -44,16 +46,16 @@ public enum ArgumentInfo {
                 .orElse(null);
     }
 
-    public static Set<String> getList(boolean restrictedToOperators) {
+    public static Set<String> getList(boolean permissionRequired) {
         return Stream.of(ArgumentInfo.values())
-                .filter(arg -> arg.restrictedToOperators == restrictedToOperators || restrictedToOperators)
+                .filter(arg -> arg.permissionRequired == permissionRequired || permissionRequired)
                 .map(Enum::toString)
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
     }
 
-    public static String getJoinedList(boolean restrictedToOperators) {
-        Set<String> list = ArgumentInfo.getList(restrictedToOperators);
+    public static String getJoinedList(boolean permissionRequired) {
+        Set<String> list = ArgumentInfo.getList(permissionRequired);
         return list.size() == 1
                 ? String.join("/", list)
                 : "<" + String.join("/", list) + ">";
@@ -78,7 +80,7 @@ public enum ArgumentInfo {
         return this.allowedInConsole;
     }
 
-    public boolean isRestrictedToOperators() {
-        return this.restrictedToOperators;
+    public boolean isPermissionRequired() {
+        return this.permissionRequired;
     }
 }

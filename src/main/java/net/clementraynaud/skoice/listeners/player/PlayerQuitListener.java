@@ -1,6 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -20,8 +19,8 @@
 
 package net.clementraynaud.skoice.listeners.player;
 
-import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.system.LinkedPlayer;
+import net.clementraynaud.skoice.system.Networks;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -29,16 +28,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerQuitListener implements Listener {
 
-    private final Skoice plugin;
-
-    public PlayerQuitListener(Skoice plugin) {
-        this.plugin = plugin;
-    }
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        this.plugin.getFoliaLib().getImpl().runAsync(() -> Network.getNetworks().stream()
-                .filter(network -> network.contains(event.getPlayer().getUniqueId()))
-                .forEach(network -> network.remove(event.getPlayer().getUniqueId())));
+        LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(event.getPlayer()));
+        Networks.getAll().stream()
+                .filter(network -> network.contains(event.getPlayer()))
+                .forEach(network -> network.remove(event.getPlayer()));
     }
 }

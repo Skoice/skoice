@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -25,15 +25,8 @@ public abstract class SelectMenu {
 
     protected final Skoice plugin;
 
-    private final boolean isRefreshable;
-
-    protected SelectMenu(Skoice plugin, boolean isRefreshable) {
+    protected SelectMenu(Skoice plugin) {
         this.plugin = plugin;
-        this.isRefreshable = isRefreshable;
-    }
-
-    public boolean isRefreshable() {
-        return this.isRefreshable;
     }
 
     public abstract net.dv8tion.jda.api.interactions.components.selections.SelectMenu get();

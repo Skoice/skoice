@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.listeners.message;
 
 import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -39,7 +39,8 @@ public class MessageReceivedListener extends ListenerAdapter {
                 && !event.getMessage().isEphemeral()) {
             this.plugin.getConfigurationMenu().store(event.getMessage());
         } else if (event.isFromType(ChannelType.PRIVATE)
-                && !event.getAuthor().getId().equals(event.getJDA().getSelfUser().getApplicationId())) {
+                && !event.getAuthor().getId().equals(event.getJDA().getSelfUser().getApplicationId())
+                && event.getMessage().getContentRaw().startsWith("/")) {
             event.getMessage().reply(this.plugin.getBot().getMenu("illegal-interaction").build()).queue();
         }
     }

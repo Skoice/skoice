@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -17,18 +17,15 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.player;
+package net.clementraynaud.skoice.storage;
 
-import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import net.clementraynaud.skoice.Skoice;
 
-public class PlayerTeleportListener implements Listener {
+public class LoginNotificationYamlFile extends YamlFile {
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPlayerTeleport(PlayerTeleportEvent event) {
-        UpdateNetworksTask.getEligiblePlayers().add(event.getPlayer().getUniqueId());
+    public static final String NOTIFIED_PLAYERS_ID_FIELD = "notified-players-id";
+
+    public LoginNotificationYamlFile(Skoice plugin) {
+        super(plugin, "login-notification");
     }
 }

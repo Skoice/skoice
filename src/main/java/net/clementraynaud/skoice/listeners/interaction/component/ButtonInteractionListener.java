@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -21,16 +21,21 @@ package net.clementraynaud.skoice.listeners.interaction.component;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.Menu;
+import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.Modal;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
+import net.dv8tion.jda.api.interactions.modals.Modal;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
+import net.dv8tion.jda.api.utils.messages.MessageEditData;
+
+import java.util.Collections;
 
 public class ButtonInteractionListener extends ListenerAdapter {
 
@@ -45,49 +50,67 @@ public class ButtonInteractionListener extends ListenerAdapter {
         if (!event.getMessage().getAuthor().equals(event.getJDA().getSelfUser())) {
             return;
         }
+
         if (!this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())
                 && !event.getMessage().isEphemeral()) {
             event.getMessage().delete().queue();
             return;
         }
+
         Member member = event.getMember();
-        if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (event.getButton().getId() != null) {
-                String buttonId = event.getButton().getId();
-                if (this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
-                    if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
-                        event.getMessage().delete().queue();
-                        if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-                            event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").build())
-                                    .setEphemeral(true).queue();
-                        }
-                    } else if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
-                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
-                    } else if ("customize".equals(buttonId)) {
-                        TextInput horizontalRadius = TextInput.create("horizontal-radius",
-                                        this.plugin.getLang().getMessage("discord.text-input.horizontal-radius.label"),
-                                        TextInputStyle.SHORT)
-                                .setValue(this.plugin.getConfiguration().getFile().getString(ConfigurationField.HORIZONTAL_RADIUS.toString()))
-                                .setRequiredRange(1, 3)
-                                .build();
-                        TextInput verticalRadius = TextInput.create("vertical-radius",
-                                        this.plugin.getLang().getMessage("discord.text-input.vertical-radius.label"),
-                                        TextInputStyle.SHORT)
-                                .setValue(this.plugin.getConfiguration().getFile().getString(ConfigurationField.VERTICAL_RADIUS.toString()))
-                                .setRequiredRange(1, 3)
-                                .build();
-                        Modal modal = Modal.create("customize",
-                                        this.plugin.getLang().getMessage("discord.field.customize.title"))
-                                .addActionRows(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
-                                .build();
-                        event.replyModal(modal).queue();
-                    } else {
-                        event.editMessage(this.plugin.getBot().getMenu(buttonId).build()).queue();
+        String buttonId = event.getButton().getId();
+        if (member == null || buttonId == null) {
+            return;
+        }
+
+        if (buttonId.equals(Menu.MESSAGE_NOT_SHOWING_UP)) {
+            event.reply(this.plugin.getLang().getMessage("discord.message-not-showing-up"))
+                    .setEphemeral(true).queue();
+
+        } else if (member.hasPermission(Permission.MANAGE_SERVER)) {
+            if (this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
+                if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
+                    event.getMessage().delete().queue();
+                    if (this.plugin.getBot().getStatus() != BotStatus.READY) {
+                        event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").build())
+                                .setEphemeral(true).queue();
                     }
-                } else if ("resume-configuration".equals(event.getButton().getId())) {
-                    event.reply(this.plugin.getConfigurationMenu().update()).queue();
+
+                } else if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
+                    event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+
+                } else if ("customize".equals(buttonId)) {
+                    TextInput horizontalRadius = TextInput.create("horizontal-radius",
+                                    this.plugin.getLang().getMessage("discord.text-input.horizontal-radius.label"),
+                                    TextInputStyle.SHORT)
+                            .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.HORIZONTAL_RADIUS.toString()))
+                            .setRequiredRange(1, 3)
+                            .build();
+                    TextInput verticalRadius = TextInput.create("vertical-radius",
+                                    this.plugin.getLang().getMessage("discord.text-input.vertical-radius.label"),
+                                    TextInputStyle.SHORT)
+                            .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.VERTICAL_RADIUS.toString()))
+                            .setRequiredRange(1, 3)
+                            .build();
+                    Modal modal = Modal.create("customize",
+                                    this.plugin.getLang().getMessage("discord.field.customize.title"))
+                            .addComponents(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
+                            .build();
+                    event.replyModal(modal).queue();
+
+                } else if ("clear-notified-players".equals(buttonId)) {
+                    this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, Collections.emptyList());
+                    event.reply(this.plugin.getBot().getMenu("notified-players-cleared").build())
+                            .setEphemeral(true).queue();
+
+                } else {
+                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu(buttonId).build())).queue();
                 }
+
+            } else if ("resume-configuration".equals(event.getButton().getId())) {
+                event.reply(MessageCreateData.fromEditData(this.plugin.getConfigurationMenu().update())).queue();
             }
+
         } else {
             event.reply(this.plugin.getBot().getMenu("access-denied").build()).setEphemeral(true).queue();
         }

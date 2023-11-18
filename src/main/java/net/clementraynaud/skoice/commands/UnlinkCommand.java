@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -21,9 +21,11 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.util.MapUtil;
-import net.dv8tion.jda.api.entities.AudioChannel;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.OfflinePlayer;
@@ -41,27 +43,36 @@ public class UnlinkCommand extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if ("unlink".equals(event.getName()) && event.getMember() != null) {
-            if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-                event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
-                        .setEphemeral(true).queue();
+            if (this.plugin.getBot().getStatus() != BotStatus.READY && event.getMember() != null) {
+                if (event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+                    event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").build())
+                            .setEphemeral(true).queue();
+                } else {
+                    event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
+                            .setEphemeral(true).queue();
+                }
                 return;
             }
-            String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksFileStorage().getLinks(), event.getUser().getId());
+
+            String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), event.getUser().getId());
             if (minecraftId == null) {
                 event.reply(this.plugin.getBot().getMenu("account-not-linked")
                                 .build(this.plugin.getBot().getGuild().getName()))
                         .setEphemeral(true).queue();
                 return;
             }
-            this.plugin.getLinksFileStorage().unlinkUser(minecraftId);
+
+            this.plugin.getLinksYamlFile().unlinkUser(minecraftId);
+            LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getDiscordId().equals(event.getMember().getId()));
             event.reply(this.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
+
             OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
                 GuildVoiceState voiceState = event.getMember().getVoiceState();
                 if (voiceState != null) {
                     AudioChannel voiceChannel = voiceState.getChannel();
-                    if (voiceChannel != null && voiceChannel.equals(this.plugin.getConfiguration().getVoiceChannel())) {
+                    if (voiceChannel != null && voiceChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
                         player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
                     }
                 }

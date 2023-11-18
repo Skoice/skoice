@@ -1,4 +1,4 @@
-# Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+# Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
 #
 # This file is part of Skoice.
 #
@@ -16,6 +16,9 @@
 # along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 
 configuration-complete:
+  emoji: heavy_check_mark
+  inline: false
+notified-players-cleared:
   emoji: heavy_check_mark
   inline: false
 incomplete-configuration:
@@ -39,21 +42,15 @@ troubleshooting:
 contributing:
   emoji: hammer
   inline: false
-vanilla-mode:
-  emoji: map
+long-range-mode:
+  emoji: loud_sound
   inline: true
-minigame-mode:
-  emoji: crossed_swords
+short-range-mode:
+  emoji: sound
   inline: true
 customize:
   emoji: pencil2
   inline: true
-changelog:
-  emoji: clipboard
-  inline: false
-upcoming-features:
-  emoji: calendar_spiral
-  inline: false
 account-linked:
   emoji: heavy_check_mark
   inline: false

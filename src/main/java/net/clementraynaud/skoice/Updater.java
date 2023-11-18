@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -31,6 +31,9 @@ import java.util.function.Consumer;
 
 public class Updater {
 
+    private static final long TICKS_BETWEEN_VERSION_CHECKING = 720000L;
+    private static final long TICKS_BEFORE_VERSION_CHECKING = 1200L;
+
     private final Skoice plugin;
     private final String pluginPath;
     private String downloadedVersion;
@@ -38,9 +41,15 @@ public class Updater {
     public Updater(Skoice plugin, String pluginPath) {
         this.plugin = plugin;
         this.pluginPath = pluginPath;
+        this.plugin.getServer().getScheduler().runTaskTimer(
+                this.plugin,
+                this::checkVersion,
+                Updater.TICKS_BEFORE_VERSION_CHECKING,
+                Updater.TICKS_BETWEEN_VERSION_CHECKING
+        );
     }
 
-    public void checkVersion() {
+    private void checkVersion() {
         this.getVersion(version -> {
             if (version != null && !this.plugin.getDescription().getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
                 this.update(version);
@@ -74,13 +83,15 @@ public class Updater {
                 this.downloadedVersion = version;
                 this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
 
-            } catch (IOException e) {
+            } catch (IOException exception) {
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
                         this.plugin.getDescription().getVersion(), version));
                 try {
                     Files.delete(update.getAbsoluteFile().toPath());
-                } catch (IOException ignored) {
+                } catch (IOException exception2) {
+                    this.plugin.getBugsnag().notify(exception2);
                 }
+                this.plugin.getBugsnag().notify(exception);
             }
         });
     }

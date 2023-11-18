@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -21,11 +21,12 @@ package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.menus.MenuEmoji;
-import net.dv8tion.jda.api.entities.Category;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.dv8tion.jda.api.entities.channel.concrete.Category;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +35,7 @@ import java.util.List;
 public class VoiceChannelSelectMenu extends SelectMenu {
 
     public VoiceChannelSelectMenu(Skoice plugin) {
-        super(plugin, true);
+        super(plugin);
     }
 
     @Override
@@ -63,11 +64,12 @@ public class VoiceChannelSelectMenu extends SelectMenu {
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
         if (super.plugin.getBot().getStatus() == BotStatus.READY) {
-            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("voice-channel-selection")
+            return StringSelectMenu.create("voice-channel-selection")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(super.plugin.getConfiguration().getFile().getString(ConfigurationField.VOICE_CHANNEL_ID.toString()))).build();
+                    .setDefaultValues(Collections.singleton(super.plugin.getConfigYamlFile()
+                            .getString(ConfigField.VOICE_CHANNEL_ID.toString()))).build();
         } else {
-            return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("voice-channel-selection")
+            return StringSelectMenu.create("voice-channel-selection")
                     .setPlaceholder(super.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.placeholder"))
                     .addOptions(options).build();
         }

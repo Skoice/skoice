@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -20,11 +20,12 @@
 package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigurationField;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.modals.ModalMapping;
+import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 public class ModalInteractionListener extends ListenerAdapter {
 
@@ -49,10 +50,10 @@ public class ModalInteractionListener extends ListenerAdapter {
             String voiceChannelName = voiceChannelValue.getAsString();
             event.getGuild().createCategory(categoryName).queue(category ->
                     event.getGuild().createVoiceChannel(voiceChannelName, category).queue(channel -> {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(), channel.getId());
-                        this.plugin.getConfiguration().saveFile();
-                        new InterruptSystemTask(this.plugin.getConfiguration()).run();
+                        this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
+                        new InterruptSystemTask(this.plugin).run();
                         this.plugin.getListenerManager().update(event.getUser());
+                        this.plugin.getBot().muteMembers();
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     }));
         } else if ("customize".equals(event.getModalId())) {
@@ -72,10 +73,9 @@ public class ModalInteractionListener extends ListenerAdapter {
             if (horizontalRadius == 0 || verticalRadius == 0) {
                 event.reply(this.plugin.getBot().getMenu("illegal-value").build()).setEphemeral(true).queue();
             } else {
-                this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
-                this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), verticalRadius);
-                this.plugin.getConfiguration().saveFile();
-                event.editMessage(this.plugin.getBot().getMenu("mode").build()).queue();
+                this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
+                this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
+                event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("range").build())).queue();
             }
         }
     }

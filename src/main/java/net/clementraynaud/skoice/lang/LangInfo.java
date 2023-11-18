@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -21,11 +21,24 @@ package net.clementraynaud.skoice.lang;
 
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public enum LangInfo {
 
     EN("English", "U+1F1ECU+1F1E7"),
+    DA("Dansk", "U+1F1E9U+1F1F0"),
+    DE("Deutsch", "U+1F1E9U+1F1EA"),
+    ES("Español", "U+1F1EAU+1F1F8"),
     FR("Français", "U+1F1EBU+1F1F7"),
-    DE("Deutsch", "U+1F1E9U+1F1EA");
+    IT("Italiano", "U+1F1EEU+1F1F9"),
+    JA("日本語", "U+1F1EFU+1F1F5"),
+    NO("Norsk", "U+1F1F3U+1F1F4"),
+    PL("Polski", "U+1F1F5U+1F1F1"),
+    PT("Português", "U+1F1F5U+1F1F9"),
+    RU("Русский", "U+1F1F7U+1F1FA"),
+    TR("Türkçe", "U+1F1F9U+1F1F7");
 
     private final String fullName;
     private final String unicode;
@@ -33,6 +46,17 @@ public enum LangInfo {
     LangInfo(String fullName, String unicode) {
         this.fullName = fullName;
         this.unicode = unicode;
+    }
+
+    public static Set<String> getList() {
+        return Stream.of(LangInfo.values())
+                .map(Enum::toString)
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
+    }
+
+    public static String getJoinedList() {
+        return "<" + String.join("/", LangInfo.getList()) + ">";
     }
 
     public String getFullName() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -20,9 +20,10 @@
 package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.lang.LangInfo;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,21 +32,22 @@ import java.util.List;
 public class LanguageSelectMenu extends SelectMenu {
 
     public LanguageSelectMenu(Skoice plugin) {
-        super(plugin, false);
+        super(plugin);
     }
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
         List<SelectOption> options = new ArrayList<>();
         for (LangInfo option : LangInfo.values()) {
-            options.add(SelectOption.of(option.getFullName(), option.name())
-                    .withDescription(option.name().equals(LangInfo.EN.name())
+            options.add(SelectOption.of(option.getFullName(), option.toString())
+                    .withDescription(option.toString().equals(LangInfo.EN.toString())
                             ? super.plugin.getLang().getMessage("discord.select-option.default.description")
                             : null)
                     .withEmoji(option.getEmoji()));
         }
-        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("language-selection")
+        return StringSelectMenu.create("language-selection")
                 .addOptions(options)
-                .setDefaultValues(Collections.singleton(super.plugin.getConfiguration().getFile().getString(ConfigurationField.LANG.toString()))).build();
+                .setDefaultValues(Collections.singleton(super.plugin.getConfigYamlFile()
+                        .getString(ConfigField.LANG.toString()))).build();
     }
 }

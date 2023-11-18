@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -19,53 +19,53 @@
 
 package net.clementraynaud.skoice.tasks;
 
-import net.clementraynaud.skoice.config.Configuration;
-import net.clementraynaud.skoice.storage.TempFileStorage;
+import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
 import java.util.List;
 
 public class UpdateVoiceStateTask {
 
-    private final Configuration configuration;
-    private final TempFileStorage tempFileStorage;
+    private final Skoice plugin;
     private final Member member;
     private final VoiceChannel channel;
 
-    public UpdateVoiceStateTask(Configuration configuration, TempFileStorage tempFileStorage, Member member, VoiceChannel channel) {
-        this.configuration = configuration;
-        this.tempFileStorage = tempFileStorage;
+    public UpdateVoiceStateTask(Skoice plugin, Member member, VoiceChannel channel) {
+        this.plugin = plugin;
         this.member = member;
         this.channel = channel;
     }
 
     public void run() {
-        if (this.member.getVoiceState() == null || this.configuration.getVoiceChannel() == null) {
+        if (this.member.getVoiceState() == null || this.plugin.getConfigYamlFile().getVoiceChannel() == null) {
             return;
         }
-        boolean isMainVoiceChannel = this.channel.getId().equals(this.configuration.getVoiceChannel().getId());
+        boolean isMainVoiceChannel = this.channel.getId().equals(this.plugin.getConfigYamlFile().getVoiceChannel().getId());
         if (isMainVoiceChannel) {
             if (!this.member.getVoiceState().isGuildMuted()
                     && this.member.hasPermission(this.channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
-                    && this.channel.getGuild().getSelfMember().hasPermission(this.configuration.getCategory(), Permission.VOICE_MOVE_OTHERS)) {
+                    && this.channel.getGuild().getSelfMember().hasPermission(this.plugin.getConfigYamlFile().getCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
-                List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
+                List<String> mutedUsers = this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);
                 if (!mutedUsers.contains(this.member.getId())) {
                     mutedUsers.add(this.member.getId());
-                    this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
-                    this.tempFileStorage.saveFile();
+                    this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
                 }
             }
         } else {
-            List<String> mutedUsers = this.tempFileStorage.getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
+            VoiceChannel afkChannel = this.plugin.getBot().getGuild().getAfkChannel();
+            if (afkChannel != null && this.channel.getId().equals(afkChannel.getId())) {
+                return;
+            }
+            List<String> mutedUsers = this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);
             if (mutedUsers.contains(this.member.getId()) || this.member.hasPermission(Permission.VOICE_MUTE_OTHERS)) {
                 this.member.mute(false).queue();
                 mutedUsers.remove(this.member.getId());
-                this.tempFileStorage.getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
-                this.tempFileStorage.saveFile();
+                this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
             }
         }
     }

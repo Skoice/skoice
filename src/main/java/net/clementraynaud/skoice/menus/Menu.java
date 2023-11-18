@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -21,18 +21,22 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.menus.selectmenus.ActionBarAlertsSelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.IncludedPlayersSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.ModeSelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.LoginNotificationSelectMenu;
+import net.clementraynaud.skoice.menus.selectmenus.RangeSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ServerSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.ToggleSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.VoiceChannelSelectMenu;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -43,9 +47,10 @@ import java.util.List;
 public class Menu {
 
     public static final String CLOSE_BUTTON_ID = "close";
+    public static final String MESSAGE_NOT_SHOWING_UP = "message-not-showing-up";
 
     private final Skoice plugin;
-    private final String name;
+    private final String menuId;
     private final String parentName;
     private final MenuEmoji emoji;
     private final MenuType type;
@@ -56,8 +61,8 @@ public class Menu {
 
     public Menu(Skoice plugin, ConfigurationSection menu) {
         this.plugin = plugin;
-        this.name = menu.getName();
-        this.parentName = !menu.getParent().equals(menu.getRoot()) ? menu.getParent().getName() : this.name;
+        this.menuId = menu.getName();
+        this.parentName = !menu.getParent().equals(menu.getRoot()) ? menu.getParent().getName() : this.menuId;
         this.emoji = MenuEmoji.valueOf(!menu.getParent().equals(menu.getRoot())
                 ? menu.getParent().getString("emoji").toUpperCase()
                 : menu.getString("emoji").toUpperCase());
@@ -67,9 +72,10 @@ public class Menu {
         this.fields = menu.getStringList("fields").toArray(new String[0]);
     }
 
-    public Message build(String... args) {
-        return new MessageBuilder().setEmbeds(this.getEmbed(args))
-                .setActionRows(this.getActionRows()).build();
+    public MessageCreateData build(String... args) {
+        this.plugin.getConfigurationMenu().setMenuId(this.menuId);
+        return new MessageCreateBuilder().setEmbeds(this.getEmbed(args))
+                .setComponents(this.getActionRows()).build();
     }
 
     private String getTitle(boolean withEmoji) {
@@ -90,9 +96,16 @@ public class Menu {
 
     private MessageEmbed getEmbed(String... args) {
         EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(true))
-                .setColor(this.type.getColor())
-                .setFooter(this.plugin.getLang().getMessage("discord.menu.footer"),
-                        "https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409");
+                .setColor(this.type.getColor());
+
+        if ("skoice-proximity-voice-chat".equals(this.menuId)) {
+            embed.setFooter(this.plugin.getLang().getMessage("discord.menu.invite-footer"),
+                    "https://avatars.githubusercontent.com/u/107434569?s=200&v=4");
+        } else {
+            embed.setFooter(this.plugin.getLang().getMessage("discord.menu.footer"),
+                    "https://avatars.githubusercontent.com/u/107434569?s=200&v=4");
+        }
+
         if (this.getDescription(false) != null) {
             embed.setDescription(this.getDescription(false));
         }
@@ -106,10 +119,10 @@ public class Menu {
             }
             embed.setAuthor(author.toString());
         }
-        if (!"mode".equals(this.name)) {
+        if (!"range".equals(this.menuId)) {
             for (Menu menu : this.plugin.getBot().getMenus().values()) {
                 String description = menu.getDescription(true);
-                if (menu.parent != null && menu.parent.equals(this.name) && description != null) {
+                if (menu.parent != null && menu.parent.equals(this.menuId) && description != null) {
                     embed.addField(menu.getTitle(true), description, true);
                 }
             }
@@ -128,22 +141,31 @@ public class Menu {
     }
 
     private List<ActionRow> getActionRows() {
-        switch (this.name) {
+        switch (this.menuId) {
             case "server":
                 this.selectMenu = new ServerSelectMenu(this.plugin);
                 break;
             case "voice-channel":
                 this.selectMenu = new VoiceChannelSelectMenu(this.plugin);
                 break;
-            case "mode":
-                this.selectMenu = new ModeSelectMenu(this.plugin);
+            case "range":
+                this.selectMenu = new RangeSelectMenu(this.plugin);
                 break;
             case "language":
                 this.selectMenu = new LanguageSelectMenu(this.plugin);
                 break;
-            case "action-bar-alert":
+            case "login-notification":
+                this.selectMenu = new LoginNotificationSelectMenu(this.plugin);
+                break;
+            case "included-players":
+                this.selectMenu = new IncludedPlayersSelectMenu(this.plugin);
+                break;
+            case "action-bar-alerts":
+                this.selectMenu = new ActionBarAlertsSelectMenu(this.plugin);
+                break;
+            case "tooltips":
             case "channel-visibility":
-                this.selectMenu = new ToggleSelectMenu(this.plugin, this.name);
+                this.selectMenu = new ToggleSelectMenu(this.plugin, this.menuId);
                 break;
             default:
                 List<Button> buttons = this.getButtons();
@@ -157,20 +179,17 @@ public class Menu {
 
     private List<Button> getButtons() {
         List<Button> buttons = new ArrayList<>();
-        if (this.parent != null && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.name))) {
+        if (this.parent != null && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.menuId))) {
             buttons.add(Button.secondary(this.parent, "← " + this.plugin.getLang().getMessage("discord.button-label.back")));
         }
-        if (this.selectMenu != null && this.selectMenu.isRefreshable()) {
-            buttons.add(Button.primary(this.name, "⟳ " + this.plugin.getLang().getMessage("discord.button-label.refresh")));
-        }
         buttons.addAll(this.getAdditionalButtons());
-        if (!"mode".equals(this.name)) {
+        if (!"range".equals(this.menuId)) {
             for (Menu menu : this.plugin.getBot().getMenus().values()) {
-                if (menu.parent != null && menu.parent.equals(this.name)) {
+                if (menu.parent != null && menu.parent.equals(this.menuId)) {
                     buttons.add(menu.style == MenuStyle.PRIMARY
-                            ? Button.primary(menu.name, menu.getTitle(false))
+                            ? Button.primary(menu.menuId, menu.getTitle(false))
                             .withEmoji(menu.emoji.get())
-                            : Button.secondary(menu.name, menu.getTitle(false))
+                            : Button.secondary(menu.menuId, menu.getTitle(false))
                             .withEmoji(menu.emoji.get()));
                 }
             }
@@ -181,9 +200,12 @@ public class Menu {
                                 this.plugin.getLang().getMessage("discord.button-label.close"))
                         .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.get()));
             } else {
-                if (!"language".equals(this.name)) {
+                buttons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
+                                this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
+                        .withEmoji(MenuEmoji.QUESTION.get()));
+                if (!"language".equals(this.menuId)) {
                     Menu languageMenu = this.plugin.getBot().getMenu("language");
-                    buttons.add(Button.secondary(languageMenu.name, languageMenu.getTitle(false))
+                    buttons.add(Button.secondary(languageMenu.menuId, languageMenu.getTitle(false))
                             .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()));
                 }
                 buttons.add(Button.secondary(Menu.CLOSE_BUTTON_ID,
@@ -195,20 +217,30 @@ public class Menu {
     }
 
     private List<Button> getAdditionalButtons() {
-        if ("incomplete-configuration-server-manager".equals(this.name)) {
-            return Collections.singletonList(Button.primary("resume-configuration",
+        List<Button> additionalButtons = new ArrayList<>();
+        if ("incomplete-configuration-server-manager".equals(this.menuId)) {
+            additionalButtons.add(Button.primary("resume-configuration",
                             this.plugin.getLang().getMessage("discord.button-label.resume-configuration"))
                     .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
-        } else if ("permissions".equals(this.name)) {
-            return Collections.singletonList(Button.link("https://discord.com/api/oauth2/authorize?client_id="
+        } else if ("permissions".equals(this.menuId)) {
+            additionalButtons.add(Button.link("https://discord.com/api/oauth2/authorize?client_id="
                             + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
                             + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
                     .withEmoji(this.emoji.get()));
-        } else if ("mode".equals(this.name) && this.plugin.getBot().getStatus() == BotStatus.READY) {
-            return Collections.singletonList(Button.primary("customize",
+        } else if ("range".equals(this.menuId) && this.plugin.getBot().getStatus() == BotStatus.READY) {
+            additionalButtons.add(Button.primary("customize",
                             this.plugin.getLang().getMessage("discord.field.customize.title"))
                     .withEmoji(MenuEmoji.PENCIL2.get()));
+        } else if ("login-notification".equals(this.menuId)
+                && LoginNotificationSelectMenu.REMIND_ONCE.equals(this.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
+            additionalButtons.add(Button.danger("clear-notified-players",
+                            this.plugin.getLang().getMessage("discord.button-label.clear-notified-players"))
+                    .withEmoji(MenuEmoji.WASTEBASKET.get()));
+        } else if ("verification-code".equals(this.menuId)) {
+            additionalButtons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
+                            this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
+                    .withEmoji(MenuEmoji.QUESTION.get()));
         }
-        return Collections.emptyList();
+        return additionalButtons;
     }
 }

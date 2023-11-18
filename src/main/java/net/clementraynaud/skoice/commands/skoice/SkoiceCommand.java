@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -20,11 +20,15 @@
 package net.clementraynaud.skoice.commands.skoice;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.ConfigureArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.LanguageArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.TokenArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.TooltipsArgument;
 import net.clementraynaud.skoice.commands.skoice.arguments.UnlinkArgument;
+import net.clementraynaud.skoice.lang.LangInfo;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -57,7 +61,10 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         if (args.length == 0) {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.no-parameter", ArgumentInfo.getJoinedList(sender.isOp())));
+                        .getMessage("minecraft.chat.error.no-parameter",
+                                ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION))
+                        )
+                );
             } else {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("minecraft.chat.error.no-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
@@ -67,7 +74,10 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         if (ArgumentInfo.get(args[0]) == null) {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.invalid-parameter", ArgumentInfo.getJoinedList(sender.isOp())));
+                        .getMessage("minecraft.chat.error.invalid-parameter",
+                                ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION))
+                        )
+                );
             } else {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("minecraft.chat.error.invalid-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
@@ -79,8 +89,14 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
             case CONFIGURE:
                 new ConfigureArgument(this.plugin, sender).run();
                 break;
+            case TOOLTIPS:
+                new TooltipsArgument(this.plugin, sender).run();
+                break;
             case TOKEN:
                 new TokenArgument(this.plugin, sender, arg).run();
+                break;
+            case LANGUAGE:
+                new LanguageArgument(this.plugin, sender, arg).run();
                 break;
             case LINK:
                 new LinkArgument(this.plugin, sender, arg).run();
@@ -97,8 +113,13 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
         if (args.length == 1) {
-            return ArgumentInfo.getList(sender.isOp()).stream()
+            return ArgumentInfo.getList(sender.hasPermission(Argument.MANAGE_PERMISSION)).stream()
                     .filter(arg -> arg.startsWith(args[0].toLowerCase()))
+                    .collect(Collectors.toList());
+
+        } else if (args.length == 2 && args[0].equals(ArgumentInfo.LANGUAGE.toString().toLowerCase())) {
+            return LangInfo.getList().stream()
+                    .filter(arg -> arg.startsWith(args[1].toLowerCase()))
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();

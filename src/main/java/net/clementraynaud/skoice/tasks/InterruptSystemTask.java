@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -19,8 +19,9 @@
 
 package net.clementraynaud.skoice.tasks;
 
-import net.clementraynaud.skoice.config.Configuration;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 
@@ -28,31 +29,33 @@ import java.util.concurrent.CompletableFuture;
 
 public class InterruptSystemTask {
 
-    private final Configuration configuration;
+    private final Skoice plugin;
 
-    public InterruptSystemTask(Configuration configuration) {
-        this.configuration = configuration;
+    public InterruptSystemTask(Skoice plugin) {
+        this.plugin = plugin;
     }
 
     public void run() {
         for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.getAwaitingMoves().values()) {
             value.getRight().cancel(true);
         }
-        boolean isVoiceChannelSet = this.configuration.getVoiceChannel() != null;
-        for (Network network : Network.getNetworks()) {
-            if (isVoiceChannelSet) {
+
+        boolean isMainVoiceChannelSet = this.plugin.getConfigYamlFile().getVoiceChannel() != null;
+        for (Network network : Networks.getInitialized()) {
+            if (isMainVoiceChannelSet) {
                 for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
                     Member member = network.getChannel().getMembers().get(i);
                     if (i + 1 < network.getChannel().getMembers().size()) {
-                        member.getGuild().moveVoiceMember(member, this.configuration.getVoiceChannel()).queue();
+                        member.getGuild().moveVoiceMember(member, this.plugin.getConfigYamlFile().getVoiceChannel()).queue();
                     } else {
-                        member.getGuild().moveVoiceMember(member, this.configuration.getVoiceChannel()).complete();
+                        member.getGuild().moveVoiceMember(member, this.plugin.getConfigYamlFile().getVoiceChannel()).complete();
                     }
                 }
             }
-            network.getChannel().delete().queue();
             network.clear();
+            network.delete("system-interrupted");
         }
-        Network.getNetworks().clear();
+
+        Networks.clear();
     }
 }

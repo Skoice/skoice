@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -21,9 +21,10 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.system.Network;
-import net.dv8tion.jda.api.entities.AudioChannel;
+import net.clementraynaud.skoice.system.LinkedPlayer;
+import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
@@ -32,7 +33,7 @@ import org.bukkit.entity.Player;
 public class UnlinkArgument extends Argument {
 
     public UnlinkArgument(Skoice plugin, CommandSender sender) {
-        super(plugin, sender, ArgumentInfo.UNLINK.isAllowedInConsole(), ArgumentInfo.UNLINK.isRestrictedToOperators());
+        super(plugin, sender, ArgumentInfo.UNLINK.isAllowedInConsole(), ArgumentInfo.UNLINK.isPermissionRequired());
     }
 
     @Override
@@ -40,18 +41,22 @@ public class UnlinkArgument extends Argument {
         if (this.cannotBeExecuted()) {
             return;
         }
+
         Player player = (Player) this.sender;
-        if (super.plugin.getBot().getStatus() != BotStatus.READY || super.plugin.getBot().getJDA() == null) {
-            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
+        if (super.plugin.getBot().getStatus() != BotStatus.READY) {
+            super.plugin.getBot().sendIncompleteConfigurationAlert(player, true);
             return;
         }
-        String discordId = super.plugin.getLinksFileStorage().getLinks().get(player.getUniqueId().toString());
+
+        String discordId = super.plugin.getLinksYamlFile().getLinks().get(player.getUniqueId().toString());
         if (discordId == null) {
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked",
                     this.plugin.getBot().getGuild().getName()));
             return;
         }
-        super.plugin.getLinksFileStorage().unlinkUser(player.getUniqueId().toString());
+
+        super.plugin.getLinksYamlFile().unlinkUser(player.getUniqueId().toString());
+        LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(player));
         super.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
             member.getUser().openPrivateChannel().queue(channel ->
                     channel.sendMessage(this.plugin.getBot().getMenu("account-unlinked").build())
@@ -60,8 +65,8 @@ public class UnlinkArgument extends Argument {
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 AudioChannel audioChannel = voiceState.getChannel();
-                if (audioChannel != null && audioChannel.equals(super.plugin.getConfiguration().getVoiceChannel())
-                        || Network.getNetworks().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
+                if (audioChannel != null && audioChannel.equals(super.plugin.getConfigYamlFile().getVoiceChannel())
+                        || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
                     player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
                 }
             }

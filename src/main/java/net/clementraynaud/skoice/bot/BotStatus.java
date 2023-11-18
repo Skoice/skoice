@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -21,8 +21,7 @@ package net.clementraynaud.skoice.bot;
 
 public enum BotStatus {
 
-    UNCHECKED,
-    NO_TOKEN,
+    NOT_CONNECTED,
     NO_GUILD,
     MULTIPLE_GUILDS,
     MISSING_PERMISSION,

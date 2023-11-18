@@ -1,6 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
- * Copyright 2016, 2017, 2018, 2019, 2020, 2021 Austin "Scarsz" Shapiro
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -21,9 +20,9 @@
 package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.storage.TempFileStorage;
+import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceGuildMuteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -39,21 +38,19 @@ public class GuildVoiceGuildMuteListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceGuildMute(GuildVoiceGuildMuteEvent event) {
-        if (event.getMember().getVoiceState() != null
-                && !(event.getMember().getVoiceState().getChannel() instanceof VoiceChannel)) {
+        if (event.getMember().getVoiceState() == null) {
             return;
         }
-        VoiceChannel voiceChannel = (VoiceChannel) event.getMember().getVoiceState().getChannel();
-        if (this.plugin.getConfiguration().getVoiceChannel().equals(voiceChannel) && !event.isGuildMuted()) {
+        AudioChannel audioChannel = event.getMember().getVoiceState().getChannel();
+        if (this.plugin.getConfigYamlFile().getVoiceChannel().equals(audioChannel) && !event.isGuildMuted()) {
             if (event.getMember().hasPermission(Permission.VOICE_MUTE_OTHERS)) {
                 event.getMember().mute(true).queue();
-                List<String> mutedUsers = this.plugin.getTempFileStorage().getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD);
+                List<String> mutedUsers = this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);
                 if (!mutedUsers.contains(event.getMember().getId())) {
                     mutedUsers.add(event.getMember().getId());
-                    this.plugin.getTempFileStorage().getFile().set(TempFileStorage.MUTED_USERS_ID_FIELD, mutedUsers);
-                    this.plugin.getTempFileStorage().saveFile();
+                    this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD, mutedUsers);
                 }
-            } else if (this.plugin.getTempFileStorage().getFile().getStringList(TempFileStorage.MUTED_USERS_ID_FIELD).contains(event.getMember().getId())) {
+            } else if (this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD).contains(event.getMember().getId())) {
                 event.getMember().mute(true).queue();
             }
         }

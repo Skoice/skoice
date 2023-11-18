@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -29,6 +29,7 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,32 +42,38 @@ public class BotCommands {
     }
 
     public void register(Guild guild, CommandSender sender) {
-        guild.updateCommands().addCommands(this.getCommands())
+        this.plugin.getBot().getJDA().updateCommands().addCommands(this.getGlobalCommands()).queue();
+        guild.updateCommands().addCommands(this.getGuildCommands())
                 .queue(success -> {
-                    if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                        guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
-                    }
-                }, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
-                        e -> {
-                            String applicationId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
-                            this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
-                                    guild.getName(), applicationId));
-                            if (sender != null) {
-                                sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.missing-access",
-                                        guild.getName(), applicationId));
+                            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+                                guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
                             }
-                        }));
+                        }, new ErrorHandler().handle(ErrorResponse.MISSING_ACCESS,
+                                e -> {
+                                    String applicationId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
+                                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-access",
+                                            guild.getName(), applicationId));
+                                    if (sender != null) {
+                                        sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.missing-access",
+                                                guild.getName(), applicationId));
+                                    }
+                                })
+                );
     }
 
     public void register(Guild guild) {
         this.register(guild, null);
     }
 
-    private Set<SlashCommandData> getCommands() {
+    private Set<SlashCommandData> getGlobalCommands() {
+        return new HashSet<>(Collections.singletonList(
+                Commands.slash("invite", this.plugin.getLang().getMessage("discord.command-description.invite"))));
+    }
+
+    private Set<SlashCommandData> getGuildCommands() {
         return new HashSet<>(Arrays.asList(
                 Commands.slash("configure", this.plugin.getLang().getMessage("discord.command-description.configure")),
                 Commands.slash("link", this.plugin.getLang().getMessage("discord.command-description.link")),
-                Commands.slash("unlink", this.plugin.getLang().getMessage("discord.command-description.unlink")),
-                Commands.slash("invite", this.plugin.getLang().getMessage("discord.command-description.invite"))));
+                Commands.slash("unlink", this.plugin.getLang().getMessage("discord.command-description.unlink"))));
     }
 }

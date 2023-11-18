@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -20,31 +20,35 @@
 package net.clementraynaud.skoice.listeners.interaction.component;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.config.ConfigurationField;
 import net.clementraynaud.skoice.lang.LangInfo;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEvent;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.Modal;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
+import net.dv8tion.jda.api.interactions.modals.Modal;
+import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
-public class SelectMenuInteractionListener extends ListenerAdapter {
+import java.util.ArrayList;
+import java.util.List;
+
+public class StringSelectInteractionListener extends ListenerAdapter {
 
     private final Skoice plugin;
 
-    public SelectMenuInteractionListener(Skoice plugin) {
+    public StringSelectInteractionListener(Skoice plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public void onSelectMenuInteraction(SelectMenuInteractionEvent event) {
+    public void onStringSelectInteraction(StringSelectInteractionEvent event) {
         if (!event.getMessage().getAuthor().equals(event.getJDA().getSelfUser()) || event.getGuild() == null) {
             return;
         }
@@ -55,10 +59,12 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
         Member member = event.getMember();
         if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
             String componentId = event.getComponentId();
+            List<SelectOption> options = new ArrayList<>(event.getComponent().getOptions());
+
             switch (componentId) {
                 case "server-selection":
                     if (this.plugin.getBot().getJDA().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
-                        for (SelectOption server : event.getComponent().getOptions()) {
+                        for (SelectOption server : options) {
                             Guild guild = this.plugin.getBot().getJDA().getGuildById(server.getValue());
                             if (guild != null && !event.getSelectedOptions().get(0).getValue().equals(server.getValue())) {
                                 if (event.getGuild().getId().equals(server.getValue())) {
@@ -73,19 +79,20 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                         }
                     }
                     break;
+
                 case "language-selection":
-                    this.plugin.getConfiguration().getFile().set(ConfigurationField.LANG.toString(), event.getSelectedOptions().get(0).getValue());
-                    this.plugin.getConfiguration().saveFile();
+                    this.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), event.getSelectedOptions().get(0).getValue());
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                     this.plugin.getListenerManager().update();
                     this.plugin.getBotCommands().register(event.getGuild());
-                    event.editMessage(this.plugin.getBot().getMenu("language").build()).queue();
+                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("language").build())).queue();
                     break;
+
                 case "voice-channel-selection":
                     Guild guild = event.getGuild();
                     if (guild != null) {
                         if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
-                            event.editMessage(this.plugin.getBot().getMenu("voice-channel").build()).queue();
+                            event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue();
                         } else {
                             if ("new-voice-channel".equals(event.getSelectedOptions().get(0).getValue())) {
                                 TextInput categoryName = TextInput.create("category-name",
@@ -102,60 +109,69 @@ public class SelectMenuInteractionListener extends ListenerAdapter {
                                         .build();
                                 Modal modal = Modal.create("new-voice-channel",
                                                 this.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.label"))
-                                        .addActionRows(ActionRow.of(categoryName), ActionRow.of(voiceChannelName))
+                                        .addComponents(ActionRow.of(categoryName), ActionRow.of(voiceChannelName))
                                         .build();
                                 event.replyModal(modal).queue();
                             } else {
                                 VoiceChannel voiceChannel = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                                 if (voiceChannel != null && voiceChannel.getParentCategory() != null) {
-                                    this.plugin.getConfiguration().getFile().set(ConfigurationField.VOICE_CHANNEL_ID.toString(),
+                                    this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(),
                                             event.getSelectedOptions().get(0).getValue());
-                                    this.plugin.getConfiguration().saveFile();
                                     this.plugin.getBot().updateVoiceState();
-                                    new InterruptSystemTask(this.plugin.getConfiguration()).run();
+                                    new InterruptSystemTask(this.plugin).run();
                                     this.plugin.getListenerManager().update(event.getUser());
+                                    this.plugin.getBot().muteMembers();
                                 }
                                 event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                             }
                         }
                     }
                     break;
+
                 case "mode-selection":
-                    if ("vanilla-mode".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), 80);
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 40);
-                        this.plugin.getConfiguration().saveFile();
+                    if ("long-range-mode".equals(event.getSelectedOptions().get(0).getValue())) {
+                        this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
+                        this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 40);
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
-                    } else if ("minigame-mode".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.HORIZONTAL_RADIUS.toString(), 40);
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.VERTICAL_RADIUS.toString(), 20);
-                        this.plugin.getConfiguration().saveFile();
+                    } else if ("short-range-mode".equals(event.getSelectedOptions().get(0).getValue())) {
+                        this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 40);
+                        this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 20);
                         this.plugin.getListenerManager().update(event.getUser());
                         event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                     }
                     break;
-                case "action-bar-alert":
-                    if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.ACTION_BAR_ALERT.toString(), true);
-                    } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.ACTION_BAR_ALERT.toString(), false);
-                    }
-                    this.plugin.getConfiguration().saveFile();
-                    event.editMessage(this.plugin.getBot().getMenu("action-bar-alert").build()).queue();
+
+                case "login-notification-selection":
+                    this.plugin.getConfigYamlFile().set(ConfigField.LOGIN_NOTIFICATION.toString(), event.getSelectedOptions().get(0).getValue());
+                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("login-notification").build())).queue();
                     break;
-                case "channel-visibility":
-                    if ("true".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.CHANNEL_VISIBILITY.toString(), true);
-                    } else if ("false".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfiguration().getFile().set(ConfigurationField.CHANNEL_VISIBILITY.toString(), false);
-                    }
-                    this.plugin.getConfiguration().saveFile();
-                    event.editMessage(this.plugin.getBot().getMenu("channel-visibility").build()).queue();
+
+                case "action-bar-alerts-selection":
+                    options.removeAll(event.getSelectedOptions());
+                    options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
+                    event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
+                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("action-bar-alerts").build())).queue();
                     break;
+
+                case "included-players-selection":
+                    options.removeAll(event.getSelectedOptions());
+                    options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
+                    event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
+                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("included-players").build())).queue();
+                    break;
+
                 default:
-                    throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));
+                    try {
+                        ConfigField configField = ConfigField.valueOf(componentId.replace("-", "_").toUpperCase());
+                        this.plugin.getConfigYamlFile().set(configField.toString(),
+                                Boolean.valueOf(event.getSelectedOptions().get(0).getValue()));
+                        event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu(componentId).build())).queue();
+                    } catch (IllegalArgumentException e) {
+                        throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));
+                    }
             }
+
         } else {
             event.reply(this.plugin.getBot().getMenu("access-denied").build()).setEphemeral(true).queue();
         }

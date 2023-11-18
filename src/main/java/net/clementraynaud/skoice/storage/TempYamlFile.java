@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.storage;
 
 import net.clementraynaud.skoice.Skoice;
 
-public class TempFileStorage extends FileStorage {
+public class TempYamlFile extends YamlFile {
 
     public static final String CONFIG_MENU_FIELD = "config-menu";
     public static final String GUILD_ID_FIELD = "guild-id";
@@ -29,7 +29,7 @@ public class TempFileStorage extends FileStorage {
     public static final String MESSAGE_ID_FIELD = "message-id";
     public static final String MUTED_USERS_ID_FIELD = "muted-users-id";
 
-    public TempFileStorage(Skoice plugin) {
+    public TempYamlFile(Skoice plugin) {
         super(plugin, "temp");
     }
 }

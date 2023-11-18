@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -24,6 +24,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 import java.util.concurrent.TimeUnit;
 
@@ -47,7 +48,7 @@ public class ConfigureCommand extends ListenerAdapter {
                             .setEphemeral(true).queue();
                 } else {
                     this.plugin.getConfigurationMenu().delete();
-                    event.reply(this.plugin.getConfigurationMenu().update()).queue();
+                    event.reply(MessageCreateData.fromEditData(this.plugin.getConfigurationMenu().update())).queue();
                     this.configureCommandCooldown = true;
                     this.plugin.getFoliaLib().getImpl().runLater(() ->
                             this.configureCommandCooldown = false, ConfigureCommand.COOLDOWN*50, TimeUnit.MILLISECONDS

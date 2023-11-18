@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -17,20 +17,41 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.config;
+package net.clementraynaud.skoice.storage.config;
 
-public enum ConfigurationField {
+public enum ConfigField {
 
+    SESSION_REPORTED,
     TOKEN,
     LANG,
     VOICE_CHANNEL_ID,
     HORIZONTAL_RADIUS,
     VERTICAL_RADIUS,
-    ACTION_BAR_ALERT,
+    LOGIN_NOTIFICATION,
+    CONNECTING_ALERT,
+    DISCONNECTING_ALERT,
+    TOOLTIPS,
+    PLAYERS_ON_DEATH_SCREEN_INCLUDED,
+    SPECTATORS_INCLUDED,
     CHANNEL_VISIBILITY;
 
     @Override
     public String toString() {
         return this.name().toLowerCase().replace("_", "-");
+    }
+
+    public String toCamelCase() {
+        StringBuilder builder = new StringBuilder();
+        String[] words = this.name().split("_");
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            if (i == 0) {
+                word = word.toLowerCase();
+            } else {
+                word = word.charAt(0) + word.substring(1).toLowerCase();
+            }
+            builder.append(word);
+        }
+        return builder.toString();
     }
 }

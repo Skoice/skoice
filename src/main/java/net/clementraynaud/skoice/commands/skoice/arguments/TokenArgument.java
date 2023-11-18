@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import org.bukkit.command.CommandSender;
 
 public class TokenArgument extends Argument {
@@ -27,7 +28,7 @@ public class TokenArgument extends Argument {
     private final String arg;
 
     public TokenArgument(Skoice plugin, CommandSender sender, String arg) {
-        super(plugin, sender, ArgumentInfo.TOKEN.isAllowedInConsole(), ArgumentInfo.TOKEN.isRestrictedToOperators());
+        super(plugin, sender, ArgumentInfo.TOKEN.isAllowedInConsole(), ArgumentInfo.TOKEN.isPermissionRequired());
         this.arg = arg;
     }
 
@@ -40,8 +41,8 @@ public class TokenArgument extends Argument {
             this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.no-token"));
             return;
         }
-        super.plugin.getConfiguration().setToken(this.arg);
-        if (super.plugin.getBot().getJDA() == null) {
+        super.plugin.getConfigYamlFile().setToken(this.arg);
+        if (super.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
             super.plugin.getBot().connect(this.sender);
             if (super.plugin.getBot().getJDA() != null) {
                 super.plugin.getBot().setup(this.sender);

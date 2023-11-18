@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -24,16 +24,15 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 public enum MenuEmoji {
 
     ARROW_FORWARD("U+25B6"),
-    CALENDAR_SPIRAL("U+1F5D3"),
+    BELL("U+1F514"),
+    BUST_IN_SILHOUETTE("U+1F464"),
+    BUSTS_IN_SILHOUETTE("U+1F465"),
     CARD_BOX("U+1F5C3"),
     CHART_WITH_UPWARDS_TREND("U+1F4C8"),
-    CLIPBOARD("U+1F4CB"),
     CLOCK3("U+1F552"),
-    CROSSED_SWORDS("U+2694"),
-    ENVELOPE("U+2709"),
-    EXCLAMATION("U+2757"),
     FILE_CABINET("U+1F5C4"),
     GEAR("U+2699"),
+    GHOST("U+1F47B"),
     GLOBE_WITH_MERIDIANS("U+1F310"),
     GREEN_HEART("U+1F49A"),
     HAMMER("U+1F528"),
@@ -41,17 +40,25 @@ public enum MenuEmoji {
     HEAVY_MULTIPLICATION_X("U+2716"),
     HEAVY_PLUS_SIGN("U+2795"),
     INBOX_TRAY("U+1F4E5"),
+    INFORMATION_SOURCE("U+2139"),
     KEY("U+1F511"),
     LINK("U+1F517"),
+    LOUD_SOUND("U+1F50A"),
     MAG("U+1F50D"),
-    MAP("U+1F5FA"),
-    NEWSPAPER("U+1F4F0"),
+    MUTE("U+1F507"),
     NO_ENTRY("U+26D4"),
+    OUTBOX_TRAY("U+1F4E4"),
     PENCIL2("U+270F"),
+    QUESTION("U+2753"),
+    REPEAT("U+1F501"),
+    REPEAT_ONE("U+1F502"),
     SCREWDRIVER("U+1FA9B"),
+    SKULL("U+1F480"),
     SOUND("U+1F509"),
-    VIDEO_GAME("U+1F3AE"),
+    SPEECH_BALLOON("U+1F4AC"),
+    THOUGHT_BALLOON("U+1F4AD"),
     WARNING("U+26A0"),
+    WASTEBASKET("U+1F5D1"),
     WRENCH("U+1F527"),
     X("U+274C");
 

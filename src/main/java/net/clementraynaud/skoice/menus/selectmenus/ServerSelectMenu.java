@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.List;
 public class ServerSelectMenu extends SelectMenu {
 
     public ServerSelectMenu(Skoice plugin) {
-        super(plugin, true);
+        super(plugin);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class ServerSelectMenu extends SelectMenu {
                     .withDescription(super.plugin.getLang().getMessage("discord.select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
-        return net.dv8tion.jda.api.interactions.components.selections.SelectMenu.create("server-selection")
+        return StringSelectMenu.create("server-selection")
                 .setPlaceholder(super.plugin.getLang().getMessage("discord.menu.server.select-menu.placeholder"))
                 .addOptions(options).build();
     }
