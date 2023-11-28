@@ -26,6 +26,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
+import java.util.concurrent.TimeUnit;
+
 public class ConfigureCommand extends ListenerAdapter {
 
     private static final long COOLDOWN = 100L;
@@ -48,8 +50,8 @@ public class ConfigureCommand extends ListenerAdapter {
                     this.plugin.getConfigurationMenu().delete();
                     event.reply(MessageCreateData.fromEditData(this.plugin.getConfigurationMenu().update())).queue();
                     this.configureCommandCooldown = true;
-                    this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
-                            this.configureCommandCooldown = false, ConfigureCommand.COOLDOWN
+                    this.plugin.getFoliaLib().getImpl().runLater(() ->
+                            this.configureCommandCooldown = false, ConfigureCommand.COOLDOWN*50, TimeUnit.MILLISECONDS
                     );
                 }
             } else {

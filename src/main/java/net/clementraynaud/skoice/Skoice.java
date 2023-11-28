@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice;
 
 import com.bugsnag.Bugsnag;
+import com.tcoded.folialib.FoliaLib;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
@@ -62,6 +63,8 @@ public class Skoice extends JavaPlugin {
     private BotCommands botCommands;
     private ConfigurationMenu configurationMenu;
     private BukkitAudiences adventure;
+    private FoliaLib foliaLib;
+
     private Bugsnag bugsnag;
 
     @Override
@@ -71,6 +74,7 @@ public class Skoice extends JavaPlugin {
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
+        this.foliaLib = new FoliaLib(this);
         this.saveDefaultConfig();
         this.configYamlFile = new ConfigYamlFile(this);
         this.configYamlFile.load();
@@ -262,5 +266,9 @@ public class Skoice extends JavaPlugin {
 
     public Bugsnag getBugsnag() {
         return this.bugsnag;
+    }
+
+    public FoliaLib getFoliaLib() {
+        return  this.foliaLib;
     }
 }

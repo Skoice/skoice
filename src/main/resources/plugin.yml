@@ -19,6 +19,7 @@ name: Skoice
 version: ${project.version}
 main: net.clementraynaud.skoice.Skoice
 api-version: 1.13
+folia-supported: true
 authors: [ carlodrift, Lucas_Cdry ]
 description: Proximity Voice Chat in Minecraft using Discord
 website: ${project.url}

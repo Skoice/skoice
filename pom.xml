@@ -31,7 +31,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.5.1</version>
                 <configuration>
                     <minimizeJar>true</minimizeJar>
                     <relocations>
@@ -91,6 +91,10 @@
                             <pattern>okio</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.okio</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.tcoded</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.dependencies</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
@@ -106,6 +110,12 @@
                                 <exclude>**/*.kotlin_module</exclude>
                                 <exclude>module-info.class</exclude>
                             </excludes>
+                        </filter>
+                        <filter>
+                            <artifact>com.tcoded:FoliaLib</artifact>
+                            <includes>
+                                <include>**</include>
+                            </includes>
                         </filter>
                     </filters>
                     <transformers>
@@ -146,6 +156,10 @@
             <name>m2-dv8tion</name>
             <url>https://m2.dv8tion.net/releases</url>
         </repository>
+        <repository>
+            <id>devmart-other</id>
+            <url>https://nexuslite.gcnt.net/repos/other/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -163,7 +177,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-beta.13</version>
+            <version>5.0.0-beta.17</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
@@ -174,12 +188,18 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.3.0</version>
+            <version>4.3.1</version>
         </dependency>
         <dependency>
             <groupId>com.bugsnag</groupId>
             <version>[3.0,4.0)</version>
             <artifactId>bugsnag</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.tcoded</groupId>
+            <artifactId>FoliaLib</artifactId>
+            <version>0.3.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
