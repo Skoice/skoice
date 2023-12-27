@@ -71,10 +71,6 @@ error:
     type: error
     fields:
       - access-denied
-  illegal-interaction:
-    type: error
-    fields:
-      - illegal-interaction
   illegal-value:
     type: error
     fields:

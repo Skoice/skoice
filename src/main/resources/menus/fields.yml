@@ -69,9 +69,6 @@ verification-code:
 access-denied:
   emoji: no_entry
   inline: false
-illegal-interaction:
-  emoji: x
-  inline: false
 illegal-value:
   emoji: x
   inline: false
