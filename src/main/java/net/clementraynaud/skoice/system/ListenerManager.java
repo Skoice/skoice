@@ -35,6 +35,7 @@ import net.clementraynaud.skoice.listeners.guild.override.GenericPermissionOverr
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceGuildMuteListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceUpdateListener;
 import net.clementraynaud.skoice.listeners.interaction.ModalInteractionListener;
+import net.clementraynaud.skoice.listeners.interaction.command.SlashCommandInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.component.StringSelectInteractionListener;
 import net.clementraynaud.skoice.listeners.message.MessageDeleteListener;
@@ -123,10 +124,7 @@ public class ListenerManager {
                 new MessageDeleteListener(this.plugin.getConfigurationMenu()),
                 new GenericChannelListener(this.plugin),
                 new GenericPermissionOverrideListener(this.plugin),
-                new ConfigureCommand(this.plugin),
-                new InviteCommand(this.plugin),
-                new LinkCommand(this.plugin),
-                new UnlinkCommand(this.plugin),
+                new SlashCommandInteractionListener(this.plugin),
                 new ButtonInteractionListener(this.plugin),
                 new StringSelectInteractionListener(this.plugin),
                 new ModalInteractionListener(this.plugin)

@@ -1,0 +1,286 @@
+#Copyright 2020, 2021, 2022, 2023 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#This file is part of Skoice.
+#Skoice is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#Skoice is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
+logger:
+  info:
+    plugin-enabled: "プラグインが有効になりました。"
+    plugin-disabled: "プラグインが無効になりました。"
+    plugin-updated: "Skoiceは最新バージョンに更新されました。変更を適用するには、Minecraftサーバーを再起動してください。"
+    skoice-3: "現在、Skoice 3を使用しています。Botを正しく動作させるには、移行ガイドを参照してください: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
+    configuration-complete: "Skoiceが構成されました。Discordサーバーで「/link」を入力して、DiscordアカウントをMinecraftにリンクしてください。プレイヤーは近接音声チャットを使用するためにアカウントをリンクする必要があります。"
+    bot-connecting: "あなたのbotが接続を試みています。"
+    bot-connected: "あなたのbotが接続されました。"
+  warning:
+    outdated-version: "古いバージョン (%s) を使用しています。最新バージョン (%s) をここからダウンロードしてください: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861"
+    no-token: "トークンが設定されていません。Minecraftサーバーに参加して、Skoiceを設定してください。"
+    no-guild: "あなたのbotはDiscordサーバーにいません。次のリンクを開いて招待してください: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands"
+    multiple-guilds: "あなたのbotは複数のDiscordサーバーにいます。Discordサーバーで「/configure」と入力し、1つを選択してください。"
+    no-voice-channel: "ボイスチャンネルが設定されていません。Discordサーバーで「/configure」と入力し、Skoiceを設定してください。"
+    no-radius: "範囲が設定されていません。「/configure」をDiscordサーバーで入力して、Skoiceを設定してください。"
+  error:
+    missing-permission: "あなたのDiscordサーバーでbotに管理者権限が付与されていません。次のリンクを開いて追加してください: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands"
+    missing-access: "Discordサーバー「%s」にコマンドを追加する権限がbotに付与されていません。次のリンクを開いて権限を追加し、Minecraftサーバーを再起動してください: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    bot-could-not-connect: "botが接続できませんでした。トークンを更新するには、「/skoice token」に続けて新しいトークンを入力してください。"
+    bot-timed-out: "問題によりbotが接続できませんでした。ネットワークの接続状況を確認するとともに、最新のDiscordの停止状況を確認してください: https://discordstatus.com"
+  exception:
+    unexpected-value: "予期せぬ値: %s"
+minecraft:
+  chat:
+    configuration:
+      bot-creation-interactive:
+        - " \n%s 設定: &fbot作成\n \n&8• &7最初にbotを作成し、あなたのDiscordサーバーに招待する必要があります。あなたが既にbotを所有している場合にも、新しいbotを作成する必要があります。次の手順に従ってください： "
+        - "&7.\n&8• &7トークンを取得したら、それを入れます "
+        - "&7.\n&8• &7完了したら、Discordサーバーに「&e/configure&7」と入力して次のステップに進みます。\n "
+      bot-creation: " \n%s 設定: &fbot作成\n \n&8• &7最初にbotを作成し、あなたのDiscordサーバーに招待する必要があります。あなたが既にbotを所有している場合にも、新しいbotを作成する必要があります。次の手順に従ってください: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7\n&8• &7トークンを取得したら、「&e/skoice token&7」に続けてトークンを入力します。\n&8• &7完了したら、Discordサーバーに「&e/configure&7」\n "
+      no-token: "%s &cトークンが与えられていません&7。このコマンドを使用するには、「&e/skoice token&7」の後にトークンを入力してください。"
+      no-guild-interactive:
+        - "%s あなたのbotが&cDiscordサーバーに存在しません&7。Open "
+        - " &7を開いて招待します。"
+      no-guild: "%s あなたのbotが&cDiscordサーバーに存在しません&7。 次のページを開いて招待してください: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7"
+      bot-connecting: "%s あなたのbotが&a接続を試みています&7。"
+      bot-connected: "%s あなたのbotが&a接続されました&7。"
+      bot-connected-incomplete-configuration-discord: "%s あなたのbotが&a接続されました&7。Discordサーバーに「&e/configure&7」 と入力してセットアップしてください。"
+      bot-already-connected: "%s &aトークンを更新しました&7。botを接続するにはMinecraftサーバーを再起動してください。"
+      bot-could-not-connect: "%s あなたのbotは&c接続できませんでした&7。有効なトークンでもう一度やりなおしてください。"
+      missing-access: "%s Discordサーバー「&e%s&7」に&cコマンドを追加する権限がbotに付与されていません&7。次のリンクを開いて権限を追加し、Minecraftサーバーを再起動してください: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7"
+      incomplete-configuration: "%s Skoiceが&c正しく設定されていません&7。サーバーの管理者に連絡してください。"
+      incomplete-configuration-operator-interactive:
+        - "%s Skoiceが&c正しく設定されていません&7。Click "
+        - " &7to set it up. You can change the language by clicking "
+        - "&7. このメッセージと対話できない場合は、「&e/skoice tooltips&7」と入力してください。"
+      incomplete-configuration-operator: "%s Skoiceは&c正しく設定されていません&7。「&e/skoice configure&7」と入力して設定してください。「\"&e/skoice language&7\"」に続けて言語を入力することで、言語を変更することができます。"
+      incomplete-configuration-operator-discord: "%s Skoiceが&c正しく設定されていません&7。Discordサーバーに「&e/configure&7」と入力してセットアップしてください。"
+      already-configured: "%s Skoiceは&c既に設定されています&7。設定を更新するには、Discordサーバーに「\"&e/configure&7\"」と入力してください。"
+      tooltips-enabled: "%s あなたは&a対話メッセージが有効&7になっています。"
+      tooltips-disabled: "%s あなたは&a対話メッセージが無効&7になっています。Skoiceを設定しようとしている場合は、「&e/skoice configure&7」と入力してください。"
+      no-language: "%s &c言語が指定されていません&7。このコマンドを使用するには、「&e/skoice language %s&7」と入力してください。"
+      invalid-language: "%s &c有効な言語が指定されていません&7。このコマンドを使用するには、「&e/skoice language %s&7」と入力してください。"
+      language-already-set: "%s 言語は既に「&e%s&7」に&c設定されています&7。"
+      language-updated: "%s 言語を「&e%s&7」に&a更新しました&7。"
+    player:
+      no-code: "%s &cコードが指定されていません&7。Discordサーバー「&e%s&7」で「&e/link&7」と入力するとコードを受け取れます。"
+      invalid-code: "%s &c有効なコードが指定されていません&7。Discordサーバー「&e%s&7」で「&e/link&7」と入力するとコードを受け取れます。"
+      account-linked: "%s あなたの&aMinecraftアカウントをDiscordとリンク&7しました。"
+      account-unlinked: "%s あなたの&aMinceaftアカウントをDisocrdからリンク解除&7しました。"
+      account-not-linked: "%s あなたの&cMinecraftアカウントはDiscordとリンクされていません&7。Discordサーバー「&e%s&7」で「&e/link&7」と入力してリンクし、近接ボイスチャットを使用します。"
+      account-not-linked-remind-once: "%s あなたの&cMinecraftアカウントはDiscordとリンクされていません&7。Discordサーバー「&e%s&7」で「&e/link&7」と入力してリンクし、近接ボイスチャットを使用します。以後、この通知は届きません。"
+      account-already-linked: "%s あなたは&c既にMincraftアカウントをDisocrdをリンクしています&7。「&e/skoice unlink&7」と入力して、リンクを解除してください。"
+      connected: "%s あなたは近接ボイスチャットに&a接続されています&7。より良い体験を得るためには、Discordクライアントで「配信モード」を有効にしてください。"
+      not-connected: "%s あなたは近接ボイスチャットに&c接続していません&7。使用するには、Discordサーバ「&e%s&7」のボイスチャンネル「&e%s&7」に参加してください。"
+      disconnected: "%s あなたは近接ボイスチャットから&c切断されました&7。"
+    error:
+      no-parameter: "%s &c引数が指定されていません&7。このコマンドを使用するには「&e/skoice %s&7」と入力してください。"
+      invalid-parameter: "%s &c有効な引数が指定されていません&7。このコマンドを使用するには「&e/skoice %s&7」と入力してください。"
+      illegal-executor: "%s このコマンドはプレイヤー&cのみが実行&7できます。"
+      missing-permission: "%s このコマンドは「&eskoice.manage&7」権限をもつプレイヤー&cのみが実行&7できます。"
+      bot-timed-out-interactive:
+        - "%s 問題により&cbotが接続できません&7でした。Check your network connection status and look for recent Discord outages on "
+        - "&7."
+      bot-timed-out: "%s 問題により&cbotが接続できません&7でした。ネットワークの接続状況を確認するとともに、次のページで最新のDiscordの停止状況を確認してください: &bhttps://discordstatus.com&7"
+  action-bar:
+    connecting-alert: "&a⚠ &7あなたは&aほかのプレイヤーの近くにいます&7。挨拶しましょう！"
+    disconnecting-alert: "&c⚠ &7あなたは近くのプレイヤーから&c離れています&7。"
+  interaction:
+    here: "&bhere"
+    this-page: "&bthis page"
+    execute: "&8☀ &b実行: &7%s"
+    shortcut: "&8☀ &ショートカット: &7%s"
+    link: "&8☀ &bWebブラウザで開く: &7%s"
+discord:
+  command-description:
+    configure: "Skoiceを設定する。"
+    link: "あなたのDiscordアカウントをMinecraftとリンクします。"
+    unlink: "あなたのDiscordアカウントとMinecraftのリンクを解除します。"
+    invite: "あなたのサーバーに近接ボイスチャットを呼びます。"
+  menu:
+    footer: "あなたのサーバにSkoiceが欲しいですか？「/invite」と入力してください！"
+    invite-footer: "Skoice • carlodrift, Lucas_Cdry and contributors"
+    configuration:
+      title: "設定"
+    server:
+      title: "サーバー"
+      description: "正常に動作させるため、botを複数のDiscordサーバーに存在させることはできません。近接ボイスチャットを有効にしたいサーバーを選択してください。botはその他のサーバーから自動的に退出します。"
+      select-menu:
+        placeholder: "サーバーを選択してください。"
+    permissions:
+      title: "権限"
+      description: "正常に動作させるために、Discordサーバー上でbotに「管理者」権限が必要です。"
+    voice-channel:
+      title: "ボイスチャンネル"
+      description: "近接ボイスチャットを使用するためにプレイヤーが参加するチャンネルを選択します。カテゴリ内にある必要があります。ビットレートを調整して、近接ボイスチャットの音質を管理します。このチャンネルでは、プレイヤーは自動的にミュートされることに注意してください。"
+      shortened-description: "近接ボイスチャットを使用するためにプレイヤーが参加するチャンネルを選択します。"
+      select-menu:
+        placeholder: "ボイスチャンネルを選択してください。"
+        select-option:
+          new-voice-channel:
+            label: "新しいボイスチャンネル"
+            description: "Skoiceは自動的にボイスチャンネルをセットアップします。"
+    range:
+      title: "範囲"
+      description: "モードを選択するか、距離をカスタマイズします。"
+      alternative-description: "Skoiceの個人的な使い方に最適な設定を選択してください。後ほど距離をカスタマイズすることができます。"
+      select-menu:
+        placeholder: "モードを選択してください。"
+        alternative-placeholder: "現在、カスタマイズされた距離を使用しています。"
+        select-option:
+          long-range-mode:
+            label: "長距離モード"
+            description: "水平半径: 80ブロック — 垂直半径: 40ブロック"
+          short-range-mode:
+            label: "短距離モード"
+            description: "水平半径: 40ブロック — 垂直半径: 20ブロック"
+    more-settings:
+      title: "その他の設定"
+      description: "その他のパラメータを管理します。"
+    language:
+      title: "言語"
+      description: "メッセージの表示に使用する言語を選択してください。あなたの言語が無いか不完全ですか？[Crowdinでプライグインを翻訳してください](https://crowdin.com/project/skoice)！"
+      shortened-description: "メッセージの表示に使用する言語を選択してください。"
+    in-game-messages:
+      title: "ゲーム内メッセージ"
+      description: "Minecraftサーバー上でプレイヤーに送信されるメッセージを管理します。"
+    login-notification:
+      title: "ログイン通知"
+      description: "Minecraftサーバーにログインしたときに、アカウントをリンクしていないプレイヤーに送信されるメッセージを切り替えます。"
+      select-menu:
+        always-remind:
+          label: "常に通知する"
+        remind-once:
+          label: "一度だけ通知する"
+        never-remind:
+          label: "通知しない"
+    action-bar-alerts:
+      title: "アクションバー通知"
+      description: "近接ボイスチャットを使用しているプレイヤーに送信される通知を切り替えます。"
+      select-menu:
+        placeholder: "希望する通知を選択してください。"
+        connecting-alert:
+          label: "「あなたはほかのプレイヤーの近くにいます。挨拶しましょう！」"
+        disconnecting-alert:
+          label: "「あなたは近くのプレイヤーから離れています。」"
+    tooltips:
+      title: "ツールチップ"
+      shortened-description: "Minecraftサーバー上の対話型メッセージを切り替えます。"
+      description: "Minceaftサーバー上で対話型メッセージを切り替えます。サーバーが統合版で実行されている場合や、Minecraft設定でツールチップが無効人なっている場合、この設定を無効にすることができます。操作者のみが対話型メッセージを受信できます。"
+    included-players:
+      title: "対象プレイヤー"
+      description: "近接ボイスチャットに含まれるプレイヤーの種類を選択します。"
+      select-menu:
+        placeholder: "希望するプレイヤーの種類を選択してください。"
+        players-on-death-screen-included:
+          label: "死亡画面状態のプレイヤー"
+        spectators-included:
+          label: "スペクテイター"
+    channel-visibility:
+      title: "チャンネルの可視性"
+      description: "Skoiceによって作成された一時チャンネルの可視性を切り替えます。"
+    skoice-proximity-voice-chat:
+      title: "Skoice：近接ボイスチャット"
+    linking-process:
+      title: "リンク手続き"
+    error:
+      title: "エラー"
+  field:
+    configuration-complete:
+      title: "設定完了"
+      description: "Skoiceが設定されました。Discordサーバーで `/link` と入力して、DiscordアカウントとMinecraftをリンクしてください。プレイヤーは近接ボイスチャットを使用するためにアカウントをリンクする必要があります。"
+    notified-players-cleared:
+      title: "通知されたプレイヤーの消去"
+      description: "通知を受け取ったプレイヤーを消去しました。既に通知を受け取っていたプレイヤーは再度通知されるようになります。"
+    incomplete-configuration:
+      title: "未完了の設定"
+      description: "Skoiceが正しく設定されていません。サーバーの管理者に連絡してください。"
+    incomplete-configuration-server-manager:
+      title: "未完了の設定"
+      description: "Skoiceを使用するには、Discordサーバーに `/configure` と入力して設定を完了してください。"
+    incomplete-configuration-alternative-server-manager:
+      title: "未完了の設定"
+      description: "メインのボイスチャンネルが移動または削除されました。Skoiceを使用するには、Discordサーバーに `/configure` と入力して設定を完了してください。"
+    download:
+      title: "ダウンロード"
+      description: "[プラグインを入手](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) して、あなたのMinecraftサーバーにインストールしてください。"
+    donating:
+      title: "寄付"
+      description: "Skoiceはフリーソフトウェアです。もし気に入っていただけたなら、 [寄付](https://opencollective.com/skoice) することでご支援いただけます。"
+    troubleshooting:
+      title: "トラブルシューティング"
+      description: "問題がありますか？ [私たちのDiscordサーバに参加してください](https://discord.gg/h3Tgccc) ！"
+    contributing:
+      title: "貢献"
+      description: "Skoiceの未来を形作るのに興味がありますか？ [GitHubでコントリビュート](https://github.com/Skoice/skoice) し [Crowdinでプラグインを翻訳](https://crowdin.com/project/skoice) してください！"
+    long-range-mode:
+      title: "長距離モード"
+      description: "オープンワールドなゲームモードをプレイする場合は、このモードを選択してください。"
+    short-range-mode:
+      title: "短距離モード"
+      description: "限定されたエリアしか必要としないゲームモードをプレイする場合は、このモードを選択してください。"
+    customize:
+      title: "カスタマイズ"
+      description: "あなたの好みに応じた距離を設定します。"
+    verification-code:
+      title: "確認コード"
+      description: "ゲーム内で `/skoice link %s` と入力して手続きを完了します。"
+    account-linked:
+      title: "アカウントがリンクされた"
+      description: "あなたのDiscordアカウントはMinecraftにリンクされています。近接ボイスチャットを使用するには、ボイスチャンネル %s に参加してください。"
+    account-unlinked:
+      title: "アカウントのリンクを解除"
+      description: "あなたのDiscordアカウントはMinecraftからリンク解除されました。"
+    account-not-linked:
+      title: "アカウントがリンクされていない"
+      description: "あなたのDiscordアカウントはMinecraftにリンクされていません。近接ボイスチャットを使用するには、Discordサーバー「%s」に `/link` と入力してリンクします。"
+    account-already-linked:
+      title: "アカウントリンク済み"
+      description: "あなたのDiscordアカウントは既にMinecraftにリンクされています。リンクを解除するには `/unlink` と入力してください。"
+    access-denied:
+      title: "アクセス拒否"
+      description: "あなたはこの操作を実行するのに必要な権限がありません。"
+    too-many-interactions:
+      title: "操作が多すぎます"
+      description: "コマンドを実行するのが速すぎます"
+    illegal-interaction:
+      title: "不正な操作"
+      description: "Discordサーバー上でのみbotとやり取りできます。"
+    illegal-value:
+      title: "不正な値"
+      description: "値は 0 より大きい数値でなければなりません。"
+  button-label:
+    back: "戻る"
+    close: "閉じる"
+    configure-later: "後で設定"
+    resume-configuration: "設定を再開"
+    message-not-showing-up: "メッセージが表示されません"
+    clear-notified-players: "通知されたプレイヤーを消去"
+  select-option:
+    default:
+      description: "このオプションはデフォルトで選択されています。"
+    enabled:
+      label: "有効"
+    disabled:
+      label: "無効"
+    too-many-options:
+      label: "多すぎるオプション"
+      description: "Skoiceはこれ以上のオプションを読み込むことができません。"
+  text-input:
+    category-name:
+      label: "カテゴリ名"
+      default-value: "Skoice"
+    voice-channel-name:
+      label: "ボイスチャンネル名"
+      default-value: "近接ボイスチャット"
+    horizontal-radius:
+      label: "水平半径"
+    vertical-radius:
+      label: "垂直半径"
+  message-not-showing-up: "メッセージが表示されない場合は、Discordの設定で埋め込みを無効にしている可能性があります。Skoiceを正しく使用するには、次の設定を有効にしてください: `アプリの設定 > テキスト・画像 > 埋め込み画像を表示し、チャットに投稿されたウェブリンクをプレビューします`"
+  communication-lost: "通信が失われました。"
+  system-interrupted: "システムが切断されました。"

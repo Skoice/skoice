@@ -143,7 +143,8 @@ discord:
       description: "Verwalte andere Parameter."
     language:
       title: "Sprache"
-      description: "Wählen Sie die Sprache, in der die Meldungen angezeigt werden sollen."
+      description: "Wähle die Sprache, in der Nachrichten angezeigt werden. Deine Sprache fehlt oder ist nicht vollständig? [Übersetze unser Plugin mit Crowdin](https://crowdin.com/project/skoice)!"
+      shortened-description: "Wähle die Sprache aus, in der Nachrichten angezeigt werden."
     in-game-messages:
       title: "In-Game Nachrichten"
       description: "Verwalte die Nachrichten, die Spielern auf dem Minecraft Server geschickt werden."
@@ -254,7 +255,6 @@ discord:
       description: "Die Werte müssen ganze Zahlen größer als 0 sein."
   button-label:
     back: "Zurück"
-    refresh: "Auffrischen"
     close: "Schließen Sie"
     configure-later: "Später konfigurieren"
     resume-configuration: "Lebenslauf Konfiguration"

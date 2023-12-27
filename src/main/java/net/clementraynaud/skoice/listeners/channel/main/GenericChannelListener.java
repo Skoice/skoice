@@ -29,6 +29,7 @@ import net.dv8tion.jda.api.entities.channel.unions.ChannelUnion;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
 import net.dv8tion.jda.api.events.channel.GenericChannelEvent;
+import net.dv8tion.jda.api.events.channel.update.ChannelUpdateNameEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateParentEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -49,11 +50,8 @@ public class GenericChannelListener extends ListenerAdapter {
         if (channel.getType() != ChannelType.VOICE) {
             return;
         }
-        if (channel.asVoiceChannel().getParentCategory() != null
-                && "voice-channel".equals(this.plugin.getConfigurationMenu().getMenuId())
-                && this.plugin.getBot().getStatus() == BotStatus.READY) {
-            this.plugin.getConfigurationMenu().retrieveMessage(message ->
-                    message.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue());
+        if (channel.asVoiceChannel().getParentCategory() != null) {
+            this.reloadVoiceChannelMenu();
         }
     }
 
@@ -64,11 +62,19 @@ public class GenericChannelListener extends ListenerAdapter {
             return;
         }
         this.checkForValidVoiceChannel(event);
-        if (channel.asVoiceChannel().getParentCategory() != null
-                && "voice-channel".equals(this.plugin.getConfigurationMenu().getMenuId())
-                && this.plugin.getBot().getStatus() == BotStatus.READY) {
-            this.plugin.getConfigurationMenu().retrieveMessage(message ->
-                    message.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue());
+        if (channel.asVoiceChannel().getParentCategory() != null) {
+            this.reloadVoiceChannelMenu();
+        }
+    }
+
+    @Override
+    public void onChannelUpdateName(ChannelUpdateNameEvent event) {
+        ChannelUnion channel = event.getChannel();
+        if (channel.getType() != ChannelType.VOICE) {
+            return;
+        }
+        if (channel.asVoiceChannel().getParentCategory() != null) {
+            this.reloadVoiceChannelMenu();
         }
     }
 
@@ -79,10 +85,8 @@ public class GenericChannelListener extends ListenerAdapter {
             return;
         }
         this.checkForValidVoiceChannel(event);
-        if ("voice-channel".equals(this.plugin.getConfigurationMenu().getMenuId())
-                && this.plugin.getBot().getStatus() == BotStatus.READY) {
-            this.plugin.getConfigurationMenu().retrieveMessage(message ->
-                    message.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue());
+        if (channel.asVoiceChannel().getParentCategory() != null) {
+            this.reloadVoiceChannelMenu();
         }
     }
 
@@ -91,14 +95,24 @@ public class GenericChannelListener extends ListenerAdapter {
             this.plugin.getConfigYamlFile().remove(ConfigField.VOICE_CHANNEL_ID.toString());
             this.plugin.getListenerManager().update();
             event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).queue(auditLogEntries -> {
-                User user = auditLogEntries.get(0).getUser();
-                if (user != null && !user.isBot()) {
-                    user.openPrivateChannel().queue(channel ->
-                            channel.sendMessage(this.plugin.getBot().getMenu("incomplete-configuration-alternative-server-manager").build())
-                                    .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
-                    );
+                if (!auditLogEntries.isEmpty()) {
+                    User user = auditLogEntries.get(0).getUser();
+                    if (user != null && !user.isBot()) {
+                        user.openPrivateChannel().queue(channel ->
+                                channel.sendMessage(this.plugin.getBot().getMenu("incomplete-configuration-alternative-server-manager").build())
+                                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
+                        );
+                    }
                 }
             });
+        }
+    }
+
+    private void reloadVoiceChannelMenu() {
+        if ("voice-channel".equals(this.plugin.getConfigurationMenu().getMenuId())
+                && this.plugin.getBot().getStatus() == BotStatus.READY) {
+            this.plugin.getConfigurationMenu().retrieveMessage(message ->
+                    message.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue());
         }
     }
 }

@@ -71,10 +71,6 @@ error:
     type: error
     fields:
       - access-denied
-  too-many-interactions:
-    type: error
-    fields:
-      - too-many-interactions
   illegal-interaction:
     type: error
     fields:

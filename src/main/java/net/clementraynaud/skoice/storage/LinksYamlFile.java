@@ -81,8 +81,12 @@ public class LinksYamlFile extends YamlFile {
             return false;
         }
 
-        guild.retrieveMemberById(discordId).queue(success,
-                new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, failure));
+        guild.retrieveMemberById(discordId).queue(
+                success,
+                failure != null
+                        ? new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, failure)
+                        : new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MEMBER)
+        );
         return true;
     }
 

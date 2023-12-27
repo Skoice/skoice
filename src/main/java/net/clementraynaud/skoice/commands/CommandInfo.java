@@ -19,19 +19,26 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.utils.messages.MessageCreateData;
+public enum CommandInfo {
 
-public class ConfigureCommand extends Command {
+    CONFIGURE(true, false),
+    LINK(false, true),
+    UNLINK(false, true),
+    INVITE(false, false);
 
-    public ConfigureCommand(Skoice plugin, CommandExecutor executor, boolean serverManagerRequired, boolean botReadyRequired, SlashCommandInteractionEvent event) {
-        super(plugin, executor, serverManagerRequired, botReadyRequired, event);
+    private final boolean serverManagerRequired;
+    private final boolean botReadyRequired;
+
+    CommandInfo(boolean serverManagerRequired, boolean botReadyRequired) {
+        this.serverManagerRequired = serverManagerRequired;
+        this.botReadyRequired = botReadyRequired;
     }
 
-    @Override
-    public void run() {
-        super.plugin.getConfigurationMenu().delete();
-        super.event.reply(MessageCreateData.fromEditData(super.plugin.getConfigurationMenu().update())).queue();
+    public boolean isServerManagerRequired() {
+        return this.serverManagerRequired;
+    }
+
+    public boolean isBotReadyRequired() {
+        return this.botReadyRequired;
     }
 }

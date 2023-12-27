@@ -20,63 +20,50 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.util.MapUtil;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
-public class UnlinkCommand extends ListenerAdapter {
+public class UnlinkCommand extends Command {
 
-    private final Skoice plugin;
-
-    public UnlinkCommand(Skoice plugin) {
-        this.plugin = plugin;
+    public UnlinkCommand(Skoice plugin, CommandExecutor executor, boolean serverManagerRequired, boolean botReadyRequired, SlashCommandInteractionEvent event) {
+        super(plugin, executor, serverManagerRequired, botReadyRequired, event);
     }
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if ("unlink".equals(event.getName()) && event.getMember() != null) {
-            if (this.plugin.getBot().getStatus() != BotStatus.READY && event.getMember() != null) {
-                if (event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
-                    event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").build())
-                            .setEphemeral(true).queue();
-                } else {
-                    event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
-                            .setEphemeral(true).queue();
-                }
-                return;
-            }
+    public void run() {
+        String minecraftId = MapUtil.getKeyFromValue(super.plugin.getLinksYamlFile().getLinks(), super.executor.getUser().getId());
+        if (minecraftId == null) {
+            super.event.reply(super.plugin.getBot().getMenu("account-not-linked")
+                            .build(super.plugin.getBot().getGuild().getName()))
+                    .setEphemeral(true).queue();
+            return;
+        }
 
-            String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), event.getUser().getId());
-            if (minecraftId == null) {
-                event.reply(this.plugin.getBot().getMenu("account-not-linked")
-                                .build(this.plugin.getBot().getGuild().getName()))
-                        .setEphemeral(true).queue();
-                return;
-            }
+        super.plugin.getLinksYamlFile().unlinkUser(minecraftId);
+        LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getDiscordId().equals(super.executor.getUser().getId()));
+        super.event.reply(super.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
 
-            this.plugin.getLinksYamlFile().unlinkUser(minecraftId);
-            LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getDiscordId().equals(event.getMember().getId()));
-            event.reply(this.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
+        OfflinePlayer player = super.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
+        if (player.isOnline() && player.getPlayer() != null) {
+            player.getPlayer().sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
 
-            OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
-            if (player.isOnline() && player.getPlayer() != null) {
-                player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
-                GuildVoiceState voiceState = event.getMember().getVoiceState();
+            super.plugin.getBot().getGuild().retrieveMember(super.executor.getUser()).queue(member -> {
+                GuildVoiceState voiceState = member.getVoiceState();
                 if (voiceState != null) {
                     AudioChannel voiceChannel = voiceState.getChannel();
-                    if (voiceChannel != null && voiceChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
-                        player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+                    if (voiceChannel != null && voiceChannel.equals(super.plugin.getConfigYamlFile().getVoiceChannel())) {
+                        player.getPlayer().sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
                     }
                 }
-            }
+            }, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MEMBER));
         }
     }
 }

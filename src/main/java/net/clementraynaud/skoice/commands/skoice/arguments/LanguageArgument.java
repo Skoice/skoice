@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.storage.config.ConfigField;
-import net.dv8tion.jda.api.entities.Guild;
 import org.bukkit.command.CommandSender;
 
 public class LanguageArgument extends Argument {
@@ -49,20 +48,17 @@ public class LanguageArgument extends Argument {
         try {
             LangInfo language = LangInfo.valueOf(this.arg.toUpperCase());
 
-            if (language.name().equals(super.plugin.getConfigYamlFile().get(ConfigField.LANG.toString()))) {
+            if (language.toString().equals(super.plugin.getConfigYamlFile().get(ConfigField.LANG.toString()))) {
                 this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.language-already-set",
                         language.getFullName()));
                 return;
             }
 
-            super.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), language.name());
+            super.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), language.toString());
             super.plugin.getLang().load(language);
             super.plugin.getListenerManager().update();
 
-            Guild guild = super.plugin.getBot().getGuild();
-            if (guild != null) {
-                this.plugin.getBotCommands().register(guild);
-            }
+            this.plugin.getBotCommands().register();
             this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.language-updated",
                     language.getFullName()));
 

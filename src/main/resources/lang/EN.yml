@@ -28,7 +28,6 @@ logger:
     no-radius: "Radius not set. Type \"/configure\" on your Discord server to set up Skoice."
   error:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "You did not grant your bot the permission to register commands on the Discord server \"%s\". Open this link to add it and restart your Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."
     bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: https://discordstatus.com."
   exception:
@@ -51,7 +50,6 @@ minecraft:
       bot-connected-incomplete-configuration-discord: "%s Your bot is &anow connected&7. Type \"&e/configure&7\" on your Discord server to set it up."
       bot-already-connected: "%s You have &aupdated the token&7. Restart your Minecraft server to connect your bot."
       bot-could-not-connect: "%s Your bot &ccould not connect&7. Try again with a valid token."
-      missing-access: "%s Your bot does &cnot have the permission to register commands &7on the Discord server \"&e%s&7\". Open this link to add it and restart your Minecraft server: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice is &cnot configured correctly&7. Please contact an administrator of the server."
       incomplete-configuration-operator-interactive:
         - "%s Skoice is &cnot configured correctly&7. Click "
@@ -244,9 +242,6 @@ discord:
     access-denied:
       title: "Access Denied"
       description: "You do not have the required permission to execute this action."
-    too-many-interactions:
-      title: "Too Many Interactions"
-      description: "You are executing commands too fast."
     illegal-interaction:
       title: "Illegal Interaction"
       description: "You can only interact with the bot on a Discord server."
@@ -269,7 +264,7 @@ discord:
       label: "Disabled"
     too-many-options:
       label: "Too Many Options"
-      description: "Skoice is unabled to load more options."
+      description: "Skoice is unable to load more options."
   text-input:
     category-name:
       label: "Category Name"
