@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
@@ -38,11 +37,9 @@ public class BotCommands {
 
     public void register() {
         this.plugin.getBot().getJDA().updateCommands().addCommands(this.getCommands()).queue();
-
-        this.clearGuildCommands();
     }
 
-    private void clearGuildCommands() {
+    public void clearGuildCommands() {
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> guild.updateCommands().queue());
     }
 

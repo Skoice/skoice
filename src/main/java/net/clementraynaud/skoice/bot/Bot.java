@@ -131,6 +131,7 @@ public class Bot {
         this.plugin.getConfigurationMenu().delete();
         this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
         this.updateGuild();
+        this.plugin.getBotCommands().clearGuildCommands();
         this.plugin.getBotCommands().register();
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
             if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
