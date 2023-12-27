@@ -36,7 +36,6 @@ import net.clementraynaud.skoice.listeners.interaction.command.SlashCommandInter
 import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.component.StringSelectInteractionListener;
 import net.clementraynaud.skoice.listeners.message.MessageDeleteListener;
-import net.clementraynaud.skoice.listeners.message.MessageReceivedListener;
 import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
 import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
@@ -118,7 +117,6 @@ public class ListenerManager {
                 new GuildMemberRoleAddListener(this.plugin),
                 new GuildMemberRoleRemoveListener(this.plugin),
                 new RoleUpdatePermissionsListener(this.plugin),
-                new MessageReceivedListener(this.plugin),
                 new MessageDeleteListener(this.plugin.getConfigurationMenu()),
                 new GenericChannelListener(this.plugin),
                 new GenericPermissionOverrideListener(this.plugin),

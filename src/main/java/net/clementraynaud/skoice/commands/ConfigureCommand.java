@@ -32,6 +32,8 @@ public class ConfigureCommand extends Command {
     @Override
     public void run() {
         super.plugin.getConfigurationMenu().delete();
-        super.event.reply(MessageCreateData.fromEditData(super.plugin.getConfigurationMenu().update())).queue();
+        super.event.reply(MessageCreateData.fromEditData(super.plugin.getConfigurationMenu().update()))
+                .queue(interactionHook -> interactionHook.retrieveOriginal()
+                        .queue(message -> super.plugin.getConfigurationMenu().store(message)));
     }
 }
