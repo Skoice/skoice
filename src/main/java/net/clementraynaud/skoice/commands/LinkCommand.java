@@ -20,24 +20,19 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.BotStatus;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class LinkCommand extends ListenerAdapter {
+public class LinkCommand extends Command {
 
     private static final Map<String, String> discordIdCode = new HashMap<>();
     private static final Random random = new Random();
 
-    private final Skoice plugin;
-
-    public LinkCommand(Skoice plugin) {
-        this.plugin = plugin;
+    public LinkCommand(Skoice plugin, CommandExecutor executor, boolean serverManagerRequired, boolean botReadyRequired, SlashCommandInteractionEvent event) {
+        super(plugin, executor, serverManagerRequired, botReadyRequired, event);
     }
 
     public static Map<String, String> getDiscordIdCode() {
@@ -45,32 +40,19 @@ public class LinkCommand extends ListenerAdapter {
     }
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if ("link".equals(event.getName())) {
-            if (this.plugin.getBot().getStatus() != BotStatus.READY && event.getMember() != null) {
-                if (event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
-                    event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").build())
-                            .setEphemeral(true).queue();
-                } else {
-                    event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
-                            .setEphemeral(true).queue();
-                }
-                return;
-            }
-
-            if (this.plugin.getLinksYamlFile().getLinks().containsValue(event.getUser().getId())) {
-                event.reply(this.plugin.getBot().getMenu("account-already-linked").build()).setEphemeral(true).queue();
-                return;
-            }
-
-            LinkCommand.discordIdCode.remove(event.getUser().getId());
-            String code;
-            do {
-                int number = LinkCommand.random.nextInt(1000000);
-                code = String.format("%06d", number);
-            } while (LinkCommand.discordIdCode.containsValue(code));
-            LinkCommand.discordIdCode.put(event.getUser().getId(), code);
-            event.reply(this.plugin.getBot().getMenu("verification-code").build(code)).setEphemeral(true).queue();
+    public void run() {
+        if (super.plugin.getLinksYamlFile().getLinks().containsValue(super.executor.getUser().getId())) {
+            super.event.reply(super.plugin.getBot().getMenu("account-already-linked").build()).setEphemeral(true).queue();
+            return;
         }
+
+        LinkCommand.discordIdCode.remove(super.executor.getUser().getId());
+        String code;
+        do {
+            int number = LinkCommand.random.nextInt(1000000);
+            code = String.format("%06d", number);
+        } while (LinkCommand.discordIdCode.containsValue(code));
+        LinkCommand.discordIdCode.put(super.executor.getUser().getId(), code);
+        super.event.reply(this.plugin.getBot().getMenu("verification-code").build(code)).setEphemeral(true).queue();
     }
 }

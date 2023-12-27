@@ -84,7 +84,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     this.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), event.getSelectedOptions().get(0).getValue());
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                     this.plugin.getListenerManager().update();
-                    this.plugin.getBotCommands().register(event.getGuild());
+                    this.plugin.getBotCommands().register();
                     event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("language").build())).queue();
                     break;
 

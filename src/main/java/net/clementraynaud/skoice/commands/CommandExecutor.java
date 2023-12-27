@@ -19,19 +19,29 @@
 
 package net.clementraynaud.skoice.commands;
 
-import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.utils.messages.MessageCreateData;
+import net.dv8tion.jda.api.entities.User;
 
-public class ConfigureCommand extends Command {
+public class CommandExecutor {
 
-    public ConfigureCommand(Skoice plugin, CommandExecutor executor, boolean serverManagerRequired, boolean botReadyRequired, SlashCommandInteractionEvent event) {
-        super(plugin, executor, serverManagerRequired, botReadyRequired, event);
+    private User user;
+    private boolean inGuild;
+    private boolean serverManager;
+
+    public CommandExecutor(User user, boolean inGuild, boolean serverManager) {
+        this.user = user;
+        this.inGuild = inGuild;
+        this.serverManager = serverManager;
     }
 
-    @Override
-    public void run() {
-        super.plugin.getConfigurationMenu().delete();
-        super.event.reply(MessageCreateData.fromEditData(super.plugin.getConfigurationMenu().update())).queue();
+    public User getUser() {
+        return this.user;
+    }
+
+    public boolean isInGuild() {
+        return inGuild;
+    }
+
+    public boolean isServerManager() {
+        return this.serverManager;
     }
 }

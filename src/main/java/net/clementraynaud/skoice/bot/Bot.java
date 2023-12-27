@@ -130,7 +130,12 @@ public class Bot {
         this.plugin.getConfigurationMenu().delete();
         this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
         this.updateGuild();
-        this.jda.getGuilds().forEach(guild -> this.plugin.getBotCommands().register(guild, sender));
+        this.plugin.getBotCommands().register();
+        this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
+            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+                guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
+            }
+        });
         this.plugin.getListenerManager().registerPermanentBotListeners();
         this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
                         this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
