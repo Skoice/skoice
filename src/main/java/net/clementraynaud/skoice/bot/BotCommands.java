@@ -39,10 +39,11 @@ public class BotCommands {
     public void register() {
         this.plugin.getBot().getJDA().updateCommands().addCommands(this.getCommands()).queue();
 
-        Guild guild = this.plugin.getBot().getGuild();
-        if (guild != null) {
-            guild.updateCommands().queue();
-        }
+        this.clearGuildCommands();
+    }
+
+    private void clearGuildCommands() {
+        this.plugin.getBot().getJDA().getGuilds().forEach(guild -> guild.updateCommands().queue());
     }
 
     private Set<SlashCommandData> getCommands() {
