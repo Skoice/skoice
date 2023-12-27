@@ -27,13 +27,13 @@ public class CommandFactory {
     public Command getCommand(Skoice plugin, CommandInfo commandInfo, CommandExecutor executor, SlashCommandInteractionEvent event) {
         switch (commandInfo) {
             case CONFIGURE:
-                return new ConfigureCommand(plugin, executor, commandInfo.isServerManagerRequired(), commandInfo.isBotReadyRequired(), event);
+                return new ConfigureCommand(plugin, executor, event);
             case LINK:
-                return new LinkCommand(plugin, executor, commandInfo.isServerManagerRequired(), commandInfo.isBotReadyRequired(), event);
+                return new LinkCommand(plugin, executor, event);
             case UNLINK:
-                return new UnlinkCommand(plugin, executor, commandInfo.isServerManagerRequired(), commandInfo.isBotReadyRequired(), event);
+                return new UnlinkCommand(plugin, executor, event);
             case INVITE:
-                return new InviteCommand(plugin, executor, commandInfo.isServerManagerRequired(), commandInfo.isBotReadyRequired(), event);
+                return new InviteCommand(plugin, executor, event);
             default:
                 return null;
         }

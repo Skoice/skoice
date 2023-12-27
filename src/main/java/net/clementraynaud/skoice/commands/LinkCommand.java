@@ -31,8 +31,8 @@ public class LinkCommand extends Command {
     private static final Map<String, String> discordIdCode = new HashMap<>();
     private static final Random random = new Random();
 
-    public LinkCommand(Skoice plugin, CommandExecutor executor, boolean serverManagerRequired, boolean botReadyRequired, SlashCommandInteractionEvent event) {
-        super(plugin, executor, serverManagerRequired, botReadyRequired, event);
+    public LinkCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteractionEvent event) {
+        super(plugin, executor, CommandInfo.LINK.isServerManagerRequired(), CommandInfo.LINK.isBotReadyRequired(), event);
     }
 
     public static Map<String, String> getDiscordIdCode() {

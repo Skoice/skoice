@@ -39,9 +39,9 @@ public abstract class Argument {
         this.permissionRequired = permissionRequired;
     }
 
-    protected abstract void run();
+    public abstract void run();
 
-    protected boolean cannotBeExecuted() {
+    public boolean cannotBeExecuted() {
         if (!(this.sender instanceof Player) && !this.allowedInConsole) {
             this.sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.illegal-executor"));
             return true;

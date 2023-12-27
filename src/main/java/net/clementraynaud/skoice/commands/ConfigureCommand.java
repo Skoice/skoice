@@ -25,8 +25,8 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 public class ConfigureCommand extends Command {
 
-    public ConfigureCommand(Skoice plugin, CommandExecutor executor, boolean serverManagerRequired, boolean botReadyRequired, SlashCommandInteractionEvent event) {
-        super(plugin, executor, serverManagerRequired, botReadyRequired, event);
+    public ConfigureCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteractionEvent event) {
+        super(plugin, executor, CommandInfo.CONFIGURE.isServerManagerRequired(), CommandInfo.CONFIGURE.isBotReadyRequired(), event);
     }
 
     @Override

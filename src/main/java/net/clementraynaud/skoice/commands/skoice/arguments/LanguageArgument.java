@@ -35,10 +35,6 @@ public class LanguageArgument extends Argument {
 
     @Override
     public void run() {
-        if (this.cannotBeExecuted()) {
-            return;
-        }
-
         if (this.arg.isEmpty()) {
             this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.no-language",
                     LangInfo.getJoinedList()));

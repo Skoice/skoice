@@ -38,10 +38,6 @@ public class UnlinkArgument extends Argument {
 
     @Override
     public void run() {
-        if (this.cannotBeExecuted()) {
-            return;
-        }
-
         Player player = (Player) this.sender;
         if (super.plugin.getBot().getStatus() != BotStatus.READY) {
             super.plugin.getBot().sendIncompleteConfigurationAlert(player, true);

@@ -25,8 +25,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 public class InviteCommand extends Command {
 
 
-    public InviteCommand(Skoice plugin, CommandExecutor executor, boolean serverManagerRequired, boolean botReadyRequired, SlashCommandInteractionEvent event) {
-        super(plugin, executor, serverManagerRequired, botReadyRequired, event);
+    public InviteCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteractionEvent event) {
+        super(plugin, executor, CommandInfo.INVITE.isServerManagerRequired(), CommandInfo.INVITE.isBotReadyRequired(), event);
     }
 
     @Override

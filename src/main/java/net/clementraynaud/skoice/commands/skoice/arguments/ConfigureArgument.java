@@ -34,9 +34,6 @@ public class ConfigureArgument extends Argument {
 
     @Override
     public void run() {
-        if (this.cannotBeExecuted()) {
-            return;
-        }
         Player player = (Player) this.sender;
         if (super.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
             if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {

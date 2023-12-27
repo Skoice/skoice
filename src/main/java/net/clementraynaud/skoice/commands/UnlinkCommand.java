@@ -33,8 +33,8 @@ import java.util.UUID;
 
 public class UnlinkCommand extends Command {
 
-    public UnlinkCommand(Skoice plugin, CommandExecutor executor, boolean serverManagerRequired, boolean botReadyRequired, SlashCommandInteractionEvent event) {
-        super(plugin, executor, serverManagerRequired, botReadyRequired, event);
+    public UnlinkCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteractionEvent event) {
+        super(plugin, executor, CommandInfo.UNLINK.isServerManagerRequired(), CommandInfo.UNLINK.isBotReadyRequired(), event);
     }
 
     @Override

@@ -20,23 +20,26 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.storage.config.ConfigField;
 import org.bukkit.command.CommandSender;
 
-public class TooltipsArgument extends Argument {
+public class ArgumentFactory {
 
-    public TooltipsArgument(Skoice plugin, CommandSender sender) {
-        super(plugin, sender, ArgumentInfo.TOOLTIPS.isAllowedInConsole(), ArgumentInfo.TOOLTIPS.isPermissionRequired());
-    }
-
-    @Override
-    public void run() {
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-            super.plugin.getConfigYamlFile().set(ConfigField.TOOLTIPS.toString(), false);
-            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.tooltips-disabled"));
-        } else {
-            super.plugin.getConfigYamlFile().set(ConfigField.TOOLTIPS.toString(), true);
-            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.tooltips-enabled"));
+    public Argument getArgument(Skoice plugin, ArgumentInfo argumentInfo, CommandSender sender, String arg) {
+        switch (argumentInfo) {
+            case CONFIGURE:
+                return new ConfigureArgument(plugin, sender);
+            case TOOLTIPS:
+                return new TooltipsArgument(plugin, sender);
+            case TOKEN:
+                return new TokenArgument(plugin, sender, arg);
+            case LANGUAGE:
+                return new LanguageArgument(plugin, sender, arg);
+            case LINK:
+                return new LinkArgument(plugin, sender, arg);
+            case UNLINK:
+                return new UnlinkArgument(plugin, sender);
+            default:
+                return null;
         }
     }
 }

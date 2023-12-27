@@ -20,14 +20,7 @@
 package net.clementraynaud.skoice.commands.skoice;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
-import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
-import net.clementraynaud.skoice.commands.skoice.arguments.ConfigureArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.LanguageArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.LinkArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.TokenArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.TooltipsArgument;
-import net.clementraynaud.skoice.commands.skoice.arguments.UnlinkArgument;
+import net.clementraynaud.skoice.commands.skoice.arguments.*;
 import net.clementraynaud.skoice.lang.LangInfo;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -85,27 +78,11 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
             return true;
         }
         String arg = args.length > 1 ? args[1] : "";
-        switch (ArgumentInfo.get(args[0])) {
-            case CONFIGURE:
-                new ConfigureArgument(this.plugin, sender).run();
-                break;
-            case TOOLTIPS:
-                new TooltipsArgument(this.plugin, sender).run();
-                break;
-            case TOKEN:
-                new TokenArgument(this.plugin, sender, arg).run();
-                break;
-            case LANGUAGE:
-                new LanguageArgument(this.plugin, sender, arg).run();
-                break;
-            case LINK:
-                new LinkArgument(this.plugin, sender, arg).run();
-                break;
-            case UNLINK:
-                new UnlinkArgument(this.plugin, sender).run();
-                break;
-            default:
-                return true;
+        ArgumentInfo argumentInfo = ArgumentInfo.get(args[0]);
+
+        Argument argument = new ArgumentFactory().getArgument(this.plugin, argumentInfo, sender, arg);
+        if (!argument.cannotBeExecuted()) {
+            argument.run();
         }
         return true;
     }
