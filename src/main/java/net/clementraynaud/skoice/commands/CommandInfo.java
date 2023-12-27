@@ -34,6 +34,11 @@ public enum CommandInfo {
         this.botReadyRequired = botReadyRequired;
     }
 
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
+
     public boolean isServerManagerRequired() {
         return this.serverManagerRequired;
     }

@@ -190,7 +190,7 @@ discord:
   field:
     configuration-complete:
       title: "Configuration Complete"
-      description: "Skoice is now configured. Type `/link` on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
+      description: "Skoice is now configured. Type %s to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     notified-players-cleared:
       title: "Notified Players Cleared"
       description: "You have cleared notified players. Players who have already received the reminder to link their accounts will now be notified again."
@@ -199,10 +199,10 @@ discord:
       description: "Skoice is not configured correctly. Please contact an administrator of the server."
     incomplete-configuration-server-manager:
       title: "Incomplete Configuration"
-      description: "Type `/configure` on your Discord server to complete the configuration and use Skoice."
+      description: "Type %s to complete the configuration and use Skoice."
     incomplete-configuration-alternative-server-manager:
       title: "Incomplete Configuration"
-      description: "You have either moved or deleted the main voice channel. Type `/configure` on your Discord server to complete the configuration and use Skoice."
+      description: "You have either moved or deleted the main voice channel. Type %s to complete the configuration and use Skoice."
     download:
       title: "Download"
       description: "[Get the plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server."
@@ -235,10 +235,10 @@ discord:
       description: "Your Discord account has been unlinked from Minecraft."
     account-not-linked:
       title: "Account Not Linked"
-      description: "Your Discord account is not linked to Minecraft. Type `/link` on the Discord server \"%s\" to link it and use the proximity voice chat."
+      description: "Your Discord account is not linked to Minecraft. Type %s to link it and use the proximity voice chat."
     account-already-linked:
       title: "Account Already Linked"
-      description: "Your Discord account is already linked to Minecraft. Type `/unlink` to unlink it."
+      description: "Your Discord account is already linked to Minecraft. Type %s to unlink it."
     access-denied:
       title: "Access Denied"
       description: "You do not have the required permission to execute this action."

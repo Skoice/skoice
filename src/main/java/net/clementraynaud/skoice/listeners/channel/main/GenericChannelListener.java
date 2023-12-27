@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.listeners.channel.main;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.User;
@@ -99,7 +100,8 @@ public class GenericChannelListener extends ListenerAdapter {
                     User user = auditLogEntries.get(0).getUser();
                     if (user != null && !user.isBot()) {
                         user.openPrivateChannel().queue(channel ->
-                                channel.sendMessage(this.plugin.getBot().getMenu("incomplete-configuration-alternative-server-manager").build())
+                                channel.sendMessage(this.plugin.getBot().getMenu("incomplete-configuration-alternative-server-manager")
+                                                .build(this.plugin.getBotCommands().getCommandMentions().get(CommandInfo.CONFIGURE.toString())))
                                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
                         );
                     }

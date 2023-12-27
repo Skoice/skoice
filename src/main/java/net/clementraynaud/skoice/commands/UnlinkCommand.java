@@ -42,7 +42,7 @@ public class UnlinkCommand extends Command {
         String minecraftId = MapUtil.getKeyFromValue(super.plugin.getLinksYamlFile().getLinks(), super.executor.getUser().getId());
         if (minecraftId == null) {
             super.event.reply(super.plugin.getBot().getMenu("account-not-linked")
-                            .build(super.plugin.getBot().getGuild().getName()))
+                            .build(super.plugin.getBotCommands().getCommandMentions().get(CommandInfo.LINK.toString())))
                     .setEphemeral(true).queue();
             return;
         }

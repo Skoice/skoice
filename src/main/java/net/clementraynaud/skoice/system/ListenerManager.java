@@ -21,10 +21,7 @@ package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.commands.ConfigureCommand;
-import net.clementraynaud.skoice.commands.InviteCommand;
-import net.clementraynaud.skoice.commands.LinkCommand;
-import net.clementraynaud.skoice.commands.UnlinkCommand;
+import net.clementraynaud.skoice.commands.*;
 import net.clementraynaud.skoice.listeners.channel.main.GenericChannelListener;
 import net.clementraynaud.skoice.listeners.channel.network.ChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
@@ -84,7 +81,8 @@ public class ListenerManager {
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
             if (user != null) {
                 user.openPrivateChannel().queue(channel ->
-                        channel.sendMessage(this.plugin.getBot().getMenu("configuration-complete").build())
+                        channel.sendMessage(this.plugin.getBot().getMenu("configuration-complete")
+                                        .build(this.plugin.getBotCommands().getCommandMentions().get(CommandInfo.LINK.toString())))
                                 .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
                 );
             }

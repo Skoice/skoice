@@ -42,7 +42,9 @@ public class LinkCommand extends Command {
     @Override
     public void run() {
         if (super.plugin.getLinksYamlFile().getLinks().containsValue(super.executor.getUser().getId())) {
-            super.event.reply(super.plugin.getBot().getMenu("account-already-linked").build()).setEphemeral(true).queue();
+            super.event.reply(super.plugin.getBot().getMenu("account-already-linked")
+                            .build(super.plugin.getBotCommands().getCommandMentions().get(CommandInfo.UNLINK.toString())))
+                    .setEphemeral(true).queue();
             return;
         }
 

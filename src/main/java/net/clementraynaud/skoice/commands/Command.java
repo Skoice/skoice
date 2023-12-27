@@ -42,20 +42,21 @@ public abstract class Command {
     public abstract void run();
 
     public boolean cannotBeExecuted() {
-        if (serverManagerRequired && !executor.isInGuild()) {
+        if (this.serverManagerRequired && !this.executor.isInGuild()) {
             this.event.reply("Temporary message").setEphemeral(true).queue();
             return true;
         }
 
-        if (serverManagerRequired && executor.isInGuild() && !executor.isServerManager()) {
+        if (this.serverManagerRequired && this.executor.isInGuild() && !this.executor.isServerManager()) {
             this.event.reply(this.plugin.getBot().getMenu("access-denied").build())
                     .setEphemeral(true).queue();
             return true;
         }
 
-        if (botReadyRequired && this.plugin.getBot().getStatus() != BotStatus.READY) {
-            if (executor.isServerManager()) {
-                this.event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").build())
+        if (this.botReadyRequired && this.plugin.getBot().getStatus() != BotStatus.READY) {
+            if (this.executor.isServerManager()) {
+                this.event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager")
+                                .build(this.plugin.getBotCommands().getCommandMentions().get(CommandInfo.CONFIGURE.toString())))
                         .setEphemeral(true).queue();
             } else {
                 this.event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())

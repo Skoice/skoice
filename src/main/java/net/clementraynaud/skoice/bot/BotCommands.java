@@ -20,16 +20,22 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.commands.CommandInfo;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BotCommands {
 
     private final Skoice plugin;
+
+    private final Map<String, String> commandMentions = new HashMap<>();
 
     public BotCommands(Skoice plugin) {
         this.plugin = plugin;
@@ -37,6 +43,9 @@ public class BotCommands {
 
     public void register() {
         this.plugin.getBot().getJDA().updateCommands().addCommands(this.getCommands()).queue();
+
+        this.plugin.getBot().getJDA().retrieveCommands()
+                .queue(commands -> commands.forEach(command -> this.commandMentions.put(command.getName(), command.getAsMention())));
     }
 
     public void clearGuildCommands() {
@@ -44,10 +53,13 @@ public class BotCommands {
     }
 
     private Set<SlashCommandData> getCommands() {
-        return new HashSet<>(Arrays.asList(
-                Commands.slash("configure", this.plugin.getLang().getMessage("discord.command-description.configure")),
-                Commands.slash("link", this.plugin.getLang().getMessage("discord.command-description.link")),
-                Commands.slash("unlink", this.plugin.getLang().getMessage("discord.command-description.unlink")),
-                Commands.slash("invite", this.plugin.getLang().getMessage("discord.command-description.invite"))));
+        return Arrays.stream(CommandInfo.values())
+                .map(CommandInfo::toString)
+                .map(command -> Commands.slash(command, this.plugin.getLang().getMessage("discord.command-description." + command)))
+                .collect(Collectors.toSet());
+    }
+
+    public Map<String, String> getCommandMentions() {
+        return this.commandMentions;
     }
 }

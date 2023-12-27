@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.listeners.interaction.component;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
@@ -72,7 +73,8 @@ public class ButtonInteractionListener extends ListenerAdapter {
                 if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
                     event.getMessage().delete().queue();
                     if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-                        event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager").build())
+                        event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager")
+                                        .build(this.plugin.getBotCommands().getCommandMentions().get(CommandInfo.CONFIGURE.toString())))
                                 .setEphemeral(true).queue();
                     }
 
