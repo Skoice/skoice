@@ -152,7 +152,7 @@ public class Bot {
         if (sender != null) {
             if (this.getStatus() == BotStatus.READY) {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected"));
-            } else if (this.getStatus() == BotStatus.NO_GUILD) {
+            } else if (this.getStatus() == BotStatus.NO_GUILD && sender instanceof Player) {
                 this.sendNoGuildAlert((Player) sender);
             } else {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected-incomplete-configuration-discord"));
