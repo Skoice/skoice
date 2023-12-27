@@ -100,10 +100,10 @@ public class Menu {
 
         if ("skoice-proximity-voice-chat".equals(this.menuId)) {
             embed.setFooter(this.plugin.getLang().getMessage("discord.menu.invite-footer"),
-                    "https://avatars.githubusercontent.com/u/107434569?s=200&v=4");
+                    "https://clementraynaud.net/Skoice.jpeg");
         } else {
             embed.setFooter(this.plugin.getLang().getMessage("discord.menu.footer"),
-                    "https://avatars.githubusercontent.com/u/107434569?s=200&v=4");
+                    "https://clementraynaud.net/Skoice.jpeg");
         }
 
         if (this.getDescription(false) != null) {

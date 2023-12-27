@@ -55,6 +55,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Base64;
 import java.util.HashMap;
@@ -156,7 +157,7 @@ public class Bot {
         if (sender != null) {
             if (this.getStatus() == BotStatus.READY) {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected"));
-            } else if (this.getStatus() == BotStatus.NO_GUILD) {
+            } else if (this.getStatus() == BotStatus.NO_GUILD && sender instanceof Player) {
                 this.sendNoGuildAlert((Player) sender);
             } else {
                 sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected-incomplete-configuration-discord"));
@@ -170,12 +171,13 @@ public class Bot {
 
     private void setDefaultAvatar() {
         if (this.jda.getSelfUser().getDefaultAvatarUrl().equals(this.jda.getSelfUser().getEffectiveAvatarUrl())) {
-            try {
-                this.jda.getSelfUser().getManager()
-                        .setAvatar(Icon.from(new URL("https://www.spigotmc.org/data/resource_icons/82/82861.jpg?1597701409")
-                                .openStream())).queue();
-            } catch (IOException ignored) {
-            }
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+                try (InputStream inputStream = new URL("https://clementraynaud.net/Skoice.jpeg").openStream()) {
+                    Icon icon = Icon.from(inputStream);
+                    this.jda.getSelfUser().getManager().setAvatar(icon).queue();
+                } catch (IOException ignored) {
+                }
+            });
         }
     }
 
