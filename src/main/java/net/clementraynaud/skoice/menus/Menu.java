@@ -151,7 +151,11 @@ public class Menu {
             actionRows.add(mainActionRow);
         }
 
-        actionRows.add(this.getSecondaryActionRow());
+        ActionRow secondaryActionRow = this.getSecondaryActionRow();
+        if (secondaryActionRow != null) {
+            actionRows.add(secondaryActionRow);
+        }
+
         return actionRows;
     }
 
@@ -168,6 +172,7 @@ public class Menu {
                 }
             }
         }
+
         if (buttons.isEmpty()) {
             return null;
         }
@@ -259,6 +264,10 @@ public class Menu {
                                 this.plugin.getLang().getMessage("discord.button-label.configure-later"))
                         .withEmoji(MenuEmoji.CLOCK3.get()));
             }
+        }
+
+        if (buttons.isEmpty()) {
+            return null;
         }
         return ActionRow.of(buttons);
     }
