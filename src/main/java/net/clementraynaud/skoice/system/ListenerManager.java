@@ -81,7 +81,7 @@ public class ListenerManager {
             if (user != null) {
                 user.openPrivateChannel().queue(channel ->
                         channel.sendMessage(this.plugin.getBot().getMenu("configuration-complete")
-                                        .build(this.plugin.getBotCommands().getCommandMentions().get(CommandInfo.LINK.toString())))
+                                        .build(this.plugin.getBotCommands().getAsMention(CommandInfo.LINK.toString())))
                                 .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
                 );
             }

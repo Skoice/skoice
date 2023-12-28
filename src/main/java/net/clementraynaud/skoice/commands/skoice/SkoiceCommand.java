@@ -81,7 +81,7 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         ArgumentInfo argumentInfo = ArgumentInfo.get(args[0]);
 
         Argument argument = new ArgumentFactory().getArgument(this.plugin, argumentInfo, sender, arg);
-        if (!argument.cannotBeExecuted()) {
+        if (argument.canBeExecuted()) {
             argument.run();
         }
         return true;

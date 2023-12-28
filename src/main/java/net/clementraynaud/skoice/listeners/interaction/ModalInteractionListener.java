@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.listeners.interaction;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.modals.ModalMapping;
@@ -37,9 +38,11 @@ public class ModalInteractionListener extends ListenerAdapter {
 
     @Override
     public void onModalInteraction(ModalInteractionEvent event) {
-        if (event.getGuild() == null) {
+        Guild guild = this.plugin.getBot().getGuild(event.getInteraction());
+        if (guild == null) {
             return;
         }
+
         if ("new-voice-channel".equals(event.getModalId())) {
             ModalMapping categoryValue = event.getValue("category-name");
             ModalMapping voiceChannelValue = event.getValue("voice-channel-name");
@@ -48,8 +51,8 @@ public class ModalInteractionListener extends ListenerAdapter {
             }
             String categoryName = categoryValue.getAsString();
             String voiceChannelName = voiceChannelValue.getAsString();
-            event.getGuild().createCategory(categoryName).queue(category ->
-                    event.getGuild().createVoiceChannel(voiceChannelName, category).queue(channel -> {
+            guild.createCategory(categoryName).queue(category ->
+                    guild.createVoiceChannel(voiceChannelName, category).queue(channel -> {
                         this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
                         new InterruptSystemTask(this.plugin).run();
                         this.plugin.getListenerManager().update(event.getUser());

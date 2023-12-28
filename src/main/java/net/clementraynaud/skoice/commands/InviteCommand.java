@@ -20,18 +20,18 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 public class InviteCommand extends Command {
 
 
-    public InviteCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteractionEvent event) {
-        super(plugin, executor, CommandInfo.INVITE.isServerManagerRequired(), CommandInfo.INVITE.isBotReadyRequired(), event);
+    public InviteCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteraction interaction) {
+        super(plugin, executor, CommandInfo.INVITE.isServerManagerRequired(), CommandInfo.INVITE.isBotReadyRequired(), interaction);
     }
 
     @Override
     public void run() {
-        super.event.reply(super.plugin.getBot().getMenu("skoice-proximity-voice-chat").build())
+        super.interaction.reply(super.plugin.getBot().getMenu("skoice-proximity-voice-chat").build())
                 .setEphemeral(true).queue();
     }
 }

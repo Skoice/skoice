@@ -46,6 +46,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
+import net.dv8tion.jda.api.interactions.Interaction;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.OfflinePlayer;
@@ -413,6 +414,13 @@ public class Bot {
             return null;
         }
         return this.jda.getGuildById(this.guildId);
+    }
+
+    public Guild getGuild(Interaction interaction) {
+        if (interaction.isFromGuild()) {
+            return interaction.getGuild();
+        }
+        return this.getGuild();
     }
 
     public MenuField getField(String field) {

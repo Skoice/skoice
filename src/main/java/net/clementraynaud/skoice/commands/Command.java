@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 public abstract class Command {
 
@@ -29,41 +29,46 @@ public abstract class Command {
     protected final CommandExecutor executor;
     protected final boolean serverManagerRequired;
     protected final boolean botReadyRequired;
-    protected final SlashCommandInteractionEvent event;
+    protected final SlashCommandInteraction interaction;
 
-    protected Command(Skoice plugin, CommandExecutor executor, boolean serverManagerRequired, boolean botReadyRequired, SlashCommandInteractionEvent event) {
+    protected Command(Skoice plugin, CommandExecutor executor, boolean serverManagerRequired, boolean botReadyRequired, SlashCommandInteraction interaction) {
         this.plugin = plugin;
         this.executor = executor;
         this.serverManagerRequired = serverManagerRequired;
         this.botReadyRequired = botReadyRequired;
-        this.event = event;
+        this.interaction = interaction;
     }
 
     public abstract void run();
 
-    public boolean cannotBeExecuted() {
-        if (this.serverManagerRequired && !this.executor.isInGuild()) {
-            this.event.reply("Temporary message").setEphemeral(true).queue();
-            return true;
+    public boolean canBeExecuted() {
+        if (this.serverManagerRequired
+                && !this.executor.isInGuild()
+                && this.plugin.getBot().getStatus() == BotStatus.MULTIPLE_GUILDS) {
+            this.interaction.reply("Requires to be performed in a guild (temporary message)").setEphemeral(true).queue();
+            return false;
         }
 
-        if (this.serverManagerRequired && this.executor.isInGuild() && !this.executor.isServerManager()) {
-            this.event.reply(this.plugin.getBot().getMenu("access-denied").build())
+        if (this.serverManagerRequired
+                && this.executor.isInGuild()
+                && !this.executor.isServerManager()) {
+            this.interaction.reply(this.plugin.getBot().getMenu("access-denied").build())
                     .setEphemeral(true).queue();
-            return true;
+            return false;
         }
 
-        if (this.botReadyRequired && this.plugin.getBot().getStatus() != BotStatus.READY) {
+        if (this.botReadyRequired
+                && this.plugin.getBot().getStatus() != BotStatus.READY) {
             if (this.executor.isServerManager()) {
-                this.event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager")
-                                .build(this.plugin.getBotCommands().getCommandMentions().get(CommandInfo.CONFIGURE.toString())))
+                this.interaction.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager")
+                                .build(this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString())))
                         .setEphemeral(true).queue();
             } else {
-                this.event.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
+                this.interaction.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
                         .setEphemeral(true).queue();
             }
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 }

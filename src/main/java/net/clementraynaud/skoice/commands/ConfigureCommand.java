@@ -20,19 +20,19 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 public class ConfigureCommand extends Command {
 
-    public ConfigureCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteractionEvent event) {
-        super(plugin, executor, CommandInfo.CONFIGURE.isServerManagerRequired(), CommandInfo.CONFIGURE.isBotReadyRequired(), event);
+    public ConfigureCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteraction interaction) {
+        super(plugin, executor, CommandInfo.CONFIGURE.isServerManagerRequired(), CommandInfo.CONFIGURE.isBotReadyRequired(), interaction);
     }
 
     @Override
     public void run() {
         super.plugin.getConfigurationMenu().delete();
-        super.event.reply(MessageCreateData.fromEditData(super.plugin.getConfigurationMenu().update()))
+        super.interaction.reply(MessageCreateData.fromEditData(super.plugin.getConfigurationMenu().update()))
                 .queue(interactionHook -> interactionHook.retrieveOriginal()
                         .queue(message -> super.plugin.getConfigurationMenu().store(message)));
     }

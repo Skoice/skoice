@@ -58,23 +58,24 @@ public class ButtonInteractionListener extends ListenerAdapter {
             return;
         }
 
-        Member member = event.getMember();
         String buttonId = event.getButton().getId();
-        if (member == null || buttonId == null) {
+        if (buttonId == null) {
             return;
         }
+
+        Member member = event.getMember();
 
         if (buttonId.equals(Menu.MESSAGE_NOT_SHOWING_UP)) {
             event.reply(this.plugin.getLang().getMessage("discord.message-not-showing-up"))
                     .setEphemeral(true).queue();
 
-        } else if (member.hasPermission(Permission.MANAGE_SERVER)) {
+        } else if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
             if (this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
                 if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
                     event.getMessage().delete().queue();
                     if (this.plugin.getBot().getStatus() != BotStatus.READY) {
                         event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager")
-                                        .build(this.plugin.getBotCommands().getCommandMentions().get(CommandInfo.CONFIGURE.toString())))
+                                        .build(this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString())))
                                 .setEphemeral(true).queue();
                     }
 

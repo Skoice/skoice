@@ -24,8 +24,8 @@ import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.OfflinePlayer;
 
@@ -33,23 +33,23 @@ import java.util.UUID;
 
 public class UnlinkCommand extends Command {
 
-    public UnlinkCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteractionEvent event) {
-        super(plugin, executor, CommandInfo.UNLINK.isServerManagerRequired(), CommandInfo.UNLINK.isBotReadyRequired(), event);
+    public UnlinkCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteraction interaction) {
+        super(plugin, executor, CommandInfo.UNLINK.isServerManagerRequired(), CommandInfo.UNLINK.isBotReadyRequired(), interaction);
     }
 
     @Override
     public void run() {
         String minecraftId = MapUtil.getKeyFromValue(super.plugin.getLinksYamlFile().getLinks(), super.executor.getUser().getId());
         if (minecraftId == null) {
-            super.event.reply(super.plugin.getBot().getMenu("account-not-linked")
-                            .build(super.plugin.getBotCommands().getCommandMentions().get(CommandInfo.LINK.toString())))
+            super.interaction.reply(super.plugin.getBot().getMenu("account-not-linked")
+                            .build(super.plugin.getBotCommands().getAsMention(CommandInfo.LINK.toString())))
                     .setEphemeral(true).queue();
             return;
         }
 
         super.plugin.getLinksYamlFile().unlinkUser(minecraftId);
         LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getDiscordId().equals(super.executor.getUser().getId()));
-        super.event.reply(super.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
+        super.interaction.reply(super.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
 
         OfflinePlayer player = super.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
         if (player.isOnline() && player.getPlayer() != null) {

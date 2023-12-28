@@ -21,13 +21,15 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.TempYamlFile;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.function.Consumer;
 
@@ -70,22 +72,28 @@ public class ConfigurationMenu {
     }
 
     public void retrieveMessage(Consumer<Message> success) {
-        String guildId = this.plugin.getTempYamlFile()
-                .getString(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.GUILD_ID_FIELD);
+        String channelTypeString = this.plugin.getTempYamlFile()
+                .getString(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.CHANNEL_TYPE_FIELD);
+        if (Arrays.stream(ChannelType.values()).noneMatch(value -> value.toString().equalsIgnoreCase(channelTypeString))) {
+            return;
+        }
+        ChannelType channelType = ChannelType.valueOf(this.plugin.getTempYamlFile()
+                .getString(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.CHANNEL_TYPE_FIELD));
+
         String channelId = this.plugin.getTempYamlFile()
                 .getString(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.CHANNEL_ID_FIELD);
         String messageId = this.plugin.getTempYamlFile()
                 .getString(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.MESSAGE_ID_FIELD);
-        if (guildId == null || channelId == null || messageId == null) {
+        if (channelId == null || messageId == null) {
             return;
         }
 
-        Guild guild = this.plugin.getBot().getJDA().getGuildById(guildId);
-        if (guild == null) {
-            return;
+        MessageChannel channel;
+        if (channelType.isGuild()) {
+            channel = this.plugin.getBot().getJDA().getChannelById(GuildMessageChannel.class, channelId);
+        } else {
+            channel = this.plugin.getBot().getJDA().getPrivateChannelById(channelId);
         }
-
-        GuildMessageChannel channel = guild.getChannelById(GuildMessageChannel.class, channelId);
         if (channel == null) {
             return;
         }
@@ -105,9 +113,9 @@ public class ConfigurationMenu {
 
     public void store(Message message) {
         this.plugin.getTempYamlFile()
-                .set(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.GUILD_ID_FIELD, message.getGuild().getId());
+                .set(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.CHANNEL_TYPE_FIELD, message.getChannelType().toString());
         this.plugin.getTempYamlFile()
-                .set(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.CHANNEL_ID_FIELD, message.getGuildChannel().getId());
+                .set(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.CHANNEL_ID_FIELD, message.getChannelId());
         this.plugin.getTempYamlFile()
                 .set(TempYamlFile.CONFIG_MENU_FIELD + "." + TempYamlFile.MESSAGE_ID_FIELD, message.getId());
     }

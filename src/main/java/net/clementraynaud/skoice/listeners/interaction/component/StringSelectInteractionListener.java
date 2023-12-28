@@ -49,15 +49,18 @@ public class StringSelectInteractionListener extends ListenerAdapter {
 
     @Override
     public void onStringSelectInteraction(StringSelectInteractionEvent event) {
-        if (!event.getMessage().getAuthor().equals(event.getJDA().getSelfUser()) || event.getGuild() == null) {
+        Guild guild = this.plugin.getBot().getGuild(event.getInteraction());
+        if (!event.getMessage().getAuthor().equals(event.getJDA().getSelfUser()) || guild == null) {
             return;
         }
+
         if (!this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
             event.getMessage().delete().queue();
             return;
         }
+
         Member member = event.getMember();
-        if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
+        if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
             String componentId = event.getComponentId();
             List<SelectOption> options = new ArrayList<>(event.getComponent().getOptions());
 
@@ -65,14 +68,14 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                 case "server-selection":
                     if (this.plugin.getBot().getJDA().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
                         for (SelectOption server : options) {
-                            Guild guild = this.plugin.getBot().getJDA().getGuildById(server.getValue());
-                            if (guild != null && !event.getSelectedOptions().get(0).getValue().equals(server.getValue())) {
-                                if (event.getGuild().getId().equals(server.getValue())) {
+                            Guild guildToLeave = this.plugin.getBot().getJDA().getGuildById(server.getValue());
+                            if (guildToLeave != null && !event.getSelectedOptions().get(0).getValue().equals(server.getValue())) {
+                                if (guild.getId().equals(server.getValue())) {
                                     this.plugin.getConfigurationMenu().retrieveMessage(message ->
                                             message.delete().queue(success ->
-                                                    guild.leave().queue()));
+                                                    guildToLeave.leave().queue()));
                                 } else {
-                                    guild.leave().queue(success ->
+                                    guildToLeave.leave().queue(success ->
                                             event.editMessage(this.plugin.getConfigurationMenu().update()).queue());
                                 }
                             }
@@ -89,41 +92,38 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     break;
 
                 case "voice-channel-selection":
-                    Guild guild = event.getGuild();
-                    if (guild != null) {
-                        if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
-                            event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue();
+                    if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
+                        event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue();
+                    } else {
+                        if ("new-voice-channel".equals(event.getSelectedOptions().get(0).getValue())) {
+                            TextInput categoryName = TextInput.create("category-name",
+                                            this.plugin.getLang().getMessage("discord.text-input.category-name.label"),
+                                            TextInputStyle.SHORT)
+                                    .setValue(this.plugin.getLang().getMessage("discord.text-input.category-name.default-value"))
+                                    .setRequiredRange(1, 25)
+                                    .build();
+                            TextInput voiceChannelName = TextInput.create("voice-channel-name",
+                                            this.plugin.getLang().getMessage("discord.text-input.voice-channel-name.label"),
+                                            TextInputStyle.SHORT)
+                                    .setValue(this.plugin.getLang().getMessage("discord.text-input.voice-channel-name.default-value"))
+                                    .setRequiredRange(1, 25)
+                                    .build();
+                            Modal modal = Modal.create("new-voice-channel",
+                                            this.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.label"))
+                                    .addComponents(ActionRow.of(categoryName), ActionRow.of(voiceChannelName))
+                                    .build();
+                            event.replyModal(modal).queue();
                         } else {
-                            if ("new-voice-channel".equals(event.getSelectedOptions().get(0).getValue())) {
-                                TextInput categoryName = TextInput.create("category-name",
-                                                this.plugin.getLang().getMessage("discord.text-input.category-name.label"),
-                                                TextInputStyle.SHORT)
-                                        .setValue(this.plugin.getLang().getMessage("discord.text-input.category-name.default-value"))
-                                        .setRequiredRange(1, 25)
-                                        .build();
-                                TextInput voiceChannelName = TextInput.create("voice-channel-name",
-                                                this.plugin.getLang().getMessage("discord.text-input.voice-channel-name.label"),
-                                                TextInputStyle.SHORT)
-                                        .setValue(this.plugin.getLang().getMessage("discord.text-input.voice-channel-name.default-value"))
-                                        .setRequiredRange(1, 25)
-                                        .build();
-                                Modal modal = Modal.create("new-voice-channel",
-                                                this.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.label"))
-                                        .addComponents(ActionRow.of(categoryName), ActionRow.of(voiceChannelName))
-                                        .build();
-                                event.replyModal(modal).queue();
-                            } else {
-                                VoiceChannel voiceChannel = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
-                                if (voiceChannel != null && voiceChannel.getParentCategory() != null) {
-                                    this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(),
-                                            event.getSelectedOptions().get(0).getValue());
-                                    this.plugin.getBot().updateVoiceState();
-                                    new InterruptSystemTask(this.plugin).run();
-                                    this.plugin.getListenerManager().update(event.getUser());
-                                    this.plugin.getBot().muteMembers();
-                                }
-                                event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+                            VoiceChannel voiceChannel = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
+                            if (voiceChannel != null && voiceChannel.getParentCategory() != null) {
+                                this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(),
+                                        event.getSelectedOptions().get(0).getValue());
+                                this.plugin.getBot().updateVoiceState();
+                                new InterruptSystemTask(this.plugin).run();
+                                this.plugin.getListenerManager().update(event.getUser());
+                                this.plugin.getBot().muteMembers();
                             }
+                            event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
                         }
                     }
                     break;

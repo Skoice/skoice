@@ -20,20 +20,20 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 public class CommandFactory {
 
-    public Command getCommand(Skoice plugin, CommandInfo commandInfo, CommandExecutor executor, SlashCommandInteractionEvent event) {
+    public Command getCommand(Skoice plugin, CommandInfo commandInfo, CommandExecutor executor, SlashCommandInteraction interaction) {
         switch (commandInfo) {
             case CONFIGURE:
-                return new ConfigureCommand(plugin, executor, event);
+                return new ConfigureCommand(plugin, executor, interaction);
             case LINK:
-                return new LinkCommand(plugin, executor, event);
+                return new LinkCommand(plugin, executor, interaction);
             case UNLINK:
-                return new UnlinkCommand(plugin, executor, event);
+                return new UnlinkCommand(plugin, executor, interaction);
             case INVITE:
-                return new InviteCommand(plugin, executor, event);
+                return new InviteCommand(plugin, executor, interaction);
             default:
                 return null;
         }

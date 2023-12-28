@@ -19,18 +19,20 @@
 
 package net.clementraynaud.skoice.commands;
 
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 public class CommandExecutor {
 
-    private User user;
-    private boolean inGuild;
+    private final User user;
+    private final boolean inGuild;
     private boolean serverManager;
 
-    public CommandExecutor(User user, boolean inGuild, boolean serverManager) {
-        this.user = user;
-        this.inGuild = inGuild;
-        this.serverManager = serverManager;
+    public CommandExecutor(SlashCommandInteraction interaction) {
+        this.user = interaction.getUser();
+        this.inGuild = interaction.isFromGuild();
+        this.serverManager = interaction.getMember() != null && interaction.getMember().hasPermission(Permission.MANAGE_SERVER);
     }
 
     public User getUser() {
@@ -38,10 +40,14 @@ public class CommandExecutor {
     }
 
     public boolean isInGuild() {
-        return inGuild;
+        return this.inGuild;
     }
 
     public boolean isServerManager() {
         return this.serverManager;
+    }
+
+    public void setServerManager(boolean serverManager) {
+        this.serverManager = serverManager;
     }
 }

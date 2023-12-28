@@ -101,7 +101,7 @@ public class GenericChannelListener extends ListenerAdapter {
                     if (user != null && !user.isBot()) {
                         user.openPrivateChannel().queue(channel ->
                                 channel.sendMessage(this.plugin.getBot().getMenu("incomplete-configuration-alternative-server-manager")
-                                                .build(this.plugin.getBotCommands().getCommandMentions().get(CommandInfo.CONFIGURE.toString())))
+                                                .build(this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString())))
                                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
                         );
                     }

@@ -20,11 +20,13 @@
 package net.clementraynaud.skoice.listeners.interaction.command;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.commands.*;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import java.util.Arrays;
 
@@ -41,21 +43,29 @@ public class SlashCommandInteractionListener extends ListenerAdapter {
         if (Arrays.stream(CommandInfo.values()).noneMatch(value -> value.toString().equalsIgnoreCase(event.getName()))) {
             return;
         }
-
         CommandInfo commandInfo = CommandInfo.valueOf(event.getName().toUpperCase());
-
-        boolean serverManager = false;
-        Member member = event.getMember();
-        if (member != null && member.hasPermission(Permission.MANAGE_SERVER)) {
-            serverManager = true;
+        CommandExecutor executor = new CommandExecutor(event.getInteraction());
+        Command command = new CommandFactory().getCommand(this.plugin, commandInfo, executor, event.getInteraction());
+        if (command == null) {
+            return;
         }
 
-        CommandExecutor executor = new CommandExecutor(event.getUser(), event.isFromGuild(), serverManager);
+        if (!executor.isInGuild()
+                && this.plugin.getBot().getStatus() != BotStatus.MULTIPLE_GUILDS) {
+            this.plugin.getBot().getGuild().retrieveMember(executor.getUser()).queue(member -> {
+                if (member.hasPermission(Permission.MANAGE_SERVER)) {
+                    executor.setServerManager(true);
+                }
 
-        Command command = new CommandFactory().getCommand(this.plugin, commandInfo, executor, event);
+                if (command.canBeExecuted()) {
+                    command.run();
+                }
+            }, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MEMBER));
 
-        if (command != null && !command.cannotBeExecuted()) {
-            command.run();
+        } else {
+            if (command.canBeExecuted()) {
+                command.run();
+            }
         }
     }
 }

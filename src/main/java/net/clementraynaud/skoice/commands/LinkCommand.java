@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +31,8 @@ public class LinkCommand extends Command {
     private static final Map<String, String> discordIdCode = new HashMap<>();
     private static final Random random = new Random();
 
-    public LinkCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteractionEvent event) {
-        super(plugin, executor, CommandInfo.LINK.isServerManagerRequired(), CommandInfo.LINK.isBotReadyRequired(), event);
+    public LinkCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteraction interaction) {
+        super(plugin, executor, CommandInfo.LINK.isServerManagerRequired(), CommandInfo.LINK.isBotReadyRequired(), interaction);
     }
 
     public static Map<String, String> getDiscordIdCode() {
@@ -42,8 +42,8 @@ public class LinkCommand extends Command {
     @Override
     public void run() {
         if (super.plugin.getLinksYamlFile().getLinks().containsValue(super.executor.getUser().getId())) {
-            super.event.reply(super.plugin.getBot().getMenu("account-already-linked")
-                            .build(super.plugin.getBotCommands().getCommandMentions().get(CommandInfo.UNLINK.toString())))
+            super.interaction.reply(super.plugin.getBot().getMenu("account-already-linked")
+                            .build(super.plugin.getBotCommands().getAsMention(CommandInfo.UNLINK.toString())))
                     .setEphemeral(true).queue();
             return;
         }
@@ -55,6 +55,6 @@ public class LinkCommand extends Command {
             code = String.format("%06d", number);
         } while (LinkCommand.discordIdCode.containsValue(code));
         LinkCommand.discordIdCode.put(super.executor.getUser().getId(), code);
-        super.event.reply(this.plugin.getBot().getMenu("verification-code").build(code)).setEphemeral(true).queue();
+        super.interaction.reply(this.plugin.getBot().getMenu("verification-code").build(code)).setEphemeral(true).queue();
     }
 }

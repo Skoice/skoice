@@ -26,7 +26,6 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,7 +34,7 @@ public class BotCommands {
 
     private final Skoice plugin;
 
-    private final Map<String, String> commandMentions = new HashMap<>();
+    private final Map<String, String> mentions = new HashMap<>();
 
     public BotCommands(Skoice plugin) {
         this.plugin = plugin;
@@ -45,7 +44,7 @@ public class BotCommands {
         this.plugin.getBot().getJDA().updateCommands().addCommands(this.getCommands()).queue();
 
         this.plugin.getBot().getJDA().retrieveCommands()
-                .queue(commands -> commands.forEach(command -> this.commandMentions.put(command.getName(), command.getAsMention())));
+                .queue(commands -> commands.forEach(command -> this.mentions.put(command.getName(), command.getAsMention())));
     }
 
     public void clearGuildCommands() {
@@ -59,7 +58,7 @@ public class BotCommands {
                 .collect(Collectors.toSet());
     }
 
-    public Map<String, String> getCommandMentions() {
-        return this.commandMentions;
+    public String getAsMention(String command) {
+        return this.mentions.get(command);
     }
 }
