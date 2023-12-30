@@ -50,7 +50,6 @@ public abstract class Command {
         }
 
         if (this.serverManagerRequired
-                && this.executor.isInGuild()
                 && !this.executor.isServerManager()) {
             this.interaction.reply(this.plugin.getBot().getMenu("access-denied").build())
                     .setEphemeral(true).queue();
