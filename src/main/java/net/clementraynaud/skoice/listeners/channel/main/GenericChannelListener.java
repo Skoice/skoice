@@ -111,8 +111,7 @@ public class GenericChannelListener extends ListenerAdapter {
     }
 
     private void reloadVoiceChannelMenu() {
-        if ("voice-channel".equals(this.plugin.getConfigurationMenu().getMenuId())
-                && this.plugin.getBot().getStatus() == BotStatus.READY) {
+        if ("voice-channel".equals(this.plugin.getConfigurationMenu().getMenuId())) {
             this.plugin.getConfigurationMenu().retrieveMessage(message ->
                     message.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue());
         }
