@@ -169,7 +169,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-beta.18</version>
+            <version>5.0.0-beta.19</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
