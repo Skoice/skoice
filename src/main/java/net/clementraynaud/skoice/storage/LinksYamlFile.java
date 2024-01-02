@@ -43,10 +43,20 @@ public class LinksYamlFile extends YamlFile {
     }
 
     public void linkUser(String minecraftId, String discordId) {
-        super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
+        this.linkUserDirectly(minecraftId, discordId);
+        super.plugin.getDiscordSRVHook().linkUser(minecraftId, discordId);
     }
 
     public void unlinkUser(String minecraftId) {
+        this.unlinkUserDirectly(minecraftId);
+        super.plugin.getDiscordSRVHook().unlinkUser(minecraftId);
+    }
+
+    public void linkUserDirectly(String minecraftId, String discordId) {
+        super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
+    }
+
+    public void unlinkUserDirectly(String minecraftId) {
         super.remove(LinksYamlFile.LINKS_FIELD + "." + minecraftId);
 
         OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));

@@ -23,6 +23,7 @@ import com.bugsnag.Bugsnag;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
+import net.clementraynaud.skoice.hooks.discordsrv.DiscordSRVHook;
 import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
@@ -63,6 +64,7 @@ public class Skoice extends JavaPlugin {
     private ConfigurationMenu configurationMenu;
     private BukkitAudiences adventure;
     private Bugsnag bugsnag;
+    private DiscordSRVHook discordSRVHook;
 
     @Override
     public void onEnable() {
@@ -97,6 +99,8 @@ public class Skoice extends JavaPlugin {
             this.listenerManager.update();
         }
         new SkoiceCommand(this).init();
+        this.discordSRVHook = new DiscordSRVHook(this);
+        this.discordSRVHook.initialize();
         this.addCustomCharts();
         this.setupBugsnag();
         new Updater(this, this.getFile().getAbsolutePath());
@@ -121,6 +125,9 @@ public class Skoice extends JavaPlugin {
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));
         if (this.adventure != null) {
             this.adventure.close();
+        }
+        if (this.discordSRVHook != null) {
+            this.discordSRVHook.close();
         }
     }
 
@@ -262,5 +269,9 @@ public class Skoice extends JavaPlugin {
 
     public Bugsnag getBugsnag() {
         return this.bugsnag;
+    }
+
+    public DiscordSRVHook getDiscordSRVHook() {
+        return this.discordSRVHook;
     }
 }
