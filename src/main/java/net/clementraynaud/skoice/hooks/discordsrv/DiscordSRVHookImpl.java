@@ -39,14 +39,18 @@ public class DiscordSRVHookImpl {
 
     public void linkUser(String minecraftId, String discordId) {
         try {
-            DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, UUID.fromString(minecraftId));
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () ->
+                    DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, UUID.fromString(minecraftId))
+            );
         } catch (Throwable ignored) {
         }
     }
 
     public void unlinkUser(String minecraftId) {
         try {
-            DiscordSRV.getPlugin().getAccountLinkManager().unlink(UUID.fromString(minecraftId));
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () ->
+                    DiscordSRV.getPlugin().getAccountLinkManager().unlink(UUID.fromString(minecraftId))
+            );
         } catch (Throwable ignored) {
         }
     }
@@ -91,7 +95,9 @@ public class DiscordSRVHookImpl {
             try {
                 UUID uuid = UUID.fromString(minecraftId);
                 if (!existingHookLinks.containsValue(uuid)) {
-                    DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, uuid);
+                    this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () ->
+                            DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, uuid)
+                    );
                 }
             } catch (IllegalArgumentException ignored) {
             }
