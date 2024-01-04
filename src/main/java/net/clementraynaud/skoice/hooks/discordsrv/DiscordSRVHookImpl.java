@@ -57,14 +57,14 @@ public class DiscordSRVHookImpl {
 
     @Subscribe
     public void onAccountLinked(AccountLinkedEvent event) {
-        if (this.isDiscordReady) {
+        if (this.isDiscordReady && event.getUser() != null && event.getPlayer() != null) {
             this.plugin.getLinksYamlFile().linkUserDirectly(event.getPlayer().getUniqueId().toString(), event.getUser().getId());
         }
     }
 
     @Subscribe
     public void onAccountUnlinked(AccountUnlinkedEvent event) {
-        if (this.isDiscordReady) {
+        if (this.isDiscordReady && event.getPlayer() != null) {
             this.plugin.getLinksYamlFile().unlinkUserDirectly(event.getPlayer().getUniqueId().toString());
         }
     }
@@ -87,7 +87,7 @@ public class DiscordSRVHookImpl {
 
         existingHookLinks.forEach((discordId, minecraftId) -> {
             if (!existingSkoiceLinks.containsValue(discordId)) {
-                this.plugin.getLinksYamlFile().linkUser(minecraftId.toString(), discordId);
+                this.plugin.getLinksYamlFile().linkUserDirectly(minecraftId.toString(), discordId);
             }
         });
 
