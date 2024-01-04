@@ -63,7 +63,6 @@ public class UnlinkCommand extends ListenerAdapter {
             }
 
             this.plugin.getLinksYamlFile().unlinkUser(minecraftId);
-            LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getDiscordId().equals(event.getMember().getId()));
             event.reply(this.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
 
             OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
