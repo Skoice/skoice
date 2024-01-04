@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.storage;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -28,6 +29,7 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +56,10 @@ public class LinksYamlFile extends YamlFile {
 
     public void linkUserDirectly(String minecraftId, String discordId) {
         super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
+        Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
+        if (player != null && player.isOnline()) {
+            LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, discordId));
+        }
     }
 
     public void unlinkUserDirectly(String minecraftId) {
@@ -66,6 +72,8 @@ public class LinksYamlFile extends YamlFile {
         Networks.getAll().stream()
                 .filter(network -> network.contains(player.getPlayer()))
                 .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(player.getPlayer()));
+
+        LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(player));
     }
 
     public Map<String, String> getLinks() {

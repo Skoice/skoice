@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
@@ -48,7 +47,6 @@ public class UnlinkCommand extends Command {
         }
 
         super.plugin.getLinksYamlFile().unlinkUser(minecraftId);
-        LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getDiscordId().equals(super.executor.getUser().getId()));
         super.interaction.reply(super.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
 
         OfflinePlayer player = super.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
