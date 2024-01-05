@@ -58,6 +58,9 @@ public class DiscordSRVHookImpl {
     @Subscribe
     public void onAccountLinked(AccountLinkedEvent event) {
         if (this.isDiscordReady && event.getUser() != null && event.getPlayer() != null) {
+            if (this.plugin.getLinksYamlFile().getLinks().containsKey(event.getPlayer().getUniqueId().toString())) {
+                return;
+            }
             this.plugin.getLinksYamlFile().linkUserDirectly(event.getPlayer().getUniqueId().toString(), event.getUser().getId());
         }
     }
@@ -65,6 +68,9 @@ public class DiscordSRVHookImpl {
     @Subscribe
     public void onAccountUnlinked(AccountUnlinkedEvent event) {
         if (this.isDiscordReady && event.getPlayer() != null) {
+            if (this.plugin.getLinksYamlFile().getLinks().get(event.getPlayer().getUniqueId().toString()) == null) {
+                return;
+            }
             this.plugin.getLinksYamlFile().unlinkUserDirectly(event.getPlayer().getUniqueId().toString());
         }
     }
