@@ -88,10 +88,8 @@ public class Updater {
                         this.plugin.getDescription().getVersion(), version));
                 try {
                     Files.delete(update.getAbsoluteFile().toPath());
-                } catch (IOException exception2) {
-                    this.plugin.getBugsnag().notify(exception2);
+                } catch (IOException ignored) {
                 }
-                this.plugin.getBugsnag().notify(exception);
             }
         });
     }

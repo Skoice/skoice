@@ -19,7 +19,6 @@
 
 package net.clementraynaud.skoice;
 
-import com.bugsnag.Bugsnag;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
@@ -51,7 +50,6 @@ public class Skoice extends JavaPlugin {
 
     private static final String OUTDATED_MINECRAFT_SERVER_ERROR = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
     private static final int SERVICE_ID = 11380;
-    private static final String BUGSNAG_KEY = "";
 
     private Lang lang;
     private ConfigYamlFile configYamlFile;
@@ -63,7 +61,6 @@ public class Skoice extends JavaPlugin {
     private BotCommands botCommands;
     private ConfigurationMenu configurationMenu;
     private BukkitAudiences adventure;
-    private Bugsnag bugsnag;
     private DiscordSRVHook discordSRVHook;
 
     @Override
@@ -102,7 +99,6 @@ public class Skoice extends JavaPlugin {
         this.discordSRVHook = new DiscordSRVHook(this);
         this.discordSRVHook.initialize();
         this.addCustomCharts();
-        this.setupBugsnag();
         new Updater(this, this.getFile().getAbsolutePath());
     }
 
@@ -114,9 +110,6 @@ public class Skoice extends JavaPlugin {
     public void onDisable() {
         if (!this.isMinecraftServerCompatible()) {
             return;
-        }
-        if (this.bugsnag != null) {
-            this.bugsnag.close();
         }
         if (this.bot.getJDA() != null) {
             new InterruptSystemTask(this).run();
@@ -159,52 +152,6 @@ public class Skoice extends JavaPlugin {
         metrics.addCustomChart(ChartUtil.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
 
         metrics.addCustomChart(new SimplePie("botStatus", () -> this.bot.getStatus().toString()));
-    }
-
-    private void setupBugsnag() {
-        if (Skoice.BUGSNAG_KEY.isEmpty()) {
-            return;
-        }
-        this.bugsnag = new Bugsnag(Skoice.BUGSNAG_KEY);
-        this.bugsnag.setAppVersion(this.getDescription().getVersion());
-
-        this.bugsnag.addCallback(report -> {
-            StackTraceElement[] trace = report.getException().getStackTrace();
-            boolean reportError = false;
-            for (StackTraceElement element : trace) {
-                if (element.getClassName().startsWith("net.clementraynaud.skoice")) {
-                    reportError = true;
-                    break;
-                }
-            }
-            if (!reportError) {
-                report.cancel();
-                return;
-            }
-
-            report.addToTab("server", "version", this.getServer().getVersion());
-            report.addToTab("server", "bukkitVersion", this.getServer().getBukkitVersion());
-
-            this.getSharedConfigFields().forEach(field ->
-                    report.addToTab("app", field.toCamelCase(), this.configYamlFile.getString(field.toString()))
-            );
-
-            this.getSharedIntConfigFields().forEach(field ->
-                    report.addToTab("app", field.toCamelCase(), this.configYamlFile.getInt(field.toString()))
-            );
-
-            report.addToTab("app", ConfigField.LANG.toCamelCase(), LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())).getFullName());
-
-            int linkedUsers = this.linksYamlFile.getLinks().size();
-            report.addToTab("app", "linkedUsers", linkedUsers);
-            report.addToTab("app", "botStatus", this.bot.getStatus().toString());
-        });
-
-        this.bugsnag.setAutoCaptureSessions(false);
-        if (!this.configYamlFile.contains(ConfigField.SESSION_REPORTED.toString())) {
-            this.bugsnag.startSession();
-            this.configYamlFile.set(ConfigField.SESSION_REPORTED.toString(), true);
-        }
     }
 
     private Set<ConfigField> getSharedConfigFields() {
@@ -265,10 +212,6 @@ public class Skoice extends JavaPlugin {
 
     public ConfigurationMenu getConfigurationMenu() {
         return this.configurationMenu;
-    }
-
-    public Bugsnag getBugsnag() {
-        return this.bugsnag;
     }
 
     public DiscordSRVHook getDiscordSRVHook() {
