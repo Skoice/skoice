@@ -22,12 +22,12 @@ logger:
   warning:
     outdated-version: "You are using an outdated version (%s). Download the latest version (%s) here: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
     no-token: "Token not set. Join your Minecraft server to set up Skoice."
-    no-guild: "Your bot is not on a Discord server. Open this link to invite it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    no-guild: "Your bot is not on a Discord server. Open this link to invite it: %s."
     multiple-guilds: "Your bot is on multiple Discord servers. Type \"/configure\" on your Discord server to choose one."
     no-voice-channel: "Voice channel not set. Type \"/configure\" on your Discord server to set up Skoice."
     no-radius: "Radius not set. Type \"/configure\" on your Discord server to set up Skoice."
   error:
-    missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."
     bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: https://discordstatus.com."
   exception:
@@ -44,7 +44,7 @@ minecraft:
       no-guild-interactive:
         - "%s Your bot is &cnot on a Discord server&7. Open "
         - " &7to invite it."
-      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
+      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &b%s&7."
       bot-connecting: "%s Your bot is &aattempting to connect&7."
       bot-connected: "%s Your bot is &anow connected&7."
       bot-connected-incomplete-configuration-discord: "%s Your bot is &anow connected&7. Type \"&e/configure&7\" on your Discord server to set it up."

@@ -32,6 +32,7 @@ import net.clementraynaud.skoice.menus.selectmenus.ToggleSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.VoiceChannelSelectMenu;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
@@ -220,10 +221,11 @@ public class Menu {
                             this.plugin.getLang().getMessage("discord.button-label.resume-configuration"))
                     .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
         } else if ("permissions".equals(this.menuId)) {
-            additionalButtons.add(Button.link("https://discord.com/api/oauth2/authorize?client_id="
-                            + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
-                            + "&permissions=8&scope=bot%20applications.commands", "Update Permissions")
-                    .withEmoji(this.emoji.get()));
+            this.plugin.getBot().getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+                applicationInfo.setRequiredScopes("applications.commands");
+                additionalButtons.add(Button.link(applicationInfo.getInviteUrl(Permission.ADMINISTRATOR), "Update Permissions")
+                        .withEmoji(this.emoji.get()));
+            });
         } else if ("range".equals(this.menuId) && this.plugin.getBot().getStatus() == BotStatus.READY) {
             additionalButtons.add(Button.primary("customize",
                             this.plugin.getLang().getMessage("discord.field.customize.title"))

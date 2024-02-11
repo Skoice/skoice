@@ -281,16 +281,20 @@ public class Bot {
                 List<Guild> guilds = this.getJDA().getGuilds();
                 if (guilds.isEmpty()) {
                     this.status = BotStatus.NO_GUILD;
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-guild",
-                            this.getJDA().getSelfUser().getApplicationId()));
+                    this.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+                        applicationInfo.setRequiredScopes("applications.commands");
+                        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-guild", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
+                    });
                 } else if (guilds.size() > 1) {
                     this.status = BotStatus.MULTIPLE_GUILDS;
                     this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
                 }
             } else if (!this.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                 this.status = BotStatus.MISSING_PERMISSION;
-                this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission",
-                        this.getJDA().getSelfUser().getApplicationId()));
+                this.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+                    applicationInfo.setRequiredScopes("applications.commands");
+                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
+                });
             } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
                 this.status = BotStatus.NO_VOICE_CHANNEL;
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-voice-channel"));
@@ -342,21 +346,23 @@ public class Bot {
 
     public void sendNoGuildAlert(Player player) {
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-            this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
-                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link",
-                                    "https://discord.com/api/oauth2/authorize?client_id="
-                                            + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
-                                            + "&permissions=8&scope=bot%20applications.commands"))
-                            )
-                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discord.com/api/oauth2/authorize?client_id="
-                                    + this.plugin.getBot().getJDA().getSelfUser().getApplicationId()
-                                    + "&permissions=8&scope=bot%20applications.commands")
-                            )
-                    )
-            );
+            this.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+                applicationInfo.setRequiredScopes("applications.commands");
+                String inviteUrl = applicationInfo.getInviteUrl(Permission.ADMINISTRATOR);
+                this.plugin.adventure().player(player).sendMessage(
+                        this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive",
+                                this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
+                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", inviteUrl)))
+                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl(inviteUrl))
+                        )
+                );
+            });
         } else {
-            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild",
-                    this.plugin.getBot().getJDA().getSelfUser().getApplicationId()));
+            this.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+                applicationInfo.setRequiredScopes("applications.commands");
+                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild",
+                        applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
+            });
         }
     }
 
