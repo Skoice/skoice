@@ -57,6 +57,7 @@ public class Menu {
     private final MenuStyle style;
     private final String parent;
     private final String[] fields;
+    private String inviteUrl;
 
     public Menu(Skoice plugin, ConfigurationSection menu) {
         this.plugin = plugin;
@@ -69,6 +70,10 @@ public class Menu {
         this.style = menu.contains("style") ? MenuStyle.valueOf(menu.getString("style").toUpperCase()) : null;
         this.parent = menu.contains("parent") ? menu.getString("parent") : null;
         this.fields = menu.getStringList("fields").toArray(new String[0]);
+        this.plugin.getBot().getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+            applicationInfo.setRequiredScopes("applications.commands");
+            this.inviteUrl = applicationInfo.getInviteUrl(Permission.ADMINISTRATOR);
+        });
     }
 
     public MessageCreateData build(String... args) {
@@ -221,11 +226,8 @@ public class Menu {
                             this.plugin.getLang().getMessage("discord.button-label.resume-configuration"))
                     .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
         } else if ("permissions".equals(this.menuId)) {
-            this.plugin.getBot().getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
-                applicationInfo.setRequiredScopes("applications.commands");
-                additionalButtons.add(Button.link(applicationInfo.getInviteUrl(Permission.ADMINISTRATOR), "Update Permissions")
-                        .withEmoji(this.emoji.get()));
-            });
+            additionalButtons.add(Button.link(this.inviteUrl, "Update Permissions")
+                    .withEmoji(this.emoji.get()));
         } else if ("range".equals(this.menuId) && this.plugin.getBot().getStatus() == BotStatus.READY) {
             additionalButtons.add(Button.primary("customize",
                             this.plugin.getLang().getMessage("discord.field.customize.title"))
