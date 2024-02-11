@@ -22,13 +22,12 @@ logger:
   warning:
     outdated-version: "Şu anda eski bir sürüm (%s) kullanıyorsunuz. Buradan son sürümü (%s) indirebilirsiniz: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
     no-token: "Token belirlenmemiş. Skoice'i kurmak için Minecraft sunucunuza bağlanın."
-    no-guild: "Botunuz bir Discord sunucusunda değil. Bu bağlantıya tıklayarak ekleyebilirsiniz: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    no-guild: "Your bot is not on a Discord server. Open this link to invite it: %s."
     multiple-guilds: "Botunuz birden fazla Discord sunucusunda bulunuyor. Sadece birini seçmek için \"/configure\" komutunu kullanmalısınız."
     no-voice-channel: "Ses kanalı belirlenmemiş. Discord sunucunuzda \"/configure\" komutunu kullanarak Skoice'i kurabilirsiniz."
     no-radius: "Konuşma uzaklığı belirlenmemiş. Discord sunucunuzda \"/configure\" komutunu kullanarak Skoice'i kurabilirsiniz."
   error:
-    missing-permission: "Discord sunucunuzda botunuza \"Yönetici\" yetkisini vermeniz gerekiyor. Bu bağlantıyı kullanarak botunuzu tekrar ekleyin: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "\"%s\" Adındaki Discord sunucunuzda botunuzun slaş komutları kullanmasına izin vermediniz. Bu bağlantıyı kullanarak botunuzu tekrar ekleyin ve Minecraft sunucunuzu yeniden başlatın: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "Botun bağlanamadı. Tokeni güncellemek için \"/skoice token <yeniToken>\" komutunu kullanın."
     bot-timed-out: "Bilinmeyen bir sorun botunuzun bağlanmasını engelliyor. İnternet bağlantınızı kontrol edin ve en sonki Discord kesintilerine göz atın: https://discordstatus.com."
   exception:
@@ -45,13 +44,12 @@ minecraft:
       no-guild-interactive:
         - "%s Botun &cbir Discord sunucusunda değil&7. Davet etmek için "
         - " &7bağlantısına tıklayın."
-      no-guild: "%s Botun &cbir Discord sunucusunda değil&7. Sunucuna eklemek için bu sayfayı aç: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
+      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &b%s&7."
       bot-connecting: "%s Botunuz &abağlanmaya çalışıyor&7."
       bot-connected: "%s Botunuz &abağlandı&7."
       bot-connected-incomplete-configuration-discord: "%s Botunuz &abağlandı&7. \"&e/configure&7\" komutunu Discord sunucunuzda kullanarak kurun."
       bot-already-connected: "%s Tokeni &agüncelledin&7. Botuna bağlanmak için Minecraft sunucunu yeniden başlat."
       bot-could-not-connect: "%s Botun &cbağlanamadı&7. Geçerli bir token ile tekrardan deneyin."
-      missing-access: "%s \"&e%s&7\" Adındaki Discord sunucunuzda botunuzun &cslaş komutları kullanmaya izni yok&7. Bu bağlantıyı kullanarak botunuzu tekrar ekleyin ve Minecraft sunucunuzu yeniden başlatın: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
       incomplete-configuration: "%s Skoice &cdoğru yapılandırılmamış&7. Lütfen sunucunun bir yöneticisi ile görüşün."
       incomplete-configuration-operator-interactive:
         - "%s Skoice artık &cdoğru olarak yapılandırıldı&7. Kurmak için "
@@ -192,7 +190,7 @@ discord:
   field:
     configuration-complete:
       title: "Yapılandırma Tamamlandı"
-      description: "Skoice ayarlandı. Minecraft hesabınızı Discord ile bağlamak için Discord sunucunuzda \"/link\" komutunu kullanın. Sesli sohbeti kullanabilmek için hesaplarınızı bağlamanız gerekiyor."
+      description: "Skoice is now configured. Type %s to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     notified-players-cleared:
       title: "Bildirilen Oyuncular Temizlendi"
       description: "Bildirilen oyuncuları temizledin. Hesaplarını bağlamaları için zaten bildirim almış oyuncular tekrardan bildirilecek."
@@ -201,10 +199,10 @@ discord:
       description: "Skoice doğru yapılandırılmamış. Lütfen sunucunun bir yöneticisi ile görüşün."
     incomplete-configuration-server-manager:
       title: "Tamamlanmamış Yapılandırma"
-      description: "Yapılandırmayı tamamlamak ve Skoice'i kullanmak için Discord sunucunuzda `/configure` komutunu kullanın."
+      description: "Type %s to complete the configuration and use Skoice."
     incomplete-configuration-alternative-server-manager:
       title: "Tamamlanmamış Yapılandırma"
-      description: "Ana ses kanalı taşınmış veya silinmiş. `/configure` komutunu Discord sunucunuzda kullanarak Skoice'in yapılandırmasını tamamlayabilir ve kullanabilirsiniz."
+      description: "You have either moved or deleted the main voice channel. Type %s to complete the configuration and use Skoice."
     download:
       title: "İndir"
       description: "[Eklentiyi indir](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) ve Minecraft sunucuna kur."
@@ -237,19 +235,13 @@ discord:
       description: "Discord hesabın ile Minecraft hesabının bağlantısı kesildi."
     account-not-linked:
       title: "Hesaplar Bağlı Değil"
-      description: "Discord hesabın Minecraft ile bağlanmamış. \"%s\" adlı Discord sunucusunda `/link` komutunu kullanarak bağlayabilir ve proximity chat'i kullanabilirsin."
+      description: "Your Discord account is not linked to Minecraft. Type %s to link it and use the proximity voice chat."
     account-already-linked:
       title: "Hesap Zaten Bağlanmış"
-      description: "Discord hesabın zaten bir Minecraft hesabına bağlı. İstersen `/unlink` komutu ile bağlantıyı kesebilirsin."
+      description: "Your Discord account is already linked to Minecraft. Type %s to unlink it."
     access-denied:
       title: "Erişim Reddedildi"
       description: "Bu eylemi gerçekleştirmek için gerekli yetkiye sahip değilsin."
-    too-many-interactions:
-      title: "Çok Fazla Komut"
-      description: "Komutları çok hızlı kullanıyorsun."
-    illegal-interaction:
-      title: "Geçersiz Etkileşim"
-      description: "Botu sadece bir Discord sunucunda kullanabilirsin."
     illegal-value:
       title: "Geçersiz Değer"
       description: "Değerler 0'dan büyük bir tam sayı olmalıdır."

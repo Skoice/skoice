@@ -22,13 +22,12 @@ logger:
   warning:
     outdated-version: "古いバージョン (%s) を使用しています。最新バージョン (%s) をここからダウンロードしてください: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861"
     no-token: "トークンが設定されていません。Minecraftサーバーに参加して、Skoiceを設定してください。"
-    no-guild: "あなたのbotはDiscordサーバーにいません。次のリンクを開いて招待してください: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands"
+    no-guild: "Your bot is not on a Discord server. Open this link to invite it: %s."
     multiple-guilds: "あなたのbotは複数のDiscordサーバーにいます。Discordサーバーで「/configure」と入力し、1つを選択してください。"
     no-voice-channel: "ボイスチャンネルが設定されていません。Discordサーバーで「/configure」と入力し、Skoiceを設定してください。"
     no-radius: "範囲が設定されていません。「/configure」をDiscordサーバーで入力して、Skoiceを設定してください。"
   error:
-    missing-permission: "あなたのDiscordサーバーでbotに管理者権限が付与されていません。次のリンクを開いて追加してください: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands"
-    missing-access: "Discordサーバー「%s」にコマンドを追加する権限がbotに付与されていません。次のリンクを開いて権限を追加し、Minecraftサーバーを再起動してください: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "botが接続できませんでした。トークンを更新するには、「/skoice token」に続けて新しいトークンを入力してください。"
     bot-timed-out: "問題によりbotが接続できませんでした。ネットワークの接続状況を確認するとともに、最新のDiscordの停止状況を確認してください: https://discordstatus.com"
   exception:
@@ -45,13 +44,12 @@ minecraft:
       no-guild-interactive:
         - "%s あなたのbotが&cDiscordサーバーに存在しません&7。Open "
         - " &7を開いて招待します。"
-      no-guild: "%s あなたのbotが&cDiscordサーバーに存在しません&7。 次のページを開いて招待してください: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7"
+      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &b%s&7."
       bot-connecting: "%s あなたのbotが&a接続を試みています&7。"
       bot-connected: "%s あなたのbotが&a接続されました&7。"
       bot-connected-incomplete-configuration-discord: "%s あなたのbotが&a接続されました&7。Discordサーバーに「&e/configure&7」 と入力してセットアップしてください。"
       bot-already-connected: "%s &aトークンを更新しました&7。botを接続するにはMinecraftサーバーを再起動してください。"
       bot-could-not-connect: "%s あなたのbotは&c接続できませんでした&7。有効なトークンでもう一度やりなおしてください。"
-      missing-access: "%s Discordサーバー「&e%s&7」に&cコマンドを追加する権限がbotに付与されていません&7。次のリンクを開いて権限を追加し、Minecraftサーバーを再起動してください: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7"
       incomplete-configuration: "%s Skoiceが&c正しく設定されていません&7。サーバーの管理者に連絡してください。"
       incomplete-configuration-operator-interactive:
         - "%s Skoiceが&c正しく設定されていません&7。Click "
@@ -192,7 +190,7 @@ discord:
   field:
     configuration-complete:
       title: "設定完了"
-      description: "Skoiceが設定されました。Discordサーバーで `/link` と入力して、DiscordアカウントとMinecraftをリンクしてください。プレイヤーは近接ボイスチャットを使用するためにアカウントをリンクする必要があります。"
+      description: "Skoice is now configured. Type %s to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     notified-players-cleared:
       title: "通知されたプレイヤーの消去"
       description: "通知を受け取ったプレイヤーを消去しました。既に通知を受け取っていたプレイヤーは再度通知されるようになります。"
@@ -201,10 +199,10 @@ discord:
       description: "Skoiceが正しく設定されていません。サーバーの管理者に連絡してください。"
     incomplete-configuration-server-manager:
       title: "未完了の設定"
-      description: "Skoiceを使用するには、Discordサーバーに `/configure` と入力して設定を完了してください。"
+      description: "Type %s to complete the configuration and use Skoice."
     incomplete-configuration-alternative-server-manager:
       title: "未完了の設定"
-      description: "メインのボイスチャンネルが移動または削除されました。Skoiceを使用するには、Discordサーバーに `/configure` と入力して設定を完了してください。"
+      description: "You have either moved or deleted the main voice channel. Type %s to complete the configuration and use Skoice."
     download:
       title: "ダウンロード"
       description: "[プラグインを入手](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) して、あなたのMinecraftサーバーにインストールしてください。"
@@ -237,19 +235,13 @@ discord:
       description: "あなたのDiscordアカウントはMinecraftからリンク解除されました。"
     account-not-linked:
       title: "アカウントがリンクされていない"
-      description: "あなたのDiscordアカウントはMinecraftにリンクされていません。近接ボイスチャットを使用するには、Discordサーバー「%s」に `/link` と入力してリンクします。"
+      description: "Your Discord account is not linked to Minecraft. Type %s to link it and use the proximity voice chat."
     account-already-linked:
       title: "アカウントリンク済み"
-      description: "あなたのDiscordアカウントは既にMinecraftにリンクされています。リンクを解除するには `/unlink` と入力してください。"
+      description: "Your Discord account is already linked to Minecraft. Type %s to unlink it."
     access-denied:
       title: "アクセス拒否"
       description: "あなたはこの操作を実行するのに必要な権限がありません。"
-    too-many-interactions:
-      title: "操作が多すぎます"
-      description: "コマンドを実行するのが速すぎます"
-    illegal-interaction:
-      title: "不正な操作"
-      description: "Discordサーバー上でのみbotとやり取りできます。"
     illegal-value:
       title: "不正な値"
       description: "値は 0 より大きい数値でなければなりません。"

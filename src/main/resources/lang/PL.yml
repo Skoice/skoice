@@ -22,13 +22,12 @@ logger:
   warning:
     outdated-version: "Używasz przestarzałej wersji (%s). Pobierz najnowszą wersję (%s) tutaj: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
     no-token: "Token nie ustawiony. Dołącz do swojego serwera Minecraft, aby skonfigurować Skoice."
-    no-guild: "Twój bot nie jest na serwerze Discord. Otwórz ten link, aby go zaprosić: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    no-guild: "Your bot is not on a Discord server. Open this link to invite it: %s."
     multiple-guilds: "Twój bot jest na kilku serwerach discord. Wpisz \"/configure\" na twoim serwerze Discord, aby wybrać jeden."
     no-voice-channel: "Kanał głosowy nie został ustawiony. Wpisz \"/configure\" na twoim serwerze Discord, aby skonfigurować Skoice."
     no-radius: "Zasięg nie został ustawiony. Wpisz \"/configure\" na twoim serwerze Discord, aby skonfigurować Skoice."
   error:
-    missing-permission: "Nie dałeś swojemu botowi uprawnienia \"Administrator\" na twoim serwerze discord. Otwórz ten link aby je dodać: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "Nie nadałeś botowi uprawnień do rejestracji poleceń na serwerze Discord \"%s\". Otwórz ten link, aby dodać go i uruchom ponownie swój serwer Minecraft: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "Twój bot nie mógł się połączyć. Aby zaktualizować token, wpisz \"/skoice token\" po czym wpisz nowy token."
     bot-timed-out: "Problem uniemożliwił połączenie twojego bota. Sprawdź stan połączenia z siecią i poszukaj ostatnich błędów Discord tutaj: https://discordstatus.com."
   exception:
@@ -45,13 +44,12 @@ minecraft:
       no-guild-interactive:
         - "%s Twój bot &cnie jest na serwerze discord&7. Otwórz "
         - " &7aby go zaprosić."
-      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
+      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &b%s&7."
       bot-connecting: "%s Twój bot &apróbuje się połączyć&7."
       bot-connected: "%s Twój bot jest teraz &aPołączony&7."
       bot-connected-incomplete-configuration-discord: "%s Twoj bot jest teraz &aPołączony&7. Wpisz \"&e/configure&7\" na twoim serwerze Discord aby go skonfigurować."
       bot-already-connected: "%s&aZaktualizowałeś token&7. Zrestartuj swój serwer Minecraft aby go połączyć."
       bot-could-not-connect: "%s Twój bot &cnie mógł się połączyć&7. Spróbuj jeszcze raz z poprawnym tokenem."
-      missing-access: "%s &cNie nadałeś botowi uprawnień do rejestracji poleceń &7na serwerze Discord \"&e%s&7\". Otwórz ten link, aby dodać go i uruchom ponownie swój serwer Minecraft: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice jest &cźle skonfigurowany&7. Skontaktuj się z administratorem."
       incomplete-configuration-operator-interactive:
         - "%s Skoice jest &cźle skonfigurowany&7. Kliknij "
@@ -143,7 +141,8 @@ discord:
       description: "Manage other parameters."
     language:
       title: "Język"
-      description: "Wybierz język używany do wyświetlania wiadomości."
+      description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
+      shortened-description: "Choose the language used to display messages."
     in-game-messages:
       title: "In-Game Messages"
       description: "Manage the messages sent to players on your Minecraft server."
@@ -191,7 +190,7 @@ discord:
   field:
     configuration-complete:
       title: "Konfiguracja Skończona"
-      description: "Skoice został skonfigurowany. Wpisz `/link` na twoim serwerze discord aby połączyć je do Minecraft. Gracze muszą połączyć swoje konto aby używać zbliżeniowego czatu głosowego."
+      description: "Skoice is now configured. Type %s to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     notified-players-cleared:
       title: "Notified Players Cleared"
       description: "You have cleared notified players. Players who have already received the reminder to link their accounts will now be notified again."
@@ -200,10 +199,10 @@ discord:
       description: "Skoice nie został skonfigurowany poprawnie. Skontaktuj się z adminsitratorem."
     incomplete-configuration-server-manager:
       title: "Konfiguracja Niedokończona"
-      description: "Wpisz `/configure` na twoim serwerze Discord aby skończyć konfiguracje i użyć Skoice."
+      description: "Type %s to complete the configuration and use Skoice."
     incomplete-configuration-alternative-server-manager:
       title: "Konfiguracja Niedokończona"
-      description: "Przeniosłeś lub usunąłeś główny kanał głosowy. Wpisz `/configure` na twoim serwerze Discord aby skończyć konfiguracje i użyć Skoice."
+      description: "You have either moved or deleted the main voice channel. Type %s to complete the configuration and use Skoice."
     download:
       title: "Pobierz"
       description: "[Zdobądź plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) i zainstaluj go na swoim serwerze Minecraft."
@@ -236,25 +235,18 @@ discord:
       description: "Twoje konto discord zostało odłączone od Minecraft."
     account-not-linked:
       title: "Konto nie podłączone"
-      description: "Your Discord account is not linked to Minecraft. Type `/link` on the Discord server \"%s\" to link it and use the proximity voice chat."
+      description: "Your Discord account is not linked to Minecraft. Type %s to link it and use the proximity voice chat."
     account-already-linked:
       title: "Konto już podłączone"
-      description: "Twoje konto Minecraft jest już połączone do konta Discord. Wpisz `/unlink` aby je odłączyć."
+      description: "Your Discord account is already linked to Minecraft. Type %s to unlink it."
     access-denied:
       title: "Brak dostępu"
       description: "Nie masz wymaganych uprawnień do wykonania tej akcji."
-    too-many-interactions:
-      title: "Zbyt wiele interakcji"
-      description: "Wykonujesz polecenia zbyt szybko."
-    illegal-interaction:
-      title: "Nielegalna interakcja"
-      description: "Możesz wchodzisz w interakcje z botem tylko na serwerze Discord."
     illegal-value:
       title: "Nielegalna wartość"
       description: "Wartość musi być liczbą całkowitą większą niż 0."
   button-label:
     back: "Wróć"
-    refresh: "Odśwież"
     close: "Zamknij"
     configure-later: "Skonfiguruj pózniej"
     resume-configuration: "Wznów konfigurację"

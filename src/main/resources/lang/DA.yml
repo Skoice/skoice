@@ -22,13 +22,12 @@ logger:
   warning:
     outdated-version: "Du bruger en forældet version (%s). Download den seneste version (%s) her: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
     no-token: "Token ikke sat. Tilslut dig din Minecraft server for at opsætte Skoice."
-    no-guild: "Din bot er ikke på en Discord server. Åbn dette link for at invitere den: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    no-guild: "Your bot is not on a Discord server. Open this link to invite it: %s."
     multiple-guilds: "Din bot er på flere Discord servere. Skriv \"/configure\" på din Discord server for at vælge en."
     no-voice-channel: "Stemmekanal ikke sat. Skriv \"/configure\" på din Discord server for at opsætte Skoice."
     no-radius: "Radius ikke sat. Skriv \"/configure\" på din Discord server for at opsætte Skoice."
   error:
-    missing-permission: "Du har ikke givet din bot tilladelsen \"Administrator\" på din Discord server. Åbn dette link for at tilføje den: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
-    missing-access: "Du har ikke givet din bot tilladelsen til at registrere kommandoer på Discord serveren \"%s\". Åbn dette link for at tilføje det og genstart din Minecraft server: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "Din bot kunne ikke oprette forbindelse. For at opdatere token, skriv \"/skoice token\" efterfulgt af det nye token."
     bot-timed-out: "Et problem forhindrede din bot i at oprette forbindelse. Tjek din netværkstilstand og led efter seneste Discord outages her: https://discordstatus.com."
   exception:
@@ -45,13 +44,12 @@ minecraft:
       no-guild-interactive:
         - "%s Din bot er &cikke på en Discord server&7. Åbn "
         - " &7for at invitere den."
-      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
+      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &b%s&7."
       bot-connecting: "%s Din bot &aforsøger at oprette forbindelse&7."
       bot-connected: "%s Din bot er &anu tilsluttet&7."
       bot-connected-incomplete-configuration-discord: "%s Din bot er &anu tilsluttet&7. Skriv \"&e/configure&7\" på din Discord server for at opsætte den."
       bot-already-connected: "%s Du har &aopdateret token&7. Genstart din Minecraft server for at tilslutte din bot."
       bot-could-not-connect: "%s Din bot &ccould not connect&7. Prøv igen med en gyldig token."
-      missing-access: "%s Din bot har &cikke tilladelse til at registrere kommandoer &7på Discord serveren \"&e%s&7\". Åbn denne link for at tilføje det og genstart din Minecraft server: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice er &cikke korrekt konfigureret&7. Kontakt venligst en administrator på serveren."
       incomplete-configuration-operator-interactive:
         - "%s Skoice er &cikke korrekt konfigureret&7. Klik "
@@ -192,7 +190,7 @@ discord:
   field:
     configuration-complete:
       title: "Konfiguration fuldført"
-      description: "Skoice er nu konfigureret. Skriv `/link` på din Discord server for at linke din Discord konto til Minecraft. Spillere skal linke deres konto for at bruge proximity voice chat."
+      description: "Skoice is now configured. Type %s to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     notified-players-cleared:
       title: "Notified Players Cleared"
       description: "You have cleared notified players. Players who have already received the reminder to link their accounts will now be notified again."
@@ -201,10 +199,10 @@ discord:
       description: "Skoice er ikke korrekt konfigureret. Kontakt en administrator på serveren."
     incomplete-configuration-server-manager:
       title: "Ufuldstændig konfiguration"
-      description: "Skriv `/configure` på din Discord server for at fuldføre konfigurationen og bruge Skoice."
+      description: "Type %s to complete the configuration and use Skoice."
     incomplete-configuration-alternative-server-manager:
       title: "Ufuldstændig konfiguration"
-      description: "Du har enten flyttet eller slettet hovedlydkanalen. Skriv `/configure` på din Discord-server for at fuldføre konfigurationen og bruge Skoice."
+      description: "You have either moved or deleted the main voice channel. Type %s to complete the configuration and use Skoice."
     download:
       title: "Download"
       description: "[Hent pluginet](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) og installer det på din Minecraft-server."
@@ -237,19 +235,13 @@ discord:
       description: "Din Discord konto er blevet afbrudt fra Minecraft."
     account-not-linked:
       title: "Konto Ikke Linket"
-      description: "Your Discord account is not linked to Minecraft. Type `/link` on the Discord server \"%s\" to link it and use the proximity voice chat."
+      description: "Your Discord account is not linked to Minecraft. Type %s to link it and use the proximity voice chat."
     account-already-linked:
       title: "Konto Allerede Linket"
-      description: "Din Discord konto er allerede linket til Minecraft. Skriv `/unlink` for at afbryde linket."
+      description: "Your Discord account is already linked to Minecraft. Type %s to unlink it."
     access-denied:
       title: "Adgang Nægtet"
       description: "Du har ikke de krævede tilladelser til at udføre denne handling."
-    too-many-interactions:
-      title: "For mange Interaktioner"
-      description: "Du udfører kommandoer for hurtigt."
-    illegal-interaction:
-      title: "Ulovlig Interaktion"
-      description: "Du kan kun interagere med bot'en på en Discord server."
     illegal-value:
       title: "Ugyldig værdi"
       description: "Værdier skal være hele tal, der er større end 0."
