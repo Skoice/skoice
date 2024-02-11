@@ -22,12 +22,12 @@ logger:
   warning:
     outdated-version: "Vous utilisez une version obsolète (%s). Téléchargez la dernière version (%s) ici : https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
     no-token: "Token non défini. Rejoignez votre serveur Minecraft pour configurer Skoice."
-    no-guild: "Your bot is not on a Discord server. Open this link to invite it: %s."
+    no-guild: "Votre bot n'est pas sur un serveur Discord. Ouvrez ce lien pour l'inviter : %s."
     multiple-guilds: "Votre bot est sur plusieurs serveurs Discord. Tapez \"/configure\" sur votre serveur Discord pour en choisir un."
     no-voice-channel: "Salon vocal non défini. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
     no-radius: "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
   error:
-    missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
+    missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : %s."
     bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."
     bot-timed-out: "Un problème a empêché votre bot de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord ici : https://discordstatus.com."
   exception:
@@ -44,7 +44,7 @@ minecraft:
       no-guild-interactive:
         - "%s Votre bot n'est &cpas sur un serveur Discord&7. Ouvrez "
         - " &7pour l'inviter."
-      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &b%s&7."
+      no-guild: "%s Votre bot &cn'est pas sur un serveur Discord&7. Ouvrez cette page pour l'inviter : &b%s&7."
       bot-connecting: "%s Votre bot &atente de se connecter&7."
       bot-connected: "%s Votre bot est &adésormais connecté&7."
       bot-connected-incomplete-configuration-discord: "%s Votre bot est &adésormais connecté&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
