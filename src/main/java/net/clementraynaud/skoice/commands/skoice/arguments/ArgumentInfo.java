@@ -24,19 +24,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum ArgumentInfo {
-    CONFIGURE(false, true),
-    TOOLTIPS(false, true),
-    TOKEN(true, true),
-    LANGUAGE(true, true),
-    LINK(false, false),
-    UNLINK(false, false);
+    CONFIGURE(false, true, false),
+    TOOLTIPS(false, true, false),
+    TOKEN(true, true, false),
+    LANGUAGE(true, true, false),
+    LINK(false, false, false),
+    UNLINK(false, false, false);
 
     private final boolean allowedInConsole;
     private final boolean permissionRequired;
+    private final boolean hidden;
 
-    ArgumentInfo(boolean allowedInConsole, boolean permissionRequired) {
+    ArgumentInfo(boolean allowedInConsole, boolean permissionRequired, boolean hidden) {
         this.allowedInConsole = allowedInConsole;
         this.permissionRequired = permissionRequired;
+        this.hidden = hidden;
     }
 
     public static ArgumentInfo get(String option) {
@@ -48,7 +50,7 @@ public enum ArgumentInfo {
 
     public static Set<String> getList(boolean permissionRequired) {
         return Stream.of(ArgumentInfo.values())
-                .filter(arg -> arg.permissionRequired == permissionRequired || permissionRequired)
+                .filter(arg -> (arg.permissionRequired == permissionRequired || permissionRequired) && !arg.isHidden())
                 .map(Enum::toString)
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
@@ -63,7 +65,7 @@ public enum ArgumentInfo {
 
     private static Set<String> getConsoleAllowedList() {
         return Stream.of(ArgumentInfo.values())
-                .filter(arg -> arg.allowedInConsole)
+                .filter(arg -> arg.allowedInConsole && !arg.isHidden())
                 .map(Enum::toString)
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
@@ -82,5 +84,9 @@ public enum ArgumentInfo {
 
     public boolean isPermissionRequired() {
         return this.permissionRequired;
+    }
+
+    public boolean isHidden() {
+        return this.hidden;
     }
 }

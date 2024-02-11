@@ -29,7 +29,7 @@ public class LanguageArgument extends Argument {
     private final String arg;
 
     public LanguageArgument(Skoice plugin, CommandSender sender, String arg) {
-        super(plugin, sender, ArgumentInfo.LANGUAGE.isAllowedInConsole(), ArgumentInfo.LANGUAGE.isPermissionRequired());
+        super(plugin, sender, ArgumentInfo.LANGUAGE.isAllowedInConsole(), ArgumentInfo.LANGUAGE.isPermissionRequired(), ArgumentInfo.LANGUAGE.isHidden());
         this.arg = arg;
     }
 

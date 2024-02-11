@@ -29,7 +29,7 @@ import org.bukkit.entity.Player;
 public class ConfigureArgument extends Argument {
 
     public ConfigureArgument(Skoice plugin, CommandSender sender) {
-        super(plugin, sender, ArgumentInfo.CONFIGURE.isAllowedInConsole(), ArgumentInfo.CONFIGURE.isPermissionRequired());
+        super(plugin, sender, ArgumentInfo.CONFIGURE.isAllowedInConsole(), ArgumentInfo.CONFIGURE.isPermissionRequired(), ArgumentInfo.CONFIGURE.isHidden());
     }
 
     @Override

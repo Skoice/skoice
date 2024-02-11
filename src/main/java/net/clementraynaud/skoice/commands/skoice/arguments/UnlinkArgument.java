@@ -32,7 +32,7 @@ import org.bukkit.entity.Player;
 public class UnlinkArgument extends Argument {
 
     public UnlinkArgument(Skoice plugin, CommandSender sender) {
-        super(plugin, sender, ArgumentInfo.UNLINK.isAllowedInConsole(), ArgumentInfo.UNLINK.isPermissionRequired());
+        super(plugin, sender, ArgumentInfo.UNLINK.isAllowedInConsole(), ArgumentInfo.UNLINK.isPermissionRequired(), ArgumentInfo.UNLINK.isHidden());
     }
 
     @Override

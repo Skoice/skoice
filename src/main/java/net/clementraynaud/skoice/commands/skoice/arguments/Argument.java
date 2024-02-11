@@ -31,12 +31,14 @@ public abstract class Argument {
     protected final CommandSender sender;
     protected final boolean allowedInConsole;
     protected final boolean permissionRequired;
+    protected final boolean hidden;
 
-    protected Argument(Skoice plugin, CommandSender sender, boolean allowedInConsole, boolean permissionRequired) {
+    protected Argument(Skoice plugin, CommandSender sender, boolean allowedInConsole, boolean permissionRequired, boolean hidden) {
         this.plugin = plugin;
         this.sender = sender;
         this.allowedInConsole = allowedInConsole;
         this.permissionRequired = permissionRequired;
+        this.hidden = hidden;
     }
 
     public abstract void run();

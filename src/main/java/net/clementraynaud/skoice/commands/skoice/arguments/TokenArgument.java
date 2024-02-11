@@ -28,7 +28,7 @@ public class TokenArgument extends Argument {
     private final String arg;
 
     public TokenArgument(Skoice plugin, CommandSender sender, String arg) {
-        super(plugin, sender, ArgumentInfo.TOKEN.isAllowedInConsole(), ArgumentInfo.TOKEN.isPermissionRequired());
+        super(plugin, sender, ArgumentInfo.TOKEN.isAllowedInConsole(), ArgumentInfo.TOKEN.isPermissionRequired(), ArgumentInfo.TOKEN.isHidden());
         this.arg = arg;
     }
 
