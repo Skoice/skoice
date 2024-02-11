@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.listeners.channel.main;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.audit.ActionType;

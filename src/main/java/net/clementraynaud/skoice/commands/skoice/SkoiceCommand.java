@@ -20,7 +20,9 @@
 package net.clementraynaud.skoice.commands.skoice;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.commands.skoice.arguments.*;
+import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
+import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentFactory;
+import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
 import net.clementraynaud.skoice.lang.LangInfo;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

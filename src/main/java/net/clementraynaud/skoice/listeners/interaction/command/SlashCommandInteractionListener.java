@@ -21,7 +21,10 @@ package net.clementraynaud.skoice.listeners.interaction.command;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.commands.*;
+import net.clementraynaud.skoice.commands.Command;
+import net.clementraynaud.skoice.commands.CommandExecutor;
+import net.clementraynaud.skoice.commands.CommandFactory;
+import net.clementraynaud.skoice.commands.CommandInfo;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;

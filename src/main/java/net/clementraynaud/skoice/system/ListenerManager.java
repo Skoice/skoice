@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.commands.*;
+import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.listeners.channel.main.GenericChannelListener;
 import net.clementraynaud.skoice.listeners.channel.network.ChannelDeleteListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
