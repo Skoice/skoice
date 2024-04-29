@@ -44,7 +44,7 @@ public class LinkArgument extends Argument {
     public void run() {
         Player player = (Player) this.sender;
         if (super.plugin.getBot().getStatus() != BotStatus.READY) {
-            super.plugin.getBot().sendIncompleteConfigurationAlert(player, true);
+            super.plugin.getBot().sendIncompleteConfigurationAlert(player, true, false);
             return;
         }
         if (super.plugin.getLinksYamlFile().getLinks().containsKey(player.getUniqueId().toString())) {

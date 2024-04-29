@@ -318,8 +318,8 @@ public class Bot {
         }
     }
 
-    public void sendIncompleteConfigurationAlert(Player player, boolean sendIfPermissionMissing) {
-        if (player.hasPermission(Argument.MANAGE_PERMISSION)) {
+    public void sendIncompleteConfigurationAlert(Player player, boolean sendIfPermissionMissing, boolean force) {
+        if (player.hasPermission(Argument.MANAGE_PERMISSION) || force) {
             if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
                 if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
                     this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive",
