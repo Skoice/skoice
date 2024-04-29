@@ -47,7 +47,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-            this.plugin.getBot().sendIncompleteConfigurationAlert(player, false);
+            this.plugin.getBot().sendIncompleteConfigurationAlert(player, false, false);
         } else {
             if (!this.plugin.getLinksYamlFile().retrieveMember(player.getUniqueId(), member -> {
                 LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member.getId()));

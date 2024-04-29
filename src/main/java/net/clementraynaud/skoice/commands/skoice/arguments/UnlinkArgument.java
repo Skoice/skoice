@@ -44,7 +44,7 @@ public class UnlinkArgument extends Argument {
 
         Player player = (Player) this.sender;
         if (super.plugin.getBot().getStatus() != BotStatus.READY) {
-            super.plugin.getBot().sendIncompleteConfigurationAlert(player, true);
+            super.plugin.getBot().sendIncompleteConfigurationAlert(player, true, false);
             return;
         }
 
