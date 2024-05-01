@@ -44,7 +44,7 @@ minecraft:
       no-token: "%s You have &cnot provided a token&7. To use this command, type \"&e/skoice token&7\" followed by the token."
       no-guild-interactive:
         - "%s Your bot is &cnot on a Discord server&7. Open "
-        - " &7to invite it."
+        - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       bot-connecting: "%s Your bot is &aattempting to connect&7."
       bot-connected: "%s Your bot is &anow connected&7."
@@ -84,7 +84,7 @@ minecraft:
       missing-permission: "%s This command is &conly executable &7by players with the permission \"&eskoice.manage&7\"."
       bot-timed-out-interactive:
         - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
-        - "&7."
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &bhttps://discordstatus.com&7."
   action-bar:
     connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
