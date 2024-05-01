@@ -94,7 +94,7 @@ public class GenericChannelListener extends ListenerAdapter {
         if (event.getChannel().getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))) {
             this.plugin.getConfigYamlFile().remove(ConfigField.VOICE_CHANNEL_ID.toString());
             this.plugin.getListenerManager().update();
-            event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.CHANNEL_DELETE).queue(auditLogEntries -> {
+            event.getGuild().retrieveAuditLogs().type(ActionType.CHANNEL_DELETE).limit(1).queue(auditLogEntries -> {
                 if (!auditLogEntries.isEmpty()) {
                     User user = auditLogEntries.get(0).getUser();
                     if (user != null && !user.isBot()) {
