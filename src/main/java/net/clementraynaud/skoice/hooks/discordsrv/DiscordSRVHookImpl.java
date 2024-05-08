@@ -38,21 +38,21 @@ public class DiscordSRVHookImpl {
     }
 
     public void linkUser(String minecraftId, String discordId) {
-        try {
-            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () ->
-                    DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, UUID.fromString(minecraftId))
-            );
-        } catch (Throwable ignored) {
-        }
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            try {
+                DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, UUID.fromString(minecraftId));
+            } catch (Throwable ignored) {
+            }
+        });
     }
 
     public void unlinkUser(String minecraftId) {
-        try {
-            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () ->
-                    DiscordSRV.getPlugin().getAccountLinkManager().unlink(UUID.fromString(minecraftId))
-            );
-        } catch (Throwable ignored) {
-        }
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            try {
+                DiscordSRV.getPlugin().getAccountLinkManager().unlink(UUID.fromString(minecraftId));
+            } catch (Throwable ignored) {
+            }
+        });
     }
 
     @Subscribe
@@ -101,9 +101,12 @@ public class DiscordSRVHookImpl {
             try {
                 UUID uuid = UUID.fromString(minecraftId);
                 if (!existingHookLinks.containsValue(uuid)) {
-                    this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () ->
-                            DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, uuid)
-                    );
+                    this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+                        try {
+                            DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, uuid);
+                        } catch (Throwable ignored) {
+                        }
+                    });
                 }
             } catch (IllegalArgumentException ignored) {
             }
