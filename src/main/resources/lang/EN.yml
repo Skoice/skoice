@@ -36,14 +36,14 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
-        - "&7.\n&8• &7When you have retrieved its token, put it "
-        - "&7.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
-      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
+        - "&7.\n&8• &7Once you have retrieved its token, insert it "
+        - "&7.\n \nIf you cannot interact with this message, type \"&e/skoice tooltips&7\".\n "
+      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
       no-token: "%s You have &cnot provided a token&7. To use this command, type \"&e/skoice token&7\" followed by the token."
       no-guild-interactive:
         - "%s Your bot is &cnot on a Discord server&7. Open "
-        - " &7to invite it."
+        - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &b%s&7."
       bot-connecting: "%s Your bot is &aattempting to connect&7."
       bot-connected: "%s Your bot is &anow connected&7."
@@ -82,7 +82,7 @@ minecraft:
       missing-permission: "%s This command is &conly executable &7by players with the permission \"&eskoice.manage&7\"."
       bot-timed-out-interactive:
         - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
-        - "&7."
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &bhttps://discordstatus.com&7."
   action-bar:
     connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
