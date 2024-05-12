@@ -21,7 +21,10 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class TokenArgument extends Argument {
 
@@ -38,14 +41,33 @@ public class TokenArgument extends Argument {
             return;
         }
         if (this.arg.isEmpty()) {
-            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.no-token"));
+            super.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.no-token"));
             return;
         }
         super.plugin.getConfigYamlFile().setToken(this.arg);
         if (super.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
-            super.plugin.getBot().connect(this.sender);
+            super.plugin.getBot().connect(super.sender);
             if (super.plugin.getBot().getJDA() != null) {
-                super.plugin.getBot().setup(this.sender);
+                super.plugin.getBot().getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+                    if (applicationInfo.isBotPublic()) {
+                        super.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
+
+                        String botId = super.plugin.getBot().getJDA().getSelfUser().getApplicationId();
+                        super.plugin.getBot().getJDA().shutdown();
+
+                        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString()) && this.sender instanceof Player) {
+                            super.plugin.adventure().sender(super.sender).sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.public-bot-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
+                                            .hoverEvent(HoverEvent.showText(super.plugin.getLang().getComponentMessage("minecraft.interaction.link", "https://discord.com/developers/applications/" + botId + "/bot")))
+                                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discord.com/developers/applications/" + botId + "/bot"))
+                                    )
+                            );
+                        } else {
+                            super.sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
+                        }
+                    } else {
+                        super.plugin.getBot().setup(this.sender);
+                    }
+                });
             }
         } else {
             this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.bot-already-connected"));
