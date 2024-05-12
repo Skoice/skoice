@@ -108,7 +108,7 @@ public class Bot {
                     sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-could-not-connect"));
                     this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
                 }
-            } catch (ErrorResponseException e) {
+            } catch (ErrorResponseException | IllegalArgumentException | IllegalStateException | InterruptedException e) {
                 this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));
                 if (sender != null) {
                     if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString()) && sender instanceof Player) {
@@ -121,7 +121,6 @@ public class Bot {
                         sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out"));
                     }
                 }
-            } catch (IllegalStateException | InterruptedException ignored) {
             }
         }
     }
