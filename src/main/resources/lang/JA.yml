@@ -37,20 +37,24 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s 設定: &fbot作成\n \n&8• &7最初にbotを作成し、あなたのDiscordサーバーに招待する必要があります。あなたが既にbotを所有している場合にも、新しいbotを作成する必要があります。次の手順に従ってください： "
-        - "&7.\n&8• &7トークンを取得したら、それを入れます "
-        - "&7.\n&8• &7完了したら、Discordサーバーに「&e/configure&7」と入力して次のステップに進みます。\n "
-      bot-creation: " \n%s 設定: &fbot作成\n \n&8• &7最初にbotを作成し、あなたのDiscordサーバーに招待する必要があります。あなたが既にbotを所有している場合にも、新しいbotを作成する必要があります。次の手順に従ってください: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7\n&8• &7トークンを取得したら、「&e/skoice token&7」に続けてトークンを入力します。\n&8• &7完了したら、Discordサーバーに「&e/configure&7」\n "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
+        - "&7.\n&8• &7Once you have retrieved its token, insert it "
+        - "&7.\n \nIf you cannot interact with this message, type \"&e/skoice tooltips&7\".\n "
+      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
       no-token: "%s &cトークンが与えられていません&7。このコマンドを使用するには、「&e/skoice token&7」の後にトークンを入力してください。"
       no-guild-interactive:
         - "%s あなたのbotが&cDiscordサーバーに存在しません&7。Open "
-        - " &7を開いて招待します。"
+        - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       no-guild: "%s あなたのbotが&cDiscordサーバーに存在しません&7。 次のページを開いて招待してください: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7"
       bot-connecting: "%s あなたのbotが&a接続を試みています&7。"
       bot-connected: "%s あなたのbotが&a接続されました&7。"
       bot-connected-incomplete-configuration-discord: "%s あなたのbotが&a接続されました&7。Discordサーバーに「&e/configure&7」 と入力してセットアップしてください。"
       bot-already-connected: "%s &aトークンを更新しました&7。botを接続するにはMinecraftサーバーを再起動してください。"
       bot-could-not-connect: "%s あなたのbotは&c接続できませんでした&7。有効なトークンでもう一度やりなおしてください。"
+      public-bot-interactive:
+        - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
+        - "&7. このメッセージと対話できない場合は、「&e/skoice tooltips&7」と入力してください。"
+      public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
       missing-access: "%s Discordサーバー「&e%s&7」に&cコマンドを追加する権限がbotに付与されていません&7。次のリンクを開いて権限を追加し、Minecraftサーバーを再起動してください: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7"
       incomplete-configuration: "%s Skoiceが&c正しく設定されていません&7。サーバーの管理者に連絡してください。"
       incomplete-configuration-operator-interactive:
@@ -84,7 +88,7 @@ minecraft:
       missing-permission: "%s このコマンドは「&eskoice.manage&7」権限をもつプレイヤー&cのみが実行&7できます。"
       bot-timed-out-interactive:
         - "%s 問題により&cbotが接続できません&7でした。Check your network connection status and look for recent Discord outages on "
-        - "&7."
+        - "&7. このメッセージと対話できない場合は、「&e/skoice tooltips&7」と入力してください。"
       bot-timed-out: "%s 問題により&cbotが接続できません&7でした。ネットワークの接続状況を確認するとともに、次のページで最新のDiscordの停止状況を確認してください: &bhttps://discordstatus.com&7"
   action-bar:
     connecting-alert: "&a⚠ &7あなたは&aほかのプレイヤーの近くにいます&7。挨拶しましょう！"

@@ -37,20 +37,24 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
-        - "&7.\n&8• &7Quando obter o token, coloque-o "
-        - "&7.\n&8• &7Quando feito, envie \"&e/configure&7\" no seu servidor do Discord para avançar para o próximo passo.\n "
-      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
+        - "&7.\n&8• &7Once you have retrieved its token, insert it "
+        - "&7.\n \nIf you cannot interact with this message, type \"&e/skoice tooltips&7\".\n "
+      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
       no-token: "%sVocê &cnão configurou um token&7. Para usar esse comando, envie \"&e/skoice token&7\" seguido do token."
       no-guild-interactive:
         - "%s Seu bot &cnão está em nenhum servidor do Discord&7. Abra "
-        - " &7para convidar."
+        - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       bot-connecting: "%s Seu bot está &atentando conectar-se&7."
       bot-connected: "%s Seu bot está &aconectado&7."
       bot-connected-incomplete-configuration-discord: "%s Seu bot está &aconectado&7. Envie \"&e/configure&7\" no seu servidor do Discord para configurá-lo."
       bot-already-connected: "%s Você &aatualizou o token&7. Reinicie seu servidor do Minecraft para conectar seu bot."
       bot-could-not-connect: "%s Seu bot &cnão pôde se conectar&7. Tente novamente com um token válido."
+      public-bot-interactive:
+        - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+      public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
       missing-access: "%s Seu bot &cnão tem permissões para registrar comandos &7no servidor do Discord \"&e%s&7\". Abra este link para adicionar e após isso reiniciar seu servidor do Minecraft: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice &cnão está configurado corretamente&7. Por favor contate um administrador do servidor."
       incomplete-configuration-operator-interactive:
@@ -84,11 +88,11 @@ minecraft:
       missing-permission: "%s This command is &conly executable &7by players with the permission \"&eskoice.manage&7\"."
       bot-timed-out-interactive:
         - "%s Um problema &cimpediu que seu bot &7conectasse. Verifique as condições de sua conexão e interrupções no serviço do Discord aqui "
-        - "&7."
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &bhttps://discordstatus.com&7."
   action-bar:
     connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
-    disconnecting-alert: "&c⚠ &7You are &cmoving away &7from near players."
+    disconnecting-alert: "&c⚠ &7Você está &cse distanciando &7de jogadores próximos."
   interaction:
     here: "&baqui"
     this-page: "&besta página"
@@ -140,11 +144,11 @@ discord:
             description: "Raio Horizontal: 40 blocos — Raio Vertical: 20 blocos"
     more-settings:
       title: "More Settings"
-      description: "Manage other parameters."
+      description: "Alterar outros parâmetros."
     language:
       title: "Idioma"
       description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
-      shortened-description: "Choose the language used to display messages."
+      shortened-description: "Escolha o idioma para as mensagens."
     in-game-messages:
       title: "In-Game Messages"
       description: "Manage the messages sent to players on your Minecraft server."
@@ -153,11 +157,11 @@ discord:
       description: "Toggle the message sent to players who have not linked their accounts when they log in to your Minecraft server."
       select-menu:
         always-remind:
-          label: "Always Remind"
+          label: "Sempre Lembrar"
         remind-once:
-          label: "Remind Once"
+          label: "Lembrar uma Vez"
         never-remind:
-          label: "Never Remind"
+          label: "Nunca Lembrar"
     action-bar-alerts:
       title: "Action Bar Alerts"
       description: "Toggle the alerts sent to players who are using the proximity voice chat."
@@ -210,7 +214,7 @@ discord:
       description: "[Baixe o plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) e o adicione em seu servidor de Minecraft."
     donating:
       title: "Doar"
-      description: "Skoice is a free software. If you like it, you can help us by [donating](https://opencollective.com/skoice)."
+      description: "Skoice é um software gratuito. Caso goste, você pode nos ajudar [donating] (https://opencollective.com/skoice)."
     troubleshooting:
       title: "Solução de Problemas"
       description: "Tendo problemas? [Entre em nosso servidor do Discord](https://discord.gg/h3Tgccc)!"

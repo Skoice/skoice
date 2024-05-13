@@ -37,26 +37,30 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Configuration : &fCréation du bot\n \n&8• &7Tout d'abord, vous devez créer un bot et l'inviter sur votre serveur Discord. Si vous possédez déjà un bot, vous devez en créer un nouveau. Veuillez suivre les instructions sur "
-        - "&7.\n&8• &7Quand vous aurez récupéré son token, entrez-le "
-        - "&7.\n&8• &7Une fois fait, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante.\n "
-      bot-creation: " \n%s Configuration : &fCréation du bot\n\n&8• &7Premièrement, vous devez créer un bot et l'inviter sur votre serveur Discord. Si vous avez déjà un bot, vous devez en créer un nouveau. Veuillez suivre les instructions sur cette page : &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Une fois son token récupéré, tapez \"&e/skoice token&7\" suivi par le token.\n&8• &7Ensuite, tapez \"&e/configure&7\" sur votre serveur Discord pour passer à l'étape suivante. "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
+        - "&7.\n&8• &7Once you have retrieved its token, insert it "
+        - "&7.\n \nSi vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\". "
+      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
       no-token: "%s Vous n'avez &cpas fourni de token&7. Pour utiliser cette commande, tapez \"&e/skoice token&7\" suivi du token."
       no-guild-interactive:
         - "%s Votre bot n'est &cpas sur un serveur Discord&7. Ouvrez "
-        - " &7pour l'inviter."
+        - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       no-guild: "%s Votre bot &cn'est pas sur un serveur Discord&7. Ouvrez cette page pour l'inviter : &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       bot-connecting: "%s Votre bot &atente de se connecter&7."
       bot-connected: "%s Votre bot est &adésormais connecté&7."
       bot-connected-incomplete-configuration-discord: "%s Votre bot est &adésormais connecté&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
       bot-already-connected: "%s Vous avez &amis à jour le token&7. Redémarrez votre serveur Minecraft pour connecter votre bot."
       bot-could-not-connect: "%s Votre bot &cn'a pas pu se connecter&7. Essayez de nouveau avec un token valide."
+      public-bot-interactive:
+        - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
+        - "&7. Si vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\"."
+      public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
       missing-access: "%s Votre bot n'a &cpas la permission de déclarer des commandes &7sur le serveur Discord \"&e%s&7\". Ouvrez ce lien pour l'ajouter et redémarrez votre serveur Minecraft : &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice n'est &cpas configuré correctement&7. Veuillez contacter un administrateur du serveur."
       incomplete-configuration-operator-interactive:
         - "%s Skoice n'est &cpas configuré correctement&7. Cliquez "
         - " &7pour le configurer. Vous pouvez changer la langue en cliquant "
-        - "&7. Si vous ne pouvez pas intéragir avec ce message, tapez \"&e/skoice tooltips&7\"."
+        - "&7. Si vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\"."
       incomplete-configuration-operator: "%s Skoice &cn'est pas configuré correctement&7. Tapez \"&e/skoice configure&7\" pour le configurer. Vous pouvez changer la langue avec \"&e/skoice language&7\" suivi de la langue."
       incomplete-configuration-operator-discord: "%s Skoice n'est &cpas configuré correctement&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
       already-configured: "%s Skoice est &cdéjà configuré&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour mettre à jour ses réglages."
@@ -84,7 +88,7 @@ minecraft:
       missing-permission: "%s Cette commande est &cseulement exécutable &7par les joueurs ayant la permission \"&eskoice.manage&7\"."
       bot-timed-out-interactive:
         - "%s Un problème a &cempêché votre bot &7de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord sur "
-        - "&7."
+        - "&7. Si vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\"."
       bot-timed-out: "%s Un problème a &cempêché votre bot &7de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord sur cette page : &bhttps://discordstatus.com&7."
   action-bar:
     connecting-alert: "&a⚠ &7Vous êtes &aproche d'autres joueurs&7. Dites bonjour !"
@@ -216,7 +220,7 @@ discord:
       description: "Vous rencontrez des problèmes ? [Rejoignez notre serveur Discord](https://discord.gg/h3Tgccc) !"
     contributing:
       title: "Contribuer"
-      description: "Vous voulez nous aider à façonner le futur de Skoice ? [Contribuez sur notre page GitHub](https://github.com/Skoice/skoice) et [traduisez notre plugin avec Crowdin](https://crowdin.com/project/skoice)!"
+      description: "Vous voulez nous aider à façonner le futur de Skoice ? [Contribuez sur notre page GitHub](https://github.com/Skoice/skoice) et [traduisez notre plugin avec Crowdin](https://crowdin.com/project/skoice) !"
     long-range-mode:
       title: "Mode longue portée"
       description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu en monde ouvert."

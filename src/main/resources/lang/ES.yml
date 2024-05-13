@@ -37,31 +37,35 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
-        - "&7.\n&8• &7Cuando hayas recuperado su token, colócalo "
-        - "&7.\n&8• &7Una vez hecho, escriba \"&e/configure&7\" en su servidor de Discord para ir al siguiente paso.\n "
-      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
+        - "&7.\n&8• &7Once you have retrieved its token, insert it "
+        - "&7.\n \nIf you cannot interact with this message, type \"&e/skoice tooltips&7\".\n "
+      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
       no-token: "%s No has proporcionado un token&7. Para usar este comando, escriba \"&e/skoice token&7\" seguido del token."
       no-guild-interactive:
         - "%s Su bot &cno está en un servidor de Discord&7. Abre "
-        - " &7para invitarlo."
-      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
+        - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+      no-guild: "%s Tu bot &cno esta en un servidor de Discord&7. Abre el enlace para invitarlo: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       bot-connecting: "%s Su bot está &aintentando conectarse&7."
       bot-connected: "%s Su bot está &aahora conectado&7."
       bot-connected-incomplete-configuration-discord: "%s Su bot está &aahora conectado&7. Escribe \"&e/configure&7\" en tu servidor de Discord para configurarlo."
       bot-already-connected: "%s Ha &aactualizado el token&7. Reinicie su servidor de Minecraft para conectar su bot."
       bot-could-not-connect: "%s Su bot &cno pudo conectarse&7. Inténtalo de nuevo con un token válido."
+      public-bot-interactive:
+        - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
+        - "&7. Si acaso no puede interactuar con este mensaje, escriba lo siguiente \"&e/skoice tooltips&7\"."
+      public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
       missing-access: "%s Su bot &cno tiene permiso para registrar comandos &7en el servidor de Discord \"&e%s&7\". Abra este enlace para agregarlo y reinicie su servidor de Minecraft: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice &cno está configurado correctamente&7. Por favor, póngase en contacto con un administrador del servidor."
       incomplete-configuration-operator-interactive:
         - "%s Skoice &cno está configurado correctamente&7. Haga clic en "
-        - " &7to set it up. You can change the language by clicking "
-        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
-      incomplete-configuration-operator: "%s Skoice is &cnot configured correctly&7. Type \"&e/skoice configure&7\" to set it up. You can change the language with \"&e/skoice language&7\" followed by the language."
+        - " &7Para configurarlo. Puedes cambiar el idioma haciendo clic en "
+        - "&7. Si acaso no puede interactuar con este mensaje, escriba lo siguiente \"&e/skoice tooltips&7\"."
+      incomplete-configuration-operator: "%s Skoice no está configurado correctamente&7. Escribe \"&e/skoice configure&7\" para configurarlo. Puedes cambiar el idioma con \"&e/skoice language&7\" seguido por el idioma."
       incomplete-configuration-operator-discord: "%s Skoice &cno está configurado correctamente&7. Escribe \"&e/configure&7\" en tu servidor de Discord para configurarlo."
       already-configured: "%s Skoice &cya está configurado&7. Escribe \"&e/configure&7\" en tu servidor de Discord para actualizar sus ajustes."
-      tooltips-enabled: "%s You have &aenabled interactive messages&7."
-      tooltips-disabled: "%s You have &adisabled interactive messages&7. If you were trying to configure Skoice, type \"&e/skoice configure&7\"."
+      tooltips-enabled: "%s Tienes &ahabilitados mensajes interactivos&7."
+      tooltips-disabled: "%s &aHas desactivado los mensajes interactivos &7. Si estaba intentando configurar Skoice, escriba \"&e/skoice configure&7\"."
       no-language: "%s You have &cnot provided a language&7. To use this command, type \"&e/skoice language %s&7\"."
       invalid-language: "%s You have &cnot provided a valid language&7. To use this command, type \"&e/skoice language %s&7\"."
       language-already-set: "%s The language is &calready set &7to \"&e%s&7\"."
@@ -84,11 +88,11 @@ minecraft:
       missing-permission: "%s This command is &conly executable &7by players with the permission \"&eskoice.manage&7\"."
       bot-timed-out-interactive:
         - "%s Un problema &cimpidió que tu bot se conectara. Revisa el estado de tu conexión a internet y busca recientes interrupciones en Discord en "
-        - "&7."
+        - "&7. Si acaso no puede interactuar con este mensaje, escriba lo siguiente \"&e/skoice tooltips&7\"."
       bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &bhttps://discordstatus.com&7."
   action-bar:
     connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
-    disconnecting-alert: "&c⚠ &7You are &cmoving away &7from near players."
+    disconnecting-alert: "&c⚠ &7Te estás alejando de los jugadores cercanos."
   interaction:
     here: "&baquí"
     this-page: "&bpágina actual"
@@ -140,11 +144,11 @@ discord:
             description: "Radio Horizontal: 40 bloques — Radio Vertical: 20 bloques"
     more-settings:
       title: "More Settings"
-      description: "Manage other parameters."
+      description: "Administre otros parámetros."
     language:
       title: "Idioma"
       description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
-      shortened-description: "Choose the language used to display messages."
+      shortened-description: "Elija el idioma utilizado para mostrar mensajes."
     in-game-messages:
       title: "In-Game Messages"
       description: "Manage the messages sent to players on your Minecraft server."
@@ -153,11 +157,11 @@ discord:
       description: "Toggle the message sent to players who have not linked their accounts when they log in to your Minecraft server."
       select-menu:
         always-remind:
-          label: "Always Remind"
+          label: "Recordar Siempre"
         remind-once:
-          label: "Remind Once"
+          label: "Recordar Una Vez"
         never-remind:
-          label: "Never Remind"
+          label: "No Recordar"
     action-bar-alerts:
       title: "Action Bar Alerts"
       description: "Toggle the alerts sent to players who are using the proximity voice chat."
@@ -210,7 +214,7 @@ discord:
       description: "[Obtén el plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) e instálalo en tu servidor de Minecraft."
     donating:
       title: "Donando"
-      description: "Skoice is a free software. If you like it, you can help us by [donating](https://opencollective.com/skoice)."
+      description: "Skoice es un software gratuito. Si te gusta, puedes ayudarnos [donando](https://opencollective.com/skoice)."
     troubleshooting:
       title: "Solución de problemas"
       description: "¿Tienes problemas? [Únete a nuestro servidor de Discord](https://discord.gg/h3Tgccc)!"
@@ -246,10 +250,10 @@ discord:
       description: "No tienes el permiso necesario para ejecutar esta acción."
     too-many-interactions:
       title: "Demasiadas Interacciones"
-      description: "Estás ejecutando comandos demasiado rápido."
+      description: "Está ejecutando comandos demasiado rápido."
     illegal-interaction:
       title: "Interacción Ilegal"
-      description: "Sólo puedes interactuar con el bot en un servidor de Discord."
+      description: "Solo puede interactuar con el bot en un servidor de Discord."
     illegal-value:
       title: "Valor Ilegal"
       description: "Los valores deben ser números enteros mayores a 0."

@@ -37,20 +37,24 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
-        - "&7.\n&8• &7Когда вы получили токен, поместите его "
-        - "&7.\n&8• &7После этого, введите \"&e/configure&7\" на вашем сервере Discord, чтобы перейти к следующему шагу.\n "
-      bot-creation: " \n%s Конфигурация: &fСоздание бота:\n \n&8• &7Во-первых, вам нужно создать бота и пригласить его на свой сервер Discord. Если у вас уже есть бот, вам необходимо создать нового. Пожалуйста, следуйте инструкциям на этой странице: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Получив токен бота, введите \"&e/skoice token&7\" и через пробел токен бота. \n&8• &7После этого введите \"&e/configure&7\" на вашем сервере Discord, чтобы перейти к следующему шагу.\n "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
+        - "&7.\n&8• &7Once you have retrieved its token, insert it "
+        - "&7.\n \nIf you cannot interact with this message, type \"&e/skoice tooltips&7\".\n "
+      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
       no-token: "%s Вы &cне указали токен&7. Чтобы использовать эту команду, введите \"&e/skoice token&7\", а затем токен бота."
       no-guild-interactive:
         - "%s Ваш бот в &cне на сервере Discord&7. Открыть "
-        - " &7чтобы пригласить его."
+        - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       no-guild: "%s Вашего бота &cнет на сервере Discord&7. Откройте эту ссылку, чтобы пригласить его: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       bot-connecting: "%s Ваш бот &aпытается подключиться&7."
       bot-connected: "%s Ваш бот &aтеперь подключен&7."
       bot-connected-incomplete-configuration-discord: "%s Ваш бот &aтеперь подключен&7. Введите \"&e/configure&7\" на вашем сервере Discord, чтобы настроить его."
       bot-already-connected: "%s Вы &aобновили токен&7. Перезагрузите ваш сервер, чтобы подключить бота."
       bot-could-not-connect: "%s Ваш бот &cне смог подключиться&7. Попробуйте еще раз с верным токеном."
+      public-bot-interactive:
+        - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
+        - "&7. Если вы не можете взаимодействовать с этим сообщением, введите \"&e/skoice tooltips&7\"."
+      public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
       missing-access: "%s Вы &cне предоставили боту разрешение &7на регистрацию команд на сервере Discord \"&e%s&7\". Откройте эту ссылку, чтобы добавить её и перезапустите сервер Minecraft: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
       incomplete-configuration: "%s Skoice &cнастроен некорректно&7. Пожалуйста, обратитесь к администратору."
       incomplete-configuration-operator-interactive:
@@ -84,7 +88,7 @@ minecraft:
       missing-permission: "%s Эту команду &cмогут использовать &7только игроки с разрешением \"&eskoice.manage&7\"."
       bot-timed-out-interactive:
         - "%s &cНе удалось подключиться &7к вашему боту. Проверьте статус подключения к сети и просмотрите недавние перебои в Discord здесь "
-        - "&7."
+        - "&7. Если вы не можете взаимодействовать с этим сообщением, введите \"&e/skoice tooltips&7\"."
       bot-timed-out: "%s &cНе удалось подключиться &7к вашему боту. Проверьте ваше подключение к интернету и проверьте недавние сбои в работе Discord на этой странице: &bhttps://discordstatus.com&7."
   action-bar:
     connecting-alert: "&a⚠ &7Вы &aрядом с другими игроками&7. Скажите привет!"
@@ -144,7 +148,7 @@ discord:
     language:
       title: "Язык"
       description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
-      shortened-description: "Choose the language used to display messages."
+      shortened-description: "Выберите язык отображения сообщений."
     in-game-messages:
       title: "Внутриигровые сообщения"
       description: "Управление сообщениями, которые отправляются игрокам на вашем сервере Minecraft."

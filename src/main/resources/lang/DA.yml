@@ -37,20 +37,24 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on "
-        - "&7.\n&8• &7Når du har hentet dens token, sæt det "
-        - "&7.\n&8• &7Når det er gjort, skriv \"&e/configure&7\" på din Discord server for at gå til næste trin.\n "
-      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
+        - "&7.\n&8• &7Once you have retrieved its token, insert it "
+        - "&7.\n \nIf you cannot interact with this message, type \"&e/skoice tooltips&7\".\n "
+      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
       no-token: "%s Du har &cikke angivet et token&7. For at bruge denne kommando, skriv \"&e/skoice token&7\" efterfulgt af token."
       no-guild-interactive:
         - "%s Din bot er &cikke på en Discord server&7. Åbn "
-        - " &7for at invitere den."
+        - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       bot-connecting: "%s Din bot &aforsøger at oprette forbindelse&7."
       bot-connected: "%s Din bot er &anu tilsluttet&7."
       bot-connected-incomplete-configuration-discord: "%s Din bot er &anu tilsluttet&7. Skriv \"&e/configure&7\" på din Discord server for at opsætte den."
       bot-already-connected: "%s Du har &aopdateret token&7. Genstart din Minecraft server for at tilslutte din bot."
       bot-could-not-connect: "%s Din bot &ccould not connect&7. Prøv igen med en gyldig token."
+      public-bot-interactive:
+        - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+      public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
       missing-access: "%s Din bot har &cikke tilladelse til at registrere kommandoer &7på Discord serveren \"&e%s&7\". Åbn denne link for at tilføje det og genstart din Minecraft server: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice er &cikke korrekt konfigureret&7. Kontakt venligst en administrator på serveren."
       incomplete-configuration-operator-interactive:
@@ -84,11 +88,11 @@ minecraft:
       missing-permission: "%s This command is &conly executable &7by players with the permission \"&eskoice.manage&7\"."
       bot-timed-out-interactive:
         - "%s Et problem &cforhindrede din bot &7i at oprette forbindelse. Tjek din netværkstilstand og led efter seneste Discord outages på "
-        - "&7."
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &bhttps://discordstatus.com&7."
   action-bar:
     connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
-    disconnecting-alert: "&c⚠ &7You are &cmoving away &7from near players."
+    disconnecting-alert: "&c⚠ &7Du bevæger dig &cvæk fra nær spillere&7."
   interaction:
     here: "&bher"
     this-page: "&bdenne side"
@@ -140,11 +144,11 @@ discord:
             description: "Horizontal Radius: 40 blokke — Vertikal Radius: 20 blokke"
     more-settings:
       title: "More Settings"
-      description: "Manage other parameters."
+      description: "Administrer andre parametre."
     language:
       title: "Sprog"
       description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
-      shortened-description: "Choose the language used to display messages."
+      shortened-description: "Vælg sproget der bruges til at vise meddelelser."
     in-game-messages:
       title: "In-Game Messages"
       description: "Manage the messages sent to players on your Minecraft server."
@@ -153,11 +157,11 @@ discord:
       description: "Toggle the message sent to players who have not linked their accounts when they log in to your Minecraft server."
       select-menu:
         always-remind:
-          label: "Always Remind"
+          label: "Altid minde"
         remind-once:
-          label: "Remind Once"
+          label: "Mind kun en gang"
         never-remind:
-          label: "Never Remind"
+          label: "Aldrig minde"
     action-bar-alerts:
       title: "Action Bar Alerts"
       description: "Toggle the alerts sent to players who are using the proximity voice chat."
@@ -210,7 +214,7 @@ discord:
       description: "[Hent pluginet](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) og installer det på din Minecraft-server."
     donating:
       title: "Donationer"
-      description: "Skoice is a free software. If you like it, you can help us by [donating](https://opencollective.com/skoice)."
+      description: "Skoice er et gratis software. Hvis du kan lide det, kan du hjælpe os ved at [donere](https://opencollective.com/skoice)."
     troubleshooting:
       title: "Fejlfinding"
       description: "Har du problemer? [Deltag i vores Discord-server](https://discord.gg/h3Tgccc)!"
