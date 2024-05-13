@@ -22,12 +22,13 @@ logger:
   warning:
     outdated-version: "Stai usando una versione obsoleta (%s). Scarica l'ultima versione (%s) qui: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
     no-token: "Token non impostato. Unisciti al tuo server Minecraft per configurare Skoice."
-    no-guild: "Your bot is not on a Discord server. Open this link to invite it: %s."
+    no-guild: "Il tuo bot non è su un server Discord. Apri questo link per invitarlo: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     multiple-guilds: "Il tuo bot è su più server Discord. Digita \"/configure\" sul tuo server Discord per sceglierne uno."
     no-voice-channel: "Canale vocale non impostato. Digita \"/configure\" sul tuo server Discord per configurare Skoice."
     no-radius: "Canale vocale non impostato. Digita \"/configure\" sul tuo server Discord per configurare Skoice."
   error:
-    missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
+    missing-permission: "Il tuo bot non è su un server Discord. Apri questo link per invitarlo: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
+    missing-access: "Non hai dato al bot i permessi per registrare i comandi sul server Discord \"%s\". Apri questo link per aggiungerlo e riavvia il tuo server Minecraft: https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands."
     bot-could-not-connect: "Impossibile connettersi al bot. Per aggiornare il token, digita \"/skoice token\" seguito dal nuovo token."
     bot-timed-out: "Un problema ha impedito al tuo bot di connettersi. Controlla lo stato della tua connessione di rete e cerca le recenti interruzioni di Discord qui: https://discordstatus.com."
   exception:
@@ -36,20 +37,25 @@ minecraft:
   chat:
     configuration:
       bot-creation-interactive:
-        - " \n%s Configurazione: &fCreazione Bot\n \n&8• &7Prima devi creare un bot e poi invitarlo al tuo server Discord. Se hai già un altro bot, devi crearne un altro. Per favore segui le istruzioni su "
-        - "&7.\n&8• &7Quando hai recuperato il token, mettilo "
-        - "&7.\n&8• &7Una volta fatto, digita \"&e/configure&7\" sul tuo server Discord per passare al passo successivo.\n "
-      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7First, you need to create a bot and invite it to your Discord server. If you already own a bot, you have to create a new one. Please follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7When you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n&8• &7Once done, type \"&e/configure&7\" on your Discord server to go to the next step.\n "
+        - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
+        - "&7.\n&8• &7Once you have retrieved its token, insert it "
+        - "&7.\n \nIf you cannot interact with this message, type \"&e/skoice tooltips&7\".\n "
+      bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
       no-token: "%s Hai &non fornito un token&7. Per usare questo comando, digita \"&e/skoice token&7\" seguito dal token."
       no-guild-interactive:
         - "%s Il tuo bot è &cnot su un server Discord &7. Apri "
-        - " &7per invitarlo."
-      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &b%s&7."
+        - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+      no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       bot-connecting: "%s Il tuo bot sta tentando di connettersi."
       bot-connected: "%s Il tuo bot è &aora connesso&7."
       bot-connected-incomplete-configuration-discord: "%s Il tuo bot è &aora connesso&7. Digita \"&e/configure&7\" sul tuo server Discord per configurarlo."
       bot-already-connected: "%s Hai &aaggiornato il token&7. Riavvia il tuo server Minecraft per collegare il tuo bot."
       bot-could-not-connect: "%s Il tuo bot non può connettersi &7. Riprova con un token valido."
+      public-bot-interactive:
+        - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+      public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
+      missing-access: "%s Your bot does &cnot have the permission to register commands &7on the Discord server \"&e%s&7\". Open this link to add it and restart your Minecraft server: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice &cnon è configurato correttamente&7. Contattare un amministratore."
       incomplete-configuration-operator-interactive:
         - "%s Skoice &cnon è configurato correttamente&7. Clicca "
@@ -82,11 +88,11 @@ minecraft:
       missing-permission: "%s This command is &conly executable &7by players with the permission \"&eskoice.manage&7\"."
       bot-timed-out-interactive:
         - "%s Un problema ha impedito al tuo bot di connettersi. Controlla lo stato della tua connessione di rete e cerca le recenti interruzioni di Discord qui "
-        - "&7."
+        - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &bhttps://discordstatus.com&7."
   action-bar:
     connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
-    disconnecting-alert: "&c⚠ &7You are &cmoving away &7from near players."
+    disconnecting-alert: "&c⚠ &7Stai &cmuovendo via &7dai giocatori vicini."
   interaction:
     here: "&bQui"
     this-page: "&bQuesta pagina"
@@ -124,25 +130,25 @@ discord:
             description: "Skoice imposterà automaticamente un canale vocale."
     range:
       title: "Range"
-      description: "Select a mode or customize the distances."
-      alternative-description: "Let us choose the best settings for your personal use of Skoice. You will still be able to customize the distances later."
+      description: "Selezionare una modalità o personalizzare le distanze."
+      alternative-description: "Scegliamo le migliori impostazioni per il tuo uso personale di Skoice. Sarai ancora in grado di personalizzare le distanze più tardi."
       select-menu:
-        placeholder: "Please select a mode."
-        alternative-placeholder: "You are currently using customized distances."
+        placeholder: "Per Favore Selezionare un server."
+        alternative-placeholder: "Attualmente stai usando distanze personalizzate."
         select-option:
           long-range-mode:
             label: "Long-Range Mode"
-            description: "Horizontal Radius: 80 blocks — Vertical Radius: 40 blocks"
+            description: "Raggio orizzontale: 80 blocchi — Raggio verticale: 40 blocchi"
           short-range-mode:
             label: "Short-Range Mode"
-            description: "Horizontal Radius: 40 blocks — Vertical Radius: 20 blocks"
+            description: "Raggio orizzontale: 40 blocchi — Raggio verticale: 20 blocchi"
     more-settings:
       title: "More Settings"
-      description: "Manage other parameters."
+      description: "Gestisci altri parametri."
     language:
       title: "Lingua"
       description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
-      shortened-description: "Choose the language used to display messages."
+      shortened-description: "Scegli la lingua utilizzata per visualizzare i messaggi."
     in-game-messages:
       title: "In-Game Messages"
       description: "Manage the messages sent to players on your Minecraft server."
@@ -190,7 +196,7 @@ discord:
   field:
     configuration-complete:
       title: "Configurazione di Base Completa"
-      description: "Skoice is now configured. Type %s to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
+      description: "Skoice è ora configurato. Digita \"/link\" sul tuo server Discord per collegare il tuo account Discord a Minecraft. I giocatori devono collegare i loro account per utilizzare la chat vocale di prossimità."
     notified-players-cleared:
       title: "Notified Players Cleared"
       description: "You have cleared notified players. Players who have already received the reminder to link their accounts will now be notified again."
@@ -199,16 +205,16 @@ discord:
       description: "Skoice &cnon è configurato correttamente. Contattare un amministratore."
     incomplete-configuration-server-manager:
       title: "Iscrizioni incomplete"
-      description: "Type %s to complete the configuration and use Skoice."
+      description: "Digita `/configure` sul tuo server Discord per completare la configurazione e utilizzare Skoice."
     incomplete-configuration-alternative-server-manager:
       title: "Iscrizioni incomplete"
-      description: "You have either moved or deleted the main voice channel. Type %s to complete the configuration and use Skoice."
+      description: "Hai spostato o eliminato il canale vocale principale. Digita `/configure` sul tuo server Discord per completare la configurazione e utilizzare Skoice."
     download:
       title: "Scarica"
       description: "[Ottieni il plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) e installalo sul tuo server Minecraft."
     donating:
       title: "Donazioni"
-      description: "Skoice is a free software. If you like it, you can help us by [donating](https://opencollective.com/skoice)."
+      description: "Skoice è un software libero. Se ti piace, puoi aiutarci da [donating](https://opencollective.com/skoice)."
     troubleshooting:
       title: "Risoluzione problemi"
       description: "Hai dei problemi? [Unisciti al nostro server Discord](https://discord.gg/h3Tgccc)!"
@@ -235,13 +241,19 @@ discord:
       description: "Il tuo account Discord è stato scollegato da Minecraft."
     account-not-linked:
       title: "Account non collegato"
-      description: "Your Discord account is not linked to Minecraft. Type %s to link it and use the proximity voice chat."
+      description: "Your Discord account is not linked to Minecraft. Type `/link` on the Discord server \"%s\" to link it and use the proximity voice chat."
     account-already-linked:
       title: "Account già collegato"
-      description: "Your Discord account is already linked to Minecraft. Type %s to unlink it."
+      description: "Il tuo account Discord è già collegato a Minecraft. Digita `/unlink` per scollegarlo."
     access-denied:
       title: "Accesso negato"
       description: "Non disponi dei permessi per eseguire l'azione."
+    too-many-interactions:
+      title: "Troppe operazioni"
+      description: "Stai eseguendo i comandi troppo velocemente."
+    illegal-interaction:
+      title: "Istruzione non consentita"
+      description: "Puoi interagire solo con il bot su un server Discord."
     illegal-value:
       title: "Valore non valido"
       description: "I passi devono essere un numero maggiore di 0."
