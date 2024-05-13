@@ -21,7 +21,6 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
