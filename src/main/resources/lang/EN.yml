@@ -54,7 +54,6 @@ minecraft:
         - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
         - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
       public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
-      missing-access: "%s Your bot does &cnot have the permission to register commands &7on the Discord server \"&e%s&7\". Open this link to add it and restart your Minecraft server: &bhttps://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot%%20applications.commands&7."
       incomplete-configuration: "%s Skoice is &cnot configured correctly&7. Please contact an administrator of the server."
       incomplete-configuration-operator-interactive:
         - "%s Skoice is &cnot configured correctly&7. Click "
