@@ -83,7 +83,7 @@ minecraft:
       no-parameter: "%s You have &cnot provided an argument&7. To use this command, type \"&e/skoice %s&7\"."
       invalid-parameter: "%s You have &cnot provided a valid argument&7. To use this command, type \"&e/skoice %s&7\"."
       illegal-executor: "%s This command is &conly executable &7by players."
-      missing-permission: "%s This command is &conly executable &7by players with the permission \"&eskoice.manage&7\"."
+      missing-permission: "%s This command is &conly executable &7by operators."
       bot-timed-out-interactive:
         - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
         - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
