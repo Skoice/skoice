@@ -31,6 +31,33 @@ public enum ArgumentInfo {
     LINK(false, false, false),
     UNLINK(false, false, false);
 
+    private static final Set<String> consoleAllowedList;
+    private static final String joinedConsoleAllowedList;
+    private static final Set<String> permissionRequiredList;
+    private static final String joinedPermissionRequiredList;
+
+    static {
+        consoleAllowedList = Stream.of(ArgumentInfo.values())
+                .filter(arg -> arg.allowedInConsole && !arg.isHidden())
+                .map(Enum::toString)
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
+
+        joinedConsoleAllowedList = ArgumentInfo.consoleAllowedList.size() == 1
+                ? String.join("/", ArgumentInfo.consoleAllowedList)
+                : "<" + String.join("/", ArgumentInfo.consoleAllowedList) + ">";
+
+        permissionRequiredList = Stream.of(ArgumentInfo.values())
+                .filter(arg -> arg.permissionRequired && !arg.isHidden())
+                .map(Enum::toString)
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
+
+        joinedPermissionRequiredList = ArgumentInfo.permissionRequiredList.size() == 1
+                ? String.join("/", ArgumentInfo.permissionRequiredList)
+                : "<" + String.join("/", ArgumentInfo.permissionRequiredList) + ">";
+    }
+
     private final boolean allowedInConsole;
     private final boolean permissionRequired;
     private final boolean hidden;
@@ -63,19 +90,8 @@ public enum ArgumentInfo {
                 : "<" + String.join("/", list) + ">";
     }
 
-    private static Set<String> getConsoleAllowedList() {
-        return Stream.of(ArgumentInfo.values())
-                .filter(arg -> arg.allowedInConsole && !arg.isHidden())
-                .map(Enum::toString)
-                .map(String::toLowerCase)
-                .collect(Collectors.toSet());
-    }
-
     public static String getJoinedConsoleAllowedList() {
-        Set<String> consoleAllowedList = ArgumentInfo.getConsoleAllowedList();
-        return consoleAllowedList.size() == 1
-                ? String.join("/", consoleAllowedList)
-                : "<" + String.join("/", consoleAllowedList) + ">";
+        return ArgumentInfo.joinedConsoleAllowedList;
     }
 
     public boolean isAllowedInConsole() {

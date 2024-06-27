@@ -40,6 +40,18 @@ public enum LangInfo {
     RU("Русский", "U+1F1F7U+1F1FA"),
     TR("Türkçe", "U+1F1F9U+1F1F7");
 
+    private static final Set<String> langList;
+    private static final String joinedLangList;
+
+    static {
+        langList = Stream.of(LangInfo.values())
+                .map(Enum::toString)
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
+
+        joinedLangList = "<" + String.join("/", LangInfo.langList) + ">";
+    }
+
     private final String fullName;
     private final String unicode;
 
@@ -49,14 +61,11 @@ public enum LangInfo {
     }
 
     public static Set<String> getList() {
-        return Stream.of(LangInfo.values())
-                .map(Enum::toString)
-                .map(String::toLowerCase)
-                .collect(Collectors.toSet());
+        return LangInfo.langList;
     }
 
     public static String getJoinedList() {
-        return "<" + String.join("/", LangInfo.getList()) + ">";
+        return LangInfo.joinedLangList;
     }
 
     public String getFullName() {

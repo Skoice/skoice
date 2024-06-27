@@ -33,14 +33,17 @@ public enum ConfigField {
     SPECTATORS_INCLUDED,
     CHANNEL_VISIBILITY;
 
-    @Override
-    public String toString() {
-        return this.name().toLowerCase().replace("_", "-");
+    private final String lowerCaseName;
+    private final String camelCaseName;
+
+    ConfigField() {
+        this.lowerCaseName = this.name().toLowerCase().replace("_", "-");
+        this.camelCaseName = ConfigField.convertToCamelCase(this.name());
     }
 
-    public String toCamelCase() {
+    private static String convertToCamelCase(String name) {
         StringBuilder builder = new StringBuilder();
-        String[] words = this.name().split("_");
+        String[] words = name.split("_");
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
             if (i == 0) {
@@ -51,5 +54,14 @@ public enum ConfigField {
             builder.append(word);
         }
         return builder.toString();
+    }
+
+    public String toCamelCase() {
+        return this.camelCaseName;
+    }
+
+    @Override
+    public String toString() {
+        return this.lowerCaseName;
     }
 }
