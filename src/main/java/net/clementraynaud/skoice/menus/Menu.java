@@ -46,7 +46,6 @@ import java.util.List;
 
 public class Menu {
 
-    public static final String CLOSE_BUTTON_ID = "close";
     public static final String MESSAGE_NOT_SHOWING_UP = "message-not-showing-up";
 
     private final Skoice plugin;
@@ -251,11 +250,7 @@ public class Menu {
             buttons.add(Button.secondary(this.parent, "← " + this.plugin.getLang().getMessage("discord.button-label.back")));
         }
         if (this.type == MenuType.DEFAULT) {
-            if (this.plugin.getBot().getStatus() == BotStatus.READY) {
-                buttons.add(Button.danger(Menu.CLOSE_BUTTON_ID,
-                                this.plugin.getLang().getMessage("discord.button-label.close"))
-                        .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.get()));
-            } else {
+            if (this.plugin.getBot().getStatus() != BotStatus.READY) {
                 buttons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
                                 this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
                         .withEmoji(MenuEmoji.QUESTION.get()));
@@ -264,9 +259,6 @@ public class Menu {
                     buttons.add(Button.secondary(languageMenu.menuId, languageMenu.getTitle(false))
                             .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()));
                 }
-                buttons.add(Button.secondary(Menu.CLOSE_BUTTON_ID,
-                                this.plugin.getLang().getMessage("discord.button-label.configure-later"))
-                        .withEmoji(MenuEmoji.CLOCK3.get()));
             }
         }
 

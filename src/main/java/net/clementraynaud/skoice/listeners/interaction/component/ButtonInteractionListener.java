@@ -71,15 +71,7 @@ public class ButtonInteractionListener extends ListenerAdapter {
 
         } else if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
             if (this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
-                if (buttonId.equals(Menu.CLOSE_BUTTON_ID)) {
-                    event.getMessage().delete().queue();
-                    if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-                        event.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager")
-                                        .build(this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString())))
-                                .setEphemeral(true).queue();
-                    }
-
-                } else if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
+                if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
                     event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
 
                 } else if ("customize".equals(buttonId)) {

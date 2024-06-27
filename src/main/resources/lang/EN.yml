@@ -203,7 +203,7 @@ discord:
       description: "Skoice is not configured correctly. Please contact an administrator of the server."
     incomplete-configuration-server-manager:
       title: "Incomplete Configuration"
-      description: "Type %s to complete the configuration and use Skoice."
+      description: "Type %s or click the button below to complete the configuration and use Skoice."
     incomplete-configuration-alternative-server-manager:
       title: "Incomplete Configuration"
       description: "You have either moved or deleted the main voice channel. Type %s to complete the configuration and use Skoice."
@@ -251,8 +251,6 @@ discord:
       description: "Values must be whole numbers greater than 0."
   button-label:
     back: "Back"
-    close: "Close"
-    configure-later: "Configure Later"
     resume-configuration: "Resume Configuration"
     message-not-showing-up: "Message Not Showing Up"
     clear-notified-players: "Clear Notified Players"
