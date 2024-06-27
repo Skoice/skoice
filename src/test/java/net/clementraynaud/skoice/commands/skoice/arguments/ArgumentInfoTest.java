@@ -18,8 +18,8 @@ public class ArgumentInfoTest {
         assertNotNull(joinedConsoleAllowedList);
         assertTrue(joinedConsoleAllowedList.startsWith("<"));
         assertTrue(joinedConsoleAllowedList.endsWith(">"));
-        assertTrue(joinedConsoleAllowedList.contains("configure"));
-        assertTrue(joinedConsoleAllowedList.contains("tooltips"));
+        assertTrue(joinedConsoleAllowedList.contains("token"));
+        assertTrue(joinedConsoleAllowedList.contains("language"));
     }
 
     @Test
@@ -40,6 +40,6 @@ public class ArgumentInfoTest {
         Set<String> listWithoutPermission = ArgumentInfo.getList(false);
         assertNotNull(listWithoutPermission);
         assertFalse(listWithoutPermission.contains("token"));
-        assertTrue(listWithoutPermission.contains("configure"));
+        assertTrue(listWithoutPermission.contains("link"));
     }
 }

@@ -33,8 +33,6 @@ public enum ArgumentInfo {
 
     private static final Set<String> consoleAllowedList;
     private static final String joinedConsoleAllowedList;
-    private static final Set<String> permissionRequiredList;
-    private static final String joinedPermissionRequiredList;
 
     static {
         consoleAllowedList = Stream.of(ArgumentInfo.values())
@@ -46,16 +44,6 @@ public enum ArgumentInfo {
         joinedConsoleAllowedList = ArgumentInfo.consoleAllowedList.size() == 1
                 ? String.join("/", ArgumentInfo.consoleAllowedList)
                 : "<" + String.join("/", ArgumentInfo.consoleAllowedList) + ">";
-
-        permissionRequiredList = Stream.of(ArgumentInfo.values())
-                .filter(arg -> arg.permissionRequired && !arg.isHidden())
-                .map(Enum::toString)
-                .map(String::toLowerCase)
-                .collect(Collectors.toSet());
-
-        joinedPermissionRequiredList = ArgumentInfo.permissionRequiredList.size() == 1
-                ? String.join("/", ArgumentInfo.permissionRequiredList)
-                : "<" + String.join("/", ArgumentInfo.permissionRequiredList) + ">";
     }
 
     private final boolean allowedInConsole;
