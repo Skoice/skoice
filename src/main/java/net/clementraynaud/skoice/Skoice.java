@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice;
 
+import net.clementraynaud.skoice.api.SkoiceAPI;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
@@ -50,7 +51,7 @@ public class Skoice extends JavaPlugin {
 
     private static final String OUTDATED_MINECRAFT_SERVER_ERROR = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
     private static final int SERVICE_ID = 11380;
-
+    private static SkoiceAPI api;
     private Lang lang;
     private ConfigYamlFile configYamlFile;
     private LinksYamlFile linksYamlFile;
@@ -62,6 +63,10 @@ public class Skoice extends JavaPlugin {
     private ConfigurationMenu configurationMenu;
     private BukkitAudiences adventure;
     private DiscordSRVHook discordSRVHook;
+
+    public static SkoiceAPI api() {
+        return Skoice.api;
+    }
 
     @Override
     public void onEnable() {
@@ -100,6 +105,7 @@ public class Skoice extends JavaPlugin {
         this.discordSRVHook.initialize();
         this.addCustomCharts();
         new Updater(this, this.getFile().getAbsolutePath());
+        Skoice.api = new SkoiceAPI(this);
     }
 
     public BukkitAudiences adventure() {
