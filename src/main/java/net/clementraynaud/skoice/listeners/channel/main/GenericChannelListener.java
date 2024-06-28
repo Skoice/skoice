@@ -23,15 +23,18 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.entities.channel.unions.ChannelUnion;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
 import net.dv8tion.jda.api.events.channel.GenericChannelEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateNameEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateParentEvent;
+import net.dv8tion.jda.api.events.channel.update.ChannelUpdateVoiceStatusEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class GenericChannelListener extends ListenerAdapter {
@@ -88,10 +91,22 @@ public class GenericChannelListener extends ListenerAdapter {
         }
     }
 
+    @Override
+    public void onChannelUpdateVoiceStatus(ChannelUpdateVoiceStatusEvent event) {
+        VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+        if (voiceChannel == null || voiceChannel != event.getChannel().asVoiceChannel()) {
+            return;
+        }
+        this.plugin.getBot().setVoiceChannelStatus();
+    }
+
     private void checkForValidVoiceChannel(GenericChannelEvent event) {
         if (event.getChannel().getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))) {
             this.plugin.getConfigYamlFile().remove(ConfigField.VOICE_CHANNEL_ID.toString());
             this.plugin.getListenerManager().update();
+            if (!event.getGuild().getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS)) {
+                return;
+            }
             event.getGuild().retrieveAuditLogs().type(ActionType.CHANNEL_DELETE).limit(1).queue(auditLogEntries -> {
                 if (!auditLogEntries.isEmpty()) {
                     User user = auditLogEntries.get(0).getUser();

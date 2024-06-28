@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.listeners.session;
 
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.session.SessionRecreateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -45,6 +46,7 @@ public class SessionRecreateListener extends ListenerAdapter {
         this.plugin.getBot().updateGuild();
         this.plugin.getBot().updateVoiceState();
         this.plugin.getListenerManager().update();
+        this.plugin.getBot().setVoiceChannelStatus();
         this.plugin.getBot().muteMembers();
         this.plugin.getBot().checkForUnlinkedUsers();
         this.plugin.getBot().refreshOnlineLinkedPlayers();

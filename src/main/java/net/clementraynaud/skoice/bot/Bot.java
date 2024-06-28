@@ -152,6 +152,7 @@ public class Bot {
         this.loadMenus();
         this.updateVoiceState();
         this.plugin.getListenerManager().update();
+        this.setVoiceChannelStatus();
         this.muteMembers();
         this.checkForUnlinkedUsers();
         this.refreshOnlineLinkedPlayers();
@@ -182,7 +183,21 @@ public class Bot {
         }
     }
 
+    public void setVoiceChannelStatus() {
+        if (this.status != BotStatus.READY) {
+            return;
+        }
+        VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+        if (voiceChannel == null) {
+            return;
+        }
+        voiceChannel.modifyStatus(this.plugin.getLang().getMessage("discord.voice-channel-status")).queue();
+    }
+
     public void muteMembers() {
+        if (this.status != BotStatus.READY) {
+            return;
+        }
         VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
         if (voiceChannel == null) {
             return;

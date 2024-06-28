@@ -109,12 +109,17 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         } else {
                             VoiceChannel voiceChannel = guild.getVoiceChannelById(event.getSelectedOptions().get(0).getValue());
                             if (voiceChannel != null && voiceChannel.getParentCategory() != null) {
+                                VoiceChannel oldVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+                                if (oldVoiceChannel != null) {
+                                    oldVoiceChannel.modifyStatus("").queue();
+                                }
                                 this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(),
                                         event.getSelectedOptions().get(0).getValue());
                                 this.plugin.getBot().updateVoiceState();
                                 new InterruptSystemTask(this.plugin).run();
                                 this.plugin.getListenerManager().update(event.getUser());
                                 this.plugin.getBot().muteMembers();
+                                this.plugin.getBot().setVoiceChannelStatus();
                             }
                             this.plugin.getConfigurationMenu().refreshId().edit(event);
                         }

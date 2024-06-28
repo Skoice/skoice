@@ -276,5 +276,6 @@ discord:
     vertical-radius:
       label: "Vertical Radius"
   message-not-showing-up: "If you cannot see the message above, you probably have disabled embeds in Discord settings. To use Skoice properly, you must enable them by following this path: `App Settings › Text & Images › Show embeds and preview website links pasted into chat`."
+  voice-channel-status: "Unable to talk — No players nearby"
   communication-lost: "Communication lost."
   system-interrupted: "System interrupted."
