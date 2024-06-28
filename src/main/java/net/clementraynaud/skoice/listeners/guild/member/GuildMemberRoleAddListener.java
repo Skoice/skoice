@@ -45,8 +45,7 @@ public class GuildMemberRoleAddListener extends ListenerAdapter {
             if (rolesBeforeUpdate.stream().noneMatch(role -> role.hasPermission(Permission.ADMINISTRATOR))) {
                 event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
                 this.plugin.getListenerManager().update();
-                this.plugin.getConfigurationMenu().retrieveMessage(message ->
-                        message.editMessage(this.plugin.getConfigurationMenu().update()).queue());
+                this.plugin.getConfigurationMenu().refreshId().editFromHook();
             }
         }
     }

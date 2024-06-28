@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.commands.LinkCommand;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
@@ -69,11 +70,9 @@ public class LinkArgument extends Argument {
             super.plugin.getLinksYamlFile().linkUser(player.getUniqueId().toString(), discordId);
             LinkCommand.getDiscordIdCode().values().remove(this.arg);
             VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
-            member.getUser().openPrivateChannel().queue(channel ->
-                    channel.sendMessage(this.plugin.getBot().getMenu("account-linked")
-                                    .build(mainVoiceChannel.getAsMention()))
-                            .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
-            );
+            new EmbeddedMenu(this.plugin.getBot()).setContent("account-linked",
+                            mainVoiceChannel.getAsMention())
+                    .message(member.getUser());
             player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-linked"));
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {

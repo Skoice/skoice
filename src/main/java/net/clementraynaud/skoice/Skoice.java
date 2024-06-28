@@ -87,7 +87,7 @@ public class Skoice extends JavaPlugin {
         this.listenerManager = new ListenerManager(this);
         this.bot = new Bot(this);
         this.bot.connect();
-        this.configurationMenu = new ConfigurationMenu(this);
+        this.configurationMenu = new ConfigurationMenu(this.bot);
         this.botCommands = new BotCommands(this);
         this.adventure = BukkitAudiences.create(this);
         if (this.bot.getJDA() != null) {

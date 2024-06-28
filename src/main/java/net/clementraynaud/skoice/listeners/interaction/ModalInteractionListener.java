@@ -20,13 +20,13 @@
 package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.modals.ModalMapping;
-import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 public class ModalInteractionListener extends ListenerAdapter {
 
@@ -57,7 +57,7 @@ public class ModalInteractionListener extends ListenerAdapter {
                         new InterruptSystemTask(this.plugin).run();
                         this.plugin.getListenerManager().update(event.getUser());
                         this.plugin.getBot().muteMembers();
-                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+                        this.plugin.getConfigurationMenu().refreshId().edit(event);
                     }));
         } else if ("customize".equals(event.getModalId())) {
             int horizontalRadius = 0;
@@ -74,11 +74,12 @@ public class ModalInteractionListener extends ListenerAdapter {
                 verticalRadius = Integer.parseInt(verticalRadiusValue.getAsString());
             }
             if (horizontalRadius == 0 || verticalRadius == 0) {
-                event.reply(this.plugin.getBot().getMenu("illegal-value").build()).setEphemeral(true).queue();
+                new EmbeddedMenu(this.plugin.getBot()).setContent("illegal-value")
+                        .reply(event);
             } else {
                 this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
                 this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
-                event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("range").build())).queue();
+                this.plugin.getConfigurationMenu().setContent("range").edit(event);
             }
         }
     }

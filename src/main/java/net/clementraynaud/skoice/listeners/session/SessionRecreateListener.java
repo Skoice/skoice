@@ -34,7 +34,7 @@ public class SessionRecreateListener extends ListenerAdapter {
 
     @Override
     public void onSessionRecreate(SessionRecreateEvent event) {
-        this.plugin.getConfigurationMenu().delete();
+        this.plugin.getConfigurationMenu().deleteFromHook();
         this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
         this.plugin.getBotCommands().register();
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {

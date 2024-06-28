@@ -76,7 +76,6 @@ public class Menu {
     }
 
     public MessageCreateData build(String... args) {
-        this.plugin.getConfigurationMenu().setMenuId(this.menuId);
         return new MessageCreateBuilder().setEmbeds(this.getEmbed(args))
                 .setComponents(this.getActionRows()).build();
     }
@@ -224,23 +223,28 @@ public class Menu {
             additionalButtons.add(Button.primary("resume-configuration",
                             this.plugin.getLang().getMessage("discord.button-label.resume-configuration"))
                     .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
+
         } else if ("permissions".equals(this.menuId)) {
             additionalButtons.add(Button.link(this.inviteUrl, "Update Permissions")
                     .withEmoji(this.emoji.get()));
+
         } else if ("range".equals(this.menuId) && this.plugin.getBot().getStatus() == BotStatus.READY) {
             additionalButtons.add(Button.primary("customize",
                             this.plugin.getLang().getMessage("discord.field.customize.title"))
                     .withEmoji(MenuEmoji.PENCIL2.get()));
+
         } else if ("login-notification".equals(this.menuId)
                 && LoginNotificationSelectMenu.REMIND_ONCE.equals(this.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
             additionalButtons.add(Button.danger("clear-notified-players",
                             this.plugin.getLang().getMessage("discord.button-label.clear-notified-players"))
                     .withEmoji(MenuEmoji.WASTEBASKET.get()));
+
         } else if ("verification-code".equals(this.menuId)) {
             additionalButtons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
                             this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
                     .withEmoji(MenuEmoji.QUESTION.get()));
         }
+
         return additionalButtons;
     }
 

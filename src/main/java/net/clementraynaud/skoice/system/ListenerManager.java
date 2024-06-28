@@ -35,16 +35,14 @@ import net.clementraynaud.skoice.listeners.interaction.ModalInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.command.SlashCommandInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.component.StringSelectInteractionListener;
-import net.clementraynaud.skoice.listeners.message.MessageDeleteListener;
 import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
 import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.listeners.server.ServerCommandListener;
 import net.clementraynaud.skoice.listeners.session.SessionRecreateListener;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.exceptions.ErrorHandler;
-import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.event.HandlerList;
 
 public class ListenerManager {
@@ -81,14 +79,12 @@ public class ListenerManager {
             this.registerBotListeners();
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
             if (user != null) {
-                user.openPrivateChannel().queue(channel ->
-                        channel.sendMessage(this.plugin.getBot().getMenu("configuration-complete")
-                                        .build(this.plugin.getBotCommands().getAsMention(CommandInfo.LINK.toString())))
-                                .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
-                );
+                new EmbeddedMenu(this.plugin.getBot()).setContent("configuration-complete",
+                                this.plugin.getBotCommands().getAsMention(CommandInfo.LINK.toString()))
+                        .message(user);
             }
         } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-            this.plugin.getConfigurationMenu().retrieveMessage(message -> message.editMessage(this.plugin.getConfigurationMenu().update()).queue());
+            this.plugin.getConfigurationMenu().refreshId().editFromHook();
             if (wasBotReady) {
                 this.unregisterMinecraftListeners();
                 if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
@@ -119,7 +115,6 @@ public class ListenerManager {
                 new GuildMemberRoleAddListener(this.plugin),
                 new GuildMemberRoleRemoveListener(this.plugin),
                 new RoleUpdatePermissionsListener(this.plugin),
-                new MessageDeleteListener(this.plugin.getConfigurationMenu()),
                 new GenericChannelListener(this.plugin),
                 new GenericPermissionOverrideListener(this.plugin),
                 new SlashCommandInteractionListener(this.plugin),

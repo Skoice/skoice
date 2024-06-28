@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
@@ -40,14 +41,15 @@ public class UnlinkCommand extends Command {
     public void run() {
         String minecraftId = MapUtil.getKeyFromValue(super.plugin.getLinksYamlFile().getLinks(), super.executor.getUser().getId());
         if (minecraftId == null) {
-            super.interaction.reply(super.plugin.getBot().getMenu("account-not-linked")
-                            .build(super.plugin.getBotCommands().getAsMention(CommandInfo.LINK.toString())))
-                    .setEphemeral(true).queue();
+            new EmbeddedMenu(super.plugin.getBot()).setContent("account-not-linked",
+                            super.plugin.getBotCommands().getAsMention(CommandInfo.LINK.toString()))
+                    .reply(super.interaction);
             return;
         }
 
         super.plugin.getLinksYamlFile().unlinkUser(minecraftId);
-        super.interaction.reply(super.plugin.getBot().getMenu("account-unlinked").build()).setEphemeral(true).queue();
+        new EmbeddedMenu(super.plugin.getBot()).setContent("account-unlinked")
+                .reply(super.interaction);
 
         OfflinePlayer player = super.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
         if (player.isOnline() && player.getPlayer() != null) {

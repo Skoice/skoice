@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.storage.config.ConfigField;
@@ -43,11 +44,9 @@ import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
-import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -129,7 +128,6 @@ public class Bot {
 
     public void setup(CommandSender sender) {
         this.setDefaultAvatar();
-        this.plugin.getConfigurationMenu().delete();
         this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
         this.updateGuild();
         this.plugin.getBotCommands().clearGuildCommands();
@@ -215,10 +213,9 @@ public class Bot {
     public void checkMemberStatus(Member member) {
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
         if (minecraftId == null) {
-            member.getUser().openPrivateChannel().queue(channel ->
-                    channel.sendMessage(this.menus.get("account-not-linked").build(this.plugin.getBot().getGuild().getName()))
-                            .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
-            );
+            new EmbeddedMenu(this.plugin.getBot()).setContent("account-not-linked",
+                            this.plugin.getBot().getGuild().getName())
+                    .message(member.getUser());
         } else {
             OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {

@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 public abstract class Command {
@@ -51,20 +52,21 @@ public abstract class Command {
 
         if (this.serverManagerRequired
                 && !this.executor.isServerManager()) {
-            this.interaction.reply(this.plugin.getBot().getMenu("access-denied").build())
-                    .setEphemeral(true).queue();
+            new EmbeddedMenu(this.plugin.getBot()).setContent("access-denied")
+                    .reply(this.interaction);
             return false;
         }
 
         if (this.botReadyRequired
                 && this.plugin.getBot().getStatus() != BotStatus.READY) {
             if (this.executor.isServerManager()) {
-                this.interaction.reply(this.plugin.getBot().getMenu("incomplete-configuration-server-manager")
-                                .build(this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString())))
-                        .setEphemeral(true).queue();
+                new EmbeddedMenu(this.plugin.getBot()).setContent("incomplete-configuration-server-manager",
+                                this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
+                        .reply(this.interaction);
             } else {
-                this.interaction.reply(this.plugin.getBot().getMenu("incomplete-configuration").build())
-                        .setEphemeral(true).queue();
+                new EmbeddedMenu(this.plugin.getBot()).setContent("incomplete-configuration",
+                                this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
+                        .reply(this.interaction);
             }
             return false;
         }

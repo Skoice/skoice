@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
@@ -52,10 +53,7 @@ public class UnlinkArgument extends Argument {
 
         super.plugin.getLinksYamlFile().unlinkUser(player.getUniqueId().toString());
         super.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
-            member.getUser().openPrivateChannel().queue(channel ->
-                    channel.sendMessage(this.plugin.getBot().getMenu("account-unlinked").build())
-                            .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
-            );
+            new EmbeddedMenu(this.plugin.getBot()).setContent("account-unlinked").message(member.getUser());
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 AudioChannel audioChannel = voiceState.getChannel();

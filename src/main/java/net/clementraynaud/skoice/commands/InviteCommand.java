@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 public class InviteCommand extends Command {
@@ -31,7 +32,7 @@ public class InviteCommand extends Command {
 
     @Override
     public void run() {
-        super.interaction.reply(super.plugin.getBot().getMenu("skoice-proximity-voice-chat").build())
-                .setEphemeral(true).queue();
+        new EmbeddedMenu(super.plugin.getBot()).setContent("skoice-proximity-voice-chat")
+                .reply(super.interaction);
     }
 }

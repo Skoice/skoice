@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.listeners.interaction.component;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
@@ -32,8 +33,6 @@ import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
-import net.dv8tion.jda.api.utils.messages.MessageCreateData;
-import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 import java.util.Collections;
 
@@ -51,12 +50,6 @@ public class ButtonInteractionListener extends ListenerAdapter {
             return;
         }
 
-        if (!this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())
-                && !event.getMessage().isEphemeral()) {
-            event.getMessage().delete().queue();
-            return;
-        }
-
         String buttonId = event.getButton().getId();
         if (buttonId == null) {
             return;
@@ -69,44 +62,43 @@ public class ButtonInteractionListener extends ListenerAdapter {
                     .setEphemeral(true).queue();
 
         } else if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
-            if (this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
-                if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
-                    event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+            if ("resume-configuration".equals(event.getButton().getId())) {
+                this.plugin.getConfigurationMenu().generate(event);
 
-                } else if ("customize".equals(buttonId)) {
-                    TextInput horizontalRadius = TextInput.create("horizontal-radius",
-                                    this.plugin.getLang().getMessage("discord.text-input.horizontal-radius.label"),
-                                    TextInputStyle.SHORT)
-                            .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.HORIZONTAL_RADIUS.toString()))
-                            .setRequiredRange(1, 3)
-                            .build();
-                    TextInput verticalRadius = TextInput.create("vertical-radius",
-                                    this.plugin.getLang().getMessage("discord.text-input.vertical-radius.label"),
-                                    TextInputStyle.SHORT)
-                            .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.VERTICAL_RADIUS.toString()))
-                            .setRequiredRange(1, 3)
-                            .build();
-                    Modal modal = Modal.create("customize",
-                                    this.plugin.getLang().getMessage("discord.field.customize.title"))
-                            .addComponents(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
-                            .build();
-                    event.replyModal(modal).queue();
+            } else if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
+                this.plugin.getConfigurationMenu().refreshId().edit(event);
 
-                } else if ("clear-notified-players".equals(buttonId)) {
-                    this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, Collections.emptyList());
-                    event.reply(this.plugin.getBot().getMenu("notified-players-cleared").build())
-                            .setEphemeral(true).queue();
+            } else if ("customize".equals(buttonId)) {
+                TextInput horizontalRadius = TextInput.create("horizontal-radius",
+                                this.plugin.getLang().getMessage("discord.text-input.horizontal-radius.label"),
+                                TextInputStyle.SHORT)
+                        .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.HORIZONTAL_RADIUS.toString()))
+                        .setRequiredRange(1, 3)
+                        .build();
+                TextInput verticalRadius = TextInput.create("vertical-radius",
+                                this.plugin.getLang().getMessage("discord.text-input.vertical-radius.label"),
+                                TextInputStyle.SHORT)
+                        .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.VERTICAL_RADIUS.toString()))
+                        .setRequiredRange(1, 3)
+                        .build();
+                Modal modal = Modal.create("customize",
+                                this.plugin.getLang().getMessage("discord.field.customize.title"))
+                        .addComponents(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
+                        .build();
+                event.replyModal(modal).queue();
 
-                } else {
-                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu(buttonId).build())).queue();
-                }
+            } else if ("clear-notified-players".equals(buttonId)) {
+                this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, Collections.emptyList());
+                new EmbeddedMenu(this.plugin.getBot()).setContent("notified-players-cleared")
+                        .reply(event);
 
-            } else if ("resume-configuration".equals(event.getButton().getId())) {
-                event.reply(MessageCreateData.fromEditData(this.plugin.getConfigurationMenu().update())).queue();
+            } else {
+                this.plugin.getConfigurationMenu().setContent(buttonId).edit(event);
             }
 
         } else {
-            event.reply(this.plugin.getBot().getMenu("access-denied").build()).setEphemeral(true).queue();
+            new EmbeddedMenu(this.plugin.getBot()).setContent("access-denied")
+                    .reply(event);
         }
     }
 }

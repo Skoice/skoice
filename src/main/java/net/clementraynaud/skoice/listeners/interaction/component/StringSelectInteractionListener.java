@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.listeners.interaction.component;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.lang.LangInfo;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
@@ -34,7 +35,6 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
-import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,11 +54,6 @@ public class StringSelectInteractionListener extends ListenerAdapter {
             return;
         }
 
-        if (!this.plugin.getConfigurationMenu().getMessageId().equals(event.getMessage().getId())) {
-            event.getMessage().delete().queue();
-            return;
-        }
-
         Member member = event.getMember();
         if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
             String componentId = event.getComponentId();
@@ -71,12 +66,10 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                             Guild guildToLeave = this.plugin.getBot().getJDA().getGuildById(server.getValue());
                             if (guildToLeave != null && !event.getSelectedOptions().get(0).getValue().equals(server.getValue())) {
                                 if (guild.getId().equals(server.getValue())) {
-                                    this.plugin.getConfigurationMenu().retrieveMessage(message ->
-                                            message.delete().queue(success ->
-                                                    guildToLeave.leave().queue()));
+                                    this.plugin.getConfigurationMenu().deleteFromHook(success -> guildToLeave.leave().queue());
                                 } else {
                                     guildToLeave.leave().queue(success ->
-                                            event.editMessage(this.plugin.getConfigurationMenu().update()).queue());
+                                            this.plugin.getConfigurationMenu().refreshId().edit(event));
                                 }
                             }
                         }
@@ -88,12 +81,12 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                     this.plugin.getListenerManager().update();
                     this.plugin.getBotCommands().register();
-                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("language").build())).queue();
+                    this.plugin.getConfigurationMenu().setContent("language").edit(event);
                     break;
 
                 case "voice-channel-selection":
                     if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
-                        event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue();
+                        this.plugin.getConfigurationMenu().setContent("voice-channel").edit(event);
                     } else {
                         if ("new-voice-channel".equals(event.getSelectedOptions().get(0).getValue())) {
                             TextInput categoryName = TextInput.create("category-name",
@@ -123,7 +116,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                                 this.plugin.getListenerManager().update(event.getUser());
                                 this.plugin.getBot().muteMembers();
                             }
-                            event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+                            this.plugin.getConfigurationMenu().refreshId().edit(event);
                         }
                     }
                     break;
@@ -133,32 +126,32 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
                         this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 40);
                         this.plugin.getListenerManager().update(event.getUser());
-                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+                        this.plugin.getConfigurationMenu().refreshId().edit(event);
                     } else if ("short-range-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 40);
                         this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 20);
                         this.plugin.getListenerManager().update(event.getUser());
-                        event.editMessage(this.plugin.getConfigurationMenu().update()).queue();
+                        this.plugin.getConfigurationMenu().refreshId().edit(event);
                     }
                     break;
 
                 case "login-notification-selection":
                     this.plugin.getConfigYamlFile().set(ConfigField.LOGIN_NOTIFICATION.toString(), event.getSelectedOptions().get(0).getValue());
-                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("login-notification").build())).queue();
+                    this.plugin.getConfigurationMenu().setContent("login-notification").edit(event);
                     break;
 
                 case "action-bar-alerts-selection":
                     options.removeAll(event.getSelectedOptions());
                     options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
                     event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
-                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("action-bar-alerts").build())).queue();
+                    this.plugin.getConfigurationMenu().setContent("action-bar-alerts").edit(event);
                     break;
 
                 case "included-players-selection":
                     options.removeAll(event.getSelectedOptions());
                     options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
                     event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
-                    event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("included-players").build())).queue();
+                    this.plugin.getConfigurationMenu().setContent("included-players").edit(event);
                     break;
 
                 default:
@@ -166,14 +159,15 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         ConfigField configField = ConfigField.valueOf(componentId.replace("-", "_").toUpperCase());
                         this.plugin.getConfigYamlFile().set(configField.toString(),
                                 Boolean.valueOf(event.getSelectedOptions().get(0).getValue()));
-                        event.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu(componentId).build())).queue();
+                        this.plugin.getConfigurationMenu().setContent(componentId).edit(event);
                     } catch (IllegalArgumentException e) {
                         throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));
                     }
             }
 
         } else {
-            event.reply(this.plugin.getBot().getMenu("access-denied").build()).setEphemeral(true).queue();
+            new EmbeddedMenu(this.plugin.getBot()).setContent("access-denied")
+                    .reply(event);
         }
     }
 }

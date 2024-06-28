@@ -21,7 +21,6 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
-import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 public class ConfigureCommand extends Command {
 
@@ -31,9 +30,6 @@ public class ConfigureCommand extends Command {
 
     @Override
     public void run() {
-        super.plugin.getConfigurationMenu().delete();
-        super.interaction.reply(MessageCreateData.fromEditData(super.plugin.getConfigurationMenu().update()))
-                .queue(interactionHook -> interactionHook.retrieveOriginal()
-                        .queue(message -> super.plugin.getConfigurationMenu().store(message)));
+        super.plugin.getConfigurationMenu().generate(super.interaction);
     }
 }

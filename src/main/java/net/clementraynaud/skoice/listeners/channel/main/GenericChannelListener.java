@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.listeners.channel.main;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.CommandInfo;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.User;
@@ -31,10 +32,7 @@ import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
 import net.dv8tion.jda.api.events.channel.GenericChannelEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateNameEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateParentEvent;
-import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.requests.ErrorResponse;
-import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 public class GenericChannelListener extends ListenerAdapter {
 
@@ -98,11 +96,9 @@ public class GenericChannelListener extends ListenerAdapter {
                 if (!auditLogEntries.isEmpty()) {
                     User user = auditLogEntries.get(0).getUser();
                     if (user != null && !user.isBot()) {
-                        user.openPrivateChannel().queue(channel ->
-                                channel.sendMessage(this.plugin.getBot().getMenu("incomplete-configuration-alternative-server-manager")
-                                                .build(this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString())))
-                                        .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
-                        );
+                        new EmbeddedMenu(this.plugin.getBot()).setContent("incomplete-configuration-alternative-server-manager",
+                                        this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
+                                .message(user);
                     }
                 }
             });
@@ -110,9 +106,8 @@ public class GenericChannelListener extends ListenerAdapter {
     }
 
     private void reloadVoiceChannelMenu() {
-        if ("voice-channel".equals(this.plugin.getConfigurationMenu().getMenuId())) {
-            this.plugin.getConfigurationMenu().retrieveMessage(message ->
-                    message.editMessage(MessageEditData.fromCreateData(this.plugin.getBot().getMenu("voice-channel").build())).queue());
+        if ("voice-channel".equals(this.plugin.getConfigurationMenu().getId())) {
+            this.plugin.getConfigurationMenu().setContent("voice-channel").editFromHook();
         }
     }
 }

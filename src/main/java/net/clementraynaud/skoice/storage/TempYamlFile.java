@@ -23,10 +23,6 @@ import net.clementraynaud.skoice.Skoice;
 
 public class TempYamlFile extends YamlFile {
 
-    public static final String CONFIG_MENU_FIELD = "config-menu";
-    public static final String CHANNEL_TYPE_FIELD = "channel-type";
-    public static final String CHANNEL_ID_FIELD = "channel-id";
-    public static final String MESSAGE_ID_FIELD = "message-id";
     public static final String MUTED_USERS_ID_FIELD = "muted-users-id";
 
     public TempYamlFile(Skoice plugin) {

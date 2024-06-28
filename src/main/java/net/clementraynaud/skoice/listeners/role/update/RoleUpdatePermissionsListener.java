@@ -47,8 +47,7 @@ public class RoleUpdatePermissionsListener extends ListenerAdapter {
                     && event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                 event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
                 this.plugin.getListenerManager().update();
-                this.plugin.getConfigurationMenu().retrieveMessage(message ->
-                        message.editMessage(this.plugin.getConfigurationMenu().update()).queue());
+                this.plugin.getConfigurationMenu().refreshId().editFromHook();
             }
         }
     }
