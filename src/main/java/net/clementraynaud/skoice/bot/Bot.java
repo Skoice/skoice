@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.menus.Menu;
@@ -220,6 +221,8 @@ public class Bot {
             OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
+                PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, member.getId());
+                this.plugin.getServer().getPluginManager().callEvent(event);
             }
         }
     }

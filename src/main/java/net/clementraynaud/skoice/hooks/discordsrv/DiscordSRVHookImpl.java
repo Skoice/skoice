@@ -58,20 +58,14 @@ public class DiscordSRVHookImpl {
     @Subscribe
     public void onAccountLinked(AccountLinkedEvent event) {
         if (this.isDiscordReady && event.getUser() != null && event.getPlayer() != null) {
-            if (this.plugin.getLinksYamlFile().getLinks().containsKey(event.getPlayer().getUniqueId().toString())) {
-                return;
-            }
-            this.plugin.getLinksYamlFile().linkUserDirectly(event.getPlayer().getUniqueId().toString(), event.getUser().getId());
+            Skoice.api().linkUser(event.getPlayer().getUniqueId(), event.getUser().getId());
         }
     }
 
     @Subscribe
     public void onAccountUnlinked(AccountUnlinkedEvent event) {
         if (this.isDiscordReady && event.getPlayer() != null) {
-            if (this.plugin.getLinksYamlFile().getLinks().get(event.getPlayer().getUniqueId().toString()) == null) {
-                return;
-            }
-            this.plugin.getLinksYamlFile().unlinkUserDirectly(event.getPlayer().getUniqueId().toString());
+            Skoice.api().unlinkUser(event.getPlayer().getUniqueId());
         }
     }
 
@@ -89,7 +83,7 @@ public class DiscordSRVHookImpl {
         }
 
         Map<String, UUID> existingHookLinks = new HashMap<>(DiscordSRV.getPlugin().getAccountLinkManager().getLinkedAccounts());
-        Map<String, String> existingSkoiceLinks = new HashMap<>(this.plugin.getLinksYamlFile().getLinks());
+        Map<String, String> existingSkoiceLinks = new HashMap<>(Skoice.api().getLinkedAccounts());
 
         existingHookLinks.forEach((discordId, minecraftId) -> {
             if (!existingSkoiceLinks.containsValue(discordId)) {

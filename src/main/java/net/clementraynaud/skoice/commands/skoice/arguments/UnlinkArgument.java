@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.system.Networks;
@@ -60,6 +61,8 @@ public class UnlinkArgument extends Argument {
                 if (audioChannel != null && audioChannel.equals(super.plugin.getConfigYamlFile().getVoiceChannel())
                         || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
                     player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+                    PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(player.getUniqueId().toString(), member.getId());
+                    this.plugin.getServer().getPluginManager().callEvent(event);
                 }
             }
         }, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MEMBER));

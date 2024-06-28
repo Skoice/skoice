@@ -20,6 +20,8 @@
 package net.clementraynaud.skoice.storage;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.api.events.account.AccountLinkEvent;
+import net.clementraynaud.skoice.api.events.account.AccountUnlinkEvent;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.Guild;
@@ -47,11 +49,15 @@ public class LinksYamlFile extends YamlFile {
     public void linkUser(String minecraftId, String discordId) {
         this.linkUserDirectly(minecraftId, discordId);
         super.plugin.getDiscordSRVHook().linkUser(minecraftId, discordId);
+        AccountLinkEvent event = new AccountLinkEvent(minecraftId, discordId);
+        this.plugin.getServer().getPluginManager().callEvent(event);
     }
 
     public void unlinkUser(String minecraftId) {
         this.unlinkUserDirectly(minecraftId);
         super.plugin.getDiscordSRVHook().unlinkUser(minecraftId);
+        AccountUnlinkEvent event = new AccountUnlinkEvent(minecraftId);
+        this.plugin.getServer().getPluginManager().callEvent(event);
     }
 
     public void linkUserDirectly(String minecraftId, String discordId) {
