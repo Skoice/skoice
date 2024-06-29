@@ -62,8 +62,8 @@ public class UnlinkCommand extends Command {
                     AudioChannel voiceChannel = voiceState.getChannel();
                     if (voiceChannel != null && voiceChannel.equals(super.plugin.getConfigYamlFile().getVoiceChannel())) {
                         player.getPlayer().sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
-                        PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
-                        this.plugin.getServer().getPluginManager().callEvent(event);
+//                        PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
+//                        this.plugin.getServer().getPluginManager().callEvent(event);
                     }
                 }
             }, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MEMBER));

@@ -237,8 +237,8 @@ public class Bot {
             OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
             if (player.isOnline() && player.getPlayer() != null) {
                 player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
-                PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, member.getId());
-                this.plugin.getServer().getPluginManager().callEvent(event);
+//                PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, member.getId());
+//                this.plugin.getServer().getPluginManager().callEvent(event);
             }
         }
     }

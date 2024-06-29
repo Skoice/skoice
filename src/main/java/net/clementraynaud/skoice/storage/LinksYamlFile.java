@@ -49,15 +49,15 @@ public class LinksYamlFile extends YamlFile {
     public void linkUser(String minecraftId, String discordId) {
         this.linkUserDirectly(minecraftId, discordId);
         super.plugin.getDiscordSRVHook().linkUser(minecraftId, discordId);
-        AccountLinkEvent event = new AccountLinkEvent(minecraftId, discordId);
-        this.plugin.getServer().getPluginManager().callEvent(event);
+//        AccountLinkEvent event = new AccountLinkEvent(minecraftId, discordId);
+//        this.plugin.getServer().getPluginManager().callEvent(event);
     }
 
     public void unlinkUser(String minecraftId) {
         this.unlinkUserDirectly(minecraftId);
         super.plugin.getDiscordSRVHook().unlinkUser(minecraftId);
-        AccountUnlinkEvent event = new AccountUnlinkEvent(minecraftId);
-        this.plugin.getServer().getPluginManager().callEvent(event);
+//        AccountUnlinkEvent event = new AccountUnlinkEvent(minecraftId);
+//        this.plugin.getServer().getPluginManager().callEvent(event);
     }
 
     public void linkUserDirectly(String minecraftId, String discordId) {

@@ -57,8 +57,8 @@ public class PlayerJoinListener implements Listener {
                     AudioChannel audioChannel = voiceState.getChannel();
                     if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
                         player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
-                        PlayerProximityConnectEvent connectEvent = new PlayerProximityConnectEvent(player.getUniqueId().toString(), member.getId());
-                        this.plugin.getServer().getPluginManager().callEvent(connectEvent);
+//                        PlayerProximityConnectEvent connectEvent = new PlayerProximityConnectEvent(player.getUniqueId().toString(), member.getId());
+//                        this.plugin.getServer().getPluginManager().callEvent(connectEvent);
                     }
                 }
             }, e -> this.sendLoginNotification(player))) {
