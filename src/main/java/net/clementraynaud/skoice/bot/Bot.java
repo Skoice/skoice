@@ -229,8 +229,8 @@ public class Bot {
     public void checkMemberStatus(Member member) {
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
         if (minecraftId == null) {
-            new EmbeddedMenu(this.plugin.getBot()).setContent("account-not-linked",
-                            this.plugin.getBot().getGuild().getName())
+            new EmbeddedMenu(this).setContent("account-not-linked",
+                            this.plugin.getBotCommands().getAsMention(CommandInfo.LINK.toString()))
                     .message(member.getUser());
         } else {
             OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
