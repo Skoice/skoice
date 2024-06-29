@@ -55,6 +55,10 @@ public class Network {
     }
 
     public void build() {
+        if (this.channelId != null) {
+            this.initialized = true;
+            return;
+        }
         Guild guild = this.plugin.getBot().getGuild();
         List<Permission> deniedPermissions = Arrays.asList(
                 this.plugin.getConfigYamlFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.toString())

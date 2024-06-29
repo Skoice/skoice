@@ -277,7 +277,7 @@ public class Bot {
             List<String> voiceChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
             category.getVoiceChannels().stream()
                     .filter(channel -> voiceChannels.contains(channel.getId()))
-                    .forEach(channel -> new Network(this.plugin, channel.getId()));
+                    .forEach(channel -> new Network(this.plugin, channel.getId()).build());
         }
     }
 
