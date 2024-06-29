@@ -76,7 +76,7 @@ public class Network {
                     List<String> voiceChannels = this.plugin.getTempYamlFile()
                             .getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
                     voiceChannels.add(this.channelId);
-                    this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD, voiceChannels);
+                    this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD, voiceChannels);
                     this.initialized = true;
                 }, e -> Networks.remove(this));
     }
@@ -180,7 +180,7 @@ public class Network {
         List<String> voiceChannels = this.plugin.getTempYamlFile()
                 .getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
         voiceChannels.remove(this.channelId);
-        this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD, voiceChannels);
+        this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD, voiceChannels);
         Networks.remove(this);
     }
 
