@@ -388,7 +388,7 @@ public class Bot {
             if (menuSection != null) {
                 if ("configuration".equals(menu) || "linking-process".equals(menu) || "error".equals(menu)) {
                     for (String subMenu : menuSection.getKeys(false)) {
-                        if (!"emoji".equals(subMenu)) {
+                        if (!"emoji".equals(subMenu) && !"footer".equals(subMenu)) {
                             ConfigurationSection subMenuSection = menusYaml.getConfigurationSection(menu + "." + subMenu);
                             if (subMenuSection != null) {
                                 this.menus.put(subMenu, new Menu(this.plugin, subMenuSection));

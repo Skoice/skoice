@@ -104,8 +104,8 @@ discord:
     unlink: "Unlink your Discord account from Minecraft."
     invite: "Get the proximity voice chat on your server."
   menu:
-    footer: "Want Skoice on your server? Type \"/invite\"!"
-    invite-footer: "Skoice • carlodrift, Lucas_Cdry and contributors"
+    invite-footer: "Want Skoice on your server? Type \"/invite\"!"
+    contributors-footer: "Skoice • carlodrift, Lucas_Cdry and contributors"
     configuration:
       title: "Configuration"
     server:

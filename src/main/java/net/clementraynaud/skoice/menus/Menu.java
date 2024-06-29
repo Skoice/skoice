@@ -51,6 +51,7 @@ public class Menu {
     private final Skoice plugin;
     private final String menuId;
     private final String parentName;
+    private final String footer;
     private final MenuEmoji emoji;
     private final MenuType type;
     private final MenuStyle style;
@@ -62,6 +63,9 @@ public class Menu {
         this.plugin = plugin;
         this.menuId = menu.getName();
         this.parentName = !menu.getParent().equals(menu.getRoot()) ? menu.getParent().getName() : this.menuId;
+        this.footer = !menu.getParent().equals(menu.getRoot())
+                ? menu.getParent().getString("footer")
+                : menu.getString("footer");
         this.emoji = MenuEmoji.valueOf(!menu.getParent().equals(menu.getRoot())
                 ? menu.getParent().getString("emoji").toUpperCase()
                 : menu.getString("emoji").toUpperCase());
@@ -98,11 +102,8 @@ public class Menu {
         EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(true))
                 .setColor(this.type.getColor());
 
-        if ("skoice-proximity-voice-chat".equals(this.menuId)) {
-            embed.setFooter(this.plugin.getLang().getMessage("discord.menu.invite-footer"),
-                    "https://clementraynaud.net/Skoice.jpeg");
-        } else {
-            embed.setFooter(this.plugin.getLang().getMessage("discord.menu.footer"),
+        if (this.footer != null) {
+            embed.setFooter(this.plugin.getLang().getMessage("discord.menu." + this.footer + "-footer"),
                     "https://clementraynaud.net/Skoice.jpeg");
         }
 

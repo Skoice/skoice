@@ -44,6 +44,7 @@ configuration:
 
 linking-process:
   emoji: link
+  footer: invite
   account-linked:
     type: success
     fields:
@@ -67,6 +68,7 @@ linking-process:
 
 error:
   emoji: warning
+  footer: invite
   access-denied:
     type: error
     fields:
@@ -138,6 +140,7 @@ permissions:
   type: default
 skoice-proximity-voice-chat:
   emoji: information_source
+  footer: contributors
   type: success
   fields:
     - download
