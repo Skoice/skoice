@@ -24,6 +24,7 @@ import net.clementraynaud.skoice.Skoice;
 public class TempYamlFile extends YamlFile {
 
     public static final String MUTED_USERS_ID_FIELD = "muted-users-id";
+    public static final String VOICE_CHANNELS_ID_FIELD = "voice-channels-id";
 
     public TempYamlFile(Skoice plugin) {
         super(plugin, "temp");

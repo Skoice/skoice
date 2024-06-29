@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -31,7 +32,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Network {
@@ -62,7 +62,8 @@ public class Network {
                         : Permission.VIEW_CHANNEL,
                 Permission.VOICE_MOVE_OTHERS
         );
-        this.plugin.getConfigYamlFile().getCategory().createVoiceChannel(UUID.randomUUID().toString())
+        this.plugin.getConfigYamlFile().getCategory()
+                .createVoiceChannel(this.plugin.getLang().getMessage("discord.proximity-channel-name"))
                 .addPermissionOverride(guild.getPublicRole(),
                         Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
                         deniedPermissions)
@@ -72,6 +73,10 @@ public class Network {
                 .setBitrate(this.plugin.getConfigYamlFile().getVoiceChannel().getBitrate())
                 .queue(voiceChannel -> {
                     this.channelId = voiceChannel.getId();
+                    List<String> voiceChannels = this.plugin.getTempYamlFile()
+                            .getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
+                    voiceChannels.add(this.channelId);
+                    this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD, voiceChannels);
                     this.initialized = true;
                 }, e -> Networks.remove(this));
     }
@@ -172,6 +177,10 @@ public class Network {
         if (channel != null) {
             channel.delete().reason(this.plugin.getLang().getMessage("discord." + reason)).queue();
         }
+        List<String> voiceChannels = this.plugin.getTempYamlFile()
+                .getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
+        voiceChannels.remove(this.channelId);
+        this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD, voiceChannels);
         Networks.remove(this);
     }
 

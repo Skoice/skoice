@@ -26,6 +26,7 @@ import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuField;
+import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
@@ -273,15 +274,9 @@ public class Bot {
     private void retrieveNetworks() {
         Category category = this.plugin.getConfigYamlFile().getCategory();
         if (category != null) {
+            List<String> voiceChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
             category.getVoiceChannels().stream()
-                    .filter(channel -> {
-                        try {
-                            UUID.fromString(channel.getName());
-                            return true;
-                        } catch (IllegalArgumentException e) {
-                            return false;
-                        }
-                    })
+                    .filter(channel -> voiceChannels.contains(channel.getId()))
                     .forEach(channel -> Networks.add(new Network(this.plugin, channel.getId())));
         }
     }
