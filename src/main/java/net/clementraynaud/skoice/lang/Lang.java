@@ -109,6 +109,10 @@ public class Lang {
     }
 
     public int getAmountOfArgsRequired(String message) {
-        return message.split("%s").length - 1;
+        int amount = message.split("%s").length - 1;
+        if (message.startsWith("%s") || message.endsWith("%s")) {
+            amount++;
+        }
+        return amount;
     }
 }
