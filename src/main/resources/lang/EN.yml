@@ -128,8 +128,7 @@ discord:
             description: "Skoice will automatically set up a voice channel."
     range:
       title: "Range"
-      description: "Select a mode or customize the distances."
-      alternative-description: "Let us choose the best settings for your personal use of Skoice. You will still be able to customize the distances later."
+      description: "Customize the range of the proximity voice chat."
       select-menu:
         placeholder: "Please select a mode."
         alternative-placeholder: "You are currently using customized distances."

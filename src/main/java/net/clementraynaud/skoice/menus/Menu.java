@@ -86,9 +86,7 @@ public class Menu {
     }
 
     private String getDescription(boolean shortened) {
-        if (this.plugin.getBot().getStatus() != BotStatus.READY && this.plugin.getLang().contains("discord.menu." + this.parentName + ".alternative-description")) {
-            return this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".alternative-description");
-        } else if (shortened && this.plugin.getLang().contains("discord.menu." + this.parentName + ".shortened-description")) {
+        if (shortened && this.plugin.getLang().contains("discord.menu." + this.parentName + ".shortened-description")) {
             return this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".shortened-description");
         } else if (this.plugin.getLang().contains("discord.menu." + this.parentName + ".description")) {
             return this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".description");
@@ -131,9 +129,6 @@ public class Menu {
         }
         int startIndex = 0;
         for (String field : this.fields) {
-            if ("customize".equals(field) && this.plugin.getBot().getStatus() != BotStatus.READY) {
-                break;
-            }
             MenuField menuField = this.plugin.getBot().getField(field);
             int endIndex = this.plugin.getLang().getAmountOfArgsRequired(menuField.getDescription());
             embed.addField(menuField.build(Arrays.copyOfRange(args, startIndex, endIndex)));
@@ -228,7 +223,7 @@ public class Menu {
             additionalButtons.add(Button.link(this.inviteUrl, "Update Permissions")
                     .withEmoji(this.emoji.get()));
 
-        } else if ("range".equals(this.menuId) && this.plugin.getBot().getStatus() == BotStatus.READY) {
+        } else if ("range".equals(this.menuId)) {
             additionalButtons.add(Button.primary("customize",
                             this.plugin.getLang().getMessage("discord.field.customize.title"))
                     .withEmoji(MenuEmoji.PENCIL2.get()));

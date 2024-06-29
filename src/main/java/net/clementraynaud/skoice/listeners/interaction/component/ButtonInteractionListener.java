@@ -65,9 +65,6 @@ public class ButtonInteractionListener extends ListenerAdapter {
             if ("resume-configuration".equals(event.getButton().getId())) {
                 this.plugin.getConfigurationMenu().generate(event);
 
-            } else if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
-                this.plugin.getConfigurationMenu().refreshId().edit(event);
-
             } else if ("customize".equals(buttonId)) {
                 TextInput horizontalRadius = TextInput.create("horizontal-radius",
                                 this.plugin.getLang().getMessage("discord.text-input.horizontal-radius.label"),
@@ -86,6 +83,9 @@ public class ButtonInteractionListener extends ListenerAdapter {
                         .addComponents(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
                         .build();
                 event.replyModal(modal).queue();
+
+            } else if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
+                this.plugin.getConfigurationMenu().refreshId().edit(event);
 
             } else if ("clear-notified-players".equals(buttonId)) {
                 this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, Collections.emptyList());
