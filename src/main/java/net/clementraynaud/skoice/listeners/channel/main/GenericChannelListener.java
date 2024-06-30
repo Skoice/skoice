@@ -97,7 +97,7 @@ public class GenericChannelListener extends ListenerAdapter {
         if (voiceChannel == null || voiceChannel != event.getChannel().asVoiceChannel()) {
             return;
         }
-        this.plugin.getBot().setVoiceChannelStatus();
+        this.plugin.getBot().getBotVoiceChannel().setStatus();
     }
 
     private void checkForValidVoiceChannel(GenericChannelEvent event) {

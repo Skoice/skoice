@@ -118,8 +118,8 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                                 this.plugin.getBot().updateVoiceState();
                                 new InterruptSystemTask(this.plugin).run();
                                 this.plugin.getListenerManager().update(event.getUser());
-                                this.plugin.getBot().muteMembers();
-                                this.plugin.getBot().setVoiceChannelStatus();
+                                this.plugin.getBot().getBotVoiceChannel().muteMembers();
+                                this.plugin.getBot().getBotVoiceChannel().setStatus();
                             }
                             this.plugin.getConfigurationMenu().refreshId().edit(event);
                         }

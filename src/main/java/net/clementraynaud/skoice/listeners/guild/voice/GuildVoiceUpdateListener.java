@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.system.Networks;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
@@ -65,7 +64,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
         if (voiceChannel.equals(mainVoiceChannel) ||
                 Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
-            this.plugin.getBot().checkMemberStatus(member);
+            this.plugin.getBot().notifyIfUnlinked(member);
         }
     }
 
@@ -113,7 +112,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
 
         if (voiceChannelJoined.equals(mainVoiceChannel) && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelLeft))
                 || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannelJoined)) && !voiceChannelLeft.equals(mainVoiceChannel) && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelLeft))) {
-            this.plugin.getBot().checkMemberStatus(member);
+            this.plugin.getBot().notifyIfUnlinked(member);
         }
 
         if (Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelJoined))) {

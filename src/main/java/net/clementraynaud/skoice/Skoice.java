@@ -93,7 +93,6 @@ public class Skoice extends JavaPlugin {
         this.listenerManager.registerPermanentMinecraftListeners();
         this.bot = new Bot(this);
         this.bot.connect();
-        this.bot.initializeMenuFactory();
         this.configurationMenu = new ConfigurationMenu(this.bot);
         this.botCommands = new BotCommands(this);
         this.adventure = BukkitAudiences.create(this);

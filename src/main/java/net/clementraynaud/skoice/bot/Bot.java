@@ -37,8 +37,6 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.PermissionOverride;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
@@ -51,24 +49,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Bot {
 
     private final Skoice plugin;
+    private final BotVoiceChannel botVoiceChannel;
+    private final MenuFactory menuFactory;
     private JDA jda;
     private BotStatus status = BotStatus.NOT_CONNECTED;
     private String tokenManagerId;
     private String guildId;
-    private MenuFactory menuFactory;
 
     public Bot(Skoice plugin) {
         this.plugin = plugin;
+        this.botVoiceChannel = new BotVoiceChannel(this.plugin);
+        this.menuFactory = new MenuFactory();
+        this.menuFactory.loadAll(this.plugin);
     }
 
     public void connect() {
@@ -113,9 +112,12 @@ public class Bot {
         }
     }
 
-    public void initializeMenuFactory() {
-        this.menuFactory = new MenuFactory();
-        this.menuFactory.loadAll(this.plugin);
+    public boolean isAdministrator() {
+        Guild guild = this.plugin.getBot().getGuild();
+        if (guild == null) {
+            return false;
+        }
+        return guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR);
     }
 
     public void setDefaultAvatar() {
@@ -130,50 +132,7 @@ public class Bot {
         }
     }
 
-    public void setVoiceChannelStatus() {
-        if (this.status == BotStatus.NO_VOICE_CHANNEL) {
-            return;
-        }
-        VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
-        if (voiceChannel == null) {
-            return;
-        }
-        voiceChannel.modifyStatus(this.plugin.getLang().getMessage("discord.voice-channel-status")).queue();
-    }
-
-    public void muteMembers() {
-        if (this.status != BotStatus.READY) {
-            return;
-        }
-        VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
-        if (voiceChannel == null) {
-            return;
-        }
-        voiceChannel.getRolePermissionOverrides().forEach(override -> {
-            if (!override.getDenied().contains(Permission.VOICE_SPEAK)) {
-                override.getManager().deny(Permission.VOICE_SPEAK).queue();
-            }
-        });
-        Role publicRole = voiceChannel.getGuild().getPublicRole();
-        PermissionOverride permissionOverride = voiceChannel.getPermissionOverride(publicRole);
-        if (permissionOverride == null) {
-            voiceChannel.upsertPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
-        }
-    }
-
-    public void checkForUnlinkedUsers() {
-        if (this.getStatus() == BotStatus.READY) {
-            VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
-            if (voiceChannel == null) {
-                return;
-            }
-            for (Member member : voiceChannel.getMembers()) {
-                this.checkMemberStatus(member);
-            }
-        }
-    }
-
-    public void checkMemberStatus(Member member) {
+    public void notifyIfUnlinked(Member member) {
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
         if (minecraftId == null) {
             new EmbeddedMenu(this).setContent("account-not-linked",
@@ -235,7 +194,7 @@ public class Bot {
                     this.status = BotStatus.MULTIPLE_GUILDS;
                     this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
                 }
-            } else if (!this.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+            } else if (!this.isAdministrator()) {
                 this.status = BotStatus.MISSING_PERMISSION;
                 this.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
                     applicationInfo.setRequiredScopes("applications.commands");
@@ -342,6 +301,10 @@ public class Bot {
             return interaction.getGuild();
         }
         return this.getGuild();
+    }
+
+    public BotVoiceChannel getBotVoiceChannel() {
+        return this.botVoiceChannel;
     }
 
     public MenuFactory getMenuFactory() {
