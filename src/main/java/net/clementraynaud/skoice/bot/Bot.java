@@ -25,6 +25,7 @@ import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.listeners.session.ReadyListener;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.menus.Menu;
+import net.clementraynaud.skoice.menus.MenuFactory;
 import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
@@ -66,13 +67,12 @@ import java.util.UUID;
 
 public class Bot {
 
-    private final Map<String, MenuField> fields = new HashMap<>();
-    private final Map<String, Menu> menus = new LinkedHashMap<>();
     private final Skoice plugin;
     private JDA jda;
     private BotStatus status = BotStatus.NOT_CONNECTED;
     private String tokenManagerId;
     private String guildId;
+    private MenuFactory menuFactory;
 
     public Bot(Skoice plugin) {
         this.plugin = plugin;
@@ -118,6 +118,11 @@ public class Bot {
                 tokenManager.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-could-not-connect"));
             }
         }
+    }
+
+    public void initializeMenuFactory() {
+        this.menuFactory = new MenuFactory();
+        this.menuFactory.loadAll(this.plugin);
     }
 
     public void setDefaultAvatar() {
@@ -324,44 +329,6 @@ public class Bot {
         }
     }
 
-    public void loadMenus() {
-        this.loadMenuFields();
-        YamlConfiguration menusYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "menus/menus.yml");
-        if (menusYaml == null) {
-            return;
-        }
-        for (String menu : menusYaml.getKeys(false)) {
-            ConfigurationSection menuSection = menusYaml.getConfigurationSection(menu);
-            if (menuSection != null) {
-                if ("configuration".equals(menu) || "linking-process".equals(menu) || "error".equals(menu)) {
-                    for (String subMenu : menuSection.getKeys(false)) {
-                        if (!"emoji".equals(subMenu) && !"footer".equals(subMenu)) {
-                            ConfigurationSection subMenuSection = menusYaml.getConfigurationSection(menu + "." + subMenu);
-                            if (subMenuSection != null) {
-                                this.menus.put(subMenu, new Menu(this.plugin, subMenuSection));
-                            }
-                        }
-                    }
-                } else {
-                    this.menus.put(menu, new Menu(this.plugin, menuSection));
-                }
-            }
-        }
-    }
-
-    private void loadMenuFields() {
-        YamlConfiguration fieldsYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "menus/fields.yml");
-        if (fieldsYaml == null) {
-            return;
-        }
-        for (String field : fieldsYaml.getKeys(false)) {
-            ConfigurationSection fieldSection = fieldsYaml.getConfigurationSection(field);
-            if (fieldSection != null) {
-                this.fields.put(field, new MenuField(this.plugin, fieldSection));
-            }
-        }
-    }
-
     public JDA getJDA() {
         return this.jda;
     }
@@ -394,15 +361,7 @@ public class Bot {
         return this.getGuild();
     }
 
-    public MenuField getField(String field) {
-        return this.fields.get(field);
-    }
-
-    public Map<String, Menu> getMenus() {
-        return this.menus;
-    }
-
-    public Menu getMenu(String menu) {
-        return this.menus.get(menu);
+    public MenuFactory getMenuFactory() {
+        return this.menuFactory;
     }
 }

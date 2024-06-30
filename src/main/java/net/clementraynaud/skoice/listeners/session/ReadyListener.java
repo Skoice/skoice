@@ -111,8 +111,6 @@ public class ReadyListener extends ListenerAdapter {
                 0
         );
 
-        this.plugin.getBot().loadMenus(); // à revoir
-
         this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
         this.plugin.getListenerManager().update();
 

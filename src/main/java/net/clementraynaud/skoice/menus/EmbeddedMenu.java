@@ -51,7 +51,7 @@ public class EmbeddedMenu {
 
     public void message(User user) {
         user.openPrivateChannel().queue(channel ->
-                channel.sendMessage(this.bot.getMenus().get(this.menuId)
+                channel.sendMessage(this.bot.getMenuFactory().getMenu(this.menuId)
                                 .build(this.args))
                         .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER))
         );
@@ -59,7 +59,7 @@ public class EmbeddedMenu {
 
     public void reply(IReplyCallback interaction) {
         this.hook = interaction.getHook();
-        interaction.reply(this.bot.getMenu(this.menuId).build(this.args))
+        interaction.reply(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args))
                 .setEphemeral(true).queue(interactionHook -> interactionHook.deleteOriginal()
                         .queueAfter(10, TimeUnit.MINUTES,
                                 null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE))
@@ -67,7 +67,7 @@ public class EmbeddedMenu {
     }
 
     public void edit(IMessageEditCallback interaction) {
-        interaction.editMessage(MessageEditData.fromCreateData(this.bot.getMenu(this.menuId).build(this.args))).queue();
+        interaction.editMessage(MessageEditData.fromCreateData(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args))).queue();
     }
 
     public void editFromHook() {
@@ -75,7 +75,7 @@ public class EmbeddedMenu {
             return;
         }
 
-        this.hook.editOriginal(MessageEditData.fromCreateData(this.bot.getMenu(this.menuId).build(this.args))).queue();
+        this.hook.editOriginal(MessageEditData.fromCreateData(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args))).queue();
     }
 
     public void deleteFromHook(Consumer<Void> success) {

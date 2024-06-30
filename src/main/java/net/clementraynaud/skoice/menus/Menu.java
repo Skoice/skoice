@@ -114,14 +114,14 @@ public class Menu {
             StringBuilder author = new StringBuilder();
             String parentMenu = this.parent;
             while (parentMenu != null) {
-                Menu menuParent = this.plugin.getBot().getMenu(parentMenu);
+                Menu menuParent = this.plugin.getBot().getMenuFactory().getMenu(parentMenu);
                 author.insert(0, menuParent.getTitle(false) + " › ");
                 parentMenu = menuParent.parent;
             }
             embed.setAuthor(author.toString());
         }
         if (!"range".equals(this.menuId)) {
-            for (Menu menu : this.plugin.getBot().getMenus().values()) {
+            for (Menu menu : this.plugin.getBot().getMenuFactory().getMenus().values()) {
                 String description = menu.getDescription(true);
                 if (menu.parent != null && menu.parent.equals(this.menuId) && description != null) {
                     embed.addField(menu.getTitle(true), description, true);
@@ -130,7 +130,7 @@ public class Menu {
         }
         int startIndex = 0;
         for (String field : this.fields) {
-            MenuField menuField = this.plugin.getBot().getField(field);
+            MenuField menuField = this.plugin.getBot().getMenuFactory().getField(field);
             int endIndex = this.plugin.getLang().getAmountOfArgsRequired(menuField.getDescription());
             embed.addField(menuField.build(Arrays.copyOfRange(args, startIndex, endIndex)));
             startIndex = endIndex;
@@ -162,7 +162,7 @@ public class Menu {
     private ActionRow getMainActionRow() {
         List<Button> buttons = new ArrayList<>(this.getAdditionalButtons());
         if (!"range".equals(this.menuId)) {
-            for (Menu menu : this.plugin.getBot().getMenus().values()) {
+            for (Menu menu : this.plugin.getBot().getMenuFactory().getMenus().values()) {
                 if (menu.parent != null && menu.parent.equals(this.menuId)) {
                     buttons.add(menu.style == MenuStyle.PRIMARY
                             ? Button.primary(menu.menuId, menu.getTitle(false))
@@ -255,7 +255,7 @@ public class Menu {
                                 this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
                         .withEmoji(MenuEmoji.QUESTION.get()));
                 if (!"language".equals(this.menuId)) {
-                    Menu languageMenu = this.plugin.getBot().getMenu("language");
+                    Menu languageMenu = this.plugin.getBot().getMenuFactory().getMenu("language");
                     buttons.add(Button.secondary(languageMenu.menuId, languageMenu.getTitle(false))
                             .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()));
                 }
