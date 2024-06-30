@@ -36,9 +36,11 @@ import java.util.Arrays;
 public class SlashCommandInteractionListener extends ListenerAdapter {
 
     private final Skoice plugin;
+    private final CommandFactory commandFactory;
 
     public SlashCommandInteractionListener(Skoice plugin) {
         this.plugin = plugin;
+        this.commandFactory = new CommandFactory();
     }
 
     @Override
@@ -48,7 +50,7 @@ public class SlashCommandInteractionListener extends ListenerAdapter {
         }
         CommandInfo commandInfo = CommandInfo.valueOf(event.getName().toUpperCase());
         CommandExecutor executor = new CommandExecutor(event.getInteraction());
-        Command command = new CommandFactory().getCommand(this.plugin, commandInfo, executor, event.getInteraction());
+        Command command = this.commandFactory.getCommand(this.plugin, commandInfo, executor, event.getInteraction());
         if (command == null) {
             return;
         }

@@ -38,9 +38,11 @@ import java.util.stream.Collectors;
 public class SkoiceCommand implements CommandExecutor, TabCompleter {
 
     private final Skoice plugin;
+    private final ArgumentFactory argumentFactory;
 
     public SkoiceCommand(Skoice plugin) {
         this.plugin = plugin;
+        this.argumentFactory = new ArgumentFactory();
     }
 
     public void init() {
@@ -82,7 +84,7 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         String arg = args.length > 1 ? args[1] : "";
         ArgumentInfo argumentInfo = ArgumentInfo.get(args[0]);
 
-        Argument argument = new ArgumentFactory().getArgument(this.plugin, argumentInfo, sender, arg);
+        Argument argument = this.argumentFactory.getArgument(this.plugin, argumentInfo, sender, arg);
         if (argument.canBeExecuted()) {
             argument.run();
         }

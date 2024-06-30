@@ -28,7 +28,6 @@ import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class ReadyListener extends ListenerAdapter {
 
@@ -39,7 +38,7 @@ public class ReadyListener extends ListenerAdapter {
     }
 
     @Override
-    public void onReady(@NotNull ReadyEvent event) {
+    public void onReady(ReadyEvent event) {
 
         Player tokenManager = this.plugin.getBot().getTokenManager();
 
