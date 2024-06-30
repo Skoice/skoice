@@ -28,7 +28,7 @@ import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -52,16 +52,16 @@ public class UnlinkCommand extends Command {
         new EmbeddedMenu(super.plugin.getBot()).setContent("account-unlinked")
                 .reply(super.interaction);
 
-        OfflinePlayer player = super.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
-        if (player.isOnline() && player.getPlayer() != null) {
-            player.getPlayer().sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
+        Player player = super.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
+        if (player != null) {
+            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
 
             super.plugin.getBot().getGuild().retrieveMember(super.executor.getUser()).queue(member -> {
                 GuildVoiceState voiceState = member.getVoiceState();
                 if (voiceState != null) {
                     AudioChannel voiceChannel = voiceState.getChannel();
                     if (voiceChannel != null && voiceChannel.equals(super.plugin.getConfigYamlFile().getVoiceChannel())) {
-                        player.getPlayer().sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+                        player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
 //                        PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
 //                        this.plugin.getServer().getPluginManager().callEvent(event);
                     }

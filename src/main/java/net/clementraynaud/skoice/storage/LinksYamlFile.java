@@ -29,7 +29,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -63,7 +62,7 @@ public class LinksYamlFile extends YamlFile {
     public void linkUserDirectly(String minecraftId, String discordId) {
         super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
         Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
-        if (player != null && player.isOnline()) {
+        if (player != null) {
             LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, discordId));
         }
     }
@@ -71,13 +70,13 @@ public class LinksYamlFile extends YamlFile {
     public void unlinkUserDirectly(String minecraftId) {
         super.remove(LinksYamlFile.LINKS_FIELD + "." + minecraftId);
 
-        OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
-        if (!player.isOnline() || player.getPlayer() == null) {
+        Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
+        if (player == null) {
             return;
         }
         Networks.getAll().stream()
-                .filter(network -> network.contains(player.getPlayer()))
-                .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(player.getPlayer()));
+                .filter(network -> network.contains(player))
+                .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(player));
 
         LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(player));
     }

@@ -51,7 +51,6 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -235,9 +234,9 @@ public class Bot {
                             this.plugin.getBotCommands().getAsMention(CommandInfo.LINK.toString()))
                     .message(member.getUser());
         } else {
-            OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
-            if (player.isOnline() && player.getPlayer() != null) {
-                player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
+            Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
+            if (player != null) {
+                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
 //                PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, member.getId());
 //                this.plugin.getServer().getPluginManager().callEvent(event);
             }

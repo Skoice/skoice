@@ -30,7 +30,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -85,12 +85,12 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
             return;
         }
 
-        OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
-        if (player.isOnline() && player.getPlayer() != null) {
+        Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
+        if (player != null) {
             Networks.getAll().stream()
-                    .filter(network -> network.contains(player.getPlayer()))
-                    .forEach(network -> network.remove(player.getPlayer()));
-            player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+                    .filter(network -> network.contains(player))
+                    .forEach(network -> network.remove(player));
+            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
 //            PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
 //            this.plugin.getServer().getPluginManager().callEvent(event);
         }
@@ -122,21 +122,21 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
                 return;
             }
 
-            OfflinePlayer player = this.plugin.getServer().getOfflinePlayer(UUID.fromString(minecraftId));
-            if (player.isOnline() && player.getPlayer() != null) {
+            Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
+            if (player != null) {
                 if (Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannelLeft))) {
                     Networks.getAll().stream()
-                            .filter(network -> network.contains(player.getPlayer()))
-                            .forEach(network -> network.remove(player.getPlayer()));
+                            .filter(network -> network.contains(player))
+                            .forEach(network -> network.remove(player));
 
                     if (!voiceChannelJoined.equals(mainVoiceChannel)) {
-                        player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
 //                        PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
 //                        this.plugin.getServer().getPluginManager().callEvent(event);
                     }
 
                 } else if (voiceChannelLeft.equals(mainVoiceChannel)) {
-                    player.getPlayer().sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
 //                    PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
 //                    this.plugin.getServer().getPluginManager().callEvent(event);
                 }
