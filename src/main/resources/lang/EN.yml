@@ -30,6 +30,7 @@ logger:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."
     bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: https://discordstatus.com."
+    public-bot: "Your bot is not configured correctly. Run the command again once you have unselected \"Public Bot\" and clicked \"Save Changes\" on this page: %s."
   exception:
     unexpected-value: "Unexpected value: %s"
 minecraft:

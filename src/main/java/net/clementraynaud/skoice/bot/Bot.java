@@ -20,9 +20,9 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
+import net.clementraynaud.skoice.listeners.session.ReadyListener;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuField;
@@ -30,8 +30,6 @@ import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
-import net.clementraynaud.skoice.system.Networks;
-import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.clementraynaud.skoice.util.MapUtil;
@@ -47,7 +45,6 @@ import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -73,7 +70,8 @@ public class Bot {
     private final Map<String, Menu> menus = new LinkedHashMap<>();
     private final Skoice plugin;
     private JDA jda;
-    private BotStatus status;
+    private BotStatus status = BotStatus.NOT_CONNECTED;
+    private String tokenManagerId;
     private String guildId;
 
     public Bot(Skoice plugin) {
@@ -85,94 +83,44 @@ public class Bot {
     }
 
     public void connect(CommandSender sender) {
-        if (this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
-            this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connecting"));
-            if (sender != null) {
-                sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connecting"));
+        if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
+            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
+            return;
+        }
+
+        this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connecting"));
+        Player tokenManager = null;
+        if (sender instanceof Player) {
+            tokenManager = (Player) sender;
+            this.tokenManagerId = tokenManager.getUniqueId().toString();
+            tokenManager.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connecting"));
+        }
+
+        byte[] base64TokenBytes;
+        try {
+            base64TokenBytes = Base64.getDecoder()
+                    .decode(this.plugin.getConfigYamlFile().getString(ConfigField.TOKEN.toString()));
+            for (int i = 0; i < base64TokenBytes.length; i++) {
+                base64TokenBytes[i]--;
             }
-            byte[] base64TokenBytes;
-            try {
-                base64TokenBytes = Base64.getDecoder().decode(this.plugin.getConfigYamlFile().getString(ConfigField.TOKEN.toString()));
-                for (int i = 0; i < base64TokenBytes.length; i++) {
-                    base64TokenBytes[i]--;
-                }
-            } catch (IllegalArgumentException e) {
-                base64TokenBytes = new byte[0];
-            }
-            try {
-                this.jda = JDABuilder.createDefault(new String(base64TokenBytes))
-                        .build()
-                        .awaitReady();
-                this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connected"));
-            } catch (InvalidTokenException e) {
-                this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
-                if (sender != null) {
-                    sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-could-not-connect"));
-                    this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
-                }
-            } catch (ErrorResponseException | IllegalArgumentException | IllegalStateException |
-                     InterruptedException e) {
-                this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-timed-out"));
-                if (sender != null) {
-                    if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString()) && sender instanceof Player) {
-                        this.plugin.adventure().sender(sender).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
-                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", "https://discordstatus.com")))
-                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discordstatus.com"))
-                                )
-                        );
-                    } else {
-                        sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.bot-timed-out"));
-                    }
-                }
+        } catch (IllegalArgumentException e) {
+            base64TokenBytes = new byte[0];
+        }
+
+        try {
+            this.jda = JDABuilder.createDefault(new String(base64TokenBytes))
+                    .addEventListeners(new ReadyListener(this.plugin))
+                    .build();
+        } catch (InvalidTokenException | IllegalArgumentException e) {
+            this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
+            this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
+            if (tokenManager != null) {
+                tokenManager.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-could-not-connect"));
             }
         }
     }
 
-    public void setup(CommandSender sender) {
-        this.setDefaultAvatar();
-        this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
-        this.updateGuild();
-        this.plugin.getBotCommands().clearGuildCommands();
-        this.plugin.getBotCommands().register();
-        this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
-            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
-            }
-        });
-        this.plugin.getListenerManager().registerPermanentBotListeners();
-        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
-                        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
-                                this.plugin,
-                                new UpdateNetworksTask(this.plugin)::run,
-                                0,
-                                10
-                        ),
-                0
-        );
-        this.retrieveNetworks();
-        this.loadMenus();
-        this.updateVoiceState();
-        this.plugin.getListenerManager().update();
-        this.setVoiceChannelStatus();
-        this.muteMembers();
-        this.checkForUnlinkedUsers();
-        this.refreshOnlineLinkedPlayers();
-        if (sender != null) {
-            if (this.getStatus() == BotStatus.READY) {
-                sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected"));
-            } else if (this.getStatus() == BotStatus.NO_GUILD && sender instanceof Player) {
-                this.sendNoGuildAlert((Player) sender);
-            } else {
-                sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected-incomplete-configuration-discord"));
-            }
-        }
-    }
-
-    public void setup() {
-        this.setup(null);
-    }
-
-    private void setDefaultAvatar() {
+    public void setDefaultAvatar() {
         if (this.jda.getSelfUser().getDefaultAvatarUrl().equals(this.jda.getSelfUser().getEffectiveAvatarUrl())) {
             this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
                 try (InputStream inputStream = new URL("https://clementraynaud.net/Skoice.jpeg").openStream()) {
@@ -185,7 +133,7 @@ public class Bot {
     }
 
     public void setVoiceChannelStatus() {
-        if (this.status != BotStatus.READY) {
+        if (this.status == BotStatus.NO_VOICE_CHANNEL) {
             return;
         }
         VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
@@ -270,7 +218,7 @@ public class Bot {
         }
     }
 
-    private void retrieveNetworks() {
+    public void retrieveNetworks() {
         Category category = this.plugin.getConfigYamlFile().getCategory();
         if (category != null) {
             List<String> voiceChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
@@ -376,7 +324,7 @@ public class Bot {
         }
     }
 
-    private void loadMenus() {
+    public void loadMenus() {
         this.loadMenuFields();
         YamlConfiguration menusYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "menus/menus.yml");
         if (menusYaml == null) {
@@ -423,6 +371,13 @@ public class Bot {
             this.status = BotStatus.NOT_CONNECTED;
         }
         return this.status;
+    }
+
+    public Player getTokenManager() {
+        if (this.tokenManagerId == null) {
+            return null;
+        }
+        return this.plugin.getServer().getPlayer(UUID.fromString(this.tokenManagerId));
     }
 
     public Guild getGuild() {

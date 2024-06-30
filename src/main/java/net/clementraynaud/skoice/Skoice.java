@@ -90,16 +90,12 @@ public class Skoice extends JavaPlugin {
         this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
         this.loginNotificationYamlFile.load();
         this.listenerManager = new ListenerManager(this);
+        this.listenerManager.registerPermanentMinecraftListeners();
         this.bot = new Bot(this);
         this.bot.connect();
         this.configurationMenu = new ConfigurationMenu(this.bot);
         this.botCommands = new BotCommands(this);
         this.adventure = BukkitAudiences.create(this);
-        if (this.bot.getJDA() != null) {
-            this.bot.setup();
-        } else {
-            this.listenerManager.update();
-        }
         new SkoiceCommand(this).init();
         this.discordSRVHook = new DiscordSRVHook(this);
         this.discordSRVHook.initialize();

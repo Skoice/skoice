@@ -39,7 +39,7 @@ import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
 import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.listeners.server.ServerCommandListener;
-import net.clementraynaud.skoice.listeners.session.SessionRecreateListener;
+import net.clementraynaud.skoice.listeners.session.ReadyListener;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.User;
@@ -53,8 +53,6 @@ public class ListenerManager {
     private final GuildVoiceUpdateListener guildVoiceUpdateListener;
     private final ChannelDeleteListener channelDeleteListener;
 
-    private boolean startup = true;
-
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;
         this.playerQuitListener = new PlayerQuitListener();
@@ -66,15 +64,7 @@ public class ListenerManager {
     public void update(User user) {
         boolean wasBotReady = this.plugin.getBot().getStatus() == BotStatus.READY;
         this.plugin.getBot().updateStatus();
-        if (this.startup) {
-            this.startup = false;
-            this.plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.plugin), this.plugin);
-            this.plugin.getServer().getPluginManager().registerEvents(new ServerCommandListener(this.plugin), this.plugin);
-            if (this.plugin.getBot().getStatus() == BotStatus.READY) {
-                this.registerMinecraftListeners();
-                this.registerBotListeners();
-            }
-        } else if (!wasBotReady && this.plugin.getBot().getStatus() == BotStatus.READY) {
+        if (!wasBotReady && this.plugin.getBot().getStatus() == BotStatus.READY) {
             this.registerMinecraftListeners();
             this.registerBotListeners();
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
@@ -99,6 +89,11 @@ public class ListenerManager {
         this.update(null);
     }
 
+    public void registerPermanentMinecraftListeners() {
+        this.plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.plugin), this.plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(new ServerCommandListener(this.plugin), this.plugin);
+    }
+
     private void registerMinecraftListeners() {
         this.plugin.getServer().getPluginManager().registerEvents(this.playerQuitListener, this.plugin);
     }
@@ -109,7 +104,6 @@ public class ListenerManager {
 
     public void registerPermanentBotListeners() {
         this.plugin.getBot().getJDA().addEventListener(
-                new SessionRecreateListener(this.plugin),
                 new GuildJoinListener(this.plugin),
                 new GuildLeaveListener(this.plugin),
                 new GuildMemberRoleAddListener(this.plugin),
