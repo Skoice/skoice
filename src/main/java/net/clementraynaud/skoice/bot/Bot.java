@@ -24,17 +24,12 @@ import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.listeners.session.ReadyListener;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
-import net.clementraynaud.skoice.menus.Menu;
 import net.clementraynaud.skoice.menus.MenuFactory;
-import net.clementraynaud.skoice.menus.MenuField;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
-import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
-import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.clementraynaud.skoice.util.MapUtil;
-import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -50,8 +45,6 @@ import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -193,16 +186,6 @@ public class Bot {
 //                PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, member.getId());
 //                this.plugin.getServer().getPluginManager().callEvent(event);
             }
-        }
-    }
-
-    public void refreshOnlineLinkedPlayers() {
-        LinkedPlayer.getOnlineLinkedPlayers().clear();
-
-        List<Player> onlinePlayers = PlayerUtil.getOnlinePlayers();
-        for (Player player : onlinePlayers) {
-            this.plugin.getLinksYamlFile().retrieveMember(player.getUniqueId(),
-                    member -> LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member.getId())));
         }
     }
 
