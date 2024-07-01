@@ -57,7 +57,7 @@ public class ConfigYamlFile extends YamlFile {
     }
 
     public VoiceChannel getVoiceChannel() {
-        if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
+        if (this.plugin.getBot().getJDA() == null) {
             return null;
         }
         String voiceChannelId = this.getString(ConfigField.VOICE_CHANNEL_ID.toString());
