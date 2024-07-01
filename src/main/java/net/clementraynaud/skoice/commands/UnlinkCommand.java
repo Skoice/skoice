@@ -20,8 +20,8 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
@@ -62,8 +62,10 @@ public class UnlinkCommand extends Command {
                     AudioChannel voiceChannel = voiceState.getChannel();
                     if (voiceChannel != null && voiceChannel.equals(super.plugin.getConfigYamlFile().getVoiceChannel())) {
                         player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
-//                        PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
-//                        this.plugin.getServer().getPluginManager().callEvent(event);
+                        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                            PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
+                            this.plugin.getServer().getPluginManager().callEvent(event);
+                        });
                     }
                 }
             }, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MEMBER));

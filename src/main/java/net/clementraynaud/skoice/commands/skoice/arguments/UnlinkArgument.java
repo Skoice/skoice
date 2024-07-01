@@ -61,8 +61,10 @@ public class UnlinkArgument extends Argument {
                 if (audioChannel != null && audioChannel.equals(super.plugin.getConfigYamlFile().getVoiceChannel())
                         || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
                     player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
-//                    PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(player.getUniqueId().toString(), member.getId());
-//                    this.plugin.getServer().getPluginManager().callEvent(event);
+                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                        PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(player.getUniqueId().toString(), member.getId());
+                        this.plugin.getServer().getPluginManager().callEvent(event);
+                    });
                 }
             }
         }, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MEMBER));

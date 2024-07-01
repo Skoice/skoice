@@ -83,6 +83,6 @@ public class MenuFactory {
     }
 
     public SelectMenuFactory getSelectMenuFactory() {
-        return selectMenuFactory;
+        return this.selectMenuFactory;
     }
 }

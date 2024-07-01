@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.bot.Bot;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.interactions.InteractionHook;

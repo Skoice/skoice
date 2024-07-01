@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.system.Networks;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
@@ -90,8 +91,10 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
                     .filter(network -> network.contains(player))
                     .forEach(network -> network.remove(player));
             player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
-//            PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
-//            this.plugin.getServer().getPluginManager().callEvent(event);
+            this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
+                this.plugin.getServer().getPluginManager().callEvent(event);
+            });
         }
     }
 
@@ -130,14 +133,18 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
 
                     if (!voiceChannelJoined.equals(mainVoiceChannel)) {
                         player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
-//                        PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
-//                        this.plugin.getServer().getPluginManager().callEvent(event);
+                        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                            PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
+                            this.plugin.getServer().getPluginManager().callEvent(event);
+                        });
                     }
 
                 } else if (voiceChannelLeft.equals(mainVoiceChannel)) {
                     player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
-//                    PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
-//                    this.plugin.getServer().getPluginManager().callEvent(event);
+                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                        PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
+                        this.plugin.getServer().getPluginManager().callEvent(event);
+                    });
                 }
             }
         }

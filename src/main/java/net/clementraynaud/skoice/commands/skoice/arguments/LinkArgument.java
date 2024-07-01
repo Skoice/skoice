@@ -80,8 +80,10 @@ public class LinkArgument extends Argument {
                 AudioChannel audioChannel = voiceState.getChannel();
                 if (audioChannel != null && audioChannel.equals(mainVoiceChannel)) {
                     player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.connected"));
-//                    PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(player.getUniqueId().toString(), discordId);
-//                    super.plugin.getServer().getPluginManager().callEvent(event);
+                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                        PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(player.getUniqueId().toString(), discordId);
+                        super.plugin.getServer().getPluginManager().callEvent(event);
+                    });
                 } else {
                     player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.not-connected",
                             mainVoiceChannel.getName(),

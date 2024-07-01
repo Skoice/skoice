@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.listeners.session.ReadyListener;
@@ -143,8 +144,10 @@ public class Bot {
             Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
             if (player != null) {
                 player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
-//                PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, member.getId());
-//                this.plugin.getServer().getPluginManager().callEvent(event);
+                this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                    PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, member.getId());
+                    this.plugin.getServer().getPluginManager().callEvent(event);
+                });
             }
         }
     }
@@ -320,6 +323,6 @@ public class Bot {
     }
 
     public String getInviteUrl() {
-        return inviteUrl;
+        return this.inviteUrl;
     }
 }
