@@ -24,7 +24,6 @@ import net.clementraynaud.skoice.api.events.account.AccountLinkEvent;
 import net.clementraynaud.skoice.api.events.account.AccountUnlinkEvent;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Networks;
-import net.clementraynaud.skoice.util.PlayerUtil;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
@@ -34,7 +33,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -126,8 +124,7 @@ public class LinksYamlFile extends YamlFile {
     public void refreshOnlineLinkedPlayers() {
         LinkedPlayer.getOnlineLinkedPlayers().clear();
 
-        List<Player> onlinePlayers = PlayerUtil.getOnlinePlayers();
-        for (Player player : onlinePlayers) {
+        for (Player player : this.plugin.getServer().getOnlinePlayers()) {
             this.retrieveMember(player.getUniqueId(),
                     member -> LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member.getId())));
         }
