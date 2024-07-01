@@ -254,6 +254,7 @@ discord:
     resume-configuration: "Resume Configuration"
     message-not-showing-up: "Message Not Showing Up"
     clear-notified-players: "Clear Notified Players"
+    update-permissions: "Update Permissions"
   select-option:
     default:
       description: "This option is selected by default."

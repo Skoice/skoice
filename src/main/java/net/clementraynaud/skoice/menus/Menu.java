@@ -219,7 +219,8 @@ public class Menu {
                     .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
 
         } else if ("permissions".equals(this.menuId)) {
-            additionalButtons.add(Button.link(this.inviteUrl, "Update Permissions")
+            additionalButtons.add(Button.link(this.inviteUrl,
+                            this.plugin.getLang().getMessage("discord.button-label.update-permissions"))
                     .withEmoji(this.emoji.get()));
 
         } else if ("login-notification".equals(this.menuId)
