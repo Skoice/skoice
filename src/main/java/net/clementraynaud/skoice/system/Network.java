@@ -43,7 +43,7 @@ public class Network {
 
     public Network(Skoice plugin, String channelId) {
         this.plugin = plugin;
-        this.players = Collections.emptySet();
+        this.players = new HashSet<>();
         this.channelId = channelId;
         Networks.add(this);
     }
