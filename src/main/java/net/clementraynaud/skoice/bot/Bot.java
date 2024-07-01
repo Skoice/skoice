@@ -62,6 +62,7 @@ public class Bot {
     private BotStatus status = BotStatus.NOT_CONNECTED;
     private String tokenManagerId;
     private String guildId;
+    private String inviteUrl;
 
     public Bot(Skoice plugin) {
         this.plugin = plugin;
@@ -151,6 +152,13 @@ public class Bot {
     public void updateGuild() {
         List<Guild> guilds = this.jda.getGuilds();
         this.guildId = guilds.size() == 1 ? guilds.get(0).getId() : null;
+    }
+
+    public void updateInviteUrl() {
+        this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
+            applicationInfo.setRequiredScopes("applications.commands");
+            this.inviteUrl = applicationInfo.getInviteUrl(Permission.ADMINISTRATOR);
+        });
     }
 
     public void updateVoiceState() {
@@ -309,5 +317,9 @@ public class Bot {
 
     public MenuFactory getMenuFactory() {
         return this.menuFactory;
+    }
+
+    public String getInviteUrl() {
+        return inviteUrl;
     }
 }

@@ -89,6 +89,7 @@ public class ReadyListener extends ListenerAdapter {
     private void setup() {
         this.plugin.getBot().setDefaultAvatar();
         this.plugin.getBot().updateGuild();
+        this.plugin.getBot().updateInviteUrl();
 
         this.plugin.getBotCommands().clearGuildCommands();
         this.plugin.getBotCommands().register();
