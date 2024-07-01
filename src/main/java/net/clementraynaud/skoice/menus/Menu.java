@@ -120,12 +120,10 @@ public class Menu {
             }
             embed.setAuthor(author.toString());
         }
-        if (!"range".equals(this.menuId)) {
-            for (Menu menu : this.plugin.getBot().getMenuFactory().getMenus().values()) {
-                String description = menu.getDescription(true);
-                if (menu.parent != null && menu.parent.equals(this.menuId) && description != null) {
-                    embed.addField(menu.getTitle(true), description, true);
-                }
+        for (Menu menu : this.plugin.getBot().getMenuFactory().getMenus().values()) {
+            String description = menu.getDescription(true);
+            if (menu.parent != null && menu.parent.equals(this.menuId) && description != null) {
+                embed.addField(menu.getTitle(true), description, true);
             }
         }
         int startIndex = 0;
@@ -223,11 +221,6 @@ public class Menu {
         } else if ("permissions".equals(this.menuId)) {
             additionalButtons.add(Button.link(this.inviteUrl, "Update Permissions")
                     .withEmoji(this.emoji.get()));
-
-        } else if ("range".equals(this.menuId)) {
-            additionalButtons.add(Button.primary("customize",
-                            this.plugin.getLang().getMessage("discord.field.customize.title"))
-                    .withEmoji(MenuEmoji.PENCIL2.get()));
 
         } else if ("login-notification".equals(this.menuId)
                 && LoginNotificationSelectMenu.REMIND_ONCE.equals(this.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
