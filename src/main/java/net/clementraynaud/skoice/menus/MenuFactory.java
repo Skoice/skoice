@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.menus.selectmenus.SelectMenuFactory;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -32,6 +33,7 @@ public class MenuFactory {
 
     private final Map<String, Menu> menus = new LinkedHashMap<>();
     private final Map<String, MenuField> fields = new HashMap<>();
+    private final SelectMenuFactory selectMenuFactory = new SelectMenuFactory();
 
     public void loadAll(Skoice plugin) {
         YamlConfiguration fieldsYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "menus/fields.yml");
@@ -78,5 +80,9 @@ public class MenuFactory {
 
     public MenuField getField(String fieldId) {
         return this.fields.get(fieldId);
+    }
+
+    public SelectMenuFactory getSelectMenuFactory() {
+        return selectMenuFactory;
     }
 }

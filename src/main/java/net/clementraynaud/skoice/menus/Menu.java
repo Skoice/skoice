@@ -21,18 +21,10 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.menus.selectmenus.ActionBarAlertsSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.IncludedPlayersSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.LanguageSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.LoginNotificationSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.RangeSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.ServerSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.ToggleSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.VoiceChannelSelectMenu;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
@@ -173,35 +165,12 @@ public class Menu {
     }
 
     private ActionRow getSelectMenuActionRow() {
-        SelectMenu selectMenu;
-        switch (this.menuId) {
-            case "server":
-                selectMenu = new ServerSelectMenu(this.plugin);
-                break;
-            case "voice-channel":
-                selectMenu = new VoiceChannelSelectMenu(this.plugin);
-                break;
-            case "range":
-                selectMenu = new RangeSelectMenu(this.plugin);
-                break;
-            case "language":
-                selectMenu = new LanguageSelectMenu(this.plugin);
-                break;
-            case "login-notification":
-                selectMenu = new LoginNotificationSelectMenu(this.plugin);
-                break;
-            case "included-players":
-                selectMenu = new IncludedPlayersSelectMenu(this.plugin);
-                break;
-            case "action-bar-alerts":
-                selectMenu = new ActionBarAlertsSelectMenu(this.plugin);
-                break;
-            case "tooltips":
-            case "channel-visibility":
-                selectMenu = new ToggleSelectMenu(this.plugin, this.menuId);
-                break;
-            default:
-                return null;
+        SelectMenu selectMenu = this.plugin.getBot()
+                .getMenuFactory()
+                .getSelectMenuFactory()
+                .getSelectMenu(this.plugin, this.menuId);
+        if (selectMenu == null) {
+            return null;
         }
         return ActionRow.of(selectMenu.get());
     }
