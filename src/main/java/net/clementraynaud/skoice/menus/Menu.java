@@ -187,6 +187,11 @@ public class Menu {
                             this.plugin.getLang().getMessage("discord.button-label.update-permissions"))
                     .withEmoji(this.emoji.get()));
 
+        } else if ("range".equals(this.menuId)) {
+            additionalButtons.add(Button.primary("customize",
+                            this.plugin.getLang().getMessage("discord.field.customize.title"))
+                    .withEmoji(MenuEmoji.PENCIL2.get()));
+
         } else if ("login-notification".equals(this.menuId)
                 && LoginNotificationSelectMenu.REMIND_ONCE.equals(this.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
             additionalButtons.add(Button.danger("clear-notified-players",
