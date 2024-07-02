@@ -69,7 +69,6 @@ public class Bot {
         this.plugin = plugin;
         this.botVoiceChannel = new BotVoiceChannel(this.plugin);
         this.menuFactory = new MenuFactory();
-        this.menuFactory.loadAll(this.plugin);
     }
 
     public void connect() {
@@ -161,6 +160,7 @@ public class Bot {
         this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
             applicationInfo.setRequiredScopes("applications.commands");
             this.inviteUrl = applicationInfo.getInviteUrl(Permission.ADMINISTRATOR);
+            this.menuFactory.loadAll(this.plugin);
         });
     }
 

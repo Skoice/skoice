@@ -21,9 +21,7 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.menus.selectmenus.LoginNotificationSelectMenu;
 import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
-import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
@@ -49,6 +47,7 @@ public class Menu {
     private final MenuStyle style;
     private final String parent;
     private final String[] fields;
+    private Button[] buttons;
 
     public Menu(Skoice plugin, ConfigurationSection menu) {
         this.plugin = plugin;
@@ -64,6 +63,7 @@ public class Menu {
         this.style = menu.contains("style") ? MenuStyle.valueOf(menu.getString("style").toUpperCase()) : null;
         this.parent = menu.contains("parent") ? menu.getString("parent") : null;
         this.fields = menu.getStringList("fields").toArray(new String[0]);
+        this.buttons = new Button[0];
     }
 
     public MessageCreateData build(String... args) {
@@ -145,23 +145,21 @@ public class Menu {
     }
 
     private ActionRow getMainActionRow() {
-        List<Button> buttons = new ArrayList<>(this.getAdditionalButtons());
-        if (!"range".equals(this.menuId)) {
-            for (Menu menu : this.plugin.getBot().getMenuFactory().getMenus().values()) {
-                if (menu.parent != null && menu.parent.equals(this.menuId)) {
-                    buttons.add(menu.style == MenuStyle.PRIMARY
-                            ? Button.primary(menu.menuId, menu.getTitle(false))
-                            .withEmoji(menu.emoji.get())
-                            : Button.secondary(menu.menuId, menu.getTitle(false))
-                            .withEmoji(menu.emoji.get()));
-                }
+        List<Button> mainButtons = new ArrayList<>(Arrays.asList(this.buttons));
+        for (Menu menu : this.plugin.getBot().getMenuFactory().getMenus().values()) {
+            if (menu.parent != null && menu.parent.equals(this.menuId)) {
+                mainButtons.add(menu.style == MenuStyle.PRIMARY
+                        ? Button.primary(menu.menuId, menu.getTitle(false))
+                        .withEmoji(menu.emoji.get())
+                        : Button.secondary(menu.menuId, menu.getTitle(false))
+                        .withEmoji(menu.emoji.get()));
             }
         }
 
-        if (buttons.isEmpty()) {
+        if (mainButtons.isEmpty()) {
             return null;
         }
-        return ActionRow.of(buttons);
+        return ActionRow.of(mainButtons);
     }
 
     private ActionRow getSelectMenuActionRow() {
@@ -175,59 +173,35 @@ public class Menu {
         return ActionRow.of(selectMenu.get());
     }
 
-    private List<Button> getAdditionalButtons() {
-        List<Button> additionalButtons = new ArrayList<>();
-        if ("incomplete-configuration-server-manager".equals(this.menuId)) {
-            additionalButtons.add(Button.primary("resume-configuration",
-                            this.plugin.getLang().getMessage("discord.button-label.resume-configuration"))
-                    .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
-
-        } else if ("permissions".equals(this.menuId)) {
-            additionalButtons.add(Button.link(this.plugin.getBot().getInviteUrl(),
-                            this.plugin.getLang().getMessage("discord.button-label.update-permissions"))
-                    .withEmoji(this.emoji.get()));
-
-        } else if ("range".equals(this.menuId)) {
-            additionalButtons.add(Button.primary("customize",
-                            this.plugin.getLang().getMessage("discord.field.customize.title"))
-                    .withEmoji(MenuEmoji.PENCIL2.get()));
-
-        } else if ("login-notification".equals(this.menuId)
-                && LoginNotificationSelectMenu.REMIND_ONCE.equals(this.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
-            additionalButtons.add(Button.danger("clear-notified-players",
-                            this.plugin.getLang().getMessage("discord.button-label.clear-notified-players"))
-                    .withEmoji(MenuEmoji.WASTEBASKET.get()));
-
-        } else if ("verification-code".equals(this.menuId)) {
-            additionalButtons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
-                            this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
-                    .withEmoji(MenuEmoji.QUESTION.get()));
-        }
-
-        return additionalButtons;
-    }
-
     private ActionRow getSecondaryActionRow() {
-        List<Button> buttons = new ArrayList<>();
+        List<Button> secondaryButtons = new ArrayList<>();
         if (this.parent != null && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.menuId))) {
-            buttons.add(Button.secondary(this.parent, "← " + this.plugin.getLang().getMessage("discord.button-label.back")));
+            secondaryButtons.add(Button.secondary(this.parent, "← " + this.plugin.getLang().getMessage("discord.button-label.back")));
         }
         if (this.type == MenuType.DEFAULT) {
             if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-                buttons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
+                secondaryButtons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
                                 this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
                         .withEmoji(MenuEmoji.QUESTION.get()));
                 if (!"language".equals(this.menuId)) {
                     Menu languageMenu = this.plugin.getBot().getMenuFactory().getMenu("language");
-                    buttons.add(Button.secondary(languageMenu.menuId, languageMenu.getTitle(false))
+                    secondaryButtons.add(Button.secondary(languageMenu.menuId, languageMenu.getTitle(false))
                             .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()));
                 }
             }
         }
 
-        if (buttons.isEmpty()) {
+        if (secondaryButtons.isEmpty()) {
             return null;
         }
-        return ActionRow.of(buttons);
+        return ActionRow.of(secondaryButtons);
+    }
+
+    public void setButtons(Button... buttons) {
+        this.buttons = buttons;
+    }
+
+    public String getId() {
+        return this.menuId;
     }
 }
