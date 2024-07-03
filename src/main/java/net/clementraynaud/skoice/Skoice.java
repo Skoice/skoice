@@ -21,11 +21,10 @@ package net.clementraynaud.skoice;
 
 import net.clementraynaud.skoice.api.SkoiceAPI;
 import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.hooks.discordsrv.DiscordSRVHook;
 import net.clementraynaud.skoice.lang.LangInfo;
-import net.clementraynaud.skoice.lang.SpigotLang;
+import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.storage.LinksYamlFile;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
@@ -52,7 +51,7 @@ public class Skoice extends JavaPlugin {
     private static final String OUTDATED_MINECRAFT_SERVER_ERROR = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
     private static final int SERVICE_ID = 11380;
     private static SkoiceAPI api;
-    private SpigotLang lang;
+    private MinecraftLang lang;
     private ConfigYamlFile configYamlFile;
     private LinksYamlFile linksYamlFile;
     private TempYamlFile tempYamlFile;
@@ -78,7 +77,7 @@ public class Skoice extends JavaPlugin {
         this.configYamlFile = new ConfigYamlFile(this);
         this.configYamlFile.load();
         this.configYamlFile.saveDefaultValues();
-        this.lang = new SpigotLang();
+        this.lang = new MinecraftLang();
         this.lang.load(LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())));
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
         this.linksYamlFile = new LinksYamlFile(this);
@@ -178,7 +177,7 @@ public class Skoice extends JavaPlugin {
         return fields;
     }
 
-    public SpigotLang getLang() {
+    public MinecraftLang getLang() {
         return this.lang;
     }
 

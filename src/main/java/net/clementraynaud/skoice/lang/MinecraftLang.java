@@ -25,13 +25,13 @@ import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 
-public class SpigotLang extends Lang {
+public class MinecraftLang extends Lang {
 
     private static final String CHAT_PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "•" + ChatColor.GRAY;
 
     @Override
     protected String getPath(LangInfo langInfo) {
-        return "spigot/lang/" + langInfo + ".yml";
+        return "minecraft/lang/" + langInfo + ".yml";
     }
 
     @Override
@@ -41,7 +41,7 @@ public class SpigotLang extends Lang {
             return null;
         }
         if (path.startsWith("chat.")) {
-            return ChatColor.translateAlternateColorCodes('&', String.format(message, SpigotLang.CHAT_PREFIX));
+            return ChatColor.translateAlternateColorCodes('&', String.format(message, MinecraftLang.CHAT_PREFIX));
         } else if ((path.startsWith("action-bar.") || path.startsWith("interaction."))) {
             return ChatColor.translateAlternateColorCodes('&', message);
         }
@@ -61,7 +61,7 @@ public class SpigotLang extends Lang {
                 .toArray(String[]::new);
         if (path.startsWith("chat.")) {
             String[] newArgs = new String[args.length + 1];
-            newArgs[0] = SpigotLang.CHAT_PREFIX;
+            newArgs[0] = MinecraftLang.CHAT_PREFIX;
             System.arraycopy(args, 0, newArgs, 1, args.length);
             return String.format(ChatColor.translateAlternateColorCodes('&', message), (Object[]) newArgs);
         } else if (path.startsWith("interaction.")) {
@@ -75,7 +75,7 @@ public class SpigotLang extends Lang {
                 ? super.active.getStringList(path).toArray(new String[0])
                 : super.english.getStringList(path).toArray(new String[0]);
         TextComponent.Builder message = Component.text().content(ChatColor.translateAlternateColorCodes('&',
-                String.format(strings[0], SpigotLang.CHAT_PREFIX)));
+                String.format(strings[0], MinecraftLang.CHAT_PREFIX)));
         for (int i = 0; i < components.length; i++) {
             message.append(components[i])
                     .append(Component.text(ChatColor.translateAlternateColorCodes('&', strings[i + 1]))

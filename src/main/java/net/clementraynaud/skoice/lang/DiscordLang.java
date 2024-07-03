@@ -19,10 +19,10 @@
 
 package net.clementraynaud.skoice.lang;
 
-public class JDALang extends Lang {
+public class DiscordLang extends Lang {
 
     @Override
     protected String getPath(LangInfo langInfo) {
-        return "jda/lang/" + langInfo + ".yml";
+        return "discord/lang/" + langInfo + ".yml";
     }
 }

@@ -31,7 +31,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class MenuFactory {
 
@@ -42,7 +41,7 @@ public class MenuFactory {
     public void loadAll(Skoice plugin) {
         this.loadFields(plugin);
 
-        YamlConfiguration menusYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "jda/menus/menus.yml");
+        YamlConfiguration menusYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "discord/menus/menus.yml");
         if (menusYaml == null) {
             return;
         }
@@ -69,7 +68,7 @@ public class MenuFactory {
     }
 
     private void loadFields(Skoice plugin) {
-        YamlConfiguration fieldsYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "jda/menus/fields.yml");
+        YamlConfiguration fieldsYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "discord/menus/fields.yml");
         if (fieldsYaml == null) {
             return;
         }

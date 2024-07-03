@@ -23,7 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
-import net.clementraynaud.skoice.lang.JDALang;
+import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.listeners.session.ReadyListener;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
@@ -59,7 +59,7 @@ import java.util.UUID;
 public class Bot {
 
     private final Skoice plugin;
-    private final JDALang lang;
+    private final DiscordLang lang;
     private final BotCommands commands;
     private final BotVoiceChannel voiceChannel;
     private final MenuFactory menuFactory;
@@ -71,7 +71,7 @@ public class Bot {
 
     public Bot(Skoice plugin) {
         this.plugin = plugin;
-        this.lang = new JDALang();
+        this.lang = new DiscordLang();
         this.lang.load(LangInfo.valueOf(this.plugin.getConfigYamlFile().getString(ConfigField.LANG.toString())));
         this.commands = new BotCommands(this);
         this.voiceChannel = new BotVoiceChannel(this.plugin);
@@ -300,7 +300,7 @@ public class Bot {
         return this.status;
     }
 
-    public JDALang getLang() {
+    public DiscordLang getLang() {
         return this.lang;
     }
 
