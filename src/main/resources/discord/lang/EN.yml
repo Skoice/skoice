@@ -93,6 +93,11 @@ menu:
         label: "Players on Death Screen"
       spectators-included:
         label: "Spectators"
+  active-worlds:
+    title: "Active Worlds"
+    description: "Choose the worlds where Skoice is active."
+    select-menu:
+      placeholder: "Please select the desired worlds."
   channel-visibility:
     title: "Channel Visibility"
     description: "Toggle the visibility of the temporary channels created by Skoice."

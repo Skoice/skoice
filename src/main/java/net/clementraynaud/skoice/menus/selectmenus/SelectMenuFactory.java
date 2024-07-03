@@ -39,6 +39,8 @@ public class SelectMenuFactory {
                 return new IncludedPlayersSelectMenu(plugin);
             case "action-bar-alerts":
                 return new ActionBarAlertsSelectMenu(plugin);
+            case "active-worlds":
+                return new ActiveWorldsSelectMenu(plugin);
             case "tooltips":
             case "channel-visibility":
                 return new ToggleSelectMenu(plugin, menuId);

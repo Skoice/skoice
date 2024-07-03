@@ -127,6 +127,11 @@ included-players:
   type: default
   style: primary
   parent: more-settings
+active-worlds:
+  emoji: map
+  type: default
+  style: primary
+  parent: more-settings
 channel-visibility:
   emoji: mag
   type: default

@@ -38,6 +38,7 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StringSelectInteractionListener extends ListenerAdapter {
 
@@ -158,6 +159,12 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
                     event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
                     this.plugin.getBot().getConfigurationMenu().setContent("included-players").edit(event);
+                    break;
+
+                case "active-worlds-selection":
+                    this.plugin.getConfigYamlFile().set(ConfigField.ACTIVE_WORLDS.toString(),
+                            event.getSelectedOptions().stream().map(SelectOption::getValue).collect(Collectors.toList()));
+                    this.plugin.getBot().getConfigurationMenu().setContent("active-worlds").edit(event);
                     break;
 
                 default:

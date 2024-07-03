@@ -26,10 +26,12 @@ import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.generator.WorldInfo;
 
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ConfigYamlFile extends YamlFile {
 
@@ -45,6 +47,10 @@ public class ConfigYamlFile extends YamlFile {
         Map<String, Object> defaultValues = new HashMap<>(defaultConfiguration.getValues(false));
         for (Map.Entry<String, Object> entry : defaultValues.entrySet()) {
             this.setDefault(entry.getKey(), entry.getValue());
+        }
+        if (!this.contains(ConfigField.ACTIVE_WORLDS.toString())) {
+            this.set(ConfigField.ACTIVE_WORLDS.toString(),
+                    this.plugin.getServer().getWorlds().stream().map(WorldInfo::getName).collect(Collectors.toList()));
         }
     }
 
