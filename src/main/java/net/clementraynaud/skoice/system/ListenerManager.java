@@ -74,7 +74,7 @@ public class ListenerManager {
                         .message(user);
             }
         } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-            this.plugin.getConfigurationMenu().refreshId().editFromHook();
+            this.plugin.getBot().getConfigurationMenu().refreshId().editFromHook();
             if (wasBotReady) {
                 this.unregisterMinecraftListeners();
                 if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {

@@ -121,8 +121,8 @@ public class GenericChannelListener extends ListenerAdapter {
     }
 
     private void reloadVoiceChannelMenu() {
-        if ("voice-channel".equals(this.plugin.getConfigurationMenu().getId())) {
-            this.plugin.getConfigurationMenu().setContent("voice-channel").editFromHook();
+        if ("voice-channel".equals(this.plugin.getBot().getConfigurationMenu().getId())) {
+            this.plugin.getBot().getConfigurationMenu().setContent("voice-channel").editFromHook();
         }
     }
 }

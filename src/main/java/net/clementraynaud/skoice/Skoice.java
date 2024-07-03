@@ -25,7 +25,6 @@ import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.hooks.discordsrv.DiscordSRVHook;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.lang.MinecraftLang;
-import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.storage.LinksYamlFile;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.TempYamlFile;
@@ -58,7 +57,6 @@ public class Skoice extends JavaPlugin {
     private LoginNotificationYamlFile loginNotificationYamlFile;
     private ListenerManager listenerManager;
     private Bot bot;
-    private ConfigurationMenu configurationMenu;
     private BukkitAudiences adventure;
     private DiscordSRVHook discordSRVHook;
 
@@ -91,7 +89,6 @@ public class Skoice extends JavaPlugin {
         this.listenerManager.registerPermanentMinecraftListeners();
         this.bot = new Bot(this);
         this.bot.connect();
-        this.configurationMenu = new ConfigurationMenu(this.bot);
         this.adventure = BukkitAudiences.create(this);
         new SkoiceCommand(this).init();
         this.discordSRVHook = new DiscordSRVHook(this);
@@ -203,10 +200,6 @@ public class Skoice extends JavaPlugin {
 
     public Bot getBot() {
         return this.bot;
-    }
-
-    public ConfigurationMenu getConfigurationMenu() {
-        return this.configurationMenu;
     }
 
     public DiscordSRVHook getDiscordSRVHook() {

@@ -50,7 +50,7 @@ public class RoleUpdatePermissionsListener extends ListenerAdapter {
                 this.plugin.getBot().getVoiceChannel().setStatus();
                 this.plugin.getBot().getVoiceChannel().muteMembers();
                 this.plugin.getBot().updateVoiceState();
-                this.plugin.getConfigurationMenu().refreshId().editFromHook();
+                this.plugin.getBot().getConfigurationMenu().refreshId().editFromHook();
             }
         }
     }

@@ -63,7 +63,7 @@ public class ButtonInteractionListener extends ListenerAdapter {
 
         } else if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
             if ("resume-configuration".equals(event.getButton().getId())) {
-                this.plugin.getConfigurationMenu().generate(event);
+                this.plugin.getBot().getConfigurationMenu().generate(event);
 
             } else if ("customize".equals(buttonId)) {
                 TextInput horizontalRadius = TextInput.create("horizontal-radius",
@@ -85,7 +85,7 @@ public class ButtonInteractionListener extends ListenerAdapter {
                 event.replyModal(modal).queue();
 
             } else if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
-                this.plugin.getConfigurationMenu().refreshId().edit(event);
+                this.plugin.getBot().getConfigurationMenu().refreshId().edit(event);
 
             } else if ("clear-notified-players".equals(buttonId)) {
                 this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, Collections.emptyList());
@@ -93,7 +93,7 @@ public class ButtonInteractionListener extends ListenerAdapter {
                         .reply(event);
 
             } else {
-                this.plugin.getConfigurationMenu().setContent(buttonId).edit(event);
+                this.plugin.getBot().getConfigurationMenu().setContent(buttonId).edit(event);
             }
 
         } else {

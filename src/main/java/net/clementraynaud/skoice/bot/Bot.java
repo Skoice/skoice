@@ -26,6 +26,7 @@ import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.listeners.session.ReadyListener;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.menus.MenuFactory;
 import net.clementraynaud.skoice.storage.TempYamlFile;
@@ -63,6 +64,7 @@ public class Bot {
     private final BotCommands commands;
     private final BotVoiceChannel voiceChannel;
     private final MenuFactory menuFactory;
+    private final ConfigurationMenu configurationMenu;
     private JDA jda;
     private BotStatus status = BotStatus.NOT_CONNECTED;
     private String tokenManagerId;
@@ -76,6 +78,7 @@ public class Bot {
         this.commands = new BotCommands(this);
         this.voiceChannel = new BotVoiceChannel(this.plugin);
         this.menuFactory = new MenuFactory();
+        this.configurationMenu = new ConfigurationMenu(this);
     }
 
     public void connect() {
@@ -335,6 +338,10 @@ public class Bot {
 
     public MenuFactory getMenuFactory() {
         return this.menuFactory;
+    }
+
+    public ConfigurationMenu getConfigurationMenu() {
+        return this.configurationMenu;
     }
 
     public String getInviteUrl() {
