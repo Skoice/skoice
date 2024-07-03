@@ -40,10 +40,10 @@ public class ActionBarAlertsSelectMenu extends SelectMenu {
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.action-bar-alerts.select-menu.connecting-alert.label"), ActionBarAlertsSelectMenu.CONNECTING_ALERT)
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.connecting-alert.label"), ActionBarAlertsSelectMenu.CONNECTING_ALERT)
                         .withEmoji(MenuEmoji.INBOX_TRAY.get()),
-                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.action-bar-alerts.select-menu.disconnecting-alert.label"), ActionBarAlertsSelectMenu.DISCONNECTING_ALERT)
-                        .withDescription(super.plugin.getLang().getMessage("discord.select-option.default.description"))
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.disconnecting-alert.label"), ActionBarAlertsSelectMenu.DISCONNECTING_ALERT)
+                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
                         .withEmoji(MenuEmoji.OUTBOX_TRAY.get())));
         List<String> defaultValues = new ArrayList<>();
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
@@ -53,7 +53,7 @@ public class ActionBarAlertsSelectMenu extends SelectMenu {
             defaultValues.add(ConfigField.DISCONNECTING_ALERT.toString());
         }
         return StringSelectMenu.create("action-bar-alerts-selection")
-                .setPlaceholder(super.plugin.getLang().getMessage("discord.menu.action-bar-alerts.select-menu.placeholder"))
+                .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.placeholder"))
                 .addOptions(options)
                 .setRequiredRange(0, options.size())
                 .setDefaultValues(defaultValues).build();

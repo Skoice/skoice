@@ -41,7 +41,7 @@ public class LanguageSelectMenu extends SelectMenu {
         for (LangInfo option : LangInfo.values()) {
             options.add(SelectOption.of(option.getFullName(), option.toString())
                     .withDescription(option.toString().equals(LangInfo.EN.toString())
-                            ? super.plugin.getLang().getMessage("discord.select-option.default.description")
+                            ? super.plugin.getBot().getLang().getMessage("select-option.default.description")
                             : null)
                     .withEmoji(option.getEmoji()));
         }

@@ -58,7 +58,7 @@ public class ButtonInteractionListener extends ListenerAdapter {
         Member member = event.getMember();
 
         if (buttonId.equals(Menu.MESSAGE_NOT_SHOWING_UP)) {
-            event.reply(this.plugin.getLang().getMessage("discord.message-not-showing-up"))
+            event.reply(this.plugin.getBot().getLang().getMessage("message-not-showing-up"))
                     .setEphemeral(true).queue();
 
         } else if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
@@ -67,19 +67,19 @@ public class ButtonInteractionListener extends ListenerAdapter {
 
             } else if ("customize".equals(buttonId)) {
                 TextInput horizontalRadius = TextInput.create("horizontal-radius",
-                                this.plugin.getLang().getMessage("discord.text-input.horizontal-radius.label"),
+                                this.plugin.getBot().getLang().getMessage("text-input.horizontal-radius.label"),
                                 TextInputStyle.SHORT)
                         .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.HORIZONTAL_RADIUS.toString()))
                         .setRequiredRange(1, 3)
                         .build();
                 TextInput verticalRadius = TextInput.create("vertical-radius",
-                                this.plugin.getLang().getMessage("discord.text-input.vertical-radius.label"),
+                                this.plugin.getBot().getLang().getMessage("text-input.vertical-radius.label"),
                                 TextInputStyle.SHORT)
                         .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.VERTICAL_RADIUS.toString()))
                         .setRequiredRange(1, 3)
                         .build();
                 Modal modal = Modal.create("customize",
-                                this.plugin.getLang().getMessage("discord.field.customize.title"))
+                                this.plugin.getBot().getLang().getMessage("field.customize.title"))
                         .addComponents(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
                         .build();
                 event.replyModal(modal).queue();

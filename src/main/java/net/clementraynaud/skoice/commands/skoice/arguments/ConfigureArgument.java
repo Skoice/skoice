@@ -37,24 +37,24 @@ public class ConfigureArgument extends Argument {
         Player player = (Player) this.sender;
         if (super.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
             if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-                this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-creation-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
-                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")))
+                this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-creation-interactive", this.plugin.getLang().getComponentMessage("interaction.this-page")
+                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")))
                                         .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")),
-                                this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
-                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.shortcut", "/skoice token")))
+                                this.plugin.getLang().getComponentMessage("interaction.here")
+                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.shortcut", "/skoice token")))
                                         .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice token "))
                         )
                 );
             } else {
-                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.bot-creation"));
+                player.sendMessage(super.plugin.getLang().getMessage("chat.configuration.bot-creation"));
             }
         } else {
             if (super.plugin.getBot().getStatus() == BotStatus.READY) {
-                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.already-configured"));
+                player.sendMessage(super.plugin.getLang().getMessage("chat.configuration.already-configured"));
             } else if (super.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
                 super.plugin.getBot().sendNoGuildAlert(player);
             } else {
-                player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
+                player.sendMessage(super.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-discord"));
             }
         }
     }

@@ -58,26 +58,26 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         if (args.length == 0) {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.no-parameter",
+                        .getMessage("chat.error.no-parameter",
                                 ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION))
                         )
                 );
             } else {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.no-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
+                        .getMessage("chat.error.no-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
             }
             return true;
         }
         if (ArgumentInfo.get(args[0]) == null) {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.invalid-parameter",
+                        .getMessage("chat.error.invalid-parameter",
                                 ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION))
                         )
                 );
             } else {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("minecraft.chat.error.invalid-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
+                        .getMessage("chat.error.invalid-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
             }
             return true;
         }

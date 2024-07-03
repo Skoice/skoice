@@ -66,11 +66,11 @@ public class ListenerManager {
         if (!wasBotReady && this.plugin.getBot().getStatus() == BotStatus.READY) {
             this.registerMinecraftListeners();
             this.registerBotListeners();
-            this.plugin.getBot().getBotVoiceChannel().notifyUnlinkedUsers();
+            this.plugin.getBot().getVoiceChannel().notifyUnlinkedUsers();
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
             if (user != null) {
                 new EmbeddedMenu(this.plugin.getBot()).setContent("configuration-complete",
-                                this.plugin.getBotCommands().getAsMention(CommandInfo.LINK.toString()))
+                                this.plugin.getBot().getCommands().getAsMention(CommandInfo.LINK.toString()))
                         .message(user);
             }
         } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {

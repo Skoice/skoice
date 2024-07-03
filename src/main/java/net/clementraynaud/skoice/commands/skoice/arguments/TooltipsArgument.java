@@ -33,10 +33,10 @@ public class TooltipsArgument extends Argument {
     public void run() {
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
             super.plugin.getConfigYamlFile().set(ConfigField.TOOLTIPS.toString(), false);
-            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.tooltips-disabled"));
+            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.tooltips-disabled"));
         } else {
             super.plugin.getConfigYamlFile().set(ConfigField.TOOLTIPS.toString(), true);
-            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.tooltips-enabled"));
+            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.tooltips-enabled"));
         }
     }
 }

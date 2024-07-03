@@ -42,12 +42,12 @@ public class LoginNotificationSelectMenu extends SelectMenu {
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.login-notification.select-menu.always-remind.label"), LoginNotificationSelectMenu.ALWAYS_REMIND)
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.login-notification.select-menu.always-remind.label"), LoginNotificationSelectMenu.ALWAYS_REMIND)
                         .withEmoji(MenuEmoji.REPEAT.get()),
-                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.login-notification.select-menu.remind-once.label"), LoginNotificationSelectMenu.REMIND_ONCE)
-                        .withDescription(super.plugin.getLang().getMessage("discord.select-option.default.description"))
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.login-notification.select-menu.remind-once.label"), LoginNotificationSelectMenu.REMIND_ONCE)
+                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
                         .withEmoji(MenuEmoji.REPEAT_ONE.get()),
-                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.login-notification.select-menu.never-remind.label"), LoginNotificationSelectMenu.NEVER_REMIND)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.login-notification.select-menu.never-remind.label"), LoginNotificationSelectMenu.NEVER_REMIND)
                         .withEmoji(MenuEmoji.MUTE.get())));
         String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString());
         return StringSelectMenu.create("login-notification-selection")

@@ -20,92 +20,43 @@
 package net.clementraynaud.skoice.lang;
 
 import net.clementraynaud.skoice.util.ConfigurationUtil;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.util.Arrays;
+public abstract class Lang {
 
-public class Lang {
-
-    private static final String CHAT_PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "•" + ChatColor.GRAY;
-
-    private YamlConfiguration englishMessages;
-    private YamlConfiguration messages;
+    protected YamlConfiguration english;
+    protected YamlConfiguration active;
 
     public void load(LangInfo langInfo) {
-        if (this.englishMessages == null) {
-            this.englishMessages = ConfigurationUtil.loadResource(this.getClass().getName(), "lang/" + LangInfo.EN + ".yml");
+        if (this.english == null) {
+            this.english = ConfigurationUtil.loadResource(this.getClass().getName(), this.getPath(LangInfo.EN));
         }
-        this.messages = new YamlConfiguration();
+        this.active = new YamlConfiguration();
         if (langInfo != LangInfo.EN) {
-            this.messages = ConfigurationUtil.loadResource(this.getClass().getName(), "lang/" + langInfo + ".yml");
+            this.active = ConfigurationUtil.loadResource(this.getClass().getName(), this.getPath(langInfo));
         }
     }
+
+    protected abstract String getPath(LangInfo langInfo);
 
     public String getMessage(String path) {
-        String message = this.messages.contains(path)
-                ? this.messages.getString(path)
-                : this.englishMessages.getString(path);
-        if (message == null) {
-            return null;
-        }
-        if (path.startsWith("minecraft.chat.")) {
-            return ChatColor.translateAlternateColorCodes('&', String.format(message, Lang.CHAT_PREFIX));
-        } else if ((path.startsWith("minecraft.action-bar.") || path.startsWith("minecraft.interaction."))) {
-            return ChatColor.translateAlternateColorCodes('&', message);
-        }
-        return message;
-    }
-
-    public Component getComponentMessage(String path) {
-        return Component.text(ChatColor.translateAlternateColorCodes('&', this.getMessage(path)));
-    }
-
-    public Component getComponentMessage(String path, String... args) {
-        return Component.text(ChatColor.translateAlternateColorCodes('&', this.getMessage(path, args)));
+        return this.active.contains(path)
+                ? this.active.getString(path)
+                : this.english.getString(path);
     }
 
     public String getMessage(String path, String... args) {
-        String message = this.messages.contains(path)
-                ? this.messages.getString(path)
-                : this.englishMessages.getString(path);
+        String message = this.active.contains(path)
+                ? this.active.getString(path)
+                : this.english.getString(path);
         if (message == null) {
             return null;
-        }
-        if (path.startsWith("minecraft.")) {
-            args = Arrays.stream(args)
-                    .map(arg -> arg.replace(String.valueOf(ChatColor.COLOR_CHAR), ""))
-                    .toArray(String[]::new);
-            if (path.startsWith("minecraft.chat.")) {
-                String[] newArgs = new String[args.length + 1];
-                newArgs[0] = Lang.CHAT_PREFIX;
-                System.arraycopy(args, 0, newArgs, 1, args.length);
-                return String.format(ChatColor.translateAlternateColorCodes('&', message), (Object[]) newArgs);
-            } else if (path.startsWith("minecraft.interaction.")) {
-                return String.format(ChatColor.translateAlternateColorCodes('&', message), (Object[]) args);
-            }
         }
         return String.format(message, (Object[]) args);
     }
 
-    public Component getMessage(String path, Component... components) {
-        String[] strings = this.messages.contains(path)
-                ? this.messages.getStringList(path).toArray(new String[0])
-                : this.englishMessages.getStringList(path).toArray(new String[0]);
-        TextComponent.Builder message = Component.text().content(ChatColor.translateAlternateColorCodes('&',
-                String.format(strings[0], Lang.CHAT_PREFIX)));
-        for (int i = 0; i < components.length; i++) {
-            message.append(components[i])
-                    .append(Component.text(ChatColor.translateAlternateColorCodes('&', strings[i + 1]))
-                            .hoverEvent(null));
-        }
-        return message.build();
-    }
-
     public boolean contains(String path) {
-        return this.englishMessages.contains(path);
+        return this.english.contains(path);
     }
 
     public int getAmountOfArgsRequired(String message) {

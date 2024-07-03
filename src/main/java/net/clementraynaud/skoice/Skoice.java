@@ -24,8 +24,8 @@ import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.bot.BotCommands;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.hooks.discordsrv.DiscordSRVHook;
-import net.clementraynaud.skoice.lang.Lang;
 import net.clementraynaud.skoice.lang.LangInfo;
+import net.clementraynaud.skoice.lang.SpigotLang;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.storage.LinksYamlFile;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
@@ -52,14 +52,13 @@ public class Skoice extends JavaPlugin {
     private static final String OUTDATED_MINECRAFT_SERVER_ERROR = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
     private static final int SERVICE_ID = 11380;
     private static SkoiceAPI api;
-    private Lang lang;
+    private SpigotLang lang;
     private ConfigYamlFile configYamlFile;
     private LinksYamlFile linksYamlFile;
     private TempYamlFile tempYamlFile;
     private LoginNotificationYamlFile loginNotificationYamlFile;
     private ListenerManager listenerManager;
     private Bot bot;
-    private BotCommands botCommands;
     private ConfigurationMenu configurationMenu;
     private BukkitAudiences adventure;
     private DiscordSRVHook discordSRVHook;
@@ -79,7 +78,7 @@ public class Skoice extends JavaPlugin {
         this.configYamlFile = new ConfigYamlFile(this);
         this.configYamlFile.load();
         this.configYamlFile.saveDefaultValues();
-        this.lang = new Lang();
+        this.lang = new SpigotLang();
         this.lang.load(LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())));
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
         this.linksYamlFile = new LinksYamlFile(this);
@@ -94,7 +93,6 @@ public class Skoice extends JavaPlugin {
         this.bot = new Bot(this);
         this.bot.connect();
         this.configurationMenu = new ConfigurationMenu(this.bot);
-        this.botCommands = new BotCommands(this);
         this.adventure = BukkitAudiences.create(this);
         new SkoiceCommand(this).init();
         this.discordSRVHook = new DiscordSRVHook(this);
@@ -180,7 +178,7 @@ public class Skoice extends JavaPlugin {
         return fields;
     }
 
-    public Lang getLang() {
+    public SpigotLang getLang() {
         return this.lang;
     }
 
@@ -206,10 +204,6 @@ public class Skoice extends JavaPlugin {
 
     public Bot getBot() {
         return this.bot;
-    }
-
-    public BotCommands getBotCommands() {
-        return this.botCommands;
     }
 
     public ConfigurationMenu getConfigurationMenu() {

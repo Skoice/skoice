@@ -45,12 +45,12 @@ public class ServerSelectMenu extends SelectMenu {
             optionIndex++;
         }
         if (options.size() == 24) {
-            options.add(SelectOption.of(super.plugin.getLang().getMessage("discord.select-option.too-many-options.label"), "refresh")
-                    .withDescription(super.plugin.getLang().getMessage("discord.select-option.too-many-options.description"))
+            options.add(SelectOption.of(super.plugin.getBot().getLang().getMessage("select-option.too-many-options.label"), "refresh")
+                    .withDescription(super.plugin.getBot().getLang().getMessage("select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
         return StringSelectMenu.create("server-selection")
-                .setPlaceholder(super.plugin.getLang().getMessage("discord.menu.server.select-menu.placeholder"))
+                .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.server.select-menu.placeholder"))
                 .addOptions(options).build();
     }
 }

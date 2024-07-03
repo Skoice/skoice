@@ -56,7 +56,7 @@ public class PlayerJoinListener implements Listener {
                 if (voiceState != null) {
                     AudioChannel audioChannel = voiceState.getChannel();
                     if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
-                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
+                        player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
                         this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
                             PlayerProximityConnectEvent connectEvent = new PlayerProximityConnectEvent(player.getUniqueId().toString(), member.getId());
                             this.plugin.getServer().getPluginManager().callEvent(connectEvent);
@@ -72,14 +72,14 @@ public class PlayerJoinListener implements Listener {
     private void sendLoginNotification(Player player) {
         String loginNotificationStatus = this.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString());
         if (LoginNotificationSelectMenu.ALWAYS_REMIND.equals(loginNotificationStatus)) {
-            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked",
+            player.sendMessage(this.plugin.getLang().getMessage("chat.player.account-not-linked",
                     this.plugin.getBot().getGuild().getName()));
         } else if (LoginNotificationSelectMenu.REMIND_ONCE.equals(loginNotificationStatus)) {
             List<String> notifiedPlayers = this.plugin.getLoginNotificationYamlFile().getStringList(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD);
             if (!notifiedPlayers.contains(player.getUniqueId().toString())) {
                 notifiedPlayers.add(player.getUniqueId().toString());
                 this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, notifiedPlayers);
-                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.account-not-linked-remind-once",
+                player.sendMessage(this.plugin.getLang().getMessage("chat.player.account-not-linked-remind-once",
                         this.plugin.getBot().getGuild().getName()));
             }
         }

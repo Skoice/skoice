@@ -97,7 +97,7 @@ public class GenericChannelListener extends ListenerAdapter {
         if (voiceChannel == null || voiceChannel != event.getChannel().asVoiceChannel()) {
             return;
         }
-        this.plugin.getBot().getBotVoiceChannel().setStatus();
+        this.plugin.getBot().getVoiceChannel().setStatus();
     }
 
     private void checkForValidVoiceChannel(GenericChannelEvent event) {
@@ -112,7 +112,7 @@ public class GenericChannelListener extends ListenerAdapter {
                     User user = auditLogEntries.get(0).getUser();
                     if (user != null && !user.isBot()) {
                         new EmbeddedMenu(this.plugin.getBot()).setContent("incomplete-configuration-alternative-server-manager",
-                                        this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
+                                        this.plugin.getBot().getCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
                                 .message(user);
                     }
                 }

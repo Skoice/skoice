@@ -61,11 +61,11 @@ public abstract class Command {
                 && this.plugin.getBot().getStatus() != BotStatus.READY) {
             if (this.executor.isServerManager()) {
                 new EmbeddedMenu(this.plugin.getBot()).setContent("incomplete-configuration-server-manager",
-                                this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
+                                this.plugin.getBot().getCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
                         .reply(this.interaction);
             } else {
                 new EmbeddedMenu(this.plugin.getBot()).setContent("incomplete-configuration",
-                                this.plugin.getBotCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
+                                this.plugin.getBot().getCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
                         .reply(this.interaction);
             }
             return false;

@@ -39,7 +39,7 @@ public class GenericPermissionOverrideListener extends ListenerAdapter {
             return;
         }
         if (event.getChannel().equals(mainVoiceChannel)) {
-            this.plugin.getBot().getBotVoiceChannel().muteMembers();
+            this.plugin.getBot().getVoiceChannel().muteMembers();
         }
     }
 }

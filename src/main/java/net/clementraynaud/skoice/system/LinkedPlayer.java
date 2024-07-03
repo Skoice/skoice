@@ -67,7 +67,7 @@ public class LinkedPlayer {
     public void sendConnectingAlert() {
         this.plugin.adventure().player(this.player).sendActionBar(
                 Component.text(ChatColor.translateAlternateColorCodes('&',
-                        this.plugin.getLang().getMessage("minecraft.action-bar.connecting-alert")
+                        this.plugin.getLang().getMessage("action-bar.connecting-alert")
                 ))
         );
     }
@@ -75,7 +75,7 @@ public class LinkedPlayer {
     public void sendDisconnectingAlert() {
         this.plugin.adventure().player(this.player).sendActionBar(
                 Component.text(ChatColor.translateAlternateColorCodes('&',
-                        this.plugin.getLang().getMessage("minecraft.action-bar.disconnecting-alert")
+                        this.plugin.getLang().getMessage("action-bar.disconnecting-alert")
                 ))
         );
     }

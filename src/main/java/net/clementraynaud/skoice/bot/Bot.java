@@ -23,6 +23,8 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
+import net.clementraynaud.skoice.lang.JDALang;
+import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.listeners.session.ReadyListener;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.menus.MenuFactory;
@@ -57,7 +59,9 @@ import java.util.UUID;
 public class Bot {
 
     private final Skoice plugin;
-    private final BotVoiceChannel botVoiceChannel;
+    private final JDALang lang;
+    private final BotCommands commands;
+    private final BotVoiceChannel voiceChannel;
     private final MenuFactory menuFactory;
     private JDA jda;
     private BotStatus status = BotStatus.NOT_CONNECTED;
@@ -67,7 +71,10 @@ public class Bot {
 
     public Bot(Skoice plugin) {
         this.plugin = plugin;
-        this.botVoiceChannel = new BotVoiceChannel(this.plugin);
+        this.lang = new JDALang();
+        this.lang.load(LangInfo.valueOf(this.plugin.getConfigYamlFile().getString(ConfigField.LANG.toString())));
+        this.commands = new BotCommands(this);
+        this.voiceChannel = new BotVoiceChannel(this.plugin);
         this.menuFactory = new MenuFactory();
     }
 
@@ -86,7 +93,7 @@ public class Bot {
         if (sender instanceof Player) {
             tokenManager = (Player) sender;
             this.tokenManagerId = tokenManager.getUniqueId().toString();
-            tokenManager.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connecting"));
+            tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-connecting"));
         }
 
         byte[] base64TokenBytes;
@@ -108,7 +115,7 @@ public class Bot {
             this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
             this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
             if (tokenManager != null) {
-                tokenManager.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-could-not-connect"));
+                tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-could-not-connect"));
             }
         }
     }
@@ -137,12 +144,12 @@ public class Bot {
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
         if (minecraftId == null) {
             new EmbeddedMenu(this).setContent("account-not-linked",
-                            this.plugin.getBotCommands().getAsMention(CommandInfo.LINK.toString()))
+                            this.plugin.getBot().getCommands().getAsMention(CommandInfo.LINK.toString()))
                     .message(member.getUser());
         } else {
             Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
             if (player != null) {
-                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.connected"));
+                player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
                 this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
                     PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, member.getId());
                     this.plugin.getServer().getPluginManager().callEvent(event);
@@ -238,25 +245,25 @@ public class Bot {
         if (player.hasPermission(Argument.MANAGE_PERMISSION) || force) {
             if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
                 if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-                    this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-interactive",
-                                    this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
-                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.execute", "/skoice configure")))
+                    this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-interactive",
+                                    this.plugin.getLang().getComponentMessage("interaction.here")
+                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.execute", "/skoice configure")))
                                             .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure")),
-                                    this.plugin.getLang().getComponentMessage("minecraft.interaction.here")
-                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.shortcut", "/skoice language")))
+                                    this.plugin.getLang().getComponentMessage("interaction.here")
+                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.shortcut", "/skoice language")))
                                             .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice language "))
                             )
                     );
                 } else {
-                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator"));
+                    player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator"));
                 }
             } else if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
                 this.plugin.getBot().sendNoGuildAlert(player);
             } else {
-                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration-operator-discord"));
+                player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-discord"));
             }
         } else if (sendIfPermissionMissing) {
-            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.incomplete-configuration"));
+            player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration"));
         }
     }
 
@@ -266,9 +273,9 @@ public class Bot {
                 applicationInfo.setRequiredScopes("applications.commands");
                 String inviteUrl = applicationInfo.getInviteUrl(Permission.ADMINISTRATOR);
                 this.plugin.adventure().player(player).sendMessage(
-                        this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild-interactive",
-                                this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
-                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", inviteUrl)))
+                        this.plugin.getLang().getMessage("chat.configuration.no-guild-interactive",
+                                this.plugin.getLang().getComponentMessage("interaction.this-page")
+                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", inviteUrl)))
                                         .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl(inviteUrl))
                         )
                 );
@@ -276,7 +283,7 @@ public class Bot {
         } else {
             this.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
                 applicationInfo.setRequiredScopes("applications.commands");
-                player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.no-guild",
+                player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.no-guild",
                         applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
             });
         }
@@ -291,6 +298,14 @@ public class Bot {
             this.status = BotStatus.NOT_CONNECTED;
         }
         return this.status;
+    }
+
+    public JDALang getLang() {
+        return this.lang;
+    }
+
+    public BotCommands getCommands() {
+        return this.commands;
     }
 
     public Player getTokenManager() {
@@ -314,8 +329,8 @@ public class Bot {
         return this.getGuild();
     }
 
-    public BotVoiceChannel getBotVoiceChannel() {
-        return this.botVoiceChannel;
+    public BotVoiceChannel getVoiceChannel() {
+        return this.voiceChannel;
     }
 
     public MenuFactory getMenuFactory() {

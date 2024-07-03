@@ -44,7 +44,7 @@ public class LinkCommand extends Command {
     public void run() {
         if (super.plugin.getLinksYamlFile().getLinks().containsValue(super.executor.getUser().getId())) {
             new EmbeddedMenu(this.plugin.getBot()).setContent("account-already-linked",
-                            super.plugin.getBotCommands().getAsMention(CommandInfo.UNLINK.toString()))
+                            super.plugin.getBot().getCommands().getAsMention(CommandInfo.UNLINK.toString()))
                     .reply(super.interaction);
             return;
         }

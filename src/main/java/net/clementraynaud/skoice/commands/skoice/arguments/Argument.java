@@ -45,11 +45,11 @@ public abstract class Argument {
 
     public boolean canBeExecuted() {
         if (!(this.sender instanceof Player) && !this.allowedInConsole) {
-            this.sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.illegal-executor"));
+            this.sender.sendMessage(this.plugin.getLang().getMessage("chat.error.illegal-executor"));
             return false;
         }
         if (this.permissionRequired && !this.sender.hasPermission(Argument.MANAGE_PERMISSION)) {
-            this.sender.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.error.missing-permission"));
+            this.sender.sendMessage(this.plugin.getLang().getMessage("chat.error.missing-permission"));
             return false;
         }
         return true;

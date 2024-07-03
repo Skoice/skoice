@@ -46,8 +46,8 @@ public class VoiceChannelSelectMenu extends SelectMenu {
             categories.add(voiceChannel.getParentCategory());
         }
         List<SelectOption> options = new ArrayList<>();
-        options.add(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
-                .withDescription(super.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.description"))
+        options.add(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
+                .withDescription(super.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.select-option.new-voice-channel.description"))
                 .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.get()));
         int optionIndex = 0;
         while (optionIndex < 23 && voiceChannels.size() > optionIndex) {
@@ -59,8 +59,8 @@ public class VoiceChannelSelectMenu extends SelectMenu {
             optionIndex++;
         }
         if (options.size() == 23) {
-            options.add(SelectOption.of(super.plugin.getLang().getMessage("discord.select-option.too-many-options.label"), "refresh")
-                    .withDescription(super.plugin.getLang().getMessage("discord.select-option.too-many-options.description"))
+            options.add(SelectOption.of(super.plugin.getBot().getLang().getMessage("select-option.too-many-options.label"), "refresh")
+                    .withDescription(super.plugin.getBot().getLang().getMessage("select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
         if (super.plugin.getBot().getStatus() == BotStatus.READY) {
@@ -70,7 +70,7 @@ public class VoiceChannelSelectMenu extends SelectMenu {
                             .getString(ConfigField.VOICE_CHANNEL_ID.toString()))).build();
         } else {
             return StringSelectMenu.create("voice-channel-selection")
-                    .setPlaceholder(super.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.placeholder"))
+                    .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.placeholder"))
                     .addOptions(options).build();
         }
     }

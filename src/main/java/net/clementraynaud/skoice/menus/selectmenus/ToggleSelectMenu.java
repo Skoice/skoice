@@ -49,11 +49,11 @@ public class ToggleSelectMenu extends SelectMenu {
         }
         boolean defaultValue = configuration.getBoolean(this.componentId);
         return StringSelectMenu.create(this.componentId)
-                .addOptions(SelectOption.of(super.plugin.getLang().getMessage("discord.select-option.enabled.label"), ToggleSelectMenu.ENABLED_OPTION_ID)
-                                .withDescription(defaultValue ? super.plugin.getLang().getMessage("discord.select-option.default.description") : null)
+                .addOptions(SelectOption.of(super.plugin.getBot().getLang().getMessage("select-option.enabled.label"), ToggleSelectMenu.ENABLED_OPTION_ID)
+                                .withDescription(defaultValue ? super.plugin.getBot().getLang().getMessage("select-option.default.description") : null)
                                 .withEmoji(MenuEmoji.HEAVY_CHECK_MARK.get()),
-                        SelectOption.of(super.plugin.getLang().getMessage("discord.select-option.disabled.label"), ToggleSelectMenu.DISABLED_OPTION_ID)
-                                .withDescription(!defaultValue ? super.plugin.getLang().getMessage("discord.select-option.default.description") : null)
+                        SelectOption.of(super.plugin.getBot().getLang().getMessage("select-option.disabled.label"), ToggleSelectMenu.DISABLED_OPTION_ID)
+                                .withDescription(!defaultValue ? super.plugin.getBot().getLang().getMessage("select-option.default.description") : null)
                                 .withEmoji(MenuEmoji.HEAVY_MULTIPLICATION_X.get()))
                 .setDefaultValues(Collections.singleton(String.valueOf(selectedValue))).build();
     }

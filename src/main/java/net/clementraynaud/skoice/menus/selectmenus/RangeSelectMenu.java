@@ -42,11 +42,11 @@ public class RangeSelectMenu extends SelectMenu {
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.long-range-mode.label"), RangeSelectMenu.LONG_RANGE_MODE_ID)
-                        .withDescription(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.long-range-mode.description"))
+        List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.long-range-mode.label"), RangeSelectMenu.LONG_RANGE_MODE_ID)
+                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.long-range-mode.description"))
                         .withEmoji(MenuEmoji.LOUD_SOUND.get()),
-                SelectOption.of(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.short-range-mode.label"), RangeSelectMenu.SHORT_RANGE_MODE_ID)
-                        .withDescription(super.plugin.getLang().getMessage("discord.menu.range.select-menu.select-option.short-range-mode.description"))
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.short-range-mode.label"), RangeSelectMenu.SHORT_RANGE_MODE_ID)
+                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.short-range-mode.description"))
                         .withEmoji(MenuEmoji.SOUND.get())));
         String defaultValue = null;
         if (super.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString()) == 80
@@ -58,8 +58,8 @@ public class RangeSelectMenu extends SelectMenu {
         }
         return StringSelectMenu.create("mode-selection")
                 .setPlaceholder(super.plugin.getBot().getStatus() != BotStatus.READY
-                        ? super.plugin.getLang().getMessage("discord.menu.range.select-menu.placeholder")
-                        : super.plugin.getLang().getMessage("discord.menu.range.select-menu.alternative-placeholder"))
+                        ? super.plugin.getBot().getLang().getMessage("menu.range.select-menu.placeholder")
+                        : super.plugin.getBot().getLang().getMessage("menu.range.select-menu.alternative-placeholder"))
                 .addOptions(modes)
                 .setDefaultValues(defaultValue != null ? Collections.singleton(defaultValue) : Collections.emptyList()).build();
     }

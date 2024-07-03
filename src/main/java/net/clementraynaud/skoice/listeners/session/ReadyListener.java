@@ -56,11 +56,11 @@ public class ReadyListener extends ListenerAdapter {
             }
 
             if (this.plugin.getBot().getStatus() == BotStatus.READY) {
-                tokenManager.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected"));
+                tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-connected"));
             } else if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
                 this.plugin.getBot().sendNoGuildAlert(tokenManager);
             } else {
-                tokenManager.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.bot-connected-incomplete-configuration-discord"));
+                tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-connected-incomplete-configuration-discord"));
             }
         });
     }
@@ -76,13 +76,13 @@ public class ReadyListener extends ListenerAdapter {
         }
 
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-            this.plugin.adventure().sender(tokenManager).sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.public-bot-interactive", this.plugin.getLang().getComponentMessage("minecraft.interaction.this-page")
-                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("minecraft.interaction.link", "https://discord.com/developers/applications/" + botId + "/bot")))
+            this.plugin.adventure().sender(tokenManager).sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot-interactive", this.plugin.getLang().getComponentMessage("interaction.this-page")
+                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", "https://discord.com/developers/applications/" + botId + "/bot")))
                             .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discord.com/developers/applications/" + botId + "/bot"))
                     )
             );
         } else {
-            tokenManager.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.configuration.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
+            tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
         }
     }
 
@@ -91,8 +91,8 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getBot().updateGuild();
         this.plugin.getBot().updateInviteUrl();
 
-        this.plugin.getBotCommands().clearGuildCommands();
-        this.plugin.getBotCommands().register();
+        this.plugin.getBot().getCommands().clearGuildCommands();
+        this.plugin.getBot().getCommands().register();
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
             if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                 guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
@@ -115,8 +115,8 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getListenerManager().update();
 
         this.plugin.getBot().retrieveNetworks();
-        this.plugin.getBot().getBotVoiceChannel().setStatus();
+        this.plugin.getBot().getVoiceChannel().setStatus();
         this.plugin.getBot().updateVoiceState();
-        this.plugin.getBot().getBotVoiceChannel().muteMembers();
+        this.plugin.getBot().getVoiceChannel().muteMembers();
     }
 }

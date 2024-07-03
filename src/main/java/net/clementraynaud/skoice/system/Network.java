@@ -67,7 +67,7 @@ public class Network {
                 Permission.VOICE_MOVE_OTHERS
         );
         this.plugin.getConfigYamlFile().getCategory()
-                .createVoiceChannel(this.plugin.getLang().getMessage("discord.proximity-channel-name"))
+                .createVoiceChannel(this.plugin.getBot().getLang().getMessage("proximity-channel-name"))
                 .addPermissionOverride(guild.getPublicRole(),
                         Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
                         deniedPermissions)
@@ -179,7 +179,7 @@ public class Network {
     public void delete(String reason) {
         VoiceChannel channel = this.getChannel();
         if (channel != null) {
-            channel.delete().reason(this.plugin.getLang().getMessage("discord." + reason)).queue();
+            channel.delete().reason(this.plugin.getBot().getLang().getMessage(reason)).queue();
         }
         List<String> voiceChannels = this.plugin.getTempYamlFile()
                 .getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);

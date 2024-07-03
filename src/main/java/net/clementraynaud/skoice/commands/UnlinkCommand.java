@@ -43,7 +43,7 @@ public class UnlinkCommand extends Command {
         String minecraftId = MapUtil.getKeyFromValue(super.plugin.getLinksYamlFile().getLinks(), super.executor.getUser().getId());
         if (minecraftId == null) {
             new EmbeddedMenu(super.plugin.getBot()).setContent("account-not-linked",
-                            super.plugin.getBotCommands().getAsMention(CommandInfo.LINK.toString()))
+                            super.plugin.getBot().getCommands().getAsMention(CommandInfo.LINK.toString()))
                     .reply(super.interaction);
             return;
         }
@@ -54,14 +54,14 @@ public class UnlinkCommand extends Command {
 
         Player player = super.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
         if (player != null) {
-            player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.account-unlinked"));
+            player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-unlinked"));
 
             super.plugin.getBot().getGuild().retrieveMember(super.executor.getUser()).queue(member -> {
                 GuildVoiceState voiceState = member.getVoiceState();
                 if (voiceState != null) {
                     AudioChannel voiceChannel = voiceState.getChannel();
                     if (voiceChannel != null && voiceChannel.equals(super.plugin.getConfigYamlFile().getVoiceChannel())) {
-                        player.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+                        player.sendMessage(super.plugin.getLang().getMessage("chat.player.disconnected"));
                         this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
                             PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
                             this.plugin.getServer().getPluginManager().callEvent(event);

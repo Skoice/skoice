@@ -46,7 +46,7 @@ public class BotVoiceChannel {
         if (voiceChannel == null) {
             return;
         }
-        voiceChannel.modifyStatus(this.plugin.getLang().getMessage("discord.voice-channel-status")).queue();
+        voiceChannel.modifyStatus(this.plugin.getBot().getLang().getMessage("voice-channel-status")).queue();
     }
 
     public void muteMembers() {

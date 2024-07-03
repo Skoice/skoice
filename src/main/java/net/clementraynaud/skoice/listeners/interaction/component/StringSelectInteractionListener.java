@@ -79,8 +79,9 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                 case "language-selection":
                     this.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), event.getSelectedOptions().get(0).getValue());
                     this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
+                    this.plugin.getBot().getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
                     this.plugin.getListenerManager().update();
-                    this.plugin.getBotCommands().register();
+                    this.plugin.getBot().getCommands().register();
                     this.plugin.getConfigurationMenu().setContent("language").edit(event);
                     break;
 
@@ -90,19 +91,19 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     } else {
                         if ("new-voice-channel".equals(event.getSelectedOptions().get(0).getValue())) {
                             TextInput categoryName = TextInput.create("category-name",
-                                            this.plugin.getLang().getMessage("discord.text-input.category-name.label"),
+                                            this.plugin.getBot().getLang().getMessage("text-input.category-name.label"),
                                             TextInputStyle.SHORT)
-                                    .setValue(this.plugin.getLang().getMessage("discord.text-input.category-name.default-value"))
+                                    .setValue(this.plugin.getBot().getLang().getMessage("text-input.category-name.default-value"))
                                     .setRequiredRange(1, 25)
                                     .build();
                             TextInput voiceChannelName = TextInput.create("voice-channel-name",
-                                            this.plugin.getLang().getMessage("discord.text-input.voice-channel-name.label"),
+                                            this.plugin.getBot().getLang().getMessage("text-input.voice-channel-name.label"),
                                             TextInputStyle.SHORT)
-                                    .setValue(this.plugin.getLang().getMessage("discord.text-input.voice-channel-name.default-value"))
+                                    .setValue(this.plugin.getBot().getLang().getMessage("text-input.voice-channel-name.default-value"))
                                     .setRequiredRange(1, 25)
                                     .build();
                             Modal modal = Modal.create("new-voice-channel",
-                                            this.plugin.getLang().getMessage("discord.menu.voice-channel.select-menu.select-option.new-voice-channel.label"))
+                                            this.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.select-option.new-voice-channel.label"))
                                     .addComponents(ActionRow.of(categoryName), ActionRow.of(voiceChannelName))
                                     .build();
                             event.replyModal(modal).queue();
@@ -118,8 +119,8 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                                 this.plugin.getBot().updateVoiceState();
                                 new InterruptSystemTask(this.plugin).run();
                                 this.plugin.getListenerManager().update(event.getUser());
-                                this.plugin.getBot().getBotVoiceChannel().muteMembers();
-                                this.plugin.getBot().getBotVoiceChannel().setStatus();
+                                this.plugin.getBot().getVoiceChannel().muteMembers();
+                                this.plugin.getBot().getVoiceChannel().setStatus();
                             }
                             this.plugin.getConfigurationMenu().refreshId().edit(event);
                         }

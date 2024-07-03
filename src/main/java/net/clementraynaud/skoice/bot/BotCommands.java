@@ -32,29 +32,29 @@ import java.util.stream.Collectors;
 
 public class BotCommands {
 
-    private final Skoice plugin;
+    private final Bot bot;
 
     private final Map<String, String> mentions = new HashMap<>();
 
-    public BotCommands(Skoice plugin) {
-        this.plugin = plugin;
+    public BotCommands(Bot bot) {
+        this.bot = bot;
     }
 
     public void register() {
-        this.plugin.getBot().getJDA().updateCommands().addCommands(this.getCommands()).queue();
+        this.bot.getJDA().updateCommands().addCommands(this.getCommands()).queue();
 
-        this.plugin.getBot().getJDA().retrieveCommands()
+        this.bot.getJDA().retrieveCommands()
                 .queue(commands -> commands.forEach(command -> this.mentions.put(command.getName(), command.getAsMention())));
     }
 
     public void clearGuildCommands() {
-        this.plugin.getBot().getJDA().getGuilds().forEach(guild -> guild.updateCommands().queue());
+        this.bot.getJDA().getGuilds().forEach(guild -> guild.updateCommands().queue());
     }
 
     private Set<SlashCommandData> getCommands() {
         return Arrays.stream(CommandInfo.values())
                 .map(CommandInfo::toString)
-                .map(command -> Commands.slash(command, this.plugin.getLang().getMessage("discord.command-description." + command)))
+                .map(command -> Commands.slash(command, this.bot.getLang().getMessage("command-description." + command)))
                 .collect(Collectors.toSet());
     }
 

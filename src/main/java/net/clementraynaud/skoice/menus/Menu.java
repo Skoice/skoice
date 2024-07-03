@@ -72,15 +72,15 @@ public class Menu {
     }
 
     private String getTitle(boolean withEmoji) {
-        return withEmoji ? this.emoji + this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".title") :
-                this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".title");
+        return withEmoji ? this.emoji + this.plugin.getBot().getLang().getMessage("menu." + this.parentName + ".title") :
+                this.plugin.getBot().getLang().getMessage("menu." + this.parentName + ".title");
     }
 
     private String getDescription(boolean shortened) {
-        if (shortened && this.plugin.getLang().contains("discord.menu." + this.parentName + ".shortened-description")) {
-            return this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".shortened-description");
-        } else if (this.plugin.getLang().contains("discord.menu." + this.parentName + ".description")) {
-            return this.plugin.getLang().getMessage("discord.menu." + this.parentName + ".description");
+        if (shortened && this.plugin.getBot().getLang().contains("menu." + this.parentName + ".shortened-description")) {
+            return this.plugin.getBot().getLang().getMessage("menu." + this.parentName + ".shortened-description");
+        } else if (this.plugin.getBot().getLang().contains("menu." + this.parentName + ".description")) {
+            return this.plugin.getBot().getLang().getMessage("menu." + this.parentName + ".description");
         }
         return null;
     }
@@ -90,7 +90,7 @@ public class Menu {
                 .setColor(this.type.getColor());
 
         if (this.footer != null) {
-            embed.setFooter(this.plugin.getLang().getMessage("discord.menu." + this.footer + "-footer"),
+            embed.setFooter(this.plugin.getBot().getLang().getMessage("menu." + this.footer + "-footer"),
                     "https://clementraynaud.net/Skoice.jpeg");
         }
 
@@ -116,7 +116,7 @@ public class Menu {
         int startIndex = 0;
         for (String field : this.fields) {
             MenuField menuField = this.plugin.getBot().getMenuFactory().getField(field);
-            int endIndex = this.plugin.getLang().getAmountOfArgsRequired(menuField.getDescription());
+            int endIndex = this.plugin.getBot().getLang().getAmountOfArgsRequired(menuField.getDescription());
             embed.addField(menuField.build(Arrays.copyOfRange(args, startIndex, endIndex)));
             startIndex = endIndex;
         }
@@ -176,12 +176,12 @@ public class Menu {
     private ActionRow getSecondaryActionRow() {
         List<Button> secondaryButtons = new ArrayList<>();
         if (this.parent != null && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.menuId))) {
-            secondaryButtons.add(Button.secondary(this.parent, "← " + this.plugin.getLang().getMessage("discord.button-label.back")));
+            secondaryButtons.add(Button.secondary(this.parent, "← " + this.plugin.getBot().getLang().getMessage("button-label.back")));
         }
         if (this.type == MenuType.DEFAULT) {
             if (this.plugin.getBot().getStatus() != BotStatus.READY) {
                 secondaryButtons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
-                                this.plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
+                                this.plugin.getBot().getLang().getMessage("button-label.message-not-showing-up"))
                         .withEmoji(MenuEmoji.QUESTION.get()));
                 if (!"language".equals(this.menuId)) {
                     Menu languageMenu = this.plugin.getBot().getMenuFactory().getMenu("language");

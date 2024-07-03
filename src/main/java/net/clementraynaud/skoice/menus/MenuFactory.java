@@ -42,7 +42,7 @@ public class MenuFactory {
     public void loadAll(Skoice plugin) {
         this.loadFields(plugin);
 
-        YamlConfiguration menusYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "menus/menus.yml");
+        YamlConfiguration menusYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "jda/menus/menus.yml");
         if (menusYaml == null) {
             return;
         }
@@ -69,7 +69,7 @@ public class MenuFactory {
     }
 
     private void loadFields(Skoice plugin) {
-        YamlConfiguration fieldsYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "menus/fields.yml");
+        YamlConfiguration fieldsYaml = ConfigurationUtil.loadResource(this.getClass().getName(), "jda/menus/fields.yml");
         if (fieldsYaml == null) {
             return;
         }
@@ -86,29 +86,29 @@ public class MenuFactory {
             switch (menu.getId()) {
                 case "incomplete-configuration-server-manager":
                     menu.setButtons(Button.primary("resume-configuration",
-                                    plugin.getLang().getMessage("discord.button-label.resume-configuration"))
+                                    plugin.getBot().getLang().getMessage("button-label.resume-configuration"))
                             .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
                     break;
                 case "permissions":
                     menu.setButtons(Button.link(plugin.getBot().getInviteUrl(),
-                                    plugin.getLang().getMessage("discord.button-label.update-permissions"))
+                                    plugin.getBot().getLang().getMessage("button-label.update-permissions"))
                             .withEmoji(MenuEmoji.CARD_BOX.get()));
                     break;
                 case "range":
                     menu.setButtons(Button.primary("customize",
-                                    plugin.getLang().getMessage("discord.field.customize.title"))
+                                    plugin.getBot().getLang().getMessage("field.customize.title"))
                             .withEmoji(MenuEmoji.PENCIL2.get()));
                     break;
                 case "login-notification":
                     if (LoginNotificationSelectMenu.REMIND_ONCE.equals(plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
                         menu.setButtons(Button.danger("clear-notified-players",
-                                        plugin.getLang().getMessage("discord.button-label.clear-notified-players"))
+                                        plugin.getBot().getLang().getMessage("button-label.clear-notified-players"))
                                 .withEmoji(MenuEmoji.WASTEBASKET.get()));
                     }
                     break;
                 case "verification-code":
                     menu.setButtons(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
-                                    plugin.getLang().getMessage("discord.button-label.message-not-showing-up"))
+                                    plugin.getBot().getLang().getMessage("button-label.message-not-showing-up"))
                             .withEmoji(MenuEmoji.QUESTION.get()));
                     break;
                 default:

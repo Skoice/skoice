@@ -90,7 +90,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
             Networks.getAll().stream()
                     .filter(network -> network.contains(player))
                     .forEach(network -> network.remove(player));
-            player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+            player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
             this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
                 PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
                 this.plugin.getServer().getPluginManager().callEvent(event);
@@ -132,7 +132,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
                             .forEach(network -> network.remove(player));
 
                     if (!voiceChannelJoined.equals(mainVoiceChannel)) {
-                        player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+                        player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
                         this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
                             PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
                             this.plugin.getServer().getPluginManager().callEvent(event);
@@ -140,7 +140,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
                     }
 
                 } else if (voiceChannelLeft.equals(mainVoiceChannel)) {
-                    player.sendMessage(this.plugin.getLang().getMessage("minecraft.chat.player.disconnected"));
+                    player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
                     this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
                         PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
                         this.plugin.getServer().getPluginManager().callEvent(event);

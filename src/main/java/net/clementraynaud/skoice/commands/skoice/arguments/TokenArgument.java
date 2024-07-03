@@ -35,14 +35,14 @@ public class TokenArgument extends Argument {
     @Override
     public void run() {
         if (this.arg.isEmpty()) {
-            super.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.no-token"));
+            super.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.no-token"));
             return;
         }
         super.plugin.getConfigYamlFile().setToken(this.arg);
         if (super.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
             super.plugin.getBot().connect(super.sender);
         } else {
-            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.bot-already-connected"));
+            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.bot-already-connected"));
         }
     }
 }

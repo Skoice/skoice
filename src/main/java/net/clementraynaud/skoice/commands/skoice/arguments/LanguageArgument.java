@@ -36,7 +36,7 @@ public class LanguageArgument extends Argument {
     @Override
     public void run() {
         if (this.arg.isEmpty()) {
-            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.no-language",
+            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.no-language",
                     LangInfo.getJoinedList()));
             return;
         }
@@ -45,21 +45,22 @@ public class LanguageArgument extends Argument {
             LangInfo language = LangInfo.valueOf(this.arg.toUpperCase());
 
             if (language.toString().equals(super.plugin.getConfigYamlFile().get(ConfigField.LANG.toString()))) {
-                this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.language-already-set",
+                this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.language-already-set",
                         language.getFullName()));
                 return;
             }
 
             super.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), language.toString());
             super.plugin.getLang().load(language);
+            super.plugin.getBot().getLang().load(language);
             super.plugin.getListenerManager().update();
 
-            this.plugin.getBotCommands().register();
-            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.language-updated",
+            this.plugin.getBot().getCommands().register();
+            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.language-updated",
                     language.getFullName()));
 
         } catch (IllegalArgumentException e) {
-            this.sender.sendMessage(super.plugin.getLang().getMessage("minecraft.chat.configuration.invalid-language",
+            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.invalid-language",
                     LangInfo.getJoinedList()));
         }
     }

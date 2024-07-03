@@ -42,13 +42,13 @@ public class MenuField {
     }
 
     private String getTitle() {
-        return this.plugin.getLang().getMessage("discord.field." + this.name + ".title");
+        return this.plugin.getBot().getLang().getMessage("field." + this.name + ".title");
     }
 
     public String getDescription(String... args) {
         if (args.length != 0) {
-            return this.plugin.getLang().getMessage("discord.field." + this.name + ".description", args);
+            return this.plugin.getBot().getLang().getMessage("field." + this.name + ".description", args);
         }
-        return this.plugin.getLang().getMessage("discord.field." + this.name + ".description");
+        return this.plugin.getBot().getLang().getMessage("field." + this.name + ".description");
     }
 }
