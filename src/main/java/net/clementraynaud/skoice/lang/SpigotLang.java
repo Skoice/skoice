@@ -50,7 +50,9 @@ public class SpigotLang extends Lang {
 
     @Override
     public String getMessage(String path, String... args) {
-        String message = super.getMessage(path, args);
+        String message = this.active.contains(path)
+                ? this.active.getString(path)
+                : this.english.getString(path);
         if (message == null) {
             return null;
         }
