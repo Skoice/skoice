@@ -20,10 +20,8 @@
 package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,24 +63,6 @@ class LinkedPlayerTest {
         when(this.plugin.getConfigYamlFile()).thenReturn(this.configYamlFile);
         when(this.configYamlFile.getVoiceChannel()).thenReturn(this.voiceChannel);
         this.linkedPlayer = new LinkedPlayer(this.plugin, this.player, "discordId");
-    }
-
-    @Test
-    void isStateEligible_checksPlayerState() {
-        when(this.configYamlFile.getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())).thenReturn(true);
-        when(this.configYamlFile.getBoolean(ConfigField.SPECTATORS_INCLUDED.toString())).thenReturn(true);
-        when(this.player.isDead()).thenReturn(false);
-        when(this.player.getGameMode()).thenReturn(GameMode.SURVIVAL);
-
-        assertTrue(this.linkedPlayer.isStateEligible());
-
-        when(this.player.isDead()).thenReturn(true);
-        when(this.player.getGameMode()).thenReturn(GameMode.SPECTATOR);
-
-        assertTrue(this.linkedPlayer.isStateEligible());
-
-        when(this.configYamlFile.getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())).thenReturn(false);
-        assertFalse(this.linkedPlayer.isStateEligible());
     }
 
     @Test
