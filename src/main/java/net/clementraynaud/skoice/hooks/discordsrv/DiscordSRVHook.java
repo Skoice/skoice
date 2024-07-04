@@ -2,6 +2,7 @@ package net.clementraynaud.skoice.hooks.discordsrv;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 
 public class DiscordSRVHook {
 
@@ -13,6 +14,9 @@ public class DiscordSRVHook {
     }
 
     public void initialize() {
+        if (!this.plugin.getConfigYamlFile().getBoolean(ConfigField.DISCORDSRV_SYNCHRONIZATION.toString())) {
+            return;
+        }
         if (this.discordSRVHookImpl != null) {
             return;
         }
