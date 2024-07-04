@@ -176,6 +176,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                 case "release-channel-selection":
                     this.plugin.getConfigYamlFile().set(ConfigField.RELEASE_CHANNEL.toString(), event.getSelectedOptions().get(0).getValue());
                     this.plugin.getBot().getConfigurationMenu().setContent("release-channel").edit(event);
+                    this.plugin.getUpdater().checkVersion();
                     break;
 
                 default:

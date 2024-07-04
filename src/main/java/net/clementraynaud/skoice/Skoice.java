@@ -59,6 +59,7 @@ public class Skoice extends JavaPlugin {
     private Bot bot;
     private BukkitAudiences adventure;
     private DiscordSRVHook discordSRVHook;
+    private Updater updater;
 
     public static SkoiceAPI api() {
         return Skoice.api;
@@ -94,7 +95,8 @@ public class Skoice extends JavaPlugin {
         this.discordSRVHook = new DiscordSRVHook(this);
         this.discordSRVHook.initialize();
         this.addCustomCharts();
-        new Updater(this, this.getFile().getAbsolutePath());
+        this.updater = new Updater(this, this.getFile().getAbsolutePath());
+        this.updater.runUpdaterTaskTimer();
         Skoice.api = new SkoiceAPI(this);
     }
 
@@ -200,6 +202,10 @@ public class Skoice extends JavaPlugin {
 
     public Bot getBot() {
         return this.bot;
+    }
+
+    public Updater getUpdater() {
+        return this.updater;
     }
 
     public DiscordSRVHook getDiscordSRVHook() {

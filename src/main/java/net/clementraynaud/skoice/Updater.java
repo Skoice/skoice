@@ -19,6 +19,8 @@
 
 package net.clementraynaud.skoice;
 
+import net.clementraynaud.skoice.storage.config.ConfigField;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,13 +36,34 @@ public class Updater {
     private static final long TICKS_BETWEEN_VERSION_CHECKING = 720000L;
     private static final long TICKS_BEFORE_VERSION_CHECKING = 1200L;
 
+    private static final String UPDATER_URL = "https://clementraynaud.net/files";
+
+    private static final String VERSION_ENDPOINT = "/version";
+    private static final String DOWNLOAD_ENDPOINT = "/Skoice.jar";
+
+    private static final String LATEST_CHANNEL = "skoice-latest";
+    private static final String BETA_CHANNEL = "skoice-beta";
+
     private final Skoice plugin;
     private final String pluginPath;
+    private String fullURL;
     private String downloadedVersion;
 
     public Updater(Skoice plugin, String pluginPath) {
         this.plugin = plugin;
         this.pluginPath = pluginPath;
+    }
+
+    public void checkVersion() {
+        this.updateReleaseChannel();
+        this.getVersion(version -> {
+            if (version != null && !this.plugin.getDescription().getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
+                this.update(version);
+            }
+        });
+    }
+
+    public void runUpdaterTaskTimer() {
         this.plugin.getServer().getScheduler().runTaskTimer(
                 this.plugin,
                 this::checkVersion,
@@ -49,17 +72,17 @@ public class Updater {
         );
     }
 
-    private void checkVersion() {
-        this.getVersion(version -> {
-            if (version != null && !this.plugin.getDescription().getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
-                this.update(version);
-            }
-        });
+    private void updateReleaseChannel() {
+        String releaseChannel = Updater.LATEST_CHANNEL;
+        if ("beta".equals(this.plugin.getConfigYamlFile().getString(ConfigField.RELEASE_CHANNEL.toString()))) {
+            releaseChannel = Updater.BETA_CHANNEL;
+        }
+        this.fullURL = String.format("%s/%s", Updater.UPDATER_URL, releaseChannel);
     }
 
     private void getVersion(final Consumer<String> consumer) {
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-            try (InputStream inputStream = new URL("https://clementraynaud.net/files/skoice-latest/version")
+            try (InputStream inputStream = new URL(this.fullURL + Updater.VERSION_ENDPOINT)
                     .openStream(); Scanner scanner = new Scanner(inputStream)) {
                 if (scanner.hasNext()) {
                     consumer.accept(scanner.next());
@@ -78,7 +101,7 @@ public class Updater {
 
             try (FileOutputStream outputStream = new FileOutputStream(update)) {
                 outputStream.getChannel()
-                        .transferFrom(Channels.newChannel(new URL("https://clementraynaud.net/files/skoice-latest/Skoice.jar")
+                        .transferFrom(Channels.newChannel(new URL(this.fullURL + Updater.DOWNLOAD_ENDPOINT)
                                 .openStream()), 0, Long.MAX_VALUE);
                 this.downloadedVersion = version;
                 this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
