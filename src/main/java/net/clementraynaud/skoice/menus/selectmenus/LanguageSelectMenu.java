@@ -47,7 +47,7 @@ public class LanguageSelectMenu extends SelectMenu {
         }
         return StringSelectMenu.create("language-selection")
                 .addOptions(options)
-                .setDefaultValues(Collections.singleton(super.plugin.getConfigYamlFile()
-                        .getString(ConfigField.LANG.toString()))).build();
+                .setDefaultValues(super.plugin.getConfigYamlFile()
+                        .getString(ConfigField.LANG.toString())).build();
     }
 }

@@ -137,6 +137,11 @@ channel-visibility:
   type: default
   style: primary
   parent: more-settings
+chaining-limit:
+  emoji: chains
+  type: default
+  style: primary
+  parent: more-settings
 discordsrv-synchronization:
   emoji: electric_plug
   type: default

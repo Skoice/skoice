@@ -52,6 +52,6 @@ public class LoginNotificationSelectMenu extends SelectMenu {
         String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString());
         return StringSelectMenu.create("login-notification-selection")
                 .addOptions(options)
-                .setDefaultValues(Collections.singleton(defaultValue)).build();
+                .setDefaultValues(defaultValue).build();
     }
 }

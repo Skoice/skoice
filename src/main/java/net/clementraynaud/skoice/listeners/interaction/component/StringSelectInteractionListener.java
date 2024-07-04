@@ -168,6 +168,11 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     this.plugin.getBot().getConfigurationMenu().setContent("active-worlds").edit(event);
                     break;
 
+                case "chaining-limit-selection":
+                    this.plugin.getConfigYamlFile().set(ConfigField.CHAINING_LIMIT.toString(), event.getSelectedOptions().get(0).getValue());
+                    this.plugin.getBot().getConfigurationMenu().setContent("chaining-limit").edit(event);
+                    break;
+
                 default:
                     try {
                         ConfigField configField = ConfigField.valueOf(componentId.replace("-", "_").toUpperCase());

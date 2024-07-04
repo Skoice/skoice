@@ -66,8 +66,8 @@ public class VoiceChannelSelectMenu extends SelectMenu {
         if (super.plugin.getBot().getStatus() == BotStatus.READY) {
             return StringSelectMenu.create("voice-channel-selection")
                     .addOptions(options)
-                    .setDefaultValues(Collections.singleton(super.plugin.getConfigYamlFile()
-                            .getString(ConfigField.VOICE_CHANNEL_ID.toString()))).build();
+                    .setDefaultValues(super.plugin.getConfigYamlFile()
+                            .getString(ConfigField.VOICE_CHANNEL_ID.toString())).build();
         } else {
             return StringSelectMenu.create("voice-channel-selection")
                     .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.placeholder"))

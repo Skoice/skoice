@@ -33,6 +33,7 @@ public enum ConfigField {
     SPECTATORS_INCLUDED,
     DISABLED_WORLDS,
     CHANNEL_VISIBILITY,
+    CHAINING_LIMIT,
     DISCORDSRV_SYNCHRONIZATION;
 
     private final String lowerCaseName;
