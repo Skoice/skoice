@@ -1,4 +1,4 @@
-<img align="right" src="https://github.com/Skoice/skoice/assets/30211659/94ee4b30-ecf0-4348-84e7-c829d7c86280)" height="200" width="200" alt="Skoice logo">
+<img align="right" src="https://clementraynaud.net/Skoice.jpeg" height="200" width="200" alt="Skoice logo">
 
 # Skoice: Proximity Voice Chat<br>[![](https://img.shields.io/spiget/downloads/82861?style=flat&labelColor=697EC4&color=7289DA&label=Downloads)](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861) [![](https://img.shields.io/spiget/rating/82861?style=flat&labelColor=697EC4&color=7289DA&label=Rating)](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861) [![](https://img.shields.io/discord/741375523275407461.svg?style=flat&labelColor=697EC4&color=7289DA&label=Discord)](https://discord.gg/h3Tgccc)
 
@@ -13,10 +13,10 @@ You can help us translate Skoice by [joining Crowdin](https://crowdin.com/projec
 
 To download our plugin, please [head to our Spigot page](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861). Consider leaving a review if you enjoy our work!
 
-Skoice is supported on servers that run any Minecraft version from 1.8 to 1.20.
+Skoice is supported on servers that run any Minecraft version from 1.8 to 1.21.
 
 You can use Skoice on the following server software:
-- Spigot (or derivative like Paper, [Purpur](https://purpurmc.org/downloads))
+- Spigot (or derivative like [Paper](https://papermc.io/downloads/paper), [Purpur](https://purpurmc.org/downloads))
 - Fabric (using [Cardboard](https://cardboardpowered.org/))
 - Forge (using [Magma](https://magmafoundation.org/) or [Mohist](https://mohistmc.com/))
 
@@ -24,20 +24,20 @@ If your server allows Bedrock Edition players (with [Geyser](https://geysermc.or
 
 ## Installation
 
-Once you have downloaded our plugin, simply drop the file in the `plugins` folder of your Minecraft server and start it. Join the server with an account that has `skoice.manage` permission or operator privileges and follow the instructions that are sent to you.
+Once you have downloaded our plugin, simply drop the file in the `plugins` folder of your Minecraft server and start it. Join the server with an account that has operator privileges (or `skoice.manage` permission) and follow the instructions that are sent to you.
 
 ## Commands
 
 ### Minecraft
 
 - `/skoice configure`: Get instructions to begin the configuration process.*
-- `/skoice tooltips`: Toggle interactive messages, useful on Bedrock Edition or when tooltips are disabled in Minecraft settings.*
 - `/skoice token <token>`: Link a Discord bot to your Minecraft server.*
 - `/skoice language <language>`: Change the language used by Skoice.*
+- `/skoice tooltips`: Toggle interactive messages, useful on Bedrock Edition or when tooltips are disabled in Minecraft settings.*
 - `/skoice link <code>`: Link your Minecraft account to Discord.
 - `/skoice unlink`: Unlink your Minecraft account from Discord.
 
-*requires `skoice.manage` permission or operator privileges
+*requires operator privileges (or `skoice.manage` permission)
 
 ### Discord
 
@@ -48,7 +48,7 @@ Once you have downloaded our plugin, simply drop the file in the `plugins` folde
 
 ## Getting Help
 
-If you are experiencing any issues with Skoice, you may want to [join our Discord server](https://discord.gg/h3Tgccc).
+If you are experiencing any issues with Skoice, you may want to [join our Discord server](https://discord.gg/skoice-proximity-voice-chat-741375523275407461).
 
 ## Donating
 
