@@ -101,16 +101,16 @@ menu:
   chaining-limit:
     title: "Chaining Limit"
     shortened-description: "Select the additional distance allowed when chaining."
-    description: "Select the additional distance allowed when chaining. Chaining usually happens when a player is between two other players that should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."
+    description: "Select the additional distance allowed when chaining. Chaining usually happens when a player is between two other players who should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."
     select-menu:
       disabled:
         label: "Disabled — No chaining allowed"
       short:
-        label: "Short — +25% of the original range"
+        label: "Short — +25% of the initial range"
       medium:
-        label: "Medium — +50% of the original range"
+        label: "Medium — +50% of the initial range"
       long:
-        label: "Long — +100% of the original range"
+        label: "Long — +100% of the initial range"
   channel-visibility:
     title: "Channel Visibility"
     description: "Toggle the visibility of the temporary channels created by Skoice."
@@ -191,6 +191,8 @@ button-label:
 select-option:
   default:
     description: "This option is selected by default."
+  undesirable:
+    description: "This option can cause undesirable situations."
   enabled:
     label: "Enabled"
   disabled:
