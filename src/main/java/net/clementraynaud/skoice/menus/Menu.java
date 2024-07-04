@@ -131,10 +131,7 @@ public class Menu {
             actionRows.add(selectMenuActionRow);
         }
 
-        ActionRow mainActionRow = this.getMainActionRow();
-        if (mainActionRow != null) {
-            actionRows.add(mainActionRow);
-        }
+        actionRows.addAll(this.getMainActionRows());
 
         ActionRow secondaryActionRow = this.getSecondaryActionRow();
         if (secondaryActionRow != null) {
@@ -144,7 +141,8 @@ public class Menu {
         return actionRows;
     }
 
-    private ActionRow getMainActionRow() {
+    private List<ActionRow> getMainActionRows() {
+        List<ActionRow> mainActionRows = new ArrayList<>();
         List<Button> mainButtons = new ArrayList<>(Arrays.asList(this.buttons));
         for (Menu menu : this.plugin.getBot().getMenuFactory().getMenus().values()) {
             if (menu.parent != null && menu.parent.equals(this.menuId)) {
@@ -156,10 +154,11 @@ public class Menu {
             }
         }
 
-        if (mainButtons.isEmpty()) {
-            return null;
+        for (int i = 0; i < mainButtons.size(); i += 5) {
+            mainActionRows.add(ActionRow.of(mainButtons.subList(i, Math.min(i + 5, mainButtons.size()))));
         }
-        return ActionRow.of(mainButtons);
+
+        return mainActionRows;
     }
 
     private ActionRow getSelectMenuActionRow() {
