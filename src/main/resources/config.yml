@@ -8,5 +8,5 @@ tooltips: true
 players-on-death-screen-included: false
 spectators-included: false
 channel-visibility: true
-chaining-limit: medium
+chaining: medium
 discordsrv-synchronization: true

@@ -137,7 +137,7 @@ channel-visibility:
   type: default
   style: primary
   parent: more-settings
-chaining-limit:
+chaining:
   emoji: chains
   type: default
   style: primary

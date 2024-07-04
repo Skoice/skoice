@@ -29,34 +29,34 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ChainingLimitSelectMenu extends SelectMenu {
+public class ChainingSelectMenu extends SelectMenu {
 
-    public static final String DISABLED = "disabled";
+    public static final String DISABLED = "false";
     public static final String SHORT = "short";
     public static final String MEDIUM = "medium";
     public static final String LONG = "long";
 
-    public ChainingLimitSelectMenu(Skoice plugin) {
+    public ChainingSelectMenu(Skoice plugin) {
         super(plugin);
     }
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining-limit.select-menu.disabled.label"), ChainingLimitSelectMenu.DISABLED)
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.disabled.label"), ChainingSelectMenu.DISABLED)
                         .withEmoji(MenuEmoji.PROHIBITED.get())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.undesirable.description")),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining-limit.select-menu.short.label"), ChainingLimitSelectMenu.SHORT)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.short.label"), ChainingSelectMenu.SHORT)
                         .withEmoji(MenuEmoji.CHAINS.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining-limit.select-menu.medium.label"), ChainingLimitSelectMenu.MEDIUM)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.medium.label"), ChainingSelectMenu.MEDIUM)
                         .withEmoji(MenuEmoji.CHAINS.get())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description")),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining-limit.select-menu.long.label"), ChainingLimitSelectMenu.LONG)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.long.label"), ChainingSelectMenu.LONG)
                         .withEmoji(MenuEmoji.CHAINS.get())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.undesirable.description"))));
 
-        String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.CHAINING_LIMIT.toString());
+        String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.CHAINING.toString());
 
-        return StringSelectMenu.create("chaining-limit-selection")
+        return StringSelectMenu.create("chaining-selection")
                 .addOptions(options)
                 .setDefaultValues(defaultValue).build();
     }
