@@ -117,7 +117,7 @@ menu:
   discordsrv-synchronization:
     title: "DiscordSRV Synchronization"
     shortened-description: "Toggle the synchronization of DiscordSRV with Skoice."
-    description: "Toggle the synchronization of DiscordSRV with Skoice. When this option is turned on, players who have linked their Discord account to Minecraft using DiscordSRV will be able to use our proximity voice chat directly."
+    description: "Toggle the synchronization of DiscordSRV with Skoice. When this option is turned on, players who have linked their accounts using Skoice or DiscordSRV are synchronized in real time between the two databases. This option requires you to restart your Minecraft server for it to take effect."
   release-channel:
     title: "Release Channel"
     description: "Select the version of Skoice you want to use."
