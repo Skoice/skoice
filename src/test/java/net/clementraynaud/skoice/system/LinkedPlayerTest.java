@@ -21,15 +21,12 @@ package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
-import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 
 import java.util.Set;
 
@@ -50,9 +47,6 @@ class LinkedPlayerTest {
     private Player player;
 
     @Mock
-    private VoiceChannel voiceChannel;
-
-    @Mock
     private ConfigYamlFile configYamlFile;
 
     private LinkedPlayer linkedPlayer;
@@ -60,7 +54,6 @@ class LinkedPlayerTest {
     @BeforeEach
     void setUp() {
         when(this.plugin.getConfigYamlFile()).thenReturn(this.configYamlFile);
-        when(this.configYamlFile.getVoiceChannel()).thenReturn(this.voiceChannel);
         this.linkedPlayer = new LinkedPlayer(this.plugin, this.player, "discordId");
     }
 
