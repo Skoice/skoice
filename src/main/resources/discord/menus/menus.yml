@@ -137,6 +137,11 @@ channel-visibility:
   type: default
   style: primary
   parent: more-settings
+discordsrv-synchronization:
+  emoji: electric_plug
+  type: default
+  style: secondary
+  parent: more-settings
 server:
   emoji: file_cabinet
   type: default

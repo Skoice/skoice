@@ -43,6 +43,7 @@ public class SelectMenuFactory {
                 return new ActiveWorldsSelectMenu(plugin);
             case "tooltips":
             case "channel-visibility":
+            case "discordsrv-synchronization":
                 return new ToggleSelectMenu(plugin, menuId);
             default:
                 return null;

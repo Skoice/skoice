@@ -101,6 +101,10 @@ menu:
   channel-visibility:
     title: "Channel Visibility"
     description: "Toggle the visibility of the temporary channels created by Skoice."
+  discordsrv-synchronization:
+    title: "DiscordSRV Synchronization"
+    shortened-description: "Toggle the synchronization of DiscordSRV with Skoice"
+    description: "Toggle the synchronization of DiscordSRV with Skoice. When this option is turned on, players who have linked their Discord account to Minecraft using DiscordSRV will be able to use our proximity voice chat directly."
   skoice-proximity-voice-chat:
     title: "Skoice: Proximity Voice Chat"
   linking-process:

@@ -29,6 +29,7 @@ public enum MenuEmoji {
     BUSTS_IN_SILHOUETTE("U+1F465"),
     CARD_BOX("U+1F5C3"),
     CLOCK3("U+1F552"),
+    ELECTRIC_PLUG("U+1F50C"),
     FILE_CABINET("U+1F5C4"),
     GEAR("U+2699"),
     GHOST("U+1F47B"),

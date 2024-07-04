@@ -32,7 +32,8 @@ public enum ConfigField {
     PLAYERS_ON_DEATH_SCREEN_INCLUDED,
     SPECTATORS_INCLUDED,
     DISABLED_WORLDS,
-    CHANNEL_VISIBILITY;
+    CHANNEL_VISIBILITY,
+    DISCORDSRV_SYNCHRONIZATION;
 
     private final String lowerCaseName;
     private final String camelCaseName;
