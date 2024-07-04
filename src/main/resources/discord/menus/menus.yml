@@ -147,6 +147,14 @@ discordsrv-synchronization:
   type: default
   style: secondary
   parent: more-settings
+release-channel:
+  emoji: inbox_tray
+  type: default
+  style: secondary
+  parent: more-settings
+  fields:
+    - production-channel
+    - beta-channel
 server:
   emoji: file_cabinet
   type: default

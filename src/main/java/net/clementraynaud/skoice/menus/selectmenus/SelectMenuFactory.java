@@ -41,8 +41,10 @@ public class SelectMenuFactory {
                 return new ActionBarAlertsSelectMenu(plugin);
             case "active-worlds":
                 return new ActiveWorldsSelectMenu(plugin);
-            case "chaining-limit":
-                return new ChainingLimitSelectMenu(plugin);
+            case "chaining":
+                return new ChainingSelectMenu(plugin);
+            case "release-channel":
+                return new ReleaseChannelSelectMenu(plugin);
             case "tooltips":
             case "channel-visibility":
             case "discordsrv-synchronization":

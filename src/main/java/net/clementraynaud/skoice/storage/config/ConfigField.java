@@ -34,7 +34,8 @@ public enum ConfigField {
     DISABLED_WORLDS,
     CHANNEL_VISIBILITY,
     CHAINING,
-    DISCORDSRV_SYNCHRONIZATION;
+    DISCORDSRV_SYNCHRONIZATION,
+    RELEASE_CHANNEL;
 
     private final String lowerCaseName;
     private final String camelCaseName;

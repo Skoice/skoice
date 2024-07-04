@@ -118,6 +118,9 @@ menu:
     title: "DiscordSRV Synchronization"
     shortened-description: "Toggle the synchronization of DiscordSRV with Skoice."
     description: "Toggle the synchronization of DiscordSRV with Skoice. When this option is turned on, players who have linked their Discord account to Minecraft using DiscordSRV will be able to use our proximity voice chat directly."
+  release-channel:
+    title: "Release Channel"
+    description: "Select the version of Skoice you want to use."
   skoice-proximity-voice-chat:
     title: "Skoice: Proximity Voice Chat"
   linking-process:
@@ -161,6 +164,12 @@ field:
   customize:
     title: "Customize"
     description: "Set distances according to your personal preferences."
+  production-channel:
+    title: "Production Channel"
+    description: "Choose this channel to use the public version. It is more likely to offer a stable experience."
+  beta-channel:
+    title: "Beta Channel"
+    description: "Choose this channel to discover and test our latest features that are not yet released to the public. This version may contain bugs."
   verification-code:
     title: "Verification Code"
     description: "Type `/skoice link %s` in game to complete the process."
@@ -192,7 +201,7 @@ select-option:
   default:
     description: "This option is selected by default."
   undesirable:
-    description: "This option can cause undesirable situations."
+    description: "This option can cause undesirable behaviors."
   enabled:
     label: "Enabled"
   disabled:

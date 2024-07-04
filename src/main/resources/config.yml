@@ -10,3 +10,4 @@ spectators-included: false
 channel-visibility: true
 chaining: medium
 discordsrv-synchronization: true
+release-channel: production

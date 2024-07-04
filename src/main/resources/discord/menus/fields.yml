@@ -51,6 +51,12 @@ short-range-mode:
 customize:
   emoji: pencil2
   inline: true
+production-channel:
+  emoji: package
+  inline: true
+beta-channel:
+  emoji: hammer_and_wrench
+  inline: true
 account-linked:
   emoji: heavy_check_mark
   inline: false
