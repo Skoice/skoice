@@ -173,6 +173,11 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     this.plugin.getBot().getConfigurationMenu().setContent("chaining").edit(event);
                     break;
 
+                case "release-channel":
+                    this.plugin.getConfigYamlFile().set(ConfigField.RELEASE_CHANNEL.toString(), event.getSelectedOptions().get(0).getValue());
+                    this.plugin.getBot().getConfigurationMenu().setContent("release-channel").edit(event);
+                    break;
+
                 default:
                     try {
                         ConfigField configField = ConfigField.valueOf(componentId.replace("-", "_").toUpperCase());
