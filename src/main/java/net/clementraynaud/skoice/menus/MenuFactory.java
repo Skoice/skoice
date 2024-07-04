@@ -84,9 +84,9 @@ public class MenuFactory {
         for (Menu menu : this.menus.values()) {
             switch (menu.getId()) {
                 case "incomplete-configuration-server-manager":
-                    menu.setButtons(Button.primary("resume-configuration",
-                                    plugin.getBot().getLang().getMessage("button-label.resume-configuration"))
-                            .withEmoji(MenuEmoji.ARROW_FORWARD.get()));
+                    menu.setButtons(Button.primary("configure-now",
+                                    plugin.getBot().getLang().getMessage("button-label.configure-now"))
+                            .withEmoji(MenuEmoji.GEAR.get()));
                     break;
                 case "permissions":
                     menu.setButtons(Button.link(plugin.getBot().getInviteUrl(),

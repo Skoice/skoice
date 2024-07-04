@@ -62,7 +62,7 @@ public class ButtonInteractionListener extends ListenerAdapter {
                     .setEphemeral(true).queue();
 
         } else if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
-            if ("resume-configuration".equals(event.getButton().getId())) {
+            if ("configure-now".equals(event.getButton().getId())) {
                 this.plugin.getBot().getConfigurationMenu().generate(event);
 
             } else if ("customize".equals(buttonId)) {

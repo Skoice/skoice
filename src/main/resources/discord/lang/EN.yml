@@ -193,7 +193,7 @@ field:
     description: "Values must be whole numbers greater than 0."
 button-label:
   back: "Back"
-  resume-configuration: "Resume Configuration"
+  configure-now: "Configure Now"
   message-not-showing-up: "Message Not Showing Up"
   clear-notified-players: "Clear Notified Players"
   update-permissions: "Update Permissions"
