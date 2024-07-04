@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.menus.selectmenus;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
@@ -28,7 +27,6 @@ import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.bukkit.World;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ActiveWorldsSelectMenu extends SelectMenu {
@@ -40,12 +38,16 @@ public class ActiveWorldsSelectMenu extends SelectMenu {
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
         List<SelectOption> options = new ArrayList<>();
+        List<String> disabledWorlds = super.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString());
+        List<String> defaultValues = new ArrayList<>();
         for (World world : super.plugin.getServer().getWorlds()) {
             options.add(SelectOption.of(world.getName(), world.getName())
                     .withEmoji(MenuEmoji.MAP.get()));
 
+            if (!disabledWorlds.contains(world.getName())) {
+                defaultValues.add(world.getName());
+            }
         }
-        List<String> defaultValues = super.plugin.getConfigYamlFile().getStringList(ConfigField.ACTIVE_WORLDS.toString());
 
         return StringSelectMenu.create("active-worlds-selection")
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.active-worlds.select-menu.placeholder"))

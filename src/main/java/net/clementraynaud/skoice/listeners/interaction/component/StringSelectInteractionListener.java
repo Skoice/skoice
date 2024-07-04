@@ -162,8 +162,9 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     break;
 
                 case "active-worlds-selection":
-                    this.plugin.getConfigYamlFile().set(ConfigField.ACTIVE_WORLDS.toString(),
-                            event.getSelectedOptions().stream().map(SelectOption::getValue).collect(Collectors.toList()));
+                    options.removeAll(event.getSelectedOptions());
+                    this.plugin.getConfigYamlFile().set(ConfigField.DISABLED_WORLDS.toString(),
+                            options.stream().map(SelectOption::getValue).collect(Collectors.toList()));
                     this.plugin.getBot().getConfigurationMenu().setContent("active-worlds").edit(event);
                     break;
 

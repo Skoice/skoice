@@ -31,7 +31,7 @@ public enum ConfigField {
     TOOLTIPS,
     PLAYERS_ON_DEATH_SCREEN_INCLUDED,
     SPECTATORS_INCLUDED,
-    ACTIVE_WORLDS,
+    DISABLED_WORLDS,
     CHANNEL_VISIBILITY;
 
     private final String lowerCaseName;

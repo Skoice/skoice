@@ -62,7 +62,7 @@ public class LinkedPlayer {
     public boolean isStateEligible() {
         return (this.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString()) || !this.player.isDead())
                 && (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString()) || this.player.getGameMode() != GameMode.SPECTATOR)
-                && this.plugin.getConfigYamlFile().getStringList(ConfigField.ACTIVE_WORLDS.toString()).contains(this.player.getWorld().getName());
+                && !this.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString()).contains(this.player.getWorld().getName());
     }
 
     public void sendConnectingAlert() {
