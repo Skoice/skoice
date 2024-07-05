@@ -170,9 +170,17 @@ public class Menu {
 
     private ActionRow getSecondaryActionRow() {
         List<Button> secondaryButtons = new ArrayList<>();
-        if (this.parent != null && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.menuId))) {
-            secondaryButtons.add(Button.secondary(this.parent, "← " + this.plugin.getBot().getLang().getMessage("button-label.back")));
+
+        if (this.getRoot().equals("settings")
+                && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.menuId))) {
+            String backButtonId = this.parent == null ? "unreachable" : this.parent;
+            Button backButton = Button.secondary(backButtonId, "← " + this.plugin.getBot().getLang().getMessage("button-label.back"));
+            if (this.parent == null) {
+                backButton = backButton.withId("unreachable").asDisabled();
+            }
+            secondaryButtons.add(backButton);
         }
+
         secondaryButtons.add(Button.secondary("display-issues",
                         this.plugin.getBot().getLang().getMessage("button-label.display-issues"))
                 .withEmoji(MenuEmoji.QUESTION.get()));
@@ -189,6 +197,14 @@ public class Menu {
 
     public void setButtons(Button... buttons) {
         this.buttons = buttons;
+    }
+
+    private String getRoot() {
+        Menu root = this;
+        while (root.parent != null) {
+            root = this.plugin.getBot().getMenuFactory().getMenu(root.parent);
+        }
+        return root.menuId;
     }
 
     public String getId() {
