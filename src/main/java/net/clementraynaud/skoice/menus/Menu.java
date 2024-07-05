@@ -36,8 +36,6 @@ import java.util.List;
 
 public class Menu {
 
-    public static final String MESSAGE_NOT_SHOWING_UP = "message-not-showing-up";
-
     private final Skoice plugin;
     private final String menuId;
     private final String parentName;
@@ -177,22 +175,17 @@ public class Menu {
         if (this.parent != null && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.menuId))) {
             secondaryButtons.add(Button.secondary(this.parent, "← " + this.plugin.getBot().getLang().getMessage("button-label.back")));
         }
-        if (this.type == MenuType.DEFAULT) {
-            if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-                secondaryButtons.add(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
-                                this.plugin.getBot().getLang().getMessage("button-label.message-not-showing-up"))
-                        .withEmoji(MenuEmoji.QUESTION.get()));
-                if (!"language".equals(this.menuId)) {
-                    Menu languageMenu = this.plugin.getBot().getMenuFactory().getMenu("language");
-                    secondaryButtons.add(Button.secondary(languageMenu.menuId, languageMenu.getTitle(false))
-                            .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()));
-                }
-            }
+        secondaryButtons.add(Button.secondary("display-issues",
+                        this.plugin.getBot().getLang().getMessage("button-label.display-issues"))
+                .withEmoji(MenuEmoji.QUESTION.get()));
+        if (this.type == MenuType.DEFAULT
+                && this.plugin.getBot().getStatus() != BotStatus.READY
+                && !"language".equals(this.menuId)) {
+            Menu languageMenu = this.plugin.getBot().getMenuFactory().getMenu("language");
+            secondaryButtons.add(Button.secondary(languageMenu.menuId, languageMenu.getTitle(false))
+                    .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()));
         }
 
-        if (secondaryButtons.isEmpty()) {
-            return null;
-        }
         return ActionRow.of(secondaryButtons);
     }
 

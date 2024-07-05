@@ -105,11 +105,6 @@ public class MenuFactory {
                                 .withEmoji(MenuEmoji.WASTEBASKET.get()));
                     }
                     break;
-                case "verification-code":
-                    menu.setButtons(Button.secondary(Menu.MESSAGE_NOT_SHOWING_UP,
-                                    plugin.getBot().getLang().getMessage("button-label.message-not-showing-up"))
-                            .withEmoji(MenuEmoji.QUESTION.get()));
-                    break;
                 default:
                     break;
             }

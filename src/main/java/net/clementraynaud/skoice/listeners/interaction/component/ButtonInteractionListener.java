@@ -57,12 +57,12 @@ public class ButtonInteractionListener extends ListenerAdapter {
 
         Member member = event.getMember();
 
-        if (buttonId.equals(Menu.MESSAGE_NOT_SHOWING_UP)) {
-            event.reply(this.plugin.getBot().getLang().getMessage("message-not-showing-up"))
+        if ("display-issues".equals(buttonId)) {
+            event.reply(this.plugin.getBot().getLang().getMessage("display-issues"))
                     .setEphemeral(true).queue();
 
         } else if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
-            if ("configure-now".equals(event.getButton().getId())) {
+            if ("configure-now".equals(buttonId)) {
                 this.plugin.getBot().getConfigurationMenu().generate(event);
 
             } else if ("customize".equals(buttonId)) {
