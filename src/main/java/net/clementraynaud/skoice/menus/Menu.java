@@ -36,6 +36,8 @@ import java.util.List;
 
 public class Menu {
 
+    private static final int MAX_BUTTON_ROW_LENGTH = 5;
+
     private final Skoice plugin;
     private final String menuId;
     private final String parentName;
@@ -130,11 +132,7 @@ public class Menu {
         }
 
         actionRows.addAll(this.getMainActionRows());
-
-        ActionRow secondaryActionRow = this.getSecondaryActionRow();
-        if (secondaryActionRow != null) {
-            actionRows.add(secondaryActionRow);
-        }
+        actionRows.add(this.getSecondaryActionRow());
 
         return actionRows;
     }
@@ -152,7 +150,7 @@ public class Menu {
             }
         }
 
-        for (int i = 0; i < mainButtons.size(); i += 5) {
+        for (int i = 0; i < mainButtons.size(); i += Menu.MAX_BUTTON_ROW_LENGTH) {
             mainActionRows.add(ActionRow.of(mainButtons.subList(i, Math.min(i + 5, mainButtons.size()))));
         }
 
