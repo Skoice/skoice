@@ -40,6 +40,7 @@ import org.bstats.charts.SimplePie;
 import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -112,6 +113,13 @@ public class Skoice extends JavaPlugin {
         if (this.bot.getJDA() != null) {
             new InterruptSystemTask(this).run();
             this.bot.getJDA().shutdown();
+            try {
+                if (!this.bot.getJDA().awaitShutdown(Duration.ofSeconds(5))) {
+                    this.bot.getJDA().shutdownNow();
+                    this.bot.getJDA().awaitShutdown();
+                }
+            } catch (InterruptedException ignored) {
+            }
         }
         this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));
         if (this.adventure != null) {
