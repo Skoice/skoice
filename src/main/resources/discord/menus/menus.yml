@@ -164,7 +164,7 @@ permissions:
 skoice-proximity-voice-chat:
   emoji: information_source
   footer: contributors
-  type: success
+  type: default
   fields:
     - download
     - donating

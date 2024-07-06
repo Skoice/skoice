@@ -40,7 +40,7 @@ public class Menu {
 
     private final Skoice plugin;
     private final String menuId;
-    private final String parentName;
+    private final String section;
     private final String footer;
     private final MenuEmoji emoji;
     private final MenuType type;
@@ -52,7 +52,7 @@ public class Menu {
     public Menu(Skoice plugin, ConfigurationSection menu) {
         this.plugin = plugin;
         this.menuId = menu.getName();
-        this.parentName = !menu.getParent().equals(menu.getRoot()) ? menu.getParent().getName() : this.menuId;
+        this.section = !menu.getParent().equals(menu.getRoot()) ? menu.getParent().getName() : this.menuId;
         this.footer = !menu.getParent().equals(menu.getRoot())
                 ? menu.getParent().getString("footer")
                 : menu.getString("footer");
@@ -63,6 +63,7 @@ public class Menu {
         this.style = menu.contains("style") ? MenuStyle.valueOf(menu.getString("style").toUpperCase()) : null;
         this.parent = menu.contains("parent") ? menu.getString("parent") : null;
         this.fields = menu.getStringList("fields").toArray(new String[0]);
+
         this.buttons = new Button[0];
     }
 
@@ -72,15 +73,15 @@ public class Menu {
     }
 
     private String getTitle(boolean withEmoji) {
-        return withEmoji ? this.emoji + this.plugin.getBot().getLang().getMessage("menu." + this.parentName + ".title") :
-                this.plugin.getBot().getLang().getMessage("menu." + this.parentName + ".title");
+        return withEmoji ? this.emoji + this.plugin.getBot().getLang().getMessage("menu." + this.section + ".title") :
+                this.plugin.getBot().getLang().getMessage("menu." + this.section + ".title");
     }
 
     private String getDescription(boolean shortened) {
-        if (shortened && this.plugin.getBot().getLang().contains("menu." + this.parentName + ".shortened-description")) {
-            return this.plugin.getBot().getLang().getMessage("menu." + this.parentName + ".shortened-description");
-        } else if (this.plugin.getBot().getLang().contains("menu." + this.parentName + ".description")) {
-            return this.plugin.getBot().getLang().getMessage("menu." + this.parentName + ".description");
+        if (shortened && this.plugin.getBot().getLang().contains("menu." + this.section + ".shortened-description")) {
+            return this.plugin.getBot().getLang().getMessage("menu." + this.section + ".shortened-description");
+        } else if (this.plugin.getBot().getLang().contains("menu." + this.section + ".description")) {
+            return this.plugin.getBot().getLang().getMessage("menu." + this.section + ".description");
         }
         return null;
     }
@@ -170,8 +171,9 @@ public class Menu {
 
     private ActionRow getSecondaryActionRow() {
         List<Button> secondaryButtons = new ArrayList<>();
+        String root = this.getRoot();
 
-        if (this.getRoot().equals("settings")
+        if (root.equals("settings")
                 && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.menuId))) {
             String backButtonId = this.parent == null ? "unreachable" : this.parent;
             Button backButton = Button.secondary(backButtonId, "← " + this.plugin.getBot().getLang().getMessage("button-label.back"));
@@ -184,7 +186,7 @@ public class Menu {
         secondaryButtons.add(Button.secondary("display-issues",
                         this.plugin.getBot().getLang().getMessage("button-label.display-issues"))
                 .withEmoji(MenuEmoji.QUESTION.get()));
-        if (this.type == MenuType.DEFAULT
+        if (root.equals("settings")
                 && this.plugin.getBot().getStatus() != BotStatus.READY
                 && !"language".equals(this.menuId)) {
             Menu languageMenu = this.plugin.getBot().getMenuFactory().getMenu("language");
