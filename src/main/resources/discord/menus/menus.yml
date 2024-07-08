@@ -132,6 +132,11 @@ active-worlds:
   type: default
   style: primary
   parent: more-settings
+separated-teams:
+  emoji: crossed_swords
+  type: default
+  style: primary
+  parent: more-settings
 channel-visibility:
   emoji: mag
   type: default

@@ -46,6 +46,7 @@ public class SelectMenuFactory {
             case "release-channel":
                 return new ReleaseChannelSelectMenu(plugin);
             case "tooltips":
+            case "separated-teams":
             case "channel-visibility":
             case "discordsrv-synchronization":
                 return new ToggleSelectMenu(plugin, menuId);

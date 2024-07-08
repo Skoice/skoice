@@ -98,6 +98,10 @@ menu:
     description: "Choose the worlds where Skoice is active."
     select-menu:
       placeholder: "Please select the desired worlds."
+  separated-teams:
+    title: "Separated Teams"
+    shortened-description: "Choose whether or not teams can communicate with each other."
+    description: "Choose whether or not teams can communicate with each other. If this option is enabled, each team created with the `/team` command in Minecraft will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
   chaining:
     title: "Chaining"
     shortened-description: "Select the additional distance allowed when chaining."

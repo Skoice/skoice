@@ -27,6 +27,8 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -120,6 +122,19 @@ public class LinkedPlayer {
         if (!this.player.getWorld().getName().equals(linkedPlayer.player.getWorld().getName())) {
             return false;
         }
+
+        if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SEPARATED_TEAMS.toString())) {
+            Scoreboard scoreboard = this.player.getScoreboard();
+            Team playerTeam = scoreboard.getEntryTeam(player.getName());
+            if (playerTeam == null) {
+                if (scoreboard.getEntryTeam(linkedPlayer.getBukkitPlayer().getName()) != null) {
+                    return false;
+                }
+            } else if (!playerTeam.equals(scoreboard.getEntryTeam(linkedPlayer.getBukkitPlayer().getName()))) {
+                return false;
+            }
+        }
+
         int horizontalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
         int verticalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString());
         if (falloff) {

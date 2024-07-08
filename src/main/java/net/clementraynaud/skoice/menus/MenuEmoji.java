@@ -28,6 +28,7 @@ public enum MenuEmoji {
     BUSTS_IN_SILHOUETTE("U+1F465"),
     CARD_BOX("U+1F5C3"),
     CHAINS("U+26D3"),
+    CROSSED_SWORDS("U+2694"),
     ELECTRIC_PLUG("U+1F50C"),
     FILE_CABINET("U+1F5C4"),
     GEAR("U+2699"),
