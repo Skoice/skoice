@@ -195,7 +195,7 @@ field:
     description: "This command must be performed on a Discord server."
   access-denied:
     title: "Access Denied"
-    description: "You do not have the required permission to execute this action."
+    description: "You do not have the required permission to perform this command."
   illegal-value:
     title: "Illegal Value"
     description: "Values must be whole numbers greater than 0."
