@@ -17,6 +17,7 @@
 
 configuration:
   emoji: gear
+  footer: review
   settings:
     type: default
     fields:
@@ -84,11 +85,13 @@ error:
 
 voice-channel:
   emoji: sound
+  footer: review
   type: default
   style: primary
   parent: settings
 range:
   emoji: busts_in_silhouette
+  footer: review
   type: default
   style: primary
   parent: settings
@@ -98,66 +101,79 @@ range:
     - customize
 more-settings:
   emoji: wrench
+  footer: review
   type: default
   style: secondary
   parent: settings
 language:
   emoji: globe_with_meridians
+  footer: review
   type: default
   style: secondary
   parent: settings
 in-game-messages:
   emoji: speech_balloon
+  footer: review
   type: default
   style: primary
   parent: more-settings
 login-notification:
   emoji: bell
+  footer: review
   type: default
   style: primary
   parent: in-game-messages
 action-bar-alerts:
   emoji: warning
+  footer: review
   type: default
   style: primary
   parent: in-game-messages
 tooltips:
   emoji: thought_balloon
+  footer: review
   type: default
   style: primary
   parent: in-game-messages
 included-players:
   emoji: bust_in_silhouette
+  footer: review
   type: default
   style: primary
   parent: more-settings
 active-worlds:
   emoji: map
+  footer: review
   type: default
   style: primary
   parent: more-settings
 separated-teams:
   emoji: crossed_swords
+  footer: review
   type: default
   style: primary
   parent: more-settings
 channel-visibility:
   emoji: mag
+  footer: review
   type: default
   style: primary
   parent: more-settings
 chaining:
   emoji: chains
+  footer: review
   type: default
   style: primary
   parent: more-settings
 discordsrv-synchronization:
   emoji: electric_plug
+  footer: review
   type: default
   style: secondary
   parent: more-settings
 release-channel:
   emoji: inbox_tray
+  footer: review
   type: default
   style: secondary
   parent: more-settings
@@ -166,9 +182,11 @@ release-channel:
     - beta-channel
 server:
   emoji: file_cabinet
+  footer: review
   type: default
 permissions:
   emoji: card_box
+  footer: review
   type: default
 skoice-proximity-voice-chat:
   emoji: information_source
