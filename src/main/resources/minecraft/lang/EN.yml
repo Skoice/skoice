@@ -76,7 +76,7 @@ chat:
     account-not-linked: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat."
     account-not-linked-remind-once: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat. You will not receive this notification again."
     account-already-linked: "%s You have &calready linked your Minecraft account &7to Discord. Type \"&e/skoice unlink&7\" to unlink it."
-    connected: "%s You are &anow connected &7to the proximity voice chat. For a better experience, you can enable \"&eStreamer Mode&7\" in your Discord client."
+    connected: "%s You are &anow connected &7to the proximity voice chat. To disable Discord sounds and have a better experience, you can enable \"&eStreamer Mode&7\" in Discord settings."
     not-connected: "%s You are &cnot connected &7to the proximity voice chat. Join the voice channel \"&e%s&7\" on the Discord server \"&e%s&7\" to use it."
     disconnected: "%s You are &cnow disconnected &7from the proximity voice chat."
   error:

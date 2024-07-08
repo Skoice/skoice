@@ -101,7 +101,7 @@ menu:
   separated-teams:
     title: "Separated Teams"
     shortened-description: "Choose whether or not teams can communicate with each other."
-    description: "Choose whether or not teams can communicate with each other. If this option is enabled, each team created with the `/team` command in Minecraft will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
+    description: "Choose whether or not teams can communicate with each other. When this option is enabled, each team created with the `/team` command in Minecraft or with plugins that manage teams will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
   chaining:
     title: "Chaining"
     shortened-description: "Select the additional distance allowed when chaining."
@@ -121,7 +121,7 @@ menu:
   discordsrv-synchronization:
     title: "DiscordSRV Synchronization"
     shortened-description: "Toggle the synchronization of DiscordSRV with Skoice."
-    description: "Toggle the synchronization of DiscordSRV with Skoice. When this option is turned on, players who have linked their accounts using Skoice or DiscordSRV are synchronized in real time between both plugins. Updating this option requires you to restart your Minecraft server for it to take effect."
+    description: "Toggle the synchronization of DiscordSRV with Skoice. When this option is enabled, players who have linked their accounts using Skoice or DiscordSRV are synchronized in real time between both plugins. Updating this option requires you to restart your Minecraft server for it to take effect."
   release-channel:
     title: "Release Channel"
     description: "Select the version of Skoice you want to use."
