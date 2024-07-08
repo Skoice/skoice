@@ -27,8 +27,8 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,7 +60,7 @@ public class Network {
             return;
         }
         Guild guild = this.plugin.getBot().getGuild();
-        List<Permission> deniedPermissions = Arrays.asList(
+        EnumSet<Permission> deniedPermissions = EnumSet.of(
                 this.plugin.getConfigYamlFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.toString())
                         ? Permission.VOICE_CONNECT
                         : Permission.VIEW_CHANNEL,
@@ -69,10 +69,10 @@ public class Network {
         this.plugin.getConfigYamlFile().getCategory()
                 .createVoiceChannel(this.plugin.getBot().getLang().getMessage("proximity-channel-name"))
                 .addPermissionOverride(guild.getPublicRole(),
-                        Arrays.asList(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
+                        EnumSet.of(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
                         deniedPermissions)
                 .addPermissionOverride(guild.getSelfMember(),
-                        Arrays.asList(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS),
+                        EnumSet.of(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS),
                         Collections.emptyList())
                 .setBitrate(this.plugin.getConfigYamlFile().getVoiceChannel().getBitrate())
                 .queue(voiceChannel -> {
