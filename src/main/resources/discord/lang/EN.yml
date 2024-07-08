@@ -189,6 +189,9 @@ field:
   account-already-linked:
     title: "Account Already Linked"
     description: "Your Discord account is already linked to Minecraft. Type %s to unlink it."
+  restricted-command:
+    title: "Restricted Command"
+    description: "This command must be performed on a Discord server."
   access-denied:
     title: "Access Denied"
     description: "You do not have the required permission to execute this action."

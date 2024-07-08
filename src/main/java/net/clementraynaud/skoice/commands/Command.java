@@ -46,7 +46,8 @@ public abstract class Command {
         if (this.serverManagerRequired
                 && !this.executor.isInGuild()
                 && this.plugin.getBot().getStatus() == BotStatus.MULTIPLE_GUILDS) {
-            this.interaction.reply("Requires to be performed in a guild (temporary message)").setEphemeral(true).queue();
+            new EmbeddedMenu(this.plugin.getBot()).setContent("restricted-command")
+                    .reply(this.interaction);
             return false;
         }
 

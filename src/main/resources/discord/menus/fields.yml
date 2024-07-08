@@ -72,6 +72,9 @@ account-not-linked:
 verification-code:
   emoji: key
   inline: false
+restricted-command:
+  emoji: file_cabinet
+  inline: false
 access-denied:
   emoji: no_entry
   inline: false

@@ -69,6 +69,10 @@ linking-process:
 error:
   emoji: warning
   footer: invite
+  restricted-command:
+    type: error
+    fields:
+      - restricted-command
   access-denied:
     type: error
     fields:
