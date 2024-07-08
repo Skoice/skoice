@@ -104,8 +104,8 @@ menu:
     description: "Choose whether or not teams can communicate with each other. When this option is enabled, each team created with the `/team` command in Minecraft or with plugins that manage the built-in team system will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
   chaining:
     title: "Chaining"
-    shortened-description: "Select the additional distance allowed when chaining."
-    description: "Select the additional distance allowed when chaining. Chaining usually happens when a player is between two other players who should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."
+    shortened-description: "Select the additional distance allowed when players are chaining."
+    description: "Select the additional distance allowed when players are chaining. Chaining usually happens when a player is between two other players who should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."
     select-menu:
       disabled:
         label: "Disabled — No chaining allowed"
