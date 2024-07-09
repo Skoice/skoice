@@ -17,7 +17,7 @@ command-description:
   invite: "Get the proximity voice chat on your server."
 menu:
   invite-footer: "Want Skoice on your server? Type \"/invite\"!"
-  review-footer: "Skoice is working as expected? Consider leaving a review on SpigotMC!"
+  review-footer: "Having fun with Skoice? Consider leaving a review on SpigotMC!"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry and contributors"
   configuration:
     title: "Configuration"
