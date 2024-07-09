@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.system;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -40,6 +41,13 @@ public final class Networks {
                 .collect(Collectors.toSet());
     }
 
+    public static Set<String> getChannelIdSet() {
+        return Networks.networkSet.stream()
+                .map(Network::getChannelId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+    }
+
     public static void add(Network network) {
         Networks.networkSet.add(network);
     }
@@ -56,11 +64,15 @@ public final class Networks {
         }
     }
 
-    public static void clean() {
+    public static void clean(int possibleNetworks) {
         Networks.networkSet.stream()
                 .filter(Network::isEmpty)
                 .filter(network -> network.getChannel() != null && network.getChannel().getMembers().isEmpty())
-                .forEach(network -> network.delete("communication-lost"));
+                .forEach(network -> {
+                    if (Networks.networkSet.size() > possibleNetworks + 1) {
+                        network.delete("not-enough-users");
+                    }
+                });
     }
 
     public static void clear() {

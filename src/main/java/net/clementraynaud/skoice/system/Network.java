@@ -27,6 +27,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -59,6 +60,16 @@ public class Network {
             this.initialized = true;
             return;
         }
+
+        List<String> voiceChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
+        List<String> availableChannels = new ArrayList<>(voiceChannels);
+        availableChannels.removeAll(Networks.getChannelIdSet());
+
+        if (!availableChannels.isEmpty()) {
+            this.channelId = availableChannels.get(0);
+            return;
+        }
+
         Guild guild = this.plugin.getBot().getGuild();
         EnumSet<Permission> deniedPermissions = EnumSet.of(
                 this.plugin.getConfigYamlFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.toString())
@@ -77,8 +88,6 @@ public class Network {
                 .setBitrate(this.plugin.getConfigYamlFile().getVoiceChannel().getBitrate())
                 .queue(voiceChannel -> {
                     this.channelId = voiceChannel.getId();
-                    List<String> voiceChannels = this.plugin.getTempYamlFile()
-                            .getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
                     voiceChannels.add(this.channelId);
                     this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD, voiceChannels);
                     this.initialized = true;
@@ -194,6 +203,10 @@ public class Network {
 
     public boolean isEmpty() {
         return this.size() < 2;
+    }
+
+    public String getChannelId() {
+        return this.channelId;
     }
 
     public VoiceChannel getChannel() {
