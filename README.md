@@ -1,6 +1,6 @@
 <img align="right" src="https://clementraynaud.net/Skoice.jpeg" height="200" width="200" alt="Skoice logo">
 
-# Skoice: Proximity Voice Chat<br>[![](https://img.shields.io/spiget/downloads/82861?style=flat&labelColor=697EC4&color=7289DA&label=Downloads)](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861) [![](https://img.shields.io/spiget/rating/82861?style=flat&labelColor=697EC4&color=7289DA&label=Rating)](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861) [![](https://img.shields.io/discord/741375523275407461.svg?style=flat&labelColor=697EC4&color=7289DA&label=Discord)](https://discord.gg/h3Tgccc)
+# Skoice: Proximity Voice Chat<br>[![](https://img.shields.io/spiget/downloads/82861?style=flat&labelColor=697EC4&color=7289DA&label=Downloads)](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861) [![](https://img.shields.io/spiget/rating/82861?style=flat&labelColor=697EC4&color=7289DA&label=Rating)](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861) [![](https://img.shields.io/discord/741375523275407461.svg?style=flat&labelColor=697EC4&color=7289DA&label=Discord)](https://discord.gg/skoice-proximity-voice-chat-741375523275407461)
 
 Skoice allows players on a Minecraft server to communicate with each other by voice depending on their in-game location. In other words, they are only able to talk to nearby players.
 
