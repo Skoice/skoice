@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class BotCommands {
@@ -39,11 +40,9 @@ public class BotCommands {
         this.bot = bot;
     }
 
-    public void register() {
-        this.bot.getJDA().updateCommands().addCommands(this.getCommands()).queue();
-
-        this.bot.getJDA().retrieveCommands()
-                .queue(commands -> commands.forEach(command -> this.mentions.put(command.getName(), command.getAsMention())));
+    public CompletableFuture<Void> register() {
+        return this.bot.getJDA().updateCommands().addCommands(this.getCommands()).submit()
+                .thenAccept(commands -> commands.forEach(command -> this.mentions.put(command.getName(), command.getAsMention())));
     }
 
     public void clearGuildCommands() {

@@ -91,19 +91,6 @@ public class ReadyListener extends ListenerAdapter {
     }
 
     private void setup() {
-        this.plugin.getBot().setDefaultAvatar();
-        this.plugin.getBot().updateGuild();
-        this.plugin.getBot().getMenuFactory().loadAll(this.plugin);
-
-        this.plugin.getBot().getCommands().clearGuildCommands();
-        this.plugin.getBot().getCommands().register();
-        this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
-            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
-            }
-        });
-
-        this.plugin.getListenerManager().registerPermanentBotListeners();
         this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
                         this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
@@ -116,11 +103,25 @@ public class ReadyListener extends ListenerAdapter {
 
         this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
         this.plugin.getLinksYamlFile().refreshOnlineLinkedPlayers();
-        this.plugin.getListenerManager().update();
 
+        this.plugin.getBot().setDefaultAvatar();
+        this.plugin.getBot().updateGuild();
         this.plugin.getBot().retrieveNetworks();
         this.plugin.getBot().getVoiceChannel().setStatus();
-        this.plugin.getBot().updateVoiceState();
         this.plugin.getBot().getVoiceChannel().muteMembers();
+        this.plugin.getBot().updateVoiceState();
+        this.plugin.getBot().getMenuFactory().loadAll(this.plugin);
+
+        this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
+            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+                guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
+            }
+        });
+        this.plugin.getBot().getCommands().clearGuildCommands();
+        this.plugin.getBot().getCommands().register()
+                .thenRun(() -> {
+                    this.plugin.getListenerManager().registerPermanentBotListeners();
+                    this.plugin.getListenerManager().update();
+                });
     }
 }
