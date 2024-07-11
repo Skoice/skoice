@@ -198,7 +198,7 @@ public class Network {
         }
     }
 
-    private void forget() {
+    public void forget() {
         Networks.remove(this);
         List<String> voiceChannels = this.plugin.getTempYamlFile()
                 .getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);

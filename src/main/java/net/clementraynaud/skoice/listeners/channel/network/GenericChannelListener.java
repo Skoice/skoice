@@ -43,7 +43,9 @@ public class GenericChannelListener extends ListenerAdapter {
         if (!this.isNetworkChannel(channel)) {
             return;
         }
-        Networks.getInitialized().removeIf(network -> event.getChannel().getId().equals(network.getChannelId()));
+        Networks.getInitialized().stream()
+                .filter(network -> event.getChannel().getId().equals(network.getChannelId()))
+                .forEach(Network::forget);
     }
 
     @Override
