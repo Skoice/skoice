@@ -104,8 +104,7 @@ public class UpdateNetworksTask {
                 }
             }
 
-            int possibleNetworks = connectedMembers.size() / 2;
-            Networks.clean(possibleNetworks);
+            Networks.clean(connectedMembers.size());
 
         } finally {
             this.lock.unlock();

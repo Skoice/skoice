@@ -64,12 +64,15 @@ public final class Networks {
         }
     }
 
-    public static void clean(int possibleNetworks) {
+    public static void clean(int connectedMembers) {
+        int possibleNetworks = connectedMembers / 2;
+
         Networks.networkSet.stream()
                 .filter(Network::isEmpty)
                 .filter(network -> network.getChannel() != null && network.getChannel().getMembers().isEmpty())
                 .forEach(network -> {
-                    if (Networks.networkSet.size() > possibleNetworks + 1) {
+                    if (Networks.networkSet.size() > possibleNetworks + 1
+                            || connectedMembers == 0) {
                         network.delete("not-enough-users");
                     }
                 });

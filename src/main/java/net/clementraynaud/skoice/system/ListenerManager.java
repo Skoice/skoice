@@ -22,8 +22,7 @@ package net.clementraynaud.skoice.system;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.commands.CommandInfo;
-import net.clementraynaud.skoice.listeners.channel.main.GenericChannelListener;
-import net.clementraynaud.skoice.listeners.channel.network.ChannelDeleteListener;
+import net.clementraynaud.skoice.listeners.channel.network.GenericChannelListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
 import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleAddListener;
@@ -50,14 +49,14 @@ public class ListenerManager {
     private final PlayerQuitListener playerQuitListener;
     private final GuildVoiceGuildMuteListener guildVoiceGuildMuteListener;
     private final GuildVoiceUpdateListener guildVoiceUpdateListener;
-    private final ChannelDeleteListener channelDeleteListener;
+    private final GenericChannelListener channelDeleteListener;
 
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;
         this.playerQuitListener = new PlayerQuitListener();
         this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
         this.guildVoiceUpdateListener = new GuildVoiceUpdateListener(this.plugin);
-        this.channelDeleteListener = new ChannelDeleteListener();
+        this.channelDeleteListener = new GenericChannelListener(this.plugin);
     }
 
     public void update(User user) {
@@ -109,7 +108,7 @@ public class ListenerManager {
                 new GuildMemberRoleAddListener(this.plugin),
                 new GuildMemberRoleRemoveListener(this.plugin),
                 new RoleUpdatePermissionsListener(this.plugin),
-                new GenericChannelListener(this.plugin),
+                new net.clementraynaud.skoice.listeners.channel.main.GenericChannelListener(this.plugin),
                 new GenericPermissionOverrideListener(this.plugin),
                 new SlashCommandInteractionListener(this.plugin),
                 new ButtonInteractionListener(this.plugin),

@@ -188,13 +188,19 @@ public class Network {
     public void delete(String reason) {
         VoiceChannel channel = this.getChannel();
         if (channel != null) {
-            channel.delete().reason(this.plugin.getBot().getLang().getMessage(reason)).queue();
+            channel.delete().reason(this.plugin.getBot().getLang().getMessage(reason))
+                    .queue(success -> this.forget());
+        } else {
+            this.forget();
         }
+    }
+
+    private void forget() {
+        Networks.remove(this);
         List<String> voiceChannels = this.plugin.getTempYamlFile()
                 .getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
         voiceChannels.remove(this.channelId);
         this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD, voiceChannels);
-        Networks.remove(this);
     }
 
     public int size() {
