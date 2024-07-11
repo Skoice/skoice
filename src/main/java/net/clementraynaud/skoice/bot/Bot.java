@@ -190,6 +190,7 @@ public class Bot {
         Category category = this.plugin.getConfigYamlFile().getCategory();
         if (category != null) {
             List<String> voiceChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
+            this.plugin.getTempYamlFile().remove(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
             category.getVoiceChannels().stream()
                     .filter(channel -> voiceChannels.contains(channel.getId()))
                     .forEach(channel -> new Network(this.plugin, channel.getId()).build());

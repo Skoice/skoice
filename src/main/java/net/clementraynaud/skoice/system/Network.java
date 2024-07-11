@@ -56,12 +56,15 @@ public class Network {
     }
 
     public void build() {
+        List<String> voiceChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
+
         if (this.channelId != null) {
+            voiceChannels.add(this.channelId);
+            this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD, voiceChannels);
             this.initialized = true;
             return;
         }
 
-        List<String> voiceChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
         List<String> availableChannels = new ArrayList<>(voiceChannels);
         availableChannels.removeAll(Networks.getChannelIdSet());
 
