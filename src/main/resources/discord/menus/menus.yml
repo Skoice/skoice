@@ -164,7 +164,7 @@ chaining:
   footer: review
   type: default
   style: primary
-  parent: more-settings
+  parent:
 discordsrv-synchronization:
   emoji: electric_plug
   footer: review
