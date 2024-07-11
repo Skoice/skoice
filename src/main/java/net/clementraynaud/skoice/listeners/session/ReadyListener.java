@@ -49,6 +49,10 @@ public class ReadyListener extends ListenerAdapter {
             }
 
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connected"));
+
+            applicationInfo.setRequiredScopes("applications.commands");
+            this.plugin.getBot().setInviteUrl(applicationInfo.getInviteUrl(Permission.ADMINISTRATOR));
+
             this.setup();
 
             if (tokenManager == null) {
@@ -89,7 +93,7 @@ public class ReadyListener extends ListenerAdapter {
     private void setup() {
         this.plugin.getBot().setDefaultAvatar();
         this.plugin.getBot().updateGuild();
-        this.plugin.getBot().updateInviteUrl();
+        this.plugin.getBot().getMenuFactory().loadAll(this.plugin);
 
         this.plugin.getBot().getCommands().clearGuildCommands();
         this.plugin.getBot().getCommands().register();

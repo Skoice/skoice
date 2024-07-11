@@ -166,14 +166,6 @@ public class Bot {
         this.guildId = guilds.size() == 1 ? guilds.get(0).getId() : null;
     }
 
-    public void updateInviteUrl() {
-        this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
-            applicationInfo.setRequiredScopes("applications.commands");
-            this.inviteUrl = applicationInfo.getInviteUrl(Permission.ADMINISTRATOR);
-            this.menuFactory.loadAll(this.plugin);
-        });
-    }
-
     public void updateVoiceState() {
         Guild guild = this.plugin.getBot().getGuild();
         if (guild == null) {
@@ -347,5 +339,9 @@ public class Bot {
 
     public String getInviteUrl() {
         return this.inviteUrl;
+    }
+
+    public void setInviteUrl(String inviteUrl) {
+        this.inviteUrl = inviteUrl;
     }
 }
