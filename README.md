@@ -16,35 +16,50 @@ To download our plugin, please [head to our Spigot page](https://www.spigotmc.or
 Skoice is supported on servers that run any Minecraft version from 1.8 to 1.21.
 
 You can use Skoice on the following server software:
-- Spigot (or derivative like [Paper](https://papermc.io/downloads/paper), [Purpur](https://purpurmc.org/downloads))
-- Fabric (using [Cardboard](https://cardboardpowered.org/))
-- Forge (using [Magma](https://magmafoundation.org/) or [Mohist](https://mohistmc.com/))
+- **Spigot** (or derivative like [Paper](https://papermc.io/downloads/paper), [Purpur](https://purpurmc.org/downloads))
+- **Fabric** (using [Cardboard](https://cardboardpowered.org/))
+- **Forge** (using [Magma](https://magmafoundation.org/) or [Mohist](https://mohistmc.com/))
 
-If your server allows Bedrock Edition players (with [Geyser](https://geysermc.org/) for example), they can use Skoice just like Java players.
+Skoice is also available directly from the panels of many free Minecraft hosts. Thus, you can [get it on Alternos](https://alternos.org/addons/a/spigot/82861).
+
+If your server allows players from **Bedrock Edition** (with [Geyser](https://geysermc.org/) for example), they can use Skoice just like on Java Edition.
 
 ## Installation
 
 Once you have downloaded our plugin, simply drop the file in the `plugins` folder of your Minecraft server and start it. Join the server with an account that has operator privileges (or `skoice.manage` permission) and follow the instructions that are sent to you.
 
+## Features
+
+Skoice can be heavily customized directly from Discord. Here are a few things you can do:
+- Customize the range of the proximity voice chat.
+- Include or exclude certain types of players (spectators, dead players).
+- Choose worlds where Skoice is active.
+- Create multiple teams that cannot communicate with each other.
+- Synchronize the plugin with DiscordSRV.
+
 ## Commands
 
 ### Minecraft
 
-- `/skoice configure`: Get instructions to begin the configuration process.*
-- `/skoice token <token>`: Link a Discord bot to your Minecraft server.*
-- `/skoice language <language>`: Change the language used by Skoice.*
-- `/skoice tooltips`: Toggle interactive messages, useful on Bedrock Edition or when tooltips are disabled in Minecraft settings.*
-- `/skoice link <code>`: Link your Minecraft account to Discord.
-- `/skoice unlink`: Unlink your Minecraft account from Discord.
-
-*requires operator privileges (or `skoice.manage` permission)
+| Command                       | Description                                                                                                 | Permission                    |
+|-------------------------------|-------------------------------------------------------------------------------------------------------------|-------------------------------|
+| `/skoice configure`           | Get instructions to begin the configuration process.                                                        | Operator (or `skoice.manage`) |
+| `/skoice token <token>`       | Link a Discord bot to your Minecraft server.                                                                | Operator (or `skoice.manage`) |
+| `/skoice language <language>` | Change the language used by Skoice.                                                                         | Operator (or `skoice.manage`) |
+| `/skoice tooltips`            | Toggle interactive messages, useful on Bedrock Edition or when tooltips are disabled in Minecraft settings. | Operator (or `skoice.manage`) |
+| `/skoice link <code>`         | Link your Minecraft account to Discord.                                                                     | None                          |
+| `/skoice unlink`              | Unlink your Minecraft account from Discord.                                                                 | None                          |
 
 ### Discord
 
-- `/configure`: Modify settings (requires `Manage Server` permission).
-- `/link`: Get a code to link your Discord account to Minecraft.
-- `/unlink`: Unlink your Discord account from Minecraft.
-- `/invite`: Get external links related to Skoice.
+| Command      | Description                                           | Permission      |
+|--------------|-------------------------------------------------------|-----------------|
+| `/configure` | Customize Skoice depending on your needs.             | `Manage Server` |
+| `/link`      | Get a code to link your Discord account to Minecraft. | None            |
+| `/unlink`    | Unlink your Discord account from Minecraft.           | None            |
+| `/invite`    | Get external links related to Skoice.                 | None            |
+
+> **Note:** The `Use Application Commands` permission is automatically granted to users since it is required to perform those commands.
 
 ## Getting Help
 
