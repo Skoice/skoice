@@ -63,7 +63,7 @@ public class ModalInteractionListener extends ListenerAdapter {
                         this.plugin.getListenerManager().update(event.getUser());
                         this.plugin.getBot().getVoiceChannel().muteMembers();
                         this.plugin.getBot().getVoiceChannel().setStatus();
-                        this.plugin.getBot().getConfigurationMenu().refreshId().edit(event);
+                        this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.refreshId().edit(event));
                     }));
         } else if ("customize".equals(event.getModalId())) {
             int horizontalRadius = 0;
@@ -86,7 +86,7 @@ public class ModalInteractionListener extends ListenerAdapter {
                 this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
                 this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
                 this.plugin.getListenerManager().update(event.getUser());
-                this.plugin.getBot().getConfigurationMenu().refreshId().edit(event);
+                this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.refreshId().edit(event));
             }
         }
     }

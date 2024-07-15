@@ -45,6 +45,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
+import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -52,10 +53,7 @@ import org.bukkit.entity.Player;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Base64;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Bot {
 
@@ -64,7 +62,7 @@ public class Bot {
     private final BotCommands commands;
     private final BotVoiceChannel voiceChannel;
     private final MenuFactory menuFactory;
-    private final ConfigurationMenu configurationMenu;
+    private ConfigurationMenu configurationMenu;
     private JDA jda;
     private BotStatus status = BotStatus.NOT_CONNECTED;
     private String tokenManagerId;
@@ -78,7 +76,6 @@ public class Bot {
         this.commands = new BotCommands(this);
         this.voiceChannel = new BotVoiceChannel(this.plugin);
         this.menuFactory = new MenuFactory();
-        this.configurationMenu = new ConfigurationMenu(this);
     }
 
     public void connect() {
@@ -333,8 +330,13 @@ public class Bot {
         return this.menuFactory;
     }
 
-    public ConfigurationMenu getConfigurationMenu() {
-        return this.configurationMenu;
+    public void generateConfigurationMenu(IReplyCallback interaction) {
+        this.configurationMenu = new ConfigurationMenu(this);
+        this.configurationMenu.reply(interaction);
+    }
+
+    public Optional<ConfigurationMenu> getConfigurationMenu() {
+        return Optional.ofNullable(this.configurationMenu);
     }
 
     public String getInviteUrl() {

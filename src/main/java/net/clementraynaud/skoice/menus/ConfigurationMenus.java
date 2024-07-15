@@ -19,33 +19,22 @@
 
 package net.clementraynaud.skoice.menus;
 
-import net.clementraynaud.skoice.bot.Bot;
+import java.util.HashSet;
+import java.util.Set;
 
-public class ConfigurationMenu extends EmbeddedMenu {
+public final class ConfigurationMenus {
 
-    public ConfigurationMenu(Bot bot) {
-        super(bot);
-        ConfigurationMenus.getMenuSet().add(this);
-        this.refreshId();
+    private static final Set<ConfigurationMenu> menuSet = new HashSet<>();
+
+    private ConfigurationMenus() {
     }
 
-    public ConfigurationMenu refreshId() {
-        switch (super.bot.getStatus()) {
-            case MULTIPLE_GUILDS:
-                super.setContent("server");
-                break;
-            case MISSING_PERMISSION:
-                super.setContent("permissions");
-                break;
-            case NO_VOICE_CHANNEL:
-                super.setContent("voice-channel");
-                break;
-            case NO_RADIUS:
-                super.setContent("range");
-                break;
-            default:
-                super.setContent("settings");
-        }
-        return this;
+    public static void refreshAll() {
+        ConfigurationMenus.menuSet.removeIf(menu -> menu.hook.isExpired());
+        menuSet.forEach(menu -> menu.refreshId().editFromHook());
+    }
+
+    public static Set<ConfigurationMenu> getMenuSet() {
+        return ConfigurationMenus.menuSet;
     }
 }

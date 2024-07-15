@@ -30,6 +30,6 @@ public class ConfigureCommand extends Command {
 
     @Override
     public void run() {
-        super.plugin.getBot().getConfigurationMenu().generate(super.interaction);
+        this.plugin.getBot().generateConfigurationMenu(super.interaction);
     }
 }

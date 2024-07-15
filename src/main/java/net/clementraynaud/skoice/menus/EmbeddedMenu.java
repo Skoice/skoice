@@ -34,9 +34,9 @@ import java.util.function.Consumer;
 public class EmbeddedMenu {
 
     protected final Bot bot;
-    private String menuId;
-    private String[] args = new String[0];
-    private InteractionHook hook;
+    protected String menuId;
+    protected String[] args = new String[0];
+    protected InteractionHook hook;
 
     public EmbeddedMenu(Bot bot) {
         this.bot = bot;
@@ -59,10 +59,7 @@ public class EmbeddedMenu {
     public void reply(IReplyCallback interaction) {
         this.hook = interaction.getHook();
         interaction.reply(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args))
-                .setEphemeral(true).queue(interactionHook -> interactionHook.deleteOriginal()
-                        .queueAfter(10, TimeUnit.MINUTES,
-                                null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE))
-                );
+                .setEphemeral(true).queue();
     }
 
     public void edit(IMessageEditCallback interaction) {
@@ -84,10 +81,6 @@ public class EmbeddedMenu {
 
         this.hook.deleteOriginal().queue(success, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
         this.hook = null;
-    }
-
-    public void deleteFromHook() {
-        this.deleteFromHook(null);
     }
 
     public String getId() {

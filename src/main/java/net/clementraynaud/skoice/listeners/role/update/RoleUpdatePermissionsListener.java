@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.role.update;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.role.update.RoleUpdatePermissionsEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -50,7 +51,7 @@ public class RoleUpdatePermissionsListener extends ListenerAdapter {
                 this.plugin.getBot().getVoiceChannel().setStatus();
                 this.plugin.getBot().getVoiceChannel().muteMembers();
                 this.plugin.getBot().updateVoiceState();
-                this.plugin.getBot().getConfigurationMenu().refreshId().editFromHook();
+                ConfigurationMenus.refreshAll();
             }
         }
     }

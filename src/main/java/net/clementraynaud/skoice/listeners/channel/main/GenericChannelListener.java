@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.listeners.channel.main;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.CommandInfo;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
@@ -36,6 +37,8 @@ import net.dv8tion.jda.api.events.channel.update.ChannelUpdateNameEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateParentEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateVoiceStatusEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.util.Optional;
 
 public class GenericChannelListener extends ListenerAdapter {
 
@@ -121,8 +124,9 @@ public class GenericChannelListener extends ListenerAdapter {
     }
 
     private void reloadVoiceChannelMenu() {
-        if ("voice-channel".equals(this.plugin.getBot().getConfigurationMenu().getId())) {
-            this.plugin.getBot().getConfigurationMenu().setContent("voice-channel").editFromHook();
+        Optional<ConfigurationMenu> menu = this.plugin.getBot().getConfigurationMenu();
+        if (menu.isPresent() && "voice-channel".equals(menu.get().getId())) {
+            menu.get().setContent("voice-channel").editFromHook();
         }
     }
 }

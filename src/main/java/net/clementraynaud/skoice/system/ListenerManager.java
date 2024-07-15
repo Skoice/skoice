@@ -38,6 +38,7 @@ import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
 import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.listeners.server.ServerCommandListener;
+import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.User;
@@ -73,7 +74,7 @@ public class ListenerManager {
                         .message(user);
             }
         } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-            this.plugin.getBot().getConfigurationMenu().refreshId().editFromHook();
+            ConfigurationMenus.refreshAll();
             if (wasBotReady) {
                 this.unregisterMinecraftListeners();
                 if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
