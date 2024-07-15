@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.listeners.channel.main;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
+import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
@@ -37,8 +38,6 @@ import net.dv8tion.jda.api.events.channel.update.ChannelUpdateNameEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateParentEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateVoiceStatusEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
-import java.util.Optional;
 
 public class GenericChannelListener extends ListenerAdapter {
 
@@ -104,29 +103,38 @@ public class GenericChannelListener extends ListenerAdapter {
     }
 
     private void checkForValidVoiceChannel(GenericChannelEvent event) {
-        if (event.getChannel().getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))) {
-            this.plugin.getConfigYamlFile().remove(ConfigField.VOICE_CHANNEL_ID.toString());
-            this.plugin.getListenerManager().update();
-            if (!event.getGuild().getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS)) {
-                return;
-            }
-            event.getGuild().retrieveAuditLogs().type(ActionType.CHANNEL_DELETE).limit(1).queue(auditLogEntries -> {
-                if (!auditLogEntries.isEmpty()) {
-                    User user = auditLogEntries.get(0).getUser();
-                    if (user != null && !user.isBot()) {
-                        new EmbeddedMenu(this.plugin.getBot()).setContent("incomplete-configuration-alternative-server-manager",
-                                        this.plugin.getBot().getCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
-                                .message(user);
-                    }
-                }
-            });
+        if (!event.getChannel().getId().equals(this.plugin.getConfigYamlFile()
+                .getString(ConfigField.VOICE_CHANNEL_ID.toString()))) {
+            return;
         }
+
+        if (!(event instanceof ChannelDeleteEvent)) {
+            event.getChannel().asVoiceChannel().modifyStatus("").queue();
+        }
+        this.plugin.getConfigYamlFile().remove(ConfigField.VOICE_CHANNEL_ID.toString());
+        this.plugin.getListenerManager().update();
+
+        if (!event.getGuild().getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS)) {
+            return;
+        }
+        event.getGuild().retrieveAuditLogs()
+                .type(ActionType.CHANNEL_DELETE)
+                .limit(1)
+                .queue(auditLogEntries -> {
+                    if (!auditLogEntries.isEmpty()) {
+                        User user = auditLogEntries.get(0).getUser();
+                        if (user != null && !user.isBot()) {
+                            new EmbeddedMenu(this.plugin.getBot()).setContent("incomplete-configuration-alternative-server-manager",
+                                            this.plugin.getBot().getCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
+                                    .message(user);
+                        }
+                    }
+                });
     }
 
     private void reloadVoiceChannelMenu() {
-        Optional<ConfigurationMenu> menu = this.plugin.getBot().getConfigurationMenu();
-        if (menu.isPresent() && "voice-channel".equals(menu.get().getId())) {
-            menu.get().setContent("voice-channel").editFromHook();
-        }
+        ConfigurationMenus.getMenuSet().stream()
+                .filter(menu -> "voice-channel".equals(menu.getId()))
+                .forEach(ConfigurationMenu::editFromHook);
     }
 }
