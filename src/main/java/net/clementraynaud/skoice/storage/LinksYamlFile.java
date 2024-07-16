@@ -110,9 +110,9 @@ public class LinksYamlFile extends YamlFile {
 
         guild.retrieveMemberById(discordId).queue(
                 success,
-                failure != null
-                        ? new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, failure)
-                        : new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MEMBER)
+                new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, failure != null
+                        ? failure.andThen(e -> this.unlinkUser(minecraftId.toString()))
+                        : e -> this.unlinkUser(minecraftId.toString()))
         );
         return true;
     }
