@@ -183,7 +183,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-beta.13</version>
+            <version>5.0.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
