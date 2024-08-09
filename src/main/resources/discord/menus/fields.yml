@@ -55,7 +55,7 @@ production-channel:
   emoji: package
   inline: true
 beta-channel:
-  emoji: hammer_and_wrench
+  emoji: test_tube
   inline: true
 account-linked:
   emoji: heavy_check_mark

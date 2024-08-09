@@ -44,7 +44,7 @@ public class ReleaseChannelSelectMenu extends SelectMenu {
                         .withEmoji(MenuEmoji.PACKAGE.get())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description")),
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("field.beta-channel.title"), ReleaseChannelSelectMenu.BETA)
-                        .withEmoji(MenuEmoji.HAMMER_AND_WRENCH.get())
+                        .withEmoji(MenuEmoji.TEST_TUBE.get())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.undesirable.description"))));
 
         String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.RELEASE_CHANNEL.toString());
