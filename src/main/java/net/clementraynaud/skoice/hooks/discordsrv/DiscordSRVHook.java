@@ -22,8 +22,9 @@ public class DiscordSRVHook {
         }
         try {
             DiscordSRV.api.hashCode();
-            this.discordSRVHookImpl = new DiscordSRVHookImpl(this.plugin);
-            this.discordSRVHookImpl.initialize();
+            DiscordSRVHookImpl discordSRVHookImpl = new DiscordSRVHookImpl(this.plugin);
+            discordSRVHookImpl.initialize();
+            this.discordSRVHookImpl = discordSRVHookImpl;
         } catch (Throwable ignored) {
         }
     }

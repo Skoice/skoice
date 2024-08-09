@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.api.SkoiceAPI;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.hooks.discordsrv.DiscordSRVHook;
+import net.clementraynaud.skoice.hooks.essentialsx.EssentialsXHook;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.storage.LinksYamlFile;
@@ -60,6 +61,7 @@ public class Skoice extends JavaPlugin {
     private Bot bot;
     private BukkitAudiences adventure;
     private DiscordSRVHook discordSRVHook;
+    private EssentialsXHook essentialsXHook;
     private Updater updater;
 
     public static SkoiceAPI api() {
@@ -87,6 +89,7 @@ public class Skoice extends JavaPlugin {
         this.tempYamlFile.load();
         this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
         this.loginNotificationYamlFile.load();
+        Skoice.api = new SkoiceAPI(this);
         this.listenerManager = new ListenerManager(this);
         this.listenerManager.registerPermanentMinecraftListeners();
         this.bot = new Bot(this);
@@ -95,10 +98,11 @@ public class Skoice extends JavaPlugin {
         new SkoiceCommand(this).init();
         this.discordSRVHook = new DiscordSRVHook(this);
         this.discordSRVHook.initialize();
+        this.essentialsXHook = new EssentialsXHook(this);
+        this.essentialsXHook.initialize();
         this.addCustomCharts();
         this.updater = new Updater(this, this.getFile().getAbsolutePath());
         this.updater.runUpdaterTaskTimer();
-        Skoice.api = new SkoiceAPI(this);
     }
 
     public BukkitAudiences adventure() {
@@ -218,5 +222,9 @@ public class Skoice extends JavaPlugin {
 
     public DiscordSRVHook getDiscordSRVHook() {
         return this.discordSRVHook;
+    }
+
+    public EssentialsXHook getEssentialsXHook() {
+        return this.essentialsXHook;
     }
 }
