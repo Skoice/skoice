@@ -58,6 +58,7 @@ public enum MenuEmoji {
     SCREWDRIVER("U+1FA9B"),
     SKULL("U+1F480"),
     SOUND("U+1F509"),
+    SPEAKING_HEAD("U+1F5E3"),
     SPEECH_BALLOON("U+1F4AC"),
     TEST_TUBE("U+1F9EA"),
     THOUGHT_BALLOON("U+1F4AD"),

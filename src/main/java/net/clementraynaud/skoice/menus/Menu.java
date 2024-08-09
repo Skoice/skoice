@@ -33,6 +33,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Menu {
 
@@ -98,6 +100,7 @@ public class Menu {
         if (this.getDescription(false) != null) {
             embed.setDescription(this.getDescription(false));
         }
+
         if (this.plugin.getBot().getStatus() == BotStatus.READY) {
             StringBuilder author = new StringBuilder();
             String parentMenu = this.parent;
@@ -108,12 +111,18 @@ public class Menu {
             }
             embed.setAuthor(author.toString());
         }
-        for (Menu menu : this.plugin.getBot().getMenuFactory().getMenus().values()) {
-            String description = menu.getDescription(true);
-            if (menu.parent != null && menu.parent.equals(this.menuId) && description != null) {
-                embed.addField(menu.getTitle(true), description, true);
+
+        List<Menu> children = this.getChildren();
+        for (Menu child : children) {
+            String description = child.getDescription(true);
+            if (description == null) {
+                description = child.getChildren().stream()
+                        .map(menu -> "↳ " + menu.getTitle(true))
+                        .collect(Collectors.joining("\n"));
             }
+            embed.addField(child.getTitle(true), description, true);
         }
+
         int startIndex = 0;
         for (String field : this.fields) {
             MenuField menuField = this.plugin.getBot().getMenuFactory().getField(field);
@@ -186,6 +195,9 @@ public class Menu {
         secondaryButtons.add(Button.secondary("display-issues",
                         this.plugin.getBot().getLang().getMessage("button-label.display-issues"))
                 .withEmoji(MenuEmoji.QUESTION.get()));
+        secondaryButtons.add(Button.link("https://discord.gg/skoice-proximity-voice-chat-741375523275407461",
+                        this.plugin.getBot().getLang().getMessage("button-label.support-server"))
+                .withEmoji(MenuEmoji.SCREWDRIVER.get()));
         if (root.equals("settings")
                 && this.plugin.getBot().getStatus() != BotStatus.READY
                 && !"language".equals(this.menuId)) {
@@ -207,6 +219,13 @@ public class Menu {
             root = this.plugin.getBot().getMenuFactory().getMenu(root.parent);
         }
         return root.menuId;
+    }
+
+    private List<Menu> getChildren() {
+        return this.plugin.getBot().getMenuFactory().getMenus().values().stream()
+                .filter(menu -> menu.parent != null)
+                .filter(menu -> menu.parent.equals(this.menuId))
+                .collect(Collectors.toList());
     }
 
     public String getId() {

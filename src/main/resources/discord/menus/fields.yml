@@ -36,9 +36,6 @@ download:
 donating:
   emoji: green_heart
   inline: false
-troubleshooting:
-  emoji: screwdriver
-  inline: true
 contributing:
   emoji: hammer
   inline: false

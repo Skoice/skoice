@@ -20,8 +20,6 @@ configuration:
   footer: review
   settings:
     type: default
-    fields:
-      - troubleshooting
   configuration-complete:
     type: success
     fields:
@@ -83,8 +81,8 @@ error:
     fields:
       - illegal-value
 
-voice-channel:
-  emoji: sound
+voice-chat:
+  emoji: speaking_head
   footer: review
   type: default
   style: primary
@@ -94,29 +92,59 @@ range:
   footer: review
   type: default
   style: primary
-  parent: settings
+  parent: voice-chat
   fields:
     - long-range-mode
     - short-range-mode
     - customize
-more-settings:
-  emoji: wrench
+active-worlds:
+  emoji: map
   footer: review
   type: default
-  style: secondary
-  parent: settings
-language:
-  emoji: globe_with_meridians
+  style: primary
+  parent: voice-chat
+included-players:
+  emoji: bust_in_silhouette
   footer: review
   type: default
-  style: secondary
+  style: primary
+  parent: voice-chat
+separated-teams:
+  emoji: crossed_swords
+  footer: review
+  type: default
+  style: primary
+  parent: voice-chat
+chaining:
+  emoji: chains
+  footer: review
+  type: default
+  style: primary
+  parent:
+discord-integration:
+  emoji: sound
+  footer: review
+  type: default
+  style: primary
   parent: settings
+voice-channel:
+  emoji: sound
+  footer: review
+  type: default
+  style: primary
+  parent: discord-integration
+channel-visibility:
+  emoji: mag
+  footer: review
+  type: default
+  style: primary
+  parent: discord-integration
 in-game-messages:
   emoji: speech_balloon
   footer: review
   type: default
   style: primary
-  parent: more-settings
+  parent: settings
 login-notification:
   emoji: bell
   footer: review
@@ -135,51 +163,33 @@ tooltips:
   type: default
   style: primary
   parent: in-game-messages
-included-players:
-  emoji: bust_in_silhouette
+advanced-settings:
+  emoji: wrench
   footer: review
   type: default
-  style: primary
-  parent: more-settings
-active-worlds:
-  emoji: map
-  footer: review
-  type: default
-  style: primary
-  parent: more-settings
-separated-teams:
-  emoji: crossed_swords
-  footer: review
-  type: default
-  style: primary
-  parent: more-settings
-channel-visibility:
-  emoji: mag
-  footer: review
-  type: default
-  style: primary
-  parent: more-settings
-chaining:
-  emoji: chains
-  footer: review
-  type: default
-  style: primary
-  parent:
+  style: secondary
+  parent: settings
 discordsrv-synchronization:
   emoji: electric_plug
   footer: review
   type: default
-  style: secondary
-  parent: more-settings
+  style: primary
+  parent: advanced-settings
 release-channel:
   emoji: inbox_tray
   footer: review
   type: default
-  style: secondary
-  parent: more-settings
+  style: primary
+  parent: advanced-settings
   fields:
     - production-channel
     - beta-channel
+language:
+  emoji: globe_with_meridians
+  footer: review
+  type: default
+  style: secondary
+  parent: settings
 server:
   emoji: file_cabinet
   footer: review
@@ -195,5 +205,4 @@ skoice-proximity-voice-chat:
   fields:
     - download
     - donating
-    - troubleshooting
     - contributing
