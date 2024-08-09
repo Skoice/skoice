@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.api;
 
 import net.clementraynaud.skoice.Skoice;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
@@ -33,7 +34,7 @@ public class SkoiceAPI {
     }
 
     public Map<String, String> getLinkedAccounts() {
-        return this.plugin.getLinksYamlFile().getLinks();
+        return Collections.unmodifiableMap(this.plugin.getLinksYamlFile().getLinks());
     }
 
     public boolean linkUser(UUID minecraftId, String discordId) {
