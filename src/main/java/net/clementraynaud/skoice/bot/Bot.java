@@ -194,10 +194,10 @@ public class Bot {
             }
         } else {
             if (this.guildId == null) {
-                List<Guild> guilds = this.getJDA().getGuilds();
+                List<Guild> guilds = this.jda.getGuilds();
                 if (guilds.isEmpty()) {
                     this.status = BotStatus.NO_GUILD;
-                    this.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+                    this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
                         applicationInfo.setRequiredScopes("applications.commands");
                         this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-guild", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
                     });
@@ -207,7 +207,7 @@ public class Bot {
                 }
             } else if (!this.isAdministrator()) {
                 this.status = BotStatus.MISSING_PERMISSION;
-                this.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+                this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
                     applicationInfo.setRequiredScopes("applications.commands");
                     this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
                 });
@@ -226,17 +226,17 @@ public class Bot {
     }
 
     public void updateActivity() {
-        Activity activity = this.getJDA().getPresence().getActivity();
-        if (this.getStatus() == BotStatus.READY && !Objects.equals(activity, Activity.listening("/link"))) {
-            this.getJDA().getPresence().setActivity(Activity.listening("/link"));
-        } else if (this.getStatus() != BotStatus.READY && !Objects.equals(activity, Activity.listening("/configure"))) {
-            this.getJDA().getPresence().setActivity(Activity.listening("/configure"));
+        Activity activity = this.jda.getPresence().getActivity();
+        if (this.status == BotStatus.READY && !Objects.equals(activity, Activity.listening("/link"))) {
+            this.jda.getPresence().setActivity(Activity.listening("/link"));
+        } else if (this.status != BotStatus.READY && !Objects.equals(activity, Activity.listening("/configure"))) {
+            this.jda.getPresence().setActivity(Activity.listening("/configure"));
         }
     }
 
     public void sendIncompleteConfigurationAlert(Player player, boolean sendIfPermissionMissing, boolean force) {
         if (player.hasPermission(Argument.MANAGE_PERMISSION) || force) {
-            if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
+            if (this.status == BotStatus.NOT_CONNECTED) {
                 if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
                     this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-interactive",
                                     this.plugin.getLang().getComponentMessage("interaction.here")
@@ -250,8 +250,8 @@ public class Bot {
                 } else {
                     player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator"));
                 }
-            } else if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
-                this.plugin.getBot().sendNoGuildAlert(player);
+            } else if (this.status == BotStatus.NO_GUILD) {
+                this.sendNoGuildAlert(player);
             } else {
                 player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-discord"));
             }
@@ -262,7 +262,7 @@ public class Bot {
 
     public void sendNoGuildAlert(Player player) {
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-            this.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+            this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
                 applicationInfo.setRequiredScopes("applications.commands");
                 String inviteUrl = applicationInfo.getInviteUrl(Permission.ADMINISTRATOR);
                 this.plugin.adventure().player(player).sendMessage(
@@ -274,7 +274,7 @@ public class Bot {
                 );
             });
         } else {
-            this.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+            this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
                 applicationInfo.setRequiredScopes("applications.commands");
                 player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.no-guild",
                         applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
