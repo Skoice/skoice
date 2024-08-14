@@ -23,8 +23,6 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.storage.config.ConfigField;
-import net.dv8tion.jda.api.entities.channel.concrete.Category;
-import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
@@ -39,29 +37,25 @@ public class VoiceChannelSelectMenu extends SelectMenu {
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<VoiceChannel> voiceChannels = new ArrayList<>(super.plugin.getBot().getJDA().getVoiceChannels());
-        List<Category> categories = new ArrayList<>();
-        for (VoiceChannel voiceChannel : voiceChannels) {
-            categories.add(voiceChannel.getParentCategory());
-        }
         List<SelectOption> options = new ArrayList<>();
+        
         options.add(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
                 .withDescription(super.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.select-option.new-voice-channel.description"))
                 .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.get()));
-        int optionIndex = 0;
-        while (optionIndex < 23 && voiceChannels.size() > optionIndex) {
-            if (voiceChannels.get(optionIndex).getParentCategory() != null) {
-                options.add(SelectOption.of(voiceChannels.get(optionIndex).getName(), voiceChannels.get(optionIndex).getId())
-                        .withDescription(categories.get(optionIndex).getName())
-                        .withEmoji(MenuEmoji.SOUND.get()));
-            }
-            optionIndex++;
-        }
-        if (options.size() == 23) {
+
+        super.plugin.getBot().getGuild().getVoiceChannels().stream()
+                .filter(voiceChannel -> voiceChannel.getParentCategory() != null)
+                .limit(23)
+                .forEach(voiceChannel -> options.add(SelectOption.of(voiceChannel.getName(), voiceChannel.getId())
+                        .withDescription(voiceChannel.getParentCategory().getName())
+                        .withEmoji(MenuEmoji.SOUND.get())));
+
+        if (options.size() == 24) {
             options.add(SelectOption.of(super.plugin.getBot().getLang().getMessage("select-option.too-many-options.label"), "refresh")
                     .withDescription(super.plugin.getBot().getLang().getMessage("select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.get()));
         }
+
         if (super.plugin.getBot().getStatus() == BotStatus.READY) {
             return StringSelectMenu.create("voice-channel-selection")
                     .addOptions(options)
