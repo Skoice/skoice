@@ -36,7 +36,8 @@ public enum ConfigField {
     CHANNEL_VISIBILITY,
     CHAINING,
     DISCORDSRV_SYNCHRONIZATION,
-    RELEASE_CHANNEL;
+    RELEASE_CHANNEL,
+    UNREVIEWED_SETTINGS;
 
     private final String lowerCaseName;
     private final String camelCaseName;

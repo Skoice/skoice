@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
+import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -34,6 +35,7 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 
 import java.util.Collections;
+import java.util.List;
 
 public class ButtonInteractionListener extends ListenerAdapter {
 
@@ -92,7 +94,14 @@ public class ButtonInteractionListener extends ListenerAdapter {
                         .reply(event);
 
             } else {
-                this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.setContent(buttonId).edit(event));
+                this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> {
+                    List<String> unreviewedSettings = this.plugin.getConfigYamlFile().getStringList(ConfigField.UNREVIEWED_SETTINGS.toString());
+                    if (unreviewedSettings.contains(buttonId)) {
+                        unreviewedSettings.remove(buttonId);
+                        this.plugin.getConfigYamlFile().set(ConfigField.UNREVIEWED_SETTINGS.toString(), unreviewedSettings);
+                    }
+                    menu.setContent(buttonId).edit(event);
+                });
             }
 
         } else {

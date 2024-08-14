@@ -22,18 +22,17 @@ package net.clementraynaud.skoice.menus;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Menu {
@@ -110,6 +109,24 @@ public class Menu {
                 parentMenu = menuParent.parent;
             }
             embed.setAuthor(author.toString());
+
+            if (this.getRoot().equals("settings")) {
+                List<String> unreviewedSettings = this.plugin.getConfigYamlFile().getStringList(ConfigField.UNREVIEWED_SETTINGS.toString());
+                if (!unreviewedSettings.isEmpty()) {
+                    int stepSize = 3;
+                    int progressBarState = (3 - unreviewedSettings.size()) * stepSize;
+                    int progressBarSize = 3 * stepSize;
+
+                    String progressBar = String.join("", Collections.nCopies(progressBarState, ":green_square:"))
+                            + String.join("", Collections.nCopies(progressBarSize - progressBarState, ":black_large_square:"))
+                            + ":tada:";
+
+                    embed.addField(this.plugin.getBot().getMenuFactory()
+                            .getField("get-the-most-out-of-skoice")
+                            .build(progressBar)
+                    );
+                }
+            }
         }
 
         List<Menu> children = this.getChildren();
@@ -152,11 +169,15 @@ public class Menu {
         List<Button> mainButtons = new ArrayList<>(Arrays.asList(this.buttons));
         for (Menu menu : this.plugin.getBot().getMenuFactory().getMenus().values()) {
             if (menu.parent != null && menu.parent.equals(this.menuId)) {
-                mainButtons.add(menu.style == MenuStyle.PRIMARY
-                        ? Button.primary(menu.menuId, menu.getTitle(false))
-                        .withEmoji(menu.emoji.get())
-                        : Button.secondary(menu.menuId, menu.getTitle(false))
-                        .withEmoji(menu.emoji.get()));
+                List<String> unreviewedSettings = this.plugin.getConfigYamlFile().getStringList(ConfigField.UNREVIEWED_SETTINGS.toString());
+                ButtonStyle buttonStyle;
+                if (unreviewedSettings.contains(menu.menuId)) {
+                    buttonStyle = ButtonStyle.SUCCESS;
+                } else {
+                    buttonStyle = menu.style == MenuStyle.PRIMARY ? ButtonStyle.PRIMARY : ButtonStyle.SECONDARY;
+                }
+
+                mainButtons.add(Button.of(buttonStyle, menu.menuId, menu.getTitle(false), menu.emoji.get()));
             }
         }
 
