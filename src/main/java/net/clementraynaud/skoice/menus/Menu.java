@@ -117,7 +117,7 @@ public class Menu {
             String description = child.getDescription(true);
             if (description == null) {
                 description = child.getChildren().stream()
-                        .map(menu -> "↳ " + menu.getTitle(true))
+                        .map(menu -> "> " + menu.getTitle(true))
                         .collect(Collectors.joining("\n"));
             }
             embed.addField(child.getTitle(true), description, true);
