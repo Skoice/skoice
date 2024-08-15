@@ -83,6 +83,8 @@ public class ModalInteractionListener extends ListenerAdapter {
             if (horizontalRadius == 0 || verticalRadius == 0) {
                 new EmbeddedMenu(this.plugin.getBot()).setContent("illegal-value")
                         .reply(event);
+                this.plugin.getBot().getConfigurationMenu()
+                        .ifPresent(menu -> menu.setContent("range").editFromHook());
             } else {
                 this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
                 this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
