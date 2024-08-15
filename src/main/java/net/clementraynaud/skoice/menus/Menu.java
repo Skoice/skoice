@@ -110,7 +110,7 @@ public class Menu {
             }
             embed.setAuthor(author.toString());
 
-            if (this.getRoot().equals("settings") && this.getDescription(false) == null) {
+            if (this.menuId.equals("settings")) {
                 List<String> unreviewedSettings = this.plugin.getConfigYamlFile().getStringList(ConfigField.UNREVIEWED_SETTINGS.toString());
                 if (!unreviewedSettings.isEmpty()) {
                     int stepSize = 3;
