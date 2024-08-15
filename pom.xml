@@ -62,15 +62,18 @@
                         </relocation>
                         <relocation>
                             <pattern>org.intellij</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.intellij</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.intellij
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.jetbrains</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.jetbrains</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.jetbrains
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.dv8tion</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.dv8tion</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.dv8tion
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.kyori</pattern>
@@ -82,7 +85,8 @@
                         </relocation>
                         <relocation>
                             <pattern>com.fasterxml</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.fasterxml</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.fasterxml
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.iwebpp</pattern>
@@ -90,7 +94,8 @@
                         </relocation>
                         <relocation>
                             <pattern>com.neovisionaries</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.neovisionaries</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.neovisionaries
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>gnu.trove</pattern>
@@ -123,9 +128,12 @@
                         </filter>
                     </filters>
                     <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer"/>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer"/>
                     </transformers>
                 </configuration>
                 <executions>
@@ -176,6 +184,28 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>5.0.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>club.minnced</groupId>
+                    <artifactId>opus-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.3.4</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.20.3-R0.1-SNAPSHOT</version>
@@ -211,27 +241,7 @@
             </exclusions>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>net.dv8tion</groupId>
-            <artifactId>JDA</artifactId>
-            <version>5.0.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>club.minnced</groupId>
-                    <artifactId>opus-java</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.3.3</version>
-        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
