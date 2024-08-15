@@ -60,7 +60,7 @@ public class RangeSelectMenu extends SelectMenu {
         int verticalRadius = super.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString());
         if (horizontalRadius == 80 && verticalRadius == 40) {
             defaultValue = RangeSelectMenu.LONG_RANGE_MODE_ID;
-        } else if (verticalRadius == 40 && horizontalRadius == 20) {
+        } else if (horizontalRadius == 40 && verticalRadius == 20) {
             defaultValue = RangeSelectMenu.SHORT_RANGE_MODE_ID;
         } else if (super.plugin.getBot().getStatus() != BotStatus.NO_RADIUS) {
             defaultValue = RangeSelectMenu.CUSTOMIZED_ID;
