@@ -17,11 +17,12 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.selectmenus;
+package net.clementraynaud.skoice.menus.selectors;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
@@ -29,21 +30,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ReleaseChannelSelectMenu extends SelectMenu {
+public class ReleaseChannelSelector extends Selector {
 
     public static final String PRODUCTION = "production";
     public static final String BETA = "beta";
 
-    public ReleaseChannelSelectMenu(Skoice plugin) {
+    public ReleaseChannelSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
-    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("field.production-channel.title"), ReleaseChannelSelectMenu.PRODUCTION)
+    public SelectMenu get() {
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("field.production-channel.title"), ReleaseChannelSelector.PRODUCTION)
                         .withEmoji(MenuEmoji.PACKAGE.get())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description")),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("field.beta-channel.title"), ReleaseChannelSelectMenu.BETA)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("field.beta-channel.title"), ReleaseChannelSelector.BETA)
                         .withEmoji(MenuEmoji.TEST_TUBE.get())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.undesirable.description"))));
 

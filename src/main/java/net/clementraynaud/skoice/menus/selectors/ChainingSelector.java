@@ -17,11 +17,12 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.selectmenus;
+package net.clementraynaud.skoice.menus.selectors;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
@@ -29,28 +30,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ChainingSelectMenu extends SelectMenu {
+public class ChainingSelector extends Selector {
 
     public static final String DISABLED = "false";
     public static final String SHORT = "short";
     public static final String MEDIUM = "medium";
     public static final String LONG = "long";
 
-    public ChainingSelectMenu(Skoice plugin) {
+    public ChainingSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
-    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.disabled.label"), ChainingSelectMenu.DISABLED)
+    public SelectMenu get() {
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.disabled.label"), ChainingSelector.DISABLED)
                         .withEmoji(MenuEmoji.PROHIBITED.get())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.undesirable.description")),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.short.label"), ChainingSelectMenu.SHORT)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.short.label"), ChainingSelector.SHORT)
                         .withEmoji(MenuEmoji.CHAINS.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.medium.label"), ChainingSelectMenu.MEDIUM)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.medium.label"), ChainingSelector.MEDIUM)
                         .withEmoji(MenuEmoji.CHAINS.get())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description")),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.long.label"), ChainingSelectMenu.LONG)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.chaining.select-menu.long.label"), ChainingSelector.LONG)
                         .withEmoji(MenuEmoji.CHAINS.get())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.undesirable.description"))));
 

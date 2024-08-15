@@ -17,11 +17,12 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.selectmenus;
+package net.clementraynaud.skoice.menus.selectors;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
@@ -29,24 +30,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LoginNotificationSelectMenu extends SelectMenu {
+public class LoginNotificationSelector extends Selector {
 
     public static final String ALWAYS_REMIND = "always-remind";
     public static final String REMIND_ONCE = "remind-once";
     public static final String NEVER_REMIND = "never-remind";
 
-    public LoginNotificationSelectMenu(Skoice plugin) {
+    public LoginNotificationSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
-    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.login-notification.select-menu.always-remind.label"), LoginNotificationSelectMenu.ALWAYS_REMIND)
+    public SelectMenu get() {
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.login-notification.select-menu.always-remind.label"), LoginNotificationSelector.ALWAYS_REMIND)
                         .withEmoji(MenuEmoji.REPEAT.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.login-notification.select-menu.remind-once.label"), LoginNotificationSelectMenu.REMIND_ONCE)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.login-notification.select-menu.remind-once.label"), LoginNotificationSelector.REMIND_ONCE)
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
                         .withEmoji(MenuEmoji.REPEAT_ONE.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.login-notification.select-menu.never-remind.label"), LoginNotificationSelectMenu.NEVER_REMIND)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.login-notification.select-menu.never-remind.label"), LoginNotificationSelector.NEVER_REMIND)
                         .withEmoji(MenuEmoji.MUTE.get())));
         String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString());
         return StringSelectMenu.create("login-notification-selection")

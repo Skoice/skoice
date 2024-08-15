@@ -17,17 +17,18 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.selectmenus;
+package net.clementraynaud.skoice.menus.selectors;
 
 import net.clementraynaud.skoice.Skoice;
+import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 
-public abstract class SelectMenu {
+public abstract class Selector {
 
     protected final Skoice plugin;
 
-    protected SelectMenu(Skoice plugin) {
+    protected Selector(Skoice plugin) {
         this.plugin = plugin;
     }
 
-    public abstract net.dv8tion.jda.api.interactions.components.selections.SelectMenu get();
+    public abstract SelectMenu get();
 }

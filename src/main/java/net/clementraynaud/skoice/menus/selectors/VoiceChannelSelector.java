@@ -17,32 +17,33 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.selectmenus;
+package net.clementraynaud.skoice.menus.selectors;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VoiceChannelSelectMenu extends SelectMenu {
+public class VoiceChannelSelector extends Selector {
 
-    public VoiceChannelSelectMenu(Skoice plugin) {
+    public VoiceChannelSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
-    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
+    public SelectMenu get() {
         List<SelectOption> options = new ArrayList<>();
         
         options.add(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
                 .withDescription(super.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.select-option.new-voice-channel.description"))
                 .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.get()));
 
-        int channelLimit = net.dv8tion.jda.api.interactions.components.selections.SelectMenu.OPTIONS_MAX_AMOUNT - 2;
+        int channelLimit = SelectMenu.OPTIONS_MAX_AMOUNT - 2;
 
         VoiceChannel selectedChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
         if (selectedChannel != null && selectedChannel.getParentCategory() != null) {
@@ -60,7 +61,7 @@ public class VoiceChannelSelectMenu extends SelectMenu {
                         .withDescription(voiceChannel.getParentCategory().getName())
                         .withEmoji(MenuEmoji.SOUND.get())));
 
-        if (options.size() == net.dv8tion.jda.api.interactions.components.selections.SelectMenu.OPTIONS_MAX_AMOUNT - 1) {
+        if (options.size() == SelectMenu.OPTIONS_MAX_AMOUNT - 1) {
             options.add(SelectOption.of(super.plugin.getBot().getLang().getMessage("select-option.too-many-options.label"), "refresh")
                     .withDescription(super.plugin.getBot().getLang().getMessage("select-option.too-many-options.description"))
                     .withEmoji(MenuEmoji.WARNING.get()));

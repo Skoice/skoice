@@ -17,11 +17,12 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.selectmenus;
+package net.clementraynaud.skoice.menus.selectors;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
@@ -29,14 +30,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class IncludedPlayersSelectMenu extends SelectMenu {
+public class IncludedPlayersSelector extends Selector {
 
-    public IncludedPlayersSelectMenu(Skoice plugin) {
+    public IncludedPlayersSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
-    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
+    public SelectMenu get() {
         List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.included-players.select-menu.players-on-death-screen-included.label"), ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())
                         .withEmoji(MenuEmoji.SKULL.get()),
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.included-players.select-menu.spectators-included.label"), ConfigField.SPECTATORS_INCLUDED.toString())

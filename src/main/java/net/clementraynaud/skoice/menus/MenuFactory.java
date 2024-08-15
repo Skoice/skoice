@@ -20,8 +20,8 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.menus.selectmenus.LoginNotificationSelectMenu;
-import net.clementraynaud.skoice.menus.selectmenus.SelectMenuFactory;
+import net.clementraynaud.skoice.menus.selectors.LoginNotificationSelector;
+import net.clementraynaud.skoice.menus.selectors.SelectorFactory;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
@@ -36,7 +36,7 @@ public class MenuFactory {
 
     private final Map<String, Menu> menus = new LinkedHashMap<>();
     private final Map<String, MenuField> fields = new HashMap<>();
-    private final SelectMenuFactory selectMenuFactory = new SelectMenuFactory();
+    private final SelectorFactory selectorFactory = new SelectorFactory();
 
     public void loadAll(Skoice plugin) {
         this.loadFields(plugin);
@@ -96,7 +96,7 @@ public class MenuFactory {
                     break;
 
                 case "login-notification":
-                    if (LoginNotificationSelectMenu.REMIND_ONCE.equals(plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
+                    if (LoginNotificationSelector.REMIND_ONCE.equals(plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
                         menu.setButtons(Button.danger("clear-notified-players",
                                         plugin.getBot().getLang().getMessage("button-label.clear-notified-players"))
                                 .withEmoji(MenuEmoji.WASTEBASKET.get()));
@@ -121,7 +121,7 @@ public class MenuFactory {
         return this.fields.get(fieldId);
     }
 
-    public SelectMenuFactory getSelectMenuFactory() {
-        return this.selectMenuFactory;
+    public SelectorFactory getSelectorFactory() {
+        return this.selectorFactory;
     }
 }

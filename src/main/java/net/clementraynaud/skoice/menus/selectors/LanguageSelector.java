@@ -17,42 +17,37 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.selectmenus;
+package net.clementraynaud.skoice.menus.selectors;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.menus.MenuEmoji;
+import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
-import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActiveWorldsSelectMenu extends SelectMenu {
+public class LanguageSelector extends Selector {
 
-    public ActiveWorldsSelectMenu(Skoice plugin) {
+    public LanguageSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
-    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
+    public SelectMenu get() {
         List<SelectOption> options = new ArrayList<>();
-        List<String> disabledWorlds = super.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString());
-        List<String> defaultValues = new ArrayList<>();
-        for (World world : super.plugin.getServer().getWorlds()) {
-            options.add(SelectOption.of(world.getName(), world.getName())
-                    .withEmoji(MenuEmoji.MAP.get()));
-
-            if (!disabledWorlds.contains(world.getName())) {
-                defaultValues.add(world.getName());
-            }
+        for (LangInfo option : LangInfo.values()) {
+            options.add(SelectOption.of(option.getFullName(), option.toString())
+                    .withDescription(option.toString().equals(LangInfo.EN.toString())
+                            ? super.plugin.getBot().getLang().getMessage("select-option.default.description")
+                            : null)
+                    .withEmoji(option.getEmoji()));
         }
-
-        return StringSelectMenu.create("active-worlds-selection")
-                .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.active-worlds.select-menu.placeholder"))
+        return StringSelectMenu.create("language-selection")
                 .addOptions(options)
-                .setRequiredRange(0, options.size())
-                .setDefaultValues(defaultValues).build();
+                .setDefaultValues(super.plugin.getConfigYamlFile()
+                        .getString(ConfigField.LANG.toString())).build();
     }
 }

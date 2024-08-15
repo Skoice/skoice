@@ -17,25 +17,26 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.selectmenus;
+package net.clementraynaud.skoice.menus.selectors;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerSelectMenu extends SelectMenu {
+public class ServerSelector extends Selector {
 
-    public ServerSelectMenu(Skoice plugin) {
+    public ServerSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
-    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
+    public SelectMenu get() {
         List<Guild> servers = new ArrayList<>(super.plugin.getBot().getJDA().getGuilds());
         List<SelectOption> options = new ArrayList<>();
         int optionIndex = 0;

@@ -17,11 +17,12 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.menus.selectmenus;
+package net.clementraynaud.skoice.menus.selectors;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
@@ -29,20 +30,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ActionBarAlertsSelectMenu extends SelectMenu {
+public class ActionBarAlertsSelector extends Selector {
 
     public static final String CONNECTING_ALERT = "connecting-alert";
     public static final String DISCONNECTING_ALERT = "disconnecting-alert";
 
-    public ActionBarAlertsSelectMenu(Skoice plugin) {
+    public ActionBarAlertsSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
-    public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.connecting-alert.label"), ActionBarAlertsSelectMenu.CONNECTING_ALERT)
+    public SelectMenu get() {
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.connecting-alert.label"), ActionBarAlertsSelector.CONNECTING_ALERT)
                         .withEmoji(MenuEmoji.INBOX_TRAY.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.disconnecting-alert.label"), ActionBarAlertsSelectMenu.DISCONNECTING_ALERT)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.disconnecting-alert.label"), ActionBarAlertsSelector.DISCONNECTING_ALERT)
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
                         .withEmoji(MenuEmoji.OUTBOX_TRAY.get())));
         List<String> defaultValues = new ArrayList<>();

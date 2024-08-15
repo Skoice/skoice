@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.menus.selectmenus.SelectMenu;
+import net.clementraynaud.skoice.menus.selectors.Selector;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -189,14 +189,14 @@ public class Menu {
     }
 
     private ActionRow getSelectMenuActionRow() {
-        SelectMenu selectMenu = this.plugin.getBot()
+        Selector selector = this.plugin.getBot()
                 .getMenuFactory()
-                .getSelectMenuFactory()
-                .getSelectMenu(this.plugin, this.menuId);
-        if (selectMenu == null) {
+                .getSelectorFactory()
+                .getSelector(this.plugin, this.menuId);
+        if (selector == null) {
             return null;
         }
-        return ActionRow.of(selectMenu.get());
+        return ActionRow.of(selector.get());
     }
 
     private ActionRow getSecondaryActionRow() {

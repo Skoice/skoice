@@ -22,7 +22,7 @@ package net.clementraynaud.skoice.listeners.player;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.menus.selectmenus.LoginNotificationSelectMenu;
+import net.clementraynaud.skoice.menus.selectors.LoginNotificationSelector;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
@@ -71,10 +71,10 @@ public class PlayerJoinListener implements Listener {
 
     private void sendLoginNotification(Player player) {
         String loginNotificationStatus = this.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString());
-        if (LoginNotificationSelectMenu.ALWAYS_REMIND.equals(loginNotificationStatus)) {
+        if (LoginNotificationSelector.ALWAYS_REMIND.equals(loginNotificationStatus)) {
             player.sendMessage(this.plugin.getLang().getMessage("chat.player.account-not-linked",
                     this.plugin.getBot().getGuild().getName()));
-        } else if (LoginNotificationSelectMenu.REMIND_ONCE.equals(loginNotificationStatus)) {
+        } else if (LoginNotificationSelector.REMIND_ONCE.equals(loginNotificationStatus)) {
             List<String> notifiedPlayers = this.plugin.getLoginNotificationYamlFile().getStringList(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD);
             if (!notifiedPlayers.contains(player.getUniqueId().toString())) {
                 notifiedPlayers.add(player.getUniqueId().toString());
