@@ -60,8 +60,8 @@ menu:
         label: "Spectators"
   separated-teams:
     title: "Separated Teams"
-    shortened-description: "Choose whether or not teams can communicate with each other."
-    description: "Choose whether or not teams can communicate with each other. When this option is enabled, each team created with the `/team` command in Minecraft or with plugins that manage the built-in team system will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
+    shortened-description: "Choose whether or not teams should be isolated."
+    description: "Choose whether or not teams should be isolated. When this option is enabled, each team created with the `/team` command in Minecraft or with plugins that manage the built-in team system will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
   chaining:
     title: "Chaining"
     shortened-description: "Select the additional distance allowed when players are chaining."
