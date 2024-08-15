@@ -22,8 +22,7 @@ package net.clementraynaud.skoice;
 import net.clementraynaud.skoice.api.SkoiceAPI;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
-import net.clementraynaud.skoice.hooks.discordsrv.DiscordSRVHook;
-import net.clementraynaud.skoice.hooks.essentialsx.EssentialsXHook;
+import net.clementraynaud.skoice.hooks.HookManager;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.lang.MinecraftLang;
 import net.clementraynaud.skoice.storage.LinksYamlFile;
@@ -60,8 +59,7 @@ public class Skoice extends JavaPlugin {
     private ListenerManager listenerManager;
     private Bot bot;
     private BukkitAudiences adventure;
-    private DiscordSRVHook discordSRVHook;
-    private EssentialsXHook essentialsXHook;
+    private HookManager hookManager;
     private Updater updater;
 
     public static SkoiceAPI api() {
@@ -96,10 +94,8 @@ public class Skoice extends JavaPlugin {
         this.bot.connect();
         this.adventure = BukkitAudiences.create(this);
         new SkoiceCommand(this).init();
-        this.discordSRVHook = new DiscordSRVHook(this);
-        this.discordSRVHook.initialize();
-        this.essentialsXHook = new EssentialsXHook(this);
-        this.essentialsXHook.initialize();
+        this.hookManager = new HookManager(this);
+        this.hookManager.initialize();
         this.addCustomCharts();
         this.updater = new Updater(this, this.getFile().getAbsolutePath());
         this.updater.runUpdaterTaskTimer();
@@ -129,9 +125,7 @@ public class Skoice extends JavaPlugin {
         if (this.adventure != null) {
             this.adventure.close();
         }
-        if (this.discordSRVHook != null) {
-            this.discordSRVHook.close();
-        }
+        this.hookManager.close();
     }
 
     private boolean isMinecraftServerCompatible() {
@@ -220,11 +214,7 @@ public class Skoice extends JavaPlugin {
         return this.updater;
     }
 
-    public DiscordSRVHook getDiscordSRVHook() {
-        return this.discordSRVHook;
-    }
-
-    public EssentialsXHook getEssentialsXHook() {
-        return this.essentialsXHook;
+    public HookManager getHookManager() {
+        return this.hookManager;
     }
 }
