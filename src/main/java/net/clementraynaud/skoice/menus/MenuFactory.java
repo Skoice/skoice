@@ -88,16 +88,13 @@ public class MenuFactory {
                                     plugin.getBot().getLang().getMessage("button-label.configure-now"))
                             .withEmoji(MenuEmoji.GEAR.get()));
                     break;
+
                 case "permissions":
                     menu.setButtons(Button.link(plugin.getBot().getInviteUrl(),
                                     plugin.getBot().getLang().getMessage("button-label.update-permissions"))
                             .withEmoji(MenuEmoji.CARD_BOX.get()));
                     break;
-                case "range":
-                    menu.setButtons(Button.primary("customize",
-                                    plugin.getBot().getLang().getMessage("field.customize.title"))
-                            .withEmoji(MenuEmoji.PENCIL2.get()));
-                    break;
+
                 case "login-notification":
                     if (LoginNotificationSelectMenu.REMIND_ONCE.equals(plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
                         menu.setButtons(Button.danger("clear-notified-players",
@@ -105,6 +102,7 @@ public class MenuFactory {
                                 .withEmoji(MenuEmoji.WASTEBASKET.get()));
                     }
                     break;
+
                 default:
                     break;
             }

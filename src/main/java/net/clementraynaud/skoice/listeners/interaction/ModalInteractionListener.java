@@ -65,7 +65,8 @@ public class ModalInteractionListener extends ListenerAdapter {
                         this.plugin.getBot().getVoiceChannel().setStatus();
                         this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.refreshId().edit(event));
                     }));
-        } else if ("customize".equals(event.getModalId())) {
+
+        } else if ("customized".equals(event.getModalId())) {
             int horizontalRadius = 0;
             int verticalRadius = 0;
             ModalMapping horizontalRadiusValue = event.getValue("horizontal-radius");

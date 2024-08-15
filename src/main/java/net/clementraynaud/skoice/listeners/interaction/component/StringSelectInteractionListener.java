@@ -128,7 +128,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     }
                     break;
 
-                case "mode-selection":
+                case "range-selection":
                     if ("long-range-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
                         this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 40);
@@ -139,6 +139,24 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 20);
                         this.plugin.getListenerManager().update(event.getUser());
                         this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.refreshId().edit(event));
+                    } else if ("customized".equals(event.getSelectedOptions().get(0).getValue())) {
+                        TextInput horizontalRadius = TextInput.create("horizontal-radius",
+                                        this.plugin.getBot().getLang().getMessage("text-input.horizontal-radius.label"),
+                                        TextInputStyle.SHORT)
+                                .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.HORIZONTAL_RADIUS.toString()))
+                                .setRequiredRange(1, 3)
+                                .build();
+                        TextInput verticalRadius = TextInput.create("vertical-radius",
+                                        this.plugin.getBot().getLang().getMessage("text-input.vertical-radius.label"),
+                                        TextInputStyle.SHORT)
+                                .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.VERTICAL_RADIUS.toString()))
+                                .setRequiredRange(1, 3)
+                                .build();
+                        Modal modal = Modal.create("customized",
+                                        this.plugin.getBot().getLang().getMessage("field.customized.title"))
+                                .addComponents(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
+                                .build();
+                        event.replyModal(modal).queue();
                     }
                     break;
 

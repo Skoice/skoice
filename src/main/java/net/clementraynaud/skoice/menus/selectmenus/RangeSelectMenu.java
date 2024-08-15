@@ -35,6 +35,7 @@ public class RangeSelectMenu extends SelectMenu {
 
     private static final String LONG_RANGE_MODE_ID = "long-range-mode";
     private static final String SHORT_RANGE_MODE_ID = "short-range-mode";
+    private static final String CUSTOMIZED_ID = "customized";
 
     public RangeSelectMenu(Skoice plugin) {
         super(plugin);
@@ -42,25 +43,37 @@ public class RangeSelectMenu extends SelectMenu {
 
     @Override
     public net.dv8tion.jda.api.interactions.components.selections.SelectMenu get() {
-        List<SelectOption> modes = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.long-range-mode.label"), RangeSelectMenu.LONG_RANGE_MODE_ID)
-                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.long-range-mode.description"))
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.long-range-mode.label"), RangeSelectMenu.LONG_RANGE_MODE_ID)
+                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.description", "80", "40"))
                         .withEmoji(MenuEmoji.LOUD_SOUND.get()),
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.short-range-mode.label"), RangeSelectMenu.SHORT_RANGE_MODE_ID)
-                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.short-range-mode.description"))
-                        .withEmoji(MenuEmoji.SOUND.get())));
+                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.description", "40", "20"))
+                        .withEmoji(MenuEmoji.SOUND.get())
+        ));
+
+        SelectOption customizedOption  = SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.customized.label"),
+                        RangeSelectMenu.CUSTOMIZED_ID)
+                .withEmoji(MenuEmoji.PENCIL2.get());
+
         String defaultValue = null;
-        if (super.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString()) == 80
-                && super.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()) == 40) {
+        int horizontalRadius = super.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
+        int verticalRadius = super.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString());
+        if (horizontalRadius == 80 && verticalRadius == 40) {
             defaultValue = RangeSelectMenu.LONG_RANGE_MODE_ID;
-        } else if (super.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString()) == 40
-                && super.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString()) == 20) {
+        } else if (verticalRadius == 40 && horizontalRadius == 20) {
             defaultValue = RangeSelectMenu.SHORT_RANGE_MODE_ID;
+        } else if (super.plugin.getBot().getStatus() != BotStatus.NO_RADIUS) {
+            defaultValue = RangeSelectMenu.CUSTOMIZED_ID;
+            customizedOption = customizedOption.withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.description",
+                            String.valueOf(horizontalRadius),
+                            String.valueOf(verticalRadius)));
         }
-        return StringSelectMenu.create("mode-selection")
-                .setPlaceholder(super.plugin.getBot().getStatus() != BotStatus.READY
-                        ? super.plugin.getBot().getLang().getMessage("menu.range.select-menu.placeholder")
-                        : super.plugin.getBot().getLang().getMessage("menu.range.select-menu.alternative-placeholder"))
-                .addOptions(modes)
+
+        options.add(customizedOption);
+
+        return StringSelectMenu.create("range-selection")
+                .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.placeholder"))
+                .addOptions(options)
                 .setDefaultValues(defaultValue != null ? Collections.singleton(defaultValue) : Collections.emptyList()).build();
     }
 }

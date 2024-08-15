@@ -48,7 +48,7 @@ long-range-mode:
 short-range-mode:
   emoji: sound
   inline: true
-customize:
+customized:
   emoji: pencil2
   inline: true
 production-channel:

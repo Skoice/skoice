@@ -96,7 +96,7 @@ range:
   fields:
     - long-range-mode
     - short-range-mode
-    - customize
+    - customized
 active-worlds:
   emoji: map
   footer: review

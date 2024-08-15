@@ -35,15 +35,15 @@ menu:
     title: "Range"
     description: "Customize the range of the proximity voice chat."
     select-menu:
-      placeholder: "Please select a mode."
-      alternative-placeholder: "You are currently using customized distances."
+      placeholder: "Please select a range."
       select-option:
         long-range-mode:
           label: "Long-Range Mode"
-          description: "Horizontal Radius: 80 blocks — Vertical Radius: 40 blocks"
         short-range-mode:
           label: "Short-Range Mode"
-          description: "Horizontal Radius: 40 blocks — Vertical Radius: 20 blocks"
+        customized:
+          label: "Customized"
+        description: "Horizontal Radius: %s blocks — Vertical Radius: %s blocks"
   active-worlds:
     title: "Active Worlds"
     description: "Choose the worlds where Skoice is active."
@@ -168,8 +168,8 @@ field:
   short-range-mode:
     title: "Short-Range Mode"
     description: "Choose this mode if you plan to play game modes that only require a limited area."
-  customize:
-    title: "Customize"
+  customized:
+    title: "Customized"
     description: "Set distances according to your personal preferences."
   production-channel:
     title: "Production Channel"

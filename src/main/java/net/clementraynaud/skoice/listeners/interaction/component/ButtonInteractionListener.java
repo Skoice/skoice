@@ -23,16 +23,11 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
-import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.text.TextInput;
-import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
-import net.dv8tion.jda.api.interactions.modals.Modal;
 
 import java.util.Collections;
 import java.util.List;
@@ -65,25 +60,6 @@ public class ButtonInteractionListener extends ListenerAdapter {
         } else if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
             if ("configure-now".equals(buttonId)) {
                 this.plugin.getBot().generateConfigurationMenu(event);
-
-            } else if ("customize".equals(buttonId)) {
-                TextInput horizontalRadius = TextInput.create("horizontal-radius",
-                                this.plugin.getBot().getLang().getMessage("text-input.horizontal-radius.label"),
-                                TextInputStyle.SHORT)
-                        .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.HORIZONTAL_RADIUS.toString()))
-                        .setRequiredRange(1, 3)
-                        .build();
-                TextInput verticalRadius = TextInput.create("vertical-radius",
-                                this.plugin.getBot().getLang().getMessage("text-input.vertical-radius.label"),
-                                TextInputStyle.SHORT)
-                        .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.VERTICAL_RADIUS.toString()))
-                        .setRequiredRange(1, 3)
-                        .build();
-                Modal modal = Modal.create("customize",
-                                this.plugin.getBot().getLang().getMessage("field.customize.title"))
-                        .addComponents(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
-                        .build();
-                event.replyModal(modal).queue();
 
             } else if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
                 this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.refreshId().edit(event));
