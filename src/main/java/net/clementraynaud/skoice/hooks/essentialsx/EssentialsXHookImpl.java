@@ -4,10 +4,12 @@ import net.clementraynaud.skoice.Skoice;
 import net.essentialsx.api.v2.events.discordlink.DiscordLinkStatusChangeEvent;
 import net.essentialsx.api.v2.services.discord.DiscordService;
 import net.essentialsx.api.v2.services.discordlink.DiscordLinkService;
+import net.essentialsx.discordlink.EssentialsDiscordLink;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -15,8 +17,10 @@ import java.util.UUID;
 public class EssentialsXHookImpl implements Listener {
 
     private final Skoice plugin;
-    private DiscordLinkService linkApi;
-    private DiscordService discordApi;
+    private DiscordLinkService essentialsLinkApi;
+    private DiscordService essentialsDiscordApi;
+    private Map<String, String> essentialsLinkedAccounts;
+    private boolean isDiscordReady = false;
 
     public EssentialsXHookImpl(Skoice plugin) {
         this.plugin = plugin;
@@ -24,30 +28,34 @@ public class EssentialsXHookImpl implements Listener {
     }
 
     public void initialize() {
-        try {
-            this.linkApi = this.plugin.getServer().getServicesManager().load(DiscordLinkService.class);
-            this.discordApi = Bukkit.getServicesManager().load(DiscordService.class);
-            this.sendSkoiceLinks();
-        } catch (Throwable ignored) {
+        this.essentialsLinkApi = this.plugin.getServer().getServicesManager().load(DiscordLinkService.class);
+        this.essentialsDiscordApi = Bukkit.getServicesManager().load(DiscordService.class);
+        EssentialsDiscordLink ess = (EssentialsDiscordLink) Bukkit.getPluginManager().getPlugin("EssentialsDiscordLink");
+        if (ess != null && ess.getAccountStorage() != null) {
+            this.essentialsLinkedAccounts = Collections.unmodifiableMap(ess.getAccountStorage().getRawStorageMap());
+            this.synchronizeAccountLinks();
         }
     }
 
     public void linkUser(String minecraftId, String discordId) {
         try {
-            this.discordApi.getMemberById(discordId).thenAccept(member -> this.linkApi.linkAccount(UUID.fromString(minecraftId), member));
+            this.essentialsDiscordApi.getMemberById(discordId).thenAccept(member -> this.essentialsLinkApi.linkAccount(UUID.fromString(minecraftId), member));
         } catch (Throwable ignored) {
         }
     }
 
     public void unlinkUser(String minecraftId) {
         try {
-            this.linkApi.unlinkAccount(UUID.fromString(minecraftId));
+            this.essentialsLinkApi.unlinkAccount(UUID.fromString(minecraftId));
         } catch (Throwable ignored) {
         }
     }
 
     @EventHandler
     public void onDiscordLinkStatusChange(DiscordLinkStatusChangeEvent event) {
+        if (!this.isDiscordReady) {
+            return;
+        }
         if (event.isLinked()) {
             if (event.getMemberId() != null && event.getUser() != null && event.getUser().getUUID() != null) {
                 Skoice.api().linkUser(event.getUser().getUUID(), event.getMemberId());
@@ -57,19 +65,33 @@ public class EssentialsXHookImpl implements Listener {
                 Skoice.api().unlinkUser(event.getUser().getUUID());
             }
         }
-
     }
 
-    private void sendSkoiceLinks() {
+    private void synchronizeAccountLinks() {
+        if (this.isDiscordReady) {
+            return;
+        }
+
+        Map<String, String> existingHookLinks = this.essentialsLinkedAccounts;
         Map<String, String> existingSkoiceLinks = new HashMap<>(Skoice.api().getLinkedAccounts());
-        existingSkoiceLinks.forEach((minecraftId, discordId) -> {
-            try {
-                UUID uuid = UUID.fromString(minecraftId);
-                this.discordApi.getMemberById(discordId).thenAccept(member -> {
-                    this.linkApi.linkAccount(uuid, member);
-                });
-            } catch (Throwable ignored) {
+
+        existingHookLinks.forEach((minecraftId, discordId) -> {
+            if (!existingSkoiceLinks.containsValue(discordId)) {
+                this.plugin.getLinksYamlFile().linkUserDirectly(minecraftId, discordId);
             }
         });
+
+        existingSkoiceLinks.forEach((minecraftId, discordId) -> {
+            if (!existingHookLinks.containsKey(minecraftId)) {
+                this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+                    try {
+                        this.linkUser(minecraftId, discordId);
+                    } catch (Throwable ignored) {
+                    }
+                });
+            }
+        });
+
+        this.isDiscordReady = true;
     }
 }
