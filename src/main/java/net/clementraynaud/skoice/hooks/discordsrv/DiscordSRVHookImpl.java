@@ -21,12 +21,9 @@ public class DiscordSRVHookImpl {
     }
 
     public void initialize() {
-        try {
-            DiscordSRV.api.subscribe(this);
-            if (DiscordSRV.getPlugin().getAccountLinkManager() != null) {
-                this.synchronizeAccountLinks();
-            }
-        } catch (Throwable ignored) {
+        DiscordSRV.api.subscribe(this);
+        if (DiscordSRV.getPlugin().getAccountLinkManager() != null) {
+            this.synchronizeAccountLinks();
         }
     }
 
@@ -97,7 +94,7 @@ public class DiscordSRVHookImpl {
                 if (!existingHookLinks.containsValue(uuid)) {
                     this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
                         try {
-                            DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, uuid);
+                            this.linkUser(discordId, minecraftId);
                         } catch (Throwable ignored) {
                         }
                     });
