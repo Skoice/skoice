@@ -49,8 +49,8 @@ import java.util.stream.Stream;
 
 public class Skoice extends JavaPlugin {
 
-    private static final String OUTDATED_MINECRAFT_SERVER_ERROR = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
-    private static final int SERVICE_ID = 11380;
+    private static final String OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
+    private static final int BSTATS_SERVICE_ID = 11380;
     private static SkoiceAPI api;
     private MinecraftLang lang;
     private ConfigYamlFile configYamlFile;
@@ -71,7 +71,7 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onEnable() {
         if (!this.isMinecraftServerCompatible()) {
-            this.getLogger().severe(Skoice.OUTDATED_MINECRAFT_SERVER_ERROR);
+            this.getLogger().severe(Skoice.OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE);
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -144,7 +144,7 @@ public class Skoice extends JavaPlugin {
     }
 
     private void addCustomCharts() {
-        Metrics metrics = new Metrics(this, Skoice.SERVICE_ID);
+        Metrics metrics = new Metrics(this, Skoice.BSTATS_SERVICE_ID);
 
         this.getSharedConfigFields().forEach(field ->
                 metrics.addCustomChart(new SimplePie(field.toCamelCase(), () ->
