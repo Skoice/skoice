@@ -201,6 +201,9 @@ field:
   illegal-value:
     title: "Illegal Value"
     description: "Values must be whole numbers greater than 0."
+  proximity-channel-deleted:
+    title: "Proximity Channel Deleted"
+    description: "You have deleted a channel used by the proximity voice chat. These channels are automatically deleted when they are no longer needed. You should not be doing it manually."
 button-label:
   back: "Back"
   configure-now: "Configure Now"

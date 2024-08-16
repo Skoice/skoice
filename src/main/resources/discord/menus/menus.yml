@@ -80,6 +80,10 @@ error:
     type: error
     fields:
       - illegal-value
+  proximity-channel-deleted:
+    type: error
+    fields:
+      - proximity-channel-deleted
 
 voice-chat:
   emoji: speaking_head

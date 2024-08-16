@@ -81,3 +81,6 @@ access-denied:
 illegal-value:
   emoji: x
   inline: false
+proximity-channel-deleted:
+  emoji: x
+  inline: false

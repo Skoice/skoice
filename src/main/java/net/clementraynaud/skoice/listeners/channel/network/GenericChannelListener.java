@@ -20,8 +20,12 @@
 package net.clementraynaud.skoice.listeners.channel.network;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.system.Networks;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.audit.ActionType;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.unions.ChannelUnion;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
@@ -46,6 +50,22 @@ public class GenericChannelListener extends ListenerAdapter {
         Networks.getInitialized().stream()
                 .filter(network -> event.getChannel().getId().equals(network.getChannelId()))
                 .forEach(Network::forget);
+
+        if (!event.getGuild().getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS)) {
+            return;
+        }
+        event.getGuild().retrieveAuditLogs()
+                .type(ActionType.CHANNEL_DELETE)
+                .limit(1)
+                .queue(auditLogEntries -> {
+                    if (!auditLogEntries.isEmpty()) {
+                        User user = auditLogEntries.get(0).getUser();
+                        if (user != null && !user.isBot()) {
+                            new EmbeddedMenu(this.plugin.getBot()).setContent("proximity-channel-deleted")
+                                    .message(user);
+                        }
+                    }
+                });
     }
 
     @Override
