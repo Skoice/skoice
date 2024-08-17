@@ -26,10 +26,10 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class LangInfoTest {
+class LangInfoTest {
 
     @Test
-    public void testGetList() {
+    void testGetList() {
         Set<String> langList = LangInfo.getList();
         assertNotNull(langList);
         assertTrue(langList.contains("en"));
@@ -38,7 +38,7 @@ public class LangInfoTest {
     }
 
     @Test
-    public void testGetJoinedList() {
+    void testGetJoinedList() {
         String joinedList = LangInfo.getJoinedList();
         assertNotNull(joinedList);
         assertTrue(joinedList.startsWith("<"));

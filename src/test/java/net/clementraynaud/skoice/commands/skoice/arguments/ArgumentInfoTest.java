@@ -29,10 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ArgumentInfoTest {
+class ArgumentInfoTest {
 
     @Test
-    public void testGetJoinedConsoleAllowedList() {
+    void testGetJoinedConsoleAllowedList() {
         String joinedConsoleAllowedList = ArgumentInfo.getJoinedConsoleAllowedList();
         assertNotNull(joinedConsoleAllowedList);
         assertTrue(joinedConsoleAllowedList.startsWith("<"));
@@ -42,14 +42,14 @@ public class ArgumentInfoTest {
     }
 
     @Test
-    public void testGet() {
+    void testGet() {
         assertEquals(ArgumentInfo.CONFIGURE, ArgumentInfo.get("configure"));
         assertEquals(ArgumentInfo.TOKEN, ArgumentInfo.get("token"));
         assertNull(ArgumentInfo.get("nonexistent"));
     }
 
     @Test
-    public void testGetList() {
+    void testGetList() {
         Set<String> listWithPermission = ArgumentInfo.getList(true);
         assertNotNull(listWithPermission);
         assertTrue(listWithPermission.contains("configure"));

@@ -28,7 +28,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -52,13 +51,13 @@ class NetworkTest {
 
         when(player.isStateEligible()).thenReturn(true);
         when(anotherPlayer.isStateEligible()).thenReturn(true);
-        when(anotherPlayer.isCloseEnoughToPlayer(eq(player), eq(false))).thenReturn(true);
+        when(anotherPlayer.isCloseEnoughToPlayer(player, false)).thenReturn(true);
 
         this.network.add(anotherPlayer);
 
         assertTrue(this.network.canPlayerConnect(player));
 
-        when(anotherPlayer.isCloseEnoughToPlayer(eq(player), eq(false))).thenReturn(false);
+        when(anotherPlayer.isCloseEnoughToPlayer(player, false)).thenReturn(false);
         assertFalse(this.network.canPlayerConnect(player));
     }
 
@@ -69,13 +68,13 @@ class NetworkTest {
 
         when(player.isStateEligible()).thenReturn(true);
         when(anotherPlayer.isStateEligible()).thenReturn(true);
-        when(anotherPlayer.isCloseEnoughToPlayer(eq(player), eq(true))).thenReturn(true);
+        when(anotherPlayer.isCloseEnoughToPlayer(player, true)).thenReturn(true);
 
         this.network.add(anotherPlayer);
 
         assertTrue(this.network.canPlayerStayConnected(player));
 
-        when(anotherPlayer.isCloseEnoughToPlayer(eq(player), eq(true))).thenReturn(false);
+        when(anotherPlayer.isCloseEnoughToPlayer(player, true)).thenReturn(false);
         assertFalse(this.network.canPlayerStayConnected(player));
     }
 }
