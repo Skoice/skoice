@@ -47,6 +47,7 @@ public class SelectorFactory {
                 return new ReleaseChannelSelector(plugin);
             case "tooltips":
             case "separated-teams":
+            case "text-chat":
             case "channel-visibility":
             case "discordsrv-synchronization":
                 return new ToggleSelector(plugin, menuId);

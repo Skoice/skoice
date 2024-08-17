@@ -47,6 +47,7 @@ public enum MenuEmoji {
     LOUD_SOUND("U+1F50A"),
     MAG("U+1F50D"),
     MAP("U+1F5FA"),
+    MEMO("U+1F4DD"),
     MUTE("U+1F507"),
     NO_ENTRY("U+26D4"),
     OUTBOX_TRAY("U+1F4E4"),

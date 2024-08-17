@@ -74,12 +74,17 @@ public class Network {
         }
 
         Guild guild = this.plugin.getBot().getGuild();
+
         EnumSet<Permission> deniedPermissions = EnumSet.of(
                 this.plugin.getConfigYamlFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.toString())
                         ? Permission.VOICE_CONNECT
                         : Permission.VIEW_CHANNEL,
                 Permission.VOICE_MOVE_OTHERS
         );
+        if (!this.plugin.getConfigYamlFile().getBoolean(ConfigField.TEXT_CHAT.toString())) {
+            deniedPermissions.add(Permission.MESSAGE_SEND);
+        }
+
         this.plugin.getConfigYamlFile().getCategory()
                 .createVoiceChannel(this.plugin.getBot().getLang().getMessage("proximity-channel-name"))
                 .addPermissionOverride(guild.getPublicRole(),

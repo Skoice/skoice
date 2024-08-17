@@ -87,6 +87,9 @@ menu:
         new-voice-channel:
           label: "New Voice Channel"
           description: "Skoice will automatically set up a voice channel."
+  text-chat:
+    title: "Text Chat"
+    description: "Choose whether or not players can send text messages in proximity channels."
   channel-visibility:
     title: "Channel Visibility"
     description: "Toggle the visibility of the temporary channels created by Skoice."

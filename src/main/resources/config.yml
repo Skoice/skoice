@@ -8,6 +8,7 @@ tooltips: true
 players-on-death-screen-included: false
 spectators-included: false
 separated-teams: false
+text-chat: true
 channel-visibility: true
 discordsrv-synchronization: true
 release-channel: production

@@ -137,6 +137,12 @@ voice-channel:
   type: default
   style: primary
   parent: discord-integration
+text-chat:
+  emoji: memo
+  footer: review
+  type: default
+  style: primary
+  parent: discord-integration
 channel-visibility:
   emoji: mag
   footer: review
