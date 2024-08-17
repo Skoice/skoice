@@ -92,12 +92,7 @@ public class DiscordSRVHookImpl {
             try {
                 UUID uuid = UUID.fromString(minecraftId);
                 if (!existingHookLinks.containsValue(uuid)) {
-                    this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                        try {
-                            this.linkUserDiscordSRV(minecraftId, discordId);
-                        } catch (Throwable ignored) {
-                        }
-                    });
+                    this.linkUserDiscordSRV(minecraftId, discordId);
                 }
             } catch (IllegalArgumentException ignored) {
             }

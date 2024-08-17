@@ -83,12 +83,7 @@ public class EssentialsXHookImpl implements Listener {
 
         existingSkoiceLinks.forEach((minecraftId, discordId) -> {
             if (!existingHookLinks.containsKey(minecraftId)) {
-                this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                    try {
-                        this.linkUserEssentialsX(minecraftId, discordId);
-                    } catch (Throwable ignored) {
-                    }
-                });
+                this.linkUserEssentialsX(minecraftId, discordId);
             }
         });
 
