@@ -77,7 +77,10 @@ public class EssentialsXHookImpl implements Listener {
 
         existingHookLinks.forEach((minecraftId, discordId) -> {
             if (!existingSkoiceLinks.containsValue(discordId)) {
-                this.plugin.getLinksYamlFile().linkUserDirectly(minecraftId, discordId);
+                try {
+                    Skoice.api().linkUser(UUID.fromString(minecraftId), discordId);
+                } catch (IllegalArgumentException ignored) {
+                }
             }
         });
 

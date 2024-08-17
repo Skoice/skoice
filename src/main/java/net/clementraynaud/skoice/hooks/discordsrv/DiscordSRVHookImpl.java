@@ -84,7 +84,7 @@ public class DiscordSRVHookImpl {
 
         existingHookLinks.forEach((discordId, minecraftId) -> {
             if (!existingSkoiceLinks.containsValue(discordId)) {
-                this.plugin.getLinksYamlFile().linkUserDirectly(minecraftId.toString(), discordId);
+                Skoice.api().linkUser(minecraftId, discordId);
             }
         });
 
