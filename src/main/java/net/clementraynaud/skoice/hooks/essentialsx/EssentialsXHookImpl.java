@@ -20,7 +20,7 @@ public class EssentialsXHookImpl implements Listener {
     private DiscordLinkService essentialsLinkApi;
     private DiscordService essentialsDiscordApi;
     private Map<String, String> essentialsLinkedAccounts;
-    private boolean isDiscordReady = false;
+    private boolean synchronizationComplete = false;
 
     public EssentialsXHookImpl(Skoice plugin) {
         this.plugin = plugin;
@@ -37,14 +37,14 @@ public class EssentialsXHookImpl implements Listener {
         }
     }
 
-    public void linkUser(String minecraftId, String discordId) {
+    public void linkUserEssentialsX(String minecraftId, String discordId) {
         try {
             this.essentialsDiscordApi.getMemberById(discordId).thenAccept(member -> this.essentialsLinkApi.linkAccount(UUID.fromString(minecraftId), member));
         } catch (Throwable ignored) {
         }
     }
 
-    public void unlinkUser(String minecraftId) {
+    public void unlinkUserEssentialsX(String minecraftId) {
         try {
             this.essentialsLinkApi.unlinkAccount(UUID.fromString(minecraftId));
         } catch (Throwable ignored) {
@@ -53,7 +53,7 @@ public class EssentialsXHookImpl implements Listener {
 
     @EventHandler
     public void onDiscordLinkStatusChange(DiscordLinkStatusChangeEvent event) {
-        if (!this.isDiscordReady) {
+        if (!this.synchronizationComplete) {
             return;
         }
         if (event.isLinked()) {
@@ -68,7 +68,7 @@ public class EssentialsXHookImpl implements Listener {
     }
 
     private void synchronizeAccountLinks() {
-        if (this.isDiscordReady) {
+        if (this.synchronizationComplete) {
             return;
         }
 
@@ -85,13 +85,13 @@ public class EssentialsXHookImpl implements Listener {
             if (!existingHookLinks.containsKey(minecraftId)) {
                 this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
                     try {
-                        this.linkUser(minecraftId, discordId);
+                        this.linkUserEssentialsX(minecraftId, discordId);
                     } catch (Throwable ignored) {
                     }
                 });
             }
         });
 
-        this.isDiscordReady = true;
+        this.synchronizationComplete = true;
     }
 }

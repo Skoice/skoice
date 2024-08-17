@@ -14,7 +14,7 @@ import java.util.UUID;
 public class DiscordSRVHookImpl {
 
     private final Skoice plugin;
-    private boolean isDiscordReady = false;
+    private boolean synchronizationComplete = false;
 
     public DiscordSRVHookImpl(Skoice plugin) {
         this.plugin = plugin;
@@ -34,7 +34,7 @@ public class DiscordSRVHookImpl {
         }
     }
 
-    public void linkUser(String minecraftId, String discordId) {
+    public void linkUserDiscordSRV(String minecraftId, String discordId) {
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
             try {
                 DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, UUID.fromString(minecraftId));
@@ -43,7 +43,7 @@ public class DiscordSRVHookImpl {
         });
     }
 
-    public void unlinkUser(String minecraftId) {
+    public void unlinkUserDiscordSRV(String minecraftId) {
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
             try {
                 DiscordSRV.getPlugin().getAccountLinkManager().unlink(UUID.fromString(minecraftId));
@@ -54,14 +54,14 @@ public class DiscordSRVHookImpl {
 
     @Subscribe
     public void onAccountLinked(AccountLinkedEvent event) {
-        if (this.isDiscordReady && event.getUser() != null && event.getPlayer() != null) {
+        if (this.synchronizationComplete && event.getUser() != null && event.getPlayer() != null) {
             Skoice.api().linkUser(event.getPlayer().getUniqueId(), event.getUser().getId());
         }
     }
 
     @Subscribe
     public void onAccountUnlinked(AccountUnlinkedEvent event) {
-        if (this.isDiscordReady && event.getPlayer() != null) {
+        if (this.synchronizationComplete && event.getPlayer() != null) {
             Skoice.api().unlinkUser(event.getPlayer().getUniqueId());
         }
     }
@@ -75,7 +75,7 @@ public class DiscordSRVHookImpl {
     }
 
     private void synchronizeAccountLinks() {
-        if (this.isDiscordReady) {
+        if (this.synchronizationComplete) {
             return;
         }
 
@@ -94,7 +94,7 @@ public class DiscordSRVHookImpl {
                 if (!existingHookLinks.containsValue(uuid)) {
                     this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
                         try {
-                            this.linkUser(discordId, minecraftId);
+                            this.linkUserDiscordSRV(minecraftId, discordId);
                         } catch (Throwable ignored) {
                         }
                     });
@@ -103,6 +103,6 @@ public class DiscordSRVHookImpl {
             }
         });
 
-        this.isDiscordReady = true;
+        this.synchronizationComplete = true;
     }
 }

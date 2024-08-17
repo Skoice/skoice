@@ -30,15 +30,15 @@ public class EssentialsXHook {
         }
     }
 
-    public void linkUser(String minecraftId, String discordId) {
+    public void linkUserEssentialsX(String minecraftId, String discordId) {
         if (this.essentialsXHookImpl != null) {
-            this.essentialsXHookImpl.linkUser(minecraftId, discordId);
+            this.essentialsXHookImpl.linkUserEssentialsX(minecraftId, discordId);
         }
     }
 
-    public void unlinkUser(String minecraftId) {
+    public void unlinkUserEssentialsX(String minecraftId) {
         if (this.essentialsXHookImpl != null) {
-            this.essentialsXHookImpl.unlinkUser(minecraftId);
+            this.essentialsXHookImpl.unlinkUserEssentialsX(minecraftId);
         }
     }
 }

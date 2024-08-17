@@ -22,13 +22,13 @@ public class HookManager {
     }
 
     public void linkUser(String minecraftId, String discordId) {
-        this.discordSRVHook.linkUser(minecraftId, discordId);
-        this.essentialsXHook.linkUser(minecraftId, discordId);
+        this.discordSRVHook.linkUserDiscordSRV(minecraftId, discordId);
+        this.essentialsXHook.linkUserEssentialsX(minecraftId, discordId);
     }
 
     public void unlinkUser(String minecraftId) {
-        this.discordSRVHook.unlinkUser(minecraftId);
-        this.essentialsXHook.unlinkUser(minecraftId);
+        this.discordSRVHook.unlinkUserDiscordSRV(minecraftId);
+        this.essentialsXHook.unlinkUserEssentialsX(minecraftId);
     }
 
     public void close() {

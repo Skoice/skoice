@@ -29,15 +29,15 @@ public class DiscordSRVHook {
         }
     }
 
-    public void linkUser(String minecraftId, String discordId) {
+    public void linkUserDiscordSRV(String minecraftId, String discordId) {
         if (this.discordSRVHookImpl != null) {
-            this.discordSRVHookImpl.linkUser(minecraftId, discordId);
+            this.discordSRVHookImpl.linkUserDiscordSRV(minecraftId, discordId);
         }
     }
 
-    public void unlinkUser(String minecraftId) {
+    public void unlinkUserDiscordSRV(String minecraftId) {
         if (this.discordSRVHookImpl != null) {
-            this.discordSRVHookImpl.unlinkUser(minecraftId);
+            this.discordSRVHookImpl.unlinkUserDiscordSRV(minecraftId);
         }
     }
 
