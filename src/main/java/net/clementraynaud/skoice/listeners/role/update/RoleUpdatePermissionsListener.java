@@ -49,7 +49,7 @@ public class RoleUpdatePermissionsListener extends ListenerAdapter {
                 event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
                 this.plugin.getListenerManager().update();
                 this.plugin.getBot().getVoiceChannel().setStatus();
-                this.plugin.getBot().getVoiceChannel().muteMembers();
+                this.plugin.getBot().getVoiceChannel().updatePermissions();
                 this.plugin.getBot().updateVoiceState();
                 ConfigurationMenus.refreshAll();
             }

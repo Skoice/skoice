@@ -108,7 +108,7 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getBot().updateGuild();
         this.plugin.getBot().retrieveNetworks();
         this.plugin.getBot().getVoiceChannel().setStatus();
-        this.plugin.getBot().getVoiceChannel().muteMembers();
+        this.plugin.getBot().getVoiceChannel().updatePermissions();
         this.plugin.getBot().updateVoiceState();
         this.plugin.getBot().getMenuFactory().loadAll(this.plugin);
 

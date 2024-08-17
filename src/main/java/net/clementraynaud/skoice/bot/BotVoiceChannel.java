@@ -26,6 +26,8 @@ import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
+import java.util.EnumSet;
+
 public class BotVoiceChannel {
 
     private final Skoice plugin;
@@ -49,7 +51,7 @@ public class BotVoiceChannel {
         voiceChannel.modifyStatus(this.plugin.getBot().getLang().getMessage("voice-channel-status")).queue();
     }
 
-    public void muteMembers() {
+    public void updatePermissions() {
         if (!this.plugin.getBot().isAdministrator()) {
             return;
         }
@@ -58,14 +60,20 @@ public class BotVoiceChannel {
             return;
         }
         voiceChannel.getRolePermissionOverrides().forEach(override -> {
-            if (!override.getDenied().contains(Permission.VOICE_SPEAK)) {
+            EnumSet<Permission> deniedPermissions = override.getDenied();
+            if (!deniedPermissions.contains(Permission.VOICE_SPEAK)) {
                 override.getManager().deny(Permission.VOICE_SPEAK).queue();
+            }
+            if (!deniedPermissions.contains(Permission.VOICE_SET_STATUS)) {
+                override.getManager().deny(Permission.VOICE_SET_STATUS).queue();
             }
         });
         Role publicRole = voiceChannel.getGuild().getPublicRole();
         PermissionOverride permissionOverride = voiceChannel.getPermissionOverride(publicRole);
         if (permissionOverride == null) {
-            voiceChannel.upsertPermissionOverride(publicRole).deny(Permission.VOICE_SPEAK).queue();
+            voiceChannel.upsertPermissionOverride(publicRole)
+                    .deny(Permission.VOICE_SPEAK, Permission.VOICE_SET_STATUS)
+                    .queue();
         }
     }
 

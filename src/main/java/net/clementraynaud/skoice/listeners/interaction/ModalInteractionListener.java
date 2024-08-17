@@ -61,7 +61,7 @@ public class ModalInteractionListener extends ListenerAdapter {
                         this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
                         new InterruptSystemTask(this.plugin).run();
                         this.plugin.getListenerManager().update(event.getUser());
-                        this.plugin.getBot().getVoiceChannel().muteMembers();
+                        this.plugin.getBot().getVoiceChannel().updatePermissions();
                         this.plugin.getBot().getVoiceChannel().setStatus();
                         this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.refreshId().edit(event));
                     }));
