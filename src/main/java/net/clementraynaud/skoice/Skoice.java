@@ -164,7 +164,11 @@ public class Skoice extends JavaPlugin {
                 ConfigField.TOOLTIPS,
                 ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED,
                 ConfigField.SPECTATORS_INCLUDED,
-                ConfigField.CHANNEL_VISIBILITY
+                ConfigField.SEPARATED_TEAMS,
+                ConfigField.TEXT_CHAT,
+                ConfigField.CHANNEL_VISIBILITY,
+                ConfigField.DISCORDSRV_SYNCHRONIZATION,
+                ConfigField.RELEASE_CHANNEL
         );
     }
 
