@@ -41,10 +41,7 @@ import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.EnumSet;
 
 public class Skoice extends JavaPlugin {
 
@@ -158,8 +155,8 @@ public class Skoice extends JavaPlugin {
         metrics.addCustomChart(new SimplePie("botStatus", () -> this.bot.getStatus().toString()));
     }
 
-    private Set<ConfigField> getSharedConfigFields() {
-        return Stream.of(
+    private EnumSet<ConfigField> getSharedConfigFields() {
+        return EnumSet.of(
                 ConfigField.LANG,
                 ConfigField.LOGIN_NOTIFICATION,
                 ConfigField.CONNECTING_ALERT,
@@ -168,11 +165,11 @@ public class Skoice extends JavaPlugin {
                 ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED,
                 ConfigField.SPECTATORS_INCLUDED,
                 ConfigField.CHANNEL_VISIBILITY
-        ).collect(Collectors.toSet());
+        );
     }
 
-    private Set<ConfigField> getSharedIntConfigFields() {
-        Set<ConfigField> fields = new HashSet<>();
+    private EnumSet<ConfigField> getSharedIntConfigFields() {
+        EnumSet<ConfigField> fields = EnumSet.noneOf(ConfigField.class);
         if (this.configYamlFile.contains(ConfigField.HORIZONTAL_RADIUS.toString())) {
             fields.add(ConfigField.HORIZONTAL_RADIUS);
         }
