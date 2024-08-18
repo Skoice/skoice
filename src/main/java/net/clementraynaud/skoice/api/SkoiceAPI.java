@@ -38,7 +38,7 @@ public class SkoiceAPI {
     }
 
     public boolean linkUser(UUID minecraftId, String discordId) {
-        if (this.plugin.getLinksYamlFile().getLinks().containsKey(minecraftId.toString())) {
+        if (this.plugin.getLinksYamlFile().getLinks().containsKey(minecraftId.toString()) || this.plugin.getLinksYamlFile().getLinks().containsValue(discordId)) {
             return false;
         }
         this.plugin.getLinksYamlFile().linkUserDirectly(minecraftId.toString(), discordId);
