@@ -106,7 +106,6 @@ public class ReadyListener extends ListenerAdapter {
 
         this.plugin.getBot().setDefaultAvatar();
         this.plugin.getBot().updateGuild();
-        this.plugin.getBot().retrieveNetworks();
         this.plugin.getBot().getVoiceChannel().setStatus();
         this.plugin.getBot().getVoiceChannel().updatePermissions();
         this.plugin.getBot().updateVoiceState();
@@ -122,6 +121,8 @@ public class ReadyListener extends ListenerAdapter {
                 .thenRun(() -> {
                     this.plugin.getListenerManager().registerPermanentBotListeners();
                     this.plugin.getListenerManager().update();
+
+                    this.plugin.getBot().retrieveNetworks();
                 });
     }
 }
