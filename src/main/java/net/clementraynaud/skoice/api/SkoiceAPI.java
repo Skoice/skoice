@@ -52,4 +52,12 @@ public class SkoiceAPI {
         this.plugin.getLinksYamlFile().unlinkUserDirectly(minecraftId.toString());
         return true;
     }
+    
+    public boolean isLinked(UUID minecraftId) {
+        return this.getLinkedAccounts().containsKey(minecraftId.toString());
+    }
+
+    public boolean isLinked(String discordId) {
+        return this.getLinkedAccounts().containsValue(discordId);
+    }
 }
