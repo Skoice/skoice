@@ -44,54 +44,56 @@ public class LinkArgument extends Argument {
 
     @Override
     public void run() {
-        Player player = (Player) this.sender;
-        if (super.plugin.getBot().getStatus() != BotStatus.READY) {
-            super.plugin.getBot().sendIncompleteConfigurationAlert(player, true, false);
-            return;
-        }
-        if (super.plugin.getLinksYamlFile().getLinks().containsKey(player.getUniqueId().toString())) {
-            player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-already-linked"));
-            return;
-        }
-        if (this.arg.isEmpty()) {
-            player.sendMessage(super.plugin.getLang().getMessage("chat.player.no-code",
-                    super.plugin.getBot().getGuild().getName()));
-            return;
-        }
-        if (!LinkCommand.getDiscordIdCode().containsValue(this.arg)) {
-            player.sendMessage(super.plugin.getLang().getMessage("chat.player.invalid-code",
-                    super.plugin.getBot().getGuild().getName()));
-            return;
-        }
-        String discordId = MapUtil.getKeyFromValue(LinkCommand.getDiscordIdCode(), this.arg);
-        if (discordId == null) {
-            return;
-        }
-        super.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
-            super.plugin.getLinksYamlFile().linkUser(player.getUniqueId().toString(), discordId);
-            LinkCommand.getDiscordIdCode().values().remove(this.arg);
-            VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
-            new EmbeddedMenu(this.plugin.getBot()).setContent("account-linked",
-                            mainVoiceChannel.getAsMention())
-                    .message(member.getUser());
-            player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-linked"));
-            GuildVoiceState voiceState = member.getVoiceState();
-            if (voiceState != null) {
-                AudioChannel audioChannel = voiceState.getChannel();
-                if (audioChannel != null && audioChannel.equals(mainVoiceChannel)) {
-                    player.sendMessage(super.plugin.getLang().getMessage("chat.player.connected"));
-                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                        PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(player.getUniqueId().toString(), discordId);
-                        super.plugin.getServer().getPluginManager().callEvent(event);
-                    });
-                } else {
-                    player.sendMessage(super.plugin.getLang().getMessage("chat.player.not-connected",
-                            mainVoiceChannel.getName(),
-                            this.plugin.getBot().getGuild().getName()));
-                }
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            Player player = (Player) this.sender;
+            if (super.plugin.getBot().getStatus() != BotStatus.READY) {
+                super.plugin.getBot().sendIncompleteConfigurationAlert(player, true, false);
+                return;
             }
-        }, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, e ->
-                player.sendMessage(super.plugin.getLang().getMessage("chat.player.invalid-code"))));
+            if (super.plugin.getLinksYamlFile().getLinks().containsKey(player.getUniqueId().toString())) {
+                player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-already-linked"));
+                return;
+            }
+            if (this.arg.isEmpty()) {
+                player.sendMessage(super.plugin.getLang().getMessage("chat.player.no-code",
+                        super.plugin.getBot().getGuild().getName()));
+                return;
+            }
+            if (!LinkCommand.getDiscordIdCode().containsValue(this.arg)) {
+                player.sendMessage(super.plugin.getLang().getMessage("chat.player.invalid-code",
+                        super.plugin.getBot().getGuild().getName()));
+                return;
+            }
+            String discordId = MapUtil.getKeyFromValue(LinkCommand.getDiscordIdCode(), this.arg);
+            if (discordId == null) {
+                return;
+            }
+            super.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
+                super.plugin.getLinksYamlFile().linkUser(player.getUniqueId().toString(), discordId);
+                LinkCommand.getDiscordIdCode().values().remove(this.arg);
+                VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
+                new EmbeddedMenu(this.plugin.getBot()).setContent("account-linked",
+                                mainVoiceChannel.getAsMention())
+                        .message(member.getUser());
+                player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-linked"));
+                GuildVoiceState voiceState = member.getVoiceState();
+                if (voiceState != null) {
+                    AudioChannel audioChannel = voiceState.getChannel();
+                    if (audioChannel != null && audioChannel.equals(mainVoiceChannel)) {
+                        player.sendMessage(super.plugin.getLang().getMessage("chat.player.connected"));
+                        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                            PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(player.getUniqueId().toString(), discordId);
+                            super.plugin.getServer().getPluginManager().callEvent(event);
+                        });
+                    } else {
+                        player.sendMessage(super.plugin.getLang().getMessage("chat.player.not-connected",
+                                mainVoiceChannel.getName(),
+                                this.plugin.getBot().getGuild().getName()));
+                    }
+                }
+            }, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, e ->
+                    player.sendMessage(super.plugin.getLang().getMessage("chat.player.invalid-code"))));
+        });
     }
 
 }
