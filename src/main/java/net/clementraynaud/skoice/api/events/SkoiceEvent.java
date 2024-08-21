@@ -22,14 +22,19 @@ package net.clementraynaud.skoice.api.events;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import java.util.UUID;
+
 public class SkoiceEvent extends Event {
 
     protected static final HandlerList HANDLERS = new HandlerList();
 
-    private final String minecraftId;
+    private UUID minecraftId;
 
     public SkoiceEvent(String minecraftId) {
-        this.minecraftId = minecraftId;
+        try {
+            this.minecraftId = UUID.fromString(minecraftId);
+        } catch (IllegalArgumentException ignored) {
+        }
     }
 
     public static HandlerList getHandlerList() {
@@ -41,7 +46,7 @@ public class SkoiceEvent extends Event {
         return SkoiceEvent.HANDLERS;
     }
 
-    public String getMinecraftId() {
+    public UUID getMinecraftId() {
         return this.minecraftId;
     }
 }
