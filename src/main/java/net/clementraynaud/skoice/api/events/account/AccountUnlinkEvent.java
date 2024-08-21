@@ -19,9 +19,9 @@
 
 package net.clementraynaud.skoice.api.events.account;
 
-import net.clementraynaud.skoice.api.events.SkoiceEvent;
+import net.clementraynaud.skoice.api.events.SkoiceEventMinecraft;
 
-public class AccountUnlinkEvent extends SkoiceEvent {
+public class AccountUnlinkEvent extends SkoiceEventMinecraft {
 
     public AccountUnlinkEvent(String minecraftId) {
         super(minecraftId);

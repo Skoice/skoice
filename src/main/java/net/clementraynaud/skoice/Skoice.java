@@ -85,6 +85,7 @@ public class Skoice extends JavaPlugin {
         this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
         this.loginNotificationYamlFile.load();
         Skoice.api = new SkoiceAPI(this);
+        this.getServer().getPluginManager().registerEvents(Skoice.api, this);
         this.listenerManager = new ListenerManager(this);
         this.listenerManager.registerPermanentMinecraftListeners();
         this.bot = new Bot(this);

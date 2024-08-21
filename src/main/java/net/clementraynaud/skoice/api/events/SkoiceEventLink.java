@@ -19,11 +19,11 @@
 
 package net.clementraynaud.skoice.api.events;
 
-public class SkoiceEventDiscord extends SkoiceEvent {
+public class SkoiceEventLink extends SkoiceEventMinecraft {
 
     private final String discordId;
 
-    public SkoiceEventDiscord(String minecraftId, String discordId) {
+    public SkoiceEventLink(String minecraftId, String discordId) {
         super(minecraftId);
         this.discordId = discordId;
     }

@@ -19,9 +19,9 @@
 
 package net.clementraynaud.skoice.api.events.player;
 
-import net.clementraynaud.skoice.api.events.SkoiceEventDiscord;
+import net.clementraynaud.skoice.api.events.SkoiceEventLink;
 
-public class PlayerProximityConnectEvent extends SkoiceEventDiscord {
+public class PlayerProximityConnectEvent extends SkoiceEventLink {
 
     public PlayerProximityConnectEvent(String minecraftId, String discordId) {
         super(minecraftId, discordId);
