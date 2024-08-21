@@ -5,7 +5,6 @@ import net.essentialsx.api.v2.events.discordlink.DiscordLinkStatusChangeEvent;
 import net.essentialsx.api.v2.services.discord.DiscordService;
 import net.essentialsx.api.v2.services.discordlink.DiscordLinkService;
 import net.essentialsx.discordlink.EssentialsDiscordLink;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -29,8 +28,8 @@ public class EssentialsXHookImpl implements Listener {
 
     public void initialize() {
         this.essentialsLinkApi = this.plugin.getServer().getServicesManager().load(DiscordLinkService.class);
-        this.essentialsDiscordApi = Bukkit.getServicesManager().load(DiscordService.class);
-        EssentialsDiscordLink ess = (EssentialsDiscordLink) Bukkit.getPluginManager().getPlugin("EssentialsDiscordLink");
+        this.essentialsDiscordApi = this.plugin.getServer().getServicesManager().load(DiscordService.class);
+        EssentialsDiscordLink ess = (EssentialsDiscordLink) this.plugin.getServer().getPluginManager().getPlugin("EssentialsDiscordLink");
         if (ess != null && ess.getAccountStorage() != null) {
             this.essentialsLinkedAccounts = Collections.unmodifiableMap(ess.getAccountStorage().getRawStorageMap());
             this.synchronizeAccountLinks();

@@ -4,7 +4,6 @@ import net.clementraynaud.skoice.Skoice;
 import net.essentialsx.api.v2.services.discord.DiscordService;
 import net.essentialsx.api.v2.services.discordlink.DiscordLinkService;
 import net.essentialsx.discordlink.EssentialsDiscordLink;
-import org.bukkit.Bukkit;
 
 public class EssentialsXHook {
 
@@ -22,7 +21,7 @@ public class EssentialsXHook {
         try {
             this.plugin.getServer().getServicesManager().load(DiscordLinkService.class).hashCode();
             this.plugin.getServer().getServicesManager().load(DiscordService.class).hashCode();
-            ((EssentialsDiscordLink) Bukkit.getPluginManager().getPlugin("EssentialsDiscordLink")).getAccountStorage().hashCode();
+            ((EssentialsDiscordLink) this.plugin.getServer().getPluginManager().getPlugin("EssentialsDiscordLink")).getAccountStorage().hashCode();
             EssentialsXHookImpl essentialsXHookImpl = new EssentialsXHookImpl(this.plugin);
             essentialsXHookImpl.initialize();
             this.essentialsXHookImpl = essentialsXHookImpl;
