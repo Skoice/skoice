@@ -28,6 +28,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.stream.Collectors;
 
 public class ProximityChannel {
 
@@ -63,7 +64,10 @@ public class ProximityChannel {
                     this.channelId = voiceChannel.getId();
                     ProximityChannels.add(this);
                     this.initialized = true;
-                    this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD, ProximityChannels.getAll());
+                    this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD,
+                            ProximityChannels.getInitialized().stream()
+                                    .map(ProximityChannel::getChannelId)
+                                    .collect(Collectors.toSet()));
                 }, e -> Networks.remove(network));
     }
 
