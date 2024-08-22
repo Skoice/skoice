@@ -246,5 +246,3 @@ text-input:
 display-issues: "If you cannot see the message above, you probably have disabled embeds in Discord settings. To use Skoice properly, you must enable them by following this path: `App Settings › Chat › Show embeds and preview website links pasted into chat`."
 voice-channel-status: "Unable to talk — No players nearby"
 proximity-channel-name: "Proximity Channel"
-not-enough-users: "Not enough users."
-system-interrupted: "System interrupted."

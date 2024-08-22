@@ -62,7 +62,7 @@ public final class ProximityChannels {
                 .forEach(proximityChannel -> {
                     if (ProximityChannels.getAll().size() > possibleNetworks + 1
                             || connectedMembers == 0) {
-                        proximityChannel.delete("not-enough-users");
+                        proximityChannel.delete();
                     }
                 });
     }

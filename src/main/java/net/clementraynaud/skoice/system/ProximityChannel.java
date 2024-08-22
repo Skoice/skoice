@@ -78,10 +78,10 @@ public class ProximityChannel {
         ProximityChannels.add(this);
     }
 
-    public void delete(String reason) {
+    public void delete() {
         VoiceChannel channel = this.getChannel();
         if (channel != null) {
-            channel.delete().reason(this.plugin.getBot().getLang().getMessage(reason)).queue();
+            channel.delete().queue();
         } else {
             ProximityChannels.remove(this);
         }

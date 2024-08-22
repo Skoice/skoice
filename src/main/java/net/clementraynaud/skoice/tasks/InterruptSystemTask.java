@@ -61,7 +61,7 @@ public class InterruptSystemTask {
                     }
                 }
             }
-            proximityChannel.delete("system-interrupted");
+            proximityChannel.delete();
         }
 
         Networks.getAll().forEach(Network::clear);
