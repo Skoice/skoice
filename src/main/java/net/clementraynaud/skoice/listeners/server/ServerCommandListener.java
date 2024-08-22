@@ -39,8 +39,8 @@ public class ServerCommandListener implements Listener {
         if (command.startsWith("op ")) {
             String playerName = command.substring(3);
             if (!playerName.isEmpty()) {
-                Player player = this.plugin.getServer().getPlayer(playerName);
-                if (player != null && !player.isOp() && player.isOnline()) {
+                Player player = this.plugin.getServer().getPlayerExact(playerName);
+                if (player != null && !player.isOp()) {
                     this.plugin.getBot().sendIncompleteConfigurationAlert(player, false, true);
                 }
             }

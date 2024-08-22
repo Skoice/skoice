@@ -71,7 +71,7 @@ public class LinksYamlFile extends YamlFile {
     public void linkUserDirectly(String minecraftId, String discordId) {
         super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
         Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
-        if (player == null || !player.isOnline()) {
+        if (player == null) {
             return;
         }
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
@@ -101,7 +101,7 @@ public class LinksYamlFile extends YamlFile {
         super.remove(LinksYamlFile.LINKS_FIELD + "." + minecraftId);
 
         Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
-        if (player == null || !player.isOnline()) {
+        if (player == null) {
             return;
         }
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
