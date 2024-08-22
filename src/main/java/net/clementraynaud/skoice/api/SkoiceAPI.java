@@ -20,14 +20,24 @@
 package net.clementraynaud.skoice.api;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
+import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
+import net.clementraynaud.skoice.api.events.system.SystemInterruptionEvent;
+import net.clementraynaud.skoice.bot.BotStatus;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
-public class SkoiceAPI {
+public class SkoiceAPI implements Listener {
 
     private final Skoice plugin;
+    private final Set<UUID> proximityConnectedPlayers = new HashSet<>();
 
     public SkoiceAPI(Skoice plugin) {
         this.plugin = plugin;
@@ -38,7 +48,7 @@ public class SkoiceAPI {
     }
 
     public boolean linkUser(UUID minecraftId, String discordId) {
-        if (this.plugin.getLinksYamlFile().getLinks().containsKey(minecraftId.toString())) {
+        if (this.plugin.getLinksYamlFile().getLinks().containsKey(minecraftId.toString()) || this.plugin.getLinksYamlFile().getLinks().containsValue(discordId)) {
             return false;
         }
         this.plugin.getLinksYamlFile().linkUserDirectly(minecraftId.toString(), discordId);
@@ -51,5 +61,51 @@ public class SkoiceAPI {
         }
         this.plugin.getLinksYamlFile().unlinkUserDirectly(minecraftId.toString());
         return true;
+    }
+
+    public boolean isLinked(UUID minecraftId) {
+        return this.getLinkedAccounts().containsKey(minecraftId.toString());
+    }
+
+    public boolean isLinked(String discordId) {
+        return this.getLinkedAccounts().containsValue(discordId);
+    }
+
+    public boolean isProximityConnected(UUID minecraftId) {
+        return this.proximityConnectedPlayers.contains(minecraftId);
+    }
+
+    public Set<UUID> getProximityConnectedPlayers() {
+        return Collections.unmodifiableSet(this.proximityConnectedPlayers);
+    }
+
+    public boolean isSystemReady() {
+        return this.plugin.getBot().getStatus() == BotStatus.READY;
+    }
+
+    @EventHandler
+    private void onPlayerLeft(PlayerQuitEvent event) {
+        if (this.isLinked(event.getPlayer().getUniqueId()) && this.isProximityConnected(event.getPlayer().getUniqueId())) {
+            String memberId = this.getLinkedAccounts().get(event.getPlayer().getUniqueId().toString());
+            this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                PlayerProximityDisconnectEvent newEvent = new PlayerProximityDisconnectEvent(event.getPlayer().getUniqueId().toString(), memberId);
+                this.plugin.getServer().getPluginManager().callEvent(newEvent);
+            });
+        }
+    }
+
+    @EventHandler
+    private void onPlayerProximityDisconnect(PlayerProximityDisconnectEvent event) {
+        this.proximityConnectedPlayers.remove(event.getMinecraftId());
+    }
+
+    @EventHandler
+    private void onPlayerProximityConnect(PlayerProximityConnectEvent event) {
+        this.proximityConnectedPlayers.add(event.getMinecraftId());
+    }
+
+    @EventHandler
+    private void onSystemInterruption(SystemInterruptionEvent event) {
+        this.proximityConnectedPlayers.clear();
     }
 }

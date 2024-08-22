@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
+import net.clementraynaud.skoice.api.events.system.SystemReadyEvent;
 import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.lang.DiscordLang;
@@ -54,7 +55,11 @@ import org.bukkit.entity.Player;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.*;
+import java.util.Base64;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 public class Bot {
 
@@ -221,6 +226,10 @@ public class Bot {
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-radius"));
             } else {
                 this.status = BotStatus.READY;
+                this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                    SystemReadyEvent event = new SystemReadyEvent();
+                    this.plugin.getServer().getPluginManager().callEvent(event);
+                });
             }
             this.updateActivity();
         }

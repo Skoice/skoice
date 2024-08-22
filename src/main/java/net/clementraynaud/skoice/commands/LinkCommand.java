@@ -23,13 +23,13 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LinkCommand extends Command {
 
-    private static final Map<String, String> discordIdCode = new HashMap<>();
+    private static final Map<String, String> discordIdCode = new ConcurrentHashMap<>();
     private static final Random random = new Random();
 
     public LinkCommand(Skoice plugin, CommandExecutor executor, SlashCommandInteraction interaction) {
@@ -50,12 +50,13 @@ public class LinkCommand extends Command {
         }
 
         LinkCommand.discordIdCode.remove(super.executor.getUser().getId());
+
         String code;
         do {
             int number = LinkCommand.random.nextInt(1000000);
             code = String.format("%06d", number);
-        } while (LinkCommand.discordIdCode.containsValue(code));
-        LinkCommand.discordIdCode.put(super.executor.getUser().getId(), code);
+        } while (LinkCommand.discordIdCode.putIfAbsent(super.executor.getUser().getId(), code) != null);
+
         new EmbeddedMenu(this.plugin.getBot()).setContent("verification-code", code)
                 .reply(super.interaction);
     }
