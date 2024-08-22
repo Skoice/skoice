@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.commands;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
+import org.bukkit.Bukkit;
 
 import java.util.Map;
 import java.util.Random;
@@ -37,11 +38,23 @@ public class LinkCommand extends Command {
     }
 
     public static Map<String, String> getDiscordIdCode() {
+        try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         return LinkCommand.discordIdCode;
     }
 
     @Override
     public void run() {
+        try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         if (super.plugin.getLinksYamlFile().getLinks().containsValue(super.executor.getUser().getId())) {
             new EmbeddedMenu(this.plugin.getBot()).setContent("account-already-linked",
                             super.plugin.getBot().getCommands().getAsMention(CommandInfo.UNLINK.toString()))
