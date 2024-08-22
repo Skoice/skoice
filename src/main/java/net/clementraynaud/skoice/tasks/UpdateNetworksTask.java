@@ -24,6 +24,8 @@ import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.system.Networks;
+import net.clementraynaud.skoice.system.ProximityChannel;
+import net.clementraynaud.skoice.system.ProximityChannels;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
@@ -31,10 +33,12 @@ import net.dv8tion.jda.internal.utils.tuple.Pair;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 public class UpdateNetworksTask {
 
@@ -70,7 +74,11 @@ public class UpdateNetworksTask {
             this.manageMoves();
 
             Set<Member> connectedMembers = new HashSet<>(mainVoiceChannel.getMembers());
-            Networks.getInitialized().forEach(network -> connectedMembers.addAll(network.getChannel().getMembers()));
+            connectedMembers.addAll(ProximityChannels.getInitialized().stream()
+                    .map(ProximityChannel::getChannel)
+                    .filter(Objects::nonNull)
+                    .flatMap(channel -> channel.getMembers().stream())
+                    .collect(Collectors.toSet()));
 
             for (Member member : connectedMembers) {
                 Network network = null;
@@ -82,17 +90,18 @@ public class UpdateNetworksTask {
 
                 VoiceChannel shouldBeInChannel;
                 if (network != null) {
-                    if (!network.isInitialized()) {
+                    if (!network.getProximityChannel().isInitialized()) {
                         continue;
                     }
-                    shouldBeInChannel = network.getChannel();
+                    shouldBeInChannel = network.getProximityChannel().getChannel();
                 } else {
                     shouldBeInChannel = mainVoiceChannel;
                 }
 
                 Pair<String, CompletableFuture<Void>> awaitingMove = UpdateNetworksTask.awaitingMoves.get(member.getId());
                 if (awaitingMove == null
-                        || !awaitingMove.getLeft().equals(shouldBeInChannel.getId()) && awaitingMove.getRight().cancel(false)) {
+                        || !awaitingMove.getLeft().equals(shouldBeInChannel.getId())
+                        && awaitingMove.getRight().cancel(false)) {
                     GuildVoiceState voiceState = member.getVoiceState();
                     if (voiceState != null && voiceState.getChannel() != shouldBeInChannel) {
                         UpdateNetworksTask.awaitingMoves.put(member.getId(), Pair.of(
@@ -104,7 +113,8 @@ public class UpdateNetworksTask {
                 }
             }
 
-            Networks.clean(connectedMembers.size());
+            Networks.clean();
+            ProximityChannels.clean(connectedMembers.size());
 
         } finally {
             this.lock.unlock();
@@ -176,7 +186,7 @@ public class UpdateNetworksTask {
 
     private void manageMoves() {
         LinkedPlayer.getOnlineLinkedPlayers().forEach(p -> {
-            if (!p.isInMainVoiceChannel() && !p.isInAnyNetworkChannel()) {
+            if (!p.isInMainVoiceChannel() && !p.isInAnyProximityChannel()) {
                 Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(p.getDiscordId());
                 if (pair != null) {
                     pair.getRight().cancel(false);

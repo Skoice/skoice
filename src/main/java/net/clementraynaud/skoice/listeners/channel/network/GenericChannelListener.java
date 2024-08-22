@@ -21,8 +21,8 @@ package net.clementraynaud.skoice.listeners.channel.network;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
-import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.system.Networks;
+import net.clementraynaud.skoice.system.ProximityChannels;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.User;
@@ -44,12 +44,16 @@ public class GenericChannelListener extends ListenerAdapter {
     @Override
     public void onChannelDelete(ChannelDeleteEvent event) {
         ChannelUnion channel = event.getChannel();
-        if (!this.isNetworkChannel(channel)) {
+        if (channel.getType() != ChannelType.VOICE
+                || !ProximityChannels.isProximityChannel(channel.getId())) {
             return;
         }
+
         Networks.getInitialized().stream()
-                .filter(network -> event.getChannel().getId().equals(network.getChannelId()))
-                .forEach(Network::forget);
+                .filter(network -> event.getChannel().getId().equals(network.getProximityChannel().getChannelId()))
+                .forEach(Networks::remove);
+
+        ProximityChannels.remove(channel.getId());
 
         if (!event.getGuild().getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS)) {
             return;
@@ -71,33 +75,26 @@ public class GenericChannelListener extends ListenerAdapter {
     @Override
     public void onChannelUpdateParent(ChannelUpdateParentEvent event) {
         ChannelUnion channel = event.getChannel();
-        if (!this.isNetworkChannel(channel)
-                || (event.getNewValue() != null
-                && event.getNewValue().getId().equals(this.plugin.getConfigYamlFile().getCategory().getId()))) {
-            return;
+
+        if (channel.getType() == ChannelType.VOICE
+                && ProximityChannels.isProximityChannel(channel.getId())
+                && (event.getNewValue() == null
+                || !event.getNewValue().getId().equals(this.plugin.getConfigYamlFile().getCategory().getId()))) {
+            event.getChannel().asVoiceChannel().getManager()
+                    .setParent(event.getOldValue()).queue();
         }
-        event.getChannel().asVoiceChannel().getManager()
-                .setParent(event.getOldValue()).queue();
     }
 
     @Override
     public void onChannelUpdateName(ChannelUpdateNameEvent event) {
         ChannelUnion channel = event.getChannel();
         String expectedName = this.plugin.getBot().getLang().getMessage("proximity-channel-name");
-        if (!this.isNetworkChannel(channel)
-                || event.getChannel().asVoiceChannel().getName().equals(expectedName)) {
-            return;
-        }
-        channel.asVoiceChannel().getManager().
-                setName(expectedName).queue();
-    }
 
-    private boolean isNetworkChannel(ChannelUnion channel) {
-        if (channel.getType() != ChannelType.VOICE) {
-            return false;
+        if (channel.getType() == ChannelType.VOICE
+                && ProximityChannels.isProximityChannel(channel.getId())
+                && !event.getChannel().asVoiceChannel().getName().equals(expectedName)) {
+            channel.asVoiceChannel().getManager().
+                    setName(expectedName).queue();
         }
-        return Networks.getInitialized().stream()
-                .map(Network::getChannelId)
-                .anyMatch(channelId -> channelId.equals(channel.getId()));
     }
 }

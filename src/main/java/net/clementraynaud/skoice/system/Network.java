@@ -20,18 +20,10 @@
 package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.storage.TempYamlFile;
-import net.clementraynaud.skoice.storage.config.ConfigField;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,15 +31,7 @@ public class Network {
 
     private final Skoice plugin;
     private final Set<LinkedPlayer> players;
-    private boolean initialized = false;
-    private String channelId;
-
-    public Network(Skoice plugin, String channelId) {
-        this.plugin = plugin;
-        this.players = new HashSet<>();
-        this.channelId = channelId;
-        Networks.add(this);
-    }
+    private ProximityChannel proximityChannel;
 
     public Network(Skoice plugin, Set<LinkedPlayer> players) {
         this.plugin = plugin;
@@ -56,50 +40,10 @@ public class Network {
     }
 
     public void build() {
-        List<String> voiceChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
-
-        if (this.channelId != null) {
-            voiceChannels.add(this.channelId);
-            this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD, voiceChannels);
-            this.initialized = true;
-            return;
-        }
-
-        List<String> availableChannels = new ArrayList<>(voiceChannels);
-        availableChannels.removeAll(Networks.getChannelIdSet());
-
-        if (!availableChannels.isEmpty()) {
-            this.channelId = availableChannels.get(0);
-            return;
-        }
-
-        Guild guild = this.plugin.getBot().getGuild();
-
-        EnumSet<Permission> deniedPermissions = EnumSet.of(
-                this.plugin.getConfigYamlFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.toString())
-                        ? Permission.VOICE_CONNECT
-                        : Permission.VIEW_CHANNEL,
-                Permission.VOICE_MOVE_OTHERS
-        );
-        if (!this.plugin.getConfigYamlFile().getBoolean(ConfigField.TEXT_CHAT.toString())) {
-            deniedPermissions.add(Permission.MESSAGE_SEND);
-        }
-
-        this.plugin.getConfigYamlFile().getCategory()
-                .createVoiceChannel(this.plugin.getBot().getLang().getMessage("proximity-channel-name"))
-                .addPermissionOverride(guild.getPublicRole(),
-                        EnumSet.of(Permission.VOICE_SPEAK, Permission.VOICE_USE_VAD),
-                        deniedPermissions)
-                .addPermissionOverride(guild.getSelfMember(),
-                        EnumSet.of(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS),
-                        Collections.emptyList())
-                .setBitrate(this.plugin.getConfigYamlFile().getVoiceChannel().getBitrate())
-                .queue(voiceChannel -> {
-                    this.channelId = voiceChannel.getId();
-                    voiceChannels.add(this.channelId);
-                    this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD, voiceChannels);
-                    this.initialized = true;
-                }, e -> Networks.remove(this));
+        this.proximityChannel = ProximityChannels.getAll().stream()
+                .filter(channel -> !Networks.getProximityChannels().contains(channel))
+                .findFirst()
+                .orElseGet(() -> new ProximityChannel(plugin, this));
     }
 
     public boolean canPlayerConnect(LinkedPlayer player) {
@@ -193,24 +137,6 @@ public class Network {
         return this.players.stream().anyMatch(p -> p.getBukkitPlayer().equals(player));
     }
 
-    public void delete(String reason) {
-        VoiceChannel channel = this.getChannel();
-        if (channel != null) {
-            channel.delete().reason(this.plugin.getBot().getLang().getMessage(reason))
-                    .queue(success -> this.forget());
-        } else {
-            this.forget();
-        }
-    }
-
-    public void forget() {
-        Networks.remove(this);
-        List<String> voiceChannels = this.plugin.getTempYamlFile()
-                .getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
-        voiceChannels.remove(this.channelId);
-        this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD, voiceChannels);
-    }
-
     public int size() {
         return this.players.size();
     }
@@ -219,22 +145,7 @@ public class Network {
         return this.size() < 2;
     }
 
-    public String getChannelId() {
-        return this.channelId;
-    }
-
-    public VoiceChannel getChannel() {
-        if (this.channelId == null) {
-            return null;
-        }
-        Guild guild = this.plugin.getBot().getGuild();
-        if (guild != null) {
-            return guild.getVoiceChannelById(this.channelId);
-        }
-        return null;
-    }
-
-    public boolean isInitialized() {
-        return this.initialized;
+    public ProximityChannel getProximityChannel() {
+        return this.proximityChannel;
     }
 }

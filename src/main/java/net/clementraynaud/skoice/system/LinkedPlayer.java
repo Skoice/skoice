@@ -30,7 +30,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -39,7 +38,7 @@ public class LinkedPlayer {
 
     private static final int FALLOFF = 3;
 
-    private static final Set<LinkedPlayer> onlineLinkedPlayers = new HashSet<>();
+    private static final Set<LinkedPlayer> onlineLinkedPlayers = ConcurrentHashMap.newKeySet();
 
     private final Skoice plugin;
     private final Player player;
@@ -85,7 +84,7 @@ public class LinkedPlayer {
 
     public Set<LinkedPlayer> getPlayersWithinRange() {
         return LinkedPlayer.getOnlineLinkedPlayers().stream()
-                .filter(p -> p.isInMainVoiceChannel() || p.isInAnyNetworkChannel())
+                .filter(p -> p.isInMainVoiceChannel() || p.isInAnyProximityChannel())
                 .filter(p -> !p.equals(this))
                 .filter(LinkedPlayer::isStateEligible)
                 .filter(p -> p.isCloseEnoughToPlayer(this, false))
@@ -110,12 +109,13 @@ public class LinkedPlayer {
                 .findFirst().orElse(null);
     }
 
-    public boolean isInAnyNetworkChannel() {
+    public boolean isInAnyProximityChannel() {
         Network network = this.getNetwork();
-        if (network == null || !network.isInitialized()) {
+        if (network == null || !network.getProximityChannel().isInitialized()) {
             return false;
         }
-        return network.getChannel().getMembers().stream().anyMatch(member -> this.discordId.equals(member.getId()));
+        return network.getProximityChannel().getChannel().getMembers().stream()
+                .anyMatch(member -> this.discordId.equals(member.getId()));
     }
 
     public boolean isCloseEnoughToPlayer(LinkedPlayer linkedPlayer, boolean falloff) {

@@ -32,6 +32,7 @@ import net.clementraynaud.skoice.menus.MenuFactory;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.Network;
+import net.clementraynaud.skoice.system.ProximityChannel;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.JDA;
@@ -182,7 +183,7 @@ public class Bot {
             this.plugin.getTempYamlFile().remove(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
             category.getVoiceChannels().stream()
                     .filter(channel -> voiceChannels.contains(channel.getId()))
-                    .forEach(channel -> new Network(this.plugin, channel.getId()).build());
+                    .forEach(channel -> new ProximityChannel(this.plugin, channel.getId()));
         }
     }
 

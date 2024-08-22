@@ -19,7 +19,6 @@
 
 package net.clementraynaud.skoice.system;
 
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -37,14 +36,13 @@ public final class Networks {
 
     public static Set<Network> getInitialized() {
         return Networks.networkSet.stream()
-                .filter(Network::isInitialized)
+                .filter(network -> network.getProximityChannel().isInitialized())
                 .collect(Collectors.toSet());
     }
 
-    public static Set<String> getChannelIdSet() {
+    public static Set<ProximityChannel> getProximityChannels() {
         return Networks.networkSet.stream()
-                .map(Network::getChannelId)
-                .filter(Objects::nonNull)
+                .map(Network::getProximityChannel)
                 .collect(Collectors.toSet());
     }
 
@@ -64,18 +62,10 @@ public final class Networks {
         }
     }
 
-    public static void clean(int connectedMembers) {
-        int possibleNetworks = connectedMembers / 2;
-
+    public static void clean() {
         Networks.networkSet.stream()
                 .filter(Network::isEmpty)
-                .filter(network -> network.getChannel() != null && network.getChannel().getMembers().isEmpty())
-                .forEach(network -> {
-                    if (Networks.networkSet.size() > possibleNetworks + 1
-                            || connectedMembers == 0) {
-                        network.delete("not-enough-users");
-                    }
-                });
+                .forEach(Networks::remove);
     }
 
     public static void clear() {

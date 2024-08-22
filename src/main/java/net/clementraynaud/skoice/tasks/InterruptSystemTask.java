@@ -22,7 +22,10 @@ package net.clementraynaud.skoice.tasks;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.system.Networks;
+import net.clementraynaud.skoice.system.ProximityChannel;
+import net.clementraynaud.skoice.system.ProximityChannels;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 
 import java.util.concurrent.CompletableFuture;
@@ -40,22 +43,27 @@ public class InterruptSystemTask {
             value.getRight().cancel(true);
         }
 
-        boolean isMainVoiceChannelSet = this.plugin.getConfigYamlFile().getVoiceChannel() != null;
-        for (Network network : Networks.getInitialized()) {
-            if (isMainVoiceChannelSet) {
-                for (int i = 0; i < network.getChannel().getMembers().size(); i++) {
-                    Member member = network.getChannel().getMembers().get(i);
-                    if (i + 1 < network.getChannel().getMembers().size()) {
-                        member.getGuild().moveVoiceMember(member, this.plugin.getConfigYamlFile().getVoiceChannel()).queue();
+        VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+
+        for (ProximityChannel proximityChannel : ProximityChannels.getInitialized()) {
+            if (voiceChannel != null) {
+                for (int i = 0; i < proximityChannel.getChannel().getMembers().size(); i++) {
+                    Member member = proximityChannel.getChannel().getMembers().get(i);
+                    if (i + 1 < proximityChannel.getChannel().getMembers().size()) {
+                        member.getGuild()
+                                .moveVoiceMember(member, voiceChannel)
+                                .queue();
                     } else {
-                        member.getGuild().moveVoiceMember(member, this.plugin.getConfigYamlFile().getVoiceChannel()).complete();
+                        member.getGuild()
+                                .moveVoiceMember(member, voiceChannel)
+                                .complete();
                     }
                 }
             }
-            network.clear();
-            network.delete("system-interrupted");
+            proximityChannel.delete("system-interrupted");
         }
 
+        Networks.getAll().forEach(Network::clear);
         Networks.clear();
     }
 }

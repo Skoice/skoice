@@ -23,7 +23,9 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.Networks;
+import net.clementraynaud.skoice.system.ProximityChannels;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
@@ -58,8 +60,9 @@ public class UnlinkArgument extends Argument {
             GuildVoiceState voiceState = member.getVoiceState();
             if (voiceState != null) {
                 AudioChannel audioChannel = voiceState.getChannel();
-                if (audioChannel != null && audioChannel.equals(super.plugin.getConfigYamlFile().getVoiceChannel())
-                        || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(audioChannel))) {
+                if (audioChannel != null
+                        && (audioChannel.getId().equals(super.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))
+                        || ProximityChannels.getInitialized().stream().anyMatch(proximityChannel -> proximityChannel.getChannelId().equals(audioChannel.getId())))) {
                     player.sendMessage(super.plugin.getLang().getMessage("chat.player.disconnected"));
                     this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
                         PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(player.getUniqueId().toString(), member.getId());

@@ -39,10 +39,10 @@ class NetworkTest {
 
     private Network network;
 
-    @BeforeEach
-    void setUp() {
-        this.network = new Network(this.plugin, "channelId");
-    }
+    //@BeforeEach
+    //void setUp() {
+    //    this.network = new Network(this.plugin, "channelId");
+    //}
 
     @Test
     void canPlayerConnect_checksPlayerEligibility() {

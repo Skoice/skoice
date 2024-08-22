@@ -21,7 +21,10 @@ package net.clementraynaud.skoice.listeners.guild.voice;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
+import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.system.Networks;
+import net.clementraynaud.skoice.system.ProximityChannels;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.Member;
@@ -32,6 +35,7 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.UUID;
 
 public class GuildVoiceUpdateListener extends ListenerAdapter {
@@ -62,11 +66,11 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         VoiceChannel voiceChannel = audioChannel.asVoiceChannel();
         new UpdateVoiceStateTask(this.plugin, member, voiceChannel).run();
 
-        VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
-        if (voiceChannel.equals(mainVoiceChannel) ||
-                Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannel))) {
+        if (voiceChannel.getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))
+                || ProximityChannels.getInitialized().stream().anyMatch(proximityChannel -> proximityChannel.getChannelId().equals(voiceChannel.getId()))) {
             this.plugin.getBot().notifyIfUnlinked(member);
         }
+        new Network(this.plugin, Collections.emptySet()).build();
     }
 
     private void manageLeavingChannel(Member member, AudioChannelUnion audioChannel) {
@@ -75,8 +79,8 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         }
 
         VoiceChannel voiceChannel = audioChannel.asVoiceChannel();
-        if (!voiceChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())
-                && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannel))) {
+        if (!voiceChannel.getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))
+                && ProximityChannels.getInitialized().stream().noneMatch(proximityChannel -> proximityChannel.getChannelId().equals(voiceChannel.getId()))) {
             return;
         }
 
@@ -87,9 +91,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
 
         Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
         if (player != null) {
-            Networks.getAll().stream()
-                    .filter(network -> network.contains(player))
-                    .forEach(network -> network.remove(player));
+            Networks.getAll().forEach(network -> network.remove(player));
             player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
             this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
                 PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
@@ -111,41 +113,44 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         }
         VoiceChannel voiceChannelLeft = audioChannelLeft.asVoiceChannel();
 
-        VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+        String mainVoiceChannelId = this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString());
 
-        if (voiceChannelJoined.equals(mainVoiceChannel) && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelLeft))
-                || Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannelJoined)) && !voiceChannelLeft.equals(mainVoiceChannel) && Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelLeft))) {
+        if (voiceChannelJoined.getId().equals(mainVoiceChannelId)
+                && ProximityChannels.getInitialized().stream().noneMatch(proximityChannel -> proximityChannel.getChannelId().equals(voiceChannelLeft.getId()))
+                || ProximityChannels.getInitialized().stream().anyMatch(proximityChannel -> proximityChannel.getChannelId().equals(voiceChannelJoined.getId()))
+                && !voiceChannelLeft.getId().equals(mainVoiceChannelId)
+                && ProximityChannels.getInitialized().stream().noneMatch(proximityChannel -> proximityChannel.getChannelId().equals(voiceChannelLeft.getId()))) {
             this.plugin.getBot().notifyIfUnlinked(member);
         }
 
-        if (Networks.getInitialized().stream().noneMatch(network -> network.getChannel().equals(voiceChannelJoined))) {
+        if (!ProximityChannels.isProximityChannel(voiceChannelJoined.getId())) {
             String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
             if (minecraftId == null) {
                 return;
             }
 
             Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
-            if (player != null) {
-                if (Networks.getInitialized().stream().anyMatch(network -> network.getChannel().equals(voiceChannelLeft))) {
-                    Networks.getAll().stream()
-                            .filter(network -> network.contains(player))
-                            .forEach(network -> network.remove(player));
+            if (player == null) {
+                return;
+            }
 
-                    if (!voiceChannelJoined.equals(mainVoiceChannel)) {
-                        player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
-                        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                            PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
-                            this.plugin.getServer().getPluginManager().callEvent(event);
-                        });
-                    }
+            if (ProximityChannels.isProximityChannel(voiceChannelLeft.getId())) {
+                Networks.getAll().forEach(network -> network.remove(player));
 
-                } else if (voiceChannelLeft.equals(mainVoiceChannel)) {
+                if (!voiceChannelJoined.getId().equals(mainVoiceChannelId)) {
                     player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
                     this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
                         PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
                         this.plugin.getServer().getPluginManager().callEvent(event);
                     });
                 }
+
+            } else if (voiceChannelLeft.getId().equals(mainVoiceChannelId)) {
+                player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
+                this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                    PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId, member.getId());
+                    this.plugin.getServer().getPluginManager().callEvent(event);
+                });
             }
         }
     }
