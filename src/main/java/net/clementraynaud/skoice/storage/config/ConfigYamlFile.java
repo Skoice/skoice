@@ -76,7 +76,7 @@ public class ConfigYamlFile extends YamlFile {
     }
 
     public Category getCategory() {
-        if (this.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
+        if (this.plugin.getBot().getJDA() == null) {
             return null;
         }
         VoiceChannel voiceChannel = this.getVoiceChannel();

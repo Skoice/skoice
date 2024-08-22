@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.TempYamlFile;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
@@ -40,15 +41,21 @@ public class UpdateVoiceStateTask {
     }
 
     public void run() {
-        if (this.member.getVoiceState() == null || this.plugin.getConfigYamlFile().getVoiceChannel() == null) {
+        if (this.member.getVoiceState() == null) {
             return;
         }
-        boolean isMainVoiceChannel = this.channel.getId().equals(this.plugin.getConfigYamlFile().getVoiceChannel().getId());
+
+        VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+        if (voiceChannel == null || voiceChannel.getParentCategory() == null) {
+            return;
+        }
+
+        boolean isMainVoiceChannel = this.channel.getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()));
         if (isMainVoiceChannel) {
             if (!this.member.getVoiceState().isGuildMuted()
                     && this.member.hasPermission(this.channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
                     && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
-                    && this.channel.getGuild().getSelfMember().hasPermission(this.plugin.getConfigYamlFile().getCategory(), Permission.VOICE_MOVE_OTHERS)) {
+                    && this.channel.getGuild().getSelfMember().hasPermission(voiceChannel.getParentCategory(), Permission.VOICE_MOVE_OTHERS)) {
                 this.member.mute(true).queue();
                 List<String> mutedUsers = this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD);
                 if (!mutedUsers.contains(this.member.getId())) {
