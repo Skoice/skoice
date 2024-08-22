@@ -20,11 +20,9 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.config.ConfigField;
-import net.clementraynaud.skoice.system.Networks;
 import net.clementraynaud.skoice.system.ProximityChannels;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
@@ -64,10 +62,6 @@ public class UnlinkArgument extends Argument {
                         && (audioChannel.getId().equals(super.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))
                         || ProximityChannels.getInitialized().stream().anyMatch(proximityChannel -> proximityChannel.getChannelId().equals(audioChannel.getId())))) {
                     player.sendMessage(super.plugin.getLang().getMessage("chat.player.disconnected"));
-                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                        PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(player.getUniqueId().toString(), member.getId());
-                        this.plugin.getServer().getPluginManager().callEvent(event);
-                    });
                 }
             }
         }, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MEMBER));

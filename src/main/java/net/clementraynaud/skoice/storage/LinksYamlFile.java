@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.storage;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.api.events.account.AccountLinkEvent;
 import net.clementraynaud.skoice.api.events.account.AccountUnlinkEvent;
+import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.Guild;
@@ -60,15 +61,20 @@ public class LinksYamlFile extends YamlFile {
         this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
             AccountUnlinkEvent event = new AccountUnlinkEvent(minecraftId);
             this.plugin.getServer().getPluginManager().callEvent(event);
+            PlayerProximityDisconnectEvent event2 = new PlayerProximityDisconnectEvent(minecraftId);
+            this.plugin.getServer().getPluginManager().callEvent(event2);
         });
     }
 
     public void linkUserDirectly(String minecraftId, String discordId) {
         super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
         Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
-        if (player != null) {
-            LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, discordId));
+        if (player == null) {
+            return;
         }
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, discordId));
+        });
     }
 
     public void unlinkUserDirectly(String minecraftId) {
@@ -78,7 +84,7 @@ public class LinksYamlFile extends YamlFile {
         if (player == null) {
             return;
         }
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
             Networks.getAll().stream()
                     .filter(network -> network.contains(player))
                     .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(player));

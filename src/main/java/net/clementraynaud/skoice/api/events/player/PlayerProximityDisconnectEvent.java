@@ -19,11 +19,11 @@
 
 package net.clementraynaud.skoice.api.events.player;
 
-import net.clementraynaud.skoice.api.events.SkoiceEventLink;
+import net.clementraynaud.skoice.api.events.SkoiceEventMinecraft;
 
-public class PlayerProximityDisconnectEvent extends SkoiceEventLink {
+public class PlayerProximityDisconnectEvent extends SkoiceEventMinecraft {
 
-    public PlayerProximityDisconnectEvent(String minecraftId, String discordId) {
-        super(minecraftId, discordId);
+    public PlayerProximityDisconnectEvent(String minecraftId) {
+        super(minecraftId);
     }
 }
