@@ -71,7 +71,7 @@ public class LinksYamlFile extends YamlFile {
     public void linkUserDirectly(String minecraftId, String discordId) {
         super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
         Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
-        if (player == null) {
+        if (player == null || !player.isOnline()) {
             return;
         }
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
@@ -101,7 +101,7 @@ public class LinksYamlFile extends YamlFile {
         super.remove(LinksYamlFile.LINKS_FIELD + "." + minecraftId);
 
         Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
-        if (player == null) {
+        if (player == null || !player.isOnline()) {
             return;
         }
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
@@ -111,10 +111,12 @@ public class LinksYamlFile extends YamlFile {
 
             LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(player));
         });
-        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-            PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId);
-            this.plugin.getServer().getPluginManager().callEvent(event);
-        });
+        if (Skoice.api().isProximityConnected(UUID.fromString(minecraftId))) {
+            this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId);
+                this.plugin.getServer().getPluginManager().callEvent(event);
+            });
+        }
     }
 
     public Map<String, String> getLinks() {
