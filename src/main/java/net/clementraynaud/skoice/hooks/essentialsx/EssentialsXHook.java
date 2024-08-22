@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.hooks.essentialsx;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.essentialsx.api.v2.services.discord.DiscordService;
 import net.essentialsx.api.v2.services.discordlink.DiscordLinkService;
 import net.essentialsx.discordlink.EssentialsDiscordLink;
@@ -34,6 +35,9 @@ public class EssentialsXHook {
     }
 
     public void initialize() {
+        if (!this.plugin.getConfigYamlFile().getBoolean(ConfigField.ESSENTIALSX_SYNCHRONIZATION.toString())) {
+            return;
+        }
         if (this.essentialsXHookImpl != null) {
             return;
         }
