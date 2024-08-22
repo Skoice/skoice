@@ -20,14 +20,11 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.util.MapUtil;
-import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.command.CommandSender;
@@ -76,21 +73,6 @@ public class LinkArgument extends Argument {
                                 mainVoiceChannel.getAsMention())
                         .message(member.getUser());
                 player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-linked"));
-                GuildVoiceState voiceState = member.getVoiceState();
-                if (voiceState != null) {
-                    AudioChannel audioChannel = voiceState.getChannel();
-                    if (audioChannel != null && audioChannel.equals(mainVoiceChannel)) {
-                        player.sendMessage(super.plugin.getLang().getMessage("chat.player.connected"));
-                        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                            PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(player.getUniqueId().toString(), discordId);
-                            super.plugin.getServer().getPluginManager().callEvent(event);
-                        });
-                    } else {
-                        player.sendMessage(super.plugin.getLang().getMessage("chat.player.not-connected",
-                                mainVoiceChannel.getName(),
-                                this.plugin.getBot().getGuild().getName()));
-                    }
-                }
             }, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, e ->
                     player.sendMessage(super.plugin.getLang().getMessage("chat.player.invalid-code"))));
         });

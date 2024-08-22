@@ -22,11 +22,15 @@ package net.clementraynaud.skoice.storage;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.api.events.account.AccountLinkEvent;
 import net.clementraynaud.skoice.api.events.account.AccountUnlinkEvent;
+import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
@@ -61,8 +65,6 @@ public class LinksYamlFile extends YamlFile {
         this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
             AccountUnlinkEvent event = new AccountUnlinkEvent(minecraftId);
             this.plugin.getServer().getPluginManager().callEvent(event);
-            PlayerProximityDisconnectEvent event2 = new PlayerProximityDisconnectEvent(minecraftId);
-            this.plugin.getServer().getPluginManager().callEvent(event2);
         });
     }
 
@@ -74,6 +76,24 @@ public class LinksYamlFile extends YamlFile {
         }
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
             LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, discordId));
+        });
+        this.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
+            VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
+            GuildVoiceState voiceState = member.getVoiceState();
+            if (voiceState != null) {
+                AudioChannel audioChannel = voiceState.getChannel();
+                if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
+                    player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
+                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                        PlayerProximityConnectEvent connectEvent = new PlayerProximityConnectEvent(player.getUniqueId().toString(), member.getId());
+                        this.plugin.getServer().getPluginManager().callEvent(connectEvent);
+                    });
+                } else {
+                    player.sendMessage(super.plugin.getLang().getMessage("chat.player.not-connected",
+                            mainVoiceChannel.getName(),
+                            this.plugin.getBot().getGuild().getName()));
+                }
+            }
         });
     }
 
@@ -90,6 +110,10 @@ public class LinksYamlFile extends YamlFile {
                     .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(player));
 
             LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(player));
+        });
+        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+            PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId);
+            this.plugin.getServer().getPluginManager().callEvent(event);
         });
     }
 
