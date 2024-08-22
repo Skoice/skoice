@@ -44,7 +44,7 @@ public class LanguageArgument extends Argument {
         try {
             LangInfo language = LangInfo.valueOf(this.arg.toUpperCase());
 
-            if (language.toString().equals(super.plugin.getConfigYamlFile().get(ConfigField.LANG.toString()))) {
+            if (language.toString().equals(super.plugin.getConfigYamlFile().getString(ConfigField.LANG.toString()))) {
                 this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.language-already-set",
                         language.getFullName()));
                 return;

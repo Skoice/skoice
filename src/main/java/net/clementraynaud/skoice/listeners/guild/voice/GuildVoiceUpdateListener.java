@@ -70,7 +70,6 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
                 || ProximityChannels.getInitialized().stream().anyMatch(proximityChannel -> proximityChannel.getChannelId().equals(voiceChannel.getId()))) {
             this.plugin.getBot().notifyIfUnlinked(member);
         }
-        new Network(this.plugin, Collections.emptySet()).build();
     }
 
     private void manageLeavingChannel(Member member, AudioChannelUnion audioChannel) {
