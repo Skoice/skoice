@@ -179,7 +179,7 @@ advanced-settings:
   type: default
   style: secondary
   parent: settings
-discordsrv-synchronization:
+link-synchronization:
   emoji: electric_plug
   footer: review
   type: default

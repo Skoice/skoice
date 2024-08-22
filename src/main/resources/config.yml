@@ -11,6 +11,7 @@ separated-teams: false
 text-chat: true
 channel-visibility: true
 discordsrv-synchronization: true
+essentialsx-synchronization: true
 release-channel: production
 unreviewed-settings:
   - voice-chat

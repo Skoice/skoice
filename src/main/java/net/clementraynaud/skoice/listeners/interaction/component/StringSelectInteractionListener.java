@@ -191,6 +191,13 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.setContent("chaining").edit(event));
                     break;
 
+                case "link-synchronization-selection":
+                    options.removeAll(event.getSelectedOptions());
+                    options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
+                    event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
+                    this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.setContent("link-synchronization").edit(event));
+                    break;
+
                 case "release-channel-selection":
                     this.plugin.getConfigYamlFile().set(ConfigField.RELEASE_CHANNEL.toString(), event.getSelectedOptions().get(0).getValue());
                     this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.setContent("release-channel").edit(event));

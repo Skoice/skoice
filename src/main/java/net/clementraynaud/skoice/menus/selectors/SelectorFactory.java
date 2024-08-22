@@ -43,13 +43,14 @@ public class SelectorFactory {
                 return new ActiveWorldsSelector(plugin);
             case "chaining":
                 return new ChainingSelector(plugin);
+            case "link-synchronization":
+                return new LinkSynchronizationSelector(plugin);
             case "release-channel":
                 return new ReleaseChannelSelector(plugin);
             case "tooltips":
             case "separated-teams":
             case "text-chat":
             case "channel-visibility":
-            case "discordsrv-synchronization":
                 return new ToggleSelector(plugin, menuId);
             default:
                 return null;

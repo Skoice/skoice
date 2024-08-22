@@ -120,10 +120,16 @@ menu:
     description: "Toggle interactive messages on your Minecraft server. You may want to disable this setting if your server is running on Bedrock Edition or if tooltips are disabled in Minecraft settings. Only operators can receive interactive messages."
   advanced-settings:
     title: "Advanced Settings"
-  discordsrv-synchronization:
-    title: "DiscordSRV Synchronization"
-    shortened-description: "Toggle the synchronization of DiscordSRV with Skoice."
-    description: "Toggle the synchronization of DiscordSRV with Skoice. When this option is enabled, players who have linked their accounts using Skoice or DiscordSRV are synchronized in real time between both plugins. Updating this option requires you to restart your Minecraft server for it to take effect."
+  link-synchronization:
+    title: "Link Synchronization"
+    shortened-description: "Toggle the synchronization of external plugins with Skoice."
+    description: "Toggle the synchronization of external plugins with Skoice. Players who have linked their accounts using one of the selected plugins are synchronized in real time between Skoice and that plugin. Updating this option requires you to restart your Minecraft server for it to take effect."
+    select-menu:
+      placeholder: "Please select the desired plugins."
+      discordsrv:
+        label: "DiscordSRV"
+      essentialsx:
+        label: "EssentialsX"
   release-channel:
     title: "Release Channel"
     description: "Select the version of Skoice you want to use."
