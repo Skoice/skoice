@@ -24,6 +24,7 @@ import net.clementraynaud.skoice.api.events.account.AccountLinkEvent;
 import net.clementraynaud.skoice.api.events.account.AccountUnlinkEvent;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.Guild;
@@ -77,24 +78,26 @@ public class LinksYamlFile extends YamlFile {
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
             LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, discordId));
         });
-        this.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
-            VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
-            GuildVoiceState voiceState = member.getVoiceState();
-            if (voiceState != null) {
-                AudioChannel audioChannel = voiceState.getChannel();
-                if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
-                    player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
-                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                        PlayerProximityConnectEvent connectEvent = new PlayerProximityConnectEvent(player.getUniqueId().toString(), member.getId());
-                        this.plugin.getServer().getPluginManager().callEvent(connectEvent);
-                    });
-                } else {
-                    player.sendMessage(super.plugin.getLang().getMessage("chat.player.not-connected",
-                            mainVoiceChannel.getName(),
-                            this.plugin.getBot().getGuild().getName()));
+        if (this.plugin.getBot().getStatus() == BotStatus.READY) {
+            this.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
+                VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
+                GuildVoiceState voiceState = member.getVoiceState();
+                if (voiceState != null) {
+                    AudioChannel audioChannel = voiceState.getChannel();
+                    if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
+                        player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
+                        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                            PlayerProximityConnectEvent connectEvent = new PlayerProximityConnectEvent(player.getUniqueId().toString(), member.getId());
+                            this.plugin.getServer().getPluginManager().callEvent(connectEvent);
+                        });
+                    } else {
+                        player.sendMessage(super.plugin.getLang().getMessage("chat.player.not-connected",
+                                mainVoiceChannel.getName(),
+                                this.plugin.getBot().getGuild().getName()));
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void unlinkUserDirectly(String minecraftId) {
