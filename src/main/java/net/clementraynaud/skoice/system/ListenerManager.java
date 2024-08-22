@@ -55,7 +55,7 @@ public class ListenerManager {
 
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;
-        this.playerQuitListener = new PlayerQuitListener();
+        this.playerQuitListener = new PlayerQuitListener(this.plugin);
         this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
         this.guildVoiceUpdateListener = new GuildVoiceUpdateListener(this.plugin);
         this.channelDeleteListener = new GenericChannelListener(this.plugin);

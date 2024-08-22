@@ -19,6 +19,8 @@
 
 package net.clementraynaud.skoice.system;
 
+import org.bukkit.Bukkit;
+
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -31,26 +33,56 @@ public final class Networks {
     }
 
     public static Set<Network> getAll() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         return Networks.networkSet;
     }
 
     public static Set<Network> getInitialized() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         return Networks.networkSet.stream()
                 .filter(network -> network.getProximityChannel().isInitialized())
                 .collect(Collectors.toSet());
     }
 
     public static Set<ProximityChannel> getProximityChannels() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         return Networks.networkSet.stream()
                 .map(Network::getProximityChannel)
                 .collect(Collectors.toSet());
     }
 
     public static void add(Network network) {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         Networks.networkSet.add(network);
     }
 
     public static void remove(Network network) {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         Networks.networkSet.remove(network);
     }
 
@@ -63,12 +95,24 @@ public final class Networks {
     }
 
     public static void clean() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         Networks.networkSet.stream()
                 .filter(Network::isEmpty)
                 .forEach(Networks::remove);
     }
 
     public static void clear() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         Networks.networkSet.clear();
     }
 }

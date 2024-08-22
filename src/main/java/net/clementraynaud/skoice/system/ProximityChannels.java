@@ -19,6 +19,8 @@
 
 package net.clementraynaud.skoice.system;
 
+import org.bukkit.Bukkit;
+
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -31,29 +33,65 @@ public final class ProximityChannels {
     }
 
     public static Set<ProximityChannel> getAll() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         return ProximityChannels.proximityChannelSet;
     }
 
     public static Set<ProximityChannel> getInitialized() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         return ProximityChannels.proximityChannelSet.stream()
                 .filter(ProximityChannel::isInitialized)
                 .collect(Collectors.toSet());
     }
 
     public static void add(ProximityChannel proximityChannel) {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         ProximityChannels.proximityChannelSet.add(proximityChannel);
     }
 
     public static void remove(ProximityChannel proximityChannel) {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         ProximityChannels.proximityChannelSet.remove(proximityChannel);
     }
 
     public static void remove(String channelId) {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         ProximityChannels.proximityChannelSet.removeIf(proximityChannel ->
                 proximityChannel.getChannelId().equals(channelId));
     }
 
     public static void clean(int connectedMembers) {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         int possibleNetworks = connectedMembers / 2;
 
         ProximityChannels.proximityChannelSet.stream()

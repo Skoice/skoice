@@ -78,11 +78,13 @@ public class LinksYamlFile extends YamlFile {
         if (player == null) {
             return;
         }
-        Networks.getAll().stream()
-                .filter(network -> network.contains(player))
-                .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(player));
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            Networks.getAll().stream()
+                    .filter(network -> network.contains(player))
+                    .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(player));
 
-        LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(player));
+            LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(player));
+        });
     }
 
     public Map<String, String> getLinks() {

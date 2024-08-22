@@ -30,6 +30,7 @@ import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
+import org.bukkit.Bukkit;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -53,10 +54,22 @@ public class UpdateNetworksTask {
     }
 
     public static Map<String, Pair<String, CompletableFuture<Void>>> getAwaitingMoves() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         return UpdateNetworksTask.awaitingMoves;
     }
 
     public void run() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         if (!this.lock.tryLock()) {
             return;
         }
@@ -185,6 +198,12 @@ public class UpdateNetworksTask {
     }
 
     private void manageMoves() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         LinkedPlayer.getOnlineLinkedPlayers().forEach(p -> {
             if (!p.isInMainVoiceChannel() && !p.isInAnyProximityChannel()) {
                 Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(p.getDiscordId());

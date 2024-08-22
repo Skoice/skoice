@@ -24,6 +24,7 @@ import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.util.DistanceUtil;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -51,10 +52,22 @@ public class LinkedPlayer {
     }
 
     public static Set<LinkedPlayer> getOnlineLinkedPlayers() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         return LinkedPlayer.onlineLinkedPlayers;
     }
 
     public static LinkedPlayer fromMemberId(String memberId) {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         return LinkedPlayer.onlineLinkedPlayers.stream()
                 .filter(p -> p.getDiscordId().equals(memberId))
                 .findFirst().orElse(null);
@@ -83,6 +96,12 @@ public class LinkedPlayer {
     }
 
     public Set<LinkedPlayer> getPlayersWithinRange() {
+       try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         return LinkedPlayer.getOnlineLinkedPlayers().stream()
                 .filter(p -> p.isInMainVoiceChannel() || p.isInAnyProximityChannel())
                 .filter(p -> !p.equals(this))
