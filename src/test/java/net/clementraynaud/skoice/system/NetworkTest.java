@@ -26,6 +26,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashSet;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -39,10 +41,10 @@ class NetworkTest {
 
     private Network network;
 
-    //@BeforeEach
-    //void setUp() {
-    //    this.network = new Network(this.plugin, "channelId");
-    //}
+    @BeforeEach
+    void setUp() {
+        this.network = new Network(this.plugin, new HashSet<>());
+    }
 
     @Test
     void canPlayerConnect_checksPlayerEligibility() {
