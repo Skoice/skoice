@@ -28,6 +28,7 @@ import net.clementraynaud.skoice.system.ProximityChannels;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
+import org.bukkit.Bukkit;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -40,6 +41,12 @@ public class InterruptSystemTask {
     }
 
     public void run() {
+        try {
+            if (Bukkit.isPrimaryThread()) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
         for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.getAwaitingMoves().values()) {
             value.getRight().cancel(true);
         }
