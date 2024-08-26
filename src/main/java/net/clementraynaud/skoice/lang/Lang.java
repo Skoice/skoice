@@ -40,7 +40,7 @@ public abstract class Lang {
     protected abstract String getPath(LangInfo langInfo);
 
     public String getMessage(String path) {
-        return this.active.contains(path)
+        return (this.active != null && this.active.contains(path))
                 ? this.active.getString(path)
                 : this.english.getString(path);
     }
