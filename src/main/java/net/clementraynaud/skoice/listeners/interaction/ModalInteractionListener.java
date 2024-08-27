@@ -63,6 +63,7 @@ public class ModalInteractionListener extends ListenerAdapter {
                         this.plugin.getListenerManager().update(event.getUser());
                         this.plugin.getBot().getVoiceChannel().updatePermissions();
                         this.plugin.getBot().getVoiceChannel().setStatus();
+                        this.plugin.getLinksYamlFile().refreshOnlineLinkedPlayers();
                         this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.refreshId().edit(event));
                     }));
 
