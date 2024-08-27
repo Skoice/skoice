@@ -21,6 +21,8 @@ package net.clementraynaud.skoice.menus.selectors;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
+import net.clementraynaud.skoice.system.ProximityChannel;
+import net.clementraynaud.skoice.system.ProximityChannels;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
@@ -28,6 +30,8 @@ import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class VoiceChannelSelector extends Selector {
 
@@ -53,9 +57,14 @@ public class VoiceChannelSelector extends Selector {
             channelLimit--;
         }
 
+        Set<String> proximityChannels = ProximityChannels.getInitialized().stream()
+                .map(ProximityChannel::getChannelId)
+                .collect(Collectors.toSet());
+
         super.plugin.getBot().getGuild().getVoiceChannels().stream()
                 .filter(voiceChannel -> voiceChannel.getParentCategory() != null)
                 .filter(voiceChannel -> !voiceChannel.equals(selectedChannel))
+                .filter(voiceChannel -> !proximityChannels.contains(voiceChannel.getId()))
                 .limit(channelLimit)
                 .forEach(voiceChannel -> options.add(SelectOption.of(voiceChannel.getName(), voiceChannel.getId())
                         .withDescription(voiceChannel.getParentCategory().getName())
