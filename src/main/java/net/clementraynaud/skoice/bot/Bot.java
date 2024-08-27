@@ -169,6 +169,11 @@ public class Bot {
         this.guildId = guilds.size() == 1 ? guilds.get(0).getId() : null;
     }
 
+    public void retrieveMutedUsers() {
+        UpdateVoiceStateTask.getMutedUsers().clear();
+        UpdateVoiceStateTask.getMutedUsers().addAll(this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD));
+    }
+
     public void updateVoiceState() {
         Guild guild = this.plugin.getBot().getGuild();
         if (guild == null) {
