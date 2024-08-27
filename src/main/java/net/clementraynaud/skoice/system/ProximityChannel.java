@@ -67,7 +67,7 @@ public class ProximityChannel {
                     this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD,
                             ProximityChannels.getInitialized().stream()
                                     .map(ProximityChannel::getChannelId)
-                                    .collect(Collectors.toSet()));
+                                    .collect(Collectors.toList()));
                 }, e -> Networks.remove(network));
     }
 
