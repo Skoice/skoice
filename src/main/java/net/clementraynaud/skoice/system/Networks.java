@@ -34,7 +34,7 @@ public final class Networks {
 
     public static Set<Network> getAll() {
        try {
-            if (Bukkit.isPrimaryThread()) {
+            if (Bukkit.isPrimaryThread() && Bukkit.getPluginManager().isPluginEnabled("Skoice")) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
         } catch (NullPointerException ignored) {
@@ -108,7 +108,7 @@ public final class Networks {
 
     public static void clear() {
        try {
-            if (Bukkit.isPrimaryThread()) {
+            if (Bukkit.isPrimaryThread() && Bukkit.getPluginManager().isPluginEnabled("Skoice")) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
         } catch (NullPointerException ignored) {

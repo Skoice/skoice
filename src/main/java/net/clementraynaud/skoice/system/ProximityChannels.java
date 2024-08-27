@@ -44,7 +44,7 @@ public final class ProximityChannels {
 
     public static Set<ProximityChannel> getInitialized() {
        try {
-            if (Bukkit.isPrimaryThread()) {
+            if (Bukkit.isPrimaryThread() && Bukkit.getPluginManager().isPluginEnabled("Skoice")) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
         } catch (NullPointerException ignored) {

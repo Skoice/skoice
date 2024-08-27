@@ -42,7 +42,7 @@ public class InterruptSystemTask {
 
     public void run() {
         try {
-            if (Bukkit.isPrimaryThread()) {
+            if (Bukkit.isPrimaryThread() && this.plugin.isEnabled()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
         } catch (NullPointerException ignored) {
