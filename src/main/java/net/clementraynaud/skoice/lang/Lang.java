@@ -46,7 +46,7 @@ public abstract class Lang {
     }
 
     public String getMessage(String path, String... args) {
-        String message = this.active.contains(path)
+        String message = (this.active != null && this.active.contains(path))
                 ? this.active.getString(path)
                 : this.english.getString(path);
         if (message == null) {
