@@ -49,6 +49,7 @@ public class LinkedPlayer {
         this.plugin = plugin;
         this.player = player;
         this.discordId = discordId;
+        LinkedPlayer.onlineLinkedPlayers.add(this);
     }
 
     public static Set<LinkedPlayer> getOnlineLinkedPlayers() {

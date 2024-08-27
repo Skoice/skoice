@@ -75,9 +75,9 @@ public class LinksYamlFile extends YamlFile {
         if (player == null) {
             return;
         }
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-            LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, discordId));
-        });
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin,
+                () -> new LinkedPlayer(this.plugin, player, discordId)
+        );
         if (this.plugin.getBot().getStatus() == BotStatus.READY) {
             this.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
                 VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
@@ -163,7 +163,7 @@ public class LinksYamlFile extends YamlFile {
 
         for (Player player : this.plugin.getServer().getOnlinePlayers()) {
             this.retrieveMember(player.getUniqueId(),
-                    member -> LinkedPlayer.getOnlineLinkedPlayers().add(new LinkedPlayer(this.plugin, player, member.getId())));
+                    member -> new LinkedPlayer(this.plugin, player, member.getId()));
         }
     }
 }

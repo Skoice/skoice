@@ -64,8 +64,7 @@ class LinkedPlayerTest {
         when(anotherPlayer.isStateEligible()).thenReturn(true);
         when(anotherPlayer.isCloseEnoughToPlayer(eq(this.linkedPlayer), anyBoolean())).thenReturn(true);
 
-        LinkedPlayer.getOnlineLinkedPlayers().add(this.linkedPlayer);
-        LinkedPlayer.getOnlineLinkedPlayers().add(anotherPlayer);
+        LinkedPlayer.getOnlineLinkedPlayers().add(anotherPlayer); // may be redundant
 
         Set<LinkedPlayer> playersWithinRange = this.linkedPlayer.getPlayersWithinRange();
 
