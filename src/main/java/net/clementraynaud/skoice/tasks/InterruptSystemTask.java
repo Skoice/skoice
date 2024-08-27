@@ -57,7 +57,8 @@ public class InterruptSystemTask {
             if (voiceChannel != null) {
                 for (int i = 0; i < proximityChannel.getChannel().getMembers().size(); i++) {
                     Member member = proximityChannel.getChannel().getMembers().get(i);
-                    if (i + 1 < proximityChannel.getChannel().getMembers().size()) {
+                    if (i + 1 < proximityChannel.getChannel().getMembers().size()
+                            || this.plugin.isEnabled()) {
                         member.getGuild()
                                 .moveVoiceMember(member, voiceChannel)
                                 .queue();
