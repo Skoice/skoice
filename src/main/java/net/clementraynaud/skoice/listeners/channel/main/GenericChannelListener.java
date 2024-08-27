@@ -87,7 +87,15 @@ public class GenericChannelListener extends ListenerAdapter {
         if (channel.getType() != ChannelType.VOICE) {
             return;
         }
-        this.checkForValidVoiceChannel(event);
+
+        if (event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)
+                && channel.getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))
+                && channel.asVoiceChannel().getParentCategory() == null) {
+            channel.asVoiceChannel().getManager()
+                    .setParent(event.getOldValue())
+                    .queue();
+        }
+
         if (channel.asVoiceChannel().getParentCategory() != null) {
             this.reloadVoiceChannelMenu();
         }

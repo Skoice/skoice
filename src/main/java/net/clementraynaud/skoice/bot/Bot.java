@@ -182,14 +182,17 @@ public class Bot {
     }
 
     public void retrieveNetworks() {
-        Category category = this.plugin.getConfigYamlFile().getCategory();
-        if (category != null) {
-            List<String> voiceChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
-            this.plugin.getTempYamlFile().remove(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
-            category.getVoiceChannels().stream()
-                    .filter(channel -> voiceChannels.contains(channel.getId()))
-                    .forEach(channel -> new ProximityChannel(this.plugin, channel.getId()));
+        Guild guild = this.getGuild();
+        if (guild == null) {
+            return;
         }
+
+        List<String> voiceChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
+        this.plugin.getTempYamlFile().remove(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
+
+        guild.getVoiceChannels().stream()
+                .filter(channel -> voiceChannels.contains(channel.getId()))
+                .forEach(channel -> new ProximityChannel(this.plugin, channel.getId()));
     }
 
     public void updateStatus() {
