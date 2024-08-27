@@ -161,7 +161,7 @@ field:
     description: "Type %s or click the button below to complete the configuration and use Skoice."
   incomplete-configuration-alternative-server-manager:
     title: "Incomplete Configuration"
-    description: "You have either moved or deleted the main voice channel. Type %s to complete the configuration and use Skoice."
+    description: "You have deleted the main voice channel. Type %s to complete the configuration and use Skoice."
   download:
     title: "Download"
     description: "[Get the plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server."
