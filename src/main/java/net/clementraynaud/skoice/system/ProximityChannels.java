@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 public final class ProximityChannels {
 
+    private static final int EXTRA_CHANNELS = 1;
     private static final Set<ProximityChannel> proximityChannelSet = ConcurrentHashMap.newKeySet();
 
     private ProximityChannels() {
@@ -98,7 +99,7 @@ public final class ProximityChannels {
                 .filter(proximityChannel -> proximityChannel.getChannel() != null
                         && proximityChannel.getChannel().getMembers().isEmpty())
                 .forEach(proximityChannel -> {
-                    if (ProximityChannels.getAll().size() > possibleNetworks + 1
+                    if (ProximityChannels.getAll().size() > possibleNetworks + ProximityChannels.EXTRA_CHANNELS
                             || possibleUsers == 0) {
                         proximityChannel.delete();
                     }
