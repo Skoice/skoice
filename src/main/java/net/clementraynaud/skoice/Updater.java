@@ -25,9 +25,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
@@ -40,6 +44,7 @@ public class Updater {
 
     private static final String VERSION_ENDPOINT = "/version";
     private static final String DOWNLOAD_ENDPOINT = "/Skoice.jar";
+    private static final String HASH_ENDPOINT = "/Skoice.jar.sha256";
 
     private static final String LATEST_CHANNEL = "skoice-latest";
     private static final String BETA_CHANNEL = "skoice-beta";
@@ -82,38 +87,108 @@ public class Updater {
 
     private void getVersion(final Consumer<String> consumer) {
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-            try (InputStream inputStream = new URL(this.fullURL + Updater.VERSION_ENDPOINT)
-                    .openStream(); Scanner scanner = new Scanner(inputStream)) {
-                if (scanner.hasNext()) {
-                    consumer.accept(scanner.next());
+            HttpURLConnection connection = null;
+            try {
+                URL url = new URL(this.fullURL + Updater.VERSION_ENDPOINT);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setConnectTimeout(5000);
+                connection.setReadTimeout(5000);
+                connection.connect();
+
+                try (InputStream inputStream = connection.getInputStream(); Scanner scanner = new Scanner(inputStream)) {
+                    if (scanner.hasNext()) {
+                        consumer.accept(scanner.next());
+                    }
                 }
             } catch (IOException ignored) {
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+        });
+
+    }
+
+    private void update(String version) {
+        File updateFolder = this.plugin.getServer().getUpdateFolderFile();
+        File tempUpdateFile = new File(updateFolder, "Skoice.jar.temp");
+        File finalUpdateFile = new File(updateFolder, this.pluginPath.substring(this.pluginPath.lastIndexOf(File.separator) + 1));
+
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            updateFolder.mkdirs();
+            HttpURLConnection connection = null;
+
+            try (FileOutputStream outputStream = new FileOutputStream(tempUpdateFile)) {
+                URL url = new URL(this.fullURL + Updater.DOWNLOAD_ENDPOINT);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setConnectTimeout(20000);
+                connection.setReadTimeout(240000);
+                connection.connect();
+
+                outputStream.getChannel()
+                        .transferFrom(Channels.newChannel(connection.getInputStream()), 0, Long.MAX_VALUE);
+
+                String expectedHash = this.fetchHashFromServer();
+                if (expectedHash != null && this.verifyFileIntegrity(tempUpdateFile, expectedHash)) {
+                    Files.move(tempUpdateFile.toPath(), finalUpdateFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    this.downloadedVersion = version;
+                    this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
+                } else {
+                    throw new IOException("File integrity check failed");
+                }
+            } catch (IOException | NoSuchAlgorithmException exception) {
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
+                        this.plugin.getDescription().getVersion(), version));
+                try {
+                    Files.delete(tempUpdateFile.toPath());
+                } catch (IOException ignored) {
+                }
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
             }
         });
     }
 
-    private void update(String version) {
-        File update = new File(this.plugin.getServer().getUpdateFolderFile().getAbsolutePath() + File.separator
-                + this.pluginPath.substring(this.pluginPath.lastIndexOf(File.separator) + 1));
+    private String fetchHashFromServer() {
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(this.fullURL + Updater.HASH_ENDPOINT);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
 
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-            this.plugin.getServer().getUpdateFolderFile().mkdirs();
-
-            try (FileOutputStream outputStream = new FileOutputStream(update)) {
-                outputStream.getChannel()
-                        .transferFrom(Channels.newChannel(new URL(this.fullURL + Updater.DOWNLOAD_ENDPOINT)
-                                .openStream()), 0, Long.MAX_VALUE);
-                this.downloadedVersion = version;
-                this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
-
-            } catch (IOException exception) {
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                        this.plugin.getDescription().getVersion(), version));
-                try {
-                    Files.delete(update.getAbsoluteFile().toPath());
-                } catch (IOException ignored) {
+            try (InputStream inputStream = connection.getInputStream(); Scanner scanner = new Scanner(inputStream)) {
+                if (scanner.hasNext()) {
+                    return scanner.next();
                 }
             }
-        });
+        } catch (IOException ignored) {
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return null;
+    }
+
+    private boolean verifyFileIntegrity(File file, String expectedHash) throws NoSuchAlgorithmException, IOException {
+        MessageDigest sha256Digest = MessageDigest.getInstance("SHA-256");
+        try (InputStream fis = Files.newInputStream(file.toPath())) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                sha256Digest.update(buffer, 0, bytesRead);
+            }
+        }
+        byte[] fileHashBytes = sha256Digest.digest();
+        StringBuilder fileHash = new StringBuilder();
+        for (byte b : fileHashBytes) {
+            fileHash.append(String.format("%02x", b));
+        }
+        return fileHash.toString().equals(expectedHash);
     }
 }
