@@ -63,7 +63,13 @@ public class Updater {
         this.updateReleaseChannel();
         this.getVersion(version -> {
             if (version != null && !this.plugin.getDescription().getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
-                this.update(version);
+                String expectedHash = this.fetchHashFromServer();
+                if (expectedHash != null) {
+                    this.update(version, expectedHash);
+                } else {
+                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
+                            this.plugin.getDescription().getVersion(), version));
+                }
             }
         });
     }
@@ -107,10 +113,9 @@ public class Updater {
                 }
             }
         });
-
     }
 
-    private void update(String version) {
+    private void update(String version, String expectedHash) {
         File updateFolder = this.plugin.getServer().getUpdateFolderFile();
         File tempUpdateFile = new File(updateFolder, "Skoice.jar.temp");
         File finalUpdateFile = new File(updateFolder, this.pluginPath.substring(this.pluginPath.lastIndexOf(File.separator) + 1));
@@ -129,8 +134,7 @@ public class Updater {
                 outputStream.getChannel()
                         .transferFrom(Channels.newChannel(connection.getInputStream()), 0, Long.MAX_VALUE);
 
-                String expectedHash = this.fetchHashFromServer();
-                if (expectedHash != null && this.verifyFileIntegrity(tempUpdateFile, expectedHash)) {
+                if (this.verifyFileIntegrity(tempUpdateFile, expectedHash)) {
                     Files.move(tempUpdateFile.toPath(), finalUpdateFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     this.downloadedVersion = version;
                     this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
