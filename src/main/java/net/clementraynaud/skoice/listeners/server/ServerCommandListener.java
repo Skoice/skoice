@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.server;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,7 +41,9 @@ public class ServerCommandListener implements Listener {
             String playerName = command.substring(3);
             if (!playerName.isEmpty()) {
                 Player player = this.plugin.getServer().getPlayerExact(playerName);
-                if (player != null && !player.isOp()) {
+                if (player != null
+                        && !player.isOp()
+                        && this.plugin.getBot().getStatus() != BotStatus.READY) {
                     this.plugin.getBot().sendIncompleteConfigurationAlert(player, false, true);
                 }
             }
