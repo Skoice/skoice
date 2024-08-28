@@ -28,7 +28,6 @@ import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class EmbeddedMenu {
