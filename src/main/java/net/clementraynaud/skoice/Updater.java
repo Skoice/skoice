@@ -115,45 +115,43 @@ public class Updater {
         });
     }
 
-    private void update(String version, String expectedHash) {
+    private synchronized void update(String version, String expectedHash) {
         File updateFolder = this.plugin.getServer().getUpdateFolderFile();
         File tempUpdateFile = new File(updateFolder, "Skoice.jar.temp");
         File finalUpdateFile = new File(updateFolder, this.pluginPath.substring(this.pluginPath.lastIndexOf(File.separator) + 1));
 
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-            updateFolder.mkdirs();
-            HttpURLConnection connection = null;
+        updateFolder.mkdirs();
+        HttpURLConnection connection = null;
 
-            try (FileOutputStream outputStream = new FileOutputStream(tempUpdateFile)) {
-                URL url = new URL(this.fullURL + Updater.DOWNLOAD_ENDPOINT);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setConnectTimeout(20000);
-                connection.setReadTimeout(240000);
-                connection.connect();
+        try (FileOutputStream outputStream = new FileOutputStream(tempUpdateFile)) {
+            URL url = new URL(this.fullURL + Updater.DOWNLOAD_ENDPOINT);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(20000);
+            connection.setReadTimeout(240000);
+            connection.connect();
 
-                outputStream.getChannel()
-                        .transferFrom(Channels.newChannel(connection.getInputStream()), 0, Long.MAX_VALUE);
+            outputStream.getChannel()
+                    .transferFrom(Channels.newChannel(connection.getInputStream()), 0, Long.MAX_VALUE);
 
-                if (this.verifyFileIntegrity(tempUpdateFile, expectedHash)) {
-                    Files.move(tempUpdateFile.toPath(), finalUpdateFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    this.downloadedVersion = version;
-                    this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
-                } else {
-                    throw new IOException("File integrity check failed");
-                }
-            } catch (IOException | NoSuchAlgorithmException exception) {
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                        this.plugin.getDescription().getVersion(), version));
-                try {
-                    Files.delete(tempUpdateFile.toPath());
-                } catch (IOException ignored) {
-                }
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
+            if (this.verifyFileIntegrity(tempUpdateFile, expectedHash)) {
+                Files.move(tempUpdateFile.toPath(), finalUpdateFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                this.downloadedVersion = version;
+                this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
+            } else {
+                throw new IOException("File integrity check failed");
             }
-        });
+        } catch (IOException | NoSuchAlgorithmException exception) {
+            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
+                    this.plugin.getDescription().getVersion(), version));
+            try {
+                Files.delete(tempUpdateFile.toPath());
+            } catch (IOException ignored) {
+            }
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
     }
 
     private String fetchHashFromServer() {

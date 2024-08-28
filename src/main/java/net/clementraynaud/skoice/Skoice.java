@@ -57,7 +57,6 @@ public class Skoice extends JavaPlugin {
     private Bot bot;
     private BukkitAudiences adventure;
     private HookManager hookManager;
-    private Updater updater;
 
     public static SkoiceAPI api() {
         return Skoice.api;
@@ -95,8 +94,8 @@ public class Skoice extends JavaPlugin {
         this.hookManager = new HookManager(this);
         this.hookManager.initialize();
         this.addCustomCharts();
-        this.updater = new Updater(this, this.getFile().getAbsolutePath());
-        this.updater.runUpdaterTaskTimer();
+        Updater updater = new Updater(this, this.getFile().getAbsolutePath());
+        updater.runUpdaterTaskTimer();
     }
 
     public BukkitAudiences adventure() {
@@ -210,10 +209,6 @@ public class Skoice extends JavaPlugin {
 
     public Bot getBot() {
         return this.bot;
-    }
-
-    public Updater getUpdater() {
-        return this.updater;
     }
 
     public HookManager getHookManager() {
