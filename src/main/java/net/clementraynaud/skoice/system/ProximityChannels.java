@@ -85,21 +85,21 @@ public final class ProximityChannels {
                 proximityChannel.getChannelId().equals(channelId));
     }
 
-    public static void clean(int connectedMembers) {
+    public static void clean(int possibleUsers) {
        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
         } catch (NullPointerException ignored) {
         }
-        int possibleNetworks = connectedMembers / 2;
+        int possibleNetworks = possibleUsers / 2;
 
         ProximityChannels.proximityChannelSet.stream()
                 .filter(proximityChannel -> proximityChannel.getChannel() != null
                         && proximityChannel.getChannel().getMembers().isEmpty())
                 .forEach(proximityChannel -> {
                     if (ProximityChannels.getAll().size() > possibleNetworks + 1
-                            || connectedMembers == 0) {
+                            || possibleUsers == 0) {
                         proximityChannel.delete();
                     }
                 });

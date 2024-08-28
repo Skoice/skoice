@@ -127,7 +127,12 @@ public class UpdateNetworksTask {
             }
 
             Networks.clean();
-            ProximityChannels.clean(connectedMembers.size());
+
+            int possibleUsers = (int) connectedMembers.stream()
+                    .map(member -> LinkedPlayer.fromMemberId(member.getId()))
+                    .filter(Objects::nonNull)
+                    .count();
+            ProximityChannels.clean(possibleUsers);
 
         } finally {
             this.lock.unlock();
