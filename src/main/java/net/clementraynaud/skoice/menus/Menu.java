@@ -48,7 +48,6 @@ public class Menu {
     private final MenuStyle style;
     private final String parent;
     private final String[] fields;
-    private Button[] buttons;
 
     public Menu(Skoice plugin, ConfigurationSection menu) {
         this.plugin = plugin;
@@ -64,8 +63,6 @@ public class Menu {
         this.style = menu.contains("style") ? MenuStyle.valueOf(menu.getString("style").toUpperCase()) : null;
         this.parent = menu.contains("parent") ? menu.getString("parent") : null;
         this.fields = menu.getStringList("fields").toArray(new String[0]);
-
-        this.buttons = new Button[0];
     }
 
     public MessageCreateData build(String... args) {
@@ -166,7 +163,7 @@ public class Menu {
 
     private List<ActionRow> getMainActionRows() {
         List<ActionRow> mainActionRows = new ArrayList<>();
-        List<Button> mainButtons = new ArrayList<>(Arrays.asList(this.buttons));
+        List<Button> mainButtons = this.plugin.getBot().getMenuFactory().getButtons(this.plugin, this.menuId);
         for (Menu menu : this.plugin.getBot().getMenuFactory().getMenus().values()) {
             if (menu.parent != null && menu.parent.equals(this.menuId)) {
                 List<String> unreviewedSettings = this.plugin.getConfigYamlFile().getStringList(ConfigField.UNREVIEWED_SETTINGS.toString());
@@ -228,10 +225,6 @@ public class Menu {
         }
 
         return ActionRow.of(secondaryButtons);
-    }
-
-    public void setButtons(Button... buttons) {
-        this.buttons = buttons;
     }
 
     private String getRoot() {

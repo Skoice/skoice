@@ -28,8 +28,10 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MenuFactory {
@@ -63,8 +65,6 @@ public class MenuFactory {
                 this.menus.put(menu, new Menu(plugin, menuSection));
             }
         }
-
-        this.loadButtons(plugin);
     }
 
     private void loadFields(Skoice plugin) {
@@ -80,33 +80,34 @@ public class MenuFactory {
         }
     }
 
-    private void loadButtons(Skoice plugin) {
-        for (Menu menu : this.menus.values()) {
-            switch (menu.getId()) {
-                case "incomplete-configuration-server-manager":
-                    menu.setButtons(Button.primary("configure-now",
-                                    plugin.getBot().getLang().getMessage("button-label.configure-now"))
-                            .withEmoji(MenuEmoji.GEAR.get()));
-                    break;
+    public List<Button> getButtons(Skoice plugin, String menuId) {
+        List<Button> buttons = new ArrayList<>();
+        switch (menuId) {
+            case "incomplete-configuration-server-manager":
+                buttons.add(Button.primary("configure-now",
+                                plugin.getBot().getLang().getMessage("button-label.configure-now"))
+                        .withEmoji(MenuEmoji.GEAR.get()));
+                break;
 
-                case "permissions":
-                    menu.setButtons(Button.link(plugin.getBot().getInviteUrl(),
-                                    plugin.getBot().getLang().getMessage("button-label.update-permissions"))
-                            .withEmoji(MenuEmoji.CARD_BOX.get()));
-                    break;
+            case "permissions":
+                buttons.add(Button.link(plugin.getBot().getInviteUrl(),
+                                plugin.getBot().getLang().getMessage("button-label.update-permissions"))
+                        .withEmoji(MenuEmoji.CARD_BOX.get()));
+                break;
 
-                case "login-notification":
-                    if (LoginNotificationSelector.REMIND_ONCE.equals(plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
-                        menu.setButtons(Button.danger("clear-notified-players",
-                                        plugin.getBot().getLang().getMessage("button-label.clear-notified-players"))
-                                .withEmoji(MenuEmoji.WASTEBASKET.get()));
-                    }
-                    break;
+            case "login-notification":
+                if (LoginNotificationSelector.REMIND_ONCE.equals(plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString()))) {
+                    buttons.add(Button.danger("clear-notified-players",
+                                    plugin.getBot().getLang().getMessage("button-label.clear-notified-players"))
+                            .withEmoji(MenuEmoji.WASTEBASKET.get()));
+                }
+                break;
 
-                default:
-                    break;
-            }
+            default:
+                break;
         }
+
+        return buttons;
     }
 
     public Map<String, Menu> getMenus() {
