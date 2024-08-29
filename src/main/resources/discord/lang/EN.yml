@@ -79,7 +79,7 @@ menu:
     title: "Discord Integration"
   voice-channel:
     title: "Voice Channel"
-    description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Adjust its bitrate to manage the audio quality of the proximity voice chat. Please note that players will automatically be muted in this channel."
+    description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Please note that players will automatically be muted in this channel."
     shortened-description: "Select the channel players have to join to use the proximity voice chat."
     select-menu:
       placeholder: "Please select a voice channel."

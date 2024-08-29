@@ -59,7 +59,6 @@ public class ProximityChannel {
                 .addPermissionOverride(guild.getSelfMember(),
                         EnumSet.of(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS),
                         Collections.emptyList())
-                .setBitrate(this.plugin.getConfigYamlFile().getVoiceChannel().getBitrate())
                 .queue(voiceChannel -> {
                     this.channelId = voiceChannel.getId();
                     ProximityChannels.add(this);
