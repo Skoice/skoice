@@ -30,6 +30,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
@@ -179,15 +180,13 @@ public class Updater {
 
     private boolean verifyFileIntegrity(File file, String expectedHash) throws NoSuchAlgorithmException, IOException {
         MessageDigest sha256Digest = MessageDigest.getInstance("SHA-256");
-        try (InputStream fis = Files.newInputStream(file.toPath())) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = fis.read(buffer)) != -1) {
-                sha256Digest.update(buffer, 0, bytesRead);
+        try (DigestInputStream dis = new DigestInputStream(Files.newInputStream(file.toPath()), sha256Digest)) {
+            byte[] buffer = new byte[16384];
+            while (dis.read(buffer) != -1) {
             }
         }
         byte[] fileHashBytes = sha256Digest.digest();
-        StringBuilder fileHash = new StringBuilder();
+        StringBuilder fileHash = new StringBuilder(fileHashBytes.length * 2);
         for (byte b : fileHashBytes) {
             fileHash.append(String.format("%02x", b));
         }
