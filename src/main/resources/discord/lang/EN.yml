@@ -123,7 +123,7 @@ menu:
   link-synchronization:
     title: "Link Synchronization"
     shortened-description: "Toggle the synchronization of external plugins with Skoice."
-    description: "Toggle the synchronization of external plugins with Skoice. Players who have linked their accounts using one of the selected plugins are synchronized in real time between Skoice and that plugin. Updating this option requires you to restart your Minecraft server for it to take effect."
+    description: "Toggle the synchronization of external plugins with Skoice. When players link their accounts via Skoice or a selected plugin, real-time synchronization occurs on both sides. Updating this option requires you to restart your Minecraft server for it to take effect."
     select-menu:
       placeholder: "Please select the desired plugins."
   release-channel:
