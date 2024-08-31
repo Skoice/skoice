@@ -168,6 +168,7 @@ public class Skoice extends JavaPlugin {
                 ConfigField.TEXT_CHAT,
                 ConfigField.CHANNEL_VISIBILITY,
                 ConfigField.DISCORDSRV_SYNCHRONIZATION,
+                ConfigField.ESSENTIALSX_SYNCHRONIZATION,
                 ConfigField.RELEASE_CHANNEL
         );
     }
