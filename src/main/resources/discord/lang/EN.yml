@@ -126,10 +126,6 @@ menu:
     description: "Toggle the synchronization of external plugins with Skoice. Players who have linked their accounts using one of the selected plugins are synchronized in real time between Skoice and that plugin. Updating this option requires you to restart your Minecraft server for it to take effect."
     select-menu:
       placeholder: "Please select the desired plugins."
-      discordsrv:
-        label: "DiscordSRV"
-      essentialsx:
-        label: "EssentialsX"
   release-channel:
     title: "Release Channel"
     description: "Select the version of Skoice you want to use."

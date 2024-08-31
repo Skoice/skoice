@@ -38,11 +38,11 @@ public class LinkSynchronizationSelector extends Selector {
 
     @Override
     public SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.link-synchronization.select-menu.discordsrv.label"),
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of("DiscordSRV",
                                 ConfigField.DISCORDSRV_SYNCHRONIZATION.toString())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
                         .withEmoji(MenuEmoji.ELECTRIC_PLUG.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.link-synchronization.select-menu.essentialsx.label"),
+                SelectOption.of("EssentialsX",
                                 ConfigField.ESSENTIALSX_SYNCHRONIZATION.toString())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
                         .withEmoji(MenuEmoji.ELECTRIC_PLUG.get())));
