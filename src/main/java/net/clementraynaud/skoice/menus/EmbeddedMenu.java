@@ -62,6 +62,7 @@ public class EmbeddedMenu {
     }
 
     public void edit(IMessageEditCallback interaction) {
+        this.hook = interaction.getHook();
         interaction.editMessage(MessageEditData.fromCreateData(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args))).queue();
     }
 
