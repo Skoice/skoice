@@ -21,11 +21,22 @@ package net.clementraynaud.skoice.bot;
 
 public enum BotStatus {
 
-    NOT_CONNECTED,
-    NO_GUILD,
-    MULTIPLE_GUILDS,
-    MISSING_PERMISSION,
-    NO_VOICE_CHANNEL,
-    NO_RADIUS,
-    READY
+    NOT_CONNECTED(null),
+    NO_GUILD(null),
+    MULTIPLE_GUILDS("server"),
+    MISSING_PERMISSION("permissions"),
+    NO_VOICE_CHANNEL("voice-channel"),
+    NO_RADIUS("range"),
+    READY("settings");
+
+    private final String menuId;
+
+    BotStatus(String menuId) {
+        this.menuId = menuId;
+    }
+
+    public String getMenuId() {
+        return this.menuId;
+    }
+
 }

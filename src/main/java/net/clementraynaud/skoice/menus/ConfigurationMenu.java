@@ -30,22 +30,7 @@ public class ConfigurationMenu extends EmbeddedMenu {
     }
 
     public ConfigurationMenu refreshId() {
-        switch (super.bot.getStatus()) {
-            case MULTIPLE_GUILDS:
-                super.setContent("server");
-                break;
-            case MISSING_PERMISSION:
-                super.setContent("permissions");
-                break;
-            case NO_VOICE_CHANNEL:
-                super.setContent("voice-channel");
-                break;
-            case NO_RADIUS:
-                super.setContent("range");
-                break;
-            default:
-                super.setContent("settings");
-        }
+        super.setContent(super.bot.getStatus().getMenuId());
         return this;
     }
 }
