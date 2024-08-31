@@ -22,41 +22,76 @@ package net.clementraynaud.skoice.lang;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public abstract class Lang {
 
-    protected YamlConfiguration english;
-    protected YamlConfiguration active;
+    protected Map<String, List<String>> english;
+    protected Map<String, List<String>> active;
 
     public void load(LangInfo langInfo) {
+        this.active = null;
         if (this.english == null) {
-            this.english = ConfigurationUtil.loadResource(this.getClass().getName(), this.getPath(LangInfo.EN));
+            YamlConfiguration english = ConfigurationUtil.loadResource(this.getClass().getName(), this.getPath(LangInfo.EN));
+            if (english != null) {
+                this.english = this.convertYamlToMap(english);
+            } else {
+                this.english = new HashMap<>();
+            }
         }
-        this.active = new YamlConfiguration();
         if (langInfo != LangInfo.EN) {
-            this.active = ConfigurationUtil.loadResource(this.getClass().getName(), this.getPath(langInfo));
+            YamlConfiguration active = ConfigurationUtil.loadResource(this.getClass().getName(), this.getPath(langInfo));
+            if (active != null) {
+                this.active = this.convertYamlToMap(active);
+            }
         }
+    }
+
+    private Map<String, List<String>> convertYamlToMap(YamlConfiguration yamlConfig) {
+        Map<String, List<String>> result = new HashMap<>();
+        for (String key : yamlConfig.getKeys(true)) {
+            Object value = yamlConfig.get(key);
+            List<String> valuesList = new ArrayList<>();
+            if (value instanceof List) {
+                for (Object obj : (List<?>) value) {
+                    if (obj instanceof String) {
+                        valuesList.add((String) obj);
+                    }
+                }
+            } else if (value instanceof String) {
+                valuesList.add((String) value);
+            }
+            if (!valuesList.isEmpty()) {
+                result.put(key, valuesList);
+            }
+        }
+        return result;
     }
 
     protected abstract String getPath(LangInfo langInfo);
 
     public String getMessage(String path) {
-        return (this.active != null && this.active.contains(path))
-                ? this.active.getString(path)
-                : this.english.getString(path);
+        String message;
+        if (this.active != null && this.active.containsKey(path)) {
+            message = this.active.get(path).get(0);
+        } else {
+            message = (this.english.get(path) != null) ? this.english.get(path).get(0) : null;
+        }
+        if (message == null || message.trim().isEmpty()) {
+            return String.format("!%s!", path);
+        }
+        return message;
     }
 
     public String getMessage(String path, String... args) {
-        String message = (this.active != null && this.active.contains(path))
-                ? this.active.getString(path)
-                : this.english.getString(path);
-        if (message == null) {
-            return null;
-        }
-        return String.format(message, (Object[]) args);
+        return String.format(this.getMessage(path), (Object[]) args);
     }
 
     public boolean contains(String path) {
-        return this.english.contains(path);
+        return this.english.containsKey(path);
     }
 
     public int getAmountOfArgsRequired(String message) {

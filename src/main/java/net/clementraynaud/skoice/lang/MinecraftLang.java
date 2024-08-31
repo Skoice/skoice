@@ -37,8 +37,8 @@ public class MinecraftLang extends Lang {
     @Override
     public String getMessage(String path) {
         String message = super.getMessage(path);
-        if (message == null) {
-            return null;
+        if (message == null || message.trim().isEmpty()) {
+            return String.format("!%s!", path);
         }
         if (path.startsWith("chat.")) {
             return ChatColor.translateAlternateColorCodes('&', String.format(message, MinecraftLang.CHAT_PREFIX));
@@ -50,12 +50,7 @@ public class MinecraftLang extends Lang {
 
     @Override
     public String getMessage(String path, String... args) {
-        String message = (this.active != null && this.active.contains(path))
-                ? this.active.getString(path)
-                : this.english.getString(path);
-        if (message == null) {
-            return null;
-        }
+        String message = super.getMessage(path);
         args = Arrays.stream(args)
                 .map(arg -> arg.replace(String.valueOf(ChatColor.COLOR_CHAR), ""))
                 .toArray(String[]::new);
@@ -71,9 +66,9 @@ public class MinecraftLang extends Lang {
     }
 
     public Component getMessage(String path, Component... components) {
-        String[] strings = (super.active != null && super.active.contains(path))
-                ? super.active.getStringList(path).toArray(new String[0])
-                : super.english.getStringList(path).toArray(new String[0]);
+        String[] strings = (super.active != null && super.active.containsKey(path))
+                ? super.active.get(path).toArray(new String[0])
+                : super.english.get(path).toArray(new String[0]);
         TextComponent.Builder message = Component.text().content(ChatColor.translateAlternateColorCodes('&',
                 String.format(strings[0], MinecraftLang.CHAT_PREFIX)));
         for (int i = 0; i < components.length; i++) {
