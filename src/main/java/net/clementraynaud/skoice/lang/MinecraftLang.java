@@ -71,7 +71,7 @@ public class MinecraftLang extends Lang {
     }
 
     public Component getMessage(String path, Component... components) {
-        String[] strings = super.active.contains(path)
+        String[] strings = (super.active != null && super.active.contains(path))
                 ? super.active.getStringList(path).toArray(new String[0])
                 : super.english.getStringList(path).toArray(new String[0]);
         TextComponent.Builder message = Component.text().content(ChatColor.translateAlternateColorCodes('&',
