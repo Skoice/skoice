@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.lang;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ public abstract class Lang {
         if (this.english == null) {
             YamlConfiguration english = ConfigurationUtil.loadResource(this.getClass().getName(), this.getPath(LangInfo.EN));
             if (english != null) {
-                this.english = this.convertYamlToMap(english);
+                this.english = ConfigurationUtil.convertLangYamlToMap(english);
             } else {
                 this.english = new HashMap<>();
             }
@@ -45,30 +44,9 @@ public abstract class Lang {
         if (langInfo != LangInfo.EN) {
             YamlConfiguration active = ConfigurationUtil.loadResource(this.getClass().getName(), this.getPath(langInfo));
             if (active != null) {
-                this.active = this.convertYamlToMap(active);
+                this.active = ConfigurationUtil.convertLangYamlToMap(active);
             }
         }
-    }
-
-    private Map<String, List<String>> convertYamlToMap(YamlConfiguration yamlConfig) {
-        Map<String, List<String>> result = new HashMap<>();
-        for (String key : yamlConfig.getKeys(true)) {
-            Object value = yamlConfig.get(key);
-            List<String> valuesList = new ArrayList<>();
-            if (value instanceof List) {
-                for (Object obj : (List<?>) value) {
-                    if (obj instanceof String) {
-                        valuesList.add((String) obj);
-                    }
-                }
-            } else if (value instanceof String) {
-                valuesList.add((String) value);
-            }
-            if (!valuesList.isEmpty()) {
-                result.put(key, valuesList);
-            }
-        }
-        return result;
     }
 
     protected abstract String getPath(LangInfo langInfo);

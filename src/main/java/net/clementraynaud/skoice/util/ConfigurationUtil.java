@@ -24,6 +24,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class ConfigurationUtil {
 
@@ -42,5 +46,26 @@ public final class ConfigurationUtil {
         }
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         return YamlConfiguration.loadConfiguration(inputStreamReader);
+    }
+
+    public static Map<String, List<String>> convertLangYamlToMap(YamlConfiguration yamlConfig) {
+        Map<String, List<String>> result = new HashMap<>();
+        for (String key : yamlConfig.getKeys(true)) {
+            Object value = yamlConfig.get(key);
+            List<String> valuesList = new ArrayList<>();
+            if (value instanceof List) {
+                for (Object obj : (List<?>) value) {
+                    if (obj instanceof String) {
+                        valuesList.add((String) obj);
+                    }
+                }
+            } else if (value instanceof String) {
+                valuesList.add((String) value);
+            }
+            if (!valuesList.isEmpty()) {
+                result.put(key, valuesList);
+            }
+        }
+        return result;
     }
 }
