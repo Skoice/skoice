@@ -84,9 +84,10 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     break;
 
                 case "language-selection":
-                    this.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), event.getSelectedOptions().get(0).getValue());
-                    this.plugin.getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
-                    this.plugin.getBot().getLang().load(LangInfo.valueOf(event.getSelectedOptions().get(0).getValue()));
+                    LangInfo language = LangInfo.valueOf(event.getSelectedOptions().get(0).getValue());
+                    this.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), language.toString());
+                    this.plugin.getLang().load(language);
+                    this.plugin.getBot().getLang().load(language);
                     this.plugin.getListenerManager().update();
                     this.plugin.getBot().getCommands().register();
                     ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent("language").edit(event));

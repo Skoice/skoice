@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import org.bukkit.command.CommandSender;
@@ -55,7 +56,10 @@ public class LanguageArgument extends Argument {
             super.plugin.getBot().getLang().load(language);
             super.plugin.getListenerManager().update();
 
-            this.plugin.getBot().getCommands().register();
+            if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
+                this.plugin.getBot().getCommands().register();
+            }
+            
             this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.language-updated",
                     language.getFullName()));
 
