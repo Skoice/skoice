@@ -54,7 +54,9 @@ public class LanguageArgument extends Argument {
             super.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), language.toString());
             super.plugin.getLang().load(language);
             super.plugin.getBot().getLang().load(language);
-            super.plugin.getListenerManager().update();
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+                super.plugin.getListenerManager().update();
+            });
 
             if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
                 this.plugin.getBot().getCommands().register();
