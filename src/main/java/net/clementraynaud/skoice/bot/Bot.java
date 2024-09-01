@@ -89,11 +89,13 @@ public class Bot {
         }
 
         this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connecting"));
-        Player tokenManager = null;
+        Player tokenManager;
         if (sender instanceof Player) {
             tokenManager = (Player) sender;
             this.tokenManagerId = tokenManager.getUniqueId().toString();
             tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-connecting"));
+        } else {
+            tokenManager = null;
         }
 
         byte[] base64TokenBytes;
@@ -107,17 +109,20 @@ public class Bot {
             base64TokenBytes = new byte[0];
         }
 
-        try {
-            this.jda = JDABuilder.createDefault(new String(base64TokenBytes))
-                    .addEventListeners(new ReadyListener(this.plugin))
-                    .build();
-        } catch (InvalidTokenException | IllegalArgumentException e) {
-            this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
-            this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
-            if (tokenManager != null) {
-                tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-could-not-connect"));
+        byte[] finalBase64TokenBytes = base64TokenBytes;
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            try {
+                this.jda = JDABuilder.createDefault(new String(finalBase64TokenBytes))
+                        .addEventListeners(new ReadyListener(this.plugin))
+                        .build();
+            } catch (InvalidTokenException | IllegalArgumentException e) {
+                this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
+                this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
+                if (tokenManager != null) {
+                    tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-could-not-connect"));
+                }
             }
-        }
+        });
     }
 
     public boolean isAdministrator() {
