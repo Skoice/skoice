@@ -24,6 +24,7 @@ import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -101,7 +102,9 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getBot().getMenuFactory().loadAll(this.plugin);
 
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
-            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+            if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)
+                    && (guild.getRequiredMFALevel() != Guild.MFALevel.TWO_FACTOR_AUTH
+                    || this.plugin.getBot().getJDA().getSelfUser().isMfaEnabled())) {
                 guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
             }
         });
