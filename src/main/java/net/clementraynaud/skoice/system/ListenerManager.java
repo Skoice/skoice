@@ -29,6 +29,7 @@ import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRemoveListene
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleAddListener;
 import net.clementraynaud.skoice.listeners.guild.member.GuildMemberRoleRemoveListener;
 import net.clementraynaud.skoice.listeners.guild.override.GenericPermissionOverrideListener;
+import net.clementraynaud.skoice.listeners.guild.update.GuildUpdateMFALevelListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceGuildMuteListener;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceUpdateListener;
 import net.clementraynaud.skoice.listeners.interaction.ModalInteractionListener;
@@ -38,6 +39,7 @@ import net.clementraynaud.skoice.listeners.interaction.component.StringSelectInt
 import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
 import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
+import net.clementraynaud.skoice.listeners.self.SelfUpdateMFAListener;
 import net.clementraynaud.skoice.listeners.server.ServerCommandListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
@@ -112,6 +114,8 @@ public class ListenerManager {
         this.plugin.getBot().getJDA().addEventListener(
                 new GuildJoinListener(this.plugin),
                 new GuildLeaveListener(this.plugin),
+                new GuildUpdateMFALevelListener(this.plugin),
+                new SelfUpdateMFAListener(this.plugin),
                 new GuildMemberRemoveListener(this.plugin),
                 new GuildMemberRoleAddListener(this.plugin),
                 new GuildMemberRoleRemoveListener(this.plugin),
