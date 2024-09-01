@@ -88,7 +88,7 @@ public class GenericChannelListener extends ListenerAdapter {
             return;
         }
 
-        if (event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)
+        if (this.plugin.getBot().isAdministrator()
                 && channel.getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))
                 && channel.asVoiceChannel().getParentCategory() == null) {
             channel.asVoiceChannel().getManager()

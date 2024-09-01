@@ -125,6 +125,12 @@ public class Bot {
         if (guild == null) {
             return false;
         }
+
+        if (this.getGuild().getRequiredMFALevel() == Guild.MFALevel.TWO_FACTOR_AUTH
+                && !this.jda.getSelfUser().isMfaEnabled()) {
+            return false;
+        }
+
         return guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR);
     }
 
