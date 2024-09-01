@@ -53,23 +53,25 @@ public class InterruptSystemTask {
 
         VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
 
-        for (ProximityChannel proximityChannel : ProximityChannels.getInitialized()) {
-            if (voiceChannel != null) {
-                for (int i = 0; i < proximityChannel.getChannel().getMembers().size(); i++) {
-                    Member member = proximityChannel.getChannel().getMembers().get(i);
-                    if (i + 1 < proximityChannel.getChannel().getMembers().size()
-                            || this.plugin.isEnabled()) {
-                        member.getGuild()
-                                .moveVoiceMember(member, voiceChannel)
-                                .queue();
-                    } else {
-                        member.getGuild()
-                                .moveVoiceMember(member, voiceChannel)
-                                .complete();
+        if (this.plugin.getBot().isAdministrator()) {
+            for (ProximityChannel proximityChannel : ProximityChannels.getInitialized()) {
+                if (voiceChannel != null) {
+                    for (int i = 0; i < proximityChannel.getChannel().getMembers().size(); i++) {
+                        Member member = proximityChannel.getChannel().getMembers().get(i);
+                        if (i + 1 < proximityChannel.getChannel().getMembers().size()
+                                || this.plugin.isEnabled()) {
+                            member.getGuild()
+                                    .moveVoiceMember(member, voiceChannel)
+                                    .queue();
+                        } else {
+                            member.getGuild()
+                                    .moveVoiceMember(member, voiceChannel)
+                                    .complete();
+                        }
                     }
                 }
+                proximityChannel.delete();
             }
-            proximityChannel.delete();
         }
 
         Networks.getAll().forEach(Network::clear);
