@@ -46,7 +46,9 @@ public class ConfigureArgument extends Argument {
                         )
                 );
             } else {
-                player.sendMessage(super.plugin.getLang().getMessage("chat.configuration.bot-creation"));
+                player.sendMessage(super.plugin.getLang().getMessage("chat.configuration.bot-creation",
+                        "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")
+                );
             }
         } else {
             if (super.plugin.getBot().getStatus() == BotStatus.READY) {

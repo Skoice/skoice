@@ -69,7 +69,10 @@ public class Updater {
                     this.update(version, expectedHash);
                 } else {
                     this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                            this.plugin.getDescription().getVersion(), version));
+                            this.plugin.getDescription().getVersion(),
+                            version,
+                            "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861")
+                    );
                 }
             }
         });
@@ -143,7 +146,10 @@ public class Updater {
             }
         } catch (IOException | NoSuchAlgorithmException exception) {
             this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                    this.plugin.getDescription().getVersion(), version));
+                    this.plugin.getDescription().getVersion(),
+                    version,
+                    "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861")
+            );
             try {
                 Files.delete(tempUpdateFile.toPath());
             } catch (IOException ignored) {

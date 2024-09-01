@@ -15,12 +15,12 @@ logger:
     plugin-enabled: "Plugin enabled."
     plugin-disabled: "Plugin disabled."
     plugin-updated: "Skoice has been updated to the latest version. Please restart your Minecraft server to apply changes."
-    skoice-3: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3."
+    skoice-3: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: %s."
     configuration-complete: "Skoice is now configured. Type \"/link\" on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     bot-connecting: "Your bot is attempting to connect."
     bot-connected: "Your bot is connected."
   warning:
-    outdated-version: "You are using an outdated version (%s). Download the latest version (%s) here: https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861."
+    outdated-version: "You are using an outdated version (%s). Download the latest version (%s) here: %s."
     no-token: "Token not set. Join your Minecraft server to set up Skoice."
     no-guild: "Your bot is not on a Discord server. Open this link to invite it: %s."
     multiple-guilds: "Your bot is on multiple Discord servers. Type \"/configure\" on your Discord server to choose one."
@@ -30,7 +30,7 @@ logger:
   error:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."
-    bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: https://discordstatus.com."
+    bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: %s."
     public-bot: "Your bot is not configured correctly. Run the command again once you have unselected \"Public Bot\" and clicked \"Save Changes\" on this page: %s."
   exception:
     unexpected-value: "Unexpected value: %s"
@@ -40,7 +40,7 @@ chat:
       - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
       - "&7.\n&8• &7Once you have retrieved its token, insert it "
       - "&7.\n \nIf you cannot interact with this message, type \"&e/skoice tooltips&7\".\n "
-    bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &bhttps://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
+    bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &b%s&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
     no-token: "%s You have &cnot provided a token&7. To use this command, type \"&e/skoice token&7\" followed by the token."
     no-guild-interactive:
       - "%s Your bot is &cnot on a Discord server&7. Open "
@@ -88,7 +88,7 @@ chat:
     bot-timed-out-interactive:
       - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
       - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
-    bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &bhttps://discordstatus.com&7."
+    bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &b%s&7."
 action-bar:
   connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
   disconnecting-alert: "&c⚠ &7You are &cmoving away &7from near players."
