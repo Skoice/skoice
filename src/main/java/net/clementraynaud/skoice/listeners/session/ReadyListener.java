@@ -52,20 +52,8 @@ public class ReadyListener extends ListenerAdapter {
 
             applicationInfo.setRequiredScopes("applications.commands");
             this.plugin.getBot().setInviteUrl(applicationInfo.getInviteUrl(Permission.ADMINISTRATOR));
-            
-            this.setup();
 
-            if (tokenManager == null) {
-                return;
-            }
-
-            if (this.plugin.getBot().getStatus() == BotStatus.READY) {
-                tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-connected"));
-            } else if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
-                this.plugin.getBot().sendNoGuildAlert(tokenManager);
-            } else {
-                tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-connected-incomplete-configuration-discord"));
-            }
+            this.setup(tokenManager);
         });
     }
 
@@ -90,7 +78,7 @@ public class ReadyListener extends ListenerAdapter {
         }
     }
 
-    private void setup() {
+    private void setup(Player tokenManager) {
         this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
                         this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
                                 this.plugin,
@@ -124,6 +112,18 @@ public class ReadyListener extends ListenerAdapter {
                     this.plugin.getListenerManager().update();
 
                     this.plugin.getBot().retrieveProximityChannels();
+
+                    if (tokenManager == null) {
+                        return;
+                    }
+
+                    if (this.plugin.getBot().getStatus() == BotStatus.READY) {
+                        tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-connected"));
+                    } else if (this.plugin.getBot().getStatus() == BotStatus.NO_GUILD) {
+                        this.plugin.getBot().sendNoGuildAlert(tokenManager);
+                    } else {
+                        tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-connected-incomplete-configuration-discord"));
+                    }
                 });
     }
 }
