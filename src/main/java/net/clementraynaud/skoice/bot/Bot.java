@@ -68,7 +68,6 @@ public class Bot {
     private final BotCommands commands;
     private final BotVoiceChannel voiceChannel;
     private final MenuFactory menuFactory;
-    private ConfigurationMenu configurationMenu;
     private JDA jda;
     private BotStatus status = BotStatus.NOT_CONNECTED;
     private String tokenManagerId;
@@ -346,15 +345,6 @@ public class Bot {
 
     public MenuFactory getMenuFactory() {
         return this.menuFactory;
-    }
-
-    public void generateConfigurationMenu(IReplyCallback interaction) {
-        this.configurationMenu = new ConfigurationMenu(this);
-        this.configurationMenu.reply(interaction);
-    }
-
-    public Optional<ConfigurationMenu> getConfigurationMenu() {
-        return Optional.ofNullable(this.configurationMenu);
     }
 
     public String getInviteUrl() {

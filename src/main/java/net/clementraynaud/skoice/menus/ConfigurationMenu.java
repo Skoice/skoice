@@ -29,6 +29,11 @@ public class ConfigurationMenu extends EmbeddedMenu {
         this.refreshId();
     }
 
+    public ConfigurationMenu(Bot bot, String messageId) {
+        super(bot, messageId);
+        ConfigurationMenus.getMenuSet().add(this);
+    }
+
     public ConfigurationMenu refreshId() {
         super.setContent(super.bot.getStatus().getMenuId());
         return this;

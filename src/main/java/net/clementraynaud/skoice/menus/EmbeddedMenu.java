@@ -35,10 +35,16 @@ public class EmbeddedMenu {
     protected final Bot bot;
     protected String menuId;
     protected String[] args = new String[0];
+    protected String messageId;
     protected InteractionHook hook;
 
     public EmbeddedMenu(Bot bot) {
         this.bot = bot;
+    }
+
+    public EmbeddedMenu(Bot bot, String messageId) {
+        this.bot = bot;
+        this.messageId = messageId;
     }
 
     public EmbeddedMenu setContent(String menuId, String... args) {
@@ -58,7 +64,9 @@ public class EmbeddedMenu {
     public void reply(IReplyCallback interaction) {
         this.hook = interaction.getHook();
         interaction.reply(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args))
-                .setEphemeral(true).queue();
+                .setEphemeral(true)
+                .flatMap(InteractionHook::retrieveOriginal)
+                .queue(message -> this.messageId = message.getId());
     }
 
     public void edit(IMessageEditCallback interaction) {

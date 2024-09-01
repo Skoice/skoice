@@ -62,9 +62,15 @@ public class ListenerManager {
     }
 
     public void update(User user) {
-        boolean wasBotReady = this.plugin.getBot().getStatus() == BotStatus.READY;
+        BotStatus oldStatus = this.plugin.getBot().getStatus();
         this.plugin.getBot().updateStatus();
-        if (!wasBotReady && this.plugin.getBot().getStatus() == BotStatus.READY) {
+        BotStatus newStatus = this.plugin.getBot().getStatus();
+
+        if (oldStatus != newStatus && newStatus.getMenuId() != null) {
+            ConfigurationMenus.refreshAll();
+        }
+
+        if (oldStatus != BotStatus.READY && newStatus == BotStatus.READY) {
             this.registerMinecraftListeners();
             this.registerBotListeners();
             this.plugin.getBot().getVoiceChannel().notifyUnlinkedUsers();
@@ -74,11 +80,10 @@ public class ListenerManager {
                                 this.plugin.getBot().getCommands().getAsMention(CommandInfo.LINK.toString()))
                         .message(user);
             }
-        } else if (this.plugin.getBot().getStatus() != BotStatus.READY) {
-            ConfigurationMenus.refreshAll();
-            if (wasBotReady) {
+        } else if (newStatus != BotStatus.READY) {
+            if (oldStatus == BotStatus.READY) {
                 this.unregisterMinecraftListeners();
-                if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
+                if (newStatus != BotStatus.NOT_CONNECTED) {
                     this.unregisterBotListeners();
                 }
             }

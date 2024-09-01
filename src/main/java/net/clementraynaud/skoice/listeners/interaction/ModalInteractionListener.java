@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.interaction;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
@@ -39,6 +40,10 @@ public class ModalInteractionListener extends ListenerAdapter {
 
     @Override
     public void onModalInteraction(ModalInteractionEvent event) {
+        if (event.getMessage() == null) {
+            return;
+        }
+
         Guild guild = this.plugin.getBot().getGuild(event.getInteraction());
         if (guild == null) {
             return;
@@ -64,7 +69,7 @@ public class ModalInteractionListener extends ListenerAdapter {
                         this.plugin.getBot().getVoiceChannel().updatePermissions();
                         this.plugin.getBot().getVoiceChannel().setStatus();
                         this.plugin.getLinksYamlFile().refreshOnlineLinkedPlayers();
-                        this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.refreshId().edit(event));
+                        ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> menu.refreshId().edit(event));
                     }));
 
         } else if ("customized".equals(event.getModalId())) {
@@ -84,13 +89,13 @@ public class ModalInteractionListener extends ListenerAdapter {
             if (horizontalRadius == 0 || verticalRadius == 0) {
                 new EmbeddedMenu(this.plugin.getBot()).setContent("illegal-value")
                         .reply(event);
-                this.plugin.getBot().getConfigurationMenu()
+                ConfigurationMenus.getFromMessageId(event.getMessage().getId())
                         .ifPresent(menu -> menu.setContent("range").editFromHook());
             } else {
                 this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
                 this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
                 this.plugin.getListenerManager().update(event.getUser());
-                this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.refreshId().edit(event));
+                ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> menu.refreshId().edit(event));
             }
         }
     }

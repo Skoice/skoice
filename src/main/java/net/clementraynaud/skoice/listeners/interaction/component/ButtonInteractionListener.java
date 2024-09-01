@@ -21,6 +21,8 @@ package net.clementraynaud.skoice.listeners.interaction.component;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
+import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
@@ -51,6 +53,10 @@ public class ButtonInteractionListener extends ListenerAdapter {
             return;
         }
 
+        if (!ConfigurationMenus.contains(event.getMessageId())) {
+            new ConfigurationMenu(this.plugin.getBot(), event.getMessageId());
+        }
+
         Member member = event.getMember();
 
         if ("display-issues".equals(buttonId)) {
@@ -59,10 +65,11 @@ public class ButtonInteractionListener extends ListenerAdapter {
 
         } else if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
             if ("configure-now".equals(buttonId)) {
-                this.plugin.getBot().generateConfigurationMenu(event);
+                ConfigurationMenu menu = new ConfigurationMenu(this.plugin.getBot());
+                menu.reply(event);
 
             } else if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
-                this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> menu.refreshId().edit(event));
+                ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.refreshId().edit(event));
 
             } else if ("clear-notified-players".equals(buttonId)) {
                 this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, Collections.emptyList());
@@ -70,7 +77,7 @@ public class ButtonInteractionListener extends ListenerAdapter {
                         .reply(event);
 
             } else {
-                this.plugin.getBot().getConfigurationMenu().ifPresent(menu -> {
+                ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> {
                     List<String> unreviewedSettings = this.plugin.getConfigYamlFile().getStringList(ConfigField.UNREVIEWED_SETTINGS.toString());
                     if (unreviewedSettings.contains(buttonId)) {
                         unreviewedSettings.remove(buttonId);

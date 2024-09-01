@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 public class ConfigureCommand extends Command {
@@ -30,6 +31,7 @@ public class ConfigureCommand extends Command {
 
     @Override
     public void run() {
-        this.plugin.getBot().generateConfigurationMenu(super.interaction);
+        ConfigurationMenu menu = new ConfigurationMenu(super.plugin.getBot());
+        menu.reply(super.interaction);
     }
 }

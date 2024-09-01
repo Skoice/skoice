@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.menus;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public final class ConfigurationMenus {
@@ -27,6 +28,17 @@ public final class ConfigurationMenus {
     private static final Set<ConfigurationMenu> menuSet = new HashSet<>();
 
     private ConfigurationMenus() {
+    }
+
+    public static boolean contains(String messageId) {
+        return ConfigurationMenus.menuSet.stream()
+                .anyMatch(menu-> messageId.equals(menu.messageId));
+    }
+
+    public static Optional<ConfigurationMenu> getFromMessageId(String messageId) {
+        return ConfigurationMenus.menuSet.stream()
+                .filter(menu -> messageId.equals(menu.messageId))
+                .findFirst();
     }
 
     public static void refreshAll() {
