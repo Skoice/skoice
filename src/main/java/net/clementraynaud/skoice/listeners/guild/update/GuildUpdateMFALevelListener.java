@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.listeners.guild.update;
 
 import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateMFALevelEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
