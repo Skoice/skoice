@@ -39,7 +39,6 @@ import net.clementraynaud.skoice.listeners.interaction.component.StringSelectInt
 import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
 import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
-import net.clementraynaud.skoice.listeners.self.SelfUpdateMFAListener;
 import net.clementraynaud.skoice.listeners.server.ServerCommandListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
@@ -115,7 +114,6 @@ public class ListenerManager {
                 new GuildJoinListener(this.plugin),
                 new GuildLeaveListener(this.plugin),
                 new GuildUpdateMFALevelListener(this.plugin),
-                new SelfUpdateMFAListener(this.plugin),
                 new GuildMemberRemoveListener(this.plugin),
                 new GuildMemberRoleAddListener(this.plugin),
                 new GuildMemberRoleRemoveListener(this.plugin),
