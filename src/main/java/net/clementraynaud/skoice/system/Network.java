@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ public class Network {
     public void build() {
         this.proximityChannel = ProximityChannels.getAll().stream()
                 .filter(channel -> !Networks.getProximityChannels().contains(channel))
-                .findFirst()
+                .min(Comparator.comparingInt(channel -> Integer.parseInt(channel.getChannelId())))
                 .orElseGet(() -> new ProximityChannel(plugin, this));
     }
 
