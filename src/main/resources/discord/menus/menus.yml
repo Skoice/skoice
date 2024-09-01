@@ -204,6 +204,10 @@ server:
   emoji: file_cabinet
   footer: review
   type: default
+two-factor-authentication:
+  emoji: closed_lock_with_key
+  footer: review
+  type: default
 permissions:
   emoji: card_box
   footer: review

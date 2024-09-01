@@ -24,6 +24,7 @@ logger:
     no-token: "Token not set. Join your Minecraft server to set up Skoice."
     no-guild: "Your bot is not on a Discord server. Open this link to invite it: %s."
     multiple-guilds: "Your bot is on multiple Discord servers. Type \"/configure\" on your Discord server to choose one."
+    two-factor-authentication: "Two-factor authentication required. Enable two-factor authentication on the bot owner's account or disable \"Require 2FA for moderator actions\" in server settings."
     no-voice-channel: "Voice channel not set. Type \"/configure\" on your Discord server to set up Skoice."
     no-radius: "Radius not set. Type \"/configure\" on your Discord server to set up Skoice."
   error:

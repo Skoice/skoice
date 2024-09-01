@@ -41,6 +41,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
@@ -68,6 +69,7 @@ public class Bot {
     private String tokenManagerId;
     private String guildId;
     private String inviteUrl;
+    private User owner;
 
     public Bot(Skoice plugin) {
         this.plugin = plugin;
@@ -213,6 +215,10 @@ public class Bot {
                     this.status = BotStatus.MULTIPLE_GUILDS;
                     this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
                 }
+            } else if (this.getGuild().getRequiredMFALevel() == Guild.MFALevel.TWO_FACTOR_AUTH
+                    && !this.jda.getSelfUser().isMfaEnabled()) {
+                this.status = BotStatus.MFA_REQUIRED;
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.two-factor-authentication"));
             } else if (!this.isAdministrator()) {
                 this.status = BotStatus.MISSING_PERMISSION;
                 this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
@@ -348,5 +354,13 @@ public class Bot {
 
     public void setInviteUrl(String inviteUrl) {
         this.inviteUrl = inviteUrl;
+    }
+
+    public User getOwner() {
+        return this.owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

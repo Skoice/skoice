@@ -26,9 +26,12 @@ menu:
     description: "In order to work properly, your bot cannot be present on multiple Discord servers. Select the server where you want the proximity voice chat to be active. Your bot will automatically leave the other ones."
     select-menu:
       placeholder: "Please select a server."
+  two-factor-authentication:
+    title: "Two-Factor Authentication"
+    description: "Your Discord server requires the bot owner's account to have two-factor authentication enabled. Set it up or disable this requirement in server settings by following this path: `Moderation › Safety Setup › Require 2FA for moderator actions`."
   permissions:
     title: "Permissions"
-    description: "In order to work properly, your bot must have the \"Administrator\" permission on your Discord server."
+    description: "In order to work properly, your bot must have the `Administrator permission on your Discord server."
   voice-chat:
     title: "Voice Chat"
   range:

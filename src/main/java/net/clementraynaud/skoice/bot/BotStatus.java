@@ -24,6 +24,7 @@ public enum BotStatus {
     NOT_CONNECTED(null),
     NO_GUILD(null),
     MULTIPLE_GUILDS("server"),
+    MFA_REQUIRED("two-factor-authentication"),
     MISSING_PERMISSION("permissions"),
     NO_VOICE_CHANNEL("voice-channel"),
     NO_RADIUS("range"),
