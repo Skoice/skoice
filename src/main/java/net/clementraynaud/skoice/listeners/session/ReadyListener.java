@@ -123,7 +123,7 @@ public class ReadyListener extends ListenerAdapter {
                     this.plugin.getListenerManager().registerPermanentBotListeners();
                     this.plugin.getListenerManager().update();
 
-                    this.plugin.getBot().retrieveNetworks();
+                    this.plugin.getBot().retrieveProximityChannels();
                 });
     }
 }
