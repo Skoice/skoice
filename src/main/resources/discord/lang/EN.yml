@@ -147,7 +147,7 @@ field:
     title: "Configuration Complete"
     description: "Skoice is now configured. Type %s to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
   get-the-most-out-of-skoice:
-    title: "Get the most out of Skoice"
+    title: "Get the Most Out of Skoice"
     description: "Skoice is ready to be used but can offer you some more customization! Follow the **green buttons** to go through all the features.\n\nProgression: %s"
   notified-players-cleared:
     title: "Notified Players Cleared"
