@@ -89,6 +89,12 @@ public class MenuFactory {
                         .withEmoji(MenuEmoji.GEAR.get()));
                 break;
 
+            case "two-factor-authentication":
+                buttons.add(Button.primary("refresh",
+                                plugin.getBot().getLang().getMessage("button-label.refresh"))
+                        .withEmoji(MenuEmoji.ARROWS_COUNTERCLOCKWISE.get()));
+                break;
+
             case "permissions":
                 buttons.add(Button.link(plugin.getBot().getInviteUrl(),
                                 plugin.getBot().getLang().getMessage("button-label.update-permissions"))

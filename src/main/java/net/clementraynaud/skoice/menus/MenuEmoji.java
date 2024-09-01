@@ -23,6 +23,7 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 
 public enum MenuEmoji {
 
+    ARROWS_COUNTERCLOCKWISE("U+1F504"),
     BELL("U+1F514"),
     BULB("U+1F4A1"),
     BUST_IN_SILHOUETTE("U+1F464"),

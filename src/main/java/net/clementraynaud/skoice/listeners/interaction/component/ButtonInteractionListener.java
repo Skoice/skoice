@@ -68,6 +68,10 @@ public class ButtonInteractionListener extends ListenerAdapter {
                 ConfigurationMenu menu = new ConfigurationMenu(this.plugin.getBot());
                 menu.reply(event);
 
+            } else if ("refresh".equals(buttonId)) {
+                this.plugin.getListenerManager().update(event.getUser());
+                ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> menu.refreshId().edit(event));
+
             } else if (this.plugin.getBot().getStatus() != BotStatus.READY && !"language".equals(buttonId)) {
                 ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.refreshId().edit(event));
 

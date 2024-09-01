@@ -218,6 +218,7 @@ button-label:
   display-issues: "Display Issues"
   support-server: "Support Server"
   clear-notified-players: "Clear Notified Players"
+  refresh: "Refresh"
   update-permissions: "Update Permissions"
 select-option:
   default:

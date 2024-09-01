@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
@@ -31,6 +32,10 @@ public class ConfigureCommand extends Command {
 
     @Override
     public void run() {
+        if (this.plugin.getBot().getStatus() == BotStatus.MFA_REQUIRED) {
+            this.plugin.getListenerManager().update(executor.getUser());
+        }
+
         ConfigurationMenu menu = new ConfigurationMenu(super.plugin.getBot());
         menu.reply(super.interaction);
     }
