@@ -34,7 +34,7 @@ public final class ProximityChannels {
     }
 
     public static Set<ProximityChannel> getAll() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -44,7 +44,7 @@ public final class ProximityChannels {
     }
 
     public static Set<ProximityChannel> getInitialized() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread() && Bukkit.getPluginManager().isPluginEnabled("Skoice")) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -56,7 +56,7 @@ public final class ProximityChannels {
     }
 
     public static void add(ProximityChannel proximityChannel) {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -66,7 +66,7 @@ public final class ProximityChannels {
     }
 
     public static void remove(ProximityChannel proximityChannel) {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -76,7 +76,7 @@ public final class ProximityChannels {
     }
 
     public static void remove(String channelId) {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -87,7 +87,7 @@ public final class ProximityChannels {
     }
 
     public static void clean(int possibleUsers) {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }

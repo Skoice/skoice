@@ -44,7 +44,7 @@ public class Network {
         this.proximityChannel = ProximityChannels.getAll().stream()
                 .filter(channel -> !Networks.getProximityChannels().contains(channel))
                 .min(Comparator.comparingInt(channel -> Integer.parseInt(channel.getChannelId())))
-                .orElseGet(() -> new ProximityChannel(plugin, this));
+                .orElseGet(() -> new ProximityChannel(this.plugin, this));
     }
 
     public boolean canPlayerConnect(LinkedPlayer player) {

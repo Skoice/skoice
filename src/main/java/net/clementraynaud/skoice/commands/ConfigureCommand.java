@@ -33,7 +33,7 @@ public class ConfigureCommand extends Command {
     @Override
     public void run() {
         if (this.plugin.getBot().getStatus() == BotStatus.MFA_REQUIRED) {
-            this.plugin.getListenerManager().update(executor.getUser());
+            this.plugin.getListenerManager().update(this.executor.getUser());
         }
 
         ConfigurationMenu menu = new ConfigurationMenu(super.plugin.getBot());

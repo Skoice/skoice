@@ -53,7 +53,7 @@ public class LinkedPlayer {
     }
 
     public static Set<LinkedPlayer> getOnlineLinkedPlayers() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -63,7 +63,7 @@ public class LinkedPlayer {
     }
 
     public static LinkedPlayer fromMemberId(String memberId) {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -97,7 +97,7 @@ public class LinkedPlayer {
     }
 
     public Set<LinkedPlayer> getPlayersWithinRange() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -145,7 +145,7 @@ public class LinkedPlayer {
 
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SEPARATED_TEAMS.toString())) {
             Scoreboard scoreboard = this.player.getScoreboard();
-            Team playerTeam = scoreboard.getEntryTeam(player.getName());
+            Team playerTeam = scoreboard.getEntryTeam(this.player.getName());
             if (playerTeam == null) {
                 if (scoreboard.getEntryTeam(linkedPlayer.getBukkitPlayer().getName()) != null) {
                     return false;

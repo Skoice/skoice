@@ -42,7 +42,7 @@ public class VoiceChannelSelector extends Selector {
     @Override
     public SelectMenu get() {
         List<SelectOption> options = new ArrayList<>();
-        
+
         options.add(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.select-option.new-voice-channel.label"), "new-voice-channel")
                 .withDescription(super.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.select-option.new-voice-channel.description"))
                 .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.get()));

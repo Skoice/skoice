@@ -52,7 +52,7 @@ public class RangeSelector extends Selector {
                         .withEmoji(MenuEmoji.SOUND.get())
         ));
 
-        SelectOption customizedOption  = SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.customized.label"),
+        SelectOption customizedOption = SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.customized.label"),
                         RangeSelector.CUSTOMIZED_ID)
                 .withEmoji(MenuEmoji.PENCIL2.get());
 
@@ -66,8 +66,8 @@ public class RangeSelector extends Selector {
         } else if (super.plugin.getBot().getStatus() != BotStatus.NO_RADIUS) {
             defaultValue = RangeSelector.CUSTOMIZED_ID;
             customizedOption = customizedOption.withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.description",
-                            String.valueOf(horizontalRadius),
-                            String.valueOf(verticalRadius)));
+                    String.valueOf(horizontalRadius),
+                    String.valueOf(verticalRadius)));
         }
 
         options.add(customizedOption);

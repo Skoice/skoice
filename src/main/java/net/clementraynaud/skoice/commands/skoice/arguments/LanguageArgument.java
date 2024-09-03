@@ -61,7 +61,7 @@ public class LanguageArgument extends Argument {
             if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
                 this.plugin.getBot().getCommands().register();
             }
-            
+
             this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.language-updated",
                     language.getFullName()));
 

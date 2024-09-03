@@ -32,7 +32,7 @@ public final class ConfigurationMenus {
 
     public static boolean contains(String messageId) {
         return ConfigurationMenus.menuSet.stream()
-                .anyMatch(menu-> messageId.equals(menu.messageId));
+                .anyMatch(menu -> messageId.equals(menu.messageId));
     }
 
     public static Optional<ConfigurationMenu> getFromMessageId(String messageId) {
@@ -43,7 +43,7 @@ public final class ConfigurationMenus {
 
     public static void refreshAll() {
         ConfigurationMenus.menuSet.removeIf(menu -> menu.hook.isExpired());
-        menuSet.forEach(menu -> menu.refreshId().editFromHook());
+        ConfigurationMenus.menuSet.forEach(menu -> menu.refreshId().editFromHook());
     }
 
     public static Set<ConfigurationMenu> getMenuSet() {

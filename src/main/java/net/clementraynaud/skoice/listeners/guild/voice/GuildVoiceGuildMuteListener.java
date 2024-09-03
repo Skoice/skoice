@@ -52,7 +52,7 @@ public class GuildVoiceGuildMuteListener extends ListenerAdapter {
 
         if (event.getMember().hasPermission(Permission.VOICE_MUTE_OTHERS)
                 || UpdateVoiceStateTask.getMutedUsers().contains(event.getMember().getId())) {
-            event.getMember().mute(true).queue();;
+            event.getMember().mute(true).queue();
         }
     }
 }

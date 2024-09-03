@@ -32,7 +32,10 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Menu {
@@ -107,7 +110,7 @@ public class Menu {
             }
             embed.setAuthor(author.toString());
 
-            if (this.menuId.equals("settings")) {
+            if ("settings".equals(this.menuId)) {
                 List<String> unreviewedSettings = this.plugin.getConfigYamlFile().getStringList(ConfigField.UNREVIEWED_SETTINGS.toString());
                 if (!unreviewedSettings.isEmpty()) {
                     int stepSize = 3;
@@ -200,7 +203,7 @@ public class Menu {
         List<Button> secondaryButtons = new ArrayList<>();
         String root = this.getRoot();
 
-        if (root.equals("settings")
+        if ("settings".equals(root)
                 && (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.menuId))) {
             String backButtonId = this.parent == null ? "unreachable" : this.parent;
             Button backButton = Button.secondary(backButtonId, "← " + this.plugin.getBot().getLang().getMessage("button-label.back"));
@@ -216,7 +219,7 @@ public class Menu {
         secondaryButtons.add(Button.link("https://discord.gg/skoice-proximity-voice-chat-741375523275407461",
                         this.plugin.getBot().getLang().getMessage("button-label.support-server"))
                 .withEmoji(MenuEmoji.SCREWDRIVER.get()));
-        if (root.equals("settings")
+        if ("settings".equals(root)
                 && this.plugin.getBot().getStatus() != BotStatus.READY
                 && !"language".equals(this.menuId)) {
             Menu languageMenu = this.plugin.getBot().getMenuFactory().getMenu("language");

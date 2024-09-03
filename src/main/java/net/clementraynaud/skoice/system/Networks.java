@@ -33,7 +33,7 @@ public final class Networks {
     }
 
     public static Set<Network> getAll() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread() && Bukkit.getPluginManager().isPluginEnabled("Skoice")) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -43,7 +43,7 @@ public final class Networks {
     }
 
     public static Set<Network> getInitialized() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -55,7 +55,7 @@ public final class Networks {
     }
 
     public static Set<ProximityChannel> getProximityChannels() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -67,7 +67,7 @@ public final class Networks {
     }
 
     public static void add(Network network) {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -77,7 +77,7 @@ public final class Networks {
     }
 
     public static void remove(Network network) {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -95,7 +95,7 @@ public final class Networks {
     }
 
     public static void clean() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -107,7 +107,7 @@ public final class Networks {
     }
 
     public static void clear() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread() && Bukkit.getPluginManager().isPluginEnabled("Skoice")) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }

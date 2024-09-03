@@ -54,7 +54,7 @@ public class UpdateNetworksTask {
     }
 
     public static Map<String, Pair<String, CompletableFuture<Void>>> getAwaitingMoves() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread() && Bukkit.getPluginManager().isPluginEnabled("Skoice")) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -64,7 +64,7 @@ public class UpdateNetworksTask {
     }
 
     public void run() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
@@ -203,7 +203,7 @@ public class UpdateNetworksTask {
     }
 
     private void manageMoves() {
-       try {
+        try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
             }
