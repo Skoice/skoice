@@ -109,7 +109,6 @@ public class ReadyListener extends ListenerAdapter {
         );
 
         this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
-        this.plugin.getLinksYamlFile().refreshOnlineLinkedPlayers();
 
         this.plugin.getBot().setDefaultAvatar();
         this.plugin.getBot().updateGuild();

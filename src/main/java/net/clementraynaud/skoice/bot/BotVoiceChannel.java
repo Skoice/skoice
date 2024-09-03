@@ -20,10 +20,13 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
 import java.util.EnumSet;
@@ -34,6 +37,18 @@ public class BotVoiceChannel {
 
     public BotVoiceChannel(Skoice plugin) {
         this.plugin = plugin;
+    }
+
+    public void setup(VoiceChannel channel, User user) {
+        VoiceChannel oldVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+        if (oldVoiceChannel != null) {
+            oldVoiceChannel.modifyStatus("").queue();
+            new InterruptSystemTask(this.plugin).run();
+        }
+        this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
+        this.plugin.getListenerManager().update(user);
+        this.plugin.getBot().getVoiceChannel().updatePermissions();
+        this.plugin.getBot().getVoiceChannel().setStatus();
     }
 
     public VoiceChannel getVoiceChannel() {

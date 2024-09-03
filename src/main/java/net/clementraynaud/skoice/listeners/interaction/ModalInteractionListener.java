@@ -23,9 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.storage.config.ConfigField;
-import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.modals.ModalMapping;
@@ -59,16 +57,7 @@ public class ModalInteractionListener extends ListenerAdapter {
             String voiceChannelName = voiceChannelValue.getAsString();
             guild.createCategory(categoryName).queue(category ->
                     guild.createVoiceChannel(voiceChannelName, category).queue(channel -> {
-                        VoiceChannel oldVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
-                        if (oldVoiceChannel != null) {
-                            oldVoiceChannel.modifyStatus("").queue();
-                        }
-                        this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
-                        new InterruptSystemTask(this.plugin).run();
-                        this.plugin.getListenerManager().update(event.getUser());
-                        this.plugin.getBot().getVoiceChannel().updatePermissions();
-                        this.plugin.getBot().getVoiceChannel().setStatus();
-                        this.plugin.getLinksYamlFile().refreshOnlineLinkedPlayers();
+                        this.plugin.getBot().getVoiceChannel().setup(channel, event.getUser());
                         ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> menu.refreshId().edit(event));
                     }));
 

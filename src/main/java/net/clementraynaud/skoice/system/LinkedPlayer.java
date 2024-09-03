@@ -103,7 +103,7 @@ public class LinkedPlayer {
             }
         } catch (NullPointerException ignored) {
         }
-        return LinkedPlayer.getOnlineLinkedPlayers().stream()
+        return LinkedPlayer.onlineLinkedPlayers.stream()
                 .filter(p -> p.isInMainVoiceChannel() || p.isInAnyProximityChannel())
                 .filter(p -> !p.equals(this))
                 .filter(LinkedPlayer::isStateEligible)
