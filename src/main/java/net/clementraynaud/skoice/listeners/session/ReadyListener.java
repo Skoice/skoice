@@ -26,9 +26,14 @@ import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.ErrorResponse;
+import net.dv8tion.jda.api.requests.RestAction;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.Player;
+
+import java.util.function.Consumer;
 
 public class ReadyListener extends ListenerAdapter {
 
@@ -55,6 +60,19 @@ public class ReadyListener extends ListenerAdapter {
             this.plugin.getBot().setInviteUrl(applicationInfo.getInviteUrl(Permission.ADMINISTRATOR));
 
             this.setup(tokenManager);
+        });
+
+        Consumer<? super Throwable> defaultFailure = RestAction.getDefaultFailure();
+        RestAction.setDefaultFailure(throwable -> {
+            if (throwable instanceof ErrorResponseException) {
+                ErrorResponseException error = (ErrorResponseException) throwable;
+                if (error.getErrorCode() == ErrorResponse.MFA_NOT_ENABLED.getCode()) {
+                    this.plugin.getListenerManager().update();
+                    return;
+                }
+            }
+
+            defaultFailure.accept(throwable);
         });
     }
 
