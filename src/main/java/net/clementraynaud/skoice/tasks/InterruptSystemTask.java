@@ -76,10 +76,11 @@ public class InterruptSystemTask {
                     }
                 }
             }
+
+            ProximityChannels.clear();
         }
 
         Networks.clear();
-        ProximityChannels.clear();
 
         if (this.plugin.isEnabled()) {
             this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
