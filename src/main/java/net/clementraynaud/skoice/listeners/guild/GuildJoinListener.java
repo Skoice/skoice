@@ -37,7 +37,6 @@ public class GuildJoinListener extends ListenerAdapter {
         if (this.plugin.getBot().isAdministrator()) {
             event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
         }
-        this.plugin.getBot().updateGuild();
         this.plugin.getListenerManager().update();
     }
 }

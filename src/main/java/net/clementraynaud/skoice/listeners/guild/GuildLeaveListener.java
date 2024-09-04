@@ -33,7 +33,6 @@ public class GuildLeaveListener extends ListenerAdapter {
 
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
-        this.plugin.getBot().updateGuild();
         this.plugin.getListenerManager().update();
     }
 }

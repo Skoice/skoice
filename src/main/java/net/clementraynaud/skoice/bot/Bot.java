@@ -159,11 +159,6 @@ public class Bot {
         }
     }
 
-    public void updateGuild() {
-        List<Guild> guilds = this.jda.getGuilds();
-        this.guildId = guilds.size() == 1 ? guilds.get(0).getId() : null;
-    }
-
     public void retrieveMutedUsers() {
         UpdateVoiceStateTask.getMutedUsers().clear();
         UpdateVoiceStateTask.getMutedUsers().addAll(this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD));
@@ -203,46 +198,48 @@ public class Bot {
             }
 
         } else {
-            if (this.guildId == null) {
-                List<Guild> guilds = this.jda.getGuilds();
-                if (guilds.isEmpty()) {
-                    this.status = BotStatus.NO_GUILD;
-                    this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
-                        applicationInfo.setRequiredScopes("applications.commands");
-                        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-guild", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
-                    });
-                } else if (guilds.size() > 1) {
-                    this.status = BotStatus.MULTIPLE_GUILDS;
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
-                }
+            List<Guild> guilds = this.jda.getGuilds();
 
-            } else if (this.getGuild().getRequiredMFALevel() == Guild.MFALevel.TWO_FACTOR_AUTH
-                    && !this.jda.getSelfUser().isMfaEnabled()) {
-                this.status = BotStatus.MFA_REQUIRED;
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.two-factor-authentication"));
-
-            } else if (!this.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                this.status = BotStatus.MISSING_PERMISSION;
+            if (guilds.isEmpty()) {
+                this.status = BotStatus.NO_GUILD;
                 this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
                     applicationInfo.setRequiredScopes("applications.commands");
-                    this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
+                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-guild", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
                 });
-
-            } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
-                this.status = BotStatus.NO_VOICE_CHANNEL;
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-voice-channel"));
-
-            } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.HORIZONTAL_RADIUS.toString())
-                    || !this.plugin.getConfigYamlFile().contains(ConfigField.VERTICAL_RADIUS.toString())) {
-                this.status = BotStatus.NO_RADIUS;
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-radius"));
-
+            } else if (guilds.size() > 1) {
+                this.status = BotStatus.MULTIPLE_GUILDS;
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
             } else {
-                this.status = BotStatus.READY;
-                this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                    SystemReadyEvent event = new SystemReadyEvent();
-                    this.plugin.getServer().getPluginManager().callEvent(event);
-                });
+                this.guildId = guilds.get(0).getId();
+
+                if (this.getGuild().getRequiredMFALevel() == Guild.MFALevel.TWO_FACTOR_AUTH
+                        && !this.jda.getSelfUser().isMfaEnabled()) {
+                    this.status = BotStatus.MFA_REQUIRED;
+                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.two-factor-authentication"));
+
+                } else if (!this.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+                    this.status = BotStatus.MISSING_PERMISSION;
+                    this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
+                        applicationInfo.setRequiredScopes("applications.commands");
+                        this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
+                    });
+
+                } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
+                    this.status = BotStatus.NO_VOICE_CHANNEL;
+                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-voice-channel"));
+
+                } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.HORIZONTAL_RADIUS.toString())
+                        || !this.plugin.getConfigYamlFile().contains(ConfigField.VERTICAL_RADIUS.toString())) {
+                    this.status = BotStatus.NO_RADIUS;
+                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-radius"));
+
+                } else {
+                    this.status = BotStatus.READY;
+                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                        SystemReadyEvent event = new SystemReadyEvent();
+                        this.plugin.getServer().getPluginManager().callEvent(event);
+                    });
+                }
             }
 
             this.updateActivity();
