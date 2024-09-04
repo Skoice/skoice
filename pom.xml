@@ -109,6 +109,10 @@
                             <pattern>okio</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.okio</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.bugsnag</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.bugsnag</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
@@ -203,6 +207,11 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bugsnag</groupId>
+            <version>3.7.2</version>
+            <artifactId>bugsnag</artifactId>
         </dependency>
 
         <dependency>

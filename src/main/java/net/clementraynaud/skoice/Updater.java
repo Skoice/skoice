@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice;
 
+import com.bugsnag.Severity;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 
 import java.io.File;
@@ -154,6 +155,7 @@ public class Updater {
                 Files.delete(tempUpdateFile.toPath());
             } catch (IOException ignored) {
             }
+            this.plugin.getAnalyticManager().getBugsnag().notify(exception, Severity.WARNING);
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -196,6 +198,7 @@ public class Updater {
         for (byte b : fileHashBytes) {
             fileHash.append(String.format("%02x", b));
         }
+        this.plugin.getAnalyticManager().getBugsnag().notify(new IOException("File integrity check failed: expected " + expectedHash + ", got " + fileHash), Severity.WARNING);
         return fileHash.toString().equals(expectedHash);
     }
 }

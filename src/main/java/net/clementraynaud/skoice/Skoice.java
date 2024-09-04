@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice;
 
+import net.clementraynaud.skoice.analytics.AnalyticManager;
 import net.clementraynaud.skoice.api.SkoiceAPI;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
@@ -33,20 +34,15 @@ import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
 import net.clementraynaud.skoice.storage.config.OutdatedConfig;
 import net.clementraynaud.skoice.system.ListenerManager;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
-import net.clementraynaud.skoice.util.ChartUtil;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import org.bstats.bukkit.Metrics;
-import org.bstats.charts.SimplePie;
 import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Duration;
-import java.util.EnumSet;
 
 public class Skoice extends JavaPlugin {
 
     private static final String OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
-    private static final int BSTATS_SERVICE_ID = 11380;
     private static SkoiceAPI api;
     private MinecraftLang lang;
     private ConfigYamlFile configYamlFile;
@@ -57,6 +53,7 @@ public class Skoice extends JavaPlugin {
     private Bot bot;
     private BukkitAudiences adventure;
     private HookManager hookManager;
+    private AnalyticManager analyticManager;
 
     public static SkoiceAPI api() {
         return Skoice.api;
@@ -93,7 +90,8 @@ public class Skoice extends JavaPlugin {
         new SkoiceCommand(this).init();
         this.hookManager = new HookManager(this);
         this.hookManager.initialize();
-        this.addCustomCharts();
+        this.analyticManager = new AnalyticManager(this);
+        this.analyticManager.initialize();
         Updater updater = new Updater(this, this.getFile().getAbsolutePath());
         updater.runUpdaterTaskTimer();
     }
@@ -134,56 +132,6 @@ public class Skoice extends JavaPlugin {
         return true;
     }
 
-    private void addCustomCharts() {
-        Metrics metrics = new Metrics(this, Skoice.BSTATS_SERVICE_ID);
-
-        this.getSharedConfigFields().forEach(field ->
-                metrics.addCustomChart(new SimplePie(field.toCamelCase(), () ->
-                        this.configYamlFile.getString(field.toString())
-                ))
-        );
-
-        this.getSharedIntConfigFields().forEach(field ->
-                metrics.addCustomChart(ChartUtil.createDrilldownPie(field.toCamelCase(),
-                        this.configYamlFile.getInt(field.toString()), 0, 10, 11)
-                )
-        );
-
-        int linkedUsers = this.linksYamlFile.getLinks().size();
-        metrics.addCustomChart(ChartUtil.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
-
-        metrics.addCustomChart(new SimplePie("botStatus", () -> this.bot.getStatus().toString()));
-    }
-
-    private EnumSet<ConfigField> getSharedConfigFields() {
-        return EnumSet.of(
-                ConfigField.LANG,
-                ConfigField.LOGIN_NOTIFICATION,
-                ConfigField.CONNECTING_ALERT,
-                ConfigField.DISCONNECTING_ALERT,
-                ConfigField.TOOLTIPS,
-                ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED,
-                ConfigField.SPECTATORS_INCLUDED,
-                ConfigField.SEPARATED_TEAMS,
-                ConfigField.TEXT_CHAT,
-                ConfigField.CHANNEL_VISIBILITY,
-                ConfigField.DISCORDSRV_SYNCHRONIZATION,
-                ConfigField.ESSENTIALSX_SYNCHRONIZATION,
-                ConfigField.RELEASE_CHANNEL
-        );
-    }
-
-    private EnumSet<ConfigField> getSharedIntConfigFields() {
-        EnumSet<ConfigField> fields = EnumSet.noneOf(ConfigField.class);
-        if (this.configYamlFile.contains(ConfigField.HORIZONTAL_RADIUS.toString())) {
-            fields.add(ConfigField.HORIZONTAL_RADIUS);
-        }
-        if (this.configYamlFile.contains(ConfigField.VERTICAL_RADIUS.toString())) {
-            fields.add(ConfigField.VERTICAL_RADIUS);
-        }
-        return fields;
-    }
-
     public MinecraftLang getLang() {
         return this.lang;
     }
@@ -214,5 +162,9 @@ public class Skoice extends JavaPlugin {
 
     public HookManager getHookManager() {
         return this.hookManager;
+    }
+
+    public AnalyticManager getAnalyticManager() {
+        return this.analyticManager;
     }
 }

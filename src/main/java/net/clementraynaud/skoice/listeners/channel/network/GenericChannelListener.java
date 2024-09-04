@@ -23,7 +23,6 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.system.Networks;
 import net.clementraynaud.skoice.system.ProximityChannels;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.ChannelType;

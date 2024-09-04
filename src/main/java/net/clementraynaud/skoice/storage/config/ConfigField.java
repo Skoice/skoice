@@ -39,7 +39,8 @@ public enum ConfigField {
     DISCORDSRV_SYNCHRONIZATION,
     ESSENTIALSX_SYNCHRONIZATION,
     RELEASE_CHANNEL,
-    UNREVIEWED_SETTINGS;
+    UNREVIEWED_SETTINGS,
+    SESSION_REPORTED;
 
     private final String lowerCaseName;
     private final String camelCaseName;
