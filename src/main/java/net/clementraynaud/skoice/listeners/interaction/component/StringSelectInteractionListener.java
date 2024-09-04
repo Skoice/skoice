@@ -67,16 +67,19 @@ public class StringSelectInteractionListener extends ListenerAdapter {
 
             switch (componentId) {
                 case "server-selection":
-                    if (this.plugin.getBot().getJDA().getGuildById(event.getSelectedOptions().get(0).getValue()) != null) {
+                    String selectedGuildId = event.getSelectedOptions().get(0).getValue();
+
+                    if (this.plugin.getBot().getJDA().getGuildById(selectedGuildId) != null) {
                         for (SelectOption server : options) {
                             Guild guildToLeave = this.plugin.getBot().getJDA().getGuildById(server.getValue());
-                            if (guildToLeave != null && !event.getSelectedOptions().get(0).getValue().equals(server.getValue())) {
-                                if (guild.getId().equals(server.getValue())) {
-                                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.deleteFromHook(success -> guildToLeave.leave().queue()));
-                                } else {
-                                    guildToLeave.leave().queue(success ->
-                                            ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.refreshId().edit(event)));
-                                }
+                            if (guildToLeave == null || selectedGuildId.equals(server.getValue())) {
+                                continue;
+                            }
+
+                            if (guild.getId().equals(server.getValue())) {
+                                ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.deleteFromHook(success -> guildToLeave.leave().queue()));
+                            } else {
+                                guildToLeave.leave().queue();
                             }
                         }
                     }

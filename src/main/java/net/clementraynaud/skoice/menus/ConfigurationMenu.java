@@ -38,4 +38,9 @@ public class ConfigurationMenu extends EmbeddedMenu {
         super.setContent(super.bot.getStatus().getMenuId());
         return this;
     }
+
+    @Override
+    protected void forget() {
+        ConfigurationMenus.getMenuSet().remove(this);
+    }
 }

@@ -71,7 +71,8 @@ public class EmbeddedMenu {
 
     public void edit(IMessageEditCallback interaction) {
         this.hook = interaction.getHook();
-        interaction.editMessage(MessageEditData.fromCreateData(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args))).queue();
+        interaction.editMessage(MessageEditData.fromCreateData(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args)))
+                .queue(null, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.forget()));
     }
 
     public void editFromHook() {
@@ -79,7 +80,8 @@ public class EmbeddedMenu {
             return;
         }
 
-        this.hook.editOriginal(MessageEditData.fromCreateData(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args))).queue();
+        this.hook.editOriginal(MessageEditData.fromCreateData(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args)))
+                .queue(null, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.forget()));
     }
 
     public void deleteFromHook(Consumer<Void> success) {
@@ -87,8 +89,12 @@ public class EmbeddedMenu {
             return;
         }
 
-        this.hook.deleteOriginal().queue(success, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
+        this.hook.deleteOriginal()
+                .queue(success.andThen(e -> this.forget()), new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.forget()));
         this.hook = null;
+    }
+
+    protected void forget() {
     }
 
     public String getId() {
