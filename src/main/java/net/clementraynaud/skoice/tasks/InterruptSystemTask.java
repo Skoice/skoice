@@ -21,7 +21,6 @@ package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.api.events.system.SystemInterruptionEvent;
-import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.system.Networks;
 import net.clementraynaud.skoice.system.ProximityChannel;
 import net.clementraynaud.skoice.system.ProximityChannels;
