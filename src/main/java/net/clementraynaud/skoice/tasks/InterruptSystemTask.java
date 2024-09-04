@@ -25,6 +25,8 @@ import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.system.Networks;
 import net.clementraynaud.skoice.system.ProximityChannel;
 import net.clementraynaud.skoice.system.ProximityChannels;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
@@ -51,31 +53,38 @@ public class InterruptSystemTask {
             value.getRight().cancel(true);
         }
 
-        VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+        Guild guild = this.plugin.getBot().getGuild();
 
-        if (this.plugin.getBot().isAdministrator()) {
+        if (guild != null
+                && guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)
+                && (guild.getRequiredMFALevel() != Guild.MFALevel.TWO_FACTOR_AUTH
+                || this.plugin.getBot().getJDA().getSelfUser().isMfaEnabled())) {
+            VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
             for (ProximityChannel proximityChannel : ProximityChannels.getInitialized()) {
                 if (voiceChannel != null) {
                     for (int i = 0; i < proximityChannel.getChannel().getMembers().size(); i++) {
                         Member member = proximityChannel.getChannel().getMembers().get(i);
-                        if (i + 1 < proximityChannel.getChannel().getMembers().size()
-                                || this.plugin.isEnabled()) {
+                        if (i + 1 < proximityChannel.getChannel().getMembers().size()) {
                             member.getGuild()
                                     .moveVoiceMember(member, voiceChannel)
                                     .queue();
+                        } else if (this.plugin.isEnabled()) {
+                            member.getGuild()
+                                    .moveVoiceMember(member, voiceChannel)
+                                    .queue(sucess -> proximityChannel.delete());
                         } else {
                             member.getGuild()
                                     .moveVoiceMember(member, voiceChannel)
                                     .complete();
+                            proximityChannel.delete();
                         }
                     }
                 }
-                proximityChannel.delete();
             }
         }
 
-        Networks.getAll().forEach(Network::clear);
         Networks.clear();
+        ProximityChannels.clear();
 
         if (this.plugin.isEnabled()) {
             this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {

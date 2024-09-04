@@ -81,14 +81,12 @@ public class ListenerManager {
                                 this.plugin.getBot().getCommands().getAsMention(CommandInfo.LINK.toString()))
                         .message(user);
             }
-        } else if (newStatus != BotStatus.READY) {
-            if (oldStatus == BotStatus.READY) {
-                this.unregisterMinecraftListeners();
-                if (newStatus != BotStatus.NOT_CONNECTED) {
-                    this.unregisterBotListeners();
-                }
+        } else if (oldStatus == BotStatus.READY && newStatus != BotStatus.READY) {
+            this.unregisterMinecraftListeners();
+            if (newStatus != BotStatus.NOT_CONNECTED) {
+                this.unregisterBotListeners();
+                new InterruptSystemTask(this.plugin).run();
             }
-            new InterruptSystemTask(this.plugin).run();
         }
     }
 

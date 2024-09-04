@@ -84,14 +84,11 @@ public class EmbeddedMenu {
                 .queue(null, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.forget()));
     }
 
-    public void deleteFromHook(Consumer<Void> success) {
-        if (this.hook == null || this.hook.isExpired()) {
-            return;
-        }
-
-        this.hook.deleteOriginal()
-                .queue(success.andThen(e -> this.forget()), new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.forget()));
-        this.hook = null;
+    public void delete(IMessageEditCallback interaction, Consumer<Void> success) {
+        interaction.getHook().deleteOriginal()
+                .queue(success.andThen(e -> this.forget()),
+                        new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.forget())
+                );
     }
 
     protected void forget() {

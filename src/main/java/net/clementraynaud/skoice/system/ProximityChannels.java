@@ -106,6 +106,16 @@ public final class ProximityChannels {
                 });
     }
 
+    public static void clear() {
+        try {
+            if (Bukkit.isPrimaryThread() && Bukkit.getPluginManager().isPluginEnabled("Skoice")) {
+                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
+            }
+        } catch (NullPointerException ignored) {
+        }
+        ProximityChannels.proximityChannelSet.clear();
+    }
+
     public static boolean isProximityChannel(String voiceChannelId) {
         return ProximityChannels.getInitialized().stream()
                 .map(ProximityChannel::getChannelId)

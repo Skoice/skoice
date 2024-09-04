@@ -77,11 +77,16 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                             }
 
                             if (guild.getId().equals(server.getValue())) {
-                                ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.deleteFromHook(success -> guildToLeave.leave().queue()));
+                                ConfigurationMenus.getFromMessageId(event.getMessageId())
+                                        .ifPresent(menu -> menu.delete(event, success -> guildToLeave.leave().queue()));
                             } else {
                                 guildToLeave.leave().queue();
                             }
                         }
+                    }
+
+                    if (!event.isAcknowledged()) {
+                        ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.refreshId().edit(event));
                     }
                     break;
 
