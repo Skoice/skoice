@@ -34,7 +34,7 @@ public class GuildJoinListener extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(GuildJoinEvent event) {
-        if (event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
+        if (this.plugin.getBot().isAdministrator()) {
             event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
         }
         this.plugin.getBot().updateGuild();

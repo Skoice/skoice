@@ -27,6 +27,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.requests.RestAction;
@@ -66,10 +67,15 @@ public class ReadyListener extends ListenerAdapter {
         RestAction.setDefaultFailure(throwable -> {
             if (throwable instanceof ErrorResponseException) {
                 ErrorResponseException error = (ErrorResponseException) throwable;
-                if (error.getErrorCode() == ErrorResponse.MFA_NOT_ENABLED.getCode()) {
+                if (error.getErrorCode() == ErrorResponse.MISSING_PERMISSIONS.getCode()
+                        || error.getErrorCode() == ErrorResponse.MISSING_ACCESS.getCode()
+                        || error.getErrorCode() == ErrorResponse.MFA_NOT_ENABLED.getCode()) {
                     this.plugin.getListenerManager().update();
                     return;
                 }
+            } else if (throwable instanceof PermissionException) {
+                this.plugin.getListenerManager().update();
+                return;
             }
 
             defaultFailure.accept(throwable);

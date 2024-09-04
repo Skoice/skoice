@@ -122,7 +122,7 @@ public class GenericChannelListener extends ListenerAdapter {
         this.plugin.getConfigYamlFile().remove(ConfigField.VOICE_CHANNEL_ID.toString());
         this.plugin.getListenerManager().update();
 
-        if (!event.getGuild().getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS)) {
+        if (!this.plugin.getBot().isAdministrator()) {
             return;
         }
         event.getGuild().retrieveAuditLogs()

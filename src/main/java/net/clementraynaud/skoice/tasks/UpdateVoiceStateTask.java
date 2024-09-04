@@ -75,8 +75,7 @@ public class UpdateVoiceStateTask {
         if (isMainVoiceChannel) {
             if (!this.member.getVoiceState().isGuildMuted()
                     && this.member.hasPermission(this.channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
-                    && this.channel.getGuild().getSelfMember().hasPermission(this.channel, Permission.VOICE_MUTE_OTHERS)
-                    && this.channel.getGuild().getSelfMember().hasPermission(voiceChannel.getParentCategory(), Permission.VOICE_MOVE_OTHERS)) {
+                    && this.plugin.getBot().isAdministrator()) {
                 this.member.mute(true).queue(success -> {
                     UpdateVoiceStateTask.mutedUsers.add(this.member.getId());
                     this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD,

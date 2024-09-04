@@ -55,7 +55,7 @@ public class GenericChannelListener extends ListenerAdapter {
 
         ProximityChannels.remove(channel.getId());
 
-        if (!event.getGuild().getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS)) {
+        if (!this.plugin.getBot().isAdministrator()) {
             return;
         }
         event.getGuild().retrieveAuditLogs()
