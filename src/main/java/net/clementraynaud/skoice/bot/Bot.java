@@ -116,7 +116,7 @@ public class Bot {
                         .addEventListeners(new ReadyListener(this.plugin))
                         .build();
             } catch (InvalidTokenException | IllegalArgumentException e) {
-                this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
+                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
                 this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
                 if (tokenManager != null) {
                     tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-could-not-connect"));
@@ -221,7 +221,7 @@ public class Bot {
                     this.status = BotStatus.MISSING_PERMISSION;
                     this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
                         applicationInfo.setRequiredScopes("applications.commands");
-                        this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.missing-permission", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
+                        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.missing-permission", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
                     });
 
                 } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
