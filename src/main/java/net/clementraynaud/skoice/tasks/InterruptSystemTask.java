@@ -30,6 +30,8 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import org.bukkit.Bukkit;
 
+import java.util.List;
+
 public class InterruptSystemTask {
 
     private final Skoice plugin;
@@ -56,10 +58,11 @@ public class InterruptSystemTask {
                 || this.plugin.getBot().getJDA().getSelfUser().isMfaEnabled())) {
             VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
             for (ProximityChannel proximityChannel : ProximityChannels.getInitialized()) {
-                if (voiceChannel != null) {
-                    for (int i = 0; i < proximityChannel.getChannel().getMembers().size(); i++) {
-                        Member member = proximityChannel.getChannel().getMembers().get(i);
-                        if (i + 1 < proximityChannel.getChannel().getMembers().size()) {
+                List<Member> members = proximityChannel.getChannel().getMembers();
+                if (voiceChannel != null && !members.isEmpty()) {
+                    for (int i = 0; i < members.size(); i++) {
+                        Member member = members.get(i);
+                        if (i + 1 < members.size()) {
                             member.getGuild()
                                     .moveVoiceMember(member, voiceChannel)
                                     .queue();
@@ -74,6 +77,8 @@ public class InterruptSystemTask {
                             proximityChannel.delete();
                         }
                     }
+                } else {
+                    proximityChannel.delete();
                 }
             }
 
