@@ -41,12 +41,11 @@ public class BotVoiceChannel {
 
     public void setup(VoiceChannel channel, User user) {
         VoiceChannel oldVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+        this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
         if (oldVoiceChannel != null) {
             oldVoiceChannel.modifyStatus("").queue();
-            new InterruptSystemTask(this.plugin).run();
+            this.plugin.getListenerManager().update(user);
         }
-        this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
-        this.plugin.getListenerManager().update(user);
     }
 
     public VoiceChannel getVoiceChannel() {
