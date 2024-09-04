@@ -115,9 +115,6 @@ public class GenericChannelListener extends ListenerAdapter {
             return;
         }
 
-        if (!(event instanceof ChannelDeleteEvent)) {
-            event.getChannel().asVoiceChannel().modifyStatus("").queue();
-        }
         this.plugin.getConfigYamlFile().remove(ConfigField.VOICE_CHANNEL_ID.toString());
         this.plugin.getListenerManager().update();
 
