@@ -23,7 +23,6 @@ import com.bugsnag.Severity;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.storage.config.ConfigField;
-import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -110,16 +109,6 @@ public class ReadyListener extends ListenerAdapter {
     }
 
     private void setup(Player tokenManager) {
-        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
-                        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
-                                this.plugin,
-                                new UpdateNetworksTask(this.plugin)::run,
-                                0,
-                                10
-                        ),
-                0
-        );
-
         this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
 
         this.plugin.getBot().setDefaultAvatar();

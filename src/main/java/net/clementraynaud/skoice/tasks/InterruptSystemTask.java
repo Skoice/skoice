@@ -28,10 +28,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import net.dv8tion.jda.internal.utils.tuple.Pair;
 import org.bukkit.Bukkit;
-
-import java.util.concurrent.CompletableFuture;
 
 public class InterruptSystemTask {
 
@@ -48,9 +45,8 @@ public class InterruptSystemTask {
             }
         } catch (NullPointerException ignored) {
         }
-        for (Pair<String, CompletableFuture<Void>> value : UpdateNetworksTask.getAwaitingMoves().values()) {
-            value.getRight().cancel(true);
-        }
+
+        this.plugin.getUpdateNetworksTask().interrupt();
 
         Guild guild = this.plugin.getBot().getGuild();
 

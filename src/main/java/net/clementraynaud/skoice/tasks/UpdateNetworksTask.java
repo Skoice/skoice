@@ -43,27 +43,34 @@ import java.util.stream.Collectors;
 
 public class UpdateNetworksTask {
 
-    private static final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
+    private final Skoice plugin;
+    private final Map<String, Pair<String, CompletableFuture<Void>>> awaitingMoves = new ConcurrentHashMap<>();
 
     private final ReentrantLock lock = new ReentrantLock();
-
-    private final Skoice plugin;
+    private int taskId;
 
     public UpdateNetworksTask(Skoice plugin) {
         this.plugin = plugin;
     }
 
-    public static Map<String, Pair<String, CompletableFuture<Void>>> getAwaitingMoves() {
-        try {
-            if (Bukkit.isPrimaryThread() && Bukkit.getPluginManager().isPluginEnabled("Skoice")) {
-                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
-            }
-        } catch (NullPointerException ignored) {
-        }
-        return UpdateNetworksTask.awaitingMoves;
+    public void start() {
+        this.taskId = this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
+                this.plugin,
+                this::run,
+                0,
+                10
+        ).getTaskId();
     }
 
-    public void run() {
+    public void interrupt() {
+        this.plugin.getServer().getScheduler().cancelTask(this.taskId);
+
+        for (Pair<String, CompletableFuture<Void>> value : this.awaitingMoves.values()) {
+            value.getRight().cancel(true);
+        }
+    }
+
+    private void run() {
         try {
             if (Bukkit.isPrimaryThread()) {
                 new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
@@ -111,16 +118,16 @@ public class UpdateNetworksTask {
                     shouldBeInChannel = mainVoiceChannel;
                 }
 
-                Pair<String, CompletableFuture<Void>> awaitingMove = UpdateNetworksTask.awaitingMoves.get(member.getId());
+                Pair<String, CompletableFuture<Void>> awaitingMove = this.awaitingMoves.get(member.getId());
                 if (awaitingMove == null
                         || !awaitingMove.getLeft().equals(shouldBeInChannel.getId())
                         && awaitingMove.getRight().cancel(false)) {
                     GuildVoiceState voiceState = member.getVoiceState();
                     if (voiceState != null && voiceState.getChannel() != shouldBeInChannel) {
-                        UpdateNetworksTask.awaitingMoves.put(member.getId(), Pair.of(
+                        this.awaitingMoves.put(member.getId(), Pair.of(
                                 shouldBeInChannel.getId(),
                                 this.plugin.getBot().getGuild().moveVoiceMember(member, shouldBeInChannel)
-                                        .submit().whenCompleteAsync((v, t) -> UpdateNetworksTask.awaitingMoves.remove(member.getId()))
+                                        .submit().whenCompleteAsync((v, t) -> this.awaitingMoves.remove(member.getId()))
                         ));
                     }
                 }
@@ -211,7 +218,7 @@ public class UpdateNetworksTask {
         }
         LinkedPlayer.getOnlineLinkedPlayers().forEach(p -> {
             if (!p.isInMainVoiceChannel() && !p.isInAnyProximityChannel()) {
-                Pair<String, CompletableFuture<Void>> pair = UpdateNetworksTask.awaitingMoves.get(p.getDiscordId());
+                Pair<String, CompletableFuture<Void>> pair = this.awaitingMoves.get(p.getDiscordId());
                 if (pair != null) {
                     pair.getRight().cancel(false);
                 }

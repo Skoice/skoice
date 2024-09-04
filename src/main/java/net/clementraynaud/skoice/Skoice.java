@@ -34,6 +34,7 @@ import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
 import net.clementraynaud.skoice.storage.config.OutdatedConfig;
 import net.clementraynaud.skoice.system.ListenerManager;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
+import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,6 +52,7 @@ public class Skoice extends JavaPlugin {
     private LoginNotificationYamlFile loginNotificationYamlFile;
     private ListenerManager listenerManager;
     private Bot bot;
+    private UpdateNetworksTask updateNetworksTask;
     private BukkitAudiences adventure;
     private HookManager hookManager;
     private AnalyticManager analyticManager;
@@ -86,6 +88,7 @@ public class Skoice extends JavaPlugin {
         this.listenerManager.registerPermanentMinecraftListeners();
         this.bot = new Bot(this);
         this.bot.connect();
+        this.updateNetworksTask = new UpdateNetworksTask(this);
         this.adventure = BukkitAudiences.create(this);
         new SkoiceCommand(this).init();
         this.hookManager = new HookManager(this);
@@ -158,6 +161,10 @@ public class Skoice extends JavaPlugin {
 
     public Bot getBot() {
         return this.bot;
+    }
+
+    public UpdateNetworksTask getUpdateNetworksTask() {
+        return this.updateNetworksTask;
     }
 
     public HookManager getHookManager() {

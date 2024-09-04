@@ -42,6 +42,7 @@ import net.clementraynaud.skoice.listeners.server.ServerCommandListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
+import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
 import net.dv8tion.jda.api.entities.User;
 import org.bukkit.event.HandlerList;
 
@@ -75,6 +76,7 @@ public class ListenerManager {
             this.registerBotListeners();
             this.plugin.getLinksYamlFile().refreshOnlineLinkedPlayers();
             this.plugin.getBot().getVoiceChannel().notifyUnlinkedUsers();
+            this.plugin.getUpdateNetworksTask().start();
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
             if (user != null) {
                 new EmbeddedMenu(this.plugin.getBot()).setContent("configuration-complete",
