@@ -21,7 +21,6 @@ package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigField;
-import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.PermissionOverride;
@@ -44,6 +43,14 @@ public class BotVoiceChannel {
         this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
         if (oldVoiceChannel != null) {
             oldVoiceChannel.modifyStatus("").queue();
+        }
+
+        if (this.plugin.getBot().getStatus() == BotStatus.READY) {
+            this.plugin.getBot().getVoiceChannel().notifyUnlinkedUsers();
+            this.plugin.getBot().getVoiceChannel().setStatus();
+            this.plugin.getBot().getVoiceChannel().updatePermissions();
+            this.plugin.getBot().updateVoiceState();
+        } else {
             this.plugin.getListenerManager().update(user);
         }
     }
