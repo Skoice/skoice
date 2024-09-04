@@ -128,9 +128,6 @@ public class ReadyListener extends ListenerAdapter {
                     this.plugin.getListenerManager().registerPermanentBotListeners();
                     this.plugin.getListenerManager().update();
 
-                    this.plugin.getBot().getVoiceChannel().setStatus();
-                    this.plugin.getBot().getVoiceChannel().updatePermissions();
-                    this.plugin.getBot().updateVoiceState();
                     this.plugin.getBot().retrieveProximityChannels();
 
                     if (tokenManager == null) {

@@ -76,6 +76,9 @@ public class ListenerManager {
             this.registerBotListeners();
             this.plugin.getLinksYamlFile().refreshOnlineLinkedPlayers();
             this.plugin.getBot().getVoiceChannel().notifyUnlinkedUsers();
+            this.plugin.getBot().getVoiceChannel().setStatus();
+            this.plugin.getBot().getVoiceChannel().updatePermissions();
+            this.plugin.getBot().updateVoiceState();
             this.plugin.getUpdateNetworksTask().start();
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
             if (user != null) {

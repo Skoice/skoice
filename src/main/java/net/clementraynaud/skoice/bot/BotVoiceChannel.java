@@ -47,8 +47,6 @@ public class BotVoiceChannel {
         }
         this.plugin.getConfigYamlFile().set(ConfigField.VOICE_CHANNEL_ID.toString(), channel.getId());
         this.plugin.getListenerManager().update(user);
-        this.plugin.getBot().getVoiceChannel().updatePermissions();
-        this.plugin.getBot().getVoiceChannel().setStatus();
     }
 
     public VoiceChannel getVoiceChannel() {
