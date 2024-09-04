@@ -56,7 +56,7 @@ public class BotVoiceChannel {
     }
 
     public void setStatus() {
-        if (this.plugin.getBot().isAdministrator()) {
+        if (!this.plugin.getBot().isAdministrator()) {
             return;
         }
         VoiceChannel voiceChannel = this.getVoiceChannel();

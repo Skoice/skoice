@@ -47,6 +47,8 @@ public class ReadyListener extends ListenerAdapter {
     @Override
     public void onReady(ReadyEvent event) {
 
+        this.setDefaultFailure();
+
         Player tokenManager = this.plugin.getBot().getTokenManager();
 
         this.plugin.getBot().getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
@@ -62,7 +64,9 @@ public class ReadyListener extends ListenerAdapter {
 
             this.setup(tokenManager);
         });
+    }
 
+    private void setDefaultFailure() {
         Consumer<? super Throwable> defaultFailure = RestAction.getDefaultFailure();
         RestAction.setDefaultFailure(throwable -> {
             if (throwable instanceof ErrorResponseException) {
