@@ -47,8 +47,6 @@ public class ReadyListener extends ListenerAdapter {
     @Override
     public void onReady(ReadyEvent event) {
 
-        this.setDefaultFailure();
-
         Player tokenManager = this.plugin.getBot().getTokenManager();
 
         this.plugin.getBot().getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
@@ -64,6 +62,8 @@ public class ReadyListener extends ListenerAdapter {
 
             this.setup(tokenManager);
         });
+
+        this.setDefaultFailure();
     }
 
     private void setDefaultFailure() {
@@ -122,10 +122,7 @@ public class ReadyListener extends ListenerAdapter {
 
         this.plugin.getBot().setDefaultAvatar();
         this.plugin.getBot().updateGuild();
-        this.plugin.getBot().getVoiceChannel().setStatus();
-        this.plugin.getBot().getVoiceChannel().updatePermissions();
         this.plugin.getBot().retrieveMutedUsers();
-        this.plugin.getBot().updateVoiceState();
         this.plugin.getBot().getMenuFactory().loadAll(this.plugin);
 
         this.plugin.getBot().getJDA().getGuilds().forEach(guild -> {
@@ -141,6 +138,9 @@ public class ReadyListener extends ListenerAdapter {
                     this.plugin.getListenerManager().registerPermanentBotListeners();
                     this.plugin.getListenerManager().update();
 
+                    this.plugin.getBot().getVoiceChannel().setStatus();
+                    this.plugin.getBot().getVoiceChannel().updatePermissions();
+                    this.plugin.getBot().updateVoiceState();
                     this.plugin.getBot().retrieveProximityChannels();
 
                     if (tokenManager == null) {
