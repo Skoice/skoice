@@ -80,6 +80,8 @@ public class Skoice extends JavaPlugin {
         this.tempYamlFile.load();
         this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
         this.loginNotificationYamlFile.load();
+        this.analyticManager = new AnalyticManager(this);
+        this.analyticManager.initialize();
         Skoice.api = new SkoiceAPI(this);
         this.getServer().getPluginManager().registerEvents(Skoice.api, this);
         this.listenerManager = new ListenerManager(this);
@@ -90,8 +92,6 @@ public class Skoice extends JavaPlugin {
         new SkoiceCommand(this).init();
         this.hookManager = new HookManager(this);
         this.hookManager.initialize();
-        this.analyticManager = new AnalyticManager(this);
-        this.analyticManager.initialize();
         Updater updater = new Updater(this, this.getFile().getAbsolutePath());
         updater.runUpdaterTaskTimer();
     }
