@@ -1,0 +1,248 @@
+#Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#This file is part of Skoice.
+#Skoice is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#Skoice is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
+command-description:
+  configure: "Skoice'i yapılandır."
+  link: "Discord hesabını Minceraft hesabına bağla."
+  unlink: "Discord hesabınıza bağlı Minecraft hesabımızın bağlantısını kaldır."
+  invite: "Proximity chat'i sunucuna kur."
+menu:
+  invite-footer: "Skoice'i kendi sunucunda istermisin? \"/invite\"'ı kullan!"
+  review-footer: "Having fun with Skoice? Consider leaving a review on SpigotMC!"
+  contributors-footer: "Skoice • carlodrift, Lucas_Cdry ve katkıda bulunanlar tarafından"
+  configuration:
+    title: "Ayarlar"
+  server:
+    title: "Sunucu"
+    description: "Botunuzun düzgün çalışması için, birden fazla sunucuda kullanılmaması gerekitr. Proximity Voice Chat'in hangi sunucuda aktif olmasını istediğinizi seçin. Bot otomatik olarak diğer sunuculardan ayrılacak."
+    select-menu:
+      placeholder: "Lütfen bir sunucuyu seçin."
+  two-factor-authentication:
+    title: "Two-Factor Authentication"
+    description: "Your Discord server requires the bot owner's account to have two-factor authentication enabled. Set it up or disable this requirement in server settings by following this path: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
+  permissions:
+    title: "İzinler"
+    description: "Botunuzun düzgün çalışması için Discord sunucunuzda \"Yönetici\" iznine ihtiyacı var."
+  voice-chat:
+    title: "Voice Chat"
+  range:
+    title: "Konuşma Mesafesi"
+    description: "Proximity chat'in mesafesini özelleştir."
+    select-menu:
+      placeholder: "Please select a range."
+      select-option:
+        long-range-mode:
+          label: "Uzak-Mesafe Modu"
+        short-range-mode:
+          label: "Kısa-Mesafe Modu"
+        customized:
+          label: "Customized"
+        description: "Horizontal Radius: %s blocks — Vertical Radius: %s blocks"
+  active-worlds:
+    title: "Active Worlds"
+    description: "Choose the worlds where Skoice is active."
+    select-menu:
+      placeholder: "Please select the desired worlds."
+  included-players:
+    title: "Dahil Oyuncular"
+    description: "Proximity Chat'i kullanmasını istediğiniz oyuncu türlerini seçin."
+    select-menu:
+      placeholder: "Lütfen istenen oyuncu türlerini seçin."
+      players-on-death-screen-included:
+        label: "Ölüm Ekranındaki Oyuncular"
+      spectators-included:
+        label: "İzleyiciler"
+  separated-teams:
+    title: "Separated Teams"
+    shortened-description: "Choose whether or not teams should be isolated."
+    description: "Choose whether or not teams should be isolated. When this option is enabled, each team created with the `/team` command in Minecraft or with plugins that manage the built-in team system will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
+  chaining:
+    title: "Chaining"
+    shortened-description: "Select the additional distance allowed when players are chaining."
+    description: "Select the additional distance allowed when players are chaining. Chaining usually happens when a player is between two other players who should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."
+    select-menu:
+      disabled:
+        label: "Disabled — No chaining allowed"
+      short:
+        label: "Short — +25% of the initial range"
+      medium:
+        label: "Medium — +50% of the initial range"
+      long:
+        label: "Long — +100% of the initial range"
+  discord-integration:
+    title: "Discord Integration"
+  voice-channel:
+    title: "Ana Ses Kanalı"
+    description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Please note that players will automatically be muted in this channel."
+    shortened-description: "Oyuncuların proximity chat'i kullanmak için girmesi gereken ses kanalını seçin."
+    select-menu:
+      placeholder: "Lütfen bir ses kanalını seçin."
+      select-option:
+        new-voice-channel:
+          label: "Yeni Ses Kanalı"
+          description: "Skoice otomatik olarak bir ses kanalına kurulacak."
+  text-chat:
+    title: "Text Chat"
+    description: "Choose whether or not players can send text messages in proximity channels."
+  channel-visibility:
+    title: "Kanal Görünürlüğü"
+    description: "Skoice tarafından oluşturulan geçici kanalların görünürlüğünü ayarla."
+  in-game-messages:
+    title: "Oyun İçi Mesajlar"
+  login-notification:
+    title: "Giriş Bildirimi"
+    description: "Hesapları bağlı olmayan kullanıcıların Minecraft sunucuna girdikleri zaman görecekleri mesajı ayarla."
+    select-menu:
+      always-remind:
+        label: "Her Zaman Hatırlat"
+      remind-once:
+        label: "Sadece Bir Kere Hatırlat"
+      never-remind:
+        label: "Asla Hatırlatma"
+  action-bar-alerts:
+    title: "Durum Barı Bildirimleri"
+    description: "Proximity Voice Chat'i kullanan oyunculara gönderilecek bildirimleri ayarla."
+    select-menu:
+      placeholder: "Lütfen istenen bildirimleri seçin."
+      connecting-alert:
+        label: "\"Diğer oyunculara yakınsın. Merhaba de!\""
+      disconnecting-alert:
+        label: "\"Diğer oyunculardan uzaklaşıyorsun.\""
+  tooltips:
+    title: "İpuçları"
+    shortened-description: "Minecraft sunucundaki interaktif mesajları ayarla."
+    description: "Minecraft sunucundaki interaktif mesajları ayarla. Eğer Minecraft ayarlarında ipuçları kapalı ise beya Bedrock Edition kullanıyorsanız bunu kapatmak isteyebilirsiniz. Sadece yöneticiler interaktif mesajlar alabilir."
+  advanced-settings:
+    title: "Gelişmiş Ayarlar"
+  link-synchronization:
+    title: "Link Synchronization"
+    shortened-description: "Toggle the synchronization of external plugins with Skoice."
+    description: "Toggle the synchronization of external plugins with Skoice. When players link their accounts via Skoice or a selected plugin, real-time synchronization occurs on both sides. Updating this option requires you to restart your Minecraft server for it to take effect."
+    select-menu:
+      placeholder: "Please select the desired plugins."
+  release-channel:
+    title: "Release Channel"
+    description: "Select the version of Skoice you want to use."
+  language:
+    title: "Dil"
+    description: "Mesajları göstermek için kullanılacak dili seçin. Kendi diliniz tam değil veya eksikmi? [Crowdin'den kendiniz çevirin](https://crowdin.com/project/skoice)!"
+    shortened-description: "Mesajları göstermek için kullanılacak dili seçin."
+  skoice-proximity-voice-chat:
+    title: "Skoice: Minecraft'ta Proximity Chat"
+  linking-process:
+    title: "Bağlama İşlemi"
+  error:
+    title: "Hata"
+field:
+  configuration-complete:
+    title: "Yapılandırma Tamamlandı"
+    description: "Skoice ayarlandı. Discord hesabını Minecraft ile bağlamak için %s yaz. Oyuncular proximity chat'i kullanabilmek için hesaplarını bağlamalıdır."
+  get-the-most-out-of-skoice:
+    title: "Get the Most Out of Skoice"
+    description: "Skoice is ready to be used but can offer you some more customization! Follow the **green buttons** to go through all the features.\n\nProgression: %s"
+  notified-players-cleared:
+    title: "Bildirilen Oyuncular Temizlendi"
+    description: "Bildirilen oyuncuları temizledin. Hesaplarını bağlamaları için zaten bildirim almış oyuncular tekrardan bildirilecek."
+  incomplete-configuration:
+    title: "Tamamlanmamış Yapılandırma"
+    description: "Skoice doğru yapılandırılmamış. Lütfen sunucunun bir yöneticisi ile görüşün."
+  incomplete-configuration-server-manager:
+    title: "Tamamlanmamış Yapılandırma"
+    description: "Yapılandırmayı bitirip Skoice'i kullanmaya başlamak için %s yazın veya aşağıdaki butona tıklayın."
+  incomplete-configuration-alternative-server-manager:
+    title: "Tamamlanmamış Yapılandırma"
+    description: "You have deleted the main voice channel. Type %s to complete the configuration and use Skoice."
+  download:
+    title: "İndir"
+    description: "[Eklentiyi indir](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) ve Minecraft sunucuna kur."
+  donating:
+    title: "Bağış"
+    description: "Skoice ücretsiz bir yazılımdır. Eğer beğenirseniz bize [bağış yaparak](https://opencollective.com/skoice) yardım edebilirsiniz."
+  contributing:
+    title: "Katkıda bulunma"
+    description: "Skoice'in geleceğini şekillendirmeye ilgilimisiniz! [Github sayfamıza katkıda bulunabilir](https://github.com/Skoice/skoice) veya [Crowdin ile eklentimizi çeşitli dillere çevirebilirsiniz](https://crowdin.com/project/skoice)!"
+  long-range-mode:
+    title: "Uzak-Mesafe Modu"
+    description: "Açık dünya modlarında oynayacaksanız bu modu seçin."
+  short-range-mode:
+    title: "Kısa-Mesafe Modu"
+    description: "Sadece kısıtlı bir alana ihtiyacı olan oyun modlarını oynamayı düşünüyorsanız bu modu seçin."
+  customized:
+    title: "Customized"
+    description: "Mesafeleri kendi tercihlerine göre ayarla."
+  production-channel:
+    title: "Production Channel"
+    description: "Choose this channel to use the public version. It is more likely to offer a stable experience."
+  beta-channel:
+    title: "Beta Channel"
+    description: "Choose this channel to discover and test our latest features that are not yet released to the public. This version may contain bugs."
+  verification-code:
+    title: "Doğrulama Kodu"
+    description: "`/skoice link %s` komutunu kullanın ve doğrulamayı tamamlayın."
+  account-linked:
+    title: "Hesaplar Bağlandı"
+    description: "Discord hesabın Minecraft ile bağlandı. %s ses kanalına girerek proximity chat'i kullanabilirsin."
+  account-unlinked:
+    title: "Bağlantı Kesildi"
+    description: "Discord hesabın ile Minecraft hesabının bağlantısı kesildi."
+  account-not-linked:
+    title: "Hesaplar Bağlı Değil"
+    description: "Discord hesabın Minecraft'a bağlı değil. Bağlamak ve proximity chat'i kullanabilmek için %s yaz."
+  account-already-linked:
+    title: "Hesap Zaten Bağlanmış"
+    description: "Discord hesabın zaten Minecraft'a bağlı. Bağlantıyı kaldırmak için %s yaz."
+  restricted-command:
+    title: "Restricted Command"
+    description: "This command must be performed on a Discord server."
+  access-denied:
+    title: "Erişim Reddedildi"
+    description: "You do not have the required permission to perform this command."
+  illegal-value:
+    title: "Geçersiz Değer"
+    description: "Değerler 0'dan büyük bir tam sayı olmalıdır."
+  proximity-channel-deleted:
+    title: "Proximity Channel Deleted"
+    description: "You have deleted a channel used by the proximity voice chat. These channels are automatically deleted when they are no longer needed. You should not be doing it manually."
+button-label:
+  back: "Geri"
+  configure-now: "Configure Now"
+  display-issues: "Display Issues"
+  support-server: "Support Server"
+  clear-notified-players: "Bildirilen Oyuncuları Temizle"
+  refresh: "Yenile"
+  update-permissions: "İzinleri Güncelle"
+select-option:
+  default:
+    description: "Varsayılan Ayar."
+  undesirable:
+    description: "This option can cause undesirable behaviors."
+  enabled:
+    label: "Etkinleştirildi"
+  disabled:
+    label: "Pasifleştirildi"
+  too-many-options:
+    label: "Çok Fazla Seçenek"
+    description: "Skoice daha fazla seçenek yükleyemiyor."
+text-input:
+  category-name:
+    label: "Kategori Adı"
+    default-value: "Skoice"
+  voice-channel-name:
+    label: "Ses Kanalının Adı"
+    default-value: "Proximity Chat"
+  horizontal-radius:
+    label: "Yatay Mesafe"
+  vertical-radius:
+    label: "Dikey Mesafe"
+display-issues: "If you cannot see the message above, you probably have disabled embeds in Discord settings. To use Skoice properly, you must enable them by following this path: `App Settings › Chat › Show embeds and preview website links pasted into chat`."
+voice-channel-status: "Konuşulamıyor - Yakınlarda biri yok"
+proximity-channel-name: "Proximity Chat Kanalı"

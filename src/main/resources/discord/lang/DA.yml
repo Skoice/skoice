@@ -1,0 +1,248 @@
+#Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#This file is part of Skoice.
+#Skoice is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#Skoice is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
+command-description:
+  configure: "Konfigurer Skoice."
+  link: "Tilknyt din Discord konto til Minecraft."
+  unlink: "Frakoble din Discord konto fra Minecraft."
+  invite: "Få nærhedsbaseret stemmechat på din server."
+menu:
+  invite-footer: "Want Skoice on your server? Type \"/invite\"!"
+  review-footer: "Having fun with Skoice? Consider leaving a review on SpigotMC!"
+  contributors-footer: "Skoice • carlodrift, Lucas_Cdry and contributors"
+  configuration:
+    title: "Konfiguration"
+  server:
+    title: "Server"
+    description: "For at fungere korrekt, kan din bot ikke være tilstede på flere Discord servere. Vælg den server, hvor du ønsker nærhedsbaseret stemmechat skal være aktiv. Din bot vil automatisk forlade de andre."
+    select-menu:
+      placeholder: "Vælg venligst en server."
+  two-factor-authentication:
+    title: "Two-Factor Authentication"
+    description: "Your Discord server requires the bot owner's account to have two-factor authentication enabled. Set it up or disable this requirement in server settings by following this path: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
+  permissions:
+    title: "Tilladelser"
+    description: "For at fungere korrekt, skal din bot have tilladelse til \"Administrator\" på din Discord server."
+  voice-chat:
+    title: "Voice Chat"
+  range:
+    title: "Rækkevidde"
+    description: "Customize the range of the proximity voice chat."
+    select-menu:
+      placeholder: "Please select a range."
+      select-option:
+        long-range-mode:
+          label: "Lang-række-tilstand"
+        short-range-mode:
+          label: "Kort-række-tilstand"
+        customized:
+          label: "Customized"
+        description: "Horizontal Radius: %s blocks — Vertical Radius: %s blocks"
+  active-worlds:
+    title: "Active Worlds"
+    description: "Choose the worlds where Skoice is active."
+    select-menu:
+      placeholder: "Please select the desired worlds."
+  included-players:
+    title: "Included Players"
+    description: "Choose the types of players included in the proximity voice chat."
+    select-menu:
+      placeholder: "Please select the desired types of players."
+      players-on-death-screen-included:
+        label: "Players on Death Screen"
+      spectators-included:
+        label: "Spectators"
+  separated-teams:
+    title: "Separated Teams"
+    shortened-description: "Choose whether or not teams should be isolated."
+    description: "Choose whether or not teams should be isolated. When this option is enabled, each team created with the `/team` command in Minecraft or with plugins that manage the built-in team system will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
+  chaining:
+    title: "Chaining"
+    shortened-description: "Select the additional distance allowed when players are chaining."
+    description: "Select the additional distance allowed when players are chaining. Chaining usually happens when a player is between two other players who should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."
+    select-menu:
+      disabled:
+        label: "Disabled — No chaining allowed"
+      short:
+        label: "Short — +25% of the initial range"
+      medium:
+        label: "Medium — +50% of the initial range"
+      long:
+        label: "Long — +100% of the initial range"
+  discord-integration:
+    title: "Discord Integration"
+  voice-channel:
+    title: "Stemmekanal"
+    description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Please note that players will automatically be muted in this channel."
+    shortened-description: "Vælg kanalen spillere skal join for at bruge nærhedsbaseret stemmechat."
+    select-menu:
+      placeholder: "Vælg venligst en stemmekanal."
+      select-option:
+        new-voice-channel:
+          label: "Ny Stemmekanal"
+          description: "Skoice vil automatisk opsætte en stemmekanal."
+  text-chat:
+    title: "Text Chat"
+    description: "Choose whether or not players can send text messages in proximity channels."
+  channel-visibility:
+    title: "Kanal synlighed"
+    description: "Skift synligheden af de midlertidige kanaler der bliver oprettet af Skoice."
+  in-game-messages:
+    title: "In-Game Messages"
+  login-notification:
+    title: "Login Notification"
+    description: "Toggle the message sent to players who have not linked their accounts when they log in to your Minecraft server."
+    select-menu:
+      always-remind:
+        label: "Altid minde"
+      remind-once:
+        label: "Mind kun en gang"
+      never-remind:
+        label: "Aldrig minde"
+  action-bar-alerts:
+    title: "Action Bar Alerts"
+    description: "Toggle the alerts sent to players who are using the proximity voice chat."
+    select-menu:
+      placeholder: "Please select the desired alerts."
+      connecting-alert:
+        label: "\"You are near other players. Say hi!\""
+      disconnecting-alert:
+        label: "\"You are moving away from near players.\""
+  tooltips:
+    title: "Tooltips"
+    shortened-description: "Toggle interactive messages on your Minecraft server."
+    description: "Toggle interactive messages on your Minecraft server. You may want to disable this setting if your server is running on Bedrock Edition or if tooltips are disabled in Minecraft settings. Only operators can receive interactive messages."
+  advanced-settings:
+    title: "Avancerede Indstillinger"
+  link-synchronization:
+    title: "Link Synchronization"
+    shortened-description: "Toggle the synchronization of external plugins with Skoice."
+    description: "Toggle the synchronization of external plugins with Skoice. When players link their accounts via Skoice or a selected plugin, real-time synchronization occurs on both sides. Updating this option requires you to restart your Minecraft server for it to take effect."
+    select-menu:
+      placeholder: "Please select the desired plugins."
+  release-channel:
+    title: "Release Channel"
+    description: "Select the version of Skoice you want to use."
+  language:
+    title: "Sprog"
+    description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
+    shortened-description: "Vælg sproget der bruges til at vise meddelelser."
+  skoice-proximity-voice-chat:
+    title: "Skoice: Proximity Voice Chat"
+  linking-process:
+    title: "Linking Proces"
+  error:
+    title: "Fejl"
+field:
+  configuration-complete:
+    title: "Konfiguration fuldført"
+    description: "Skoice is now configured. Type %s to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
+  get-the-most-out-of-skoice:
+    title: "Get the Most Out of Skoice"
+    description: "Skoice is ready to be used but can offer you some more customization! Follow the **green buttons** to go through all the features.\n\nProgression: %s"
+  notified-players-cleared:
+    title: "Notified Players Cleared"
+    description: "You have cleared notified players. Players who have already received the reminder to link their accounts will now be notified again."
+  incomplete-configuration:
+    title: "Ufuldstændig konfiguration"
+    description: "Skoice er ikke korrekt konfigureret. Kontakt en administrator på serveren."
+  incomplete-configuration-server-manager:
+    title: "Ufuldstændig konfiguration"
+    description: "Type %s or click the button below to complete the configuration and use Skoice."
+  incomplete-configuration-alternative-server-manager:
+    title: "Ufuldstændig konfiguration"
+    description: "You have deleted the main voice channel. Type %s to complete the configuration and use Skoice."
+  download:
+    title: "Download"
+    description: "[Hent pluginet](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) og installer det på din Minecraft-server."
+  donating:
+    title: "Donationer"
+    description: "Skoice er et gratis software. Hvis du kan lide det, kan du hjælpe os ved at [donere](https://opencollective.com/skoice)."
+  contributing:
+    title: "Bidrag"
+    description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/Skoice/skoice) and [translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
+  long-range-mode:
+    title: "Lang-række-tilstand"
+    description: "Vælg denne tilstand, hvis du planlægger at spille åbne verdens spilmetoder."
+  short-range-mode:
+    title: "Kort-række-tilstand"
+    description: "Vælg denne tilstand, hvis du planlægger at spille spilmetoder, der kun kræver et begrænset område."
+  customized:
+    title: "Customized"
+    description: "Indstil afstande efter dine personlige præferencer."
+  production-channel:
+    title: "Production Channel"
+    description: "Choose this channel to use the public version. It is more likely to offer a stable experience."
+  beta-channel:
+    title: "Beta Channel"
+    description: "Choose this channel to discover and test our latest features that are not yet released to the public. This version may contain bugs."
+  verification-code:
+    title: "Bekræftelseskode"
+    description: "Skriv `/skoice link %s` i spillet for at fuldføre processen."
+  account-linked:
+    title: "Konto Linket"
+    description: "Your Discord account has been linked to Minecraft. Join the voice channel %s to use the proximity voice chat."
+  account-unlinked:
+    title: "Konto Afbrudt"
+    description: "Din Discord konto er blevet afbrudt fra Minecraft."
+  account-not-linked:
+    title: "Konto Ikke Linket"
+    description: "Your Discord account is not linked to Minecraft. Type %s to link it and use the proximity voice chat."
+  account-already-linked:
+    title: "Konto Allerede Linket"
+    description: "Your Discord account is already linked to Minecraft. Type %s to unlink it."
+  restricted-command:
+    title: "Restricted Command"
+    description: "This command must be performed on a Discord server."
+  access-denied:
+    title: "Adgang Nægtet"
+    description: "You do not have the required permission to perform this command."
+  illegal-value:
+    title: "Ugyldig værdi"
+    description: "Værdier skal være hele tal, der er større end 0."
+  proximity-channel-deleted:
+    title: "Proximity Channel Deleted"
+    description: "You have deleted a channel used by the proximity voice chat. These channels are automatically deleted when they are no longer needed. You should not be doing it manually."
+button-label:
+  back: "Tilbage"
+  configure-now: "Configure Now"
+  display-issues: "Display Issues"
+  support-server: "Support Server"
+  clear-notified-players: "Clear Notified Players"
+  refresh: "Opdater"
+  update-permissions: "Update Permissions"
+select-option:
+  default:
+    description: "Dette valg er valgt som standard."
+  undesirable:
+    description: "This option can cause undesirable behaviors."
+  enabled:
+    label: "Aktiveret"
+  disabled:
+    label: "Deaktiveret"
+  too-many-options:
+    label: "For mange muligheder"
+    description: "Skoice is unable to load more options."
+text-input:
+  category-name:
+    label: "Kategori navn"
+    default-value: "Skoice"
+  voice-channel-name:
+    label: "Stemme kanal navn"
+    default-value: "Proximity Voice Chat"
+  horizontal-radius:
+    label: "Horisontal radius"
+  vertical-radius:
+    label: "Vertikal radius"
+display-issues: "If you cannot see the message above, you probably have disabled embeds in Discord settings. To use Skoice properly, you must enable them by following this path: `App Settings › Chat › Show embeds and preview website links pasted into chat`."
+voice-channel-status: "Unable to talk — No players nearby"
+proximity-channel-name: "Proximity Channel"
