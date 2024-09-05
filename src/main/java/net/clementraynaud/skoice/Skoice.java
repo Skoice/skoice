@@ -45,6 +45,7 @@ public class Skoice extends JavaPlugin {
 
     private static final String OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
     private static SkoiceAPI api;
+    private static AnalyticManager analyticManager;
     private MinecraftLang lang;
     private ConfigYamlFile configYamlFile;
     private LinksYamlFile linksYamlFile;
@@ -55,10 +56,13 @@ public class Skoice extends JavaPlugin {
     private UpdateNetworksTask updateNetworksTask;
     private BukkitAudiences adventure;
     private HookManager hookManager;
-    private AnalyticManager analyticManager;
 
     public static SkoiceAPI api() {
         return Skoice.api;
+    }
+
+    public static AnalyticManager analyticManager() {
+        return Skoice.analyticManager;
     }
 
     @Override
@@ -82,8 +86,8 @@ public class Skoice extends JavaPlugin {
         this.tempYamlFile.load();
         this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
         this.loginNotificationYamlFile.load();
-        this.analyticManager = new AnalyticManager(this);
-        this.analyticManager.initialize();
+        Skoice.analyticManager = new AnalyticManager(this);
+        Skoice.analyticManager.initialize();
         Skoice.api = new SkoiceAPI(this);
         this.getServer().getPluginManager().registerEvents(Skoice.api, this);
         this.listenerManager = new ListenerManager(this);
@@ -169,9 +173,5 @@ public class Skoice extends JavaPlugin {
 
     public HookManager getHookManager() {
         return this.hookManager;
-    }
-
-    public AnalyticManager getAnalyticManager() {
-        return this.analyticManager;
     }
 }

@@ -22,10 +22,10 @@ package net.clementraynaud.skoice.tasks;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.util.ThreadUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -46,22 +46,12 @@ public class UpdateVoiceStateTask {
     }
 
     public static Set<String> getMutedUsers() {
-        try {
-            if (Bukkit.isPrimaryThread()) {
-                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
-            }
-        } catch (NullPointerException ignored) {
-        }
+        ThreadUtil.ensureNotMainThread();
         return UpdateVoiceStateTask.mutedUsers;
     }
 
     public void run() {
-        try {
-            if (Bukkit.isPrimaryThread()) {
-                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
-            }
-        } catch (NullPointerException ignored) {
-        }
+        ThreadUtil.ensureNotMainThread();
         if (this.member.getVoiceState() == null) {
             return;
         }

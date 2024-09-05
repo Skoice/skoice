@@ -24,11 +24,11 @@ import net.clementraynaud.skoice.api.events.system.SystemInterruptionEvent;
 import net.clementraynaud.skoice.system.Networks;
 import net.clementraynaud.skoice.system.ProximityChannel;
 import net.clementraynaud.skoice.system.ProximityChannels;
+import net.clementraynaud.skoice.util.ThreadUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import org.bukkit.Bukkit;
 
 import java.util.List;
 
@@ -41,12 +41,7 @@ public class InterruptSystemTask {
     }
 
     public void run() {
-        try {
-            if (Bukkit.isPrimaryThread() && this.plugin.isEnabled()) {
-                new IllegalStateException("This method should not be called from the main thread.").printStackTrace();
-            }
-        } catch (NullPointerException ignored) {
-        }
+        ThreadUtil.ensureNotMainThread(true);
 
         this.plugin.getUpdateNetworksTask().interrupt();
 

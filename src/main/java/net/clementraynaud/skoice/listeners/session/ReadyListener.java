@@ -82,7 +82,7 @@ public class ReadyListener extends ListenerAdapter {
                 return;
             }
 
-            this.plugin.getAnalyticManager().getBugsnag().notify(throwable, Severity.ERROR);
+            Skoice.analyticManager().getBugsnag().notify(throwable, Severity.ERROR);
             defaultFailure.accept(throwable);
         });
     }
