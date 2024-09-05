@@ -1,0 +1,100 @@
+#Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#This file is part of Skoice.
+#Skoice is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#Skoice is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
+logger:
+  info:
+    plugin-enabled: "Plugin activé."
+    plugin-disabled: "Plugin désactivé."
+    plugin-updated: "Skoice a été mis à jour vers la version la plus récente. Veuillez redémarrer votre serveur Minecraft pour appliquer les changements."
+    skoice-3: "Vous utilisez désormais Skoice 3. Pour que votre bot fonctionne correctement, suivez notre guide de migration ici : %s."
+    configuration-complete: "Skoice est désormais configuré. Tapez \"/link\" sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
+    bot-connecting: "Votre bot tente de se connecter."
+    bot-connected: "Votre bot est connecté."
+  warning:
+    outdated-version: "Vous utilisez une version obsolète (%s). Téléchargez la dernière version (%s) ici : %s."
+    no-token: "Token non défini. Rejoignez votre serveur Minecraft pour configurer Skoice."
+    no-guild: "Votre bot n'est pas sur un serveur Discord. Ouvrez ce lien pour l'inviter : %s."
+    multiple-guilds: "Votre bot est sur plusieurs serveurs Discord. Tapez \"/configure\" sur votre serveur Discord pour en choisir un."
+    two-factor-authentication: "L'authentification à deux facteurs est requise. Activez l'authentification à deux facteurs sur le compte du propriétaire du bot ou désactivez \"Exiger une A2F pour les actions des modérateurs\" dans les paramètres du serveur."
+    no-voice-channel: "Salon vocal non défini. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
+    no-radius: "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
+  error:
+    missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : %s."
+    bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."
+    bot-timed-out: "Un problème a empêché votre bot de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord ici : %s."
+    public-bot: "Votre bot n'est pas correctement configuré. Exécutez la commande à nouveau après avoir désélectionné \"Public Bot\" et cliqué sur \"Save Changes\" sur cette page : %s."
+  exception:
+    unexpected-value: "Valeur inattendue : %s"
+chat:
+  configuration:
+    bot-creation-interactive:
+      - " %s Configuration : &7Création du bot\n\n&8• &7Skoice fonctionne avec un bot Discord. Pour en créer un, suivez les instructions sur "
+      - "&7.\n&8• &7Une fois son token récupéré, entrez-le "
+      - "&7.\n \nSi vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\". "
+    bot-creation: " %s Configuration : &7Création du bot\n\n&8• &7Skoice fonctionne avec un bot Discord. Pour en créer un, suivez les instructions sur cette page : &b%s&7.\n&8• &7Une fois son token récupéré, tapez \"&e/skoice token&7\" suivi par le token. "
+    no-token: "%s Vous n'avez &cpas fourni de token&7. Pour utiliser cette commande, tapez \"&e/skoice token&7\" suivi du token."
+    no-guild-interactive:
+      - "%s Votre bot n'est &cpas sur un serveur Discord&7. Ouvrez "
+      - " &7pour l'inviter. Si vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\"."
+    no-guild: "%s Votre bot &cn'est pas sur un serveur Discord&7. Ouvrez cette page pour l'inviter : &b%s&7."
+    bot-connecting: "%s Votre bot &atente de se connecter&7."
+    bot-connected: "%s Votre bot est &adésormais connecté&7."
+    bot-connected-incomplete-configuration-discord: "%s Votre bot est &adésormais connecté&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
+    bot-already-connected: "%s Vous avez &amis à jour le token&7. Redémarrez votre serveur Minecraft pour connecter votre bot."
+    bot-could-not-connect: "%s Votre bot &cn'a pas pu se connecter&7. Essayez de nouveau avec un token valide."
+    public-bot-interactive:
+      - "%s Votre bot &cn'est pas correctement configuré&7. Exécutez la commande à nouveau après avoir désélectionné \"&ePublic Bot&7\" et cliqué sur \"&eSave Changes&7\" sur "
+      - "&7. Si vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\"."
+    public-bot: "%s Votre bot &cn'est pas correctement configuré&7. Exécutez la commande à nouveau après avoir désélectionné \"&ePublic Bot&7\" et cliqué sur \"&eSave Changes&7\" sur cette page : &b%s&7."
+    incomplete-configuration: "%s Skoice n'est &cpas configuré correctement&7. Veuillez contacter un administrateur du serveur."
+    incomplete-configuration-operator-interactive:
+      - "%s Skoice n'est &cpas configuré correctement&7. Cliquez "
+      - " &7pour le configurer. Vous pouvez changer la langue en cliquant "
+      - "&7. Si vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\"."
+    incomplete-configuration-operator: "%s Skoice &cn'est pas configuré correctement&7. Tapez \"&e/skoice configure&7\" pour le configurer. Vous pouvez changer la langue avec \"&e/skoice language&7\" suivi de la langue."
+    incomplete-configuration-operator-discord: "%s Skoice n'est &cpas configuré correctement&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
+    already-configured: "%s Skoice est &cdéjà configuré&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour mettre à jour ses réglages."
+    tooltips-enabled: "%s Vous avez &aactivé les messages interactifs&7."
+    tooltips-disabled: "%s Vous avez &adésactivé les messages interactifs&7. Si vous essayez de configurer Skoice, tapez \"&e/skoice configure&7\"."
+    no-language: "%s Vous n'avez &cpas fourni de langue&7. Pour utiliser cette commande, tapez \"&e/skoice language %s&7\"."
+    invalid-language: "%s Vous n'avez &cpas fourni une langue valide&7. Pour utiliser cette commande, tapez \"&e/skoice language %s&7\"."
+    language-already-set: "%s La langue est &cdéjà définie &7sur \"&e%s&7\"."
+    language-updated: "%s Vous avez &amis à jour la langue &7vers le \"&e%s&7\"."
+  player:
+    no-code: "%s Vous n'avez &cpas fourni de code&7. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour en recevoir un."
+    invalid-code: "%s Vous n'avez &cpas fourni de code valide&7. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour en recevoir un."
+    account-linked: "%s Vous avez &alié votre compte Minecraft &7à Discord."
+    account-unlinked: "%s Vous avez &adelié votre compte Minecraft &7de Discord."
+    account-not-linked: "%s Vous n'avez &cpas lié votre compte Minecraft &7à Discord. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour le lier et utiliser le chat vocal de proximité."
+    account-not-linked-remind-once: "%s Vous n'avez &cpas lié votre compte Minecraft &7à Discord. Tapez \"&e/link&7\" sur le serveur Discord \"&e%s&7\" pour le lier et utiliser le chat vocal de proximité. Vous ne recevrez plus cette notification."
+    account-already-linked: "%s Vous avez &cdéjà lié votre compte Minecraft &7à Discord. Tapez \"&e/skoice unlink&7\" pour le délier."
+    connected: "%s Vous êtes &adésormais connecté &7au chat vocal de proximité. Pour désactiver les sons de Discord et avoir une expérience plus immersive, vous pouvez activer le \"&eMode streamer&7\" dans les paramètres de Discord."
+    not-connected: "%s Vous n'êtes &cpas connecté &7au chat vocal de proximité. Rejoignez le salon vocal \"&e%s&7\" sur le serveur Discord \"&e%s&7\" pour l'utiliser."
+    disconnected: "%s Vous êtes &cdésormais déconnecté &7du chat vocal de proximité."
+  error:
+    no-parameter: "%s Vous n'avez &cpas fourni un argument&7. Pour utiliser cette commande, tapez \"&e/skoice %s&7\"."
+    invalid-parameter: "%s Vous n'avez &cpas fourni un argument valide&7. Pour utiliser cette commande, tapez \"&e/skoice %s&7\"."
+    illegal-executor: "%s Cette commande est &cseulement exécutable &7par les joueurs."
+    missing-permission: "%s Cette commande est &cseulement exécutable &7par les opérateurs."
+    bot-timed-out-interactive:
+      - "%s Un problème a &cempêché votre bot &7de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord sur "
+      - "&7. Si vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\"."
+    bot-timed-out: "%s Un problème a &cempêché votre bot &7de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord sur cette page : &b%s&7."
+action-bar:
+  connecting-alert: "&a⚠ &7Vous êtes &aproche d'autres joueurs&7. Dites bonjour !"
+  disconnecting-alert: "&c⚠ &7Vous vous &céloignez &7des joueurs à proximité."
+interaction:
+  here: "&bici"
+  this-page: "&bcette page"
+  execute: "&8☀ &bExécute : &7%s"
+  shortcut: "&8☀ &bRaccourci : &7%s"
+  link: "&8☀ &bOuvre dans le navigateur web : &7%s"
