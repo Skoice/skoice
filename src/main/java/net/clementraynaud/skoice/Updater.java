@@ -198,7 +198,10 @@ public class Updater {
         for (byte b : fileHashBytes) {
             fileHash.append(String.format("%02x", b));
         }
-        Skoice.analyticManager().getBugsnag().notify(new IOException("File integrity check failed: expected " + expectedHash + ", got " + fileHash), Severity.WARNING);
-        return fileHash.toString().equals(expectedHash);
+        boolean verified = fileHash.toString().equals(expectedHash);
+        if (!verified) {
+            Skoice.analyticManager().getBugsnag().notify(new IOException("File integrity check failed: expected " + expectedHash + ", got " + fileHash), Severity.WARNING);
+        }
+        return verified;
     }
 }
