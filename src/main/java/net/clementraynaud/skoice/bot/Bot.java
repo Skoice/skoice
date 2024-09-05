@@ -259,15 +259,17 @@ public class Bot {
         if (player.hasPermission(Argument.MANAGE_PERMISSION) || force) {
             if (this.status == BotStatus.NOT_CONNECTED) {
                 if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-                    this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-interactive",
-                                    this.plugin.getLang().getComponentMessage("interaction.here")
-                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.execute", "/skoice configure")))
-                                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure")),
-                                    this.plugin.getLang().getComponentMessage("interaction.here")
-                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.shortcut", "/skoice language")))
-                                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice language "))
-                            )
-                    );
+                    this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+                        this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-interactive",
+                                        this.plugin.getLang().getComponentMessage("interaction.here")
+                                                .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.execute", "/skoice configure")))
+                                                .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure")),
+                                        this.plugin.getLang().getComponentMessage("interaction.here")
+                                                .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.shortcut", "/skoice language")))
+                                                .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice language "))
+                                )
+                        );
+                    });
                 } else {
                     player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator"));
                 }
