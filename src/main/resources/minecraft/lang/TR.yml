@@ -38,7 +38,7 @@ chat:
   configuration:
     bot-creation-interactive:
       - " \n%s Yapılandırma: &fBot Oluşturma\n \n&8• &7Skoice'in çalışmak için bir Discord botuna ihtiyacı vardır. Oluşturmak için "
-      - "&7.\n&8• &7Botun tokenini aldıktan sonra \"&e/skoice token <token>&7\" komutu ile tokeni belirleyin "
+      - "&7.\n&8• &7Once you have retrieved its token, insert it "
       - "&7.\n \nEğer bu mesaj ile etkileşime geçemiyorsan \"&e/skoice tooltips&7\" yaz.\n "
     bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &b%s&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
     no-token: "%s Bir token &cbelirtmedin&7. Doğru kullanım: \"&e/skoice token <token>&7\"."

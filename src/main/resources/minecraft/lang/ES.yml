@@ -37,7 +37,7 @@ logger:
 chat:
   configuration:
     bot-creation-interactive:
-      - " \nConfiguración%s: &fBot Creation\n \n&8• &7Skoice necesita un bot de Discord para funcionar. Para crear uno, siga las instrucciones en "
+      - " \n%s Configuración: &fBot Creation\n \n&8• &7Skoice necesita un bot de Discord para funcionar. Para crear uno, siga las instrucciones en "
       - "&7.\n&8• &7Cuando hayas recuperado su token, colócalo "
       - "&7. Si acaso no puede interactuar con este mensaje, escriba lo siguiente \"&e/skoice tooltips&7\". "
     bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &b%s&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
