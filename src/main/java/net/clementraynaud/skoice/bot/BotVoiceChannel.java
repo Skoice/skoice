@@ -45,11 +45,11 @@ public class BotVoiceChannel {
             oldVoiceChannel.modifyStatus("").queue();
         }
 
+        this.plugin.getBot().getVoiceChannel().setStatus();
+        this.plugin.getBot().getVoiceChannel().updatePermissions();
+
         if (this.plugin.getBot().getStatus() == BotStatus.READY) {
             this.plugin.getBot().getVoiceChannel().notifyUnlinkedUsers();
-            this.plugin.getBot().getVoiceChannel().setStatus();
-            this.plugin.getBot().getVoiceChannel().updatePermissions();
-            this.plugin.getBot().updateVoiceState();
         } else {
             this.plugin.getListenerManager().update(user);
         }
