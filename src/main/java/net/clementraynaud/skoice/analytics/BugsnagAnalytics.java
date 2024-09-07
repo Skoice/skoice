@@ -25,11 +25,15 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class BugsnagAnalytics {
 
     private static final String BUGSNAG_SERVICE_ID = "";
     private final Skoice plugin;
     private final AnalyticManager analyticManager;
+    private final Set<String> reportedExceptions = ConcurrentHashMap.newKeySet();
     private Bugsnag bugsnag;
 
     public BugsnagAnalytics(Skoice plugin, AnalyticManager analyticManager) {
@@ -42,11 +46,27 @@ public class BugsnagAnalytics {
             return;
         }
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            String exceptionKey = this.createExceptionKey(throwable);
+
+            if (this.reportedExceptions.contains(exceptionKey)) {
+                return;
+            }
+
+            this.reportedExceptions.add(exceptionKey);
+
             try {
                 this.bugsnag.notify(throwable, severity);
             } catch (Throwable ignored) {
             }
         });
+    }
+
+    private String createExceptionKey(Throwable throwable) {
+        StringBuilder keyBuilder = new StringBuilder(throwable.toString());
+        for (StackTraceElement element : throwable.getStackTrace()) {
+            keyBuilder.append(element.toString());
+        }
+        return keyBuilder.toString();
     }
 
     public void initialize() {
