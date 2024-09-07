@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.system;
 
+import net.clementraynaud.skoice.BukkitTestSetup;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
 import org.bukkit.entity.Player;
@@ -38,7 +39,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class LinkedPlayerTest {
+class LinkedPlayerTest extends BukkitTestSetup {
 
     @Mock
     private Skoice plugin;

@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.system;
 
+import net.clementraynaud.skoice.BukkitTestSetup;
 import net.clementraynaud.skoice.Skoice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class NetworkTest {
+class NetworkTest extends BukkitTestSetup {
 
     @Mock
     private Skoice plugin;

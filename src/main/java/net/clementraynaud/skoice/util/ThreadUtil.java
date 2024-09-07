@@ -29,13 +29,10 @@ public final class ThreadUtil {
     }
 
     public static void ensureNotMainThread(boolean disablingBypass) {
-        try {
-            if (Bukkit.isPrimaryThread() && (!disablingBypass || Bukkit.getPluginManager().isPluginEnabled("Skoice"))) {
-                Exception exception = new IllegalStateException("This method should not be called from the main thread.");
-                exception.printStackTrace();
-                Skoice.analyticManager().getBugsnag().notify(exception, Severity.WARNING);
-            }
-        } catch (NullPointerException ignored) {
+        if (Bukkit.isPrimaryThread() && (!disablingBypass || Bukkit.getPluginManager().isPluginEnabled("Skoice"))) {
+            Exception exception = new IllegalStateException("This method should not be called from the main thread.");
+            exception.printStackTrace();
+            Skoice.analyticManager().getBugsnag().notify(exception, Severity.WARNING);
         }
     }
 
