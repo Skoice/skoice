@@ -25,6 +25,8 @@ import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -80,7 +82,9 @@ public class ProximityChannel {
     public void delete() {
         VoiceChannel channel = this.getChannel();
         if (channel != null) {
-            channel.delete().queue();
+            channel.delete().queue(null, new ErrorHandler().handle(ErrorResponse.UNKNOWN_CHANNEL, e ->
+                    ProximityChannels.remove(this)
+            ));
         } else {
             ProximityChannels.remove(this);
         }
