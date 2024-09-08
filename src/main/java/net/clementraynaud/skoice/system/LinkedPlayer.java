@@ -105,7 +105,7 @@ public class LinkedPlayer {
     }
 
     public boolean isInAnyNetwork() {
-        return Networks.getAll().stream().anyMatch(network -> network.contains(this.getBukkitPlayer()));
+        return Networks.getAll().stream().anyMatch(network -> network.contains(this));
     }
 
     public Network getNetwork() {
