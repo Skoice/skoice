@@ -35,7 +35,7 @@ Skoice can be heavily customized directly from Discord. Here are a few things yo
 - Include or exclude certain types of players (spectators, dead players).
 - Choose worlds where Skoice is active.
 - Create multiple teams that cannot communicate with each other.
-- Synchronize the plugin with DiscordSRV.
+- Synchronize the plugin with DiscordSRV and EssentialsX Discord Link.
 
 ## Commands
 
