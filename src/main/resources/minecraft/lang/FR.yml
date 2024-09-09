@@ -37,10 +37,10 @@ logger:
 chat:
   configuration:
     bot-creation-interactive:
-      - " %s Configuration : &7Création du bot\n\n&8• &7Skoice fonctionne avec un bot Discord. Pour en créer un, suivez les instructions sur "
+      - " %s Configuration : &fCréation du bot\n\n&8• &7Skoice fonctionne avec un bot Discord. Pour en créer un, suivez les instructions sur "
       - "&7.\n&8• &7Une fois son token récupéré, entrez-le "
       - "&7.\n \nSi vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\". "
-    bot-creation: " %s Configuration : &7Création du bot\n\n&8• &7Skoice fonctionne avec un bot Discord. Pour en créer un, suivez les instructions sur cette page : &b%s&7.\n&8• &7Une fois son token récupéré, tapez \"&e/skoice token&7\" suivi par le token. "
+    bot-creation: " %s Configuration : &fCréation du bot\n\n&8• &7Skoice fonctionne avec un bot Discord. Pour en créer un, suivez les instructions sur cette page : &b%s&7.\n&8• &7Une fois son token récupéré, tapez \"&e/skoice token&7\" suivi par le token. "
     no-token: "%s Vous n'avez &cpas fourni de token&7. Pour utiliser cette commande, tapez \"&e/skoice token&7\" suivi du token."
     no-guild-interactive:
       - "%s Votre bot n'est &cpas sur un serveur Discord&7. Ouvrez "
@@ -85,10 +85,6 @@ chat:
     invalid-parameter: "%s Vous n'avez &cpas fourni un argument valide&7. Pour utiliser cette commande, tapez \"&e/skoice %s&7\"."
     illegal-executor: "%s Cette commande est &cseulement exécutable &7par les joueurs."
     missing-permission: "%s Cette commande est &cseulement exécutable &7par les opérateurs."
-    bot-timed-out-interactive:
-      - "%s Un problème a &cempêché votre bot &7de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord sur "
-      - "&7. Si vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\"."
-    bot-timed-out: "%s Un problème a &cempêché votre bot &7de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord sur cette page : &b%s&7."
 action-bar:
   connecting-alert: "&a⚠ &7Vous êtes &aproche d'autres joueurs&7. Dites bonjour !"
   disconnecting-alert: "&c⚠ &7Vous vous &céloignez &7des joueurs à proximité."
