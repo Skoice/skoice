@@ -70,6 +70,7 @@ public class Bot {
     private final MenuFactory menuFactory;
     private JDA jda;
     private BotStatus status = BotStatus.NOT_CONNECTED;
+    private boolean isStatusChecked = false;
     private String tokenManagerId;
     private String guildId;
     private String inviteUrl;
@@ -89,6 +90,7 @@ public class Bot {
 
     public void connect(CommandSender sender) {
         if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
+            this.isStatusChecked = true;
             this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
             return;
         }
@@ -121,6 +123,7 @@ public class Bot {
                         .addEventListeners(new ReadyListener(this.plugin))
                         .build();
             } catch (InvalidTokenException | IllegalArgumentException | ErrorResponseException e) {
+                this.isStatusChecked = true;
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
                 this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
                 if (tokenManager != null) {
@@ -262,6 +265,7 @@ public class Bot {
                 }
             }
 
+            this.isStatusChecked = true;
             this.updateActivity();
         }
     }
@@ -276,6 +280,10 @@ public class Bot {
     }
 
     public void sendIncompleteConfigurationAlert(Player player, boolean sendIfPermissionMissing, boolean force) {
+        if (!this.isStatusChecked) {
+            return;
+        }
+
         if (player.hasPermission(Argument.MANAGE_PERMISSION) || force) {
             if (this.status == BotStatus.NOT_CONNECTED) {
                 if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
