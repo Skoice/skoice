@@ -209,13 +209,10 @@ public class UpdateNetworksTask {
 
     private void manageMoves() {
         ThreadUtil.ensureNotMainThread();
-        LinkedPlayer.getOnlineLinkedPlayers().forEach(p -> {
-            if (!p.isInMainVoiceChannel() && !p.isInAnyProximityChannel()) {
-                Pair<String, CompletableFuture<Void>> pair = this.awaitingMoves.get(p.getDiscordId());
-                if (pair != null) {
-                    pair.getRight().cancel(false);
-                }
-            }
-        });
+        LinkedPlayer.getOnlineLinkedPlayers().stream()
+                .filter(p -> !p.isInMainVoiceChannel() && !p.isInAnyProximityChannel())
+                .map(p -> this.awaitingMoves.get(p.getDiscordId()))
+                .filter(Objects::nonNull)
+                .forEach(pair -> pair.getRight().cancel(false));
     }
 }
