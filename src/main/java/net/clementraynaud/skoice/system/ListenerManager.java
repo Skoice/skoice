@@ -91,7 +91,6 @@ public class ListenerManager {
         } else if (oldStatus == BotStatus.READY && newStatus != BotStatus.READY) {
             this.unregisterMinecraftListeners();
             if (newStatus != BotStatus.NOT_CONNECTED) {
-                this.unregisterBotListeners();
                 new InterruptSystemTask(this.plugin).run();
             }
         }
@@ -139,7 +138,7 @@ public class ListenerManager {
         );
     }
 
-    private void unregisterBotListeners() {
+    public void unregisterBotListeners() {
         this.plugin.getBot().getJDA().removeEventListener(
                 this.guildVoiceGuildMuteListener,
                 this.guildVoiceUpdateListener,

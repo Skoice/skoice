@@ -43,10 +43,10 @@ public class InterruptSystemTask {
     public void run() {
         ThreadUtil.ensureNotMainThread(true);
 
+        this.plugin.getListenerManager().unregisterBotListeners();
         this.plugin.getUpdateNetworksTask().interrupt();
 
         Guild guild = this.plugin.getBot().getGuild();
-
         if (guild != null
                 && guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)
                 && (guild.getRequiredMFALevel() != Guild.MFALevel.TWO_FACTOR_AUTH
