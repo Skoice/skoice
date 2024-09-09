@@ -115,10 +115,6 @@
                             </shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.google</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>google.protobuf</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.google.protobuf
                             </shadedPattern>
@@ -127,6 +123,18 @@
                             <pattern>javax.annotation</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.javax.annotation
                             </shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.google.crypto</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.crypto</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.google.errorprone</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.errorprone</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.google.gson</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.gson</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
