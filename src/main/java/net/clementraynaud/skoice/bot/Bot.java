@@ -265,9 +265,10 @@ public class Bot {
                 }
             }
 
-            this.isStatusChecked = true;
             this.updateActivity();
         }
+
+        this.isStatusChecked = true;
     }
 
     public void updateActivity() {
