@@ -78,6 +78,9 @@ public class ListenerManager {
             this.plugin.getBot().getVoiceChannel().setStatus();
             this.plugin.getBot().getVoiceChannel().updatePermissions();
             this.plugin.getBot().updateVoiceState();
+            if (!ProximityChannels.getInitialized().isEmpty()) {
+                this.plugin.getBot().retrieveProximityChannels();
+            }
             this.plugin.getUpdateNetworksTask().start();
             this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
             if (user != null) {

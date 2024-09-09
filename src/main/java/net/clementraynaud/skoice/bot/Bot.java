@@ -32,6 +32,7 @@ import net.clementraynaud.skoice.menus.MenuFactory;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.ProximityChannel;
+import net.clementraynaud.skoice.system.ProximityChannels;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.JDA;
@@ -39,6 +40,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
@@ -55,7 +57,9 @@ import java.net.URL;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Bot {
 
@@ -187,17 +191,23 @@ public class Bot {
     }
 
     public void retrieveProximityChannels() {
+        ProximityChannels.clear();
+
         Guild guild = this.getGuild();
         if (guild == null) {
             return;
         }
 
-        List<String> voiceChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
-        this.plugin.getTempYamlFile().remove(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
-
-        guild.getVoiceChannels().stream()
-                .filter(channel -> voiceChannels.contains(channel.getId()))
-                .forEach(channel -> new ProximityChannel(this.plugin, channel.getId()));
+        List<String> storedChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
+        Set<VoiceChannel> remainingChannels = guild.getVoiceChannels().stream()
+                .filter(channel -> storedChannels.contains(channel.getId()))
+                .collect(Collectors.toSet());
+        remainingChannels.forEach(channel -> new ProximityChannel(this.plugin, channel.getId()));
+        this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD,
+                remainingChannels.stream()
+                        .map(ISnowflake::getId)
+                        .collect(Collectors.toList())
+        );
     }
 
     public void updateStatus() {
