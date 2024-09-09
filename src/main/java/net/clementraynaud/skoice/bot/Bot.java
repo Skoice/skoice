@@ -42,6 +42,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -115,7 +116,7 @@ public class Bot {
                 this.jda = JDABuilder.createDefault(new String(finalBase64TokenBytes))
                         .addEventListeners(new ReadyListener(this.plugin))
                         .build();
-            } catch (InvalidTokenException | IllegalArgumentException e) {
+            } catch (InvalidTokenException | IllegalArgumentException | ErrorResponseException e) {
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
                 this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
                 if (tokenManager != null) {
