@@ -57,44 +57,50 @@
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.bstats</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.apache</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.apache</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.intellij</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.intellij
+                            <pattern>org.apache.commons.collections4</pattern>
+                            <shadedPattern>
+                                ${project.groupId}.${project.artifactId}.libraries.org.apache.commons.collections4
                             </shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.jetbrains</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.jetbrains
+                            <pattern>org.intellij.lang.annotations</pattern>
+                            <shadedPattern>
+                                ${project.groupId}.${project.artifactId}.libraries.org.intellij.lang.annotations
                             </shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>net.dv8tion</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.dv8tion
+                            <pattern>org.jetbrains.annotations</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.jetbrains.annotations
                             </shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>net.kyori</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.kyori</shadedPattern>
+                            <pattern>net.dv8tion.jda</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.dv8tion.jda
+                            </shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.adventure</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.kyori.adventure
+                            </shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.examination</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.kyori.examination
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>kotlin</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.kotlin</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.fasterxml</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.fasterxml
+                            <pattern>com.fasterxml.jackson</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.fasterxml.jackson
                             </shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.iwebpp</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.iwebpp</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>com.neovisionaries</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.neovisionaries
+                            <pattern>com.neovisionaries.ws.client</pattern>
+                            <shadedPattern>
+                                ${project.groupId}.${project.artifactId}.libraries.com.neovisionaries.ws.client
                             </shadedPattern>
                         </relocation>
                         <relocation>
@@ -126,15 +132,18 @@
                         </relocation>
                         <relocation>
                             <pattern>com.google.crypto</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.crypto</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.crypto
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.google.errorprone</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.errorprone</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.errorprone
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.google.gson</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.gson</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.gson
+                            </shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
