@@ -85,10 +85,6 @@ chat:
     invalid-parameter: "%s You have &cnot provided a valid argument&7. To use this command, type \"&e/skoice %s&7\"."
     illegal-executor: "%s This command is &conly executable &7by players."
     missing-permission: "%s This command is &conly executable &7by operators."
-    bot-timed-out-interactive:
-      - "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on "
-      - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
-    bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &b%s&7."
 action-bar:
   connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
   disconnecting-alert: "&c⚠ &7You are &cmoving away &7from near players."
