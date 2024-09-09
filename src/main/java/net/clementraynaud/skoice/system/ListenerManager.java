@@ -51,14 +51,14 @@ public class ListenerManager {
     private final PlayerQuitListener playerQuitListener;
     private final GuildVoiceGuildMuteListener guildVoiceGuildMuteListener;
     private final GuildVoiceUpdateListener guildVoiceUpdateListener;
-    private final GenericChannelListener channelDeleteListener;
+    private final GenericChannelListener genericChannelListener;
 
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;
         this.playerQuitListener = new PlayerQuitListener(this.plugin);
         this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
         this.guildVoiceUpdateListener = new GuildVoiceUpdateListener(this.plugin);
-        this.channelDeleteListener = new GenericChannelListener(this.plugin);
+        this.genericChannelListener = new GenericChannelListener(this.plugin);
     }
 
     public void update(User user) {
@@ -135,7 +135,7 @@ public class ListenerManager {
         this.plugin.getBot().getJDA().addEventListener(
                 this.guildVoiceGuildMuteListener,
                 this.guildVoiceUpdateListener,
-                this.channelDeleteListener
+                this.genericChannelListener
         );
     }
 
@@ -143,7 +143,7 @@ public class ListenerManager {
         this.plugin.getBot().getJDA().removeEventListener(
                 this.guildVoiceGuildMuteListener,
                 this.guildVoiceUpdateListener,
-                this.channelDeleteListener
+                this.genericChannelListener
         );
     }
 }
