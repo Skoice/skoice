@@ -167,7 +167,7 @@ public class UpdateNetworksTask {
     private void manageIsolatedPlayers() {
         LinkedPlayer.getOnlineLinkedPlayers().stream()
                 .filter(LinkedPlayer::isStateEligible)
-                .filter(LinkedPlayer::isInMainVoiceChannel)
+                .filter(p -> p.isInMainVoiceChannel() || p.isInAnyProximityChannel())
                 .filter(p -> !p.isInAnyNetwork())
                 .forEach(p -> {
                     Set<LinkedPlayer> playersWithinRange = p.getPlayersWithinRange();

@@ -115,12 +115,9 @@ public class LinkedPlayer {
     }
 
     public boolean isInAnyProximityChannel() {
-        Network network = this.getNetwork();
-        if (network == null || !network.getProximityChannel().isInitialized()) {
-            return false;
-        }
-        return network.getProximityChannel().getChannel().getMembers().stream()
-                .anyMatch(member -> this.discordId.equals(member.getId()));
+        return ProximityChannels.getInitialized().stream()
+                .flatMap(proximityChannel -> proximityChannel.getChannel().getMembers().stream())
+                .anyMatch(member -> member.getId().equals(this.discordId));
     }
 
     public boolean isCloseEnoughToPlayer(LinkedPlayer linkedPlayer, boolean falloff) {
