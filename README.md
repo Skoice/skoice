@@ -20,13 +20,13 @@ You can use Skoice on the following server software:
 - **Fabric** (using [Cardboard](https://cardboardpowered.org/))
 - **Forge** (using [Magma](https://magmafoundation.org/) or [Mohist](https://mohistmc.com/))
 
-Skoice is also available directly from the panels of many free Minecraft hosts. Thus, you can [get it on Alternos](https://alternos.org/addons/a/spigot/82861).
-
 If your server allows players from **Bedrock Edition** (with [Geyser](https://geysermc.org/) for example), they can use Skoice just like on Java Edition.
 
 ## Installation
 
 Once you have downloaded our plugin, simply drop the file in the `plugins` folder of your Minecraft server and start it. Join the server with an account that has operator privileges (or `skoice.manage` permission) and follow the instructions that are sent to you.
+
+Skoice is also available directly from the panels of many free Minecraft hosts. Thus, you can [get it on Alternos](https://alternos.org/addons/a/spigot/82861).
 
 ## Features
 
