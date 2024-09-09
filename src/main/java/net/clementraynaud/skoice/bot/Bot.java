@@ -130,6 +130,15 @@ public class Bot {
         return this.status.ordinal() > BotStatus.MISSING_PERMISSION.ordinal();
     }
 
+    public void allowApplicationCommands(Guild guild) {
+        if (guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)
+                && (guild.getRequiredMFALevel() != Guild.MFALevel.TWO_FACTOR_AUTH
+                || this.plugin.getBot().getJDA().getSelfUser().isMfaEnabled())
+                && !guild.getPublicRole().hasPermission(Permission.USE_APPLICATION_COMMANDS)) {
+            guild.getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
+        }
+    }
+
     public void setDefaultAvatar() {
         if (this.jda.getSelfUser().getDefaultAvatarUrl().equals(this.jda.getSelfUser().getEffectiveAvatarUrl())) {
             this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {

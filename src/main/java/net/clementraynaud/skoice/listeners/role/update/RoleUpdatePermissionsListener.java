@@ -34,18 +34,18 @@ public class RoleUpdatePermissionsListener extends ListenerAdapter {
 
     @Override
     public void onRoleUpdatePermissions(RoleUpdatePermissionsEvent event) {
-        if (event.getRole().isPublicRole() && !event.getRole().hasPermission(Permission.USE_APPLICATION_COMMANDS)) {
-            event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
-        }
+        this.plugin.getBot().allowApplicationCommands(event.getGuild());
+
         if (event.getGuild().getSelfMember().getRoles().contains(event.getRole())) {
-            if (event.getOldPermissions().contains(Permission.ADMINISTRATOR)
+            boolean lostAdministratorPermission = event.getOldPermissions().contains(Permission.ADMINISTRATOR)
                     && !event.getNewPermissions().contains(Permission.ADMINISTRATOR)
-                    && !event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                this.plugin.getListenerManager().update();
-            } else if (!event.getOldPermissions().contains(Permission.ADMINISTRATOR)
+                    && !event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR);
+
+            boolean gainedAdministratorPermission = !event.getOldPermissions().contains(Permission.ADMINISTRATOR)
                     && event.getNewPermissions().contains(Permission.ADMINISTRATOR)
-                    && event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-                event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
+                    && event.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR);
+
+            if (lostAdministratorPermission || gainedAdministratorPermission) {
                 this.plugin.getListenerManager().update();
             }
         }

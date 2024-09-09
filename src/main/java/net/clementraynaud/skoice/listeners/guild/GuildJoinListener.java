@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.listeners.guild;
 
 import net.clementraynaud.skoice.Skoice;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -34,9 +33,7 @@ public class GuildJoinListener extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(GuildJoinEvent event) {
-        if (this.plugin.getBot().isAdministrator()) {
-            event.getGuild().getPublicRole().getManager().givePermissions(Permission.USE_APPLICATION_COMMANDS).queue();
-        }
+        this.plugin.getBot().allowApplicationCommands(event.getGuild());
         this.plugin.getListenerManager().update();
     }
 }
