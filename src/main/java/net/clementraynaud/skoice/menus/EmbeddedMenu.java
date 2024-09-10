@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.bot.Bot;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.interactions.InteractionHook;
@@ -28,6 +29,7 @@ import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
+import java.util.EnumSet;
 import java.util.function.Consumer;
 
 public class EmbeddedMenu {
@@ -76,12 +78,19 @@ public class EmbeddedMenu {
     }
 
     public void editFromHook() {
-        if (this.hook == null || this.hook.isExpired()) {
+        if (!this.isHookValid()) {
             return;
         }
 
         this.hook.editOriginal(MessageEditData.fromCreateData(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args)))
-                .queue(null, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.forget()));
+                .queue(null, new ErrorHandler().handle(EnumSet.of(
+                        ErrorResponse.UNKNOWN_MESSAGE,
+                        ErrorResponse.INVALID_WEBHOOK_TOKEN
+                ), e -> this.forget()));
+    }
+
+    protected boolean isHookValid() {
+        return this.hook != null && !this.hook.isExpired();
     }
 
     public void delete(IMessageEditCallback interaction, Consumer<Void> success) {

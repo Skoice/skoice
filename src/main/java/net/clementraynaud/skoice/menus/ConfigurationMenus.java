@@ -42,8 +42,12 @@ public final class ConfigurationMenus {
     }
 
     public static void refreshAll() {
-        ConfigurationMenus.menuSet.removeIf(menu -> menu.hook == null || menu.hook.isExpired());
+        ConfigurationMenus.clean();
         ConfigurationMenus.menuSet.forEach(menu -> menu.refreshId().editFromHook());
+    }
+
+    private static void clean() {
+        ConfigurationMenus.menuSet.removeIf(menu -> !menu.isHookValid());
     }
 
     public static Set<ConfigurationMenu> getMenuSet() {
