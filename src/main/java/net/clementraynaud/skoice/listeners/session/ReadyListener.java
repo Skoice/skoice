@@ -25,6 +25,7 @@ import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.PermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -60,7 +61,9 @@ public class ReadyListener extends ListenerAdapter {
             this.plugin.getBot().setInviteUrl(applicationInfo.getInviteUrl(Permission.ADMINISTRATOR));
 
             this.setup(tokenManager);
-        });
+        }, new ErrorHandler().handle(ErrorResponse.fromCode(-1), e ->
+                this.handleParsingException(tokenManager))
+        );
 
         this.setDefaultFailure();
     }
@@ -87,10 +90,11 @@ public class ReadyListener extends ListenerAdapter {
     }
 
     private void handlePublicBot(Player tokenManager) {
+        this.plugin.getBot().acknowledgeStatus();
         this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
         String botId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
         this.plugin.getBot().getJDA().shutdown();
-        this.plugin.getLogger().severe(this.plugin.getLang().getMessage("logger.error.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
+        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
 
         if (tokenManager == null) {
             return;
@@ -104,6 +108,17 @@ public class ReadyListener extends ListenerAdapter {
             );
         } else {
             tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
+        }
+    }
+
+    private void handleParsingException(Player tokenManager) {
+        this.plugin.getBot().acknowledgeStatus();
+        this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
+        this.plugin.getBot().getJDA().shutdown();
+        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.invalid-bot"));
+
+        if (tokenManager != null) {
+            tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.invalid-bot"));
         }
     }
 

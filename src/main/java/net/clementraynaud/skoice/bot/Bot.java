@@ -54,6 +54,7 @@ import org.bukkit.entity.Player;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
@@ -70,7 +71,7 @@ public class Bot {
     private final MenuFactory menuFactory;
     private JDA jda;
     private BotStatus status = BotStatus.NOT_CONNECTED;
-    private boolean isStatusChecked = false;
+    private boolean isStatusAcknowledged = false;
     private String tokenManagerId;
     private String guildId;
     private String inviteUrl;
@@ -90,7 +91,7 @@ public class Bot {
 
     public void connect(CommandSender sender) {
         if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
-            this.isStatusChecked = true;
+            this.acknowledgeStatus();
             this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
             return;
         }
@@ -123,7 +124,7 @@ public class Bot {
                         .addEventListeners(new ReadyListener(this.plugin))
                         .build();
             } catch (InvalidTokenException | IllegalArgumentException | ErrorResponseException e) {
-                this.isStatusChecked = true;
+                this.acknowledgeStatus();
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
                 this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
                 if (tokenManager != null) {
@@ -268,7 +269,7 @@ public class Bot {
             this.updateActivity();
         }
 
-        this.isStatusChecked = true;
+        this.isStatusAcknowledged = true;
     }
 
     public void updateActivity() {
@@ -281,7 +282,7 @@ public class Bot {
     }
 
     public void sendIncompleteConfigurationAlert(Player player, boolean sendIfPermissionMissing, boolean force) {
-        if (!this.isStatusChecked) {
+        if (!this.isStatusAcknowledged) {
             return;
         }
 
@@ -351,6 +352,10 @@ public class Bot {
 
     public BotCommands getCommands() {
         return this.commands;
+    }
+
+    public void acknowledgeStatus() {
+        this.isStatusAcknowledged = true;
     }
 
     public Player getTokenManager() {
