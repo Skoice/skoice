@@ -21,8 +21,18 @@ package net.clementraynaud.skoice.lang;
 
 public class DiscordLang extends Lang {
 
+    public static final int MAX_SHORT_TEXT_INPUT_VALUE_LENGTH = 25;
+
     @Override
     protected String getPath(LangInfo langInfo) {
         return "discord/lang/" + langInfo + ".yml";
+    }
+
+    public String getMessage(String path, int maxLength) {
+        String message = super.getMessage(path);
+        if (message.length() <= maxLength) {
+            return message;
+        }
+        return message.substring(0, maxLength - 1) + "…";
     }
 }

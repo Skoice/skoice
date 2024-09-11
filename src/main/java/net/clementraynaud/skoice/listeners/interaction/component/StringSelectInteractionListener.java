@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.listeners.interaction.component;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.menus.ConfigurationMenus;
@@ -108,13 +109,15 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                             TextInput categoryName = TextInput.create("category-name",
                                             this.plugin.getBot().getLang().getMessage("text-input.category-name.label"),
                                             TextInputStyle.SHORT)
-                                    .setValue(this.plugin.getBot().getLang().getMessage("text-input.category-name.default-value"))
+                                    .setValue(this.plugin.getBot().getLang().getMessage("text-input.category-name.default-value",
+                                            DiscordLang.MAX_SHORT_TEXT_INPUT_VALUE_LENGTH))
                                     .setRequiredRange(1, 25)
                                     .build();
                             TextInput voiceChannelName = TextInput.create("voice-channel-name",
                                             this.plugin.getBot().getLang().getMessage("text-input.voice-channel-name.label"),
                                             TextInputStyle.SHORT)
-                                    .setValue(this.plugin.getBot().getLang().getMessage("text-input.voice-channel-name.default-value"))
+                                    .setValue(this.plugin.getBot().getLang().getMessage("text-input.voice-channel-name.default-value",
+                                            DiscordLang.MAX_SHORT_TEXT_INPUT_VALUE_LENGTH))
                                     .setRequiredRange(1, 25)
                                     .build();
                             Modal modal = Modal.create("new-voice-channel",
