@@ -26,6 +26,8 @@ import net.clementraynaud.skoice.util.ThreadUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -70,7 +72,7 @@ public class UpdateVoiceStateTask {
                     UpdateVoiceStateTask.mutedUsers.add(this.member.getId());
                     this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD,
                             new ArrayList<>(UpdateVoiceStateTask.mutedUsers));
-                });
+                }, new ErrorHandler().ignore(ErrorResponse.USER_NOT_CONNECTED));
             }
         } else {
             VoiceChannel afkChannel = this.plugin.getBot().getGuild().getAfkChannel();
@@ -83,7 +85,7 @@ public class UpdateVoiceStateTask {
                     UpdateVoiceStateTask.mutedUsers.remove(this.member.getId());
                     this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD,
                             new ArrayList<>(UpdateVoiceStateTask.mutedUsers));
-                });
+                }, new ErrorHandler().ignore(ErrorResponse.USER_NOT_CONNECTED));
             }
         }
     }
