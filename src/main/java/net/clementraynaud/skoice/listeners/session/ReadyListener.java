@@ -94,6 +94,7 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
         String botId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
         this.plugin.getBot().getJDA().shutdown();
+        this.plugin.getListenerManager().update();
         this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
 
         if (tokenManager == null) {
@@ -115,6 +116,7 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getBot().acknowledgeStatus();
         this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
         this.plugin.getBot().getJDA().shutdown();
+        this.plugin.getListenerManager().update();
         this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.invalid-bot"));
 
         if (tokenManager != null) {

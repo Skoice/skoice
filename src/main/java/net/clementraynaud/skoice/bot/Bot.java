@@ -33,6 +33,7 @@ import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.ProximityChannel;
 import net.clementraynaud.skoice.system.ProximityChannels;
+import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.JDA;
@@ -134,6 +135,34 @@ public class Bot {
         });
     }
 
+    public boolean isAvailable() {
+        return this.jda != null
+                && this.jda.getStatus() == JDA.Status.CONNECTED;
+    }
+
+    public boolean canShutdown() {
+        return this.jda != null
+                && this.jda.getStatus() != JDA.Status.SHUTTING_DOWN
+                && this.jda.getStatus() != JDA.Status.SHUTDOWN;
+    }
+
+    public void shutdown() {
+        if (this.canShutdown()) {
+            if (this.isAvailable()) {
+                new InterruptSystemTask(this.plugin).run();
+            }
+
+            this.jda.shutdown();
+            try {
+                if (!this.jda.awaitShutdown(Duration.ofSeconds(5))) {
+                    this.jda.shutdownNow();
+                    this.jda.awaitShutdown();
+                }
+            } catch (InterruptedException ignored) {
+            }
+        }
+    }
+
     public boolean isAdministrator() {
         return this.status.ordinal() > BotStatus.MISSING_PERMISSION.ordinal();
     }
@@ -215,7 +244,7 @@ public class Bot {
     }
 
     public void updateStatus() {
-        if (this.jda == null) {
+        if (!this.isAvailable()) {
             this.status = BotStatus.NOT_CONNECTED;
             if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
@@ -340,7 +369,7 @@ public class Bot {
     }
 
     public BotStatus getStatus() {
-        if (this.jda == null && this.status != BotStatus.NOT_CONNECTED) {
+        if (!this.isAvailable() && this.status != BotStatus.NOT_CONNECTED) {
             this.status = BotStatus.NOT_CONNECTED;
         }
         return this.status;

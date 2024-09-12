@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.storage.config;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.YamlFile;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -56,7 +57,7 @@ public class ConfigYamlFile extends YamlFile {
     }
 
     public VoiceChannel getVoiceChannel() {
-        if (this.plugin.getBot().getJDA() == null) {
+        if (!this.plugin.getBot().isAvailable()) {
             return null;
         }
         String voiceChannelId = this.getString(ConfigField.VOICE_CHANNEL_ID.toString());
@@ -75,7 +76,7 @@ public class ConfigYamlFile extends YamlFile {
     }
 
     public Category getCategory() {
-        if (this.plugin.getBot().getJDA() == null) {
+        if (!this.plugin.getBot().isAvailable()) {
             return null;
         }
         VoiceChannel voiceChannel = this.getVoiceChannel();
