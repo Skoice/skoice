@@ -28,7 +28,7 @@ menu:
       placeholder: "Lütfen bir sunucuyu seçin."
   two-factor-authentication:
     title: "Two-Factor Authentication"
-    description: "Your Discord server requires the bot owner's account to have two-factor authentication enabled. Set it up or disable this requirement in server settings by following this path: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
+    description: "Discord sunucun bot sahibi olan hesabın iki aşamalı doğrulamayı açmasını gerektiriyor. 2AD'yi açın veya bu zorunluluğu sunucu ayarlarından `Moderasyon > Güvenlik Kurulumu > Moderatör eylemleri için İki Aşamalı Doğrulama gerektir` yolunu izleyerek kapatın."
   permissions:
     title: "İzinler"
     description: "Botunuzun düzgün çalışması için Discord sunucunuzda \"Yönetici\" iznine ihtiyacı var."

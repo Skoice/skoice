@@ -30,7 +30,7 @@ logger:
   error:
     missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : %s."
     bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."
-    bot-timed-out: "Un problème a empêché votre bot de se connecter. Vérifiez l'état de votre connexion au réseau et cherchez des pannes récentes de Discord ici : %s."
+    invalid-bot: "Votre bot n'est pas configuré correctement. Rejoignez votre serveur Minecraft pour en créer un nouveau."
     public-bot: "Votre bot n'est pas correctement configuré. Exécutez la commande à nouveau après avoir désélectionné \"Public Bot\" et cliqué sur \"Save Changes\" sur cette page : %s."
   exception:
     unexpected-value: "Valeur inattendue : %s"
@@ -51,6 +51,7 @@ chat:
     bot-connected-incomplete-configuration-discord: "%s Votre bot est &adésormais connecté&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
     bot-already-connected: "%s Vous avez &amis à jour le token&7. Redémarrez votre serveur Minecraft pour connecter votre bot."
     bot-could-not-connect: "%s Votre bot &cn'a pas pu se connecter&7. Essayez de nouveau avec un token valide."
+    invalid-bot: "%s Votre bot n'est &cpas configuré correctement&7. Veuillez suivre à nouveau les instructions pour en créer un nouveau."
     public-bot-interactive:
       - "%s Votre bot &cn'est pas correctement configuré&7. Exécutez la commande à nouveau après avoir désélectionné \"&ePublic Bot&7\" et cliqué sur \"&eSave Changes&7\" sur "
       - "&7. Si vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\"."
