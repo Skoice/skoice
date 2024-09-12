@@ -60,7 +60,7 @@ chat:
       - "%s Skoice n'est &cpas configuré correctement&7. Cliquez "
       - " &7pour le configurer. Vous pouvez changer la langue en cliquant "
       - "&7. Si vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\"."
-    incomplete-configuration-operator: "%s Skoice &cn'est pas configuré correctement&7. Tapez \"&e/skoice configure&7\" pour le configurer. Vous pouvez changer la langue avec \"&e/skoice language&7\" suivi de la langue."
+    incomplete-configuration-operator: "%s Skoice n'est &cpas configuré correctement&7. Tapez \"&e/skoice configure&7\" pour le configurer. Vous pouvez changer la langue avec \"&e/skoice language&7\" suivi de la langue."
     incomplete-configuration-operator-discord: "%s Skoice n'est &cpas configuré correctement&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
     already-configured: "%s Skoice est &cdéjà configuré&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour mettre à jour ses réglages."
     tooltips-enabled: "%s Vous avez &aactivé les messages interactifs&7."

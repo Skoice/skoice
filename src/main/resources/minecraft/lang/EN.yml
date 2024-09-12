@@ -51,7 +51,7 @@ chat:
     bot-connected-incomplete-configuration-discord: "%s Your bot is &anow connected&7. Type \"&e/configure&7\" on your Discord server to set it up."
     bot-already-connected: "%s You have &aupdated the token&7. Restart your Minecraft server to connect your bot."
     bot-could-not-connect: "%s Your bot &ccould not connect&7. Try again with a valid token."
-    invalid-bot: "%s Your bot is &cnot configured correctly%7. Please follow the instructions again to create a new one."
+    invalid-bot: "%s Your bot is &cnot configured correctly&7. Please follow the instructions again to create a new one."
     public-bot-interactive:
       - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
       - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
