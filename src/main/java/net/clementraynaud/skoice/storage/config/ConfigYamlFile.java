@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.storage.config;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.YamlFile;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import org.bukkit.configuration.file.YamlConfiguration;

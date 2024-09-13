@@ -50,19 +50,19 @@ public class ReadyListener extends ListenerAdapter {
         Player tokenManager = this.plugin.getBot().getTokenManager();
 
         this.plugin.getBot().getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
-            if (applicationInfo.isBotPublic()) {
-                this.handlePublicBot(tokenManager);
-                return;
-            }
+                    if (applicationInfo.isBotPublic()) {
+                        this.handlePublicBot(tokenManager);
+                        return;
+                    }
 
-            this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connected"));
+                    this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connected"));
 
-            applicationInfo.setRequiredScopes("applications.commands");
-            this.plugin.getBot().setInviteUrl(applicationInfo.getInviteUrl(Permission.ADMINISTRATOR));
+                    applicationInfo.setRequiredScopes("applications.commands");
+                    this.plugin.getBot().setInviteUrl(applicationInfo.getInviteUrl(Permission.ADMINISTRATOR));
 
-            this.setup(tokenManager);
-        }, new ErrorHandler().handle(ErrorResponse.fromCode(-1), e ->
-                this.handleParsingException(tokenManager))
+                    this.setup(tokenManager);
+                }, new ErrorHandler().handle(ErrorResponse.fromCode(-1), e ->
+                        this.handleParsingException(tokenManager))
         );
 
         this.setDefaultFailure();
