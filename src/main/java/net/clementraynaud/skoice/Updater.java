@@ -139,9 +139,13 @@ public class Updater {
                     .transferFrom(Channels.newChannel(connection.getInputStream()), 0, Long.MAX_VALUE);
 
             if (this.verifyFileIntegrity(tempUpdateFile, expectedHash)) {
-                Files.move(tempUpdateFile.toPath(), finalUpdateFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(tempUpdateFile.toPath(), finalUpdateFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 this.downloadedVersion = version;
                 this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
+                try {
+                    Files.delete(tempUpdateFile.toPath());
+                } catch (IOException ignored) {
+                }
             } else {
                 throw new IOException("File integrity check failed");
             }
