@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.tasks;
 import com.bugsnag.Severity;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.system.ActionBarAlert;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.system.Networks;
@@ -89,6 +90,8 @@ public class UpdateNetworksTask {
             this.mergeNetworks();
             this.manageMoves();
 
+            LinkedPlayer.sendActionBarAlerts();
+
             Set<Member> connectedMembers = new HashSet<>(mainVoiceChannel.getMembers());
             connectedMembers.addAll(ProximityChannels.getInitialized().stream()
                     .map(ProximityChannel::getChannel)
@@ -155,7 +158,7 @@ public class UpdateNetworksTask {
 
                     } else if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.DISCONNECTING_ALERT.toString())
                             && !network.canPlayerConnect(p)) {
-                        p.sendDisconnectingAlert();
+                        p.addActionBarAlert(ActionBarAlert.DISCONNECTING);
                     }
                 });
     }
@@ -180,7 +183,7 @@ public class UpdateNetworksTask {
                                     playerInNearNetwork.getNetwork().add(p);
 
                                     if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
-                                        p.sendConnectingAlert();
+                                        p.addActionBarAlert(ActionBarAlert.CONNECTING);
                                     }
                                 });
 
@@ -190,7 +193,7 @@ public class UpdateNetworksTask {
                             new Network(this.plugin, playersWithinRange).build();
 
                             if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
-                                playersWithinRange.forEach(LinkedPlayer::sendConnectingAlert);
+                                playersWithinRange.forEach(playerWithinRange -> playerWithinRange.addActionBarAlert(ActionBarAlert.CONNECTING));
                             }
                         }
                     }

@@ -31,6 +31,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -44,6 +45,7 @@ public class LinkedPlayer {
     private final Skoice plugin;
     private final Player player;
     private final String discordId;
+    private final EnumSet<ActionBarAlert> alerts = EnumSet.noneOf(ActionBarAlert.class);
 
     public LinkedPlayer(Skoice plugin, Player player, String discordId) {
         this.plugin = plugin;
@@ -55,6 +57,10 @@ public class LinkedPlayer {
     public static Set<LinkedPlayer> getOnlineLinkedPlayers() {
         ThreadUtil.ensureNotMainThread();
         return LinkedPlayer.onlineLinkedPlayers;
+    }
+
+    public static void sendActionBarAlerts() {
+        LinkedPlayer.onlineLinkedPlayers.forEach(LinkedPlayer::sendActionBarAlert);
     }
 
     public static LinkedPlayer fromMemberId(String memberId) {
@@ -70,20 +76,21 @@ public class LinkedPlayer {
                 && !this.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString()).contains(this.player.getWorld().getName());
     }
 
-    public void sendConnectingAlert() {
-        this.plugin.adventure().player(this.player).sendActionBar(
-                Component.text(ChatColor.translateAlternateColorCodes('&',
-                        this.plugin.getLang().getMessage("action-bar.connecting-alert")
-                ))
-        );
+    public void addActionBarAlert(ActionBarAlert alert) {
+        this.alerts.add(alert);
     }
 
-    public void sendDisconnectingAlert() {
-        this.plugin.adventure().player(this.player).sendActionBar(
-                Component.text(ChatColor.translateAlternateColorCodes('&',
-                        this.plugin.getLang().getMessage("action-bar.disconnecting-alert")
-                ))
-        );
+    public void sendActionBarAlert() {
+        ActionBarAlert priorityAlert = ActionBarAlert.getPriorityAlert(this.alerts);
+        if (priorityAlert != null) {
+            this.plugin.adventure().player(this.player).sendActionBar(
+                    Component.text(ChatColor.translateAlternateColorCodes('&',
+                            this.plugin.getLang().getMessage("action-bar." + priorityAlert)
+                    ))
+            );
+        }
+
+        this.alerts.clear();
     }
 
     public Set<LinkedPlayer> getPlayersWithinRange() {
