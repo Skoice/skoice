@@ -34,6 +34,8 @@ import net.dv8tion.jda.api.requests.RestAction;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.Player;
 
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.function.Consumer;
 
 public class ReadyListener extends ListenerAdapter {
@@ -49,13 +51,19 @@ public class ReadyListener extends ListenerAdapter {
 
         Player tokenManager = this.plugin.getBot().getTokenManager();
 
-        this.plugin.getBot().getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+        event.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
                     if (applicationInfo.isBotPublic()) {
                         this.handlePublicBot(tokenManager);
                         return;
                     }
 
                     this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connected"));
+
+                    if (tokenManager != null
+                            && event.getJDA().getSelfUser().getTimeCreated().isBefore(OffsetDateTime.now().minusDays(1))) {
+                        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.old-bot"));
+                        tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.old-bot"));
+                    }
 
                     applicationInfo.setRequiredScopes("applications.commands");
                     this.plugin.getBot().setInviteUrl(applicationInfo.getInviteUrl(Permission.ADMINISTRATOR));

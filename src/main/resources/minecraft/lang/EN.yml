@@ -27,6 +27,7 @@ logger:
     two-factor-authentication: "Two-factor authentication required. Enable two-factor authentication on the bot owner's account or disable \"Require 2FA for moderator actions\" in server settings."
     no-voice-channel: "Voice channel not set. Type \"/configure\" on your Discord server to set up Skoice."
     no-radius: "Radius not set. Type \"/configure\" on your Discord server to set up Skoice."
+    old-bot: "You are using an old bot. Make sure it is configured as indicated and you only use it for Skoice."
   error:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."
@@ -49,6 +50,7 @@ chat:
     bot-connecting: "%s Your bot is &aattempting to connect&7."
     bot-connected: "%s Your bot is &anow connected&7."
     bot-connected-incomplete-configuration-discord: "%s Your bot is &anow connected&7. Type \"&e/configure&7\" on your Discord server to set it up."
+    old-bot: "%s You are &cusing an old bot&7. Make sure it is configured as indicated and you only use it for Skoice."
     bot-already-connected: "%s You have &aupdated the token&7. Restart your Minecraft server to connect your bot."
     bot-could-not-connect: "%s Your bot &ccould not connect&7. Try again with a valid token."
     invalid-bot: "%s Your bot is &cnot configured correctly&7. Please follow the instructions again to create a new one."
