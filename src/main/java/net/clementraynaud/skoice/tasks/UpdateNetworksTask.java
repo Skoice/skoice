@@ -108,6 +108,7 @@ public class UpdateNetworksTask {
                     if (voiceState != null) {
                         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.MUTED_ALERT.toString())
                                 && voiceState.isMuted()
+                                && !linkedPlayer.isInMainVoiceChannel()
                                 && !UpdateVoiceStateTask.getMutedUsers().contains(member.getId())) {
                             linkedPlayer.addActionBarAlert(ActionBarAlert.MUTED);
                         }
