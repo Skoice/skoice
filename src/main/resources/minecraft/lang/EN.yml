@@ -89,6 +89,8 @@ chat:
 action-bar:
   connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
   disconnecting-alert: "&c⚠ &7You are &cmoving away &7from near players."
+  muted-alert: "&c⚠ &7You are &cmuted&7."
+  deafened-alert: "&c⚠ &7You are &cdeafened&7."
 interaction:
   here: "&bhere"
   this-page: "&bthis page"

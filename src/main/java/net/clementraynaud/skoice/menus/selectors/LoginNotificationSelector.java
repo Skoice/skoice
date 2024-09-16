@@ -48,7 +48,7 @@ public class LoginNotificationSelector extends Selector {
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
                         .withEmoji(MenuEmoji.REPEAT_ONE.get()),
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.login-notification.select-menu.never-remind.label"), LoginNotificationSelector.NEVER_REMIND)
-                        .withEmoji(MenuEmoji.MUTE.get())));
+                        .withEmoji(MenuEmoji.NO_BELL.get())));
         String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString());
         return StringSelectMenu.create("login-notification-selection")
                 .addOptions(options)

@@ -90,8 +90,6 @@ public class UpdateNetworksTask {
             this.mergeNetworks();
             this.manageMoves();
 
-            LinkedPlayer.sendActionBarAlerts();
-
             Set<Member> connectedMembers = new HashSet<>(mainVoiceChannel.getMembers());
             connectedMembers.addAll(ProximityChannels.getInitialized().stream()
                     .map(ProximityChannel::getChannel)
@@ -105,6 +103,19 @@ public class UpdateNetworksTask {
                 LinkedPlayer linkedPlayer = LinkedPlayer.fromMemberId(member.getId());
                 if (linkedPlayer != null) {
                     network = linkedPlayer.getNetwork();
+
+                    GuildVoiceState voiceState = member.getVoiceState();
+                    if (voiceState != null) {
+                        if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.MUTED_ALERT.toString())
+                                && voiceState.isMuted()
+                                && !UpdateVoiceStateTask.getMutedUsers().contains(member.getId())) {
+                            linkedPlayer.addActionBarAlert(ActionBarAlert.MUTED);
+                        }
+                        if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.DEAFENED_ALERT.toString())
+                                && voiceState.isDeafened()) {
+                            linkedPlayer.addActionBarAlert(ActionBarAlert.DEAFENED);
+                        }
+                    }
                 }
 
                 VoiceChannel shouldBeInChannel;
@@ -131,6 +142,8 @@ public class UpdateNetworksTask {
                     }
                 }
             }
+
+            LinkedPlayer.sendActionBarAlerts();
 
             Networks.clean();
 

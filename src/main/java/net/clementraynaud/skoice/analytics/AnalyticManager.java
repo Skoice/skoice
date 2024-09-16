@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 
 import java.util.EnumSet;
+import java.util.Set;
 
 public class AnalyticManager {
 
@@ -39,12 +40,14 @@ public class AnalyticManager {
         this.bugsnagAnalytics.initialize();
     }
 
-    public EnumSet<ConfigField> getSharedConfigFields() {
+    public Set<ConfigField> getSharedConfigFields() {
         return EnumSet.of(
                 ConfigField.LANG,
                 ConfigField.LOGIN_NOTIFICATION,
                 ConfigField.CONNECTING_ALERT,
                 ConfigField.DISCONNECTING_ALERT,
+                ConfigField.MUTED_ALERT,
+                ConfigField.DEAFENED_ALERT,
                 ConfigField.TOOLTIPS,
                 ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED,
                 ConfigField.SPECTATORS_INCLUDED,
@@ -57,7 +60,7 @@ public class AnalyticManager {
         );
     }
 
-    public EnumSet<ConfigField> getSharedIntConfigFields() {
+    public Set<ConfigField> getSharedIntConfigFields() {
         EnumSet<ConfigField> fields = EnumSet.noneOf(ConfigField.class);
         if (this.plugin.getConfigYamlFile().contains(ConfigField.HORIZONTAL_RADIUS.toString())) {
             fields.add(ConfigField.HORIZONTAL_RADIUS);

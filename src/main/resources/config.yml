@@ -4,6 +4,8 @@ lang: EN
 login-notification: remind-once
 connecting-alert: false
 disconnecting-alert: true
+muted-alert: true
+deafened-alert : true
 tooltips: true
 players-on-death-screen-included: false
 spectators-included: false

@@ -24,8 +24,10 @@ import java.util.Set;
 
 public enum ActionBarAlert {
 
-    CONNECTING(1),
-    DISCONNECTING(1);
+    DEAFENED(1),
+    DISCONNECTING(2),
+    MUTED(3),
+    CONNECTING(4);
 
     private final int priority;
     private final String lowerCaseName;
@@ -46,7 +48,7 @@ public enum ActionBarAlert {
 
     public static ActionBarAlert getPriorityAlert(Set<ActionBarAlert> alerts) {
         return alerts.stream()
-                .max(Comparator.comparingInt(ActionBarAlert::getPriority))
+                .min(Comparator.comparingInt(ActionBarAlert::getPriority))
                 .orElse(null);
     }
 }

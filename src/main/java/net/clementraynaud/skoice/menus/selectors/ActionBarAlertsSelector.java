@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.menus.selectors;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.system.ActionBarAlert;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
@@ -32,20 +33,24 @@ import java.util.List;
 
 public class ActionBarAlertsSelector extends Selector {
 
-    public static final String CONNECTING_ALERT = "connecting-alert";
-    public static final String DISCONNECTING_ALERT = "disconnecting-alert";
-
     public ActionBarAlertsSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
     public SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.connecting-alert.label"), ActionBarAlertsSelector.CONNECTING_ALERT)
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.connecting-alert.label"), ActionBarAlert.CONNECTING.toString())
                         .withEmoji(MenuEmoji.INBOX_TRAY.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.disconnecting-alert.label"), ActionBarAlertsSelector.DISCONNECTING_ALERT)
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.disconnecting-alert.label"), ActionBarAlert.DISCONNECTING.toString())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
-                        .withEmoji(MenuEmoji.OUTBOX_TRAY.get())));
+                        .withEmoji(MenuEmoji.OUTBOX_TRAY.get()),
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.muted-alert.label"), ActionBarAlert.MUTED.toString())
+                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
+                        .withEmoji(MenuEmoji.STUDIO_MICROPHONE.get()),
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.deafened-alert.label"), ActionBarAlert.DEAFENED.toString())
+                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
+                        .withEmoji(MenuEmoji.MUTE.get())));
+
         List<String> defaultValues = new ArrayList<>();
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
             defaultValues.add(ConfigField.CONNECTING_ALERT.toString());
@@ -53,6 +58,13 @@ public class ActionBarAlertsSelector extends Selector {
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.DISCONNECTING_ALERT.toString())) {
             defaultValues.add(ConfigField.DISCONNECTING_ALERT.toString());
         }
+        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.MUTED_ALERT.toString())) {
+            defaultValues.add(ConfigField.MUTED_ALERT.toString());
+        }
+        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.DEAFENED_ALERT.toString())) {
+            defaultValues.add(ConfigField.DEAFENED_ALERT.toString());
+        }
+
         return StringSelectMenu.create("action-bar-alerts-selection")
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.placeholder"))
                 .addOptions(options)

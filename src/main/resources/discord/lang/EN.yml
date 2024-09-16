@@ -117,6 +117,10 @@ menu:
         label: "\"You are near other players. Say hi!\""
       disconnecting-alert:
         label: "\"You are moving away from near players.\""
+      muted-alert:
+        label: "\"You are muted.\""
+      deafened-alert:
+        label: "\"You are deafened.\""
   tooltips:
     title: "Tooltips"
     shortened-description: "Toggle interactive messages on your Minecraft server."
