@@ -60,7 +60,7 @@ public class ReadyListener extends ListenerAdapter {
                     this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connected"));
 
                     if (tokenManager != null
-                            && applicationInfo.getTimeCreated().isBefore(OffsetDateTime.now().minus(1, ChronoUnit.DAYS))) {
+                            && event.getJDA().getSelfUser().getTimeCreated().isBefore(OffsetDateTime.now().minus(1, ChronoUnit.DAYS))) {
                         this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.old-bot"));
                         tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.old-bot"));
                     }
