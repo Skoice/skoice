@@ -15,31 +15,47 @@ logger:
     plugin-enabled: "Плагин включен."
     plugin-disabled: "Плагин отключен."
     plugin-updated: "Skoice был обновлен до последней версии. Пожалуйста, перезапустите ваш сервер Minecraft, чтобы применить изменения."
+    skoice-3: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: %s."
+    configuration-complete: "Skoice is now configured. Type \"/link\" on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
     bot-connecting: "Ваш бот подключается."
     bot-connected: "Ваш бот подключен."
   warning:
+    outdated-version: "You are using an outdated version (%s). Download the latest version (%s) here: %s."
     no-token: "Токен не установлен. Присоединяйтесь к серверу Minecraft, чтобы настроить Skoice."
+    no-guild: "Your bot is not on a Discord server. Open this link to invite it: %s."
     multiple-guilds: "Ваш бот на нескольких Discord серверах. Введите \"/configure\" на вашем Discord сервере, чтобы выбрать его."
+    two-factor-authentication: "Two-factor authentication required. Enable two-factor authentication on the bot owner's account or disable \"Require 2FA for moderator actions\" in server settings."
     no-voice-channel: "Голосовой канал не установлен. Введите \"/configure\" на вашем сервере Discord, чтобы настроить Skoice."
     no-radius: "Радиус не установлен. Введите \"/configure\" на вашем сервере Discord, чтобы настроить Skoice."
   error:
+    missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "Ваш бот не смог подключиться. Чтобы обновить токен, введите \"/skoice token\", а затем новый токен."
+    bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: %s."
+    public-bot: "Your bot is not configured correctly. Run the command again once you have unselected \"Public Bot\" and clicked \"Save Changes\" on this page: %s."
   exception:
     unexpected-value: "Недопустимое значение: %s"
 chat:
   configuration:
+    bot-creation-interactive:
+      - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
+      - "&7.\n&8• &7Once you have retrieved its token, insert it "
+      - "&7.\n \nIf you cannot interact with this message, type \"&e/skoice tooltips&7\".\n "
+    bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &b%s&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
     no-token: "%s Вы &cне указали токен&7. Чтобы использовать эту команду, введите \"&e/skoice token&7\", а затем токен бота."
     no-guild-interactive:
       - "%s Ваш бот в &cне на сервере Discord&7. Открыть "
-      - ""
+      - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+    no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &b%s&7."
     bot-connecting: "%s Ваш бот &aпытается подключиться&7."
     bot-connected: "%s Ваш бот &aтеперь подключен&7."
     bot-connected-incomplete-configuration-discord: "%s Ваш бот &aтеперь подключен&7. Введите \"&e/configure&7\" на вашем сервере Discord, чтобы настроить его."
     bot-already-connected: "%s Вы &aобновили токен&7. Перезагрузите ваш сервер, чтобы подключить бота."
     bot-could-not-connect: "%s Ваш бот &cне смог подключиться&7. Попробуйте еще раз с верным токеном."
     public-bot-interactive:
-      - ""
+      - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
       - "&7. Если вы не можете взаимодействовать с этим сообщением, введите \"&e/skoice tooltips&7\"."
+    public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
+    incomplete-configuration: "%s Skoice is &cnot configured correctly&7. Please contact an administrator of the server."
     incomplete-configuration-operator-interactive:
       - "%s Skoice &cнастроен некорректно&7. Нажмите "
       - " &7 чтобы настроить его. Вы можете изменить язык, нажав "
@@ -58,7 +74,10 @@ chat:
     invalid-code: "%s Вы указали &cневерный код&7. Введите \"&e/link&7\" на сервере Discord \"&e%s&7\", чтобы его получить."
     account-linked: "%s Вы &aуспешно привязали ваш аккаунт Minecraft &7к Discord."
     account-unlinked: "%s Вы &aотвязали ваш аккаунт Minecraft &7от Discord."
+    account-not-linked: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat."
+    account-not-linked-remind-once: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat. You will not receive this notification again."
     account-already-linked: "%s Вы &cуже привязали аккаунт Minecraft &7к Discord. Введите \"&e/skoice unlink&7\", чтобы отвязать его."
+    connected: "%s You are &anow connected &7to the proximity voice chat. To disable Discord sounds and have a more immersive experience, you can enable \"&eStreamer Mode&7\" in Discord settings."
     not-connected: "%s Вы &cне подключены &7к голосовому чату. Присоединитесь к каналу \"&e%s&7\" на сервере Discord \"&e%s&7\"."
     disconnected: "%s Вы &cотключились &7от голосового чата."
   error:
@@ -66,6 +85,10 @@ chat:
     invalid-parameter: "%s Вы &cне указали верный аргумент&7. Чтобы использовать эту команду, введите \"&e/skoice %s&7\"."
     illegal-executor: "%s Эта команда &cдоступна только &7для игроков."
     missing-permission: "%s Эта команда &cдоступна только &7для операторов."
+    bot-timed-out-interactive:
+      - "%s &cНе удалось подключиться &7к вашему боту. Проверьте статус подключения к сети и просмотрите недавние перебои в Discord здесь "
+      - "&7. Если вы не можете взаимодействовать с этим сообщением, введите \"&e/skoice tooltips&7\"."
+    bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &b%s&7."
 action-bar:
   connecting-alert: "&a⚠ &7Вы &aрядом с другими игроками&7. Скажите привет!"
   disconnecting-alert: "&c⚠ &7Вы &cотдаляетесь &7от ближайших игроков."

@@ -15,18 +15,22 @@ logger:
     plugin-enabled: "Eklenti etkinleştirildi."
     plugin-disabled: "Eklenti devre dışı bırakıldı."
     plugin-updated: "Skoice son sürüme güncellendi. Lütfen değişiklikleri uygulamak için sunucunuzu yeniden başlatın."
+    skoice-3: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: %s."
     configuration-complete: "Skoice ayarlandı. Minecraft hesabınızı Discord ile bağlamak için Discord sunucunuzda \"/link\" komutunu kullanın. Sesli sohbeti kullanabilmek için hesaplarınızı bağlamanız gerekiyor."
     bot-connecting: "Botunuz bağlanmaya çalışıyor."
     bot-connected: "Botunuz bağlandı."
   warning:
+    outdated-version: "You are using an outdated version (%s). Download the latest version (%s) here: %s."
     no-token: "Token belirlenmemiş. Skoice'i kurmak için Minecraft sunucunuza bağlanın."
     no-guild: "Botun bir Discord sunucusunda değil. Davet etmek için bu bağlantıyı açın: %s."
     multiple-guilds: "Botunuz birden fazla Discord sunucusunda bulunuyor. Sadece birini seçmek için \"/configure\" komutunu kullanmalısınız."
+    two-factor-authentication: "Two-factor authentication required. Enable two-factor authentication on the bot owner's account or disable \"Require 2FA for moderator actions\" in server settings."
     no-voice-channel: "Ses kanalı belirlenmemiş. Discord sunucunuzda \"/configure\" komutunu kullanarak Skoice'i kurabilirsiniz."
     no-radius: "Konuşma uzaklığı belirlenmemiş. Discord sunucunuzda \"/configure\" komutunu kullanarak Skoice'i kurabilirsiniz."
   error:
     missing-permission: "Discord sunucunda botuna \"Yönetici\" izni vermedin. Eklemek için bu bağlantıyı aç: %s."
     bot-could-not-connect: "Botun bağlanamadı. Tokeni güncellemek için \"/skoice token <yeniToken>\" komutunu kullanın."
+    bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: %s."
     public-bot: "Botun doğru yapılandırılmamış. %s sayfasından \"Public Bot\" seçeneğinin işaretini kaldırıp \"Save Changes\" ile değişiklikleri kaydettikten sonra komutu tekrardan çalıştırın."
   exception:
     unexpected-value: "Beklenmeyen değer: %s"
@@ -34,8 +38,9 @@ chat:
   configuration:
     bot-creation-interactive:
       - " \n%s Yapılandırma: &fBot Oluşturma\n \n&8• &7Skoice'in çalışmak için bir Discord botuna ihtiyacı vardır. Oluşturmak için "
-      - ""
+      - "&7.\n&8• &7Once you have retrieved its token, insert it "
       - "&7.\n \nEğer bu mesaj ile etkileşime geçemiyorsan \"&e/skoice tooltips&7\" yaz.\n "
+    bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &b%s&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
     no-token: "%s Bir token &cbelirtmedin&7. Doğru kullanım: \"&e/skoice token <token>&7\"."
     no-guild-interactive:
       - "%s Botun &cbir Discord sunucusunda değil&7. Davet etmek için "
@@ -72,6 +77,7 @@ chat:
     account-not-linked: "%s Minecraft hesabın &cDiscord hesabına bağlı değil&7. \"&e%s&7\" adlı Discord sunucusunda \"&e/link&7\" komutunu kullanarak bağlayabilir ve proximity chat'i kullanabilirsin."
     account-not-linked-remind-once: "%s Minecraft hesabın &cDiscord hesabına bağlı değil&7. \"&e%s&7\" adlı Discord sunucusunda \"&e/link&7\" komutunu kullanarak bağlayabilir ve proximity chat'i kullanabilirsin. Bu bildirimi bir daha almayacaksın."
     account-already-linked: "%s Discord hesabın ile Minecraft hesabın &czaten bağlı&7. İstersen \"&e/skoice unlink&7\" komutu ile bağlantıyı kaldırabilirsin."
+    connected: "%s You are &anow connected &7to the proximity voice chat. To disable Discord sounds and have a more immersive experience, you can enable \"&eStreamer Mode&7\" in Discord settings."
     not-connected: "%s Proximity chat'e &cbağlı değilsin&7. \"&e%s&7\" adlı ses kanalına \"&e%s&7\" Discord sunucusunda girerek kullanabilirsin."
     disconnected: "%s Proximity chat &cbağlantını kestin&7."
   error:
@@ -79,6 +85,10 @@ chat:
     invalid-parameter: "%s Geçerli bir &cargüman belitmediniz&7. Doğru kullanım: \"&e/skoice %s&7\"."
     illegal-executor: "%s Bu komut &csadece oyuncular tarafından &7 kullanılabilir."
     missing-permission: "%s Bu komutu &csadece &7yöneticiler çalıştırabilir."
+    bot-timed-out-interactive:
+      - "%s Bir sorun botunuzun &cbağlanmasını engelledi &7. İnternet bağlantınızın durumunu kontrol edin ve en sonki Discord kesintilerine göz atın "
+      - "&7. Bu mesaj ile etkileşime geçemiyorsan \"&e/skoice tooltips&7\" komutunu kullan."
+    bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &b%s&7."
 action-bar:
   connecting-alert: "&a⚠ &7Diğer oyunculara yakınsın. Merhaba de!"
   disconnecting-alert: "&c⚠ &7Diğer oyunculardan uzaklaşıyorsun."

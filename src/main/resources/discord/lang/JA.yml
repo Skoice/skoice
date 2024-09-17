@@ -17,6 +17,7 @@ command-description:
   invite: "あなたのサーバーに近接ボイスチャットを呼びます。"
 menu:
   invite-footer: "あなたのサーバにSkoiceが欲しいですか？「/invite」と入力してください！"
+  review-footer: "Having fun with Skoice? Consider leaving a review on SpigotMC!"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry and contributors"
   configuration:
     title: "設定"
@@ -25,17 +26,32 @@ menu:
     description: "正常に動作させるため、botを複数のDiscordサーバーに存在させることはできません。近接ボイスチャットを有効にしたいサーバーを選択してください。botはその他のサーバーから自動的に退出します。"
     select-menu:
       placeholder: "サーバーを選択してください。"
+  two-factor-authentication:
+    title: "Two-Factor Authentication"
+    description: "Your Discord server requires the bot owner's account to have two-factor authentication enabled. Set it up or disable this requirement in server settings by following this path: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
   permissions:
     title: "権限"
     description: "正常に動作させるために、Discordサーバー上でbotに「管理者」権限が必要です。"
+  voice-chat:
+    title: "Voice Chat"
   range:
     title: "範囲"
+    description: "Customize the range of the proximity voice chat."
     select-menu:
+      placeholder: "Please select a range."
       select-option:
         long-range-mode:
           label: "長距離モード"
         short-range-mode:
           label: "短距離モード"
+        customized:
+          label: "Customized"
+        description: "Horizontal Radius: %s blocks — Vertical Radius: %s blocks"
+  active-worlds:
+    title: "Active Worlds"
+    description: "Choose the worlds where Skoice is active."
+    select-menu:
+      placeholder: "Please select the desired worlds."
   included-players:
     title: "対象プレイヤー"
     description: "近接ボイスチャットに含まれるプレイヤーの種類を選択します。"
@@ -45,8 +61,28 @@ menu:
         label: "死亡画面状態のプレイヤー"
       spectators-included:
         label: "スペクテイター"
+  separated-teams:
+    title: "Separated Teams"
+    shortened-description: "Choose whether or not teams should be isolated."
+    description: "Choose whether or not teams should be isolated. When this option is enabled, each team created with the `/team` command in Minecraft or with plugins that manage the built-in team system will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
+  chaining:
+    title: "Chaining"
+    shortened-description: "Select the additional distance allowed when players are chaining."
+    description: "Select the additional distance allowed when players are chaining. Chaining usually happens when a player is between two other players who should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."
+    select-menu:
+      disabled:
+        label: "Disabled — No chaining allowed"
+      short:
+        label: "Short — +25% of the initial range"
+      medium:
+        label: "Medium — +50% of the initial range"
+      long:
+        label: "Long — +100% of the initial range"
+  discord-integration:
+    title: "Discord Integration"
   voice-channel:
     title: "ボイスチャンネル"
+    description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Please note that players will automatically be muted in this channel."
     shortened-description: "近接ボイスチャットを使用するためにプレイヤーが参加するチャンネルを選択します。"
     select-menu:
       placeholder: "ボイスチャンネルを選択してください。"
@@ -54,6 +90,9 @@ menu:
         new-voice-channel:
           label: "新しいボイスチャンネル"
           description: "Skoiceは自動的にボイスチャンネルをセットアップします。"
+  text-chat:
+    title: "Text Chat"
+    description: "Choose whether or not players can send text messages in proximity channels."
   channel-visibility:
     title: "チャンネルの可視性"
     description: "Skoiceによって作成された一時チャンネルの可視性を切り替えます。"
@@ -82,6 +121,17 @@ menu:
     title: "ツールチップ"
     shortened-description: "Minecraftサーバー上の対話型メッセージを切り替えます。"
     description: "Minceaftサーバー上で対話型メッセージを切り替えます。サーバーが統合版で実行されている場合や、Minecraft設定でツールチップが無効人なっている場合、この設定を無効にすることができます。操作者のみが対話型メッセージを受信できます。"
+  advanced-settings:
+    title: "Advanced Settings"
+  link-synchronization:
+    title: "Link Synchronization"
+    shortened-description: "Toggle the synchronization of external plugins with Skoice."
+    description: "Toggle the synchronization of external plugins with Skoice. When players link their accounts via Skoice or a selected plugin, real-time synchronization occurs on both sides. Updating this option requires you to restart your Minecraft server for it to take effect."
+    select-menu:
+      placeholder: "Please select the desired plugins."
+  release-channel:
+    title: "Release Channel"
+    description: "Select the version of Skoice you want to use."
   language:
     title: "言語"
     description: "メッセージの表示に使用する言語を選択してください。あなたの言語が無いか不完全ですか？[Crowdinでプライグインを翻訳してください](https://crowdin.com/project/skoice)！"
@@ -95,6 +145,10 @@ menu:
 field:
   configuration-complete:
     title: "設定完了"
+    description: "Skoice is now configured. Type %s to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
+  get-the-most-out-of-skoice:
+    title: "Get the Most Out of Skoice"
+    description: "Skoice is ready to be used but can offer you some more customization! Follow the **green buttons** to go through all the features.\n\nProgression: %s"
   notified-players-cleared:
     title: "通知されたプレイヤーの消去"
     description: "通知を受け取ったプレイヤーを消去しました。既に通知を受け取っていたプレイヤーは再度通知されるようになります。"
@@ -103,8 +157,10 @@ field:
     description: "Skoiceが正しく設定されていません。サーバーの管理者に連絡してください。"
   incomplete-configuration-server-manager:
     title: "未完了の設定"
+    description: "Type %s or click the button below to complete the configuration and use Skoice."
   incomplete-configuration-alternative-server-manager:
     title: "未完了の設定"
+    description: "You have deleted the main voice channel. Type %s to complete the configuration and use Skoice."
   download:
     title: "ダウンロード"
     description: "[プラグインを入手](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) して、あなたのMinecraftサーバーにインストールしてください。"
@@ -121,7 +177,14 @@ field:
     title: "短距離モード"
     description: "限定されたエリアしか必要としないゲームモードをプレイする場合は、このモードを選択してください。"
   customized:
+    title: "Customized"
     description: "あなたの好みに応じた距離を設定します。"
+  production-channel:
+    title: "Production Channel"
+    description: "Choose this channel to use the public version. It is more likely to offer a stable experience."
+  beta-channel:
+    title: "Beta Channel"
+    description: "Choose this channel to discover and test our latest features that are not yet released to the public. This version may contain bugs."
   verification-code:
     title: "確認コード"
     description: "ゲーム内で `/skoice link %s` と入力して手続きを完了します。"
@@ -133,26 +196,42 @@ field:
     description: "あなたのDiscordアカウントはMinecraftからリンク解除されました。"
   account-not-linked:
     title: "アカウントがリンクされていない"
+    description: "Your Discord account is not linked to Minecraft. Type %s to link it and use the proximity voice chat."
   account-already-linked:
     title: "アカウントリンク済み"
+    description: "Your Discord account is already linked to Minecraft. Type %s to unlink it."
+  restricted-command:
+    title: "Restricted Command"
+    description: "This command must be performed on a Discord server."
   access-denied:
     title: "アクセス拒否"
+    description: "You do not have the required permission to perform this command."
   illegal-value:
     title: "不正な値"
     description: "値は 0 より大きい数値でなければなりません。"
+  proximity-channel-deleted:
+    title: "Proximity Channel Deleted"
+    description: "You have deleted a channel used by the proximity voice chat. These channels are automatically deleted when they are no longer needed. You should not be doing it manually."
 button-label:
   back: "戻る"
+  configure-now: "Configure Now"
+  display-issues: "Display Issues"
+  support-server: "Support Server"
   clear-notified-players: "通知されたプレイヤーを消去"
   refresh: "更新"
+  update-permissions: "Update Permissions"
 select-option:
   default:
     description: "このオプションはデフォルトで選択されています。"
+  undesirable:
+    description: "This option can cause undesirable behaviors."
   enabled:
     label: "有効"
   disabled:
     label: "無効"
   too-many-options:
     label: "多すぎるオプション"
+    description: "Skoice is unable to load more options."
 text-input:
   category-name:
     label: "カテゴリ名"
@@ -164,3 +243,6 @@ text-input:
     label: "水平半径"
   vertical-radius:
     label: "垂直半径"
+display-issues: "If you cannot see the message above, you probably have disabled embeds in Discord settings. To use Skoice properly, you must enable them by following this path: `App Settings › Chat › Show embeds and preview website links pasted into chat`."
+voice-channel-status: "Unable to talk — No players nearby"
+proximity-channel-name: "Proximity Channel"
