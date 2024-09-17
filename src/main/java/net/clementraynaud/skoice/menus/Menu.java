@@ -78,13 +78,16 @@ public class Menu {
                 this.plugin.getBot().getLang().getMessage("menu." + this.section + ".title");
     }
 
-    private String getDescription(boolean shortened) {
-        if (shortened && this.plugin.getBot().getLang().contains("menu." + this.section + ".shortened-description")) {
-            return this.plugin.getBot().getLang().getMessage("menu." + this.section + ".shortened-description");
-        } else if (this.plugin.getBot().getLang().contains("menu." + this.section + ".description")) {
-            return this.plugin.getBot().getLang().getMessage("menu." + this.section + ".description");
+    private String getDescription(boolean full) {
+        StringBuilder description = new StringBuilder();
+        if (this.plugin.getBot().getLang().contains("menu." + this.section + ".description")) {
+            description.append(this.plugin.getBot().getLang().getMessage("menu." + this.section + ".description"));
         }
-        return null;
+        if (full && this.plugin.getBot().getLang().contains("menu." + this.section + ".full-description")) {
+            description.append(" ")
+                    .append(this.plugin.getBot().getLang().getMessage("menu." + this.section + ".full-description"));
+        }
+        return description.toString();
     }
 
     private MessageEmbed getEmbed(String... args) {
@@ -96,9 +99,7 @@ public class Menu {
                     "https://clementraynaud.net/Skoice.jpeg");
         }
 
-        if (this.getDescription(false) != null) {
-            embed.setDescription(this.getDescription(false));
-        }
+        embed.setDescription(this.getDescription(true));
 
         if (this.plugin.getBot().getStatus() == BotStatus.READY) {
             StringBuilder author = new StringBuilder();
@@ -131,8 +132,8 @@ public class Menu {
 
         List<Menu> children = this.getChildren();
         for (Menu child : children) {
-            String description = child.getDescription(true);
-            if (description == null) {
+            String description = child.getDescription(false);
+            if (description.isEmpty()) {
                 description = child.getChildren().stream()
                         .map(menu -> "> " + menu.getTitle(true))
                         .collect(Collectors.joining("\n"));

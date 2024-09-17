@@ -63,12 +63,12 @@ menu:
         label: "Spectators"
   separated-teams:
     title: "Separated Teams"
-    shortened-description: "Choose whether or not teams should be isolated."
-    description: "Choose whether or not teams should be isolated. When this option is enabled, each team created with the `/team` command in Minecraft or with plugins that manage the built-in team system will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
+    description: "Choose whether or not teams should be isolated."
+    full-description: "When this option is enabled, each team created with the `/team` command in Minecraft or with plugins that manage the built-in team system will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
   chaining:
     title: "Chaining"
-    shortened-description: "Select the additional distance allowed when players are chaining."
-    description: "Select the additional distance allowed when players are chaining. Chaining usually happens when a player is between two other players who should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."
+    description: "Select the additional distance allowed when players are chaining."
+    full-description: "Chaining usually happens when a player is between two other players who should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."
     select-menu:
       disabled:
         label: "Disabled — No chaining allowed"
@@ -82,8 +82,8 @@ menu:
     title: "Discord Integration"
   voice-channel:
     title: "Voice Channel"
-    description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Please note that players will automatically be muted in this channel."
-    shortened-description: "Select the channel players have to join to use the proximity voice chat."
+    description: "Select the channel players have to join to use the proximity voice chat."
+    full-description: "It must be in a category. Please note that players will automatically be muted in this channel."
     select-menu:
       placeholder: "Please select a voice channel."
       select-option:
@@ -119,14 +119,14 @@ menu:
         label: "\"You are moving away from near players.\""
   tooltips:
     title: "Tooltips"
-    shortened-description: "Toggle interactive messages on your Minecraft server."
-    description: "Toggle interactive messages on your Minecraft server. You may want to disable this setting if your server is running on Bedrock Edition or if tooltips are disabled in Minecraft settings. Only operators can receive interactive messages."
+    description: "Toggle interactive messages on your Minecraft server."
+    full-description: "You may want to disable this setting if your server is running on Bedrock Edition or if tooltips are disabled in Minecraft settings. Only operators can receive interactive messages."
   advanced-settings:
     title: "Advanced Settings"
   link-synchronization:
     title: "Link Synchronization"
-    shortened-description: "Toggle the synchronization of external plugins with Skoice."
-    description: "Toggle the synchronization of external plugins with Skoice. When players link their accounts via Skoice or a selected plugin, real-time synchronization occurs on both sides. Updating this option requires you to restart your Minecraft server for it to take effect."
+    description: "Toggle the synchronization of external plugins with Skoice."
+    full-description: "When players link their accounts via Skoice or a selected plugin, real-time synchronization occurs on both sides. Updating this option requires you to restart your Minecraft server for it to take effect."
     select-menu:
       placeholder: "Please select the desired plugins."
   release-channel:
@@ -134,8 +134,8 @@ menu:
     description: "Select the version of Skoice you want to use."
   language:
     title: "Language"
-    description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
-    shortened-description: "Choose the language used to display messages."
+    description: "Choose the language used to display messages."
+    full-description: "Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
   skoice-proximity-voice-chat:
     title: "Skoice: Proximity Voice Chat"
   linking-process:
