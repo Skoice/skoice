@@ -26,9 +26,6 @@ menu:
     description: "Para funcionar correctamente, tu bot no puede estar presente en varios servidores de Discord. Selecciona el servidor donde deseas que el chat de voz de proximidad esté activo. Tu bot abandonará automáticamente los demás."
     select-menu:
       placeholder: "Por favor, selecciona un servidor."
-  two-factor-authentication:
-    title: "Two-Factor Authentication"
-    description: "Your Discord server requires the bot owner's account to have two-factor authentication enabled. Set it up or disable this requirement in server settings by following this path: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
   permissions:
     title: "Permisos"
     description: "Para funcionar correctamente, tu bot debe tener el permiso de \"Administrador\" en tu servidor de Discord."
@@ -145,22 +142,13 @@ menu:
 field:
   configuration-complete:
     title: "Configuración Completa"
-    description: "Skoice is now configured. Type %s to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
-  get-the-most-out-of-skoice:
-    title: "Get the Most Out of Skoice"
-    description: "Skoice is ready to be used but can offer you some more customization! Follow the **green buttons** to go through all the features.\n\nProgression: %s"
-  notified-players-cleared:
-    title: "Notified Players Cleared"
-    description: "You have cleared notified players. Players who have already received the reminder to link their accounts will now be notified again."
   incomplete-configuration:
     title: "Configuración Incompleta"
     description: "Skoice no está configurado correctamente. Por favor, contacta a un administrador del servidor."
   incomplete-configuration-server-manager:
     title: "Configuración Incompleta"
-    description: "Type %s or click the button below to complete the configuration and use Skoice."
   incomplete-configuration-alternative-server-manager:
     title: "Configuración Incompleta"
-    description: "You have deleted the main voice channel. Type %s to complete the configuration and use Skoice."
   download:
     title: "Descargar"
     description: "[Obtén el plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) e instálalo en tu servidor de Minecraft."
@@ -169,7 +157,6 @@ field:
     description: "Skoice es un software gratuito. Si te gusta, puedes ayudarnos [donando](https://opencollective.com/skoice)."
   contributing:
     title: "Contribuyendo"
-    description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/Skoice/skoice) and [translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
   long-range-mode:
     title: "Modo de larga distancia"
     description: "Elige este modo si planeas jugar modos de juego en un mundo abierto."
@@ -177,61 +164,36 @@ field:
     title: "Modo de corta distancia"
     description: "Elige este modo si planeas jugar modos de juego que solo requieren un área limitada."
   customized:
-    title: "Customized"
     description: "Ajustar las distancias según tus preferencias personales."
-  production-channel:
-    title: "Production Channel"
-    description: "Choose this channel to use the public version. It is more likely to offer a stable experience."
-  beta-channel:
-    title: "Beta Channel"
-    description: "Choose this channel to discover and test our latest features that are not yet released to the public. This version may contain bugs."
   verification-code:
     title: "Código de verificación"
     description: "Escribe `/skoice link %s` en el juego para completar el proceso."
   account-linked:
     title: "Cuenta vinculada"
-    description: "Your Discord account has been linked to Minecraft. Join the voice channel %s to use the proximity voice chat."
   account-unlinked:
     title: "Cuenta desvinculada"
     description: "Tu cuenta de Discord ha sido desvinculada de Minecraft."
   account-not-linked:
     title: "Cuenta no vinculada"
-    description: "Your Discord account is not linked to Minecraft. Type %s to link it and use the proximity voice chat."
   account-already-linked:
     title: "Cuenta ya vinculada"
-    description: "Your Discord account is already linked to Minecraft. Type %s to unlink it."
-  restricted-command:
-    title: "Restricted Command"
-    description: "This command must be performed on a Discord server."
   access-denied:
     title: "Acceso Denegado"
-    description: "You do not have the required permission to perform this command."
   illegal-value:
     title: "Valor Ilegal"
     description: "Los valores deben ser números enteros mayores a 0."
-  proximity-channel-deleted:
-    title: "Proximity Channel Deleted"
-    description: "You have deleted a channel used by the proximity voice chat. These channels are automatically deleted when they are no longer needed. You should not be doing it manually."
 button-label:
   back: "Volver"
-  configure-now: "Configure Now"
-  display-issues: "Display Issues"
-  support-server: "Support Server"
-  clear-notified-players: "Clear Notified Players"
   refresh: "Refrescar"
-  update-permissions: "Update Permissions"
 select-option:
   default:
     description: "Esta opción está seleccionada por defecto."
-  undesirable:
-    description: "This option can cause undesirable behaviors."
   enabled:
     label: "Habilitado"
   disabled:
     label: "Deshabilitado"
   too-many-options:
     label: "Demasiadas Opciones"
-    description: "Skoice is unable to load more options."
 text-input:
   category-name:
     label: "Nombre de Categoría"
@@ -243,6 +205,3 @@ text-input:
     label: "Radio Horizontal"
   vertical-radius:
     label: "Radio Vertical"
-display-issues: "If you cannot see the message above, you probably have disabled embeds in Discord settings. To use Skoice properly, you must enable them by following this path: `App Settings › Chat › Show embeds and preview website links pasted into chat`."
-voice-channel-status: "Unable to talk — No players nearby"
-proximity-channel-name: "Proximity Channel"

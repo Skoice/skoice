@@ -15,23 +15,18 @@ logger:
     plugin-enabled: "Plug-in habilitado."
     plugin-disabled: "Plug-in deshabilitado."
     plugin-updated: "Skoice se ha actualizado a la última versión. Reinicie su servidor de Minecraft para aplicar los cambios."
-    skoice-3: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: %s."
     configuration-complete: "Skoice está configurado. Escribe \"/link\" en tu servidor de Discord para vincular tu cuenta de Discord con Minecraft. Los jugadores deben vincular sus cuentas para usar el chat de voz de proximidad."
     bot-connecting: "Tu bot está intentando conectarse."
     bot-connected: "Tu bot está conectado."
   warning:
-    outdated-version: "You are using an outdated version (%s). Download the latest version (%s) here: %s."
     no-token: "Token no establecido. Unete a tu servidor de Minecraft para configurar Skoice."
     no-guild: "Tu bot no está en un servidor de Discord. Abre este enlace para invitarlo: %s."
     multiple-guilds: "Tu bot está en múltiples servidores de Discord. Escribe \"/configure\" en tu servidor de Discord para elegir uno."
-    two-factor-authentication: "Two-factor authentication required. Enable two-factor authentication on the bot owner's account or disable \"Require 2FA for moderator actions\" in server settings."
     no-voice-channel: "Canal de voz no establecido. Escribe \"/configure\" en tu servidor de Discord para configurar Skoice."
     no-radius: "Radio no establecido. Escribe \"/configure\" en tu servidor de Discord para configurar Skoice."
   error:
     missing-permission: "No has concedido a tu bot el permiso de \"Administrador\" en tu servidor de Discord. Abre este enlace para añadirlo: %s."
     bot-could-not-connect: "Su bot no pudo conectarse. Para actualizar el token, escriba \"/skoice token\" seguido del nuevo token."
-    bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: %s."
-    public-bot: "Your bot is not configured correctly. Run the command again once you have unselected \"Public Bot\" and clicked \"Save Changes\" on this page: %s."
   exception:
     unexpected-value: "Valor inesperado: %s"
 chat:
@@ -40,11 +35,10 @@ chat:
       - " \n%s Configuración: &fBot Creation\n \n&8• &7Skoice necesita un bot de Discord para funcionar. Para crear uno, siga las instrucciones en "
       - "&7.\n&8• &7Cuando hayas recuperado su token, colócalo "
       - "&7. Si acaso no puede interactuar con este mensaje, escriba lo siguiente \"&e/skoice tooltips&7\". "
-    bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &b%s&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
     no-token: "%s No has proporcionado un token&7. Para usar este comando, escriba \"&e/skoice token&7\" seguido del token."
     no-guild-interactive:
       - "%s Su bot &cno está en un servidor de Discord&7. Abre "
-      - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+      - ""
     no-guild: "Tu bot no está en un servidor de Discord. Abre este enlace para invitarlo: %s."
     bot-connecting: "%s Su bot está &aintentando conectarse&7."
     bot-connected: "%s Su bot está &aahora conectado&7."
@@ -52,9 +46,8 @@ chat:
     bot-already-connected: "%s Ha &aactualizado el token&7. Reinicie su servidor de Minecraft para conectar su bot."
     bot-could-not-connect: "%s Su bot &cno pudo conectarse&7. Inténtalo de nuevo con un token válido."
     public-bot-interactive:
-      - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
+      - ""
       - "&7. Si acaso no puede interactuar con este mensaje, escriba lo siguiente \"&e/skoice tooltips&7\"."
-    public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
     incomplete-configuration: "%s Skoice &cno está configurado correctamente&7. Por favor, póngase en contacto con un administrador del servidor."
     incomplete-configuration-operator-interactive:
       - "%s Skoice &cno está configurado correctamente&7. Haga clic en "
@@ -65,19 +58,12 @@ chat:
     already-configured: "%s Skoice &cya está configurado&7. Escribe \"&e/configure&7\" en tu servidor de Discord para actualizar sus ajustes."
     tooltips-enabled: "%s Tienes &ahabilitados mensajes interactivos&7."
     tooltips-disabled: "%s &aHas desactivado los mensajes interactivos &7. Si estaba intentando configurar Skoice, escriba \"&e/skoice configure&7\"."
-    no-language: "%s You have &cnot provided a language&7. To use this command, type \"&e/skoice language %s&7\"."
-    invalid-language: "%s You have &cnot provided a valid language&7. To use this command, type \"&e/skoice language %s&7\"."
-    language-already-set: "%s The language is &calready set &7to \"&e%s&7\"."
-    language-updated: "%s You have &aupdated the language &7to \"&e%s&7\"."
   player:
     no-code: "%s No has proporcionado un código&7. Escribe \"&e/link&7\" en el servidor de Discord \"&e%s&7\" para recibir uno."
     invalid-code: "%s No has proporcionado un código válido&7. Escribe \"&e/link&7\" en el servidor de Discord \"&e%s&7\" para recibir uno."
     account-linked: "%s Has vinculado tu cuenta de Minecraft &7a Discord."
     account-unlinked: "%s Has desvinculado tu cuenta de Minecraft &7de Discord."
-    account-not-linked: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat."
-    account-not-linked-remind-once: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat. You will not receive this notification again."
     account-already-linked: "%s Ya has vinculado tu cuenta de Minecraft &7a Discord. Escribe \"&e/skoice unlink&7\" para desvincularla."
-    connected: "%s You are &anow connected &7to the proximity voice chat. To disable Discord sounds and have a more immersive experience, you can enable \"&eStreamer Mode&7\" in Discord settings."
     not-connected: "%s No estás conectado &7al chat de voz por proximidad. Únete al canal de voz \"&e%s&7\" en el servidor de Discord \"&e%s&7\" para usarlo."
     disconnected: "%s Ahora estás desconectado &7del chat de voz por proximidad."
   error:
@@ -85,12 +71,7 @@ chat:
     invalid-parameter: "%s No has proporcionado un argumento válido&7. Para usar este comando, escribe \"&e/skoice %s&7\"."
     illegal-executor: "%s Este comando sólo se puede ejecutar &7por jugadores."
     missing-permission: "%s Este comando sólo se puede ejecutar &7por operadores."
-    bot-timed-out-interactive:
-      - "%s Un problema &cimpidió que tu bot se conectara. Revisa el estado de tu conexión a internet y busca recientes interrupciones en Discord en "
-      - "&7. Si acaso no puede interactuar con este mensaje, escriba lo siguiente \"&e/skoice tooltips&7\"."
-    bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &b%s&7."
 action-bar:
-  connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
   disconnecting-alert: "&c⚠ &7Te estás alejando de los jugadores cercanos."
 interaction:
   here: "&baquí"

@@ -15,46 +15,32 @@ logger:
     plugin-enabled: "プラグインが有効になりました。"
     plugin-disabled: "プラグインが無効になりました。"
     plugin-updated: "Skoiceは最新バージョンに更新されました。変更を適用するには、Minecraftサーバーを再起動してください。"
-    skoice-3: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: %s."
     configuration-complete: "Skoiceが構成されました。Discordサーバーで「/link」を入力して、DiscordアカウントをMinecraftにリンクしてください。プレイヤーは近接音声チャットを使用するためにアカウントをリンクする必要があります。"
     bot-connecting: "あなたのbotが接続を試みています。"
     bot-connected: "あなたのbotが接続されました。"
   warning:
-    outdated-version: "You are using an outdated version (%s). Download the latest version (%s) here: %s."
     no-token: "トークンが設定されていません。Minecraftサーバーに参加して、Skoiceを設定してください。"
-    no-guild: "Your bot is not on a Discord server. Open this link to invite it: %s."
     multiple-guilds: "あなたのbotは複数のDiscordサーバーにいます。Discordサーバーで「/configure」と入力し、1つを選択してください。"
-    two-factor-authentication: "Two-factor authentication required. Enable two-factor authentication on the bot owner's account or disable \"Require 2FA for moderator actions\" in server settings."
     no-voice-channel: "ボイスチャンネルが設定されていません。Discordサーバーで「/configure」と入力し、Skoiceを設定してください。"
     no-radius: "範囲が設定されていません。「/configure」をDiscordサーバーで入力して、Skoiceを設定してください。"
   error:
-    missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "botが接続できませんでした。トークンを更新するには、「/skoice token」に続けて新しいトークンを入力してください。"
-    bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: %s."
-    public-bot: "Your bot is not configured correctly. Run the command again once you have unselected \"Public Bot\" and clicked \"Save Changes\" on this page: %s."
   exception:
     unexpected-value: "予期せぬ値: %s"
 chat:
   configuration:
-    bot-creation-interactive:
-      - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
-      - "&7.\n&8• &7Once you have retrieved its token, insert it "
-      - "&7.\n \nIf you cannot interact with this message, type \"&e/skoice tooltips&7\".\n "
-    bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &b%s&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
     no-token: "%s &cトークンが与えられていません&7。このコマンドを使用するには、「&e/skoice token&7」の後にトークンを入力してください。"
     no-guild-interactive:
       - "%s あなたのbotが&cDiscordサーバーに存在しません&7。Open "
-      - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
-    no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &b%s&7."
+      - ""
     bot-connecting: "%s あなたのbotが&a接続を試みています&7。"
     bot-connected: "%s あなたのbotが&a接続されました&7。"
     bot-connected-incomplete-configuration-discord: "%s あなたのbotが&a接続されました&7。Discordサーバーに「&e/configure&7」 と入力してセットアップしてください。"
     bot-already-connected: "%s &aトークンを更新しました&7。botを接続するにはMinecraftサーバーを再起動してください。"
     bot-could-not-connect: "%s あなたのbotは&c接続できませんでした&7。有効なトークンでもう一度やりなおしてください。"
     public-bot-interactive:
-      - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
+      - ""
       - "&7. このメッセージと対話できない場合は、「&e/skoice tooltips&7」と入力してください。"
-    public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
     incomplete-configuration: "%s Skoiceが&c正しく設定されていません&7。サーバーの管理者に連絡してください。"
     incomplete-configuration-operator-interactive:
       - "%s Skoiceが&c正しく設定されていません&7。Click "
@@ -77,18 +63,12 @@ chat:
     account-not-linked: "%s あなたの&cMinecraftアカウントはDiscordとリンクされていません&7。Discordサーバー「&e%s&7」で「&e/link&7」と入力してリンクし、近接ボイスチャットを使用します。"
     account-not-linked-remind-once: "%s あなたの&cMinecraftアカウントはDiscordとリンクされていません&7。Discordサーバー「&e%s&7」で「&e/link&7」と入力してリンクし、近接ボイスチャットを使用します。以後、この通知は届きません。"
     account-already-linked: "%s あなたは&c既にMincraftアカウントをDisocrdをリンクしています&7。「&e/skoice unlink&7」と入力して、リンクを解除してください。"
-    connected: "%s You are &anow connected &7to the proximity voice chat. To disable Discord sounds and have a more immersive experience, you can enable \"&eStreamer Mode&7\" in Discord settings."
     not-connected: "%s あなたは近接ボイスチャットに&c接続していません&7。使用するには、Discordサーバ「&e%s&7」のボイスチャンネル「&e%s&7」に参加してください。"
     disconnected: "%s あなたは近接ボイスチャットから&c切断されました&7。"
   error:
     no-parameter: "%s &c引数が指定されていません&7。このコマンドを使用するには「&e/skoice %s&7」と入力してください。"
     invalid-parameter: "%s &c有効な引数が指定されていません&7。このコマンドを使用するには「&e/skoice %s&7」と入力してください。"
     illegal-executor: "%s このコマンドはプレイヤー&cのみが実行&7できます。"
-    missing-permission: "%s This command is &conly executable &7by operators."
-    bot-timed-out-interactive:
-      - "%s 問題により&cbotが接続できません&7でした。Check your network connection status and look for recent Discord outages on "
-      - "&7. このメッセージと対話できない場合は、「&e/skoice tooltips&7」と入力してください。"
-    bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &b%s&7."
 action-bar:
   connecting-alert: "&a⚠ &7あなたは&aほかのプレイヤーの近くにいます&7。挨拶しましょう！"
   disconnecting-alert: "&c⚠ &7あなたは近くのプレイヤーから&c離れています&7。"
