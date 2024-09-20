@@ -42,13 +42,13 @@ chat:
     public-bot: "Botun {error}doğru ayarlanmamış{default}. {bot-page-url} sayfasından \"Public Bot\" özelliğini kapatıp değişiklikleri kaydettikten sonra komutu tekrar çalıştır."
     incomplete-configuration: "Skoice {error}doğru yapılandırılmamış{default}. Lütfen sunucunun bir yöneticisi ile görüşün."
     incomplete-configuration-operator-interactive: "Skoice artık {error}doğru olarak yapılandırıldı{default}. Kurmak için {run:configure-minecraft-command} bağlantısına tıklayın. Dili {suggest:language-minecraft-command}. Bu mesaj ile etkileşime geçemiyorsan \"{tooltips-minecraft-command}\" komutunu kullan."
-    incomplete-configuration-operator: "Skoice {error}doğru ayarlanmamış{default}. \"{configure-minecraft-command}\" komutu ile ayarlayabilirsiniz. \"/skoice language <dil>\" komutunu kullanarak dili değiştirebilirsiniz."
+    incomplete-configuration-operator: "Skoice {error}doğru ayarlanmamış{default}. \"{configure-minecraft-command}\" komutu ile ayarlayabilirsiniz. \"{language-minecraft-command} <dil>\" komutunu kullanarak dili değiştirebilirsiniz."
     incomplete-configuration-operator-discord: "Skoice {error}doğru olarak yapılandırılmamış{default}. Discord sunucusunda \"{configure-discord-command}\" komutunu kullanarak yapılandırabilirsin."
     already-configured: "Skoice {error}zaten ayarlanmış{default}. Ayarları güncellemek için Discord sunucusunda \"{configure-discord-command}\" komutunu kullanabilirsin."
     tooltips-enabled: "İnteraktif mesajları {success}etkinleştirdin{default}."
     tooltips-disabled: "İnteraktif mesajları {success}pasifleştirdin{default}. Eğer Skoice'i ayarlamaya çalışıyorsan \"{configure-minecraft-command}\" komutunu kullan."
-    no-language: "Bir dir {error}belirtmedin{default}. Doğru kullanım: \"/skoice language {lang-list}\"."
-    invalid-language: "Geçerli bir dir {error}belirtmedin{default}. Doğru kullanım: \"/skoice language {lang-list}\"."
+    no-language: "Bir dir {error}belirtmedin{default}. Doğru kullanım: \"{language-minecraft-command} {lang-list}\"."
+    invalid-language: "Geçerli bir dir {error}belirtmedin{default}. Doğru kullanım: \"{language-minecraft-command} {lang-list}\"."
     language-already-set: "Dil {error}zaten \"{lang}\" olarak belirlenmiş."
     language-updated: "Dili \"{lang}\" olarak {success}güncelledin{default}."
   player:
@@ -62,8 +62,8 @@ chat:
     not-connected: "Proximity chat'e {error}bağlı değilsin{default}. \"{voice-channel}\" adlı ses kanalına \"{guild}\" Discord sunucusunda girerek kullanabilirsin."
     disconnected: "Proximity chat {error}bağlantını kestin{default}."
   error:
-    no-parameter: "Bir {error}argüman belitmediniz{default}. Doğru kullanım: \"/skoice {args}\"."
-    invalid-parameter: "Geçerli bir {error}argüman belitmediniz{default}. Doğru kullanım: \"/skoice {args}\"."
+    no-parameter: "Bir {error}argüman belitmediniz{default}. Doğru kullanım: \"{skoice-minecraft-command} {args}\"."
+    invalid-parameter: "Geçerli bir {error}argüman belitmediniz{default}. Doğru kullanım: \"{skoice-minecraft-command} {args}\"."
     illegal-executor: "Bu komut {error}sadece oyuncular tarafından {default} kullanılabilir."
     missing-permission: "Bu komutu {error}sadece {default}yöneticiler çalıştırabilir."
 action-bar:

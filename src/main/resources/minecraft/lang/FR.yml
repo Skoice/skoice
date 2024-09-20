@@ -49,13 +49,13 @@ chat:
     public-bot: "Votre bot {error}n'est pas correctement configuré{default}. Exécutez la commande à nouveau après avoir désélectionné \"Public Bot\" et cliqué sur \"Save Changes\" sur cette page : {bot-page-url."
     incomplete-configuration: "Skoice n'est {error}pas configuré correctement{default}. Veuillez contacter un administrateur du serveur."
     incomplete-configuration-operator-interactive: "Skoice n'est {error}pas configuré correctement{default}. Cliquez {run:configure-minecraft-command} pour le configurer. Vous pouvez changer la langue en cliquant {suggest:language-minecraft-command}. Si vous ne pouvez pas interagir avec ce message, tapez \"{tooltips-minecraft-command}\"."
-    incomplete-configuration-operator: "Skoice n'est {error}pas configuré correctement{default}. Tapez \"{configure-minecraft-command}\" pour le configurer. Vous pouvez changer la langue avec \"/skoice language\" suivi de la langue."
+    incomplete-configuration-operator: "Skoice n'est {error}pas configuré correctement{default}. Tapez \"{configure-minecraft-command}\" pour le configurer. Vous pouvez changer la langue avec \"{language-minecraft-command}\" suivi de la langue."
     incomplete-configuration-operator-discord: "Skoice n'est {error}pas configuré correctement{default}. Tapez \"{configure-discord-command}\" sur votre serveur Discord pour le configurer."
     already-configured: "Skoice est {error}déjà configuré{default}. Tapez \"{configure-discord-command}\" sur votre serveur Discord pour mettre à jour ses réglages."
     tooltips-enabled: "Vous avez {success}activé les messages interactifs{default}."
     tooltips-disabled: "Vous avez {success}désactivé les messages interactifs{default}. Si vous essayez de configurer Skoice, tapez \"{configure-minecraft-command}\"."
-    no-language: "Vous n'avez {error}pas fourni de langue{default}. Pour utiliser cette commande, tapez \"/skoice language {lang-list}\"."
-    invalid-language: "Vous n'avez {error}pas fourni une langue valide{default}. Pour utiliser cette commande, tapez \"/skoice language {lang-list}\"."
+    no-language: "Vous n'avez {error}pas fourni de langue{default}. Pour utiliser cette commande, tapez \"{language-minecraft-command} {lang-list}\"."
+    invalid-language: "Vous n'avez {error}pas fourni une langue valide{default}. Pour utiliser cette commande, tapez \"{language-minecraft-command} {lang-list}\"."
     language-already-set: "La langue est {error}déjà définie {default}sur \"{lang}\"."
     language-updated: "Vous avez {success}mis à jour la langue {default}vers le \"{lang}\"."
   player:
@@ -70,8 +70,8 @@ chat:
     not-connected: "Vous n'êtes {error}pas connecté {default}au chat vocal de proximité. Rejoignez le salon vocal \"{voice-channel}\" sur le serveur Discord \"{guild}\" pour l'utiliser."
     disconnected: "Vous êtes {error}désormais déconnecté {default}du chat vocal de proximité."
   error:
-    no-parameter: "Vous n'avez {error}pas fourni un argument{default}. Pour utiliser cette commande, tapez \"/skoice {args}\"."
-    invalid-parameter: "Vous n'avez {error}pas fourni un argument valide{default}. Pour utiliser cette commande, tapez \"/skoice {args}\"."
+    no-parameter: "Vous n'avez {error}pas fourni un argument{default}. Pour utiliser cette commande, tapez \"{skoice-minecraft-command} {args}\"."
+    invalid-parameter: "Vous n'avez {error}pas fourni un argument valide{default}. Pour utiliser cette commande, tapez \"{skoice-minecraft-command} {args}\"."
     illegal-executor: "Cette commande est {error}seulement exécutable {default}par les joueurs."
     missing-permission: "Cette commande est {error}seulement exécutable {default}par les opérateurs."
 action-bar:

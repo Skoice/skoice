@@ -45,8 +45,8 @@ chat:
     not-connected: "Você {error}não está conectado {default}ao chat de voz por proximidade. Entre no canal de voz \"{voice-channel}\" no servidor do Discord \"{guild}\" para utilizar."
     disconnected: "Você {error}está desconectado {default}do chat de voz por proximidade."
   error:
-    no-parameter: "Você {error}não inseriu um argumento válido{default}. Para utilizar este comando, envie \"/skoice {args}\"."
-    invalid-parameter: "Você {error}não inseriu um argumento válido{default}. Para utilizar este comando, envie \"/skoice {args}\"."
+    no-parameter: "Você {error}não inseriu um argumento válido{default}. Para utilizar este comando, envie \"{skoice-minecraft-command} {args}\"."
+    invalid-parameter: "Você {error}não inseriu um argumento válido{default}. Para utilizar este comando, envie \"{skoice-minecraft-command} {args}\"."
     illegal-executor: "Este comando somente é {error}executado por {default}jogadores."
     missing-permission: "Este comando somente é {error}executado por {default}administradores."
 action-bar:

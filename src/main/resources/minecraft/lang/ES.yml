@@ -39,7 +39,7 @@ chat:
     bot-could-not-connect: "Su bot {error}no pudo conectarse{default}. Inténtalo de nuevo con un token válido."
     incomplete-configuration: "Skoice {error}no está configurado correctamente{default}. Por favor, póngase en contacto con un administrador del servidor."
     incomplete-configuration-operator-interactive: "Skoice {error}no está configurado correctamente{default}. Haga clic en {run:configure-minecraft-command} para configurarlo. Puedes cambiar el idioma haciendo clic en {suggest:language-minecraft-command}. Si acaso no puede interactuar con este mensaje, escriba lo siguiente \"{tooltips-minecraft-command}\"."
-    incomplete-configuration-operator: "Skoice no está configurado correctamente{default}. Escribe \"{configure-minecraft-command}\" para configurarlo. Puedes cambiar el idioma con \"/skoice language\" seguido por el idioma."
+    incomplete-configuration-operator: "Skoice no está configurado correctamente{default}. Escribe \"{configure-minecraft-command}\" para configurarlo. Puedes cambiar el idioma con \"{language-minecraft-command}\" seguido por el idioma."
     incomplete-configuration-operator-discord: "Skoice {error}no está configurado correctamente{default}. Escribe \"{configure-discord-command}\" en tu servidor de Discord para configurarlo."
     already-configured: "Skoice {error}ya está configurado{default}. Escribe \"{configure-discord-command}\" en tu servidor de Discord para actualizar sus ajustes."
     tooltips-enabled: "Tienes {success}habilitados mensajes interactivos{default}."
@@ -53,8 +53,8 @@ chat:
     not-connected: "No estás conectado {default}al chat de voz por proximidad. Únete al canal de voz \"{voice-channel}\" en el servidor de Discord \"{guild}\" para usarlo."
     disconnected: "Ahora estás desconectado {default}del chat de voz por proximidad."
   error:
-    no-parameter: "No has proporcionado un argumento{default}. Para usar este comando, escribe \"/skoice {args}\"."
-    invalid-parameter: "No has proporcionado un argumento válido{default}. Para usar este comando, escribe \"/skoice {args}\"."
+    no-parameter: "No has proporcionado un argumento{default}. Para usar este comando, escribe \"{skoice-minecraft-command} {args}\"."
+    invalid-parameter: "No has proporcionado un argumento válido{default}. Para usar este comando, escribe \"{skoice-minecraft-command} {args}\"."
     illegal-executor: "Este comando sólo se puede ejecutar {default}por jugadores."
     missing-permission: "Este comando sólo se puede ejecutar {default}por operadores."
 action-bar:

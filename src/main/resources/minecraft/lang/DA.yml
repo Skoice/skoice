@@ -45,8 +45,8 @@ chat:
     not-connected: "Du er {error}ikke tilsluttet {default}til nærhedsbaseret stemmechat. Tilslut dig stemmekanalen \"{voice-channel}\" på Discord serveren \"{guild}\" for at bruge den."
     disconnected: "Du er {error}nu frakoblet {default}fra nærhedsbaseret stemmechat."
   error:
-    no-parameter: "Du har {error}ikke angivet et argument{default}. For at bruge denne kommando, skriv \"/skoice {args}\"."
-    invalid-parameter: "Du har {error}ikke angivet et gyldigt argument{default}. For at bruge denne kommando, skriv \"/skoice {args}\"."
+    no-parameter: "Du har {error}ikke angivet et argument{default}. For at bruge denne kommando, skriv \"{skoice-minecraft-command} {args}\"."
+    invalid-parameter: "Du har {error}ikke angivet et gyldigt argument{default}. For at bruge denne kommando, skriv \"{skoice-minecraft-command} {args}\"."
     illegal-executor: "Denne kommando kan {error}kun udføres {default}af spillere."
     missing-permission: "Denne kommando kan {error}kun udføres {default}af operatører."
 action-bar:

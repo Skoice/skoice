@@ -56,8 +56,8 @@ chat:
     already-configured: "Skoice is {error}already configured{default}. Type \"{configure-discord-command}\" on your Discord server to update its settings."
     tooltips-enabled: "You have {success}enabled interactive messages{default}."
     tooltips-disabled: "You have {success}disabled interactive messages{default}. If you were trying to configure Skoice, type \"{configure-minecraft-command}\"."
-    no-language: "You have {error}not provided a language{default}. To use this command, type \"/skoice language {lang-list}\"."
-    invalid-language: "You have {error}not provided a valid language{default}. To use this command, type \"/skoice language {lang-list}\"."
+    no-language: "You have {error}not provided a language{default}. To use this command, type \"{language-minecraft-command} {lang-list}\"."
+    invalid-language: "You have {error}not provided a valid language{default}. To use this command, type \"{language-minecraft-command} {lang-list}\"."
     language-already-set: "The language is {error}already set {default}to \"{lang}\"."
     language-updated: "You have {success}updated the language {default}to \"{lang}\"."
   player:
@@ -72,8 +72,8 @@ chat:
     not-connected: "You are {error}not connected {default}to the proximity voice chat. Join the voice channel \"{voice-channel}\" on the Discord server \"{guild}\" to use it."
     disconnected: "You are {error}now disconnected {default}from the proximity voice chat."
   error:
-    no-parameter: "You have {error}not provided an argument{default}. To use this command, type \"/skoice {args}\"."
-    invalid-parameter: "You have {error}not provided a valid argument{default}. To use this command, type \"/skoice {args}\"."
+    no-parameter: "You have {error}not provided an argument{default}. To use this command, type \"{skoice-minecraft-command} {args}\"."
+    invalid-parameter: "You have {error}not provided a valid argument{default}. To use this command, type \"{skoice-minecraft-command} {args}\"."
     illegal-executor: "This command is {error}only executable {default}by players."
     missing-permission: "This command is {error}only executable {default}by operators."
 action-bar:

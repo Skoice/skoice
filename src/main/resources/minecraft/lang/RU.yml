@@ -33,13 +33,13 @@ chat:
     bot-already-connected: "Вы {success}обновили токен{default}. Перезагрузите ваш сервер, чтобы подключить бота."
     bot-could-not-connect: "Ваш бот {error}не смог подключиться{default}. Попробуйте еще раз с верным токеном."
     incomplete-configuration-operator-interactive: "Skoice {error}настроен некорректно{default}. Нажмите {run:configure-minecraft-command} чтобы настроить его. Вы можете изменить язык, нажав {suggest:language-minecraft-command}. Если вы не можете взаимодействовать с этим сообщением, введите \"{tooltips-minecraft-command}\"."
-    incomplete-configuration-operator: "Skoice {error}настроен неправильно{default}. Введите \"{configure-minecraft-command}\" Чтобы настроить его. Вы можете изменить язык введя \"/skoice language\" и через пробел название языка."
+    incomplete-configuration-operator: "Skoice {error}настроен неправильно{default}. Введите \"{configure-minecraft-command}\" Чтобы настроить его. Вы можете изменить язык введя \"{language-minecraft-command}\" и через пробел название языка."
     incomplete-configuration-operator-discord: "Skoice {error}не настроен корректно{default}. Введите \"{configure-discord-command}\" на вашем сервере Discord, чтобы настроить его."
     already-configured: "Skoice {error}уже настроен{default}. Введите \"{configure-discord-command}\" на вашем сервере Discord, чтобы обновить настройки."
     tooltips-enabled: "У вас {success}включены интерактивные сообщения{default}."
     tooltips-disabled: "Вы {success}отключили интерактивные сообщения{default}. Если вы пытались настроить Skoice, введите \"{configure-minecraft-command}\"."
-    no-language: "Вы {success}не ввели название языка{default}. Чтобы использовать эту команду, введите \"/skoice language {lang-list}\"."
-    invalid-language: "Вы &ввели неверный язык{default}. Чтобы использовать эту команду, введите \"/skoice language {lang-list}\"."
+    no-language: "Вы {success}не ввели название языка{default}. Чтобы использовать эту команду, введите \"{language-minecraft-command} {lang-list}\"."
+    invalid-language: "Вы &ввели неверный язык{default}. Чтобы использовать эту команду, введите \"{language-minecraft-command} {lang-list}\"."
     language-already-set: "Язык {error}уже установлен {default}на \"{lang}\"."
     language-updated: "Вы {success}изменили язык {default}на \"{lang}\"."
   player:
@@ -51,8 +51,8 @@ chat:
     not-connected: "Вы {error}не подключены {default}к голосовому чату. Присоединитесь к каналу \"{voice-channel}\" на сервере Discord \"{guild}\"."
     disconnected: "Вы {error}отключились {default}от голосового чата."
   error:
-    no-parameter: "Вы {error}не указали аргумент{default}. Чтобы использовать эту команду, введите \"/skoice {args}\"."
-    invalid-parameter: "Вы {error}не указали верный аргумент{default}. Чтобы использовать эту команду, введите \"/skoice {args}\"."
+    no-parameter: "Вы {error}не указали аргумент{default}. Чтобы использовать эту команду, введите \"{skoice-minecraft-command} {args}\"."
+    invalid-parameter: "Вы {error}не указали верный аргумент{default}. Чтобы использовать эту команду, введите \"{skoice-minecraft-command} {args}\"."
     illegal-executor: "Эта команда {error}доступна только {default}для игроков."
     missing-permission: "Эта команда {error}доступна только {default}для операторов."
 action-bar:

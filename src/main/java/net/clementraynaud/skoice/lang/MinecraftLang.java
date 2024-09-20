@@ -49,6 +49,7 @@ public class MinecraftLang extends Lang {
         super.formatter.set("interactive", ChatColor.AQUA.toString());
         super.formatter.set("default", ChatColor.GRAY.toString());
 
+        super.formatter.set("skoice-minecraft-command", "/skoice");
         super.formatter.set("configure-minecraft-command", "/skoice configure");
         super.formatter.set("token-minecraft-command", "/skoice token");
         super.formatter.set("language-minecraft-command", "/skoice language");

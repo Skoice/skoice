@@ -47,8 +47,8 @@ chat:
     not-connected: "{error}Nie jesteś połączony {default}do zbliżeniowego czatu głosowego. Dołącz do kanału głosowego \"{voice-channel}\" na serwerze Discord \"{guild}\", aby go użyć."
     disconnected: "Jesteś teraz {error}odłączony {default}od zbliżeniowego czatu głosowego."
   error:
-    no-parameter: "{error}Nie podałeś argumentu{default}. Aby użyć tego polecenia, wpisz \"/skoice {args}\"."
-    invalid-parameter: "{error}Nie podałeś prawidłowego argumentu{default}. Aby użyć tego polecenia, wpisz \"/skoice {args}\"."
+    no-parameter: "{error}Nie podałeś argumentu{default}. Aby użyć tego polecenia, wpisz \"{skoice-minecraft-command} {args}\"."
+    invalid-parameter: "{error}Nie podałeś prawidłowego argumentu{default}. Aby użyć tego polecenia, wpisz \"{skoice-minecraft-command} {args}\"."
     illegal-executor: "Ta komenda może {error}być tylko wykonana {default}przez graczy."
     missing-permission: "Ta komenda może {error}być tylko wykonana {default}przez operatorów."
 action-bar:

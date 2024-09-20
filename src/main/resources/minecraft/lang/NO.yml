@@ -44,8 +44,8 @@ chat:
     not-connected: "Du er {error}ikke koblet til proximity chatten. Bli med i talekanalen \"{voice-channel}\" på Discord-serveren \"{guild}\" for å bruke den."
     disconnected: "Du er {error}nå frakoblet {default}fra proximity chat."
   error:
-    no-parameter: "Du har {error}ikke levert ett argument{default}. For å bruke denne kommandoen, skriv \"/skoice {args}\"."
-    invalid-parameter: "Du har {error}ikke inkludert ett argument{default}. For å bruke denne kommandoen, skriv \"/skoice {args}\"."
+    no-parameter: "Du har {error}ikke levert ett argument{default}. For å bruke denne kommandoen, skriv \"{skoice-minecraft-command} {args}\"."
+    invalid-parameter: "Du har {error}ikke inkludert ett argument{default}. For å bruke denne kommandoen, skriv \"{skoice-minecraft-command} {args}\"."
     illegal-executor: "Denne kommandoen er {error}bare kjørbar {default}av spillere."
     missing-permission: "Denne kommandoen er {error}bare kjørbar {default}av spillere."
 action-bar:
