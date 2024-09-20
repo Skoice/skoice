@@ -25,7 +25,7 @@ menu:
       placeholder: "Vennligst velg en server."
   permissions:
     title: "Tillatelser"
-    description: "For å fungere skikkelig, må boten din ha \"Administrator\" tillatelse på Discord-serveren din."
+    description: "For å fungere skikkelig, må boten din ha `Administrator` tillatelse på Discord-serveren din."
   voice-channel:
     title: "Talekanal navn"
     shortened-description: "Velg kanalen spillere må delta i for å bruke proximity chat."

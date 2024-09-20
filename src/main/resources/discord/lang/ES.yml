@@ -28,7 +28,7 @@ menu:
       placeholder: "Por favor, selecciona un servidor."
   permissions:
     title: "Permisos"
-    description: "Para funcionar correctamente, tu bot debe tener el permiso de \"Administrador\" en tu servidor de Discord."
+    description: "Para funcionar correctamente, tu bot debe tener el permiso de `Administrador` en tu servidor de Discord."
   voice-chat:
     title: "Chat de voz"
   range:

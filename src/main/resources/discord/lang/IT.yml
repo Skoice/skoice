@@ -25,7 +25,7 @@ menu:
       placeholder: "Per Favore Selezionare un server."
   permissions:
     title: "Permessi"
-    description: "Per funzionare correttamente, il tuo bot deve avere il permesso \"Administrator\" sul tuo server di Discord."
+    description: "Per funzionare correttamente, il tuo bot deve avere il permesso `Administrator` sul tuo server di Discord."
   voice-channel:
     title: "Canale vocale"
     shortened-description: "Seleziona il canale che i giocatori devono unirsi per utilizzare la chat vocale di prossimità."

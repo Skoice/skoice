@@ -30,7 +30,7 @@ menu:
     title: "Zwei-Faktor-Authentifizierung"
   permissions:
     title: "Berechtigungen"
-    description: "Um richtig zu funktionieren, muss dein Bot die Berechtigung \"Administrator\" auf deinem Discord-Server haben."
+    description: "Um richtig zu funktionieren, muss dein Bot die Berechtigung `Administrator` auf deinem Discord-Server haben."
   voice-chat:
     title: "Sprachchat"
   range:

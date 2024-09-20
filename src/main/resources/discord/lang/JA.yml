@@ -27,7 +27,7 @@ menu:
       placeholder: "サーバーを選択してください。"
   permissions:
     title: "権限"
-    description: "正常に動作させるために、Discordサーバー上でbotに「管理者」権限が必要です。"
+    description: "正常に動作させるために、Discordサーバー上でbotに `管理者` 権限が必要です。"
   range:
     title: "範囲"
     select-menu:

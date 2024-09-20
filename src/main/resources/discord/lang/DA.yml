@@ -25,7 +25,7 @@ menu:
       placeholder: "Vælg venligst en server."
   permissions:
     title: "Tilladelser"
-    description: "For at fungere korrekt, skal din bot have tilladelse til \"Administrator\" på din Discord server."
+    description: "For at fungere korrekt, skal din bot have tilladelse til `Administrator` på din Discord server."
   range:
     title: "Rækkevidde"
     select-menu:
