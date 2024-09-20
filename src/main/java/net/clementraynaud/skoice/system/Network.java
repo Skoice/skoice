@@ -20,23 +20,26 @@
 package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.util.ThreadUtil;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class Network {
 
     private final Skoice plugin;
-    private final Set<LinkedPlayer> players;
+    private final Set<LinkedPlayer> players = ConcurrentHashMap.newKeySet();
     private ProximityChannel proximityChannel;
 
     public Network(Skoice plugin, Set<LinkedPlayer> players) {
+        ThreadUtil.ensureNotMainThread();
         this.plugin = plugin;
-        this.players = players;
+        this.players.addAll(players);
         Networks.add(this);
     }
 
@@ -48,6 +51,7 @@ public class Network {
     }
 
     public boolean canPlayerConnect(LinkedPlayer player) {
+        ThreadUtil.ensureNotMainThread();
         if (!player.isStateEligible()) {
             return false;
         }
@@ -58,6 +62,7 @@ public class Network {
     }
 
     public boolean canPlayerStayConnected(LinkedPlayer player) {
+        ThreadUtil.ensureNotMainThread();
         if (!player.isStateEligible()) {
             return false;
         }
@@ -68,6 +73,7 @@ public class Network {
     }
 
     public void splitIfSpread() {
+        ThreadUtil.ensureNotMainThread();
         if (this.size() < 4) {
             return;
         }
@@ -110,35 +116,43 @@ public class Network {
     }
 
     public void engulf(Network network) {
+        ThreadUtil.ensureNotMainThread();
         this.players.addAll(network.players);
         network.players.clear();
     }
 
     public void clear() {
+        ThreadUtil.ensureNotMainThread();
         this.players.clear();
     }
 
     public void add(LinkedPlayer player) {
+        ThreadUtil.ensureNotMainThread();
         this.players.add(player);
     }
 
     public void remove(LinkedPlayer player) {
+        ThreadUtil.ensureNotMainThread();
         this.players.remove(player);
     }
 
     public void remove(Player player) {
+        ThreadUtil.ensureNotMainThread();
         this.players.removeIf(p -> p.getBukkitPlayer().equals(player));
     }
 
     public boolean contains(LinkedPlayer player) {
+        ThreadUtil.ensureNotMainThread();
         return this.players.contains(player);
     }
 
     public boolean contains(Player player) {
+        ThreadUtil.ensureNotMainThread();
         return this.players.stream().anyMatch(p -> p.getBukkitPlayer().equals(player));
     }
 
     public int size() {
+        ThreadUtil.ensureNotMainThread();
         return this.players.size();
     }
 
