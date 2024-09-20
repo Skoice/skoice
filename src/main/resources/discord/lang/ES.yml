@@ -43,7 +43,7 @@ menu:
           label: "Modo de corto alcance"
         customized:
           label: "Personalizado"
-        description: "Radio horizontal: %s bloques — Radio vertical: %s bloques"
+        description: "Radio horizontal: {horizontal-radius} bloques — Radio vertical: {vertical-radius} bloques"
   active-worlds:
     title: "Mundos activos"
     description: "Elige los mundos donde Skoice estará activo."
@@ -167,7 +167,7 @@ field:
     description: "Ajustar las distancias según tus preferencias personales."
   verification-code:
     title: "Código de verificación"
-    description: "Escribe `/skoice link %s` en el juego para completar el proceso."
+    description: "Escribe `{link-minecraft-command} {code}` en el juego para completar el proceso."
   account-linked:
     title: "Cuenta vinculada"
   account-unlinked:

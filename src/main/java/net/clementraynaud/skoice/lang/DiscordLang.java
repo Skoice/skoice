@@ -30,6 +30,7 @@ public class DiscordLang extends Lang {
 
     @Override
     protected void loadFormatter() {
+        super.formatter.set("link-minecraft-command", "/skoice link");
     }
 
     public String getMessage(String path, int maxLength) {

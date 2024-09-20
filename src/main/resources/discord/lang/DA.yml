@@ -92,7 +92,7 @@ field:
     description: "Indstil afstande efter dine personlige præferencer."
   verification-code:
     title: "Bekræftelseskode"
-    description: "Skriv `/skoice link %s` i spillet for at fuldføre processen."
+    description: "Skriv `{link-minecraft-command} {code}` i spillet for at fuldføre processen."
   account-linked:
     title: "Konto Linket"
   account-unlinked:

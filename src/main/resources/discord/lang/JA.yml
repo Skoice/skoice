@@ -124,10 +124,10 @@ field:
     description: "あなたの好みに応じた距離を設定します。"
   verification-code:
     title: "確認コード"
-    description: "ゲーム内で `/skoice link %s` と入力して手続きを完了します。"
+    description: "ゲーム内で `{link-minecraft-command} {code}` と入力して手続きを完了します。"
   account-linked:
     title: "アカウントがリンクされた"
-    description: "あなたのDiscordアカウントはMinecraftにリンクされています。近接ボイスチャットを使用するには、ボイスチャンネル %s に参加してください。"
+    description: "あなたのDiscordアカウントはMinecraftにリンクされています。近接ボイスチャットを使用するには、ボイスチャンネル {voice-channel} に参加してください。"
   account-unlinked:
     title: "アカウントのリンクを解除"
     description: "あなたのDiscordアカウントはMinecraftからリンク解除されました。"

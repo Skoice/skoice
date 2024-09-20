@@ -117,7 +117,7 @@ field:
     description: "Установите расстояния в соответствии с вашими личными предпочтениями."
   verification-code:
     title: "Проверочный код"
-    description: "Для завершения процесса введите `/skoice link %s` в игре."
+    description: "Для завершения процесса введите `{link-minecraft-command} {code}` в игре."
   account-linked:
     title: "Аккаунт привязан"
   account-unlinked:

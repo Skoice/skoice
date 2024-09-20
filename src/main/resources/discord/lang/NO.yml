@@ -70,7 +70,7 @@ field:
     description: "Angi avstander i henhold til dine personlige innstillinger."
   verification-code:
     title: "Bekreftelseskode"
-    description: "Skriv `/skoice link %s` i spillet for å fullføre prosessen."
+    description: "Skriv `{link-minecraft-command} {code}` i spillet for å fullføre prosessen."
   account-linked:
     title: "Konto Koblet"
   account-unlinked:

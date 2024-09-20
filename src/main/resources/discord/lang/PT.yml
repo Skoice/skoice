@@ -99,7 +99,7 @@ field:
     description: "Configure distâncias de acordo com suas preferências."
   verification-code:
     title: "Código de Verificação"
-    description: "Envie `/skoice link %s` em jogo para completar o processo."
+    description: "Envie `{link-minecraft-command} {code}` em jogo para completar o processo."
   account-linked:
     title: "Conta Vinculada"
   account-unlinked:

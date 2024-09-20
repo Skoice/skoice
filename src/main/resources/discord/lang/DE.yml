@@ -45,7 +45,7 @@ menu:
           label: "Kurzstrecken-Modus"
         customized:
           label: "Benutzerdefiniert"
-        description: "Horizontaler Radius: %s Blöcke — Vertikaler Radius: %s Blöcke"
+        description: "Horizontaler Radius: {horizontal-radius} Blöcke — Vertikaler Radius: {vertical-radius} Blöcke"
   active-worlds:
     title: "Aktive Welten"
     description: "Wähle die Welten, in denen Skoice aktiv ist."
@@ -158,10 +158,10 @@ field:
     title: "Betakanal"
   verification-code:
     title: "Verifizierungscode"
-    description: "Geben Sie `/skoice link %s` im Spiel ein, um den Vorgang abzuschließen."
+    description: "Geben Sie `{link-minecraft-command} {code}` im Spiel ein, um den Vorgang abzuschließen."
   account-linked:
     title: "Verbundenes Konto"
-    description: "Dein Discord Account wurde mit Minecraft verlinkt. Betritt den Sprachkanal %s, um den abstandsbasierten Sprachchat zu nutzen."
+    description: "Dein Discord Account wurde mit Minecraft verlinkt. Betritt den Sprachkanal {voice-channel}, um den abstandsbasierten Sprachchat zu nutzen."
   account-unlinked:
     title: "Unverknüpftes Konto"
     description: "Dein Discord-Account wurde von Minecraft entkoppelt."
@@ -169,7 +169,7 @@ field:
     title: "Konto nicht verknüpft"
   account-already-linked:
     title: "Bereits verknüpftes Konto"
-    description: "Dein Discord-Account ist bereits mit Minecraft verknüpft. Gib %s ein, um die Verknüpfung zu lösen."
+    description: "Dein Discord-Account ist bereits mit Minecraft verknüpft. Gib {unlink-discord-command} ein, um die Verknüpfung zu lösen."
   access-denied:
     title: "Zugang verweigert"
   illegal-value:

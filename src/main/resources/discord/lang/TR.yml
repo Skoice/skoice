@@ -100,7 +100,7 @@ menu:
 field:
   configuration-complete:
     title: "Yapılandırma Tamamlandı"
-    description: "Skoice ayarlandı. Discord hesabını Minecraft ile bağlamak için %s yaz. Oyuncular proximity chat'i kullanabilmek için hesaplarını bağlamalıdır."
+    description: "Skoice ayarlandı. Discord hesabını Minecraft ile bağlamak için {link-discord-command} yaz. Oyuncular proximity chat'i kullanabilmek için hesaplarını bağlamalıdır."
   notified-players-cleared:
     title: "Bildirilen Oyuncular Temizlendi"
     description: "Bildirilen oyuncuları temizledin. Hesaplarını bağlamaları için zaten bildirim almış oyuncular tekrardan bildirilecek."
@@ -109,7 +109,7 @@ field:
     description: "Skoice doğru yapılandırılmamış. Lütfen sunucunun bir yöneticisi ile görüşün."
   incomplete-configuration-server-manager:
     title: "Tamamlanmamış Yapılandırma"
-    description: "Yapılandırmayı bitirip Skoice'i kullanmaya başlamak için %s yazın veya aşağıdaki butona tıklayın."
+    description: "Yapılandırmayı bitirip Skoice'i kullanmaya başlamak için {configure-discord-command} yazın veya aşağıdaki butona tıklayın."
   incomplete-configuration-alternative-server-manager:
     title: "Tamamlanmamış Yapılandırma"
   download:
@@ -131,19 +131,19 @@ field:
     description: "Mesafeleri kendi tercihlerine göre ayarla."
   verification-code:
     title: "Doğrulama Kodu"
-    description: "`/skoice link %s` komutunu kullanın ve doğrulamayı tamamlayın."
+    description: "`{link-minecraft-command} {code}` komutunu kullanın ve doğrulamayı tamamlayın."
   account-linked:
     title: "Hesaplar Bağlandı"
-    description: "Discord hesabın Minecraft ile bağlandı. %s ses kanalına girerek proximity chat'i kullanabilirsin."
+    description: "Discord hesabın Minecraft ile bağlandı. {voice-channel} ses kanalına girerek proximity chat'i kullanabilirsin."
   account-unlinked:
     title: "Bağlantı Kesildi"
     description: "Discord hesabın ile Minecraft hesabının bağlantısı kesildi."
   account-not-linked:
     title: "Hesaplar Bağlı Değil"
-    description: "Discord hesabın Minecraft'a bağlı değil. Bağlamak ve proximity chat'i kullanabilmek için %s yaz."
+    description: "Discord hesabın Minecraft'a bağlı değil. Bağlamak ve proximity chat'i kullanabilmek için {link-discord-command} yaz."
   account-already-linked:
     title: "Hesap Zaten Bağlanmış"
-    description: "Discord hesabın zaten Minecraft'a bağlı. Bağlantıyı kaldırmak için %s yaz."
+    description: "Discord hesabın zaten Minecraft'a bağlı. Bağlantıyı kaldırmak için {unlink-discord-command} yaz."
   access-denied:
     title: "Erişim Reddedildi"
   illegal-value:

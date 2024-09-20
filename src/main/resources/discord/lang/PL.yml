@@ -92,7 +92,7 @@ field:
     description: "Ustawiaj dystanse zgodnie z twoimi preferencjami."
   verification-code:
     title: "Kod Weryfikacyjny"
-    description: "Wpisz `/skoice link %s` w grze aby dokończyć proces."
+    description: "Wpisz `{link-minecraft-command} {code}` w grze aby dokończyć proces."
   account-linked:
     title: "Konto Połączone"
   account-unlinked:

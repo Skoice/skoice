@@ -59,7 +59,6 @@ public class MinecraftLang extends Lang {
         super.formatter.set("configure-discord-command", "/configure");
         super.formatter.set("link-discord-command", "/link");
         super.formatter.set("unlink-discord-command", "/unlink");
-        super.formatter.set("invite-discord-command", "/invite");
 
         super.formatter.set("spigotmc-url", "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861");
         super.formatter.set("creation-guide-url", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice");

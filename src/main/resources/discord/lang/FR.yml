@@ -46,7 +46,7 @@ menu:
           label: "Mode courte portée"
         customized:
           label: "Personnalisé"
-        description: "Rayon horizontal : %s blocs — Rayon vertical : %s blocs"
+        description: "Rayon horizontal : {horizontal-radius} blocs — Rayon vertical : {vertical-radius} blocs"
   active-worlds:
     title: "Mondes actifs"
     description: "Choisissez les mondes où Skoice est actif."
@@ -145,10 +145,10 @@ menu:
 field:
   configuration-complete:
     title: "Configuration terminée"
-    description: "Skoice est maintenant configuré. Tapez %s pour lier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
+    description: "Skoice est maintenant configuré. Tapez {link-discord-command} pour lier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
   get-the-most-out-of-skoice:
     title: "Tirez le maximum de Skoice"
-    description: "Skoice est prêt à être utilisé mais peut vous offrir plus de personnalisation ! Suivez les **boutons verts** pour passer en revue toutes les fonctionnalités.\n\nProgression : %s"
+    description: "Skoice est prêt à être utilisé mais peut vous offrir plus de personnalisation ! Suivez les **boutons verts** pour passer en revue toutes les fonctionnalités.\n\nProgression : {unreviewed-settings-progress-bar}"
   notified-players-cleared:
     title: "Joueurs notifiés effacés"
     description: "Vous avez effacté les joueurs notifiés. Les joueurs qui ont déjà reçu le rappel de lier leurs comptes seront à nouveau avertis."
@@ -157,10 +157,10 @@ field:
     description: "Skoice n'est pas configuré correctement. Veuillez contacter un administrateur du serveur."
   incomplete-configuration-server-manager:
     title: "Configuration non terminée"
-    description: "Tapez %s ou cliquez sur le bouton ci-dessous pour terminer la configuration et utiliser Skoice."
+    description: "Tapez {configure-discord-command} ou cliquez sur le bouton ci-dessous pour terminer la configuration et utiliser Skoice."
   incomplete-configuration-alternative-server-manager:
     title: "Configuration non terminée"
-    description: "Vous avez supprimé le salon vocal principal. Tapez %s pour terminer la configuration et utiliser Skoice."
+    description: "Vous avez supprimé le salon vocal principal. Tapez {configure-discord-command} pour terminer la configuration et utiliser Skoice."
   download:
     title: "Téléchargement"
     description: "[Obtenez le plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) et installez-le sur votre serveur Minecraft."
@@ -187,19 +187,19 @@ field:
     description: "Choisissez ce canal pour découvrir et tester nos dernières fonctionnalités qui n'ont pas encore été rendues publiques. Cette version peut contenir des bugs."
   verification-code:
     title: "Code de vérification"
-    description: "Tapez `/skoice link %s` en jeu pour terminer la procédure."
+    description: "Tapez `{link-minecraft-command} {code}` en jeu pour terminer la procédure."
   account-linked:
     title: "Compte lié"
-    description: "Votre compte Discord a été lié à Minecraft. Rejoignez le salon vocal %s pour utiliser le chat vocal de proximité."
+    description: "Votre compte Discord a été lié à Minecraft. Rejoignez le salon vocal {voice-channel} pour utiliser le chat vocal de proximité."
   account-unlinked:
     title: "Compte délié"
     description: "Votre compte Discord a été délié de Minecraft."
   account-not-linked:
     title: "Compte non lié"
-    description: "Votre compte Discord n'est pas lié à Minecraft. Tapez %s pour le relier et utiliser le chat vocal de proximité."
+    description: "Votre compte Discord n'est pas lié à Minecraft. Tapez {link-discord-command} pour le lier et utiliser le chat vocal de proximité."
   account-already-linked:
     title: "Compte déjà lié"
-    description: "Votre compte Discord est déjà lié à Minecraft. Tapez %s pour le déconnecter."
+    description: "Votre compte Discord est déjà lié à Minecraft. Tapez {unlink-discord-command} pour le déconnecter."
   restricted-command:
     title: "Commande restreinte"
     description: "Cette commande doit être effectuée sur un serveur Discord."
