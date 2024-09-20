@@ -31,7 +31,6 @@ import net.dv8tion.jda.api.exceptions.PermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.requests.RestAction;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.Player;
 
 import java.time.OffsetDateTime;
@@ -101,22 +100,20 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getBot().acknowledgeStatus();
         this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
         String botId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
+        this.plugin.getLang().getFormatter().set("bot-page-url", "https://discord.com/developers/applications/" + botId + "/bot");
         this.plugin.getBot().getJDA().shutdown();
         this.plugin.getListenerManager().update();
-        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
+        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.public-bot"));
 
         if (tokenManager == null) {
             return;
         }
 
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-            this.plugin.adventure().sender(tokenManager).sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot-interactive", this.plugin.getLang().getComponentMessage("interaction.this-page")
-                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", "https://discord.com/developers/applications/" + botId + "/bot")))
-                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discord.com/developers/applications/" + botId + "/bot"))
-                    )
-            );
+            this.plugin.adventure().sender(tokenManager).sendMessage(this.plugin.getLang()
+                    .getInteractiveMessage("chat.configuration.public-bot-interactive"));
         } else {
-            tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
+            tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot"));
         }
     }
 

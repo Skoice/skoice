@@ -19,15 +19,20 @@
 
 package net.clementraynaud.skoice.lang;
 
+import net.clementraynaud.skoice.util.MapUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.ChatColor;
 
-import java.util.Arrays;
+import java.util.Map;
 
 public class MinecraftLang extends Lang {
 
-    private static final String CHAT_PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "•" + ChatColor.GRAY;
+    private static final String CHAT_PREFIX = ChatColor.LIGHT_PURPLE + "Skoice "
+            + ChatColor.DARK_GRAY + "• "
+            + ChatColor.GRAY;
 
     @Override
     protected String getPath(LangInfo langInfo) {
@@ -35,55 +40,97 @@ public class MinecraftLang extends Lang {
     }
 
     @Override
-    public String getMessage(String path) {
-        String message = super.getMessage(path);
-        if (message == null || message.trim().isEmpty()) {
-            return String.format("!%s!", path);
-        }
+    protected void loadFormatter() {
+        super.formatter.set("title", ChatColor.WHITE.toString());
+        super.formatter.set("dark", ChatColor.DARK_GRAY.toString());
+        super.formatter.set("success", ChatColor.GREEN.toString());
+        super.formatter.set("error", ChatColor.RED.toString());
+        super.formatter.set("highlight", ChatColor.YELLOW.toString());
+        super.formatter.set("interactive", ChatColor.AQUA.toString());
+        super.formatter.set("default", ChatColor.GRAY.toString());
+
+        super.formatter.set("configure-minecraft-command", "/skoice configure");
+        super.formatter.set("token-minecraft-command", "/skoice token");
+        super.formatter.set("language-minecraft-command", "/skoice language");
+        super.formatter.set("tooltips-minecraft-command", "/skoice tooltips");
+        super.formatter.set("link-minecraft-command", "/skoice link");
+        super.formatter.set("unlink-minecraft-command", "/skoice unlink");
+
+        super.formatter.set("configure-discord-command", "/configure");
+        super.formatter.set("link-discord-command", "/link");
+        super.formatter.set("unlink-discord-command", "/unlink");
+        super.formatter.set("invite-discord-command", "/invite");
+
+        super.formatter.set("spigotmc-url", "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861");
+        super.formatter.set("creation-guide-url", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice");
+        super.formatter.set("migration-guide-url", "https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3");
+
+        super.formatter.set("lang-list", LangInfo.getJoinedList());
+    }
+
+    @Override
+    public String getMessage(String path, Map<String, String> args) {
+        String message = super.getRawMessage(path);
+
+        message = message.replaceAll("\"(.+?)\"",
+                        "\"" + super.formatter.get("highlight") + "$1" + super.formatter.get("default") + "\"")
+                .replaceAll("\\{.+?-url}",
+                        super.formatter.get("interactive") + "$0" + super.formatter.get("default"));
+
+        message = this.formatter.format(message, args);
+
         if (path.startsWith("chat.")) {
-            return ChatColor.translateAlternateColorCodes('&', String.format(message, MinecraftLang.CHAT_PREFIX));
-        } else if ((path.startsWith("action-bar.") || path.startsWith("interaction."))) {
-            return ChatColor.translateAlternateColorCodes('&', message);
+            String lineBreak = " \n";
+            if (message.startsWith(lineBreak)) {
+                message = lineBreak + MinecraftLang.CHAT_PREFIX + message.substring(lineBreak.length());
+            } else {
+                message = MinecraftLang.CHAT_PREFIX + message;
+            }
         }
+
         return message;
     }
 
     @Override
-    public String getMessage(String path, String... args) {
-        String message = super.getMessage(path);
-        args = Arrays.stream(args)
-                .map(arg -> arg.replace(String.valueOf(ChatColor.COLOR_CHAR), ""))
-                .toArray(String[]::new);
-        if (path.startsWith("chat.")) {
-            String[] newArgs = new String[args.length + 1];
-            newArgs[0] = MinecraftLang.CHAT_PREFIX;
-            System.arraycopy(args, 0, newArgs, 1, args.length);
-            return String.format(ChatColor.translateAlternateColorCodes('&', message), (Object[]) newArgs);
-        } else if (path.startsWith("interaction.")) {
-            return String.format(ChatColor.translateAlternateColorCodes('&', message), (Object[]) args);
+    public String getMessage(String path) {
+        return this.getMessage(path, MapUtil.of());
+    }
+
+    public Component getInteractiveMessage(String path) {
+        String message = this.getMessage(path);
+        String[] strings = this.formatter.format(message, MapUtil.of()).split("\\{|}");
+        TextComponent.Builder result = Component.text();
+
+        for (String string : strings) {
+            String[] parts = string.split(":");
+
+            if (parts.length == 1
+                    || !this.formatter.contains(parts[1])
+                    || !"suggest".equals(parts[0]) && !"run".equals(parts[0]) && !"open".equals(parts[0])) {
+                result.append(Component.text(this.formatter.get("default") + string).hoverEvent(null));
+                continue;
+            }
+
+            String value = this.formatter.get(parts[1]);
+
+            if ("suggest".equals(parts[0])) {
+                result.append(Component.text(this.formatter.get("interactive") + this.getMessage("interaction.here"))
+                        .hoverEvent(HoverEvent.showText(Component.text(this.getMessage("interaction.shortcut",
+                                MapUtil.of("minecraft-command", value)))))
+                        .clickEvent(ClickEvent.suggestCommand(value + " ")));
+            } else if ("run".equals(parts[0])) {
+                result.append(Component.text(this.formatter.get("interactive") + this.getMessage("interaction.here"))
+                        .hoverEvent(HoverEvent.showText(Component.text(this.getMessage("interaction.execute",
+                                MapUtil.of("minecraft-command", value)))))
+                        .clickEvent(ClickEvent.runCommand(value)));
+            } else if ("open".equals(parts[0])) {
+                result.append(Component.text(this.formatter.get("interactive") + this.getMessage("interaction.this-page"))
+                        .hoverEvent(HoverEvent.showText(Component.text(this.getMessage("interaction.link",
+                                MapUtil.of("url", value)))))
+                        .clickEvent(ClickEvent.openUrl(value)));
+            }
         }
-        return String.format(message, (Object[]) args);
-    }
 
-    public Component getMessage(String path, Component... components) {
-        String[] strings = (super.active != null && super.active.containsKey(path))
-                ? super.active.get(path).toArray(new String[0])
-                : super.english.get(path).toArray(new String[0]);
-        TextComponent.Builder message = Component.text().content(ChatColor.translateAlternateColorCodes('&',
-                String.format(strings[0], MinecraftLang.CHAT_PREFIX)));
-        for (int i = 0; i < components.length; i++) {
-            message.append(components[i])
-                    .append(Component.text(ChatColor.translateAlternateColorCodes('&', strings[i + 1]))
-                            .hoverEvent(null));
-        }
-        return message.build();
-    }
-
-    public Component getComponentMessage(String path) {
-        return Component.text(ChatColor.translateAlternateColorCodes('&', this.getMessage(path)));
-    }
-
-    public Component getComponentMessage(String path, String... args) {
-        return Component.text(ChatColor.translateAlternateColorCodes('&', this.getMessage(path, args)));
+        return result.build();
     }
 }

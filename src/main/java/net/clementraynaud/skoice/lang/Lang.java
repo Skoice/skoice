@@ -20,63 +20,65 @@
 package net.clementraynaud.skoice.lang;
 
 import net.clementraynaud.skoice.util.ConfigurationUtil;
+import net.clementraynaud.skoice.util.MapUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class Lang {
 
-    protected Map<String, List<String>> english;
-    protected Map<String, List<String>> active;
+    protected final LangFormatter formatter = new LangFormatter();
+    protected Map<String, String> english;
+    protected Map<String, String> active;
 
     public void load(LangInfo langInfo) {
         this.active = null;
         if (this.english == null) {
-            YamlConfiguration english = ConfigurationUtil.loadResource(this.getClass().getName(), this.getPath(LangInfo.EN));
+            this.loadFormatter();
+            YamlConfiguration english = ConfigurationUtil.loadResource(this.getClass().getName(),
+                    this.getPath(LangInfo.EN));
             if (english != null) {
-                this.english = ConfigurationUtil.convertLangYamlToMap(english);
+                this.english = ConfigurationUtil.convertYamlToStringMap(english);
             } else {
                 this.english = new HashMap<>();
             }
         }
+
         if (langInfo != LangInfo.EN) {
-            YamlConfiguration active = ConfigurationUtil.loadResource(this.getClass().getName(), this.getPath(langInfo));
+            YamlConfiguration active = ConfigurationUtil.loadResource(this.getClass().getName(),
+                    this.getPath(langInfo));
             if (active != null) {
-                this.active = ConfigurationUtil.convertLangYamlToMap(active);
+                this.active = ConfigurationUtil.convertYamlToStringMap(active);
             }
         }
     }
 
     protected abstract String getPath(LangInfo langInfo);
 
-    public String getMessage(String path) {
-        String message;
+    protected abstract void loadFormatter();
+
+    protected String getRawMessage(String path) {
         if (this.active != null && this.active.containsKey(path)) {
-            message = this.active.get(path).get(0);
+            return this.active.get(path);
         } else {
-            message = (this.english.get(path) != null) ? this.english.get(path).get(0) : null;
+            return this.english.getOrDefault(path, "");
         }
-        if (message == null || message.trim().isEmpty()) {
-            return String.format("!%s!", path);
-        }
-        return message;
     }
 
-    public String getMessage(String path, String... args) {
-        return String.format(this.getMessage(path), (Object[]) args);
+    public String getMessage(String path, Map<String, String> args) {
+        return this.formatter.format(this.getRawMessage(path), args);
+    }
+
+    public String getMessage(String path) {
+        return this.getMessage(path, MapUtil.of());
     }
 
     public boolean contains(String path) {
         return this.english.containsKey(path);
     }
 
-    public int getAmountOfArgsRequired(String message) {
-        int amount = message.split("%s").length - 1;
-        if (message.startsWith("%s") || message.endsWith("%s")) {
-            amount++;
-        }
-        return amount;
+    public LangFormatter getFormatter() {
+        return this.formatter;
     }
 }

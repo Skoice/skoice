@@ -69,7 +69,7 @@ public class OutdatedConfig {
             } catch (IOException ignored) {
             }
 
-            this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.skoice-3", "https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3"));
+            this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.skoice-3"));
         }
     }
 

@@ -47,8 +47,7 @@ public class UnlinkArgument extends Argument {
 
         String discordId = super.plugin.getLinksYamlFile().getLinks().get(player.getUniqueId().toString());
         if (discordId == null) {
-            player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-not-linked",
-                    this.plugin.getBot().getGuild().getName()));
+            player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-not-linked"));
             return;
         }
 

@@ -24,6 +24,7 @@ import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentFactory;
 import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
 import net.clementraynaud.skoice.lang.LangInfo;
+import net.clementraynaud.skoice.util.MapUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -59,12 +60,11 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("chat.error.no-parameter",
-                                ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION))
-                        )
-                );
+                                MapUtil.of("args", ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION)))));
             } else {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("chat.error.no-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
+                        .getMessage("chat.error.no-parameter",
+                                MapUtil.of("args", ArgumentInfo.getJoinedConsoleAllowedList())));
             }
             return true;
         }
@@ -72,12 +72,11 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
             if (sender instanceof Player) {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("chat.error.invalid-parameter",
-                                ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION))
-                        )
-                );
+                                MapUtil.of("args", ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION)))));
             } else {
                 sender.sendMessage(this.plugin.getLang()
-                        .getMessage("chat.error.invalid-parameter", ArgumentInfo.getJoinedConsoleAllowedList()));
+                        .getMessage("chat.error.invalid-parameter",
+                                MapUtil.of("args", ArgumentInfo.getJoinedConsoleAllowedList())));
             }
             return true;
         }

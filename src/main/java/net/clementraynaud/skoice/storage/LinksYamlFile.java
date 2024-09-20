@@ -27,6 +27,7 @@ import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEven
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Networks;
+import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -92,8 +93,7 @@ public class LinksYamlFile extends YamlFile {
                         });
                     } else {
                         player.sendMessage(super.plugin.getLang().getMessage("chat.player.not-connected",
-                                mainVoiceChannel.getName(),
-                                this.plugin.getBot().getGuild().getName()));
+                                MapUtil.of("voice-channel", mainVoiceChannel.getName())));
                     }
                 }
             });

@@ -23,6 +23,8 @@ import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Map;
+
 public class MenuField {
 
     private final Skoice plugin;
@@ -37,7 +39,7 @@ public class MenuField {
         this.inline = field.getBoolean("inline");
     }
 
-    public MessageEmbed.Field build(String... args) {
+    public MessageEmbed.Field build(Map<String, String> args) {
         return new MessageEmbed.Field(this.emoji + this.getTitle(), this.getDescription(args), this.inline);
     }
 
@@ -45,10 +47,7 @@ public class MenuField {
         return this.plugin.getBot().getLang().getMessage("field." + this.name + ".title");
     }
 
-    public String getDescription(String... args) {
-        if (args.length != 0) {
-            return this.plugin.getBot().getLang().getMessage("field." + this.name + ".description", args);
-        }
-        return this.plugin.getBot().getLang().getMessage("field." + this.name + ".description");
+    public String getDescription(Map<String, String> args) {
+        return this.plugin.getBot().getLang().getMessage("field." + this.name + ".description", args);
     }
 }

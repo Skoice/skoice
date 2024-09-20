@@ -41,8 +41,7 @@ public class UnlinkCommand extends Command {
     public void run() {
         String minecraftId = MapUtil.getKeyFromValue(super.plugin.getLinksYamlFile().getLinks(), super.executor.getUser().getId());
         if (minecraftId == null) {
-            new EmbeddedMenu(super.plugin.getBot()).setContent("account-not-linked",
-                            super.plugin.getBot().getCommands().getAsMention(CommandInfo.LINK.toString()))
+            new EmbeddedMenu(super.plugin.getBot()).setContent("account-not-linked")
                     .reply(super.interaction);
             return;
         }

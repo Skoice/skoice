@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.selectors.Selector;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
@@ -33,9 +34,9 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Menu {
@@ -68,7 +69,7 @@ public class Menu {
         this.fields = menu.getStringList("fields").toArray(new String[0]);
     }
 
-    public MessageCreateData build(String... args) {
+    public MessageCreateData build(Map<String, String> args) {
         return new MessageCreateBuilder().setEmbeds(this.getEmbed(args))
                 .setComponents(this.getActionRows()).build();
     }
@@ -90,7 +91,7 @@ public class Menu {
         return description.toString();
     }
 
-    private MessageEmbed getEmbed(String... args) {
+    private MessageEmbed getEmbed(Map<String, String> args) {
         EmbedBuilder embed = new EmbedBuilder().setTitle(this.getTitle(true))
                 .setColor(this.type.getColor());
 
@@ -124,7 +125,7 @@ public class Menu {
 
                     embed.addField(this.plugin.getBot().getMenuFactory()
                             .getField("get-the-most-out-of-skoice")
-                            .build(progressBar)
+                            .build(MapUtil.of("progress-bar"))
                     );
                 }
             }
@@ -141,13 +142,11 @@ public class Menu {
             embed.addField(child.getTitle(true), description, true);
         }
 
-        int startIndex = 0;
         for (String field : this.fields) {
             MenuField menuField = this.plugin.getBot().getMenuFactory().getField(field);
-            int endIndex = this.plugin.getBot().getLang().getAmountOfArgsRequired(menuField.getDescription());
-            embed.addField(menuField.build(Arrays.copyOfRange(args, startIndex, endIndex)));
-            startIndex = endIndex;
+            embed.addField(menuField.build(args));
         }
+
         return embed.build();
     }
 

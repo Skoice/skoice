@@ -24,8 +24,6 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -34,15 +32,15 @@ public class BotCommands {
 
     private final Bot bot;
 
-    private final Map<String, String> mentions = new HashMap<>();
-
     public BotCommands(Bot bot) {
         this.bot = bot;
     }
 
     public CompletableFuture<Void> register() {
         return this.bot.getJDA().updateCommands().addCommands(this.getCommands()).submit()
-                .thenAccept(commands -> commands.forEach(command -> this.mentions.put(command.getName(), command.getAsMention())));
+                .thenAccept(commands -> commands.forEach(command ->
+                        this.bot.getLang().getFormatter().set(command.getName() + "-discord-command", command.getAsMention()))
+                );
     }
 
     public void clearGuildCommands() {
@@ -54,9 +52,5 @@ public class BotCommands {
                 .map(CommandInfo::toString)
                 .map(command -> Commands.slash(command, this.bot.getLang().getMessage("command-description." + command)))
                 .collect(Collectors.toSet());
-    }
-
-    public String getAsMention(String command) {
-        return this.mentions.get(command);
     }
 }

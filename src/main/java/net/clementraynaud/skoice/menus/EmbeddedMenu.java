@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.interactions.InteractionHook;
@@ -29,13 +30,14 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 import java.util.EnumSet;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class EmbeddedMenu {
 
     protected final Bot bot;
     protected String menuId;
-    protected String[] args = new String[0];
+    protected Map<String, String> args;
     protected String messageId;
     protected InteractionHook hook;
 
@@ -48,10 +50,14 @@ public class EmbeddedMenu {
         this.messageId = messageId;
     }
 
-    public EmbeddedMenu setContent(String menuId, String... args) {
+    public EmbeddedMenu setContent(String menuId, Map<String, String> args) {
         this.menuId = menuId;
         this.args = args;
         return this;
+    }
+
+    public EmbeddedMenu setContent(String menuId) {
+        return this.setContent(menuId, MapUtil.of());
     }
 
     public void message(User user) {

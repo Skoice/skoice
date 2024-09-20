@@ -66,14 +66,12 @@ public class Updater {
         this.getVersion(version -> {
             if (version != null && !this.plugin.getDescription().getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
                 String expectedHash = this.fetchHashFromServer();
+                this.plugin.getLang().getFormatter().set("current-version", this.plugin.getDescription().getVersion());
+                this.plugin.getLang().getFormatter().set("latest-version", version);
                 if (expectedHash != null) {
                     this.update(version, expectedHash);
                 } else {
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                            this.plugin.getDescription().getVersion(),
-                            version,
-                            "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861")
-                    );
+                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version"));
                 }
             }
         });
@@ -150,11 +148,7 @@ public class Updater {
                 throw new IOException("File integrity check failed");
             }
         } catch (IOException | NoSuchAlgorithmException exception) {
-            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                    this.plugin.getDescription().getVersion(),
-                    version,
-                    "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861")
-            );
+            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version"));
             try {
                 Files.delete(tempUpdateFile.toPath());
             } catch (IOException ignored) {

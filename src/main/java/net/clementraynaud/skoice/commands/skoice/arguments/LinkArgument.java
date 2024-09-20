@@ -52,13 +52,11 @@ public class LinkArgument extends Argument {
                 return;
             }
             if (this.arg.isEmpty()) {
-                player.sendMessage(super.plugin.getLang().getMessage("chat.player.no-code",
-                        super.plugin.getBot().getGuild().getName()));
+                player.sendMessage(super.plugin.getLang().getMessage("chat.player.no-code"));
                 return;
             }
             if (!LinkCommand.getDiscordIdCode().containsValue(this.arg)) {
-                player.sendMessage(super.plugin.getLang().getMessage("chat.player.invalid-code",
-                        super.plugin.getBot().getGuild().getName()));
+                player.sendMessage(super.plugin.getLang().getMessage("chat.player.invalid-code"));
                 return;
             }
             String discordId = MapUtil.getKeyFromValue(LinkCommand.getDiscordIdCode(), this.arg);
@@ -70,7 +68,7 @@ public class LinkArgument extends Argument {
                 LinkCommand.getDiscordIdCode().values().remove(this.arg);
                 VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
                 new EmbeddedMenu(this.plugin.getBot()).setContent("account-linked",
-                                mainVoiceChannel.getAsMention())
+                                MapUtil.of("voice-channel", mainVoiceChannel.getAsMention()))
                         .message(member.getUser());
                 player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-linked"));
             }, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MEMBER, e ->

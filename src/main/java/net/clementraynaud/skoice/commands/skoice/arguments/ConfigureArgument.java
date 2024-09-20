@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.storage.config.ConfigField;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -38,19 +37,11 @@ public class ConfigureArgument extends Argument {
         if (super.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
             if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
                 this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                    this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-creation-interactive", this.plugin.getLang().getComponentMessage("interaction.this-page")
-                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")))
-                                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")),
-                                    this.plugin.getLang().getComponentMessage("interaction.here")
-                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.shortcut", "/skoice token")))
-                                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice token "))
-                            )
-                    );
+                    this.plugin.adventure().player(player).sendMessage(this.plugin.getLang()
+                            .getInteractiveMessage("chat.configuration.bot-creation-interactive"));
                 });
             } else {
-                player.sendMessage(super.plugin.getLang().getMessage("chat.configuration.bot-creation",
-                        "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")
-                );
+                player.sendMessage(super.plugin.getLang().getMessage("chat.configuration.bot-creation"));
             }
         } else {
             if (super.plugin.getBot().getStatus() == BotStatus.READY) {

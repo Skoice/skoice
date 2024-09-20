@@ -35,6 +35,12 @@ public enum ActionBarAlert {
         this.lowerCaseName = this.name().toLowerCase() + "-alert";
     }
 
+    public static ActionBarAlert getPriorityAlert(Set<ActionBarAlert> alerts) {
+        return alerts.stream()
+                .max(Comparator.comparingInt(ActionBarAlert::getPriority))
+                .orElse(null);
+    }
+
     private int getPriority() {
         return this.priority;
     }
@@ -42,11 +48,5 @@ public enum ActionBarAlert {
     @Override
     public String toString() {
         return this.lowerCaseName;
-    }
-
-    public static ActionBarAlert getPriorityAlert(Set<ActionBarAlert> alerts) {
-        return alerts.stream()
-                .max(Comparator.comparingInt(ActionBarAlert::getPriority))
-                .orElse(null);
     }
 }

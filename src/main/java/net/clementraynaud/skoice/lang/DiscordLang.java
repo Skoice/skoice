@@ -28,6 +28,10 @@ public class DiscordLang extends Lang {
         return "discord/lang/" + langInfo + ".yml";
     }
 
+    @Override
+    protected void loadFormatter() {
+    }
+
     public String getMessage(String path, int maxLength) {
         String message = super.getMessage(path);
         if (message.length() <= maxLength) {
