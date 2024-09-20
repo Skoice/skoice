@@ -257,7 +257,7 @@ public class Bot {
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
             } else {
                 this.guildId = guilds.get(0).getId();
-                this.plugin.getLang().getFormatter().set("guild-name", this.getGuild().getName());
+                this.plugin.getLang().getFormatter().set("guild", this.getGuild().getName());
 
                 if (this.getGuild().getRequiredMFALevel() == Guild.MFALevel.TWO_FACTOR_AUTH
                         && !this.jda.getSelfUser().isMfaEnabled()) {

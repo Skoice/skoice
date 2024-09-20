@@ -72,7 +72,7 @@ public class MinecraftLang extends Lang {
     public String getMessage(String path, Map<String, String> args) {
         String message = super.getRawMessage(path);
 
-        message = message.replaceAll("\"(.+?)\"",
+        message = message.replaceAll("[\"「](.+?)[\"」]",
                         "\"" + super.formatter.get("highlight") + "$1" + super.formatter.get("default") + "\"")
                 .replaceAll("\\{.+?-url}",
                         super.formatter.get("interactive") + "$0" + super.formatter.get("default"));
