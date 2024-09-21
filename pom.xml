@@ -22,7 +22,7 @@
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
-                <version>5.11.0</version>
+                <version>5.11.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -222,12 +222,12 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>3.0.3</version>
+            <version>3.1.0</version>
         </dependency>
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.1.0</version>
+            <version>5.1.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
