@@ -62,15 +62,15 @@ menu:
         label: "Zuschauer"
   separated-teams:
     title: "Getrennte Teams"
-    shortened-description: "Lege fest, ob Teams isoliert werden sollen oder nicht."
-    description: "Wähle, ob Teams isoliert werden sollen oder nicht. Wenn diese Option aktiviert ist, wird jedes Team, das mit dem `/team` Befehl in Minecraft erstellt wurde, oder mit Plugins, die das eingebaute Teamsystem verwalten, einen dedizierten Sprachchat in der Nähe haben. Wenn auf deinem Server Minecraft 1.12 oder älter ist, ist der zu verwendende Befehl `/scoreboard teams`."
+    description: "Lege fest, ob Teams isoliert werden sollen oder nicht."
+    full-description: "Wenn diese Option aktiviert ist, wird jedes Team, das mit dem `/team` Befehl in Minecraft erstellt wurde, oder mit Plugins, die das eingebaute Teamsystem verwalten, einen dedizierten Sprachchat in der Nähe haben. Wenn auf deinem Server Minecraft 1.12 oder älter ist, ist der zu verwendende Befehl `/scoreboard teams`."
   chaining:
     title: "Verkettung"
   discord-integration:
     title: "Discord Integration"
   voice-channel:
     title: "Sprachkanal"
-    shortened-description: "Wählen Sie den Kanal, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen."
+    description: "Wählen Sie den Kanal, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen."
     select-menu:
       placeholder: "Bitte wählen Sie einen Sprachkanal."
       select-option:
@@ -105,16 +105,16 @@ menu:
         label: "\"Du bewegst dich von den Spielern in der Nähe weg.\""
   tooltips:
     title: "Tooltips"
-    shortened-description: "De/aktiviere interaktive Nachrichten auf deinem Minecraft Server."
-    description: "De/aktiviere interaktive Nachrichten auf deinem Minecraft-Server. Du kannst diese Einstellung zum Beispiel aktivieren, wenn du Minecraft Bedrock benutzt oder wenn Tooltips in den Minecraft Einstellungen deaktiviert sind. Nur Operatoren können interaktive Nachrichten empfangen."
+    description: "De/aktiviere interaktive Nachrichten auf deinem Minecraft Server."
+    full-description: "Du kannst diese Einstellung zum Beispiel aktivieren, wenn du Minecraft Bedrock benutzt oder wenn Tooltips in den Minecraft Einstellungen deaktiviert sind. Nur Operatoren können interaktive Nachrichten empfangen."
   advanced-settings:
     title: "Erweiterte Einstellungen"
   release-channel:
     title: "Release-Kanal"
   language:
     title: "Sprache"
-    description: "Wähle die Sprache, in der Nachrichten angezeigt werden. Deine Sprache fehlt oder ist nicht vollständig? [Übersetze unser Plugin mit Crowdin](https://crowdin.com/project/skoice)!"
-    shortened-description: "Wähle die Sprache aus, in der Nachrichten angezeigt werden."
+    description: "Wähle die Sprache aus, in der Nachrichten angezeigt werden."
+    full-description: "Deine Sprache fehlt oder ist nicht vollständig? [Übersetze unser Plugin mit Crowdin](https://crowdin.com/project/skoice)!"
   skoice-proximity-voice-chat:
     title: "Skoice: Sprachchat im Nahbereich"
   linking-process:

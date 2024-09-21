@@ -47,7 +47,7 @@ menu:
         label: "スペクテイター"
   voice-channel:
     title: "ボイスチャンネル"
-    shortened-description: "近接ボイスチャットを使用するためにプレイヤーが参加するチャンネルを選択します。"
+    description: "近接ボイスチャットを使用するためにプレイヤーが参加するチャンネルを選択します。"
     select-menu:
       placeholder: "ボイスチャンネルを選択してください。"
       select-option:
@@ -80,12 +80,12 @@ menu:
         label: "「あなたは近くのプレイヤーから離れています。」"
   tooltips:
     title: "ツールチップ"
-    shortened-description: "Minecraftサーバー上の対話型メッセージを切り替えます。"
-    description: "Minceaftサーバー上で対話型メッセージを切り替えます。サーバーが統合版で実行されている場合や、Minecraft設定でツールチップが無効人なっている場合、この設定を無効にすることができます。操作者のみが対話型メッセージを受信できます。"
+    description: "Minecraftサーバー上の対話型メッセージを切り替えます。"
+    full-description: "サーバーが統合版で実行されている場合や、Minecraft設定でツールチップが無効人なっている場合、この設定を無効にすることができます。操作者のみが対話型メッセージを受信できます。"
   language:
     title: "言語"
-    description: "メッセージの表示に使用する言語を選択してください。あなたの言語が無いか不完全ですか？[Crowdinでプライグインを翻訳してください](https://crowdin.com/project/skoice)！"
-    shortened-description: "メッセージの表示に使用する言語を選択してください。"
+    description: "メッセージの表示に使用する言語を選択してください。"
+    full-description: "あなたの言語が無いか不完全ですか？[Crowdinでプライグインを翻訳してください](https://crowdin.com/project/skoice)！"
   skoice-proximity-voice-chat:
     title: "Skoice：近接ボイスチャット"
   linking-process:

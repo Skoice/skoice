@@ -28,7 +28,7 @@ menu:
     description: "For å fungere skikkelig, må boten din ha `Administrator` tillatelse på Discord-serveren din."
   voice-channel:
     title: "Talekanal navn"
-    shortened-description: "Velg kanalen spillere må delta i for å bruke proximity chat."
+    description: "Velg kanalen spillere må delta i for å bruke proximity chat."
     select-menu:
       placeholder: "Velg en talekanal."
       select-option:
@@ -42,7 +42,7 @@ menu:
     title: "Avanserte innstillinger"
   language:
     title: "Språk"
-    shortened-description: "Velg språket som skal vises for meldinger."
+    description: "Velg språket som skal vises for meldinger."
   skoice-proximity-voice-chat:
     title: "Skoice: Proximity chat"
   linking-process:

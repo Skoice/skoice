@@ -50,7 +50,7 @@ menu:
         label: "İzleyiciler"
   voice-channel:
     title: "Ana Ses Kanalı"
-    shortened-description: "Oyuncuların proximity chat'i kullanmak için girmesi gereken ses kanalını seçin."
+    description: "Oyuncuların proximity chat'i kullanmak için girmesi gereken ses kanalını seçin."
     select-menu:
       placeholder: "Lütfen bir ses kanalını seçin."
       select-option:
@@ -83,14 +83,14 @@ menu:
         label: "\"Diğer oyunculardan uzaklaşıyorsun.\""
   tooltips:
     title: "İpuçları"
-    shortened-description: "Minecraft sunucundaki interaktif mesajları ayarla."
-    description: "Minecraft sunucundaki interaktif mesajları ayarla. Eğer Minecraft ayarlarında ipuçları kapalı ise beya Bedrock Edition kullanıyorsanız bunu kapatmak isteyebilirsiniz. Sadece yöneticiler interaktif mesajlar alabilir."
+    description: "Minecraft sunucundaki interaktif mesajları ayarla."
+    full-description: "Eğer Minecraft ayarlarında ipuçları kapalı ise beya Bedrock Edition kullanıyorsanız bunu kapatmak isteyebilirsiniz. Sadece yöneticiler interaktif mesajlar alabilir."
   advanced-settings:
     title: "Gelişmiş Ayarlar"
   language:
     title: "Dil"
-    description: "Mesajları göstermek için kullanılacak dili seçin. Kendi diliniz tam değil veya eksikmi? [Crowdin'den kendiniz çevirin](https://crowdin.com/project/skoice)!"
-    shortened-description: "Mesajları göstermek için kullanılacak dili seçin."
+    description: "Mesajları göstermek için kullanılacak dili seçin."
+    full-description: "Kendi diliniz tam değil veya eksikmi? [Crowdin'den kendiniz çevirin](https://crowdin.com/project/skoice)!"
   skoice-proximity-voice-chat:
     title: "Skoice: Minecraft'ta Proximity Chat"
   linking-process:

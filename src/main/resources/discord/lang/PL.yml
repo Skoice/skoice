@@ -36,7 +36,7 @@ menu:
           label: "Short-Range Mode"
   voice-channel:
     title: "Kanał głosowy"
-    shortened-description: "Wybierz kanał, do którego gracze mają dołączyć, aby korzystać ze zbliżeniowego czatu głosowego."
+    description: "Wybierz kanał, do którego gracze mają dołączyć, aby korzystać ze zbliżeniowego czatu głosowego."
     select-menu:
       placeholder: "Proszę wybrać kanał głosowy."
       select-option:
@@ -58,7 +58,7 @@ menu:
     title: "Zaawansowane ustawienia"
   language:
     title: "Język"
-    shortened-description: "Wybierz język używany do wyświetlania wiadomości."
+    description: "Wybierz język używany do wyświetlania wiadomości."
   skoice-proximity-voice-chat:
     title: "Skoice: Zbliżeniowy czat głosowy"
   linking-process:

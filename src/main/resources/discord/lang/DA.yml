@@ -36,7 +36,7 @@ menu:
           label: "Kort-række-tilstand"
   voice-channel:
     title: "Stemmekanal"
-    shortened-description: "Vælg kanalen spillere skal join for at bruge nærhedsbaseret stemmechat."
+    description: "Vælg kanalen spillere skal join for at bruge nærhedsbaseret stemmechat."
     select-menu:
       placeholder: "Vælg venligst en stemmekanal."
       select-option:
@@ -58,7 +58,7 @@ menu:
     title: "Avancerede Indstillinger"
   language:
     title: "Sprog"
-    shortened-description: "Vælg sproget der bruges til at vise meddelelser."
+    description: "Vælg sproget der bruges til at vise meddelelser."
   skoice-proximity-voice-chat:
     title: "Skoice: Proximity Voice Chat"
   linking-process:

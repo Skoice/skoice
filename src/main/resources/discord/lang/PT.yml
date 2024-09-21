@@ -36,7 +36,7 @@ menu:
           label: "Modo de Curtas Distâncias"
   voice-channel:
     title: "Canal de Voz"
-    shortened-description: "Selecione o canal que jogadores devem entrar para utilizar o chat de voz por proximidade."
+    description: "Selecione o canal que jogadores devem entrar para utilizar o chat de voz por proximidade."
     select-menu:
       placeholder: "Por favor selecione um canal de voz."
       select-option:
@@ -64,7 +64,7 @@ menu:
     title: "Configurações Avançadas"
   language:
     title: "Idioma"
-    shortened-description: "Escolha o idioma para as mensagens."
+    description: "Escolha o idioma para as mensagens."
   skoice-proximity-voice-chat:
     title: "Skoice: Chat de Voz por Proximidade"
   linking-process:

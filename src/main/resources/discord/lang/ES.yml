@@ -60,12 +60,12 @@ menu:
         label: "Espectadores"
   separated-teams:
     title: "Equipos separados"
-    shortened-description: "Elige si los equipos deben estar aislados."
-    description: "Elige si los equipos deben estar aislados. Cuando esta opción está activada, cada equipo creado con el comando `/team` en Minecraft o con plugins que gestionen el sistema de equipos integrado tendrá un chat de voz de proximidad dedicado. Si tu servidor ejecuta Minecraft 1.12 o anterior, el comando a usar es `/scoreboard teams`."
+    description: "Elige si los equipos deben estar aislados."
+    full-description: "Cuando esta opción está activada, cada equipo creado con el comando `/team` en Minecraft o con plugins que gestionen el sistema de equipos integrado tendrá un chat de voz de proximidad dedicado. Si tu servidor ejecuta Minecraft 1.12 o anterior, el comando a usar es `/scoreboard teams`."
   chaining:
     title: "Encadenamiento"
-    shortened-description: "Selecciona la distancia adicional permitida cuando los jugadores se encadenan."
-    description: "Selecciona la distancia adicional permitida cuando los jugadores se encadenan. El encadenamiento generalmente ocurre cuando un jugador está entre dos otros jugadores que no deberían poder comunicarse. En ese caso, el rango se expande para permitir que los tres jugadores se escuchen entre sí."
+    description: "Selecciona la distancia adicional permitida cuando los jugadores se encadenan."
+    full-description: "El encadenamiento generalmente ocurre cuando un jugador está entre dos otros jugadores que no deberían poder comunicarse. En ese caso, el rango se expande para permitir que los tres jugadores se escuchen entre sí."
     select-menu:
       disabled:
         label: "Desactivado — No se permite encadenamiento"
@@ -79,8 +79,8 @@ menu:
     title: "Integración con Discord"
   voice-channel:
     title: "Canal de voz"
-    description: "Selecciona el canal que los jugadores deben unirse para usar el chat de voz de proximidad. Debe estar en una categoría. Ten en cuenta que los jugadores serán silenciados automáticamente en este canal."
-    shortened-description: "Selecciona el canal que los jugadores deben unirse para usar el chat de voz de proximidad."
+    description: "Selecciona el canal que los jugadores deben unirse para usar el chat de voz de proximidad."
+    full-description: "Debe estar en una categoría. Ten en cuenta que los jugadores serán silenciados automáticamente en este canal."
     select-menu:
       placeholder: "Por favor, selecciona un canal de voz."
       select-option:
@@ -116,14 +116,14 @@ menu:
         label: "\"Te estás alejando de los jugadores cercanos.\""
   tooltips:
     title: "Información emergente"
-    shortened-description: "Activa o desactiva los mensajes interactivos en tu servidor de Minecraft."
-    description: "Activa o desactiva los mensajes interactivos en tu servidor de Minecraft. Es posible que desees desactivar esta configuración si tu servidor se ejecuta en la edición Bedrock o si las informaciones emergentes están desactivadas en la configuración de Minecraft. Solo los operadores pueden recibir mensajes interactivos."
+    description: "Activa o desactiva los mensajes interactivos en tu servidor de Minecraft."
+    full-description: "Es posible que desees desactivar esta configuración si tu servidor se ejecuta en la edición Bedrock o si las informaciones emergentes están desactivadas en la configuración de Minecraft. Solo los operadores pueden recibir mensajes interactivos."
   advanced-settings:
     title: "Configuración avanzada"
   link-synchronization:
     title: "Sincronización de enlaces"
-    shortened-description: "Activa o desactiva la sincronización de plugins externos con Skoice."
-    description: "Activa o desactiva la sincronización de plugins externos con Skoice. Cuando los jugadores vinculan sus cuentas a través de Skoice o un plugin seleccionado, se produce una sincronización en tiempo real en ambos lados. La actualización de esta opción requiere que reinicies tu servidor de Minecraft para que surta efecto."
+    description: "Activa o desactiva la sincronización de plugins externos con Skoice."
+    full-description: "Cuando los jugadores vinculan sus cuentas a través de Skoice o un plugin seleccionado, se produce una sincronización en tiempo real en ambos lados. La actualización de esta opción requiere que reinicies tu servidor de Minecraft para que surta efecto."
     select-menu:
       placeholder: "Por favor, selecciona los plugins deseados."
   release-channel:
@@ -131,8 +131,8 @@ menu:
     description: "Selecciona la versión de Skoice que deseas usar."
   language:
     title: "Idioma"
-    description: "Elige el idioma utilizado para mostrar los mensajes. ¿Falta tu idioma o está incompleto? [¡Traduce nuestro plugin con Crowdin!](https://crowdin.com/project/skoice)"
-    shortened-description: "Elige el idioma utilizado para mostrar los mensajes."
+    description: "Elige el idioma utilizado para mostrar los mensajes."
+    full-description: "¿Falta tu idioma o está incompleto? [¡Traduce nuestro plugin con Crowdin!](https://crowdin.com/project/skoice)"
   skoice-proximity-voice-chat:
     title: "Skoice: chat de voz de proximidad"
   linking-process:

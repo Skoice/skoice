@@ -28,7 +28,7 @@ menu:
     description: "Per funzionare correttamente, il tuo bot deve avere il permesso `Administrator` sul tuo server di Discord."
   voice-channel:
     title: "Canale vocale"
-    shortened-description: "Seleziona il canale che i giocatori devono unirsi per utilizzare la chat vocale di prossimità."
+    description: "Seleziona il canale che i giocatori devono unirsi per utilizzare la chat vocale di prossimità."
     select-menu:
       placeholder: "Ti preghiamo di selezionare un canale di vendita."
       select-option:
@@ -42,7 +42,7 @@ menu:
     title: "Impostazioni avanzate"
   language:
     title: "Lingua"
-    shortened-description: "Scegli la lingua utilizzata per visualizzare i messaggi."
+    description: "Scegli la lingua utilizzata per visualizzare i messaggi."
   skoice-proximity-voice-chat:
     title: "Skoice: Prossimità Chat Vocale"
   linking-process:
