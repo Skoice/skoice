@@ -47,6 +47,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -257,7 +258,8 @@ public class Bot {
                 this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
             } else {
                 this.guildId = guilds.get(0).getId();
-                this.plugin.getLang().getFormatter().set("guild", this.getGuild().getName());
+                this.plugin.getLang().getFormatter().set("guild",
+                        this.getGuild().getName().replace(Character.toString(ChatColor.COLOR_CHAR), ""));
 
                 if (this.getGuild().getRequiredMFALevel() == Guild.MFALevel.TWO_FACTOR_AUTH
                         && !this.jda.getSelfUser().isMfaEnabled()) {
