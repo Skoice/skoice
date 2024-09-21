@@ -17,22 +17,15 @@ logger:
     plugin-updated: "Skoice has been updated to the latest version. Please restart your Minecraft server to apply changes."
     skoice-3: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: {migration-guide-url}."
     configuration-complete: "Skoice is now configured. Type \"{link-discord-command}\" on your Discord server to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
-    bot-connecting: "Your bot is attempting to connect."
-    bot-connected: "Your bot is connected."
   warning:
     outdated-version: "You are using an outdated version ({current-version}). Download the latest version ({latest-version}) here: {spigotmc-url}."
     no-token: "Token not set. Join your Minecraft server to set up Skoice."
-    no-guild: "Your bot is not on a Discord server. Open this link to invite it: {bot-invite-url}."
     multiple-guilds: "Your bot is on multiple Discord servers. Type \"{configure-discord-command}\" on your Discord server to choose one."
     two-factor-authentication: "Two-factor authentication required. Enable two-factor authentication on the bot owner's account or disable \"Require 2FA for moderator actions\" in server settings."
     no-voice-channel: "Voice channel not set. Type \"{configure-discord-command}\" on your Discord server to set up Skoice."
     no-radius: "Radius not set. Type \"{configure-discord-command}\" on your Discord server to set up Skoice."
-    old-bot: "You are using an old bot. Make sure it is configured as indicated and you only use it for Skoice."
-  error:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: {bot-invite-url}."
-    bot-could-not-connect: "Your bot could not connect. To update the token, type \"{token-minecraft-command}\" followed by the new token."
     invalid-bot: "Your bot is not configured correctly. Join your Minecraft server to create a new one."
-    public-bot: "Your bot is not configured correctly. Run the command again once you have unselected \"Public Bot\" and clicked \"Save Changes\" on this page: {bot-page-url}."
 chat:
   configuration:
     bot-creation-interactive: " \nConfiguration: {title}Bot Creation\n \n{dark}• {default}Skoice needs a Discord bot to work. To create one, follow the instructions on {open:creation-guide-url}.\n{dark}• {default}Once you have retrieved its token, insert it {suggest:token-minecraft-command}.\n \nIf you cannot interact with this message, type \"{tooltips-minecraft-command}\".\n "
@@ -45,7 +38,7 @@ chat:
     bot-connected-incomplete-configuration-discord: "Your bot is {success}now connected{default}. Type \"{configure-discord-command}\" on your Discord server to set it up."
     old-bot: "You are {error}using an old bot{default}. Make sure it is configured as indicated and you only use it for Skoice."
     bot-already-connected: "You have {success}updated the token{default}. Restart your Minecraft server to connect your bot."
-    bot-could-not-connect: "Your bot {error}could not connect{default}. Try again with a valid token."
+    bot-could-not-connect: "Your bot {error}could not connect{default}. To update the token, type \"{token-minecraft-command}\" followed by the new token."
     invalid-bot: "Your bot is {error}not configured correctly{default}. Please follow the instructions again to create a new one."
     public-bot-interactive: "Your bot {error}is not configured correctly{default}. Run the command again once you have unselected \"Public Bot\" and clicked \"Save Changes\" on {open:bot-page-url}. If you cannot interact with this message, type \"{tooltips-minecraft-command}\"."
     public-bot: "Your bot {error}is not configured correctly{default}. Run the command again once you have unselected \"Public Bot\" and clicked \"Save Changes\" on this page: {bot-page-url}."

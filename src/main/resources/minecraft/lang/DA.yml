@@ -16,15 +16,11 @@ logger:
     plugin-disabled: "Plugin er deaktiveret."
     plugin-updated: "Skoice er blevet opdateret til den seneste version. Genstart venligst din Minecraft server for at anvende ændringer."
     configuration-complete: "Skoice er nu konfigureret. Skriv \"{link-discord-command}\" på din Discord server for at linke din Discord-konto til Minecraft. Spillere skal linke deres konti for at bruge nærhedsbaseret stemmechat."
-    bot-connecting: "Din bot forsøger at oprette forbindelse."
-    bot-connected: "Din bot er tilsluttet."
   warning:
     no-token: "Token ikke sat. Tilslut dig din Minecraft server for at opsætte Skoice."
     multiple-guilds: "Din bot er på flere Discord servere. Skriv \"{configure-discord-command}\" på din Discord server for at vælge en."
     no-voice-channel: "Stemmekanal ikke sat. Skriv \"{configure-discord-command}\" på din Discord server for at opsætte Skoice."
     no-radius: "Radius ikke sat. Skriv \"{configure-discord-command}\" på din Discord server for at opsætte Skoice."
-  error:
-    bot-could-not-connect: "Din bot kunne ikke oprette forbindelse. For at opdatere token, skriv \"{token-minecraft-command}\" efterfulgt af det nye token."
 chat:
   configuration:
     no-token: "Du har {error}ikke angivet et token{default}. For at bruge denne kommando, skriv \"{token-minecraft-command}\" efterfulgt af token."
@@ -32,7 +28,7 @@ chat:
     bot-connected: "Din bot er {success}nu tilsluttet{default}."
     bot-connected-incomplete-configuration-discord: "Din bot er {success}nu tilsluttet{default}. Skriv \"{configure-discord-command}\" på din Discord server for at opsætte den."
     bot-already-connected: "Du har {success}opdateret token{default}. Genstart din Minecraft server for at tilslutte din bot."
-    bot-could-not-connect: "Din bot {error}could not connect{default}. Prøv igen med en gyldig token."
+    bot-could-not-connect: "Din bot {error}could not connect{default}. For at opdatere token, skriv \"{token-minecraft-command}\" efterfulgt af det nye token."
     incomplete-configuration: "Skoice er {error}ikke korrekt konfigureret{default}. Kontakt venligst en administrator på serveren."
     incomplete-configuration-operator-discord: "Skoice er {error}ikke korrekt konfigureret{default}. Skriv \"{configure-discord-command}\" på din Discord server for at opsætte den."
     already-configured: "Skoice er {error}allerede konfigureret{default}. Skriv \"{configure-discord-command}\" på din Discord server for at opdatere dens indstillinger."

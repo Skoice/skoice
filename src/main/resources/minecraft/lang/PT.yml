@@ -16,15 +16,11 @@ logger:
     plugin-disabled: "Plugin desabilitado."
     plugin-updated: "Skoice foi atualizado para a última versão. Reinicie seu servidor de Minecraft para aplicar as mudanças."
     configuration-complete: "Skoice configurado. Envie \"{link-discord-command}\" em seu servidor do Discord para conectar sua conta do Discord com o Minecraft. Jogadores devem conectar suas contas para utilizar o chat de voz por proximidade."
-    bot-connecting: "Seu bot está tentando se conectar."
-    bot-connected: "Seu bot está conectado."
   warning:
     no-token: "Token não configurado. Entre em seu servidor de Minecraft para configurar o Skoice."
     multiple-guilds: "Seu bot está em múltiplos servidores do Discord. Envie \"{configure-discord-command}\" no servidor que você deseja utilizar."
     no-voice-channel: "Canal de voz não configurado. Envie \"{configure-discord-command}\" no seu servidor do Discord para configurar o Skoice."
     no-radius: "Raio não configurado. Envie \"{configure-discord-command}\" no seu servidor do Discord para configurar o Skoice."
-  error:
-    bot-could-not-connect: "Seu bot não pode se conectar. Para atualizar o token, envie \"{token-minecraft-command}\" seguido do novo token."
 chat:
   configuration:
     no-token: "Você {error}não configurou um token{default}. Para usar esse comando, envie \"{token-minecraft-command}\" seguido do token."
@@ -32,7 +28,7 @@ chat:
     bot-connected: "Seu bot está {success}conectado{default}."
     bot-connected-incomplete-configuration-discord: "Seu bot está {success}conectado{default}. Envie \"{configure-discord-command}\" no seu servidor do Discord para configurá-lo."
     bot-already-connected: "Você {success}atualizou o token{default}. Reinicie seu servidor do Minecraft para conectar seu bot."
-    bot-could-not-connect: "Seu bot {error}não pôde se conectar{default}. Tente novamente com um token válido."
+    bot-could-not-connect: "Seu bot {error}não pôde se conectar{default}. Para atualizar o token, envie \"{token-minecraft-command}\" seguido do novo token."
     incomplete-configuration: "Skoice {error}não está configurado corretamente{default}. Por favor contate um administrador do servidor."
     incomplete-configuration-operator-discord: "Skoice {error}não está configurado corretamente{default}. Envie \"{configure-discord-command}\" no seu servidor do Discord para configurá-lo."
     already-configured: "Skoice {error}já está configurado{default}. Envie \"{configure-discord-command}\" no seu servidor do Discord para atualizar as configurações."

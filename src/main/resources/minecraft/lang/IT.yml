@@ -16,23 +16,19 @@ logger:
     plugin-disabled: "Plugin disabilitato."
     plugin-updated: "Skoice è stato aggiornato all'ultima versione. Riavvia il tuo server Minecraft per applicare le modifiche."
     configuration-complete: "Skoice è ora configurato. Digita \"{link-discord-command}\" sul tuo server Discord per collegare il tuo account Discord a Minecraft. I giocatori devono collegare i loro account per utilizzare la chat vocale di prossimità."
-    bot-connecting: "Il tuo bot sta tentando di connettersi."
-    bot-connected: "Il tuo account è connesso."
   warning:
     no-token: "Token non impostato. Unisciti al tuo server Minecraft per configurare Skoice."
     multiple-guilds: "Il tuo bot è su più server Discord. Digita \"{configure-discord-command}\" sul tuo server Discord per sceglierne uno."
     no-voice-channel: "Canale vocale non impostato. Digita \"{configure-discord-command}\" sul tuo server Discord per configurare Skoice."
     no-radius: "Canale vocale non impostato. Digita \"{configure-discord-command}\" sul tuo server Discord per configurare Skoice."
-  error:
-    bot-could-not-connect: "Impossibile connettersi al bot. Per aggiornare il token, digita \"{token-minecraft-command}\" seguito dal nuovo token."
 chat:
   configuration:
     no-token: "Hai &non fornito un token{default}. Per usare questo comando, digita \"{token-minecraft-command}\" seguito dal token."
-    bot-connecting: "Il tuo bot sta tentando di connettersi."
+    bot-connecting: "Il tuo bot {success}sta tentando di connettersi{default}."
     bot-connected: "Il tuo bot è {success}ora connesso{default}."
     bot-connected-incomplete-configuration-discord: "Il tuo bot è {success}ora connesso{default}. Digita \"{configure-discord-command}\" sul tuo server Discord per configurarlo."
     bot-already-connected: "Hai {success}aggiornato il token{default}. Riavvia il tuo server Minecraft per collegare il tuo bot."
-    bot-could-not-connect: "Il tuo bot non può connettersi {default}. Riprova con un token valido."
+    bot-could-not-connect: "Il tuo bot {error}non può connettersi {default}. Per aggiornare il token, digita \"{token-minecraft-command}\" seguito dal nuovo token."
     incomplete-configuration-operator-discord: "Il tuo bot è {success}ora connesso{default}. Digita \"{configure-discord-command}\" sul tuo server Discord per configurarlo."
     already-configured: "Il tuo bot è {success}ora connesso{default}. Digita \"{configure-discord-command}\" sul tuo server Discord per configurarlo."
   player:

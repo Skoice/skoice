@@ -44,6 +44,8 @@ import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.User;
 import org.bukkit.event.HandlerList;
 
+import java.util.logging.Level;
+
 public class ListenerManager {
 
     private final Skoice plugin;
@@ -81,7 +83,7 @@ public class ListenerManager {
                 this.plugin.getBot().retrieveProximityChannels();
             }
             this.plugin.getUpdateNetworksTask().start();
-            this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
+            this.plugin.log(Level.INFO, "logger.info.configuration-complete");
             if (user != null) {
                 new EmbeddedMenu(this.plugin.getBot()).setContent("configuration-complete")
                         .message(user);

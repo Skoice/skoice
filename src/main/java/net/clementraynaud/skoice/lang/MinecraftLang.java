@@ -133,4 +133,13 @@ public class MinecraftLang extends Lang {
 
         return result.build();
     }
+
+    public String getConsoleMessage(String path, Map<String, String> args) {
+        String message = super.getRawMessage(path);
+        return ChatColor.stripColor(this.formatter.format(message, args));
+    }
+
+    public String getConsoleMessage(String path) {
+        return this.getConsoleMessage(path, MapUtil.of());
+    }
 }

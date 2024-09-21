@@ -16,26 +16,21 @@ logger:
     plugin-disabled: "Plugin wyłączony."
     plugin-updated: "Skoice został zaktualizowany do najnowszej wersji. Uruchom ponownie swój serwer Minecraft, aby zastosować zmiany."
     configuration-complete: "Skoice został skonfigurowany. Wpisz \"{link-discord-command}\" na twoim serwerze Discord aby połączyć swoje konto Discord z Minecraft. Gracze muszą połączyć swoje konta, aby korzystać z zbliżeniowego czatu głosowego."
-    bot-connecting: "Twój bot próbuje się połączyć."
-    bot-connected: "Twój bot jest połączony."
   warning:
     no-token: "Token nie ustawiony. Dołącz do swojego serwera Minecraft, aby skonfigurować Skoice."
-    no-guild: "Twój bot nie jest na serwerze Discord. Otwórz ten link, żeby go zaprosić: {bot-invite-url}."
     multiple-guilds: "Twój bot jest na kilku serwerach discord. Wpisz \"{configure-discord-command}\" na twoim serwerze Discord, aby wybrać jeden."
     no-voice-channel: "Kanał głosowy nie został ustawiony. Wpisz \"{configure-discord-command}\" na twoim serwerze Discord, aby skonfigurować Skoice."
     no-radius: "Zasięg nie został ustawiony. Wpisz \"{configure-discord-command}\" na twoim serwerze Discord, aby skonfigurować Skoice."
-  error:
     missing-permission: "Twój bot nie ma nadanej permisji \"Administrator\" na twoim serwerze Discord. Otwórz ten link, żeby ją nadać: {bot-invite-url}."
-    bot-could-not-connect: "Twój bot nie mógł się połączyć. Aby zaktualizować token, wpisz \"{token-minecraft-command}\" po czym wpisz nowy token."
-    public-bot: "Twój bot nie jest poprawnie skonfigurowany. Użyj ponownie komendy po odznaczeniu \"Publiczny bot\" i kliknięciu \"Zapisz zmiany\" na tej stronie: {bot-page-url."
 chat:
   configuration:
     no-token: "{error}Nie podałeś tokenu{default}."
+    no-guild: "Twój bot {error}nie jest na serwerze Discord{default}. Otwórz ten link, żeby go zaprosić: {bot-invite-url}."
     bot-connecting: "Twój bot {success}próbuje się połączyć{default}."
     bot-connected: "Twój bot jest teraz {success}Połączony{default}."
     bot-connected-incomplete-configuration-discord: "Twoj bot jest teraz {success}Połączony{default}. Wpisz \"{configure-discord-command}\" na twoim serwerze Discord aby go skonfigurować."
     bot-already-connected: "{success}Zaktualizowałeś token{default}. Zrestartuj swój serwer Minecraft aby go połączyć."
-    bot-could-not-connect: "Twój bot {error}nie mógł się połączyć{default}. Spróbuj jeszcze raz z poprawnym tokenem."
+    bot-could-not-connect: "Twój bot {error}nie mógł się połączyć{default}. Aby zaktualizować token, wpisz \"{token-minecraft-command}\" po czym wpisz nowy token."
     incomplete-configuration-operator-discord: "Skoice jest {error}źle skonfigurowany{default}. Wpisz \"{configure-discord-command}\" na twoim serwerze Discord aby go skonfigurować."
     already-configured: "Skoice {error}jest juz skonfigurowany{default}. Wpisz \"{configure-discord-command}\" na swoim serwerze discord aby zaktualizować jego ustawienia."
   player:

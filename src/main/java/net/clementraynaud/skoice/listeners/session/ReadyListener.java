@@ -36,6 +36,7 @@ import org.bukkit.entity.Player;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 public class ReadyListener extends ListenerAdapter {
 
@@ -56,11 +57,11 @@ public class ReadyListener extends ListenerAdapter {
                         return;
                     }
 
-                    this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connected"));
+                    this.plugin.log(Level.INFO, "chat.configuration.bot-connected");
 
                     if (tokenManager != null
                             && event.getJDA().getSelfUser().getTimeCreated().isBefore(OffsetDateTime.now().minus(1, ChronoUnit.DAYS))) {
-                        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.old-bot"));
+                        this.plugin.log(Level.WARNING, "chat.configuration.old-bot");
                         tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.old-bot"));
                     }
 
@@ -103,7 +104,7 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getLang().getFormatter().set("bot-page-url", "https://discord.com/developers/applications/" + botId + "/bot");
         this.plugin.getBot().getJDA().shutdown();
         this.plugin.getListenerManager().update();
-        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.public-bot"));
+        this.plugin.log(Level.WARNING, "chat.configuration.public-bot");
 
         if (tokenManager == null) {
             return;
@@ -122,7 +123,7 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
         this.plugin.getBot().getJDA().shutdown();
         this.plugin.getListenerManager().update();
-        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.invalid-bot"));
+        this.plugin.log(Level.WARNING, "logger.error.invalid-bot");
 
         if (tokenManager != null) {
             tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.invalid-bot"));

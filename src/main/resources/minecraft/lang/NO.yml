@@ -16,23 +16,19 @@ logger:
     plugin-disabled: "Plugin deaktivert."
     plugin-updated: "Skoice har blitt oppdatert til nyeste versjon. Vendligst restart din Minecraft server for å aktivere endringene."
     configuration-complete: "Skoice er nå konfigurert. Skriv \"{link-discord-command}\" på din Discord server for å linke din Discord bruker til Minecraft. Spillere må linke brukerene sine for å kunne bruke proximity voice chatten."
-    bot-connecting: "Din bot prøver å koble til."
-    bot-connected: "Din bot er koblet til."
   warning:
     no-token: "Din token er ikke satt. Logg på din Minecraft server for å sette opp Skoice."
     multiple-guilds: "Din bot er på flere Discord servere. Skriv \"{configure-discord-command}\" på din Discord server for å velge en."
     no-voice-channel: "Du har ikke spesifisert en voice channel. Skriv \"{configure-discord-command}\" på din Discord server for å sette opp Skoice."
     no-radius: "Radius er ikke satt. Skriv \"{configure-discord-command}\" på din Discord server for å sette opp Skoice."
-  error:
-    bot-could-not-connect: "Din bot kunne ikke koble til. For å oppdatere din token, skriv \"{token-minecraft-command}\" etterfult av din nye token."
 chat:
   configuration:
     no-token: "Du har {error}ikke spesifisert en token{default}. Hvis du vil bruke denne kommandoen, skriv \"{token-minecraft-command}\" etterfulgt av token."
-    bot-connecting: "Din bot prøver å koble til."
+    bot-connecting: "Din bot {success}prøver å koble til{default}."
     bot-connected: "Din bot er {success}nå tilkoblet{default}."
     bot-connected-incomplete-configuration-discord: "Din bot er {success}nå tilkoblet{default}. Skriv \"{configure-discord-command}\" på din Discord server for å sette den opp."
     bot-already-connected: "Du har &oppdatert din token{default}. Restart din Minecraft server for å koble til din bot."
-    bot-could-not-connect: "Din bot {error}kunne ikke koble til {default}. Prøv igjen med en gyldig token."
+    bot-could-not-connect: "Din bot {error}kunne ikke koble til {default}. For å oppdatere din token, skriv \"{token-minecraft-command}\" etterfult av din nye token."
     incomplete-configuration-operator-discord: "Skoice er {error}ikke konfigurert riktig {default}. Skriv \"{configure-minecraft-command}\" på Discord for å sette den opp."
     already-configured: "Skoice er {error}allerede konfigurert{default}. Skriv \"{configure-discord-command}\" på din Discord server for å oppdatere innstillingene."
   player:

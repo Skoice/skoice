@@ -17,21 +17,15 @@ logger:
     plugin-updated: "Skoice a été mis à jour vers la version la plus récente. Veuillez redémarrer votre serveur Minecraft pour appliquer les changements."
     skoice-3: "Vous utilisez désormais Skoice 3. Pour que votre bot fonctionne correctement, suivez notre guide de migration ici : {migration-guide-url}."
     configuration-complete: "Skoice est désormais configuré. Tapez \"{link-discord-command}\" sur votre serveur Discord pour relier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
-    bot-connecting: "Votre bot tente de se connecter."
-    bot-connected: "Votre bot est connecté."
   warning:
     outdated-version: "Vous utilisez une version obsolète ({current-version}). Téléchargez la dernière version ({latest-version}) ici : {spigotmc-url}."
     no-token: "Token non défini. Rejoignez votre serveur Minecraft pour configurer Skoice."
-    no-guild: "Votre bot n'est pas sur un serveur Discord. Ouvrez ce lien pour l'inviter : {bot-invite-url}."
     multiple-guilds: "Votre bot est sur plusieurs serveurs Discord. Tapez \"{configure-discord-command}\" sur votre serveur Discord pour en choisir un."
     two-factor-authentication: "L'authentification à deux facteurs est requise. Activez l'authentification à deux facteurs sur le compte du propriétaire du bot ou désactivez \"Exiger une A2F pour les actions des modérateurs\" dans les paramètres du serveur."
     no-voice-channel: "Salon vocal non défini. Tapez \"{configure-discord-command}\" sur votre serveur Discord pour configurer Skoice."
     no-radius: "Rayons non définis. Tapez \"{configure-discord-command}\" sur votre serveur Discord pour configurer Skoice."
-  error:
     missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : {bot-invite-url}."
-    bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"{token-minecraft-command}\" suivi du nouveau token."
     invalid-bot: "Votre bot n'est pas configuré correctement. Rejoignez votre serveur Minecraft pour en créer un nouveau."
-    public-bot: "Votre bot n'est pas correctement configuré. Exécutez la commande à nouveau après avoir désélectionné \"Public Bot\" et cliqué sur \"Save Changes\" sur cette page : {bot-page-url."
 chat:
   configuration:
     bot-creation-interactive: " \nConfiguration : {title}Création du bot\n\n{dark}• {default}Skoice fonctionne avec un bot Discord. Pour en créer un, suivez les instructions sur {open:creation-guide-url}.\n{dark}• {default}Une fois son token récupéré, entrez-le {suggest:token-minecraft-command}.\n \nSi vous ne pouvez pas interagir avec ce message, tapez \"{tooltips-minecraft-command}\".\n "
@@ -43,7 +37,7 @@ chat:
     bot-connected: "Votre bot est {success}désormais connecté{default}."
     bot-connected-incomplete-configuration-discord: "Votre bot est {success}désormais connecté{default}. Tapez \"{configure-discord-command}\" sur votre serveur Discord pour le configurer."
     bot-already-connected: "Vous avez {success}mis à jour le token{default}. Redémarrez votre serveur Minecraft pour connecter votre bot."
-    bot-could-not-connect: "Votre bot {error}n'a pas pu se connecter{default}. Essayez de nouveau avec un token valide."
+    bot-could-not-connect: "Votre bot {error}n'a pas pu se connecter{default}. Pour mettre à jour le token, tapez \"{token-minecraft-command}\" suivi du nouveau token."
     invalid-bot: "Votre bot n'est {error}pas configuré correctement{default}. Veuillez suivre à nouveau les instructions pour en créer un nouveau."
     public-bot-interactive: "Votre bot {error}n'est pas correctement configuré{default}. Exécutez la commande à nouveau après avoir désélectionné \"Public Bot\" et cliqué sur \"Save Changes\" sur {open:bot-page-url}. Si vous ne pouvez pas interagir avec ce message, tapez \"{tooltips-minecraft-command}\"."
     public-bot: "Votre bot {error}n'est pas correctement configuré{default}. Exécutez la commande à nouveau après avoir désélectionné \"Public Bot\" et cliqué sur \"Save Changes\" sur cette page : {bot-page-url."

@@ -15,15 +15,11 @@ logger:
     plugin-enabled: "Плагин включен."
     plugin-disabled: "Плагин отключен."
     plugin-updated: "Skoice был обновлен до последней версии. Пожалуйста, перезапустите ваш сервер Minecraft, чтобы применить изменения."
-    bot-connecting: "Ваш бот подключается."
-    bot-connected: "Ваш бот подключен."
   warning:
     no-token: "Токен не установлен. Присоединяйтесь к серверу Minecraft, чтобы настроить Skoice."
     multiple-guilds: "Ваш бот на нескольких Discord серверах. Введите \"{configure-discord-command}\" на вашем Discord сервере, чтобы выбрать его."
     no-voice-channel: "Голосовой канал не установлен. Введите \"{configure-discord-command}\" на вашем сервере Discord, чтобы настроить Skoice."
     no-radius: "Радиус не установлен. Введите \"{configure-discord-command}\" на вашем сервере Discord, чтобы настроить Skoice."
-  error:
-    bot-could-not-connect: "Ваш бот не смог подключиться. Чтобы обновить токен, введите \"{token-minecraft-command}\", а затем новый токен."
 chat:
   configuration:
     no-token: "Вы {error}не указали токен{default}. Чтобы использовать эту команду, введите \"{token-minecraft-command}\", а затем токен бота."
@@ -31,7 +27,7 @@ chat:
     bot-connected: "Ваш бот {success}теперь подключен{default}."
     bot-connected-incomplete-configuration-discord: "Ваш бот {success}теперь подключен{default}. Введите \"{configure-discord-command}\" на вашем сервере Discord, чтобы настроить его."
     bot-already-connected: "Вы {success}обновили токен{default}. Перезагрузите ваш сервер, чтобы подключить бота."
-    bot-could-not-connect: "Ваш бот {error}не смог подключиться{default}. Попробуйте еще раз с верным токеном."
+    bot-could-not-connect: "Ваш бот {error}не смог подключиться{default}. Чтобы обновить токен, введите \"{token-minecraft-command}\", а затем новый токен."
     incomplete-configuration-operator-interactive: "Skoice {error}настроен некорректно{default}. Нажмите {run:configure-minecraft-command} чтобы настроить его. Вы можете изменить язык, нажав {suggest:language-minecraft-command}. Если вы не можете взаимодействовать с этим сообщением, введите \"{tooltips-minecraft-command}\"."
     incomplete-configuration-operator: "Skoice {error}настроен неправильно{default}. Введите \"{configure-minecraft-command}\" Чтобы настроить его. Вы можете изменить язык введя \"{language-minecraft-command}\" и через пробел название языка."
     incomplete-configuration-operator-discord: "Skoice {error}не настроен корректно{default}. Введите \"{configure-discord-command}\" на вашем сервере Discord, чтобы настроить его."

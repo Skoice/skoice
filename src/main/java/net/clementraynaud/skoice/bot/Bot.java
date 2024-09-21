@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class Bot {
@@ -92,11 +93,11 @@ public class Bot {
     public void connect(CommandSender sender) {
         if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
             this.acknowledgeStatus();
-            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
+            this.plugin.log(Level.WARNING, "logger.warning.no-token");
             return;
         }
 
-        this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connecting"));
+        this.plugin.log(Level.INFO, "chat.configuration.bot-connecting");
         Player tokenManager;
         if (sender instanceof Player) {
             tokenManager = (Player) sender;
@@ -125,7 +126,7 @@ public class Bot {
                         .build();
             } catch (InvalidTokenException | IllegalArgumentException | ErrorResponseException e) {
                 this.acknowledgeStatus();
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
+                this.plugin.log(Level.WARNING, "chat.configuration.bot-could-not-connect");
                 this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
                 if (tokenManager != null) {
                     tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-could-not-connect"));
@@ -244,7 +245,7 @@ public class Bot {
         if (!this.isAvailable()) {
             this.status = BotStatus.NOT_CONNECTED;
             if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
+                this.plugin.log(Level.WARNING, "logger.warning.no-token");
             }
 
         } else {
@@ -252,10 +253,10 @@ public class Bot {
 
             if (guilds.isEmpty()) {
                 this.status = BotStatus.NO_GUILD;
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-guild"));
+                this.plugin.log(Level.WARNING, "chat.configuration.no-guild");
             } else if (guilds.size() > 1) {
                 this.status = BotStatus.MULTIPLE_GUILDS;
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
+                this.plugin.log(Level.WARNING, "logger.warning.multiple-guilds");
             } else {
                 this.guildId = guilds.get(0).getId();
                 this.plugin.getLang().getFormatter().set("guild",
@@ -264,20 +265,20 @@ public class Bot {
                 if (this.getGuild().getRequiredMFALevel() == Guild.MFALevel.TWO_FACTOR_AUTH
                         && !this.jda.getSelfUser().isMfaEnabled()) {
                     this.status = BotStatus.MFA_REQUIRED;
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.two-factor-authentication"));
+                    this.plugin.log(Level.WARNING, "logger.warning.two-factor-authentication");
 
                 } else if (!this.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                     this.status = BotStatus.MISSING_PERMISSION;
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.missing-permission"));
+                    this.plugin.log(Level.WARNING, "logger.error.missing-permission");
 
                 } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
                     this.status = BotStatus.NO_VOICE_CHANNEL;
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-voice-channel"));
+                    this.plugin.log(Level.WARNING, "logger.warning.no-voice-channel");
 
                 } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.HORIZONTAL_RADIUS.toString())
                         || !this.plugin.getConfigYamlFile().contains(ConfigField.VERTICAL_RADIUS.toString())) {
                     this.status = BotStatus.NO_RADIUS;
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-radius"));
+                    this.plugin.log(Level.WARNING, "logger.warning.no-radius");
 
                 } else {
                     this.status = BotStatus.READY;

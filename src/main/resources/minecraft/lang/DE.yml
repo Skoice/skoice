@@ -16,15 +16,11 @@ logger:
     plugin-disabled: "Plugin deaktiviert."
     plugin-updated: "Skoice wurde auf die neueste Version aktualisiert. Bitte starten Sie Ihren Minecraft-Server neu, um die Änderungen zu übernehmen."
     configuration-complete: "Skoice ist jetzt konfiguriert. Gib \"{link-discord-command}\" auf deinem Discord-Server ein, um deinen Discord-Account mit Minecraft zu verknüpfen. Spieler müssen ihre Konten verknüpfen, um den Sprachchat im Nahbereich zu nutzen."
-    bot-connecting: "Ihr Bot versucht sich zu verbinden."
-    bot-connected: "Ihr Bot ist verbunden."
   warning:
     no-token: "Token nicht gesetzt. Tritt deinem Minecraft-Server bei, um Skoice einzurichten."
     multiple-guilds: "Dein Bot befindet sich auf mehreren Discord-Servern. Tippe \"{configure-discord-command}\" auf deinem Discord-Server ein, um einen auszuwählen."
     no-voice-channel: "Sprachkanal nicht eingestellt. Tippe \"{configure-discord-command}\" auf deinem Discord-Server ein, um Skoice einzurichten."
     no-radius: "Radius nicht eingestellt. Tippe \"{configure-discord-command}\" auf deinem Discord-Server ein, um Skoice einzurichten."
-  error:
-    bot-could-not-connect: "Ihr Bot konnte keine Verbindung herstellen. Um das Token zu aktualisieren, geben Sie \"{token-minecraft-command}\" gefolgt vom neuen Token ein."
 chat:
   configuration:
     no-token: "Sie haben {error}nicht einen Token zur Verfügung gestellt{default}. Um diesen Befehl zu verwenden, geben Sie \"{token-minecraft-command}\" gefolgt von dem Token ein."
@@ -32,7 +28,7 @@ chat:
     bot-connected: "Ihr Bot ist {success}jetzt verbunden{default}."
     bot-connected-incomplete-configuration-discord: "Dein Bot ist {success}jetzt verbunden{default}. Gib \"{configure-discord-command}\" auf deinem Discord-Server ein, um ihn einzurichten."
     bot-already-connected: "Sie haben {success}den Token aktualisiert{default}. Starte deinen Minecraft-Server neu, um deinen Bot zu verbinden."
-    bot-could-not-connect: "Ihr Bot {error}konnte keine Verbindung herstellen{default}. Versuchen Sie es erneut mit einem gültigen Token."
+    bot-could-not-connect: "Ihr Bot {error}konnte keine Verbindung herstellen{default}. Um das Token zu aktualisieren, geben Sie \"{token-minecraft-command}\" gefolgt vom neuen Token ein."
     incomplete-configuration: "Skoice ist {error}nicht korrekt konfiguriert{default}. Bitte wenden Sie sich an einen Administrator des Servers."
     incomplete-configuration-operator-interactive: "Skoice ist {error}nicht richtig konfiguriert{default}. Klicken Sie auf {run:configure-minecraft-command} zur Einrichtung. Wechsle die Sprache durch anklicken von {suggest:language-minecraft-command}. Wenn du mit dieser Nachricht nicht interagieren kannst, gib \"{tooltips-minecraft-command}\" ein."
     incomplete-configuration-operator: "Skoice ist {error}nicht korrekt konfiguriert{default}. Gib \"{configure-minecraft-command}\" ein, um das Plugin einzurichten. Du kannst die Sprache durch Eingabe von \"{language-minecraft-command}\" (gefolgt von der jeweiligen Sprache) wechseln."

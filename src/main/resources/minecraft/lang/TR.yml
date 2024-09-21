@@ -16,18 +16,12 @@ logger:
     plugin-disabled: "Eklenti devre dışı bırakıldı."
     plugin-updated: "Skoice son sürüme güncellendi. Lütfen değişiklikleri uygulamak için sunucunuzu yeniden başlatın."
     configuration-complete: "Skoice ayarlandı. Minecraft hesabınızı Discord ile bağlamak için Discord sunucunuzda \"{link-discord-command}\" komutunu kullanın. Sesli sohbeti kullanabilmek için hesaplarınızı bağlamanız gerekiyor."
-    bot-connecting: "Botunuz bağlanmaya çalışıyor."
-    bot-connected: "Botunuz bağlandı."
   warning:
     no-token: "Token belirlenmemiş. Skoice'i kurmak için Minecraft sunucunuza bağlanın."
-    no-guild: "Botun bir Discord sunucusunda değil. Davet etmek için bu bağlantıyı açın: {bot-invite-url}."
     multiple-guilds: "Botunuz birden fazla Discord sunucusunda bulunuyor. Sadece birini seçmek için \"{configure-discord-command}\" komutunu kullanmalısınız."
     no-voice-channel: "Ses kanalı belirlenmemiş. Discord sunucunuzda \"{configure-discord-command}\" komutunu kullanarak Skoice'i kurabilirsiniz."
     no-radius: "Konuşma uzaklığı belirlenmemiş. Discord sunucunuzda \"{configure-discord-command}\" komutunu kullanarak Skoice'i kurabilirsiniz."
-  error:
     missing-permission: "Discord sunucunda botuna \"Yönetici\" izni vermedin. Eklemek için bu bağlantıyı aç: {bot-invite-url}."
-    bot-could-not-connect: "Botun bağlanamadı. Tokeni güncellemek için \"{token-minecraft-command} <yeniToken>\" komutunu kullanın."
-    public-bot: "Botun doğru yapılandırılmamış. {bot-page-url sayfasından \"Public Bot\" seçeneğinin işaretini kaldırıp \"Save Changes\" ile değişiklikleri kaydettikten sonra komutu tekrardan çalıştırın."
 chat:
   configuration:
     no-token: "Bir token {error}belirtmedin{default}. Doğru kullanım: \"{token-minecraft-command} <token>\"."
@@ -37,7 +31,7 @@ chat:
     bot-connected: "Botunuz {success}bağlandı{default}."
     bot-connected-incomplete-configuration-discord: "Botunuz {success}bağlandı{default}. \"{configure-discord-command}\" komutunu Discord sunucunuzda kullanarak kurun."
     bot-already-connected: "Tokeni {success}güncelledin{default}. Botuna bağlanmak için Minecraft sunucunu yeniden başlat."
-    bot-could-not-connect: "Botun {error}bağlanamadı{default}. Geçerli bir token ile tekrardan deneyin."
+    bot-could-not-connect: "Botun {error}bağlanamadı{default}. Tokeni güncellemek için \"{token-minecraft-command} <yeniToken>\" komutunu kullanın."
     public-bot-interactive: "Botun {error}doğru ayarlanmamış{default}. \"Public Bot\" özelliğini kapatıp değişiklikleri kaydettikten sonra komutu tekrar çalıştır {open:bot-page-url}. Bu mesaj ile etkileşime geçemiyorsan \"{tooltips-minecraft-command}\" komutunu kullan."
     public-bot: "Botun {error}doğru ayarlanmamış{default}. {bot-page-url} sayfasından \"Public Bot\" özelliğini kapatıp değişiklikleri kaydettikten sonra komutu tekrar çalıştır."
     incomplete-configuration: "Skoice {error}doğru yapılandırılmamış{default}. Lütfen sunucunun bir yöneticisi ile görüşün."

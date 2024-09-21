@@ -16,15 +16,11 @@ logger:
     plugin-disabled: "プラグインが無効になりました。"
     plugin-updated: "Skoiceは最新バージョンに更新されました。変更を適用するには、Minecraftサーバーを再起動してください。"
     configuration-complete: "Skoiceが構成されました。Discordサーバーで「{link-discord-command}」を入力して、DiscordアカウントをMinecraftにリンクしてください。プレイヤーは近接音声チャットを使用するためにアカウントをリンクする必要があります。"
-    bot-connecting: "あなたのbotが接続を試みています。"
-    bot-connected: "あなたのbotが接続されました。"
   warning:
     no-token: "トークンが設定されていません。Minecraftサーバーに参加して、Skoiceを設定してください。"
     multiple-guilds: "あなたのbotは複数のDiscordサーバーにいます。Discordサーバーで「{configure-discord-command}」と入力し、1つを選択してください。"
     no-voice-channel: "ボイスチャンネルが設定されていません。Discordサーバーで「{configure-discord-command}」と入力し、Skoiceを設定してください。"
     no-radius: "範囲が設定されていません。「{configure-discord-command}」をDiscordサーバーで入力して、Skoiceを設定してください。"
-  error:
-    bot-could-not-connect: "botが接続できませんでした。トークンを更新するには、「{token-minecraft-command}」に続けて新しいトークンを入力してください。"
 chat:
   configuration:
     no-token: "{error}トークンが与えられていません{default}。このコマンドを使用するには、「{token-minecraft-command}」の後にトークンを入力してください。"
@@ -32,7 +28,7 @@ chat:
     bot-connected: "あなたのbotが{success}接続されました{default}。"
     bot-connected-incomplete-configuration-discord: "あなたのbotが{success}接続されました{default}。Discordサーバーに「{configure-discord-command}」 と入力してセットアップしてください。"
     bot-already-connected: "{success}トークンを更新しました{default}。botを接続するにはMinecraftサーバーを再起動してください。"
-    bot-could-not-connect: "あなたのbotは{error}接続できませんでした{default}。有効なトークンでもう一度やりなおしてください。"
+    bot-could-not-connect: "あなたのbotは{error}接続できませんでした{default}。トークンを更新するには、「{token-minecraft-command}」に続けて新しいトークンを入力してください。"
     incomplete-configuration: "Skoiceが{error}正しく設定されていません{default}。サーバーの管理者に連絡してください。"
     incomplete-configuration-operator: "Skoiceは{error}正しく設定されていません{default}。「{configure-minecraft-command}」と入力して設定してください。「\"{language-minecraft-command}\"」に続けて言語を入力することで、言語を変更することができます。"
     incomplete-configuration-operator-discord: "Skoiceが{error}正しく設定されていません{default}。Discordサーバーに「{configure-discord-command}」と入力してセットアップしてください。"
