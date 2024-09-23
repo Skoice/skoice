@@ -3,5 +3,5 @@ updates:
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
-      interval: "weekly"
-    target-branch: "dev"
+      interval: "daily"
+    target-branch: "release"
