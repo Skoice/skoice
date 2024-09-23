@@ -26,6 +26,7 @@ logger:
     no-radius: "Radius not set. Type \"{configure-discord-command}\" on your Discord server to set up Skoice."
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: {bot-invite-url}."
     invalid-bot: "Your bot is not configured correctly. Join your Minecraft server to create a new one."
+    shared-bot: "It seems like your bot is running multiple programs. However, it must be dedicated to Skoice in order to work properly. You can create a new one by following the instructions on this page: {creation-guide-url}. Once you have retrieved its token, type \"{token-minecraft-command}\" followed by the token."
 chat:
   configuration:
     bot-creation-interactive: " \nConfiguration: {title}Bot Creation\n \n{dark}• {default}Skoice needs a Discord bot to work. To create one, follow the instructions on {open:creation-guide-url}.\n{dark}• {default}Once you have retrieved its token, insert it {suggest:token-minecraft-command}.\n \nIf you cannot interact with this message, type \"{tooltips-minecraft-command}\".\n "

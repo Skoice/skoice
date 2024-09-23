@@ -34,7 +34,6 @@ import net.dv8tion.jda.api.requests.RestAction;
 import org.bukkit.entity.Player;
 
 import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
@@ -86,6 +85,9 @@ public class ReadyListener extends ListenerAdapter {
                         || error.getErrorCode() == ErrorResponse.MFA_NOT_ENABLED.getCode()) {
                     this.plugin.getListenerManager().update();
                     return;
+                } else if (error.getErrorResponse() == ErrorResponse.INTERACTION_ALREADY_ACKNOWLEDGED
+                        || error.getErrorResponse() == ErrorResponse.UNKNOWN_INTERACTION) {
+                    this.plugin.log(Level.WARNING, "logger.warning.shared-bot");
                 }
             } else if (throwable instanceof PermissionException) {
                 this.plugin.getListenerManager().update();
