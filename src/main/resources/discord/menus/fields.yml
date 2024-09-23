@@ -84,3 +84,6 @@ illegal-value:
 proximity-channel-deleted:
   emoji: x
   inline: false
+shared-bot:
+  emoji: robot
+  inline: false
