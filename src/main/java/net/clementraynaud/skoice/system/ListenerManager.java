@@ -21,7 +21,6 @@ package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.listeners.channel.network.GenericChannelListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
 import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
@@ -44,6 +43,8 @@ import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.User;
 import org.bukkit.event.HandlerList;
+
+import java.util.logging.Level;
 
 public class ListenerManager {
 
@@ -82,10 +83,9 @@ public class ListenerManager {
                 this.plugin.getBot().retrieveProximityChannels();
             }
             this.plugin.getUpdateNetworksTask().start();
-            this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.configuration-complete"));
+            this.plugin.log(Level.INFO, "logger.info.configuration-complete");
             if (user != null) {
-                new EmbeddedMenu(this.plugin.getBot()).setContent("configuration-complete",
-                                this.plugin.getBot().getCommands().getAsMention(CommandInfo.LINK.toString()))
+                new EmbeddedMenu(this.plugin.getBot()).setContent("configuration-complete")
                         .message(user);
             }
         } else if (oldStatus == BotStatus.READY && newStatus != BotStatus.READY) {

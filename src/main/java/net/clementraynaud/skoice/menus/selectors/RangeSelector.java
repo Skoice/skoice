@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.MenuEmoji;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
@@ -45,10 +46,10 @@ public class RangeSelector extends Selector {
     @Override
     public SelectMenu get() {
         List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.long-range-mode.label"), RangeSelector.LONG_RANGE_MODE_ID)
-                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.description", "80", "40"))
+                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.description", MapUtil.of("horizontal-radius", "80", "vertical-radius", "40")))
                         .withEmoji(MenuEmoji.LOUD_SOUND.get()),
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.short-range-mode.label"), RangeSelector.SHORT_RANGE_MODE_ID)
-                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.description", "40", "20"))
+                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.description", MapUtil.of("horizontal-radius", "40", "vertical-radius", "20")))
                         .withEmoji(MenuEmoji.SOUND.get())
         ));
 
@@ -66,8 +67,10 @@ public class RangeSelector extends Selector {
         } else if (super.plugin.getBot().getStatus() != BotStatus.NO_RADIUS) {
             defaultValue = RangeSelector.CUSTOMIZED_ID;
             customizedOption = customizedOption.withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.description",
-                    String.valueOf(horizontalRadius),
-                    String.valueOf(verticalRadius)));
+                    MapUtil.of("horizontal-radius", String.valueOf(horizontalRadius),
+                            "vertical-radius", String.valueOf(verticalRadius)
+                    )
+            ));
         }
 
         options.add(customizedOption);

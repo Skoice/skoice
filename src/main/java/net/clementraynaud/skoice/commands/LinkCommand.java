@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
+import net.clementraynaud.skoice.util.MapUtil;
 import net.clementraynaud.skoice.util.ThreadUtil;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
@@ -46,9 +47,7 @@ public class LinkCommand extends Command {
     public void run() {
         ThreadUtil.ensureNotMainThread();
         if (super.plugin.getLinksYamlFile().getLinks().containsValue(super.executor.getUser().getId())) {
-            new EmbeddedMenu(this.plugin.getBot()).setContent("account-already-linked",
-                            super.plugin.getBot().getCommands().getAsMention(CommandInfo.UNLINK.toString()))
-                    .reply(super.interaction);
+            new EmbeddedMenu(this.plugin.getBot()).setContent("account-already-linked").reply(super.interaction);
             return;
         }
 
@@ -60,7 +59,8 @@ public class LinkCommand extends Command {
             code = String.format("%06d", number);
         } while (LinkCommand.discordIdCode.putIfAbsent(super.executor.getUser().getId(), code) != null);
 
-        new EmbeddedMenu(this.plugin.getBot()).setContent("verification-code", code)
+        new EmbeddedMenu(this.plugin.getBot()).setContent("verification-code",
+                        MapUtil.of("code", code))
                 .reply(super.interaction);
     }
 }

@@ -38,6 +38,8 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Level;
+
 public class Skoice extends JavaPlugin {
 
     private static final String OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
@@ -65,7 +67,7 @@ public class Skoice extends JavaPlugin {
     @Override
     public void onEnable() {
         if (!this.isMinecraftServerCompatible()) {
-            this.getLogger().severe(Skoice.OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE);
+            this.log(Level.SEVERE, Skoice.OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE);
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -75,7 +77,7 @@ public class Skoice extends JavaPlugin {
         this.configYamlFile.saveDefaultValues();
         this.lang = new MinecraftLang();
         this.lang.load(LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())));
-        this.getLogger().info(this.lang.getMessage("logger.info.plugin-enabled"));
+        this.log(Level.INFO, "logger.info.plugin-enabled");
         this.linksYamlFile = new LinksYamlFile(this);
         this.linksYamlFile.load();
         new OutdatedConfig(this).update();
@@ -100,17 +102,13 @@ public class Skoice extends JavaPlugin {
         updater.runUpdaterTaskTimer();
     }
 
-    public BukkitAudiences adventure() {
-        return this.adventure;
-    }
-
     @Override
     public void onDisable() {
         if (!this.isMinecraftServerCompatible()) {
             return;
         }
         this.bot.shutdown();
-        this.getLogger().info(this.lang.getMessage("logger.info.plugin-disabled"));
+        this.log(Level.INFO, "logger.info.plugin-disabled");
         if (this.adventure != null) {
             this.adventure.close();
         }
@@ -124,6 +122,10 @@ public class Skoice extends JavaPlugin {
             return false;
         }
         return true;
+    }
+
+    public void log(Level level, String path) {
+        this.getLogger().log(level, this.getLang().getConsoleMessage(path));
     }
 
     public MinecraftLang getLang() {
@@ -156,6 +158,10 @@ public class Skoice extends JavaPlugin {
 
     public UpdateNetworksTask getUpdateNetworksTask() {
         return this.updateNetworksTask;
+    }
+
+    public BukkitAudiences adventure() {
+        return this.adventure;
     }
 
     public HookManager getHookManager() {

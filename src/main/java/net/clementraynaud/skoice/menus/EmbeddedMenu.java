@@ -20,6 +20,8 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.interactions.InteractionHook;
@@ -28,14 +30,16 @@ import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
+import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class EmbeddedMenu {
 
     protected final Bot bot;
     protected String menuId;
-    protected String[] args = new String[0];
+    protected Map<String, String> args;
     protected String messageId;
     protected InteractionHook hook;
 
@@ -48,10 +52,14 @@ public class EmbeddedMenu {
         this.messageId = messageId;
     }
 
-    public EmbeddedMenu setContent(String menuId, String... args) {
+    public EmbeddedMenu setContent(String menuId, Map<String, String> args) {
         this.menuId = menuId;
         this.args = args;
         return this;
+    }
+
+    public EmbeddedMenu setContent(String menuId) {
+        return this.setContent(menuId, MapUtil.of());
     }
 
     public void message(User user) {
@@ -67,7 +75,20 @@ public class EmbeddedMenu {
         interaction.reply(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args))
                 .setEphemeral(true)
                 .flatMap(InteractionHook::retrieveOriginal)
-                .queue(message -> this.messageId = message.getId());
+                .queue(message -> this.messageId = message.getId(),
+                        new ErrorHandler().handle(EnumSet.of(
+                                ErrorResponse.INTERACTION_ALREADY_ACKNOWLEDGED,
+                                ErrorResponse.UNKNOWN_INTERACTION
+                        ), e -> {
+                            if (Arrays.stream(BotStatus.values())
+                                    .anyMatch(status -> status.getMenuId().equals(this.menuId))) {
+                                interaction.getHook().sendMessage(this.bot.getMenuFactory()
+                                                .getMenu("shared-bot")
+                                                .build(this.args))
+                                        .setEphemeral(true).queue();
+                            }
+                        })
+                );
     }
 
     public void edit(IMessageEditCallback interaction) {

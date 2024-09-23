@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.listeners.channel.main;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
@@ -128,8 +127,7 @@ public class GenericChannelListener extends ListenerAdapter {
                     if (!auditLogEntries.isEmpty()) {
                         User user = auditLogEntries.get(0).getUser();
                         if (user != null && !user.isBot()) {
-                            new EmbeddedMenu(this.plugin.getBot()).setContent("incomplete-configuration-alternative-server-manager",
-                                            this.plugin.getBot().getCommands().getAsMention(CommandInfo.CONFIGURE.toString()))
+                            new EmbeddedMenu(this.plugin.getBot()).setContent("incomplete-configuration-alternative-server-manager")
                                     .message(user);
                         }
                     }

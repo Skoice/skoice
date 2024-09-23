@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.bot;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.api.events.system.SystemReadyEvent;
-import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.lang.DiscordLang;
 import net.clementraynaud.skoice.lang.LangInfo;
@@ -48,7 +47,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
-import net.kyori.adventure.text.event.HoverEvent;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -61,6 +60,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class Bot {
@@ -93,11 +93,11 @@ public class Bot {
     public void connect(CommandSender sender) {
         if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
             this.acknowledgeStatus();
-            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
+            this.plugin.log(Level.WARNING, "logger.warning.no-token");
             return;
         }
 
-        this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connecting"));
+        this.plugin.log(Level.INFO, "chat.configuration.bot-connecting");
         Player tokenManager;
         if (sender instanceof Player) {
             tokenManager = (Player) sender;
@@ -126,7 +126,7 @@ public class Bot {
                         .build();
             } catch (InvalidTokenException | IllegalArgumentException | ErrorResponseException e) {
                 this.acknowledgeStatus();
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.bot-could-not-connect"));
+                this.plugin.log(Level.WARNING, "chat.configuration.bot-could-not-connect");
                 this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
                 if (tokenManager != null) {
                     tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-could-not-connect"));
@@ -191,9 +191,7 @@ public class Bot {
     public void notifyIfUnlinked(Member member) {
         String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
         if (minecraftId == null) {
-            new EmbeddedMenu(this).setContent("account-not-linked",
-                            this.plugin.getBot().getCommands().getAsMention(CommandInfo.LINK.toString()))
-                    .message(member.getUser());
+            new EmbeddedMenu(this).setContent("account-not-linked").message(member.getUser());
         } else {
             Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
             if (player != null) {
@@ -247,7 +245,7 @@ public class Bot {
         if (!this.isAvailable()) {
             this.status = BotStatus.NOT_CONNECTED;
             if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
+                this.plugin.log(Level.WARNING, "logger.warning.no-token");
             }
 
         } else {
@@ -255,36 +253,32 @@ public class Bot {
 
             if (guilds.isEmpty()) {
                 this.status = BotStatus.NO_GUILD;
-                this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
-                    applicationInfo.setRequiredScopes("applications.commands");
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-guild", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
-                });
+                this.plugin.log(Level.WARNING, "chat.configuration.no-guild");
             } else if (guilds.size() > 1) {
                 this.status = BotStatus.MULTIPLE_GUILDS;
-                this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.multiple-guilds"));
+                this.plugin.log(Level.WARNING, "logger.warning.multiple-guilds");
             } else {
                 this.guildId = guilds.get(0).getId();
+                this.plugin.getLang().getFormatter().set("guild",
+                        this.getGuild().getName().replace(Character.toString(ChatColor.COLOR_CHAR), ""));
 
                 if (this.getGuild().getRequiredMFALevel() == Guild.MFALevel.TWO_FACTOR_AUTH
                         && !this.jda.getSelfUser().isMfaEnabled()) {
                     this.status = BotStatus.MFA_REQUIRED;
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.two-factor-authentication"));
+                    this.plugin.log(Level.WARNING, "logger.warning.two-factor-authentication");
 
                 } else if (!this.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                     this.status = BotStatus.MISSING_PERMISSION;
-                    this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
-                        applicationInfo.setRequiredScopes("applications.commands");
-                        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.missing-permission", applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
-                    });
+                    this.plugin.log(Level.WARNING, "logger.error.missing-permission");
 
                 } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
                     this.status = BotStatus.NO_VOICE_CHANNEL;
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-voice-channel"));
+                    this.plugin.log(Level.WARNING, "logger.warning.no-voice-channel");
 
                 } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.HORIZONTAL_RADIUS.toString())
                         || !this.plugin.getConfigYamlFile().contains(ConfigField.VERTICAL_RADIUS.toString())) {
                     this.status = BotStatus.NO_RADIUS;
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-radius"));
+                    this.plugin.log(Level.WARNING, "logger.warning.no-radius");
 
                 } else {
                     this.status = BotStatus.READY;
@@ -318,17 +312,9 @@ public class Bot {
         if (player.hasPermission(Argument.MANAGE_PERMISSION) || force) {
             if (this.status == BotStatus.NOT_CONNECTED) {
                 if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-                    this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                        this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-interactive",
-                                        this.plugin.getLang().getComponentMessage("interaction.here")
-                                                .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.execute", "/skoice configure")))
-                                                .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure")),
-                                        this.plugin.getLang().getComponentMessage("interaction.here")
-                                                .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.shortcut", "/skoice language")))
-                                                .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice language "))
-                                )
-                        );
-                    });
+                    this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () ->
+                            this.plugin.adventure().player(player).sendMessage(this.plugin.getLang()
+                                    .getInteractiveMessage("chat.configuration.incomplete-configuration-operator-interactive")));
                 } else {
                     player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator"));
                 }
@@ -344,23 +330,10 @@ public class Bot {
 
     public void sendNoGuildAlert(Player player) {
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-            this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
-                applicationInfo.setRequiredScopes("applications.commands");
-                String inviteUrl = applicationInfo.getInviteUrl(Permission.ADMINISTRATOR);
-                this.plugin.adventure().player(player).sendMessage(
-                        this.plugin.getLang().getMessage("chat.configuration.no-guild-interactive",
-                                this.plugin.getLang().getComponentMessage("interaction.this-page")
-                                        .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", inviteUrl)))
-                                        .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl(inviteUrl))
-                        )
-                );
-            });
+            this.plugin.adventure().player(player).sendMessage(
+                    this.plugin.getLang().getInteractiveMessage("chat.configuration.no-guild-interactive"));
         } else {
-            this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
-                applicationInfo.setRequiredScopes("applications.commands");
-                player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.no-guild",
-                        applicationInfo.getInviteUrl(Permission.ADMINISTRATOR)));
-            });
+            player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.no-guild"));
         }
     }
 
@@ -422,5 +395,6 @@ public class Bot {
 
     public void setInviteUrl(String inviteUrl) {
         this.inviteUrl = inviteUrl;
+        this.plugin.getLang().getFormatter().set("bot-invite-url", inviteUrl);
     }
 }

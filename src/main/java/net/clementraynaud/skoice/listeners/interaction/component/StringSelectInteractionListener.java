@@ -216,8 +216,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         this.plugin.getConfigYamlFile().set(configField.toString(),
                                 Boolean.valueOf(event.getSelectedOptions().get(0).getValue()));
                         ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent(componentId).edit(event));
-                    } catch (IllegalArgumentException e) {
-                        throw new IllegalStateException(this.plugin.getLang().getMessage("logger.exception.unexpected-value", componentId));
+                    } catch (IllegalArgumentException ignored) {
                     }
             }
 

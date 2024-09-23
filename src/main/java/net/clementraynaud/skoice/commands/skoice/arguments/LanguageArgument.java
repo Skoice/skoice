@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.storage.config.ConfigField;
+import net.clementraynaud.skoice.util.MapUtil;
 import org.bukkit.command.CommandSender;
 
 public class LanguageArgument extends Argument {
@@ -37,8 +38,7 @@ public class LanguageArgument extends Argument {
     @Override
     public void run() {
         if (this.arg.isEmpty()) {
-            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.no-language",
-                    LangInfo.getJoinedList()));
+            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.no-language"));
             return;
         }
 
@@ -47,7 +47,7 @@ public class LanguageArgument extends Argument {
 
             if (language.toString().equals(super.plugin.getConfigYamlFile().getString(ConfigField.LANG.toString()))) {
                 this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.language-already-set",
-                        language.getFullName()));
+                        MapUtil.of("lang", language.getFullName())));
                 return;
             }
 
@@ -63,11 +63,10 @@ public class LanguageArgument extends Argument {
             }
 
             this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.language-updated",
-                    language.getFullName()));
+                    MapUtil.of("lang", language.getFullName())));
 
         } catch (IllegalArgumentException e) {
-            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.invalid-language",
-                    LangInfo.getJoinedList()));
+            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.invalid-language"));
         }
     }
 

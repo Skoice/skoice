@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class OutdatedConfig {
 
@@ -69,7 +70,7 @@ public class OutdatedConfig {
             } catch (IOException ignored) {
             }
 
-            this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.skoice-3", "https://github.com/Skoice/skoice/wiki/Migrating-to-Skoice-3"));
+            this.plugin.log(Level.INFO, "logger.info.skoice-3");
         }
     }
 

@@ -36,6 +36,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 public class Updater {
 
@@ -66,14 +67,12 @@ public class Updater {
         this.getVersion(version -> {
             if (version != null && !this.plugin.getDescription().getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
                 String expectedHash = this.fetchHashFromServer();
+                this.plugin.getLang().getFormatter().set("current-version", this.plugin.getDescription().getVersion());
+                this.plugin.getLang().getFormatter().set("latest-version", version);
                 if (expectedHash != null) {
                     this.update(version, expectedHash);
                 } else {
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                            this.plugin.getDescription().getVersion(),
-                            version,
-                            "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861")
-                    );
+                    this.plugin.log(Level.WARNING, "logger.warning.outdated-version");
                 }
             }
         });
@@ -141,7 +140,7 @@ public class Updater {
             if (this.verifyFileIntegrity(tempUpdateFile, expectedHash)) {
                 Files.copy(tempUpdateFile.toPath(), finalUpdateFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 this.downloadedVersion = version;
-                this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
+                this.plugin.log(Level.INFO, "logger.info.plugin-updated");
                 try {
                     Files.delete(tempUpdateFile.toPath());
                 } catch (IOException ignored) {
@@ -150,11 +149,7 @@ public class Updater {
                 throw new IOException("File integrity check failed");
             }
         } catch (IOException | NoSuchAlgorithmException exception) {
-            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                    this.plugin.getDescription().getVersion(),
-                    version,
-                    "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861")
-            );
+            this.plugin.log(Level.WARNING, "logger.warning.outdated-version");
             try {
                 Files.delete(tempUpdateFile.toPath());
             } catch (IOException ignored) {

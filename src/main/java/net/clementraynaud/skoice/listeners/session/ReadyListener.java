@@ -31,10 +31,11 @@ import net.dv8tion.jda.api.exceptions.PermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.requests.RestAction;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.Player;
 
+import java.time.OffsetDateTime;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 public class ReadyListener extends ListenerAdapter {
 
@@ -49,13 +50,19 @@ public class ReadyListener extends ListenerAdapter {
 
         Player tokenManager = this.plugin.getBot().getTokenManager();
 
-        this.plugin.getBot().getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
+        event.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
                     if (applicationInfo.isBotPublic()) {
                         this.handlePublicBot(tokenManager);
                         return;
                     }
 
-                    this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connected"));
+                    this.plugin.log(Level.INFO, "chat.configuration.bot-connected");
+
+                    if (tokenManager != null
+                            && event.getJDA().getSelfUser().getTimeCreated().isBefore(OffsetDateTime.now().minusDays(1))) {
+                        this.plugin.log(Level.WARNING, "chat.configuration.old-bot");
+                        tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.old-bot"));
+                    }
 
                     applicationInfo.setRequiredScopes("applications.commands");
                     this.plugin.getBot().setInviteUrl(applicationInfo.getInviteUrl(Permission.ADMINISTRATOR));
@@ -78,6 +85,9 @@ public class ReadyListener extends ListenerAdapter {
                         || error.getErrorCode() == ErrorResponse.MFA_NOT_ENABLED.getCode()) {
                     this.plugin.getListenerManager().update();
                     return;
+                } else if (error.getErrorResponse() == ErrorResponse.INTERACTION_ALREADY_ACKNOWLEDGED
+                        || error.getErrorResponse() == ErrorResponse.UNKNOWN_INTERACTION) {
+                    this.plugin.log(Level.WARNING, "logger.warning.shared-bot");
                 }
             } else if (throwable instanceof PermissionException) {
                 this.plugin.getListenerManager().update();
@@ -93,22 +103,20 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getBot().acknowledgeStatus();
         this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
         String botId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
+        this.plugin.getLang().getFormatter().set("bot-page-url", "https://discord.com/developers/applications/" + botId + "/bot");
         this.plugin.getBot().getJDA().shutdown();
         this.plugin.getListenerManager().update();
-        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
+        this.plugin.log(Level.WARNING, "chat.configuration.public-bot");
 
         if (tokenManager == null) {
             return;
         }
 
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-            this.plugin.adventure().sender(tokenManager).sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot-interactive", this.plugin.getLang().getComponentMessage("interaction.this-page")
-                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", "https://discord.com/developers/applications/" + botId + "/bot")))
-                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discord.com/developers/applications/" + botId + "/bot"))
-                    )
-            );
+            this.plugin.adventure().sender(tokenManager).sendMessage(this.plugin.getLang()
+                    .getInteractiveMessage("chat.configuration.public-bot-interactive"));
         } else {
-            tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
+            tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot"));
         }
     }
 
@@ -117,7 +125,7 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
         this.plugin.getBot().getJDA().shutdown();
         this.plugin.getListenerManager().update();
-        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.invalid-bot"));
+        this.plugin.log(Level.WARNING, "logger.error.invalid-bot");
 
         if (tokenManager != null) {
             tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.invalid-bot"));
