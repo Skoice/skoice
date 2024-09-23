@@ -30,7 +30,6 @@ public class DiscordLang extends Lang {
 
     @Override
     protected void loadFormatter() {
-        super.formatter.set("creation-guide-url", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice");
         super.formatter.set("link-minecraft-command", "/skoice link");
     }
 

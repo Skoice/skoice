@@ -212,9 +212,6 @@ field:
   proximity-channel-deleted:
     title: "Proximity Channel Deleted"
     description: "You have deleted a channel used by the proximity voice chat. These channels are automatically deleted when they are no longer needed. You should not be doing it manually."
-  shared-bot:
-    title: "Shared Bot"
-    description: "It seems like your bot is running multiple programs. However, it must be dedicated to Skoice in order to work properly. You can create a new one by [following these instructions]({creation-guide-url}). Once you have retrieved its token, type `{token-minecraft-command}` followed by the token on your Minecraft server. If your bot is not running multiple programs, please ask for help on our Discord server by pressing the button below."
 button-label:
   back: "Back"
   configure-now: "Configure Now"

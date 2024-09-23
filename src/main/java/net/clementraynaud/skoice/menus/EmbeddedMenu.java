@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.bot.Bot;
-import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
@@ -30,7 +29,6 @@ import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -75,20 +73,7 @@ public class EmbeddedMenu {
         interaction.reply(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args))
                 .setEphemeral(true)
                 .flatMap(InteractionHook::retrieveOriginal)
-                .queue(message -> this.messageId = message.getId(),
-                        new ErrorHandler().handle(EnumSet.of(
-                                ErrorResponse.INTERACTION_ALREADY_ACKNOWLEDGED,
-                                ErrorResponse.UNKNOWN_INTERACTION
-                        ), e -> {
-                            if (Arrays.stream(BotStatus.values())
-                                    .anyMatch(status -> status.getMenuId().equals(this.menuId))) {
-                                interaction.getHook().sendMessage(this.bot.getMenuFactory()
-                                                .getMenu("shared-bot")
-                                                .build(this.args))
-                                        .setEphemeral(true).queue();
-                            }
-                        })
-                );
+                .queue(message -> this.messageId = message.getId());
     }
 
     public void edit(IMessageEditCallback interaction) {
