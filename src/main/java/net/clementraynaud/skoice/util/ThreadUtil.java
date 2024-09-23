@@ -19,20 +19,19 @@
 
 package net.clementraynaud.skoice.util;
 
-import com.bugsnag.Severity;
-import net.clementraynaud.skoice.Skoice;
 import org.bukkit.Bukkit;
 
 public final class ThreadUtil {
+
+    private static final boolean DEBUG = false;
 
     private ThreadUtil() {
     }
 
     public static void ensureNotMainThread(boolean disablingBypass) {
-        if (Bukkit.isPrimaryThread() && (!disablingBypass || Bukkit.getPluginManager().isPluginEnabled("Skoice"))) {
+        if (ThreadUtil.DEBUG && Bukkit.isPrimaryThread() && (!disablingBypass || Bukkit.getPluginManager().isPluginEnabled("Skoice"))) {
             Exception exception = new IllegalStateException("This method should not be called from the main thread.");
             exception.printStackTrace();
-            Skoice.analyticManager().getBugsnag().notify(exception, Severity.WARNING);
         }
     }
 
