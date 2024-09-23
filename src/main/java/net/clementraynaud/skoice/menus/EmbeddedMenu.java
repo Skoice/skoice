@@ -81,7 +81,7 @@ public class EmbeddedMenu {
                                 ErrorResponse.UNKNOWN_INTERACTION
                         ), e -> {
                             if (Arrays.stream(BotStatus.values())
-                                    .anyMatch(status -> status.getMenuId().equals(this.menuId))) {
+                                    .anyMatch(status -> this.menuId.equals(status.getMenuId()))) {
                                 interaction.getHook().sendMessage(this.bot.getMenuFactory()
                                                 .getMenu("shared-bot")
                                                 .build(this.args))
