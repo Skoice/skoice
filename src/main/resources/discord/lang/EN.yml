@@ -135,7 +135,7 @@ menu:
   language:
     title: "Language"
     description: "Choose the language used to display messages."
-    full-description: "Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
+    full-description: "Your language is missing or incomplete? [Translate our plugin with Crowdin]({crowdin-url})!"
   skoice-proximity-voice-chat:
     title: "Skoice: Proximity Voice Chat"
   linking-process:
@@ -163,13 +163,13 @@ field:
     description: "You have deleted the main voice channel. Type {configure-discord-command} to complete the configuration and use Skoice."
   download:
     title: "Download"
-    description: "[Get the plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server."
+    description: "[Get the plugin]({spigotmc-url}) and install it on your Minecraft server."
   donating:
     title: "Donating"
-    description: "Skoice is a free software. If you like it, you can help us by [donating](https://opencollective.com/skoice)."
+    description: "Skoice is a free software. If you like it, you can help us by [donating]({open-collective-url})."
   contributing:
     title: "Contributing"
-    description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/Skoice/skoice) and [translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
+    description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page]({github-url}) and [translate our plugin with Crowdin]({crowdin-url})!"
   long-range-mode:
     title: "Long-Range Mode"
     description: "Choose this mode if you plan to play open world game modes."

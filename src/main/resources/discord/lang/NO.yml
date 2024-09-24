@@ -60,10 +60,10 @@ field:
     title: "Ufullstendig konfigurasjon"
   download:
     title: "Nedlast"
-    description: "[Få plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) og installer den på din Minecraftserver."
+    description: "[Få plugin]({spigotmc-url}) og installer den på din Minecraftserver."
   donating:
     title: "Donere"
-    description: "Skoice er en fri programvare. Hvis du liker det, kan du hjelpe oss ved å [donating](https://opencollective.com/skoice)."
+    description: "Skoice er en fri programvare. Hvis du liker det, kan du hjelpe oss ved å [donating]({open-collective-url})."
   contributing:
     title: "Bidra"
   customized:

@@ -100,13 +100,13 @@ field:
     title: "Незавершенная конфигурация"
   download:
     title: "Скачать"
-    description: "[Скачать плагин](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) и установить его на ваш сервер Minecraft."
+    description: "[Скачать плагин]({spigotmc-url}) и установить его на ваш сервер Minecraft."
   donating:
     title: "Пожертвование"
-    description: "Skoice - бесплатный плагин. Если он вам нравится, вы можете помочь нам, [пожертвование](https://opencollective.com/skoice)."
+    description: "Skoice - бесплатный плагин. Если он вам нравится, вы можете помочь нам, [пожертвование]({open-collective-url})."
   contributing:
     title: "Помощь проекту"
-    description: "Заинтересованы в том, чтобы помочь нам сформировать будущее Skoice? [Внесите свой вклад на нашей странице GitHub](https://github.com/Skoice/skoice) и [переводите наш плагин с помощью Crowdin](https://crowdin.com/project/skoice)!"
+    description: "Заинтересованы в том, чтобы помочь нам сформировать будущее Skoice? [Внесите свой вклад на нашей странице GitHub]({github-url}) и [переводите наш плагин с помощью Crowdin]({crowdin-url})!"
   long-range-mode:
     title: "Режим Длинного-Дальности"
     description: "Выберите этот режим, если вы планируете играть в открытые режимы игры."
