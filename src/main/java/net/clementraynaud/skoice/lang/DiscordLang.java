@@ -30,7 +30,11 @@ public class DiscordLang extends Lang {
 
     @Override
     protected void loadFormatter() {
-        super.formatter.set("creation-guide-url", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice");
+        super.formatter.set("spigotmc-url", "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861");
+        super.formatter.set("open-collective-url", "https://opencollective.com/skoice");
+        super.formatter.set("github-url", "https://github.com/Skoice/skoice");
+        super.formatter.set("crowdin-url", "https://crowdin.com/project/skoice");
+
         super.formatter.set("link-minecraft-command", "/skoice link");
     }
 

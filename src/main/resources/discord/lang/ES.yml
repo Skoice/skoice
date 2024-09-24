@@ -132,7 +132,7 @@ menu:
   language:
     title: "Idioma"
     description: "Elige el idioma utilizado para mostrar los mensajes."
-    full-description: "¿Falta tu idioma o está incompleto? [¡Traduce nuestro plugin con Crowdin!](https://crowdin.com/project/skoice)"
+    full-description: "¿Falta tu idioma o está incompleto? [¡Traduce nuestro plugin con Crowdin!]({crowdin-url})"
   skoice-proximity-voice-chat:
     title: "Skoice: chat de voz de proximidad"
   linking-process:
@@ -151,10 +151,10 @@ field:
     title: "Configuración Incompleta"
   download:
     title: "Descargar"
-    description: "[Obtén el plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) e instálalo en tu servidor de Minecraft."
+    description: "[Obtén el plugin]({spigotmc-url}) e instálalo en tu servidor de Minecraft."
   donating:
     title: "Donando"
-    description: "Skoice es un software gratuito. Si te gusta, puedes ayudarnos [donando](https://opencollective.com/skoice)."
+    description: "Skoice es un software gratuito. Si te gusta, puedes ayudarnos [donando]({open-collective-url})."
   contributing:
     title: "Contribuyendo"
   long-range-mode:

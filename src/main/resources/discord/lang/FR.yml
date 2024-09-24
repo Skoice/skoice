@@ -135,7 +135,7 @@ menu:
   language:
     title: "Langue"
     description: "Choisissez la langue utilisée pour afficher les messages."
-    full-description: "Votre langue est manquante ou incomplète ? [Traduisez notre plugin avec Crowdin](https://crowdin.com/project/skoice) !"
+    full-description: "Votre langue est manquante ou incomplète ? [Traduisez notre plugin avec Crowdin]({crowdin-url}) !"
   skoice-proximity-voice-chat:
     title: "Skoice : Chat vocal de proximité"
   linking-process:
@@ -163,13 +163,13 @@ field:
     description: "Vous avez supprimé le salon vocal principal. Tapez {configure-discord-command} pour terminer la configuration et utiliser Skoice."
   download:
     title: "Téléchargement"
-    description: "[Obtenez le plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) et installez-le sur votre serveur Minecraft."
+    description: "[Obtenez le plugin]({spigotmc-url}) et installez-le sur votre serveur Minecraft."
   donating:
     title: "Faire un don"
-    description: "Skoice est un logiciel gratuit. Si vous l'aimez, vous pouvez nous aider en [faisant un don](https://opencollective.com/skoice)."
+    description: "Skoice est un logiciel gratuit. Si vous l'aimez, vous pouvez nous aider en [faisant un don]({open-collective-url})."
   contributing:
     title: "Contribuer"
-    description: "Vous voulez nous aider à façonner le futur de Skoice ? [Contribuez sur notre page GitHub](https://github.com/Skoice/skoice) et [traduisez notre plugin avec Crowdin](https://crowdin.com/project/skoice) !"
+    description: "Vous voulez nous aider à façonner le futur de Skoice ? [Contribuez sur notre page GitHub]({github-url}) et [traduisez notre plugin avec Crowdin]({crowdin-url}) !"
   long-range-mode:
     title: "Mode longue portée"
     description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu en monde ouvert."

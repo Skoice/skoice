@@ -90,7 +90,7 @@ menu:
   language:
     title: "Dil"
     description: "Mesajları göstermek için kullanılacak dili seçin."
-    full-description: "Kendi diliniz tam değil veya eksikmi? [Crowdin'den kendiniz çevirin](https://crowdin.com/project/skoice)!"
+    full-description: "Kendi diliniz tam değil veya eksikmi? [Crowdin'den kendiniz çevirin]({crowdin-url})!"
   skoice-proximity-voice-chat:
     title: "Skoice: Minecraft'ta Proximity Chat"
   linking-process:
@@ -114,13 +114,13 @@ field:
     title: "Tamamlanmamış Yapılandırma"
   download:
     title: "İndir"
-    description: "[Eklentiyi indir](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) ve Minecraft sunucuna kur."
+    description: "[Eklentiyi indir]({spigotmc-url}) ve Minecraft sunucuna kur."
   donating:
     title: "Bağış"
-    description: "Skoice ücretsiz bir yazılımdır. Eğer beğenirseniz bize [bağış yaparak](https://opencollective.com/skoice) yardım edebilirsiniz."
+    description: "Skoice ücretsiz bir yazılımdır. Eğer beğenirseniz bize [bağış yaparak]({open-collective-url}) yardım edebilirsiniz."
   contributing:
     title: "Katkıda bulunma"
-    description: "Skoice'in geleceğini şekillendirmeye ilgilimisiniz! [Github sayfamıza katkıda bulunabilir](https://github.com/Skoice/skoice) veya [Crowdin ile eklentimizi çeşitli dillere çevirebilirsiniz](https://crowdin.com/project/skoice)!"
+    description: "Skoice'in geleceğini şekillendirmeye ilgilimisiniz! [Github sayfamıza katkıda bulunabilir]({github-url}) veya [Crowdin ile eklentimizi çeşitli dillere çevirebilirsiniz]({crowdin-url})!"
   long-range-mode:
     title: "Uzak-Mesafe Modu"
     description: "Açık dünya modlarında oynayacaksanız bu modu seçin."

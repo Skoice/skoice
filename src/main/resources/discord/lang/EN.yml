@@ -139,7 +139,7 @@ menu:
   language:
     title: "Language"
     description: "Choose the language used to display messages."
-    full-description: "Your language is missing or incomplete? [Translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
+    full-description: "Your language is missing or incomplete? [Translate our plugin with Crowdin]({crowdin-url})!"
   skoice-proximity-voice-chat:
     title: "Skoice: Proximity Voice Chat"
   linking-process:
@@ -167,13 +167,13 @@ field:
     description: "You have deleted the main voice channel. Type {configure-discord-command} to complete the configuration and use Skoice."
   download:
     title: "Download"
-    description: "[Get the plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) and install it on your Minecraft server."
+    description: "[Get the plugin]({spigotmc-url}) and install it on your Minecraft server."
   donating:
     title: "Donating"
-    description: "Skoice is a free software. If you like it, you can help us by [donating](https://opencollective.com/skoice)."
+    description: "Skoice is a free software. If you like it, you can help us by [donating]({open-collective-url})."
   contributing:
     title: "Contributing"
-    description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page](https://github.com/Skoice/skoice) and [translate our plugin with Crowdin](https://crowdin.com/project/skoice)!"
+    description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page]({github-url}) and [translate our plugin with Crowdin]({crowdin-url})!"
   long-range-mode:
     title: "Long-Range Mode"
     description: "Choose this mode if you plan to play open world game modes."
@@ -216,9 +216,6 @@ field:
   proximity-channel-deleted:
     title: "Proximity Channel Deleted"
     description: "You have deleted a channel used by the proximity voice chat. These channels are automatically deleted when they are no longer needed. You should not be doing it manually."
-  shared-bot:
-    title: "Shared Bot"
-    description: "It seems like your bot is running multiple programs. However, it must be dedicated to Skoice in order to work properly. You can create a new one by [following these instructions]({creation-guide-url}). Once you have retrieved its token, type `{token-minecraft-command}` followed by the token on your Minecraft server. If your bot is not running multiple programs, please ask for help on our Discord server by pressing the button below."
 button-label:
   back: "Back"
   configure-now: "Configure Now"

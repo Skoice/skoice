@@ -60,10 +60,10 @@ field:
     title: "Iscrizioni incomplete"
   download:
     title: "Scarica"
-    description: "[Ottieni il plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) e installalo sul tuo server Minecraft."
+    description: "[Ottieni il plugin]({spigotmc-url}) e installalo sul tuo server Minecraft."
   donating:
     title: "Donazioni"
-    description: "Skoice è un software libero. Se ti piace, puoi aiutarci da [donating](https://opencollective.com/skoice)."
+    description: "Skoice è un software libero. Se ti piace, puoi aiutarci da [donating]({open-collective-url})."
   contributing:
     title: "Contribuisci"
   customized:

@@ -88,6 +88,7 @@ public class ReadyListener extends ListenerAdapter {
                 } else if (error.getErrorResponse() == ErrorResponse.INTERACTION_ALREADY_ACKNOWLEDGED
                         || error.getErrorResponse() == ErrorResponse.UNKNOWN_INTERACTION) {
                     this.plugin.log(Level.WARNING, "logger.warning.shared-bot");
+                    return;
                 }
             } else if (throwable instanceof PermissionException) {
                 this.plugin.getListenerManager().update();

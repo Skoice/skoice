@@ -76,10 +76,10 @@ field:
   incomplete-configuration-alternative-server-manager:
     title: "Ufuldstændig konfiguration"
   download:
-    description: "[Hent pluginet](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) og installer det på din Minecraft-server."
+    description: "[Hent pluginet]({spigotmc-url}) og installer det på din Minecraft-server."
   donating:
     title: "Donationer"
-    description: "Skoice er et gratis software. Hvis du kan lide det, kan du hjælpe os ved at [donere](https://opencollective.com/skoice)."
+    description: "Skoice er et gratis software. Hvis du kan lide det, kan du hjælpe os ved at [donere]({open-collective-url})."
   contributing:
     title: "Bidrag"
   long-range-mode:

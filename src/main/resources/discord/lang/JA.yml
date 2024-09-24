@@ -85,7 +85,7 @@ menu:
   language:
     title: "言語"
     description: "メッセージの表示に使用する言語を選択してください。"
-    full-description: "あなたの言語が無いか不完全ですか？[Crowdinでプライグインを翻訳してください](https://crowdin.com/project/skoice)！"
+    full-description: "あなたの言語が無いか不完全ですか？[Crowdinでプライグインを翻訳してください]({crowdin-url})！"
   skoice-proximity-voice-chat:
     title: "Skoice：近接ボイスチャット"
   linking-process:
@@ -107,13 +107,13 @@ field:
     title: "未完了の設定"
   download:
     title: "ダウンロード"
-    description: "[プラグインを入手](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) して、あなたのMinecraftサーバーにインストールしてください。"
+    description: "[プラグインを入手]({spigotmc-url}) して、あなたのMinecraftサーバーにインストールしてください。"
   donating:
     title: "寄付"
-    description: "Skoiceはフリーソフトウェアです。もし気に入っていただけたなら、 [寄付](https://opencollective.com/skoice) することでご支援いただけます。"
+    description: "Skoiceはフリーソフトウェアです。もし気に入っていただけたなら、 [寄付]({open-collective-url}) することでご支援いただけます。"
   contributing:
     title: "貢献"
-    description: "Skoiceの未来を形作るのに興味がありますか？ [GitHubでコントリビュート](https://github.com/Skoice/skoice) し [Crowdinでプラグインを翻訳](https://crowdin.com/project/skoice) してください！"
+    description: "Skoiceの未来を形作るのに興味がありますか？ [GitHubでコントリビュート]({github-url}) し [Crowdinでプラグインを翻訳]({crowdin-url}) してください！"
   long-range-mode:
     title: "長距離モード"
     description: "オープンワールドなゲームモードをプレイする場合は、このモードを選択してください。"

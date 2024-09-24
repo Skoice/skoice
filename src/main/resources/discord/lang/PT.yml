@@ -83,10 +83,10 @@ field:
     title: "Configuração Incompleta"
   download:
     title: "Baixar"
-    description: "[Baixe o plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) e o adicione em seu servidor de Minecraft."
+    description: "[Baixe o plugin]({spigotmc-url}) e o adicione em seu servidor de Minecraft."
   donating:
     title: "Doar"
-    description: "Skoice é um software gratuito. Caso goste, você pode nos ajudar [donating] (https://opencollective.com/skoice)."
+    description: "Skoice é um software gratuito. Caso goste, você pode nos ajudar [donating] ({open-collective-url})."
   contributing:
     title: "Contribuir"
   long-range-mode:
