@@ -84,6 +84,10 @@ error:
     type: error
     fields:
       - proximity-channel-deleted
+  shared-bot:
+    type: error
+    fields:
+      - shared-bot
 
 voice-chat:
   emoji: speaking_head
