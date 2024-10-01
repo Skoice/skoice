@@ -85,8 +85,8 @@ public class ReadyListener extends ListenerAdapter {
                         || error.getErrorCode() == ErrorResponse.MFA_NOT_ENABLED.getCode()) {
                     this.plugin.getListenerManager().update();
                     return;
-                } else if (error.getErrorResponse() == ErrorResponse.INTERACTION_ALREADY_ACKNOWLEDGED
-                        || error.getErrorResponse() == ErrorResponse.UNKNOWN_INTERACTION) {
+                }
+                if (error.getErrorCode() == ErrorResponse.INTERACTION_ALREADY_ACKNOWLEDGED.getCode() || (error.getErrorCode() == ErrorResponse.UNKNOWN_INTERACTION.getCode() && error.getMessage().startsWith("10062: Failed to acknowledge this interaction, this can be due to 2 reasons"))) {
                     this.plugin.log(Level.WARNING, "logger.warning.shared-bot");
                     return;
                 }
