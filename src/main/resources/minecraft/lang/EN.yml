@@ -28,6 +28,7 @@ logger:
     no-voice-channel: "Voice channel not set. Type \"/configure\" on your Discord server to set up Skoice."
     no-radius: "Radius not set. Type \"/configure\" on your Discord server to set up Skoice."
     old-bot: "You are using an old bot. Make sure it is configured as indicated and you only use it for Skoice."
+    shared-bot: "It seems like your bot is running multiple programs. However, it must be dedicated to Skoice in order to work properly. You can create a new one by following the instructions on this page: %s. Once you have retrieved its token, type \"/skoice token\" followed by the token."
   error:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "Your bot could not connect. To update the token, type \"/skoice token\" followed by the new token."

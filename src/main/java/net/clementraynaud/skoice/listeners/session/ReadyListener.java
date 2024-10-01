@@ -35,7 +35,6 @@ import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.Player;
 
 import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.function.Consumer;
 
 public class ReadyListener extends ListenerAdapter {
@@ -85,6 +84,10 @@ public class ReadyListener extends ListenerAdapter {
                         || error.getErrorCode() == ErrorResponse.MISSING_ACCESS.getCode()
                         || error.getErrorCode() == ErrorResponse.MFA_NOT_ENABLED.getCode()) {
                     this.plugin.getListenerManager().update();
+                    return;
+                }
+                if (error.getErrorCode() == ErrorResponse.INTERACTION_ALREADY_ACKNOWLEDGED.getCode() || (error.getErrorCode() == ErrorResponse.UNKNOWN_INTERACTION.getCode() && error.getMessage().startsWith("10062: Failed to acknowledge this interaction, this can be due to 2 reasons"))) {
+                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.shared-bot", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice"));
                     return;
                 }
             } else if (throwable instanceof PermissionException) {
