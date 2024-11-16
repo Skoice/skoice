@@ -31,7 +31,7 @@ menu:
     description: "Your Discord server requires the bot owner's account to have two-factor authentication enabled. Set it up or disable this requirement in server settings by following this path: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
   permissions:
     title: "Berechtigungen"
-    description: "Um richtig zu funktionieren, muss dein Bot die Berechtigung \"Administrator\" auf deinem Discord-Server haben."
+    description: "Um richtig zu funktionieren, muss dein Bot die Berechtigung `Administrator` auf deinem Discord-Server haben."
   voice-chat:
     title: "Sprachchat"
   range:
@@ -196,7 +196,7 @@ field:
     description: "Dein Discord-Account wurde von Minecraft entkoppelt."
   account-not-linked:
     title: "Konto nicht verknüpft"
-    description: "Your Discord account is not linked to Minecraft. Type %s to link it and use the proximity voice chat."
+    description: "Dein Discord-Account ist nicht mit Minecraft verknüpft. Nutze %s um es zu verknüpfen und den Proximity-Sprachchat zu nutzen."
   account-already-linked:
     title: "Bereits verknüpftes Konto"
     description: "Dein Discord-Account ist bereits mit Minecraft verknüpft. Gib %s ein, um die Verknüpfung zu lösen."
@@ -244,5 +244,5 @@ text-input:
   vertical-radius:
     label: "Vertikaler Radius"
 display-issues: "If you cannot see the message above, you probably have disabled embeds in Discord settings. To use Skoice properly, you must enable them by following this path: `App Settings › Chat › Show embeds and preview website links pasted into chat`."
-voice-channel-status: "Unable to talk — No players nearby"
+voice-channel-status: "Sprechen unmöglich — Keine Spieler da"
 proximity-channel-name: "Proximity Channel"

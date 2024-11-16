@@ -27,10 +27,12 @@ logger:
     two-factor-authentication: "Two-factor authentication required. Enable two-factor authentication on the bot owner's account or disable \"Require 2FA for moderator actions\" in server settings."
     no-voice-channel: "Stemmekanal ikke sat. Skriv \"/configure\" på din Discord server for at opsætte Skoice."
     no-radius: "Radius ikke sat. Skriv \"/configure\" på din Discord server for at opsætte Skoice."
+    old-bot: "You are using an old bot. Make sure it is configured as indicated and you only use it for Skoice."
+    shared-bot: "It seems like your bot is running multiple programs. However, it must be dedicated to Skoice in order to work properly. You can create a new one by following the instructions on this page: %s. Once you have retrieved its token, type \"/skoice token\" followed by the token."
   error:
     missing-permission: "You did not grant your bot the \"Administrator\" permission on your Discord server. Open this link to add it: %s."
     bot-could-not-connect: "Din bot kunne ikke oprette forbindelse. For at opdatere token, skriv \"/skoice token\" efterfulgt af det nye token."
-    bot-timed-out: "A problem prevented your bot from connecting. Check your network connection status and look for recent Discord outages here: %s."
+    invalid-bot: "Your bot is not configured correctly. Join your Minecraft server to create a new one."
     public-bot: "Your bot is not configured correctly. Run the command again once you have unselected \"Public Bot\" and clicked \"Save Changes\" on this page: %s."
   exception:
     unexpected-value: "Uventet værdi: %s"
@@ -49,8 +51,10 @@ chat:
     bot-connecting: "%s Din bot &aforsøger at oprette forbindelse&7."
     bot-connected: "%s Din bot er &anu tilsluttet&7."
     bot-connected-incomplete-configuration-discord: "%s Din bot er &anu tilsluttet&7. Skriv \"&e/configure&7\" på din Discord server for at opsætte den."
+    old-bot: "%s You are &cusing an old bot&7. Make sure it is configured as indicated and you only use it for Skoice."
     bot-already-connected: "%s Du har &aopdateret token&7. Genstart din Minecraft server for at tilslutte din bot."
     bot-could-not-connect: "%s Din bot &ccould not connect&7. Prøv igen med en gyldig token."
+    invalid-bot: "%s Your bot is &cnot configured correctly&7. Please follow the instructions again to create a new one."
     public-bot-interactive:
       - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
       - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
@@ -85,10 +89,6 @@ chat:
     invalid-parameter: "%s Du har &cikke angivet et gyldigt argument&7. For at bruge denne kommando, skriv \"&e/skoice %s&7\"."
     illegal-executor: "%s Denne kommando kan &ckun udføres &7af spillere."
     missing-permission: "%s Denne kommando kan &ckun udføres &7af operatører."
-    bot-timed-out-interactive:
-      - "%s Et problem &cforhindrede din bot &7i at oprette forbindelse. Tjek din netværkstilstand og led efter seneste Discord outages på "
-      - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
-    bot-timed-out: "%s A problem &cprevented your bot &7from connecting. Check your network connection status and look for recent Discord outages on this page: &b%s&7."
 action-bar:
   connecting-alert: "&a⚠ &7You are &anear other players&7. Say hi!"
   disconnecting-alert: "&c⚠ &7Du bevæger dig &cvæk fra nær spillere&7."

@@ -27,6 +27,8 @@ logger:
     two-factor-authentication: "L'authentification à deux facteurs est requise. Activez l'authentification à deux facteurs sur le compte du propriétaire du bot ou désactivez \"Exiger une A2F pour les actions des modérateurs\" dans les paramètres du serveur."
     no-voice-channel: "Salon vocal non défini. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
     no-radius: "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
+    old-bot: "Vous utilisez un ancien bot. Assurez-vous qu'il est configuré comme indiqué et que vous ne l'utilisez que pour Skoice."
+    shared-bot: "It seems like your bot is running multiple programs. However, it must be dedicated to Skoice in order to work properly. You can create a new one by following the instructions on this page: %s. Once you have retrieved its token, type \"/skoice token\" followed by the token."
   error:
     missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : %s."
     bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."
@@ -49,6 +51,7 @@ chat:
     bot-connecting: "%s Votre bot &atente de se connecter&7."
     bot-connected: "%s Votre bot est &adésormais connecté&7."
     bot-connected-incomplete-configuration-discord: "%s Votre bot est &adésormais connecté&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
+    old-bot: "%s You are &cusing an old bot&7. Make sure it is configured as indicated and you only use it for Skoice."
     bot-already-connected: "%s Vous avez &amis à jour le token&7. Redémarrez votre serveur Minecraft pour connecter votre bot."
     bot-could-not-connect: "%s Votre bot &cn'a pas pu se connecter&7. Essayez de nouveau avec un token valide."
     invalid-bot: "%s Votre bot n'est &cpas configuré correctement&7. Veuillez suivre à nouveau les instructions pour en créer un nouveau."

@@ -27,11 +27,11 @@ menu:
     select-menu:
       placeholder: "Por favor, selecciona un servidor."
   two-factor-authentication:
-    title: "Two-Factor Authentication"
+    title: "Autenticación de dos factores"
     description: "Your Discord server requires the bot owner's account to have two-factor authentication enabled. Set it up or disable this requirement in server settings by following this path: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
   permissions:
     title: "Permisos"
-    description: "Para funcionar correctamente, tu bot debe tener el permiso de \"Administrador\" en tu servidor de Discord."
+    description: "Para funcionar correctamente, tu bot debe tener el permiso de `Administrador` en tu servidor de Discord."
   voice-chat:
     title: "Chat de voz"
   range:
