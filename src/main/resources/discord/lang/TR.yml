@@ -31,7 +31,7 @@ menu:
     description: "Discord sunucun bot sahibi olan hesabın iki aşamalı doğrulamayı açmasını gerektiriyor. 2AD'yi açın veya bu zorunluluğu sunucu ayarlarından `Moderasyon > Güvenlik Kurulumu > Moderatör eylemleri için İki Aşamalı Doğrulama gerektir` yolunu izleyerek kapatın."
   permissions:
     title: "İzinler"
-    description: "Botunuzun düzgün çalışması için Discord sunucunuzda \"Yönetici\" iznine ihtiyacı var."
+    description: "Botunuzun düzgün çalışması için Discord sunucunuzda \"Yönetici\" iznine ihtiyacı var. To do this, add a role with `Administrator` permission to the bot."
   voice-chat:
     title: "Sesli sohbet"
   range:
