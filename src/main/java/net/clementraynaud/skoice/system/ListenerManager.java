@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.system;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.commands.CommandInfo;
+import net.clementraynaud.skoice.listeners.StatusChangeListener;
 import net.clementraynaud.skoice.listeners.channel.network.GenericChannelListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
 import net.clementraynaud.skoice.listeners.guild.GuildLeaveListener;
@@ -126,7 +127,8 @@ public class ListenerManager {
                 new SlashCommandInteractionListener(this.plugin),
                 new ButtonInteractionListener(this.plugin),
                 new StringSelectInteractionListener(this.plugin),
-                new ModalInteractionListener(this.plugin)
+                new ModalInteractionListener(this.plugin),
+                new StatusChangeListener(this.plugin)
         );
     }
 
