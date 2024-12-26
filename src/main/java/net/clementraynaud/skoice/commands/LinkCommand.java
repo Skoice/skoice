@@ -21,7 +21,6 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
-import net.clementraynaud.skoice.util.ThreadUtil;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 import java.util.Map;
@@ -38,13 +37,13 @@ public class LinkCommand extends Command {
     }
 
     public static Map<String, String> getDiscordIdCode() {
-        ThreadUtil.ensureNotMainThread();
+
         return LinkCommand.discordIdCode;
     }
 
     @Override
     public void run() {
-        ThreadUtil.ensureNotMainThread();
+
         if (super.plugin.getLinksYamlFile().getLinks().containsValue(super.executor.getUser().getId())) {
             new EmbeddedMenu(this.plugin.getBot()).setContent("account-already-linked",
                             super.plugin.getBot().getCommands().getAsMention(CommandInfo.UNLINK.toString()))

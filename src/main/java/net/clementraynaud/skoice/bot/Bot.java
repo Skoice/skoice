@@ -20,8 +20,6 @@
 package net.clementraynaud.skoice.bot;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
-import net.clementraynaud.skoice.api.events.system.SystemReadyEvent;
 import net.clementraynaud.skoice.commands.CommandInfo;
 import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.lang.DiscordLang;
@@ -29,6 +27,8 @@ import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.listeners.session.ReadyListener;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.menus.MenuFactory;
+import net.clementraynaud.skoice.model.minecraft.BasePlayer;
+import net.clementraynaud.skoice.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.ProximityChannel;
@@ -49,8 +49,6 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,6 +59,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class Bot {
@@ -90,7 +89,7 @@ public class Bot {
         this.connect(null);
     }
 
-    public void connect(CommandSender sender) {
+    public void connect(SkoiceCommandSender sender) {
         if (!this.plugin.getConfigYamlFile().contains(ConfigField.TOKEN.toString())) {
             this.acknowledgeStatus();
             this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.no-token"));
@@ -98,9 +97,9 @@ public class Bot {
         }
 
         this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.bot-connecting"));
-        Player tokenManager;
-        if (sender instanceof Player) {
-            tokenManager = (Player) sender;
+        BasePlayer tokenManager;
+        if (sender instanceof BasePlayer) {
+            tokenManager = (BasePlayer) sender;
             this.tokenManagerId = tokenManager.getUniqueId().toString();
             tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-connecting"));
         } else {
@@ -119,7 +118,7 @@ public class Bot {
         }
 
         byte[] finalBase64TokenBytes = base64TokenBytes;
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+        CompletableFuture.runAsync(() -> {
             try {
                 this.jda = JDABuilder.createDefault(new String(finalBase64TokenBytes))
                         .addEventListeners(new ReadyListener(this.plugin))
@@ -178,7 +177,7 @@ public class Bot {
 
     public void setDefaultAvatar() {
         if (this.jda.getSelfUser().getDefaultAvatarUrl().equals(this.jda.getSelfUser().getEffectiveAvatarUrl())) {
-            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            CompletableFuture.runAsync(() -> {
                 try (InputStream inputStream = new URL("https://clementraynaud.net/Skoice.jpeg").openStream()) {
                     Icon icon = Icon.from(inputStream);
                     this.jda.getSelfUser().getManager().setAvatar(icon).queue();
@@ -195,13 +194,9 @@ public class Bot {
                             this.plugin.getBot().getCommands().getAsMention(CommandInfo.LINK.toString()))
                     .message(member.getUser());
         } else {
-            Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
+            BasePlayer player = this.plugin.getPlayer(UUID.fromString(minecraftId));
             if (player != null) {
                 player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
-                this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                    PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, member.getId());
-                    this.plugin.getServer().getPluginManager().callEvent(event);
-                });
             }
         }
     }
@@ -288,10 +283,6 @@ public class Bot {
 
                 } else {
                     this.status = BotStatus.READY;
-                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                        SystemReadyEvent event = new SystemReadyEvent();
-                        this.plugin.getServer().getPluginManager().callEvent(event);
-                    });
                 }
             }
 
@@ -310,7 +301,7 @@ public class Bot {
         }
     }
 
-    public void sendIncompleteConfigurationAlert(Player player, boolean sendIfPermissionMissing, boolean force) {
+    public void sendIncompleteConfigurationAlert(BasePlayer player, boolean sendIfPermissionMissing, boolean force) {
         if (!this.isStatusAcknowledged) {
             return;
         }
@@ -318,8 +309,8 @@ public class Bot {
         if (player.hasPermission(Argument.MANAGE_PERMISSION) || force) {
             if (this.status == BotStatus.NOT_CONNECTED) {
                 if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-                    this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                        this.plugin.adventure().player(player).sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-interactive",
+                    CompletableFuture.runAsync(() -> {
+                        player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-interactive",
                                         this.plugin.getLang().getComponentMessage("interaction.here")
                                                 .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.execute", "/skoice configure")))
                                                 .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/skoice configure")),
@@ -342,12 +333,12 @@ public class Bot {
         }
     }
 
-    public void sendNoGuildAlert(Player player) {
+    public void sendNoGuildAlert(BasePlayer player) {
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
             this.jda.retrieveApplicationInfo().queue(applicationInfo -> {
                 applicationInfo.setRequiredScopes("applications.commands");
                 String inviteUrl = applicationInfo.getInviteUrl(Permission.ADMINISTRATOR);
-                this.plugin.adventure().player(player).sendMessage(
+                player.sendMessage(
                         this.plugin.getLang().getMessage("chat.configuration.no-guild-interactive",
                                 this.plugin.getLang().getComponentMessage("interaction.this-page")
                                         .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", inviteUrl)))
@@ -387,11 +378,11 @@ public class Bot {
         this.isStatusAcknowledged = true;
     }
 
-    public Player getTokenManager() {
+    public BasePlayer getTokenManager() {
         if (this.tokenManagerId == null) {
             return null;
         }
-        return this.plugin.getServer().getPlayer(UUID.fromString(this.tokenManagerId));
+        return this.plugin.getPlayer(UUID.fromString(this.tokenManagerId));
     }
 
     public Guild getGuild() {

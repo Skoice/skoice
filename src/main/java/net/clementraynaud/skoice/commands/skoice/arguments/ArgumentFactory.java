@@ -20,11 +20,11 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
-import org.bukkit.command.CommandSender;
+import net.clementraynaud.skoice.model.minecraft.SkoiceCommandSender;
 
 public class ArgumentFactory {
 
-    public Argument getArgument(Skoice plugin, ArgumentInfo argumentInfo, CommandSender sender, String arg) {
+    public Argument getArgument(Skoice plugin, ArgumentInfo argumentInfo, SkoiceCommandSender sender, String arg) {
         switch (argumentInfo) {
             case CONFIGURE:
                 return new ConfigureArgument(plugin, sender);

@@ -20,11 +20,9 @@
 package net.clementraynaud.skoice.tasks;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.api.events.system.SystemInterruptionEvent;
 import net.clementraynaud.skoice.system.Networks;
 import net.clementraynaud.skoice.system.ProximityChannel;
 import net.clementraynaud.skoice.system.ProximityChannels;
-import net.clementraynaud.skoice.util.ThreadUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -41,8 +39,6 @@ public class InterruptSystemTask {
     }
 
     public void run() {
-        ThreadUtil.ensureNotMainThread(true);
-
         this.plugin.getListenerManager().unregisterBotListeners();
         this.plugin.getUpdateNetworksTask().interrupt();
 
@@ -81,12 +77,5 @@ public class InterruptSystemTask {
         }
 
         Networks.clear();
-
-        if (this.plugin.isEnabled()) {
-            this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                SystemInterruptionEvent event = new SystemInterruptionEvent();
-                this.plugin.getServer().getPluginManager().callEvent(event);
-            });
-        }
     }
 }

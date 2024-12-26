@@ -25,8 +25,8 @@ import net.clementraynaud.skoice.menus.selectors.SelectorFactory;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
 import java.util.HashMap;

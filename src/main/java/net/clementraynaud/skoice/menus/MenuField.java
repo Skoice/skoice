@@ -21,7 +21,7 @@ package net.clementraynaud.skoice.menus;
 
 import net.clementraynaud.skoice.Skoice;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.bukkit.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.ConfigurationSection;
 
 public class MenuField {
 

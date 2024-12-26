@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.lang;
 
 import net.clementraynaud.skoice.util.ConfigurationUtil;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 
 import java.util.HashMap;
 import java.util.List;

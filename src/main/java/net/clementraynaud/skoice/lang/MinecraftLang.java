@@ -19,15 +19,15 @@
 
 package net.clementraynaud.skoice.lang;
 
+import net.clementraynaud.skoice.util.ComponentUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 
 public class MinecraftLang extends Lang {
 
-    private static final String CHAT_PREFIX = ChatColor.LIGHT_PURPLE + "Skoice " + ChatColor.DARK_GRAY + "•" + ChatColor.GRAY;
+    private static final String CHAT_PREFIX = "&d" + "Skoice " + "&8" + "•" + "&7";
 
     @Override
     protected String getPath(LangInfo langInfo) {
@@ -41,9 +41,9 @@ public class MinecraftLang extends Lang {
             return String.format("!%s!", path);
         }
         if (path.startsWith("chat.")) {
-            return ChatColor.translateAlternateColorCodes('&', String.format(message, MinecraftLang.CHAT_PREFIX));
+            return String.format(message, MinecraftLang.CHAT_PREFIX);
         } else if ((path.startsWith("action-bar.") || path.startsWith("interaction."))) {
-            return ChatColor.translateAlternateColorCodes('&', message);
+            return message;
         }
         return message;
     }
@@ -52,15 +52,15 @@ public class MinecraftLang extends Lang {
     public String getMessage(String path, String... args) {
         String message = super.getMessage(path);
         args = Arrays.stream(args)
-                .map(arg -> arg.replace(String.valueOf(ChatColor.COLOR_CHAR), ""))
+                .map(arg -> arg.replace("&", ""))
                 .toArray(String[]::new);
         if (path.startsWith("chat.")) {
             String[] newArgs = new String[args.length + 1];
             newArgs[0] = MinecraftLang.CHAT_PREFIX;
             System.arraycopy(args, 0, newArgs, 1, args.length);
-            return String.format(ChatColor.translateAlternateColorCodes('&', message), (Object[]) newArgs);
+            return String.format(message, (Object[]) newArgs);
         } else if (path.startsWith("interaction.")) {
-            return String.format(ChatColor.translateAlternateColorCodes('&', message), (Object[]) args);
+            return String.format(message, (Object[]) args);
         }
         return String.format(message, (Object[]) args);
     }
@@ -69,21 +69,20 @@ public class MinecraftLang extends Lang {
         String[] strings = (super.active != null && super.active.containsKey(path))
                 ? super.active.get(path).toArray(new String[0])
                 : super.english.get(path).toArray(new String[0]);
-        TextComponent.Builder message = Component.text().content(ChatColor.translateAlternateColorCodes('&',
-                String.format(strings[0], MinecraftLang.CHAT_PREFIX)));
+        TextComponent.Builder message = Component.text().append(ComponentUtil.translateAlternateColorCodes(String.format(strings[0], MinecraftLang.CHAT_PREFIX)));
         for (int i = 0; i < components.length; i++) {
             message.append(components[i])
-                    .append(Component.text(ChatColor.translateAlternateColorCodes('&', strings[i + 1]))
+                    .append(ComponentUtil.translateAlternateColorCodes(strings[i + 1])
                             .hoverEvent(null));
         }
         return message.build();
     }
 
     public Component getComponentMessage(String path) {
-        return Component.text(ChatColor.translateAlternateColorCodes('&', this.getMessage(path)));
+        return ComponentUtil.translateAlternateColorCodes(this.getMessage(path));
     }
 
     public Component getComponentMessage(String path, String... args) {
-        return Component.text(ChatColor.translateAlternateColorCodes('&', this.getMessage(path, args)));
+        return ComponentUtil.translateAlternateColorCodes(this.getMessage(path, args));
     }
 }

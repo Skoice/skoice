@@ -20,20 +20,20 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import net.clementraynaud.skoice.model.minecraft.BasePlayer;
+import net.clementraynaud.skoice.model.minecraft.SkoiceCommandSender;
 
 public abstract class Argument {
 
     public static final String MANAGE_PERMISSION = "skoice.manage";
 
     protected final Skoice plugin;
-    protected final CommandSender sender;
+    protected final SkoiceCommandSender sender;
     protected final boolean allowedInConsole;
     protected final boolean permissionRequired;
     protected final boolean hidden;
 
-    protected Argument(Skoice plugin, CommandSender sender, boolean allowedInConsole, boolean permissionRequired, boolean hidden) {
+    protected Argument(Skoice plugin, SkoiceCommandSender sender, boolean allowedInConsole, boolean permissionRequired, boolean hidden) {
         this.plugin = plugin;
         this.sender = sender;
         this.allowedInConsole = allowedInConsole;
@@ -44,7 +44,7 @@ public abstract class Argument {
     public abstract void run();
 
     public boolean canBeExecuted() {
-        if (!(this.sender instanceof Player) && !this.allowedInConsole) {
+        if (!(this.sender instanceof BasePlayer) && !this.allowedInConsole) {
             this.sender.sendMessage(this.plugin.getLang().getMessage("chat.error.illegal-executor"));
             return false;
         }

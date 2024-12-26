@@ -25,7 +25,7 @@ import net.clementraynaud.skoice.util.ConfigurationUtil;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 
 import java.util.Collections;
 

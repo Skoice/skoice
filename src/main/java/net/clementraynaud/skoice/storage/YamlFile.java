@@ -20,14 +20,12 @@
 package net.clementraynaud.skoice.storage;
 
 import net.clementraynaud.skoice.Skoice;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 
 public class YamlFile extends YamlConfiguration {
 
@@ -48,17 +46,12 @@ public class YamlFile extends YamlConfiguration {
                 this.load(this.file);
                 this.save();
             }
-        } catch (IOException | InvalidConfigurationException ignored) {
+        } catch (IOException ignored) {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public void save() {
-        try {
-            this.options().setHeader(Collections.singletonList(YamlFile.FILE_HEADER));
-        } catch (NoSuchMethodError e) {
-            this.options().header(YamlFile.FILE_HEADER);
-        }
+        this.options().header(YamlFile.FILE_HEADER);
         try {
             this.save(this.file);
         } catch (IOException ignored) {

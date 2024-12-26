@@ -19,8 +19,10 @@
 
 package net.clementraynaud.skoice.util;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 
+import org.simpleyaml.configuration.file.YamlConfiguration;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -45,7 +47,11 @@ public final class ConfigurationUtil {
             return null;
         }
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-        return YamlConfiguration.loadConfiguration(inputStreamReader);
+        try {
+            return YamlConfiguration.loadConfiguration(inputStreamReader);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     public static Map<String, List<String>> convertLangYamlToMap(YamlConfiguration yamlConfig) {

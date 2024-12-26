@@ -20,16 +20,11 @@
 package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.model.minecraft.FullPlayer;
+import net.clementraynaud.skoice.model.minecraft.SkoiceGameMode;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.util.DistanceUtil;
-import net.clementraynaud.skoice.util.ThreadUtil;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,23 +37,23 @@ public class LinkedPlayer {
     private static final Set<LinkedPlayer> onlineLinkedPlayers = ConcurrentHashMap.newKeySet();
 
     private final Skoice plugin;
-    private final Player player;
+    private final FullPlayer player;
     private final String discordId;
 
-    public LinkedPlayer(Skoice plugin, Player player, String discordId) {
+    public LinkedPlayer(Skoice plugin, FullPlayer player, String discordId) {
         this.plugin = plugin;
         this.player = player;
         this.discordId = discordId;
-        LinkedPlayer.onlineLinkedPlayers.add(this);
+        if (this.player != null) {
+            LinkedPlayer.onlineLinkedPlayers.add(this);
+        }
     }
 
     public static Set<LinkedPlayer> getOnlineLinkedPlayers() {
-        ThreadUtil.ensureNotMainThread();
         return LinkedPlayer.onlineLinkedPlayers;
     }
 
     public static LinkedPlayer fromMemberId(String memberId) {
-        ThreadUtil.ensureNotMainThread();
         return LinkedPlayer.onlineLinkedPlayers.stream()
                 .filter(p -> p.getDiscordId().equals(memberId))
                 .findFirst().orElse(null);
@@ -66,28 +61,19 @@ public class LinkedPlayer {
 
     public boolean isStateEligible() {
         return (this.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString()) || !this.player.isDead())
-                && (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString()) || this.player.getGameMode() != GameMode.SPECTATOR)
-                && !this.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString()).contains(this.player.getWorld().getName());
+                && (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString()) || this.player.getGameMode() != SkoiceGameMode.SPECTATOR)
+                && !this.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString()).contains(this.player.getWorld());
     }
 
     public void sendConnectingAlert() {
-        this.plugin.adventure().player(this.player).sendActionBar(
-                Component.text(ChatColor.translateAlternateColorCodes('&',
-                        this.plugin.getLang().getMessage("action-bar.connecting-alert")
-                ))
-        );
+        this.player.sendActionBar(this.plugin.getLang().getMessage("action-bar.connecting-alert"));
     }
 
     public void sendDisconnectingAlert() {
-        this.plugin.adventure().player(this.player).sendActionBar(
-                Component.text(ChatColor.translateAlternateColorCodes('&',
-                        this.plugin.getLang().getMessage("action-bar.disconnecting-alert")
-                ))
-        );
+        this.player.sendActionBar(this.plugin.getLang().getMessage("action-bar.disconnecting-alert"));
     }
 
     public Set<LinkedPlayer> getPlayersWithinRange() {
-        ThreadUtil.ensureNotMainThread();
         return LinkedPlayer.onlineLinkedPlayers.stream()
                 .filter(p -> p.isInMainVoiceChannel() || p.isInAnyProximityChannel())
                 .filter(p -> !p.equals(this))
@@ -121,18 +107,17 @@ public class LinkedPlayer {
     }
 
     public boolean isCloseEnoughToPlayer(LinkedPlayer linkedPlayer, boolean falloff) {
-        if (!this.player.getWorld().getName().equals(linkedPlayer.player.getWorld().getName())) {
+        if (!this.player.getWorld().equals(linkedPlayer.player.getWorld())) {
             return false;
         }
 
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SEPARATED_TEAMS.toString())) {
-            Scoreboard scoreboard = this.player.getScoreboard();
-            Team playerTeam = scoreboard.getEntryTeam(this.player.getName());
+            String playerTeam = this.player.getTeam();
             if (playerTeam == null) {
-                if (scoreboard.getEntryTeam(linkedPlayer.getBukkitPlayer().getName()) != null) {
+                if (linkedPlayer.getFullPlayer().getTeam() != null) {
                     return false;
                 }
-            } else if (!playerTeam.equals(scoreboard.getEntryTeam(linkedPlayer.getBukkitPlayer().getName()))) {
+            } else if (!playerTeam.equals(linkedPlayer.getFullPlayer().getTeam())) {
                 return false;
             }
         }
@@ -147,7 +132,7 @@ public class LinkedPlayer {
                 && DistanceUtil.getVerticalDistance(this.player.getLocation(), linkedPlayer.player.getLocation()) <= verticalRadius;
     }
 
-    public Player getBukkitPlayer() {
+    public FullPlayer getFullPlayer() {
         return this.player;
     }
 

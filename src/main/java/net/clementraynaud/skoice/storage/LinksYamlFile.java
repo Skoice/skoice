@@ -20,11 +20,9 @@
 package net.clementraynaud.skoice.storage;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.api.events.account.AccountLinkEvent;
-import net.clementraynaud.skoice.api.events.account.AccountUnlinkEvent;
-import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
-import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.model.minecraft.BasePlayer;
+import net.clementraynaud.skoice.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Networks;
 import net.dv8tion.jda.api.entities.Guild;
@@ -35,12 +33,12 @@ import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
+import org.simpleyaml.configuration.ConfigurationSection;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class LinksYamlFile extends YamlFile {
@@ -53,31 +51,19 @@ public class LinksYamlFile extends YamlFile {
 
     public void linkUser(String minecraftId, String discordId) {
         this.linkUserDirectly(minecraftId, discordId);
-        super.plugin.getHookManager().linkUser(minecraftId, discordId);
-        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-            AccountLinkEvent event = new AccountLinkEvent(minecraftId, discordId);
-            this.plugin.getServer().getPluginManager().callEvent(event);
-        });
     }
 
     public void unlinkUser(String minecraftId) {
         this.unlinkUserDirectly(minecraftId);
-        super.plugin.getHookManager().unlinkUser(minecraftId);
-        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-            AccountUnlinkEvent event = new AccountUnlinkEvent(minecraftId);
-            this.plugin.getServer().getPluginManager().callEvent(event);
-        });
     }
 
     public void linkUserDirectly(String minecraftId, String discordId) {
         super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
-        Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
+        BasePlayer player = this.plugin.getPlayer(UUID.fromString(minecraftId));
         if (player == null) {
             return;
         }
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin,
-                () -> new LinkedPlayer(this.plugin, player, discordId)
-        );
+        CompletableFuture.runAsync(() -> new LinkedPlayer(this.plugin, this.plugin.getFullPlayer(player), discordId));
         if (this.plugin.getBot().getStatus() == BotStatus.READY) {
             this.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
                 VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
@@ -86,10 +72,6 @@ public class LinksYamlFile extends YamlFile {
                     AudioChannel audioChannel = voiceState.getChannel();
                     if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
                         player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
-                        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                            PlayerProximityConnectEvent connectEvent = new PlayerProximityConnectEvent(player.getUniqueId().toString(), member.getId());
-                            this.plugin.getServer().getPluginManager().callEvent(connectEvent);
-                        });
                     } else {
                         player.sendMessage(super.plugin.getLang().getMessage("chat.player.not-connected",
                                 mainVoiceChannel.getName(),
@@ -103,23 +85,17 @@ public class LinksYamlFile extends YamlFile {
     public void unlinkUserDirectly(String minecraftId) {
         super.remove(LinksYamlFile.LINKS_FIELD + "." + minecraftId);
 
-        Player player = this.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
+        BasePlayer player = this.plugin.getPlayer(UUID.fromString(minecraftId));
         if (player == null) {
             return;
         }
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+        CompletableFuture.runAsync(() -> {
             Networks.getAll().stream()
-                    .filter(network -> network.contains(player))
-                    .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(player));
+                    .filter(network -> network.contains(this.plugin.getFullPlayer(player)))
+                    .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(this.plugin.getFullPlayer(player)));
 
-            LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(player));
+            LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getFullPlayer().equals(player));
         });
-        if (Skoice.api().isProximityConnected(UUID.fromString(minecraftId))) {
-            this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId);
-                this.plugin.getServer().getPluginManager().callEvent(event);
-            });
-        }
     }
 
     public Map<String, String> getLinks() {
@@ -161,7 +137,7 @@ public class LinksYamlFile extends YamlFile {
     public void refreshOnlineLinkedPlayers() {
         LinkedPlayer.getOnlineLinkedPlayers().clear();
 
-        for (Player player : this.plugin.getServer().getOnlinePlayers()) {
+        for (FullPlayer player : this.plugin.getOnlinePlayers()) {
             this.retrieveMember(player.getUniqueId(),
                     member -> new LinkedPlayer(this.plugin, player, member.getId()));
         }

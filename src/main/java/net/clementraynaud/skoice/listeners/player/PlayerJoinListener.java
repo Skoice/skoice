@@ -20,23 +20,18 @@
 package net.clementraynaud.skoice.listeners.player;
 
 import net.clementraynaud.skoice.Skoice;
-import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.selectors.LoginNotificationSelector;
+import net.clementraynaud.skoice.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.List;
 
-public class PlayerJoinListener implements Listener {
+public class PlayerJoinListener {
 
     private final Skoice plugin;
 
@@ -44,23 +39,18 @@ public class PlayerJoinListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
+    public void onPlayerJoin(BasePlayer player) {
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
             this.plugin.getBot().sendIncompleteConfigurationAlert(player, false, false);
         } else {
             if (!this.plugin.getLinksYamlFile().retrieveMember(player.getUniqueId(), member -> {
-                new LinkedPlayer(this.plugin, player, member.getId());
+                System.out.println("PlayerJoinListener.onPlayerJoin");
+                new LinkedPlayer(this.plugin, this.plugin.getFullPlayer(player), member.getId());
                 GuildVoiceState voiceState = member.getVoiceState();
                 if (voiceState != null) {
                     AudioChannel audioChannel = voiceState.getChannel();
                     if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
                         player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
-                        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                            PlayerProximityConnectEvent connectEvent = new PlayerProximityConnectEvent(player.getUniqueId().toString(), member.getId());
-                            this.plugin.getServer().getPluginManager().callEvent(connectEvent);
-                        });
                     }
                 }
             }, e -> this.sendLoginNotification(player))) {
@@ -69,7 +59,7 @@ public class PlayerJoinListener implements Listener {
         }
     }
 
-    private void sendLoginNotification(Player player) {
+    private void sendLoginNotification(BasePlayer player) {
         String loginNotificationStatus = this.plugin.getConfigYamlFile().getString(ConfigField.LOGIN_NOTIFICATION.toString());
         if (LoginNotificationSelector.ALWAYS_REMIND.equals(loginNotificationStatus)) {
             player.sendMessage(this.plugin.getLang().getMessage("chat.player.account-not-linked",

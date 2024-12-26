@@ -19,29 +19,20 @@
 
 package net.clementraynaud.skoice.listeners.player;
 
-import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Networks;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerQuitListener implements Listener {
+import java.util.concurrent.CompletableFuture;
 
-    private final Skoice plugin;
+public class PlayerQuitListener {
 
-    public PlayerQuitListener(Skoice plugin) {
-        this.plugin = plugin;
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-            LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getBukkitPlayer().equals(event.getPlayer()));
+    public void onPlayerQuit(BasePlayer player) {
+        CompletableFuture.runAsync(() -> {
+            LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getFullPlayer().equals(player));
             Networks.getAll().stream()
-                    .filter(network -> network.contains(event.getPlayer()))
-                    .forEach(network -> network.remove(event.getPlayer()));
+                    .filter(network -> network.contains(player))
+                    .forEach(network -> network.remove(player));
         });
     }
 }

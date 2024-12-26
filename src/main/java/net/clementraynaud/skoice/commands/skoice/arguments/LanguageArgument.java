@@ -22,14 +22,16 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.lang.LangInfo;
+import net.clementraynaud.skoice.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.storage.config.ConfigField;
-import org.bukkit.command.CommandSender;
+
+import java.util.concurrent.CompletableFuture;
 
 public class LanguageArgument extends Argument {
 
     private final String arg;
 
-    public LanguageArgument(Skoice plugin, CommandSender sender, String arg) {
+    public LanguageArgument(Skoice plugin, SkoiceCommandSender sender, String arg) {
         super(plugin, sender, ArgumentInfo.LANGUAGE.isAllowedInConsole(), ArgumentInfo.LANGUAGE.isPermissionRequired(), ArgumentInfo.LANGUAGE.isHidden());
         this.arg = arg;
     }
@@ -54,9 +56,7 @@ public class LanguageArgument extends Argument {
             super.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), language.toString());
             super.plugin.getLang().load(language);
             super.plugin.getBot().getLang().load(language);
-            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                super.plugin.getListenerManager().update();
-            });
+            CompletableFuture.runAsync(() -> super.plugin.getListenerManager().update());
 
             if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
                 this.plugin.getBot().getCommands().register();

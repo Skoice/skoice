@@ -21,13 +21,13 @@ package net.clementraynaud.skoice.commands;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
+import net.clementraynaud.skoice.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -51,7 +51,7 @@ public class UnlinkCommand extends Command {
         new EmbeddedMenu(super.plugin.getBot()).setContent("account-unlinked")
                 .reply(super.interaction);
 
-        Player player = super.plugin.getServer().getPlayer(UUID.fromString(minecraftId));
+        BasePlayer player = super.plugin.getPlayer(UUID.fromString(minecraftId));
         if (player != null) {
             player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-unlinked"));
 
