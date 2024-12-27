@@ -20,12 +20,14 @@
 package net.clementraynaud.skoice.analytics;
 
 import com.bugsnag.Bugsnag;
+import com.bugsnag.Report;
 import com.bugsnag.Severity;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BugsnagAnalytics {
@@ -45,7 +47,7 @@ public class BugsnagAnalytics {
         if (this.bugsnag == null) {
             return;
         }
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+        CompletableFuture.runAsync(() -> {
             String exceptionKey = this.createExceptionKey(throwable);
 
             if (this.reportedExceptions.contains(exceptionKey)) {
@@ -74,7 +76,7 @@ public class BugsnagAnalytics {
             return;
         }
         this.bugsnag = new Bugsnag(BugsnagAnalytics.BUGSNAG_SERVICE_ID);
-        this.bugsnag.setAppVersion(this.plugin.getDescription().getVersion());
+        this.bugsnag.setAppVersion(this.plugin.getVersion());
 
         this.bugsnag.addCallback(report -> {
             StackTraceElement[] trace = report.getException().getStackTrace();
@@ -90,8 +92,7 @@ public class BugsnagAnalytics {
                 return;
             }
 
-            report.addToTab("server", "version", this.plugin.getServer().getVersion());
-            report.addToTab("server", "bukkitVersion", this.plugin.getServer().getBukkitVersion());
+            this.addAdditionalMetadata(report);
 
             this.analyticManager.getSharedConfigFields().forEach(field ->
                     report.addToTab("app", field.toCamelCase(), this.plugin.getConfigYamlFile().getString(field.toString()))
@@ -113,5 +114,8 @@ public class BugsnagAnalytics {
             this.bugsnag.startSession();
             this.plugin.getConfigYamlFile().set(ConfigField.SESSION_REPORTED.toString(), true);
         }
+    }
+
+    protected void addAdditionalMetadata(Report report) {
     }
 }

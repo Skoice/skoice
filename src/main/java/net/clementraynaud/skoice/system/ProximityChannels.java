@@ -19,7 +19,6 @@
 
 package net.clementraynaud.skoice.system;
 
-import net.clementraynaud.skoice.util.ThreadUtil;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,35 +33,35 @@ public final class ProximityChannels {
     }
 
     public static Set<ProximityChannel> getAll() {
-        ThreadUtil.ensureNotMainThread();
+
         return ProximityChannels.proximityChannelSet;
     }
 
     public static Set<ProximityChannel> getInitialized() {
-        ThreadUtil.ensureNotMainThread(true);
+
         return ProximityChannels.proximityChannelSet.stream()
                 .filter(ProximityChannel::isInitialized)
                 .collect(Collectors.toSet());
     }
 
     public static void add(ProximityChannel proximityChannel) {
-        ThreadUtil.ensureNotMainThread();
+
         ProximityChannels.proximityChannelSet.add(proximityChannel);
     }
 
     public static void remove(ProximityChannel proximityChannel) {
-        ThreadUtil.ensureNotMainThread();
+
         ProximityChannels.proximityChannelSet.remove(proximityChannel);
     }
 
     public static void remove(String channelId) {
-        ThreadUtil.ensureNotMainThread();
+
         ProximityChannels.proximityChannelSet.removeIf(proximityChannel ->
                 proximityChannel.getChannelId().equals(channelId));
     }
 
     public static void clean(int possibleUsers) {
-        ThreadUtil.ensureNotMainThread();
+
         int possibleNetworks = possibleUsers / 2;
 
         ProximityChannels.proximityChannelSet.stream()
@@ -77,7 +76,7 @@ public final class ProximityChannels {
     }
 
     public static void clear() {
-        ThreadUtil.ensureNotMainThread(true);
+
         ProximityChannels.proximityChannelSet.clear();
     }
 

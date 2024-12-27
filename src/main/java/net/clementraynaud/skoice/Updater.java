@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice;
 
 import com.bugsnag.Severity;
+import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 
 import java.io.File;
@@ -52,12 +53,12 @@ public class Updater {
     private static final String LATEST_CHANNEL = "skoice-latest";
     private static final String BETA_CHANNEL = "skoice-beta";
 
-    private final Skoice plugin;
+    private final SkoiceSpigot plugin;
     private final String pluginPath;
     private String fullURL;
     private String downloadedVersion;
 
-    public Updater(Skoice plugin, String pluginPath) {
+    public Updater(SkoiceSpigot plugin, String pluginPath) {
         this.plugin = plugin;
         this.pluginPath = pluginPath;
     }
@@ -65,9 +66,9 @@ public class Updater {
     public void checkVersion() {
         this.updateReleaseChannel();
         this.getVersion(version -> {
-            if (version != null && !this.plugin.getDescription().getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
+            if (version != null && !this.plugin.getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
                 String expectedHash = this.fetchHashFromServer();
-                this.plugin.getLang().getFormatter().set("current-version", this.plugin.getDescription().getVersion());
+                this.plugin.getLang().getFormatter().set("current-version", this.plugin.getVersion());
                 this.plugin.getLang().getFormatter().set("latest-version", version);
                 if (expectedHash != null) {
                     this.update(version, expectedHash);
@@ -79,8 +80,8 @@ public class Updater {
     }
 
     public void runUpdaterTaskTimer() {
-        this.plugin.getServer().getScheduler().runTaskTimer(
-                this.plugin,
+        this.plugin.getPlugin().getServer().getScheduler().runTaskTimer(
+                this.plugin.getPlugin(),
                 this::checkVersion,
                 Updater.TICKS_BEFORE_VERSION_CHECKING,
                 Updater.TICKS_BETWEEN_VERSION_CHECKING
@@ -96,7 +97,7 @@ public class Updater {
     }
 
     private void getVersion(final Consumer<String> consumer) {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+        this.plugin.getPlugin().getServer().getScheduler().runTaskAsynchronously(this.plugin.getPlugin(), () -> {
             HttpURLConnection connection = null;
             try {
                 URL url = new URL(this.fullURL + Updater.VERSION_ENDPOINT);
@@ -120,7 +121,7 @@ public class Updater {
     }
 
     private synchronized void update(String version, String expectedHash) {
-        File updateFolder = this.plugin.getServer().getUpdateFolderFile();
+        File updateFolder = this.plugin.getPlugin().getServer().getUpdateFolderFile();
         File tempUpdateFile = new File(updateFolder, "Skoice.jar.temp");
         File finalUpdateFile = new File(updateFolder, this.pluginPath.substring(this.pluginPath.lastIndexOf(File.separator) + 1));
 

@@ -21,6 +21,8 @@ package net.clementraynaud.skoice.system;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.handlers.player.PlayerJoinHandler;
+import net.clementraynaud.skoice.handlers.player.PlayerQuitHandler;
 import net.clementraynaud.skoice.listeners.StatusChangeListener;
 import net.clementraynaud.skoice.listeners.channel.network.GenericChannelListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
@@ -35,32 +37,41 @@ import net.clementraynaud.skoice.listeners.interaction.ModalInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.command.SlashCommandInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.component.StringSelectInteractionListener;
-import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
-import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
-import net.clementraynaud.skoice.listeners.server.ServerCommandListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
-import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.User;
-import org.bukkit.event.HandlerList;
 
 import java.util.logging.Level;
 
-public class ListenerManager {
+public abstract class ListenerManager {
 
-    private final Skoice plugin;
-    private final PlayerQuitListener playerQuitListener;
+    protected final Skoice plugin;
+    protected final PlayerQuitHandler playerQuitHandler;
+    private final PlayerJoinHandler playerJoinHandler;
     private final GuildVoiceGuildMuteListener guildVoiceGuildMuteListener;
     private final GuildVoiceUpdateListener guildVoiceUpdateListener;
     private final GenericChannelListener genericChannelListener;
 
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;
-        this.playerQuitListener = new PlayerQuitListener(this.plugin);
+        this.playerQuitHandler = new PlayerQuitHandler();
+        this.playerJoinHandler = this.createPlayerJoinHandler();
         this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
-        this.guildVoiceUpdateListener = new GuildVoiceUpdateListener(this.plugin);
+        this.guildVoiceUpdateListener = this.createGuildVoiceUpdate();
         this.genericChannelListener = new GenericChannelListener(this.plugin);
+    }
+
+    protected PlayerJoinHandler createPlayerJoinHandler() {
+        return new PlayerJoinHandler(this.plugin);
+    }
+
+    protected GuildVoiceUpdateListener createGuildVoiceUpdate() {
+        return new GuildVoiceUpdateListener(this.plugin);
+    }
+
+    public PlayerJoinHandler getPlayerJoinHandler() {
+        return this.playerJoinHandler;
     }
 
     public void update(User user) {
@@ -92,7 +103,7 @@ public class ListenerManager {
         } else if (oldStatus == BotStatus.READY && newStatus != BotStatus.READY) {
             this.unregisterMinecraftListeners();
             if (newStatus != BotStatus.NOT_CONNECTED) {
-                new InterruptSystemTask(this.plugin).run();
+                this.plugin.getBot().runInterruptSystemTask();
             }
         }
     }
@@ -101,18 +112,11 @@ public class ListenerManager {
         this.update(null);
     }
 
-    public void registerPermanentMinecraftListeners() {
-        this.plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.plugin), this.plugin);
-        this.plugin.getServer().getPluginManager().registerEvents(new ServerCommandListener(this.plugin), this.plugin);
-    }
+    public abstract void registerPermanentMinecraftListeners();
 
-    private void registerMinecraftListeners() {
-        this.plugin.getServer().getPluginManager().registerEvents(this.playerQuitListener, this.plugin);
-    }
+    public abstract void registerMinecraftListeners();
 
-    private void unregisterMinecraftListeners() {
-        HandlerList.unregisterAll(this.playerQuitListener);
-    }
+    public abstract void unregisterMinecraftListeners();
 
     public void registerPermanentBotListeners() {
         this.plugin.getBot().getJDA().addEventListener(
@@ -146,5 +150,9 @@ public class ListenerManager {
                 this.guildVoiceUpdateListener,
                 this.genericChannelListener
         );
+    }
+
+    public PlayerQuitHandler getPlayerQuitHandler() {
+        return this.playerQuitHandler;
     }
 }

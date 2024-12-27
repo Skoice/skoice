@@ -24,30 +24,28 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.util.Map;
 
 public class MinecraftLang extends Lang {
 
-    private static final String CHAT_PREFIX = ChatColor.LIGHT_PURPLE + "Skoice "
-            + ChatColor.DARK_GRAY + "• "
-            + ChatColor.GRAY;
+    private static final String CHAT_PREFIX = "&d" + "Skoice " + "&8" + "• " + "&7";
 
     @Override
     protected String getPath(LangInfo langInfo) {
         return "minecraft/lang/" + langInfo + ".yml";
     }
 
-    @Override
     protected void loadFormatter() {
-        super.formatter.set("title", ChatColor.WHITE.toString());
-        super.formatter.set("dark", ChatColor.DARK_GRAY.toString());
-        super.formatter.set("success", ChatColor.GREEN.toString());
-        super.formatter.set("error", ChatColor.RED.toString());
-        super.formatter.set("highlight", ChatColor.YELLOW.toString());
-        super.formatter.set("interactive", ChatColor.AQUA.toString());
-        super.formatter.set("default", ChatColor.GRAY.toString());
+        super.formatter.set("title", "&f");
+        super.formatter.set("dark", "&8");
+        super.formatter.set("success", "&a");
+        super.formatter.set("error", "&c");
+        super.formatter.set("highlight", "&e");
+        super.formatter.set("interactive", "&b");
+        super.formatter.set("default", "&7");
 
         super.formatter.set("skoice-minecraft-command", "/skoice");
         super.formatter.set("configure-minecraft-command", "/skoice configure");
@@ -136,7 +134,7 @@ public class MinecraftLang extends Lang {
 
     public String getConsoleMessage(String path, Map<String, String> args) {
         String message = super.getRawMessage(path);
-        return ChatColor.stripColor(this.formatter.format(message, args));
+        return PlainTextComponentSerializer.plainText().serialize(LegacyComponentSerializer.legacySection().deserialize(this.formatter.format(message, args)));
     }
 
     public String getConsoleMessage(String path) {

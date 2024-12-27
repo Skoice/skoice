@@ -24,19 +24,15 @@ import net.clementraynaud.skoice.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentFactory;
 import net.clementraynaud.skoice.commands.skoice.arguments.ArgumentInfo;
 import net.clementraynaud.skoice.lang.LangInfo;
+import net.clementraynaud.skoice.model.minecraft.BasePlayer;
+import net.clementraynaud.skoice.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.util.MapUtil;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SkoiceCommand implements CommandExecutor, TabCompleter {
+public abstract class SkoiceCommand {
 
     private final Skoice plugin;
     private final ArgumentFactory argumentFactory;
@@ -46,18 +42,11 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         this.argumentFactory = new ArgumentFactory();
     }
 
-    public void init() {
-        PluginCommand skoiceCommand = this.plugin.getCommand("skoice");
-        if (skoiceCommand != null) {
-            skoiceCommand.setExecutor(this);
-            skoiceCommand.setTabCompleter(this);
-        }
-    }
+    public abstract void init();
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(SkoiceCommandSender sender, String[] args) {
         if (args.length == 0) {
-            if (sender instanceof Player) {
+            if (sender instanceof BasePlayer) {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("chat.error.no-parameter",
                                 MapUtil.of("args", ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION)))));
@@ -69,7 +58,7 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
             return true;
         }
         if (ArgumentInfo.get(args[0]) == null) {
-            if (sender instanceof Player) {
+            if (sender instanceof BasePlayer) {
                 sender.sendMessage(this.plugin.getLang()
                         .getMessage("chat.error.invalid-parameter",
                                 MapUtil.of("args", ArgumentInfo.getJoinedList(sender.hasPermission(Argument.MANAGE_PERMISSION)))));
@@ -90,8 +79,7 @@ public class SkoiceCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
+    public List<String> onTabComplete(SkoiceCommandSender sender, String[] args) {
         if (args.length == 1) {
             return ArgumentInfo.getList(sender.hasPermission(Argument.MANAGE_PERMISSION)).stream()
                     .filter(arg -> arg.startsWith(args[0].toLowerCase()))

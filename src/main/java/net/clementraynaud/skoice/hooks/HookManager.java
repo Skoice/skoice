@@ -19,17 +19,17 @@
 
 package net.clementraynaud.skoice.hooks;
 
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.hooks.discordsrv.DiscordSRVHook;
 import net.clementraynaud.skoice.hooks.essentialsx.EssentialsXHook;
+import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 
 public class HookManager {
 
-    private final Skoice plugin;
+    private final SkoiceSpigot plugin;
     private DiscordSRVHook discordSRVHook;
     private EssentialsXHook essentialsXHook;
 
-    public HookManager(Skoice plugin) {
+    public HookManager(SkoiceSpigot plugin) {
         this.plugin = plugin;
     }
 

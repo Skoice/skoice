@@ -19,11 +19,11 @@
 
 package net.clementraynaud.skoice.api;
 
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.api.events.system.SystemInterruptionEvent;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -36,10 +36,10 @@ import java.util.UUID;
 
 public class SkoiceAPI implements Listener {
 
-    private final Skoice plugin;
+    private final SkoiceSpigot plugin;
     private final Set<UUID> proximityConnectedPlayers = new HashSet<>();
 
-    public SkoiceAPI(Skoice plugin) {
+    public SkoiceAPI(SkoiceSpigot plugin) {
         this.plugin = plugin;
     }
 
@@ -86,9 +86,9 @@ public class SkoiceAPI implements Listener {
     @EventHandler
     private void onPlayerLeft(PlayerQuitEvent event) {
         if (this.isLinked(event.getPlayer().getUniqueId()) && this.isProximityConnected(event.getPlayer().getUniqueId())) {
-            this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+            this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
                 PlayerProximityDisconnectEvent newEvent = new PlayerProximityDisconnectEvent(event.getPlayer().getUniqueId().toString());
-                this.plugin.getServer().getPluginManager().callEvent(newEvent);
+                this.plugin.getPlugin().getServer().getPluginManager().callEvent(newEvent);
             });
         }
     }

@@ -21,13 +21,13 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
-import org.bukkit.command.CommandSender;
+import net.clementraynaud.skoice.model.minecraft.SkoiceCommandSender;
 
 public class TokenArgument extends Argument {
 
     private final String arg;
 
-    public TokenArgument(Skoice plugin, CommandSender sender, String arg) {
+    public TokenArgument(Skoice plugin, SkoiceCommandSender sender, String arg) {
         super(plugin, sender, ArgumentInfo.TOKEN.isAllowedInConsole(), ArgumentInfo.TOKEN.isPermissionRequired(), ArgumentInfo.TOKEN.isHidden());
         this.arg = arg;
     }

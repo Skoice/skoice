@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.tasks;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.TempYamlFile;
 import net.clementraynaud.skoice.storage.config.ConfigField;
-import net.clementraynaud.skoice.util.ThreadUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
@@ -48,12 +47,10 @@ public class UpdateVoiceStateTask {
     }
 
     public static Set<String> getMutedUsers() {
-        ThreadUtil.ensureNotMainThread();
         return UpdateVoiceStateTask.mutedUsers;
     }
 
     public void run() {
-        ThreadUtil.ensureNotMainThread();
         if (this.member.getVoiceState() == null) {
             return;
         }

@@ -28,7 +28,6 @@ import net.clementraynaud.skoice.system.Network;
 import net.clementraynaud.skoice.system.Networks;
 import net.clementraynaud.skoice.system.ProximityChannel;
 import net.clementraynaud.skoice.system.ProximityChannels;
-import net.clementraynaud.skoice.util.ThreadUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
@@ -56,16 +55,15 @@ public class UpdateNetworksTask {
     }
 
     public void start() {
-        this.taskId = this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(
-                this.plugin,
+        this.taskId = this.plugin.getScheduler().runTaskTimerAsynchronously(
                 this::run,
                 0,
-                10
-        ).getTaskId();
+                500
+        );
     }
 
     public void interrupt() {
-        this.plugin.getServer().getScheduler().cancelTask(this.taskId);
+        this.plugin.getScheduler().cancelTask(this.taskId);
 
         for (Pair<String, CompletableFuture<Void>> value : this.awaitingMoves.values()) {
             value.getRight().cancel(true);
@@ -73,7 +71,6 @@ public class UpdateNetworksTask {
     }
 
     private void run() {
-        ThreadUtil.ensureNotMainThread();
         if (!this.lock.tryLock()) {
             return;
         }
@@ -225,7 +222,6 @@ public class UpdateNetworksTask {
     }
 
     private void manageMoves() {
-        ThreadUtil.ensureNotMainThread();
         LinkedPlayer.getOnlineLinkedPlayers().stream()
                 .filter(p -> !p.isInMainVoiceChannel() && !p.isInAnyProximityChannel())
                 .map(p -> this.awaitingMoves.get(p.getDiscordId()))

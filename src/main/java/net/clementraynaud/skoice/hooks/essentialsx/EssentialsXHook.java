@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.hooks.essentialsx;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.essentialsx.api.v2.services.discord.DiscordService;
 import net.essentialsx.api.v2.services.discordlink.DiscordLinkService;
@@ -27,10 +28,10 @@ import net.essentialsx.discordlink.EssentialsDiscordLink;
 
 public class EssentialsXHook {
 
-    private final Skoice plugin;
+    private final SkoiceSpigot plugin;
     private EssentialsXHookImpl essentialsXHookImpl;
 
-    public EssentialsXHook(Skoice plugin) {
+    public EssentialsXHook(SkoiceSpigot plugin) {
         this.plugin = plugin;
     }
 
@@ -42,9 +43,9 @@ public class EssentialsXHook {
             return;
         }
         try {
-            this.plugin.getServer().getServicesManager().load(DiscordLinkService.class).hashCode();
-            this.plugin.getServer().getServicesManager().load(DiscordService.class).hashCode();
-            ((EssentialsDiscordLink) this.plugin.getServer().getPluginManager().getPlugin("EssentialsDiscordLink")).getAccountStorage().hashCode();
+            this.plugin.getPlugin().getServer().getServicesManager().load(DiscordLinkService.class).hashCode();
+            this.plugin.getPlugin().getServer().getServicesManager().load(DiscordService.class).hashCode();
+            ((EssentialsDiscordLink) this.plugin.getPlugin().getServer().getPluginManager().getPlugin("EssentialsDiscordLink")).getAccountStorage().hashCode();
             EssentialsXHookImpl essentialsXHookImpl = new EssentialsXHookImpl(this.plugin);
             essentialsXHookImpl.initialize();
             this.essentialsXHookImpl = essentialsXHookImpl;

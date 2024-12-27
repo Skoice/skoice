@@ -19,20 +19,19 @@
 
 package net.clementraynaud.skoice.util;
 
-import org.bukkit.Location;
-import org.bukkit.util.NumberConversions;
+import net.clementraynaud.skoice.model.minecraft.SkoiceLocation;
 
 public final class DistanceUtil {
 
     private DistanceUtil() {
     }
 
-    public static double getHorizontalDistance(Location location1, Location location2) {
-        return Math.sqrt(NumberConversions.square(location1.getX() - location2.getX())
-                + NumberConversions.square(location1.getZ() - location2.getZ()));
+    public static double getHorizontalDistance(SkoiceLocation location1, SkoiceLocation location2) {
+        return Math.sqrt(Math.pow(location1.getX() - location2.getX(), 2)
+                + Math.pow(location1.getZ() - location2.getZ(), 2));
     }
 
-    public static double getVerticalDistance(Location location1, Location location2) {
+    public static double getVerticalDistance(SkoiceLocation location1, SkoiceLocation location2) {
         return Math.abs(location1.getY() - location2.getY());
     }
 }

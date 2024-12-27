@@ -31,7 +31,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
-import org.bukkit.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.Collections;

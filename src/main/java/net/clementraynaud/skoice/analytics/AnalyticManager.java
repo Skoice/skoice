@@ -35,9 +35,16 @@ public class AnalyticManager {
     }
 
     public void initialize() {
-        new BStatsAnalytics(this.plugin, this).addCustomCharts();
-        this.bugsnagAnalytics = new BugsnagAnalytics(this.plugin, this);
+        this.bugsnagAnalytics = this.createBugsnagAnalytics();
         this.bugsnagAnalytics.initialize();
+        this.initializeAdditionalAnalytics();
+    }
+
+    protected BugsnagAnalytics createBugsnagAnalytics() {
+        return new BugsnagAnalytics(this.plugin, this);
+    }
+
+    protected void initializeAdditionalAnalytics() {
     }
 
     public Set<ConfigField> getSharedConfigFields() {

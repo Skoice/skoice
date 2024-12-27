@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.listeners.session;
 import com.bugsnag.Severity;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -31,7 +32,6 @@ import net.dv8tion.jda.api.exceptions.PermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.requests.RestAction;
-import org.bukkit.entity.Player;
 
 import java.time.OffsetDateTime;
 import java.util.function.Consumer;
@@ -48,7 +48,7 @@ public class ReadyListener extends ListenerAdapter {
     @Override
     public void onReady(ReadyEvent event) {
 
-        Player tokenManager = this.plugin.getBot().getTokenManager();
+        BasePlayer tokenManager = this.plugin.getBot().getTokenManager();
 
         event.getJDA().retrieveApplicationInfo().queue(applicationInfo -> {
                     if (applicationInfo.isBotPublic()) {
@@ -78,8 +78,7 @@ public class ReadyListener extends ListenerAdapter {
     private void setDefaultFailure() {
         Consumer<? super Throwable> defaultFailure = RestAction.getDefaultFailure();
         RestAction.setDefaultFailure(throwable -> {
-            if (throwable instanceof ErrorResponseException) {
-                ErrorResponseException error = (ErrorResponseException) throwable;
+            if (throwable instanceof ErrorResponseException error) {
                 if (error.getErrorCode() == ErrorResponse.MISSING_PERMISSIONS.getCode()
                         || error.getErrorCode() == ErrorResponse.MISSING_ACCESS.getCode()
                         || error.getErrorCode() == ErrorResponse.MFA_NOT_ENABLED.getCode()) {
@@ -100,7 +99,7 @@ public class ReadyListener extends ListenerAdapter {
         });
     }
 
-    private void handlePublicBot(Player tokenManager) {
+    private void handlePublicBot(BasePlayer tokenManager) {
         this.plugin.getBot().acknowledgeStatus();
         this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
         String botId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
@@ -114,14 +113,14 @@ public class ReadyListener extends ListenerAdapter {
         }
 
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-            this.plugin.adventure().sender(tokenManager).sendMessage(this.plugin.getLang()
+            tokenManager.sendMessage(this.plugin.getLang()
                     .getInteractiveMessage("chat.configuration.public-bot-interactive"));
         } else {
             tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot"));
         }
     }
 
-    private void handleParsingException(Player tokenManager) {
+    private void handleParsingException(BasePlayer tokenManager) {
         this.plugin.getBot().acknowledgeStatus();
         this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
         this.plugin.getBot().getJDA().shutdown();
@@ -133,7 +132,7 @@ public class ReadyListener extends ListenerAdapter {
         }
     }
 
-    private void setup(Player tokenManager) {
+    private void setup(BasePlayer tokenManager) {
         this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
 
         this.plugin.getBot().setDefaultAvatar();

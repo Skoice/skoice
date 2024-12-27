@@ -22,24 +22,24 @@ package net.clementraynaud.skoice.commands.skoice.arguments;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
+import net.clementraynaud.skoice.model.minecraft.BasePlayer;
+import net.clementraynaud.skoice.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.ProximityChannels;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class UnlinkArgument extends Argument {
 
-    public UnlinkArgument(Skoice plugin, CommandSender sender) {
+    public UnlinkArgument(Skoice plugin, SkoiceCommandSender sender) {
         super(plugin, sender, ArgumentInfo.UNLINK.isAllowedInConsole(), ArgumentInfo.UNLINK.isPermissionRequired(), ArgumentInfo.UNLINK.isHidden());
     }
 
     @Override
     public void run() {
-        Player player = (Player) this.sender;
+        BasePlayer player = (BasePlayer) this.sender;
         if (super.plugin.getBot().getStatus() != BotStatus.READY) {
             super.plugin.getBot().sendIncompleteConfigurationAlert(player, true, false);
             return;

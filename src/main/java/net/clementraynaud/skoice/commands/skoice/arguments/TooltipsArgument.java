@@ -20,12 +20,12 @@
 package net.clementraynaud.skoice.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.storage.config.ConfigField;
-import org.bukkit.command.CommandSender;
 
 public class TooltipsArgument extends Argument {
 
-    public TooltipsArgument(Skoice plugin, CommandSender sender) {
+    public TooltipsArgument(Skoice plugin, SkoiceCommandSender sender) {
         super(plugin, sender, ArgumentInfo.TOOLTIPS.isAllowedInConsole(), ArgumentInfo.TOOLTIPS.isPermissionRequired(), ArgumentInfo.TOOLTIPS.isHidden());
     }
 

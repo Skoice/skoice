@@ -21,10 +21,9 @@ package net.clementraynaud.skoice.storage.config;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.LinksYamlFile;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.FileConfiguration;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +50,7 @@ public class OutdatedConfig {
             FileConfiguration oldData = new YamlConfiguration();
             try {
                 oldData.load(outdatedConfig);
-            } catch (IOException | InvalidConfigurationException e) {
+            } catch (IOException e) {
                 return;
             }
 
@@ -62,7 +61,7 @@ public class OutdatedConfig {
 
             try {
                 this.plugin.getLinksYamlFile().loadFromString(this.plugin.getLinksYamlFile().saveToString());
-            } catch (InvalidConfigurationException ignored) {
+            } catch (IOException ignored) {
             }
 
             try {

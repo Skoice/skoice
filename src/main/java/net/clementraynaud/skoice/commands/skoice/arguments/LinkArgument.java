@@ -23,26 +23,28 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.commands.LinkCommand;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
+import net.clementraynaud.skoice.model.minecraft.BasePlayer;
+import net.clementraynaud.skoice.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.util.MapUtil;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+
+import java.util.concurrent.CompletableFuture;
 
 public class LinkArgument extends Argument {
 
     private final String arg;
 
-    public LinkArgument(Skoice plugin, CommandSender sender, String arg) {
+    public LinkArgument(Skoice plugin, SkoiceCommandSender sender, String arg) {
         super(plugin, sender, ArgumentInfo.LINK.isAllowedInConsole(), ArgumentInfo.LINK.isPermissionRequired(), ArgumentInfo.LINK.isHidden());
         this.arg = arg;
     }
 
     @Override
     public void run() {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-            Player player = (Player) this.sender;
+        CompletableFuture.runAsync(() -> {
+            BasePlayer player = (BasePlayer) this.sender;
             if (super.plugin.getBot().getStatus() != BotStatus.READY) {
                 super.plugin.getBot().sendIncompleteConfigurationAlert(player, true, false);
                 return;

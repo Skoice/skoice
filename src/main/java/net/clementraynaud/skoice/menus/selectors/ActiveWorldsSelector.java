@@ -25,7 +25,6 @@ import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
-import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,19 +40,28 @@ public class ActiveWorldsSelector extends Selector {
         List<SelectOption> options = new ArrayList<>();
         List<String> disabledWorlds = super.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString());
         List<String> defaultValues = new ArrayList<>();
-        for (World world : super.plugin.getServer().getWorlds()) {
-            options.add(SelectOption.of(world.getName(), world.getName())
+        for (String world : super.plugin.getWorlds()) {
+            options.add(SelectOption.of(world, world)
                     .withEmoji(MenuEmoji.MAP.get()));
 
-            if (!disabledWorlds.contains(world.getName())) {
-                defaultValues.add(world.getName());
+            if (!disabledWorlds.contains(world)) {
+                defaultValues.add(world);
             }
+        }
+
+        boolean disabled = false;
+        if (options.isEmpty()) {
+            options.add(SelectOption.of("Unavailable", "unavailable")
+                    .withEmoji(MenuEmoji.X.get()));
+            defaultValues.add("unavailable");
+            disabled = true;
         }
 
         return StringSelectMenu.create("active-worlds-selection")
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.active-worlds.select-menu.placeholder"))
                 .addOptions(options)
                 .setRequiredRange(0, options.size())
+                .setDisabled(disabled)
                 .setDefaultValues(defaultValues).build();
     }
 }

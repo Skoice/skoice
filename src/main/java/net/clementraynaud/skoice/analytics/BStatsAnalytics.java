@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.analytics;
 
-import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.util.ChartUtil;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
@@ -27,16 +27,16 @@ import org.bstats.charts.SimplePie;
 public class BStatsAnalytics {
 
     private static final int BSTATS_SERVICE_ID = 11380;
-    private final Skoice plugin;
+    private final SkoiceSpigot plugin;
     private final AnalyticManager analyticManager;
 
-    public BStatsAnalytics(Skoice plugin, AnalyticManager analyticManager) {
+    public BStatsAnalytics(SkoiceSpigot plugin, AnalyticManager analyticManager) {
         this.plugin = plugin;
         this.analyticManager = analyticManager;
     }
 
     public void addCustomCharts() {
-        Metrics metrics = new Metrics(this.plugin, BStatsAnalytics.BSTATS_SERVICE_ID);
+        Metrics metrics = new Metrics(this.plugin.getPlugin(), BStatsAnalytics.BSTATS_SERVICE_ID);
 
         this.analyticManager.getSharedConfigFields().forEach(field ->
                 metrics.addCustomChart(new SimplePie(field.toCamelCase(), () ->

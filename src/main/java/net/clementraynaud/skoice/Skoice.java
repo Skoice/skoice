@@ -20,12 +20,14 @@
 package net.clementraynaud.skoice;
 
 import net.clementraynaud.skoice.analytics.AnalyticManager;
-import net.clementraynaud.skoice.api.SkoiceAPI;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
-import net.clementraynaud.skoice.hooks.HookManager;
 import net.clementraynaud.skoice.lang.LangInfo;
 import net.clementraynaud.skoice.lang.MinecraftLang;
+import net.clementraynaud.skoice.model.logger.SkoiceLogger;
+import net.clementraynaud.skoice.model.minecraft.BasePlayer;
+import net.clementraynaud.skoice.model.minecraft.FullPlayer;
+import net.clementraynaud.skoice.model.scheduler.SkoiceTaskScheduler;
 import net.clementraynaud.skoice.storage.LinksYamlFile;
 import net.clementraynaud.skoice.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.storage.TempYamlFile;
@@ -34,17 +36,23 @@ import net.clementraynaud.skoice.storage.config.ConfigYamlFile;
 import net.clementraynaud.skoice.storage.config.OutdatedConfig;
 import net.clementraynaud.skoice.system.ListenerManager;
 import net.clementraynaud.skoice.tasks.UpdateNetworksTask;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import org.bukkit.GameMode;
-import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Collection;
+import java.util.UUID;
 import java.util.logging.Level;
 
-public class Skoice extends JavaPlugin {
+public abstract class Skoice {
 
-    private static final String OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
-    private static SkoiceAPI api;
     private static AnalyticManager analyticManager;
+    private final SkoiceLogger logger;
+    private final SkoiceTaskScheduler scheduler;
     private MinecraftLang lang;
     private ConfigYamlFile configYamlFile;
     private LinksYamlFile linksYamlFile;
@@ -53,24 +61,21 @@ public class Skoice extends JavaPlugin {
     private ListenerManager listenerManager;
     private Bot bot;
     private UpdateNetworksTask updateNetworksTask;
-    private BukkitAudiences adventure;
-    private HookManager hookManager;
 
-    public static SkoiceAPI api() {
-        return Skoice.api;
+    public Skoice(SkoiceLogger logger, SkoiceTaskScheduler scheduler) {
+        this.logger = logger;
+        this.scheduler = scheduler;
     }
 
     public static AnalyticManager analyticManager() {
         return Skoice.analyticManager;
     }
 
-    @Override
+    public SkoiceLogger getLogger() {
+        return this.logger;
+    }
+
     public void onEnable() {
-        if (!this.isMinecraftServerCompatible()) {
-            this.log(Level.SEVERE, Skoice.OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE);
-            this.getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
         this.saveDefaultConfig();
         this.configYamlFile = new ConfigYamlFile(this);
         this.configYamlFile.load();
@@ -78,50 +83,108 @@ public class Skoice extends JavaPlugin {
         this.lang = new MinecraftLang();
         this.lang.load(LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())));
         this.log(Level.INFO, "logger.info.plugin-enabled");
-        this.linksYamlFile = new LinksYamlFile(this);
+        this.linksYamlFile = this.createLinksYamlFile();
         this.linksYamlFile.load();
         new OutdatedConfig(this).update();
         this.tempYamlFile = new TempYamlFile(this);
         this.tempYamlFile.load();
         this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
         this.loginNotificationYamlFile.load();
-        Skoice.analyticManager = new AnalyticManager(this);
+        Skoice.analyticManager = this.createAnalyticManager();
         Skoice.analyticManager.initialize();
-        Skoice.api = new SkoiceAPI(this);
-        this.getServer().getPluginManager().registerEvents(Skoice.api, this);
-        this.listenerManager = new ListenerManager(this);
         this.listenerManager.registerPermanentMinecraftListeners();
-        this.bot = new Bot(this);
-        this.bot.connect();
+        this.runBot();
         this.updateNetworksTask = new UpdateNetworksTask(this);
-        this.adventure = BukkitAudiences.create(this);
-        new SkoiceCommand(this).init();
-        this.hookManager = new HookManager(this);
-        this.hookManager.initialize();
-        Updater updater = new Updater(this, this.getFile().getAbsolutePath());
-        updater.runUpdaterTaskTimer();
+        this.setSkoiceCommand().init();
     }
 
-    @Override
-    public void onDisable() {
-        if (!this.isMinecraftServerCompatible()) {
-            return;
+    protected AnalyticManager createAnalyticManager() {
+        return new AnalyticManager(this);
+    }
+
+    private void runBot() {
+        this.bot = this.createBot();
+        this.bot.connect();
+    }
+
+    protected Bot createBot() {
+        return new Bot(this);
+    }
+
+    protected LinksYamlFile createLinksYamlFile() {
+        return new LinksYamlFile(this);
+    }
+
+    public abstract SkoiceCommand setSkoiceCommand();
+
+    private void saveDefaultConfig() {
+        File configFile = new File(this.getDataFolder(), "config.yml");
+        if (configFile.exists()) {
+            this.saveResource("config.yml", false);
         }
+    }
+
+    public InputStream getResource(String filename) {
+        if (filename == null) {
+            throw new IllegalArgumentException("Filename cannot be null");
+        }
+
+        try {
+            ClassLoader classLoader = this.getClass().getClassLoader();
+            URL url = classLoader.getResource(filename);
+
+            if (url == null) {
+                return null;
+            }
+
+            URLConnection connection = url.openConnection();
+            connection.setUseCaches(false);
+            return connection.getInputStream();
+        } catch (IOException ex) {
+            return null;
+        }
+    }
+
+    public void saveResource(String resourcePath, boolean replace) {
+        if (resourcePath == null || "".equals(resourcePath)) {
+            throw new IllegalArgumentException("ResourcePath cannot be null or empty");
+        }
+
+        resourcePath = resourcePath.replace('\\', '/');
+        InputStream in = this.getResource(resourcePath);
+        if (in == null) {
+            throw new IllegalArgumentException("The embedded resource '" + resourcePath + "' cannot be found in " + this.getDataFolder());
+        }
+
+        File outFile = new File(this.getDataFolder(), resourcePath);
+        int lastIndex = resourcePath.lastIndexOf('/');
+        File outDir = new File(this.getDataFolder(), resourcePath.substring(0, lastIndex >= 0 ? lastIndex : 0));
+
+        if (!outDir.exists()) {
+            outDir.mkdirs();
+        }
+
+        try {
+            if (!outFile.exists() || replace) {
+                OutputStream out = new FileOutputStream(outFile);
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.close();
+                in.close();
+            } else {
+                this.logger.warning("Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
+            }
+        } catch (IOException ex) {
+            this.logger.severe("Could not save " + outFile.getName() + " to " + outFile);
+        }
+    }
+
+    public void onDisable() {
         this.bot.shutdown();
         this.log(Level.INFO, "logger.info.plugin-disabled");
-        if (this.adventure != null) {
-            this.adventure.close();
-        }
-        this.hookManager.close();
-    }
-
-    private boolean isMinecraftServerCompatible() {
-        try {
-            GameMode.SPECTATOR.toString();
-        } catch (NoSuchFieldError exception) {
-            return false;
-        }
-        return true;
     }
 
     public void log(Level level, String path) {
@@ -152,6 +215,10 @@ public class Skoice extends JavaPlugin {
         return this.listenerManager;
     }
 
+    public void setListenerManager(ListenerManager listenerManager) {
+        this.listenerManager = listenerManager;
+    }
+
     public Bot getBot() {
         return this.bot;
     }
@@ -160,11 +227,21 @@ public class Skoice extends JavaPlugin {
         return this.updateNetworksTask;
     }
 
-    public BukkitAudiences adventure() {
-        return this.adventure;
+    public abstract boolean isEnabled();
+
+    public SkoiceTaskScheduler getScheduler() {
+        return this.scheduler;
     }
 
-    public HookManager getHookManager() {
-        return this.hookManager;
-    }
+    public abstract File getDataFolder();
+
+    public abstract BasePlayer getPlayer(UUID uuid);
+
+    public abstract Collection<FullPlayer> getOnlinePlayers();
+
+    public abstract Collection<String> getWorlds();
+
+    public abstract FullPlayer getFullPlayer(BasePlayer player);
+
+    public abstract String getVersion();
 }

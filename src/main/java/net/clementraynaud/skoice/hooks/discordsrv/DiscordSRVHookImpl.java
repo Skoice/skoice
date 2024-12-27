@@ -25,6 +25,7 @@ import github.scarsz.discordsrv.api.events.AccountLinkedEvent;
 import github.scarsz.discordsrv.api.events.AccountUnlinkedEvent;
 import github.scarsz.discordsrv.api.events.DiscordReadyEvent;
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,10 +33,10 @@ import java.util.UUID;
 
 public class DiscordSRVHookImpl {
 
-    private final Skoice plugin;
+    private final SkoiceSpigot plugin;
     private boolean synchronizationComplete = false;
 
-    public DiscordSRVHookImpl(Skoice plugin) {
+    public DiscordSRVHookImpl(SkoiceSpigot plugin) {
         this.plugin = plugin;
     }
 
@@ -54,7 +55,7 @@ public class DiscordSRVHookImpl {
     }
 
     public void linkUserDiscordSRV(String minecraftId, String discordId) {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+        this.plugin.getPlugin().getServer().getScheduler().runTaskAsynchronously(this.plugin.getPlugin(), () -> {
             try {
                 DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, UUID.fromString(minecraftId));
             } catch (Throwable ignored) {
@@ -63,7 +64,7 @@ public class DiscordSRVHookImpl {
     }
 
     public void unlinkUserDiscordSRV(String minecraftId) {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+        this.plugin.getPlugin().getServer().getScheduler().runTaskAsynchronously(this.plugin.getPlugin(), () -> {
             try {
                 DiscordSRV.getPlugin().getAccountLinkManager().unlink(UUID.fromString(minecraftId));
             } catch (Throwable ignored) {
@@ -74,14 +75,14 @@ public class DiscordSRVHookImpl {
     @Subscribe
     public void onAccountLinked(AccountLinkedEvent event) {
         if (this.synchronizationComplete && event.getUser() != null && event.getPlayer() != null) {
-            Skoice.api().linkUser(event.getPlayer().getUniqueId(), event.getUser().getId());
+            SkoiceSpigot.api().linkUser(event.getPlayer().getUniqueId(), event.getUser().getId());
         }
     }
 
     @Subscribe
     public void onAccountUnlinked(AccountUnlinkedEvent event) {
         if (this.synchronizationComplete && event.getPlayer() != null) {
-            Skoice.api().unlinkUser(event.getPlayer().getUniqueId());
+            SkoiceSpigot.api().unlinkUser(event.getPlayer().getUniqueId());
         }
     }
 
@@ -99,11 +100,11 @@ public class DiscordSRVHookImpl {
         }
 
         Map<String, UUID> existingHookLinks = new HashMap<>(DiscordSRV.getPlugin().getAccountLinkManager().getLinkedAccounts());
-        Map<String, String> existingSkoiceLinks = new HashMap<>(Skoice.api().getLinkedAccounts());
+        Map<String, String> existingSkoiceLinks = new HashMap<>(SkoiceSpigot.api().getLinkedAccounts());
 
         existingHookLinks.forEach((discordId, minecraftId) -> {
             if (!existingSkoiceLinks.containsValue(discordId)) {
-                Skoice.api().linkUser(minecraftId, discordId);
+                SkoiceSpigot.api().linkUser(minecraftId, discordId);
             }
         });
 

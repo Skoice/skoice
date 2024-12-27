@@ -17,7 +17,7 @@
 
 name: Skoice
 version: ${project.version}
-main: net.clementraynaud.skoice.Skoice
+main: net.clementraynaud.skoice.platforms.spigot.SkoicePluginSpigot
 api-version: 1.13
 authors: [ carlodrift, Lucas_Cdry ]
 description: Proximity Voice Chat in Minecraft using Discord

@@ -19,7 +19,6 @@
 
 package net.clementraynaud.skoice.system;
 
-import net.clementraynaud.skoice.util.ThreadUtil;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,31 +32,26 @@ public final class Networks {
     }
 
     public static Set<Network> getAll() {
-        ThreadUtil.ensureNotMainThread(true);
         return Networks.networkSet;
     }
 
     public static Set<Network> getInitialized() {
-        ThreadUtil.ensureNotMainThread();
         return Networks.networkSet.stream()
                 .filter(network -> network.getProximityChannel().isInitialized())
                 .collect(Collectors.toSet());
     }
 
     public static Set<ProximityChannel> getProximityChannels() {
-        ThreadUtil.ensureNotMainThread();
         return Networks.networkSet.stream()
                 .map(Network::getProximityChannel)
                 .collect(Collectors.toSet());
     }
 
     public static void add(Network network) {
-        ThreadUtil.ensureNotMainThread();
         Networks.networkSet.add(network);
     }
 
     public static void remove(Network network) {
-        ThreadUtil.ensureNotMainThread();
         Networks.networkSet.remove(network);
     }
 
@@ -70,14 +64,12 @@ public final class Networks {
     }
 
     public static void clean() {
-        ThreadUtil.ensureNotMainThread();
         Networks.networkSet.stream()
                 .filter(Network::isEmpty)
                 .forEach(Networks::remove);
     }
 
     public static void clear() {
-        ThreadUtil.ensureNotMainThread(true);
         Networks.networkSet.clear();
     }
 }
