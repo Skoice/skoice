@@ -19,11 +19,11 @@
 
 package net.clementraynaud.skoice.api;
 
-import net.clementraynaud.skoice.bot.BotStatus;
-import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.api.events.system.SystemInterruptionEvent;
+import net.clementraynaud.skoice.bot.BotStatus;
+import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;

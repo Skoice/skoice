@@ -16,12 +16,12 @@ public class SpigotBasePlayer extends BasePlayer {
 
     @Override
     public void sendActionBar(Component message) {
-        SkoiceSpigot.adventure().player(player).sendActionBar(message);
+        SkoiceSpigot.adventure().player(this.player).sendActionBar(message);
     }
 
     @Override
     public void sendMessage(Component message) {
-        SkoiceSpigot.adventure().player(player).sendMessage(message);
+        SkoiceSpigot.adventure().player(this.player).sendMessage(message);
     }
 
     @Override

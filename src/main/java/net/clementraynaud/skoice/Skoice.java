@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice;
 
+import net.clementraynaud.skoice.analytics.AnalyticManager;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.lang.LangInfo;
@@ -48,6 +49,7 @@ import java.util.UUID;
 
 public abstract class Skoice {
 
+    private static AnalyticManager analyticManager;
     private final SkoiceLogger logger;
     private final SkoiceTaskScheduler scheduler;
     private MinecraftLang lang;
@@ -62,6 +64,10 @@ public abstract class Skoice {
     public Skoice(SkoiceLogger logger, SkoiceTaskScheduler scheduler) {
         this.logger = logger;
         this.scheduler = scheduler;
+    }
+
+    public static AnalyticManager analyticManager() {
+        return Skoice.analyticManager;
     }
 
     public SkoiceLogger getLogger() {
@@ -83,10 +89,16 @@ public abstract class Skoice {
         this.tempYamlFile.load();
         this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
         this.loginNotificationYamlFile.load();
+        Skoice.analyticManager = this.createAnalyticManager();
+        Skoice.analyticManager.initialize();
         this.listenerManager.registerPermanentMinecraftListeners();
         this.runBot();
         this.updateNetworksTask = new UpdateNetworksTask(this);
         this.setSkoiceCommand().init();
+    }
+
+    protected AnalyticManager createAnalyticManager() {
+        return new AnalyticManager(this);
     }
 
     private void runBot() {
@@ -225,4 +237,6 @@ public abstract class Skoice {
     public abstract Collection<String> getWorlds();
 
     public abstract FullPlayer getFullPlayer(BasePlayer player);
+
+    public abstract String getVersion();
 }

@@ -64,6 +64,11 @@ public class SkoiceVelocity extends Skoice {
     }
 
     @Override
+    public String getVersion() {
+        return "3.2.3";
+    }
+
+    @Override
     public SkoiceCommand setSkoiceCommand() {
         return new SkoiceCommandVelocity(this);
     }

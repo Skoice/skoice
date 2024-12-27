@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.tasks;
 
+import com.bugsnag.Severity;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.system.LinkedPlayer;
@@ -132,6 +133,9 @@ public class UpdateNetworksTask {
                     .filter(Objects::nonNull)
                     .count();
             ProximityChannels.clean(possibleUsers);
+        } catch (Throwable throwable) {
+            Skoice.analyticManager().getBugsnag().notify(throwable, Severity.ERROR);
+            throw throwable;
         } finally {
             this.lock.unlock();
         }

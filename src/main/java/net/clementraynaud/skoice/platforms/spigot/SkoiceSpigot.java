@@ -1,11 +1,13 @@
 package net.clementraynaud.skoice.platforms.spigot;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.analytics.AnalyticManager;
+import net.clementraynaud.skoice.api.SkoiceAPI;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.model.minecraft.FullPlayer;
-import net.clementraynaud.skoice.api.SkoiceAPI;
+import net.clementraynaud.skoice.platforms.spigot.analytics.SpigotAnalyticManager;
 import net.clementraynaud.skoice.platforms.spigot.commands.skoice.SkoiceCommandSpigot;
 import net.clementraynaud.skoice.platforms.spigot.logger.JULLoggerAdapter;
 import net.clementraynaud.skoice.platforms.spigot.minecraft.SpigotBasePlayer;
@@ -27,9 +29,9 @@ import java.util.stream.Collectors;
 public class SkoiceSpigot extends Skoice {
 
     private static final String OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
-    private final SkoicePluginSpigot plugin;
     private static BukkitAudiences adventure;
     private static SkoiceAPI api;
+    private final SkoicePluginSpigot plugin;
 
     public SkoiceSpigot(SkoicePluginSpigot plugin) {
         super(new JULLoggerAdapter(plugin.getLogger()), new SpigotTaskScheduler(plugin));
@@ -38,18 +40,22 @@ public class SkoiceSpigot extends Skoice {
     }
 
     public static SkoiceAPI api() {
-        return api;
+        return SkoiceSpigot.api;
+    }
+
+    public static BukkitAudiences adventure() {
+        return SkoiceSpigot.adventure;
     }
 
     @Override
     public void onEnable() {
         if (!this.isMinecraftServerCompatible()) {
-            this.getLogger().severe(OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE);
+            this.getLogger().severe(SkoiceSpigot.OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE);
             this.getPlugin().getServer().getPluginManager().disablePlugin(this.getPlugin());
             return;
         }
-        api = new SkoiceAPI(this);
-        this.adventure = BukkitAudiences.create(this.plugin);
+        SkoiceSpigot.api = new SkoiceAPI(this);
+        adventure = BukkitAudiences.create(this.plugin);
         super.onEnable();
     }
 
@@ -65,14 +71,10 @@ public class SkoiceSpigot extends Skoice {
 
     @Override
     public void onDisable() {
-        this.adventure.close();
-        if (this.adventure != null) {
+        adventure.close();
+        if (adventure != null) {
             super.onDisable();
         }
-    }
-
-    public static BukkitAudiences adventure() {
-        return adventure;
     }
 
     private boolean isMinecraftServerCompatible() {
@@ -119,6 +121,16 @@ public class SkoiceSpigot extends Skoice {
     @Override
     public FullPlayer getFullPlayer(BasePlayer player) {
         return Optional.ofNullable(this.plugin.getServer().getPlayer(player.getUniqueId())).map(SpigotFullPlayer::new).orElse(null);
+    }
+
+    @Override
+    public String getVersion() {
+        return this.plugin.getDescription().getVersion();
+    }
+
+    @Override
+    protected AnalyticManager createAnalyticManager() {
+        return new SpigotAnalyticManager(this);
     }
 
     public SkoicePluginSpigot getPlugin() {

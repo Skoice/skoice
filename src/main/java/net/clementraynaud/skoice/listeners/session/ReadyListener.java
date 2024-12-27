@@ -19,6 +19,7 @@
 
 package net.clementraynaud.skoice.listeners.session;
 
+import com.bugsnag.Severity;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.model.minecraft.BasePlayer;
@@ -93,6 +94,7 @@ public class ReadyListener extends ListenerAdapter {
                 return;
             }
 
+            Skoice.analyticManager().getBugsnag().notify(throwable, Severity.ERROR);
             defaultFailure.accept(throwable);
         });
     }
