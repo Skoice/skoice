@@ -77,5 +77,12 @@ public class InterruptSystemTask {
         }
 
         Networks.clear();
+
+        if (this.plugin.isEnabled()) {
+            this.callSystemInterruptionEvent();
+        }
+    }
+
+    protected void callSystemInterruptionEvent() {
     }
 }

@@ -1,6 +1,7 @@
 package net.clementraynaud.skoice.platforms.spigot;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.model.minecraft.FullPlayer;
@@ -9,7 +10,9 @@ import net.clementraynaud.skoice.platforms.spigot.logger.JULLoggerAdapter;
 import net.clementraynaud.skoice.platforms.spigot.minecraft.SpigotBasePlayer;
 import net.clementraynaud.skoice.platforms.spigot.minecraft.SpigotFullPlayer;
 import net.clementraynaud.skoice.platforms.spigot.scheduler.SpigotTaskScheduler;
+import net.clementraynaud.skoice.platforms.spigot.storage.SpigotLinksYamlFile;
 import net.clementraynaud.skoice.platforms.spigot.system.SpigotListenerManager;
+import net.clementraynaud.skoice.storage.LinksYamlFile;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.GameMode;
 import org.bukkit.generator.WorldInfo;
@@ -41,6 +44,16 @@ public class SkoiceSpigot extends Skoice {
         }
         this.adventure = BukkitAudiences.create(this.plugin);
         super.onEnable();
+    }
+
+    @Override
+    public Bot createBot() {
+        return new SpigotBot(this);
+    }
+
+    @Override
+    public LinksYamlFile createLinksYamlFile() {
+        return new SpigotLinksYamlFile(this);
     }
 
     @Override

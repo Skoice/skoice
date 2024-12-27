@@ -76,7 +76,7 @@ public abstract class Skoice {
         this.lang = new MinecraftLang();
         this.lang.load(LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())));
         this.logger.info(this.lang.getMessage("logger.info.plugin-enabled"));
-        this.linksYamlFile = new LinksYamlFile(this);
+        this.linksYamlFile = this.createLinksYamlFile();
         this.linksYamlFile.load();
         new OutdatedConfig(this).update();
         this.tempYamlFile = new TempYamlFile(this);
@@ -84,10 +84,22 @@ public abstract class Skoice {
         this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
         this.loginNotificationYamlFile.load();
         this.listenerManager.registerPermanentMinecraftListeners();
-        this.bot = new Bot(this);
-        this.bot.connect();
+        this.runBot();
         this.updateNetworksTask = new UpdateNetworksTask(this);
         this.setSkoiceCommand().init();
+    }
+
+    private void runBot() {
+        this.bot = this.createBot();
+        this.bot.connect();
+    }
+
+    protected Bot createBot() {
+        return new Bot(this);
+    }
+
+    protected LinksYamlFile createLinksYamlFile() {
+        return new LinksYamlFile(this);
     }
 
     public abstract SkoiceCommand setSkoiceCommand();

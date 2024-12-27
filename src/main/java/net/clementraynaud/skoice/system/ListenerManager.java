@@ -41,7 +41,6 @@ import net.clementraynaud.skoice.listeners.interaction.component.StringSelectInt
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
-import net.clementraynaud.skoice.tasks.InterruptSystemTask;
 import net.dv8tion.jda.api.entities.User;
 
 public abstract class ListenerManager {
@@ -56,10 +55,18 @@ public abstract class ListenerManager {
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;
         this.playerQuitHandler = new PlayerQuitHandler();
-        this.playerJoinHandler = new PlayerJoinHandler(this.plugin);
+        this.playerJoinHandler = this.createPlayerJoinHandler();
         this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
-        this.guildVoiceUpdateListener = new GuildVoiceUpdateListener(this.plugin);
+        this.guildVoiceUpdateListener = this.createGuildVoiceUpdate();
         this.genericChannelListener = new GenericChannelListener(this.plugin);
+    }
+
+    protected PlayerJoinHandler createPlayerJoinHandler() {
+        return new PlayerJoinHandler(this.plugin);
+    }
+
+    protected GuildVoiceUpdateListener createGuildVoiceUpdate() {
+        return new GuildVoiceUpdateListener(this.plugin);
     }
 
     public PlayerJoinHandler getPlayerJoinHandler() {
@@ -96,7 +103,7 @@ public abstract class ListenerManager {
         } else if (oldStatus == BotStatus.READY && newStatus != BotStatus.READY) {
             this.unregisterMinecraftListeners();
             if (newStatus != BotStatus.NOT_CONNECTED) {
-                new InterruptSystemTask(this.plugin).run();
+                this.plugin.getBot().runInterruptSystemTask();
             }
         }
     }

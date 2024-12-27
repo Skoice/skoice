@@ -148,7 +148,7 @@ public class Bot {
     public void shutdown() {
         if (this.canShutdown()) {
             if (this.isAvailable()) {
-                new InterruptSystemTask(this.plugin).run();
+                this.runInterruptSystemTask();
             }
 
             this.jda.shutdown();
@@ -160,6 +160,10 @@ public class Bot {
             } catch (InterruptedException ignored) {
             }
         }
+    }
+
+    public void runInterruptSystemTask() {
+        new InterruptSystemTask(this.plugin).run();
     }
 
     public boolean isAdministrator() {
@@ -197,8 +201,12 @@ public class Bot {
             BasePlayer player = this.plugin.getPlayer(UUID.fromString(minecraftId));
             if (player != null) {
                 player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
+                this.callPlayerProximityConnectEvent(minecraftId, member.getId());
             }
         }
+    }
+
+    protected void callPlayerProximityConnectEvent(String minecraftId, String memberId) {
     }
 
     public void retrieveMutedUsers() {
@@ -283,6 +291,7 @@ public class Bot {
 
                 } else {
                     this.status = BotStatus.READY;
+                    this.callSystemReadyEvent();
                 }
             }
 
@@ -290,6 +299,9 @@ public class Bot {
         }
 
         this.isStatusAcknowledged = true;
+    }
+
+    protected void callSystemReadyEvent() {
     }
 
     public void updateActivity() {

@@ -51,10 +51,18 @@ public class LinksYamlFile extends YamlFile {
 
     public void linkUser(String minecraftId, String discordId) {
         this.linkUserDirectly(minecraftId, discordId);
+        this.callAccountLinkEvent(minecraftId, discordId);
+    }
+
+    protected void callAccountLinkEvent(String minecraftId, String discordId) {
     }
 
     public void unlinkUser(String minecraftId) {
         this.unlinkUserDirectly(minecraftId);
+        this.callAccountUnlinkEvent(minecraftId);
+    }
+
+    protected void callAccountUnlinkEvent(String minecraftId) {
     }
 
     public void linkUserDirectly(String minecraftId, String discordId) {
@@ -72,6 +80,7 @@ public class LinksYamlFile extends YamlFile {
                     AudioChannel audioChannel = voiceState.getChannel();
                     if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
                         player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
+                        this.callPlayerProximityConnectEvent(minecraftId, discordId);
                     } else {
                         player.sendMessage(super.plugin.getLang().getMessage("chat.player.not-connected",
                                 mainVoiceChannel.getName(),
@@ -80,6 +89,9 @@ public class LinksYamlFile extends YamlFile {
                 }
             });
         }
+    }
+
+    protected void callPlayerProximityConnectEvent(String minecraftId, String discordId) {
     }
 
     public void unlinkUserDirectly(String minecraftId) {
@@ -96,6 +108,12 @@ public class LinksYamlFile extends YamlFile {
 
             LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getFullPlayer().equals(player));
         });
+        if (Skoice.api().isProximityConnected(UUID.fromString(minecraftId))) { //todo: reintroduce api
+            this.callPlayerProximityDisconnectEvent(minecraftId);
+        }
+    }
+
+    protected void callPlayerProximityDisconnectEvent(String minecraftId) {
     }
 
     public Map<String, String> getLinks() {

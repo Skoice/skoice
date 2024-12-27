@@ -1,6 +1,10 @@
 package net.clementraynaud.skoice.platforms.spigot.system;
 
+import net.clementraynaud.skoice.handlers.player.PlayerJoinHandler;
+import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceUpdateListener;
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
+import net.clementraynaud.skoice.platforms.spigot.handlers.SpigotPlayerJoinHandler;
+import net.clementraynaud.skoice.platforms.spigot.jda.SpigotGuildVoiceUpdateListener;
 import net.clementraynaud.skoice.platforms.spigot.listeners.PlayerJoinListener;
 import net.clementraynaud.skoice.platforms.spigot.listeners.PlayerQuitListener;
 import net.clementraynaud.skoice.platforms.spigot.listeners.ServerCommandListener;
@@ -32,6 +36,16 @@ public class SpigotListenerManager extends ListenerManager {
     @Override
     public void unregisterMinecraftListeners() {
         HandlerList.unregisterAll(this.playerQuitListener);
+    }
+
+    @Override
+    protected GuildVoiceUpdateListener createGuildVoiceUpdate() {
+        return new SpigotGuildVoiceUpdateListener(this.plugin);
+    }
+
+    @Override
+    protected PlayerJoinHandler createPlayerJoinHandler() {
+        return new SpigotPlayerJoinHandler(this.plugin);
     }
 
     public SkoiceSpigot getPlugin() {

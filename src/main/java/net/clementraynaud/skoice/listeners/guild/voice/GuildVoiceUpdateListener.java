@@ -89,7 +89,11 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         if (player != null) {
             Networks.getAll().forEach(network -> network.remove(player));
             player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
+            this.callPlayerProximityDisconnectEvent(minecraftId);
         }
+    }
+
+    protected void callPlayerProximityDisconnectEvent(String minecraftId) {
     }
 
     private void manageMovingToChannel(Member member, AudioChannelUnion audioChannelLeft, AudioChannelUnion audioChannelJoined) {
@@ -131,10 +135,12 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
 
                 if (!voiceChannelJoined.getId().equals(mainVoiceChannelId)) {
                     player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
+                    this.callPlayerProximityDisconnectEvent(minecraftId);
                 }
 
             } else if (voiceChannelLeft.getId().equals(mainVoiceChannelId)) {
                 player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
+                this.callPlayerProximityDisconnectEvent(minecraftId);
             }
         }
     }
