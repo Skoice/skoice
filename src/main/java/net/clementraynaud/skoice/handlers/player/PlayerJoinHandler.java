@@ -39,21 +39,29 @@ public class PlayerJoinHandler {
         this.plugin = plugin;
     }
 
-    public void onPlayerJoin(BasePlayer player) {
+    public void onPlayerJoin(BasePlayer player, boolean chatAlert) {
         if (this.plugin.getBot().getStatus() != BotStatus.READY) {
             this.plugin.getBot().sendIncompleteConfigurationAlert(player, false, false);
         } else {
             if (!this.plugin.getLinksYamlFile().retrieveMember(player.getUniqueId(), member -> {
                 new LinkedPlayer(this.plugin, this.plugin.getFullPlayer(player), member.getId());
-                GuildVoiceState voiceState = member.getVoiceState();
-                if (voiceState != null) {
-                    AudioChannel audioChannel = voiceState.getChannel();
-                    if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
-                        player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
+                if (chatAlert) {
+                    GuildVoiceState voiceState = member.getVoiceState();
+                    if (voiceState != null) {
+                        AudioChannel audioChannel = voiceState.getChannel();
+                        if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
+                            player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
+                        }
                     }
                 }
-            }, e -> this.sendLoginNotification(player))) {
-                this.sendLoginNotification(player);
+            }, e -> {
+                if (chatAlert) {
+                    this.sendLoginNotification(player);
+                }
+            })) {
+                if (chatAlert) {
+                    this.sendLoginNotification(player);
+                }
             }
         }
     }

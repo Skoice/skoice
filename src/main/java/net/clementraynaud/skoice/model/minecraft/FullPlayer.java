@@ -38,7 +38,7 @@ public class FullPlayer extends BasePlayer {
     }
 
     @Override
-    public void sendActionBar(String message) {
+    public void sendActionBar(Component message) {
         this.basePlayer.sendActionBar(message);
     }
 

@@ -1,5 +1,8 @@
 package net.clementraynaud.skoice.model.minecraft;
 
+import net.clementraynaud.skoice.util.ComponentUtil;
+import net.kyori.adventure.text.Component;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -15,7 +18,11 @@ public abstract class BasePlayer extends SkoiceCommandSender {
         return this.id;
     }
 
-    public abstract void sendActionBar(String message);
+    public abstract void sendActionBar(Component message);
+
+    public void sendActionBar(String message) {
+        this.sendActionBar(ComponentUtil.translateAlternateColorCodes(message));
+    }
 
     @Override
     public final boolean equals(Object o) {

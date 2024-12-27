@@ -26,11 +26,12 @@ import net.clementraynaud.skoice.storage.config.ConfigField;
 import net.clementraynaud.skoice.util.DistanceUtil;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class LinkedPlayer {
+public final class LinkedPlayer {
 
     private static final int FALLOFF = 3;
 
@@ -138,5 +139,20 @@ public class LinkedPlayer {
 
     public String getDiscordId() {
         return this.discordId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+
+        LinkedPlayer that = (LinkedPlayer) o;
+        return Objects.equals(this.player, that.player);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.player);
     }
 }

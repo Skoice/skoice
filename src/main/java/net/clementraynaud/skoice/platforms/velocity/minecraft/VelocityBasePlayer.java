@@ -19,8 +19,8 @@ public class VelocityBasePlayer extends BasePlayer {
     }
 
     @Override
-    public void sendActionBar(String message) {
-        this.player.sendActionBar(Component.text(message));
+    public void sendActionBar(Component message) {
+        this.player.sendActionBar(message);
     }
 
     @Override

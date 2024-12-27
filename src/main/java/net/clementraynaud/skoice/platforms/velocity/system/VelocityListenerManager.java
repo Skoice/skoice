@@ -47,9 +47,9 @@ public class VelocityListenerManager extends ListenerManager {
         return CompletableFuture.completedFuture(null);
     }
 
-    public void onPlayerJoin(VelocityBasePlayer velocityBasePlayer) {
+    public void onPlayerJoin(VelocityBasePlayer velocityBasePlayer, boolean chatAlert) {
         if (this.listeners.contains(this.getPlayerJoinListener())) {
-            this.getPlayerJoinListener().onPlayerJoin(velocityBasePlayer);
+            this.getPlayerJoinListener().onPlayerJoin(velocityBasePlayer, chatAlert);
         }
     }
 }
