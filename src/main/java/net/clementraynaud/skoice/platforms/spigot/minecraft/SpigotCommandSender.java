@@ -1,6 +1,7 @@
 package net.clementraynaud.skoice.platforms.spigot.minecraft;
 
 import net.clementraynaud.skoice.model.minecraft.SkoiceCommandSender;
+import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 
@@ -14,7 +15,7 @@ public class SpigotCommandSender extends SkoiceCommandSender {
 
     @Override
     public void sendMessage(Component message) {
-        //todo
+        SkoiceSpigot.adventure().sender(this.sender).sendMessage(message);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package net.clementraynaud.skoice.platforms.spigot.minecraft;
 
 import net.clementraynaud.skoice.model.minecraft.BasePlayer;
+import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -15,12 +16,12 @@ public class SpigotBasePlayer extends BasePlayer {
 
     @Override
     public void sendActionBar(Component message) {
-        //todo
+        SkoiceSpigot.adventure().player(player).sendActionBar(message);
     }
 
     @Override
     public void sendMessage(Component message) {
-        //todo
+        SkoiceSpigot.adventure().player(player).sendMessage(message);
     }
 
     @Override

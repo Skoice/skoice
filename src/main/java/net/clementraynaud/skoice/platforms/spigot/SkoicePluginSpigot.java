@@ -62,6 +62,11 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
     }
 
     @Override
+    public void onDisable() {
+        this.skoice.onDisable();
+    }
+
+    @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
     }
 }

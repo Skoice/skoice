@@ -10,6 +10,8 @@ import net.clementraynaud.skoice.platforms.spigot.minecraft.SpigotBasePlayer;
 import net.clementraynaud.skoice.platforms.spigot.minecraft.SpigotFullPlayer;
 import net.clementraynaud.skoice.platforms.spigot.scheduler.SpigotTaskScheduler;
 import net.clementraynaud.skoice.platforms.spigot.system.SpigotListenerManager;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.bukkit.GameMode;
 import org.bukkit.generator.WorldInfo;
 
 import java.io.File;
@@ -20,12 +22,46 @@ import java.util.stream.Collectors;
 
 public class SkoiceSpigot extends Skoice {
 
+    private static final String OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
     private final SkoicePluginSpigot plugin;
+    private static BukkitAudiences adventure;
 
     public SkoiceSpigot(SkoicePluginSpigot plugin) {
         super(new JULLoggerAdapter(plugin.getLogger()), new SpigotTaskScheduler(plugin));
         super.setListenerManager(new SpigotListenerManager(this));
         this.plugin = plugin;
+    }
+
+    @Override
+    public void onEnable() {
+        if (!this.isMinecraftServerCompatible()) {
+            this.getLogger().severe(OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE);
+            this.getPlugin().getServer().getPluginManager().disablePlugin(this.getPlugin());
+            return;
+        }
+        this.adventure = BukkitAudiences.create(this.plugin);
+        super.onEnable();
+    }
+
+    @Override
+    public void onDisable() {
+        this.adventure.close();
+        if (this.adventure != null) {
+            super.onDisable();
+        }
+    }
+
+    public static BukkitAudiences adventure() {
+        return adventure;
+    }
+
+    private boolean isMinecraftServerCompatible() {
+        try {
+            GameMode.SPECTATOR.toString();
+        } catch (NoSuchFieldError exception) {
+            return false;
+        }
+        return true;
     }
 
     @Override
