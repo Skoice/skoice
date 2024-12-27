@@ -108,12 +108,10 @@ public class LinksYamlFile extends YamlFile {
 
             LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getFullPlayer().equals(player));
         });
-        if (Skoice.api().isProximityConnected(UUID.fromString(minecraftId))) { //todo: reintroduce api
-            this.callPlayerProximityDisconnectEvent(minecraftId);
-        }
+        this.callPlayerProximityDisconnectEventIfConnected(minecraftId);
     }
 
-    protected void callPlayerProximityDisconnectEvent(String minecraftId) {
+    protected void callPlayerProximityDisconnectEventIfConnected(String minecraftId) {
     }
 
     public Map<String, String> getLinks() {

@@ -5,6 +5,7 @@ import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.model.minecraft.FullPlayer;
+import net.clementraynaud.skoice.api.SkoiceAPI;
 import net.clementraynaud.skoice.platforms.spigot.commands.skoice.SkoiceCommandSpigot;
 import net.clementraynaud.skoice.platforms.spigot.logger.JULLoggerAdapter;
 import net.clementraynaud.skoice.platforms.spigot.minecraft.SpigotBasePlayer;
@@ -28,11 +29,16 @@ public class SkoiceSpigot extends Skoice {
     private static final String OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
     private final SkoicePluginSpigot plugin;
     private static BukkitAudiences adventure;
+    private static SkoiceAPI api;
 
     public SkoiceSpigot(SkoicePluginSpigot plugin) {
         super(new JULLoggerAdapter(plugin.getLogger()), new SpigotTaskScheduler(plugin));
         super.setListenerManager(new SpigotListenerManager(this));
         this.plugin = plugin;
+    }
+
+    public static SkoiceAPI api() {
+        return api;
     }
 
     @Override
@@ -42,6 +48,7 @@ public class SkoiceSpigot extends Skoice {
             this.getPlugin().getServer().getPluginManager().disablePlugin(this.getPlugin());
             return;
         }
+        api = new SkoiceAPI(this);
         this.adventure = BukkitAudiences.create(this.plugin);
         super.onEnable();
     }

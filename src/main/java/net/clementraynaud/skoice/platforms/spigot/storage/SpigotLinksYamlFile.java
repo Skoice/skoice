@@ -7,6 +7,8 @@ import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEven
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.storage.LinksYamlFile;
 
+import java.util.UUID;
+
 public class SpigotLinksYamlFile extends LinksYamlFile {
 
     private final SkoiceSpigot plugin;
@@ -41,10 +43,12 @@ public class SpigotLinksYamlFile extends LinksYamlFile {
     }
 
     @Override
-    protected void callPlayerProximityDisconnectEvent(String minecraftId) {
-        this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
-            PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId);
-            this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
-        });
+    protected void callPlayerProximityDisconnectEventIfConnected(String minecraftId) {
+        if (SkoiceSpigot.api().isProximityConnected(UUID.fromString(minecraftId))) {
+            this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
+                PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId);
+                this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
+            });
+        }
     }
 }
