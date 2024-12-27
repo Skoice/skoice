@@ -1,5 +1,6 @@
 package net.clementraynaud.skoice.platforms.spigot.system;
 
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.handlers.player.PlayerJoinHandler;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceUpdateListener;
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
@@ -44,8 +45,8 @@ public class SpigotListenerManager extends ListenerManager {
     }
 
     @Override
-    protected PlayerJoinHandler createPlayerJoinHandler() {
-        return new SpigotPlayerJoinHandler(this.plugin);
+    protected PlayerJoinHandler createPlayerJoinHandler(Skoice skoice) {
+        return new SpigotPlayerJoinHandler((SkoiceSpigot) skoice);
     }
 
     public SkoiceSpigot getPlugin() {

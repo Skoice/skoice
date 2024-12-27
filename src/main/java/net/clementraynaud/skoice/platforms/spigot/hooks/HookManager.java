@@ -19,9 +19,9 @@
 
 package net.clementraynaud.skoice.platforms.spigot.hooks;
 
+import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.platforms.spigot.hooks.discordsrv.DiscordSRVHook;
 import net.clementraynaud.skoice.platforms.spigot.hooks.essentialsx.EssentialsXHook;
-import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 
 public class HookManager {
 

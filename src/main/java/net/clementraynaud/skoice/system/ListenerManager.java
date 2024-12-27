@@ -55,14 +55,14 @@ public abstract class ListenerManager {
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;
         this.playerQuitHandler = new PlayerQuitHandler();
-        this.playerJoinHandler = this.createPlayerJoinHandler();
+        this.playerJoinHandler = this.createPlayerJoinHandler(plugin);
         this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
         this.guildVoiceUpdateListener = this.createGuildVoiceUpdate();
         this.genericChannelListener = new GenericChannelListener(this.plugin);
     }
 
-    protected PlayerJoinHandler createPlayerJoinHandler() {
-        return new PlayerJoinHandler(this.plugin);
+    protected PlayerJoinHandler createPlayerJoinHandler(Skoice plugin) {
+        return new PlayerJoinHandler(plugin);
     }
 
     protected GuildVoiceUpdateListener createGuildVoiceUpdate() {

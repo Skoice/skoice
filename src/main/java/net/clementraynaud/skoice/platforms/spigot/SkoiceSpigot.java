@@ -4,12 +4,12 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.analytics.AnalyticManager;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
-import net.clementraynaud.skoice.platforms.spigot.hooks.HookManager;
 import net.clementraynaud.skoice.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.platforms.spigot.analytics.SpigotAnalyticManager;
 import net.clementraynaud.skoice.platforms.spigot.api.SkoiceAPI;
 import net.clementraynaud.skoice.platforms.spigot.commands.skoice.SkoiceCommandSpigot;
+import net.clementraynaud.skoice.platforms.spigot.hooks.HookManager;
 import net.clementraynaud.skoice.platforms.spigot.logger.JULLoggerAdapter;
 import net.clementraynaud.skoice.platforms.spigot.minecraft.SpigotBasePlayer;
 import net.clementraynaud.skoice.platforms.spigot.minecraft.SpigotFullPlayer;
@@ -37,8 +37,8 @@ public class SkoiceSpigot extends Skoice {
 
     public SkoiceSpigot(SkoicePluginSpigot plugin) {
         super(new JULLoggerAdapter(plugin.getLogger()), new SpigotTaskScheduler(plugin));
-        super.setListenerManager(new SpigotListenerManager(this));
         this.plugin = plugin;
+        super.setListenerManager(new SpigotListenerManager(this));
     }
 
     public static SkoiceAPI api() {
@@ -56,13 +56,13 @@ public class SkoiceSpigot extends Skoice {
             this.getPlugin().getServer().getPluginManager().disablePlugin(this.getPlugin());
             return;
         }
+        super.onEnable();
         SkoiceSpigot.api = new SkoiceAPI(this);
         SkoiceSpigot.adventure = BukkitAudiences.create(this.plugin);
         this.hookManager = new HookManager(this);
         this.hookManager.initialize();
         Updater updater = new Updater(this, this.plugin.getFile().getAbsolutePath());
         updater.runUpdaterTaskTimer();
-        super.onEnable();
     }
 
     @Override

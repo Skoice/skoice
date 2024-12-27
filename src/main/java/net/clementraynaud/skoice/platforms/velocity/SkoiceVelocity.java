@@ -25,8 +25,8 @@ public class SkoiceVelocity extends Skoice {
 
     public SkoiceVelocity(SkoicePluginVelocity plugin) {
         super(new SLF4JLoggerAdapter(plugin.getLogger()), new VelocityTaskScheduler(plugin));
-        super.setListenerManager(new VelocityListenerManager(this));
         this.plugin = plugin;
+        super.setListenerManager(new VelocityListenerManager(this));
     }
 
     @Override
