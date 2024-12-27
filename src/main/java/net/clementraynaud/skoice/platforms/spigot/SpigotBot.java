@@ -1,8 +1,8 @@
 package net.clementraynaud.skoice.platforms.spigot;
 
-import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
-import net.clementraynaud.skoice.api.events.system.SystemReadyEvent;
 import net.clementraynaud.skoice.bot.Bot;
+import net.clementraynaud.skoice.platforms.spigot.api.events.player.PlayerProximityConnectEvent;
+import net.clementraynaud.skoice.platforms.spigot.api.events.system.SystemReadyEvent;
 import net.clementraynaud.skoice.platforms.spigot.tasks.SpigotInterruptSystemTask;
 
 public class SpigotBot extends Bot {

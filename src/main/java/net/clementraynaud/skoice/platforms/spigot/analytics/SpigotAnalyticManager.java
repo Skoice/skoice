@@ -1,7 +1,6 @@
 package net.clementraynaud.skoice.platforms.spigot.analytics;
 
 import net.clementraynaud.skoice.analytics.AnalyticManager;
-import net.clementraynaud.skoice.analytics.BStatsAnalytics;
 import net.clementraynaud.skoice.analytics.BugsnagAnalytics;
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 

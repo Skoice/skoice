@@ -1,8 +1,8 @@
 package net.clementraynaud.skoice.platforms.spigot.handlers;
 
-import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.handlers.player.PlayerJoinHandler;
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
+import net.clementraynaud.skoice.platforms.spigot.api.events.player.PlayerProximityConnectEvent;
 
 public class SpigotPlayerJoinHandler extends PlayerJoinHandler {
 

@@ -17,13 +17,13 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.api.events.player;
+package net.clementraynaud.skoice.platforms.spigot.api.events.player;
 
-import net.clementraynaud.skoice.api.events.SkoiceEventMinecraft;
+import net.clementraynaud.skoice.platforms.spigot.api.events.SkoiceEventLink;
 
-public class PlayerProximityDisconnectEvent extends SkoiceEventMinecraft {
+public class PlayerProximityConnectEvent extends SkoiceEventLink {
 
-    public PlayerProximityDisconnectEvent(String minecraftId) {
-        super(minecraftId);
+    public PlayerProximityConnectEvent(String minecraftId, String discordId) {
+        super(minecraftId, discordId);
     }
 }

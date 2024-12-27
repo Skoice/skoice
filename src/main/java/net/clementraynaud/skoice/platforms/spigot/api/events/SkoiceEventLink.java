@@ -17,13 +17,18 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.api.events.account;
+package net.clementraynaud.skoice.platforms.spigot.api.events;
 
-import net.clementraynaud.skoice.api.events.SkoiceEventLink;
+public class SkoiceEventLink extends SkoiceEventMinecraft {
 
-public class AccountLinkEvent extends SkoiceEventLink {
+    private final String discordId;
 
-    public AccountLinkEvent(String minecraftId, String discordId) {
-        super(minecraftId, discordId);
+    public SkoiceEventLink(String minecraftId, String discordId) {
+        super(minecraftId);
+        this.discordId = discordId;
+    }
+
+    public String getDiscordId() {
+        return this.discordId;
     }
 }
