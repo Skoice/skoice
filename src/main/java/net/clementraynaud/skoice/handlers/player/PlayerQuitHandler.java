@@ -17,18 +17,19 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.player;
+package net.clementraynaud.skoice.handlers.player;
 
 import net.clementraynaud.skoice.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.system.LinkedPlayer;
 import net.clementraynaud.skoice.system.Networks;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
-public class PlayerQuitListener {
+public class PlayerQuitHandler {
 
-    public void onPlayerQuit(BasePlayer player) {
-        CompletableFuture.runAsync(() -> {
+    public CompletionStage<Void> onPlayerQuit(BasePlayer player) {
+        return CompletableFuture.runAsync(() -> {
             LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getFullPlayer().equals(player));
             Networks.getAll().stream()
                     .filter(network -> network.contains(player))

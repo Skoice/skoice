@@ -55,9 +55,9 @@ public class FullPlayer extends BasePlayer {
     @Override
     public String toString() {
         return "FullPlayer{" +
-                "basePlayer=" + basePlayer +
-                ", playerInfo=" + playerInfo +
-                ", id=" + id +
+                "basePlayer=" + this.basePlayer +
+                ", playerInfo=" + this.playerInfo +
+                ", id=" + this.id +
                 '}';
     }
 }

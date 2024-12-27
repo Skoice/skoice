@@ -22,6 +22,8 @@ package net.clementraynaud.skoice.system;
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
 import net.clementraynaud.skoice.commands.CommandInfo;
+import net.clementraynaud.skoice.handlers.player.PlayerJoinHandler;
+import net.clementraynaud.skoice.handlers.player.PlayerQuitHandler;
 import net.clementraynaud.skoice.listeners.StatusChangeListener;
 import net.clementraynaud.skoice.listeners.channel.network.GenericChannelListener;
 import net.clementraynaud.skoice.listeners.guild.GuildJoinListener;
@@ -36,8 +38,6 @@ import net.clementraynaud.skoice.listeners.interaction.ModalInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.command.SlashCommandInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.component.ButtonInteractionListener;
 import net.clementraynaud.skoice.listeners.interaction.component.StringSelectInteractionListener;
-import net.clementraynaud.skoice.listeners.player.PlayerJoinListener;
-import net.clementraynaud.skoice.listeners.player.PlayerQuitListener;
 import net.clementraynaud.skoice.listeners.role.update.RoleUpdatePermissionsListener;
 import net.clementraynaud.skoice.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.menus.EmbeddedMenu;
@@ -47,22 +47,22 @@ import net.dv8tion.jda.api.entities.User;
 public abstract class ListenerManager {
 
     protected final Skoice plugin;
-    private final PlayerQuitListener playerQuitListener;
-    private final PlayerJoinListener playerJoinListener;
+    private final PlayerQuitHandler playerQuitListener;
+    private final PlayerJoinHandler playerJoinListener;
     private final GuildVoiceGuildMuteListener guildVoiceGuildMuteListener;
     private final GuildVoiceUpdateListener guildVoiceUpdateListener;
     private final GenericChannelListener genericChannelListener;
 
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;
-        this.playerQuitListener = new PlayerQuitListener();
-        this.playerJoinListener = new PlayerJoinListener(this.plugin);
+        this.playerQuitListener = new PlayerQuitHandler();
+        this.playerJoinListener = new PlayerJoinHandler(this.plugin);
         this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
         this.guildVoiceUpdateListener = new GuildVoiceUpdateListener(this.plugin);
         this.genericChannelListener = new GenericChannelListener(this.plugin);
     }
 
-    public PlayerJoinListener getPlayerJoinListener() {
+    public PlayerJoinHandler getPlayerJoinListener() {
         return this.playerJoinListener;
     }
 
@@ -145,7 +145,7 @@ public abstract class ListenerManager {
         );
     }
 
-    public PlayerQuitListener getPlayerQuitListener() {
+    public PlayerQuitHandler getPlayerQuitListener() {
         return this.playerQuitListener;
     }
 }

@@ -5,6 +5,8 @@ import net.clementraynaud.skoice.platforms.velocity.minecraft.VelocityBasePlayer
 import net.clementraynaud.skoice.system.ListenerManager;
 
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VelocityListenerManager extends ListenerManager {
@@ -38,10 +40,11 @@ public class VelocityListenerManager extends ListenerManager {
         this.listeners.remove(listener);
     }
 
-    public void onPlayerQuit(VelocityBasePlayer velocityBasePlayer) {
+    public CompletionStage<Void> onPlayerQuit(VelocityBasePlayer velocityBasePlayer) {
         if (this.listeners.contains(this.getPlayerQuitListener())) {
-            this.getPlayerQuitListener().onPlayerQuit(velocityBasePlayer);
+            return this.getPlayerQuitListener().onPlayerQuit(velocityBasePlayer);
         }
+        return CompletableFuture.completedFuture(null);
     }
 
     public void onPlayerJoin(VelocityBasePlayer velocityBasePlayer) {

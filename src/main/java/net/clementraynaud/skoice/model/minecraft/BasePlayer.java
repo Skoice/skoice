@@ -34,7 +34,7 @@ public abstract class BasePlayer extends SkoiceCommandSender {
     @Override
     public String toString() {
         return "BasePlayer{" +
-                "id=" + id +
+                "id=" + this.id +
                 '}';
     }
 }

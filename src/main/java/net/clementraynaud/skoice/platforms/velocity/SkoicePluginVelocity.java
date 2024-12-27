@@ -54,14 +54,19 @@ public class SkoicePluginVelocity {
     @Subscribe
     public void onDisconnectEvent(DisconnectEvent event) {
         this.skoice.getListenerManager().onPlayerQuit(new VelocityBasePlayer(event.getPlayer()));
+        this.skoice.removePlayerInfo(event.getPlayer().getUniqueId());
     }
 
     @Subscribe
     public void onServerPostConnectEvent(ServerPostConnectEvent event) {
         if (event.getPreviousServer() != null) {
-            this.skoice.getListenerManager().onPlayerQuit(new VelocityBasePlayer(event.getPlayer()));//todo probable conflict with join
+            this.skoice.getListenerManager().onPlayerQuit(new VelocityBasePlayer(event.getPlayer())).thenAccept(aVoid -> {
+                this.skoice.removePlayerInfo(event.getPlayer().getUniqueId());
+                this.skoice.getListenerManager().onPlayerJoin(new VelocityBasePlayer(event.getPlayer()));
+            });
+        } else {
+            this.skoice.getListenerManager().onPlayerJoin(new VelocityBasePlayer(event.getPlayer()));
         }
-        this.skoice.getListenerManager().onPlayerJoin(new VelocityBasePlayer(event.getPlayer()));
     }
 
     @Subscribe

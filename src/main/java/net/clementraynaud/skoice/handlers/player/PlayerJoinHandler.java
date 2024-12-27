@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.listeners.player;
+package net.clementraynaud.skoice.handlers.player;
 
 import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.bot.BotStatus;
@@ -31,11 +31,11 @@ import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 
 import java.util.List;
 
-public class PlayerJoinListener {
+public class PlayerJoinHandler {
 
     private final Skoice plugin;
 
-    public PlayerJoinListener(Skoice plugin) {
+    public PlayerJoinHandler(Skoice plugin) {
         this.plugin = plugin;
     }
 
