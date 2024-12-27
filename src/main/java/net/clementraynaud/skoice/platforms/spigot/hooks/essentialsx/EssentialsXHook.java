@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.hooks.essentialsx;
+package net.clementraynaud.skoice.platforms.spigot.hooks.essentialsx;
 
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.storage.config.ConfigField;

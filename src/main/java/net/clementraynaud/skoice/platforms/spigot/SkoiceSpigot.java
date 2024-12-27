@@ -4,7 +4,7 @@ import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.analytics.AnalyticManager;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
-import net.clementraynaud.skoice.hooks.HookManager;
+import net.clementraynaud.skoice.platforms.spigot.hooks.HookManager;
 import net.clementraynaud.skoice.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.platforms.spigot.analytics.SpigotAnalyticManager;

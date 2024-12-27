@@ -17,10 +17,10 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.hooks;
+package net.clementraynaud.skoice.platforms.spigot.hooks;
 
-import net.clementraynaud.skoice.hooks.discordsrv.DiscordSRVHook;
-import net.clementraynaud.skoice.hooks.essentialsx.EssentialsXHook;
+import net.clementraynaud.skoice.platforms.spigot.hooks.discordsrv.DiscordSRVHook;
+import net.clementraynaud.skoice.platforms.spigot.hooks.essentialsx.EssentialsXHook;
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 
 public class HookManager {
