@@ -19,7 +19,6 @@
 
 package net.clementraynaud.skoice.hooks;
 
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.hooks.discordsrv.DiscordSRVHook;
 import net.clementraynaud.skoice.hooks.essentialsx.EssentialsXHook;
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;

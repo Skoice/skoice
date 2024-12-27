@@ -13,6 +13,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
@@ -59,6 +60,10 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
                 }
             });
         }, 0L, 20L);
+    }
+
+    public File getFile() {
+        return super.getFile();
     }
 
     @Override

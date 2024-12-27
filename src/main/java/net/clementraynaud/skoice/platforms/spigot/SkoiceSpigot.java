@@ -1,6 +1,7 @@
 package net.clementraynaud.skoice.platforms.spigot;
 
 import net.clementraynaud.skoice.Skoice;
+import net.clementraynaud.skoice.Updater;
 import net.clementraynaud.skoice.analytics.AnalyticManager;
 import net.clementraynaud.skoice.api.SkoiceAPI;
 import net.clementraynaud.skoice.bot.Bot;
@@ -60,6 +61,8 @@ public class SkoiceSpigot extends Skoice {
         SkoiceSpigot.adventure = BukkitAudiences.create(this.plugin);
         this.hookManager = new HookManager(this);
         this.hookManager.initialize();
+        Updater updater = new Updater(this, this.plugin.getFile().getAbsolutePath());
+        updater.runUpdaterTaskTimer();
         super.onEnable();
     }
 
