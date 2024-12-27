@@ -14,7 +14,7 @@ public class SpigotTaskScheduler implements SkoiceTaskScheduler {
 
     @Override
     public int runTaskTimerAsynchronously(Runnable task, long delay, long period) {
-        BukkitTask bukkitTask = this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(this.plugin, task, delay, period);
+        BukkitTask bukkitTask = this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(this.plugin, task, delay / 50L, period / 50L);
         return bukkitTask.getTaskId();
     }
 
