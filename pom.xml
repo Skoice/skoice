@@ -79,6 +79,11 @@
                             </shadedPattern>
                         </relocation>
                         <relocation>
+                            <pattern>net.kyori.adventure</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.kyori.adventure
+                            </shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>net.kyori.examination</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.kyori.examination
                             </shadedPattern>
@@ -223,6 +228,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
             <version>5.2.1</version>
@@ -259,6 +269,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.velocitypowered</groupId>
             <artifactId>velocity-api</artifactId>
@@ -277,6 +288,31 @@
             <version>1.29.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>net.essentialsx</groupId>
+            <artifactId>EssentialsXDiscordLink</artifactId>
+            <version>2.20.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.essentialsx</groupId>
+            <artifactId>EssentialsX</artifactId>
+            <version>2.20.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.essentialsx</groupId>
+            <artifactId>EssentialsXDiscord</artifactId>
+            <version>2.20.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.MinnDevelopment</groupId>
+                    <artifactId>emoji-java</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
