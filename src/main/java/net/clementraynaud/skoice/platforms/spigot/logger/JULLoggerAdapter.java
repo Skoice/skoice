@@ -2,6 +2,7 @@ package net.clementraynaud.skoice.platforms.spigot.logger;
 
 import net.clementraynaud.skoice.model.logger.SkoiceLogger;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JULLoggerAdapter implements SkoiceLogger {
@@ -30,5 +31,10 @@ public class JULLoggerAdapter implements SkoiceLogger {
     @Override
     public void warning(String message) {
         this.logger.warning(message);
+    }
+
+    @Override
+    public void log(Level level, String message) {
+        this.logger.log(level, message);
     }
 }

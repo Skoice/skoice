@@ -50,7 +50,6 @@ public class ActionBarAlertsSelector extends Selector {
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.deafened-alert.label"), ActionBarAlert.DEAFENED.toString())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
                         .withEmoji(MenuEmoji.MUTE.get())));
-
         List<String> defaultValues = new ArrayList<>();
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
             defaultValues.add(ConfigField.CONNECTING_ALERT.toString());
@@ -64,7 +63,6 @@ public class ActionBarAlertsSelector extends Selector {
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.DEAFENED_ALERT.toString())) {
             defaultValues.add(ConfigField.DEAFENED_ALERT.toString());
         }
-
         return StringSelectMenu.create("action-bar-alerts-selection")
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.placeholder"))
                 .addOptions(options)

@@ -1,5 +1,7 @@
 package net.clementraynaud.skoice.model.logger;
 
+import java.util.logging.Level;
+
 public interface SkoiceLogger {
 
     void info(String message);
@@ -9,4 +11,6 @@ public interface SkoiceLogger {
     void severe(String message);
 
     void warning(String message);
+
+    void log(Level level, String message);
 }

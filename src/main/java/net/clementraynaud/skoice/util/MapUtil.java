@@ -28,14 +28,6 @@ public final class MapUtil {
     private MapUtil() {
     }
 
-    public static Map<String, String> of(String... content) {
-        Map<String, String> map = new HashMap<>();
-        for (int i = 0; i < content.length - (content.length % 2); i += 2) {
-            map.put(content[i], content[i + 1]);
-        }
-        return map;
-    }
-
     public static String getKeyFromValue(Map<String, String> map, String value) {
         for (Map.Entry<String, String> entry : map.entrySet()) {
             if (Objects.equals(value, entry.getValue())) {
@@ -43,5 +35,13 @@ public final class MapUtil {
             }
         }
         return null;
+    }
+
+    public static Map<String, String> of(String... content) {
+        Map<String, String> map = new HashMap<>();
+        for (int i = 0; i < content.length - (content.length % 2); i += 2) {
+            map.put(content[i], content[i + 1]);
+        }
+        return map;
     }
 }

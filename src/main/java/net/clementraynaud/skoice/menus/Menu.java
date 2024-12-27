@@ -146,7 +146,6 @@ public class Menu {
             MenuField menuField = this.plugin.getBot().getMenuFactory().getField(field);
             embed.addField(menuField.build(args));
         }
-
         return embed.build();
     }
 

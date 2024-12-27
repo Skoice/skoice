@@ -24,7 +24,6 @@ import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.AccountLinkedEvent;
 import github.scarsz.discordsrv.api.events.AccountUnlinkedEvent;
 import github.scarsz.discordsrv.api.events.DiscordReadyEvent;
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 
 import java.util.HashMap;

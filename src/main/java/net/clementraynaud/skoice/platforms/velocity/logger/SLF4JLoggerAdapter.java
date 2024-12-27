@@ -3,6 +3,8 @@ package net.clementraynaud.skoice.platforms.velocity.logger;
 import net.clementraynaud.skoice.model.logger.SkoiceLogger;
 import org.slf4j.Logger;
 
+import java.util.logging.Level;
+
 public class SLF4JLoggerAdapter implements SkoiceLogger {
 
     private final Logger logger;
@@ -29,5 +31,22 @@ public class SLF4JLoggerAdapter implements SkoiceLogger {
     @Override
     public void warning(String message) {
         this.logger.warn(message);
+    }
+
+    @Override
+    public void log(Level level, String message) {
+        if (level == Level.SEVERE) {
+            this.logger.error(message);
+        } else if (level == Level.WARNING) {
+            this.logger.warn(message);
+        } else if (level == Level.INFO) {
+            this.logger.info(message);
+        } else if (level == Level.CONFIG || level == Level.FINE) {
+            this.logger.debug(message);
+        } else if (level == Level.FINER || level == Level.FINEST) {
+            this.logger.trace(message);
+        } else {
+            this.logger.info(message);
+        }
     }
 }

@@ -101,7 +101,6 @@ public class ButtonInteractionListener extends ListenerAdapter {
                 });
             }
 
-
         } else {
             new EmbeddedMenu(this.plugin.getBot()).setContent("access-denied")
                     .reply(event);

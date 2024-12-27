@@ -28,6 +28,14 @@ public class DiscordLang extends Lang {
         return "discord/lang/" + langInfo + ".yml";
     }
 
+    public String getMessage(String path, int maxLength) {
+        String message = super.getMessage(path);
+        if (message.length() <= maxLength) {
+            return message;
+        }
+        return message.substring(0, maxLength - 1) + "…";
+    }
+
     @Override
     protected void loadFormatter() {
         super.formatter.set("spigotmc-url", "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861");
@@ -37,13 +45,5 @@ public class DiscordLang extends Lang {
         super.formatter.set("creation-guide-url", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice");
 
         super.formatter.set("link-minecraft-command", "/skoice link");
-    }
-
-    public String getMessage(String path, int maxLength) {
-        String message = super.getMessage(path);
-        if (message.length() <= maxLength) {
-            return message;
-        }
-        return message.substring(0, maxLength - 1) + "…";
     }
 }

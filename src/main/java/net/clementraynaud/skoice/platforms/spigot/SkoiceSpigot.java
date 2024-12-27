@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class SkoiceSpigot extends Skoice {
@@ -53,7 +54,7 @@ public class SkoiceSpigot extends Skoice {
     @Override
     public void onEnable() {
         if (!this.isMinecraftServerCompatible()) {
-            this.getLogger().severe(SkoiceSpigot.OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE);
+            this.log(Level.SEVERE, SkoiceSpigot.OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE);
             this.getPlugin().getServer().getPluginManager().disablePlugin(this.getPlugin());
             return;
         }
