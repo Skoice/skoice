@@ -49,10 +49,19 @@ public class ActiveWorldsSelector extends Selector {
             }
         }
 
+        boolean disabled = false;
+        if (options.isEmpty()) {
+            options.add(SelectOption.of("Unavailable", "unavailable")
+                    .withEmoji(MenuEmoji.X.get()));
+            defaultValues.add("unavailable");
+            disabled = true;
+        }
+
         return StringSelectMenu.create("active-worlds-selection")
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.active-worlds.select-menu.placeholder"))
                 .addOptions(options)
                 .setRequiredRange(0, options.size())
+                .setDisabled(disabled)
                 .setDefaultValues(defaultValues).build();
     }
 }
