@@ -5,6 +5,7 @@ import net.clementraynaud.skoice.analytics.AnalyticManager;
 import net.clementraynaud.skoice.api.SkoiceAPI;
 import net.clementraynaud.skoice.bot.Bot;
 import net.clementraynaud.skoice.commands.skoice.SkoiceCommand;
+import net.clementraynaud.skoice.hooks.HookManager;
 import net.clementraynaud.skoice.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.platforms.spigot.analytics.SpigotAnalyticManager;
@@ -32,6 +33,7 @@ public class SkoiceSpigot extends Skoice {
     private static BukkitAudiences adventure;
     private static SkoiceAPI api;
     private final SkoicePluginSpigot plugin;
+    private HookManager hookManager;
 
     public SkoiceSpigot(SkoicePluginSpigot plugin) {
         super(new JULLoggerAdapter(plugin.getLogger()), new SpigotTaskScheduler(plugin));
@@ -55,7 +57,9 @@ public class SkoiceSpigot extends Skoice {
             return;
         }
         SkoiceSpigot.api = new SkoiceAPI(this);
-        adventure = BukkitAudiences.create(this.plugin);
+        SkoiceSpigot.adventure = BukkitAudiences.create(this.plugin);
+        this.hookManager = new HookManager(this);
+        this.hookManager.initialize();
         super.onEnable();
     }
 
@@ -71,10 +75,16 @@ public class SkoiceSpigot extends Skoice {
 
     @Override
     public void onDisable() {
-        adventure.close();
-        if (adventure != null) {
-            super.onDisable();
+        if (SkoiceSpigot.adventure != null) {
+            SkoiceSpigot.adventure.close();
         }
+        this.hookManager.close();
+        super.onDisable();
+
+    }
+
+    public HookManager getHookManager() {
+        return this.hookManager;
     }
 
     private boolean isMinecraftServerCompatible() {

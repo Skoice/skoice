@@ -51,18 +51,18 @@ public class LinksYamlFile extends YamlFile {
 
     public void linkUser(String minecraftId, String discordId) {
         this.linkUserDirectly(minecraftId, discordId);
-        this.callAccountLinkEvent(minecraftId, discordId);
+        this.additionalLinkProcessing(minecraftId, discordId);
     }
 
-    protected void callAccountLinkEvent(String minecraftId, String discordId) {
+    protected void additionalLinkProcessing(String minecraftId, String discordId) {
     }
 
     public void unlinkUser(String minecraftId) {
         this.unlinkUserDirectly(minecraftId);
-        this.callAccountUnlinkEvent(minecraftId);
+        this.additionalUnlinkProcessing(minecraftId);
     }
 
-    protected void callAccountUnlinkEvent(String minecraftId) {
+    protected void additionalUnlinkProcessing(String minecraftId) {
     }
 
     public void linkUserDirectly(String minecraftId, String discordId) {

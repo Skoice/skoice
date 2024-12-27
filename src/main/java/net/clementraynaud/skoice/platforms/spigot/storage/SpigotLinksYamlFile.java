@@ -19,7 +19,8 @@ public class SpigotLinksYamlFile extends LinksYamlFile {
     }
 
     @Override
-    protected void callAccountLinkEvent(String minecraftId, String discordId) {
+    protected void additionalLinkProcessing(String minecraftId, String discordId) {
+        this.plugin.getHookManager().linkUser(minecraftId, discordId);
         this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
             AccountLinkEvent event = new AccountLinkEvent(minecraftId, discordId);
             this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
@@ -27,7 +28,8 @@ public class SpigotLinksYamlFile extends LinksYamlFile {
     }
 
     @Override
-    protected void callAccountUnlinkEvent(String minecraftId) {
+    protected void additionalUnlinkProcessing(String minecraftId) {
+        this.plugin.getHookManager().unlinkUser(minecraftId);
         this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
             AccountUnlinkEvent event = new AccountUnlinkEvent(minecraftId);
             this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
