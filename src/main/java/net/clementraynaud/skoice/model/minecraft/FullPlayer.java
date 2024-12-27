@@ -51,4 +51,13 @@ public class FullPlayer extends BasePlayer {
     public boolean hasPermission(String permission) {
         return this.basePlayer.hasPermission(permission);
     }
+
+    @Override
+    public String toString() {
+        return "FullPlayer{" +
+                "basePlayer=" + basePlayer +
+                ", playerInfo=" + playerInfo +
+                ", id=" + id +
+                '}';
+    }
 }

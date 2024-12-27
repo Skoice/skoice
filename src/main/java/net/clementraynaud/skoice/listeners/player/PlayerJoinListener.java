@@ -44,7 +44,6 @@ public class PlayerJoinListener {
             this.plugin.getBot().sendIncompleteConfigurationAlert(player, false, false);
         } else {
             if (!this.plugin.getLinksYamlFile().retrieveMember(player.getUniqueId(), member -> {
-                System.out.println("PlayerJoinListener.onPlayerJoin");
                 new LinkedPlayer(this.plugin, this.plugin.getFullPlayer(player), member.getId());
                 GuildVoiceState voiceState = member.getVoiceState();
                 if (voiceState != null) {

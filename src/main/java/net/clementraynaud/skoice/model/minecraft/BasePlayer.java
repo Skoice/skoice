@@ -18,17 +18,23 @@ public abstract class BasePlayer extends SkoiceCommandSender {
     public abstract void sendActionBar(String message);
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null || this.getClass() != o.getClass()) {
+    public final boolean equals(Object o) {
+        if (!(o instanceof BasePlayer that)) {
             return false;
         }
 
-        BasePlayer that = (BasePlayer) o;
         return Objects.equals(this.id, that.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(this.id);
+    }
+
+    @Override
+    public String toString() {
+        return "BasePlayer{" +
+                "id=" + id +
+                '}';
     }
 }

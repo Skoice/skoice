@@ -73,8 +73,6 @@ public class UpdateNetworksTask {
             return;
         }
 
-        System.out.println("Running UpdateNetworksTask");
-
         try {
             VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
             if (mainVoiceChannel == null) {
