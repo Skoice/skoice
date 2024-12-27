@@ -47,23 +47,23 @@ import net.dv8tion.jda.api.entities.User;
 public abstract class ListenerManager {
 
     protected final Skoice plugin;
-    private final PlayerQuitHandler playerQuitListener;
-    private final PlayerJoinHandler playerJoinListener;
+    protected final PlayerQuitHandler playerQuitHandler;
+    private final PlayerJoinHandler playerJoinHandler;
     private final GuildVoiceGuildMuteListener guildVoiceGuildMuteListener;
     private final GuildVoiceUpdateListener guildVoiceUpdateListener;
     private final GenericChannelListener genericChannelListener;
 
     public ListenerManager(Skoice plugin) {
         this.plugin = plugin;
-        this.playerQuitListener = new PlayerQuitHandler();
-        this.playerJoinListener = new PlayerJoinHandler(this.plugin);
+        this.playerQuitHandler = new PlayerQuitHandler();
+        this.playerJoinHandler = new PlayerJoinHandler(this.plugin);
         this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
         this.guildVoiceUpdateListener = new GuildVoiceUpdateListener(this.plugin);
         this.genericChannelListener = new GenericChannelListener(this.plugin);
     }
 
-    public PlayerJoinHandler getPlayerJoinListener() {
-        return this.playerJoinListener;
+    public PlayerJoinHandler getPlayerJoinHandler() {
+        return this.playerJoinHandler;
     }
 
     public void update(User user) {
@@ -145,7 +145,7 @@ public abstract class ListenerManager {
         );
     }
 
-    public PlayerQuitHandler getPlayerQuitListener() {
-        return this.playerQuitListener;
+    public PlayerQuitHandler getPlayerQuitHandler() {
+        return this.playerQuitHandler;
     }
 }

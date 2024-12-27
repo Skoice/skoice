@@ -19,17 +19,17 @@ public class VelocityListenerManager extends ListenerManager {
 
     @Override
     public void registerPermanentMinecraftListeners() {
-        this.addMinecraftListener(super.getPlayerJoinListener());
+        this.addMinecraftListener(super.getPlayerJoinHandler());
     }
 
     @Override
     public void registerMinecraftListeners() {
-        this.addMinecraftListener(super.getPlayerQuitListener());
+        this.addMinecraftListener(super.getPlayerQuitHandler());
     }
 
     @Override
     public void unregisterMinecraftListeners() {
-        this.removeMinecraftListener(super.getPlayerQuitListener());
+        this.removeMinecraftListener(super.getPlayerQuitHandler());
     }
 
     public void addMinecraftListener(Object listener) {
@@ -41,15 +41,15 @@ public class VelocityListenerManager extends ListenerManager {
     }
 
     public CompletionStage<Void> onPlayerQuit(VelocityBasePlayer velocityBasePlayer) {
-        if (this.listeners.contains(this.getPlayerQuitListener())) {
-            return this.getPlayerQuitListener().onPlayerQuit(velocityBasePlayer);
+        if (this.listeners.contains(this.getPlayerQuitHandler())) {
+            return this.getPlayerQuitHandler().onPlayerQuit(velocityBasePlayer);
         }
         return CompletableFuture.completedFuture(null);
     }
 
     public void onPlayerJoin(VelocityBasePlayer velocityBasePlayer, boolean chatAlert) {
-        if (this.listeners.contains(this.getPlayerJoinListener())) {
-            this.getPlayerJoinListener().onPlayerJoin(velocityBasePlayer, chatAlert);
+        if (this.listeners.contains(this.getPlayerJoinHandler())) {
+            this.getPlayerJoinHandler().onPlayerJoin(velocityBasePlayer, chatAlert);
         }
     }
 }
