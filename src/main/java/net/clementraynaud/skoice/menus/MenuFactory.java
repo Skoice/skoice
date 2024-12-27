@@ -96,9 +96,10 @@ public class MenuFactory {
                 break;
 
             case "permissions":
-                buttons.add(Button.link(plugin.getBot().getInviteUrl(),
-                                plugin.getBot().getLang().getMessage("button-label.update-permissions"))
-                        .withEmoji(MenuEmoji.CARD_BOX.get()));
+                // TODO: Only the bot owner should have this button.
+//                buttons.add(Button.link(plugin.getBot().getInviteUrl(),
+//                                plugin.getBot().getLang().getMessage("button-label.update-permissions"))
+//                        .withEmoji(MenuEmoji.CARD_BOX.get()));
                 break;
 
             case "login-notification":

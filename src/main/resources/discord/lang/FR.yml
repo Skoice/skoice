@@ -31,7 +31,7 @@ menu:
     description: "Votre serveur Discord exige que l'authentification à deux facteurs soit activée sur le compte du propriétaire du bot. Configurez-la ou désactivez cette exigence dans les paramètres du serveur en suivant ce chemin : `Modération › Configuration de sécurité › (Permissions ›) Exiger une A2F pour les actions des modérateurs`."
   permissions:
     title: "Permissions"
-    description: "Afin de fonctionner correctement, votre bot doit avoir la permission `Administrateur` sur votre serveur Discord."
+    description: "Afin de fonctionner correctement, votre bot doit avoir la permission `Administrateur` sur votre serveur Discord. Pour ce faire, ajoutez au bot un rôle avec la permission `Administrateur`."
   voice-chat:
     title: "Chat vocal"
   range:
