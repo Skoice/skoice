@@ -1,10 +1,10 @@
 package net.clementraynaud.skoice.platforms.spigot.storage;
 
-import net.clementraynaud.skoice.api.events.account.AccountLinkEvent;
-import net.clementraynaud.skoice.api.events.account.AccountUnlinkEvent;
-import net.clementraynaud.skoice.api.events.player.PlayerProximityConnectEvent;
-import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
+import net.clementraynaud.skoice.platforms.spigot.api.events.account.AccountLinkEvent;
+import net.clementraynaud.skoice.platforms.spigot.api.events.account.AccountUnlinkEvent;
+import net.clementraynaud.skoice.platforms.spigot.api.events.player.PlayerProximityConnectEvent;
+import net.clementraynaud.skoice.platforms.spigot.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.storage.LinksYamlFile;
 
 import java.util.UUID;

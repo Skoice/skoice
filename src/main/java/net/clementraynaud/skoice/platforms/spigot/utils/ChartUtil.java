@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.util;
+package net.clementraynaud.skoice.platforms.spigot.utils;
 
 import org.bstats.charts.DrilldownPie;
 

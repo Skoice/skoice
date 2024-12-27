@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.hooks.discordsrv;
 
 import github.scarsz.discordsrv.DiscordSRV;
-import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 

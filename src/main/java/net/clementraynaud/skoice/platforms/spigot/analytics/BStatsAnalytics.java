@@ -17,10 +17,11 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.analytics;
+package net.clementraynaud.skoice.platforms.spigot.analytics;
 
+import net.clementraynaud.skoice.analytics.AnalyticManager;
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
-import net.clementraynaud.skoice.util.ChartUtil;
+import net.clementraynaud.skoice.platforms.spigot.utils.ChartUtil;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 

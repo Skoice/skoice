@@ -17,7 +17,7 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.api.events;
+package net.clementraynaud.skoice.platforms.spigot.api.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

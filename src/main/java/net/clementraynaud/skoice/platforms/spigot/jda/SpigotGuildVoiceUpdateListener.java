@@ -1,8 +1,8 @@
 package net.clementraynaud.skoice.platforms.spigot.jda;
 
-import net.clementraynaud.skoice.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.listeners.guild.voice.GuildVoiceUpdateListener;
 import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
+import net.clementraynaud.skoice.platforms.spigot.api.events.player.PlayerProximityDisconnectEvent;
 
 public class SpigotGuildVoiceUpdateListener extends GuildVoiceUpdateListener {
 

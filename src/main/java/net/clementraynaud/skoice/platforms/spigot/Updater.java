@@ -17,10 +17,10 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice;
+package net.clementraynaud.skoice.platforms.spigot;
 
 import com.bugsnag.Severity;
-import net.clementraynaud.skoice.platforms.spigot.SkoiceSpigot;
+import net.clementraynaud.skoice.Skoice;
 import net.clementraynaud.skoice.storage.config.ConfigField;
 
 import java.io.File;
