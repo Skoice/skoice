@@ -19,8 +19,8 @@
 
 package net.clementraynaud.skoice.spigot.hooks.essentialsx;
 
-import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
+import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.essentialsx.api.v2.services.discord.DiscordService;
 import net.essentialsx.api.v2.services.discordlink.DiscordLinkService;
 import net.essentialsx.discordlink.EssentialsDiscordLink;

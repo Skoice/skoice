@@ -20,8 +20,8 @@
 package net.clementraynaud.skoice.spigot.hooks.discordsrv;
 
 import github.scarsz.discordsrv.DiscordSRV;
-import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
+import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 
 public class DiscordSRVHook {
 

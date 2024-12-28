@@ -2,7 +2,6 @@ package net.clementraynaud.skoice.spigot.scheduler;
 
 import net.clementraynaud.skoice.common.model.scheduler.SkoiceTaskScheduler;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 public class SpigotTaskScheduler implements SkoiceTaskScheduler {
 
@@ -14,8 +13,12 @@ public class SpigotTaskScheduler implements SkoiceTaskScheduler {
 
     @Override
     public int runTaskTimerAsynchronously(Runnable task, long delay, long period) {
-        BukkitTask bukkitTask = this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(this.plugin, task, delay / 50L, period / 50L);
-        return bukkitTask.getTaskId();
+        return this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(this.plugin, task, delay / 50L, period / 50L).getTaskId();
+    }
+
+    @Override
+    public int runTaskLaterAsynchronously(Runnable task, long delay) {
+        return this.plugin.getServer().getScheduler().runTaskLaterAsynchronously(this.plugin, task, delay / 50L).getTaskId();
     }
 
     @Override

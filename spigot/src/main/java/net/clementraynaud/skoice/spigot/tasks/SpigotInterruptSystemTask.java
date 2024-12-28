@@ -1,9 +1,9 @@
 package net.clementraynaud.skoice.spigot.tasks;
 
 
+import net.clementraynaud.skoice.common.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.spigot.api.events.system.SystemInterruptionEvent;
-import net.clementraynaud.skoice.common.tasks.InterruptSystemTask;
 
 public class SpigotInterruptSystemTask extends InterruptSystemTask {
 

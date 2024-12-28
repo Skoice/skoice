@@ -2,12 +2,12 @@ package net.clementraynaud.skoice.velocity;
 
 import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.commands.skoice.SkoiceCommand;
-import net.clementraynaud.skoice.velocity.commands.skoice.SkoiceCommandVelocity;
-import net.clementraynaud.skoice.velocity.logger.SLF4JLoggerAdapter;
-import net.clementraynaud.skoice.velocity.minecraft.VelocityBasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.model.minecraft.PlayerInfo;
+import net.clementraynaud.skoice.velocity.commands.skoice.SkoiceCommandVelocity;
+import net.clementraynaud.skoice.velocity.logger.SLF4JLoggerAdapter;
+import net.clementraynaud.skoice.velocity.minecraft.VelocityBasePlayer;
 import net.clementraynaud.skoice.velocity.scheduler.VelocityTaskScheduler;
 import net.clementraynaud.skoice.velocity.system.VelocityListenerManager;
 

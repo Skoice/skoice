@@ -1,8 +1,8 @@
 package net.clementraynaud.skoice.spigot.analytics;
 
-import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.common.analytics.AnalyticManager;
 import net.clementraynaud.skoice.common.analytics.BugsnagAnalytics;
+import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 
 public class SpigotAnalyticManager extends AnalyticManager {
 

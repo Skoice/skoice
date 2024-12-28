@@ -2,8 +2,8 @@ package net.clementraynaud.skoice.velocity.scheduler;
 
 import com.velocitypowered.api.scheduler.ScheduledTask;
 import com.velocitypowered.api.scheduler.Scheduler;
-import net.clementraynaud.skoice.velocity.SkoicePluginVelocity;
 import net.clementraynaud.skoice.common.model.scheduler.SkoiceTaskScheduler;
+import net.clementraynaud.skoice.velocity.SkoicePluginVelocity;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -26,6 +26,18 @@ public class VelocityTaskScheduler implements SkoiceTaskScheduler {
         int taskId = this.taskIdCounter.incrementAndGet();
         ScheduledTask scheduledTask = this.taskScheduler.buildTask(this.plugin, task)
                 .repeat(period, TimeUnit.MILLISECONDS)
+                .delay(delay, TimeUnit.MILLISECONDS)
+                .schedule();
+
+        this.tasks.put(taskId, scheduledTask);
+
+        return taskId;
+    }
+
+    @Override
+    public int runTaskLaterAsynchronously(Runnable task, long delay) {
+        int taskId = this.taskIdCounter.incrementAndGet();
+        ScheduledTask scheduledTask = this.taskScheduler.buildTask(this.plugin, task)
                 .delay(delay, TimeUnit.MILLISECONDS)
                 .schedule();
 

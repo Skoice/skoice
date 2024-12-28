@@ -4,8 +4,8 @@ import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.Player;
 import net.clementraynaud.skoice.common.Skoice;
-import net.clementraynaud.skoice.velocity.SkoiceVelocity;
 import net.clementraynaud.skoice.common.commands.skoice.SkoiceCommand;
+import net.clementraynaud.skoice.velocity.SkoiceVelocity;
 import net.clementraynaud.skoice.velocity.minecraft.VelocityBasePlayer;
 import net.clementraynaud.skoice.velocity.minecraft.VelocityCommandSender;
 

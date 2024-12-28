@@ -1,7 +1,7 @@
 package net.clementraynaud.skoice.spigot.minecraft;
 
-import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceCommandSender;
+import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 

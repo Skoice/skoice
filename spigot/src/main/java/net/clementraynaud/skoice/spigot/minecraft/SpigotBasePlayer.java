@@ -1,7 +1,8 @@
 package net.clementraynaud.skoice.spigot.minecraft;
 
-import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
+import net.clementraynaud.skoice.spigot.SkoicePluginSpigot;
+import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -21,7 +22,9 @@ public class SpigotBasePlayer extends BasePlayer {
 
     @Override
     public void sendMessage(Component message) {
-        SkoiceSpigot.adventure().player(this.player).sendMessage(message);
+        if (!SkoicePluginSpigot.isProxyMode()) {
+            SkoiceSpigot.adventure().player(this.player).sendMessage(message);
+        }
     }
 
     @Override
