@@ -160,7 +160,7 @@ public class Updater {
                 Files.delete(tempUpdateFile.toPath());
             } catch (IOException ignored) {
             }
-            net.clementraynaud.skoice.common.Skoice.analyticManager().getBugsnag().notify(exception, Severity.WARNING);
+            Skoice.analyticManager().getBugsnag().notify(exception, Severity.WARNING);
         } finally {
             if (connection != null) {
                 connection.disconnect();

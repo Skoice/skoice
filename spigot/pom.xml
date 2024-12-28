@@ -64,6 +64,11 @@
                                 ${project.groupId}.${project.artifactId}.libraries.net.clementraynaud.skoice.common
                             </shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.bugsnag</pattern>
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.com.bugsnag
+                            </shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>

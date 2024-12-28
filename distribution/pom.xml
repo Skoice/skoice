@@ -31,13 +31,6 @@
                             <include>net.clementraynaud:skoice.spigot</include>
                         </includes>
                     </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>com.bugsnag</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.bugsnag
-                            </shadedPattern>
-                        </relocation>
-                    </relocations>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
@@ -72,6 +65,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <finalName>Skoice</finalName>
                         </configuration>
                     </execution>
                 </executions>

@@ -35,6 +35,13 @@
                             <include>net.clementraynaud:skoice.common</include>
                         </includes>
                     </artifactSet>
+                    <relocations>
+                        <relocation>
+                            <pattern>com.bugsnag</pattern>
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.com.bugsnag
+                            </shadedPattern>
+                        </relocation>
+                    </relocations>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
