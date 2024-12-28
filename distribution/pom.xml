@@ -28,21 +28,10 @@
                     <artifactSet>
                         <includes>
                             <include>net.clementraynaud:skoice.velocity</include>
-                            <include>net.clementraynaud:skoice.common</include>
                             <include>net.clementraynaud:skoice.spigot</include>
                         </includes>
                     </artifactSet>
                     <relocations>
-<!--                        <relocation>-->
-<!--                            <pattern>net.kyori.adventure</pattern>-->
-<!--                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.kyori.adventure-->
-<!--                            </shadedPattern>-->
-<!--                        </relocation>-->
-<!--                        <relocation>-->
-<!--                            <pattern>net.kyori.examination</pattern>-->
-<!--                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.kyori.examination-->
-<!--                            </shadedPattern>-->
-<!--                        </relocation>-->
                         <relocation>
                             <pattern>com.bugsnag</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.bugsnag
@@ -97,11 +86,6 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>net.clementraynaud</groupId>
-            <artifactId>skoice.common</artifactId>
-            <version>3.2.3</version>
-        </dependency>
         <dependency>
             <groupId>net.clementraynaud</groupId>
             <artifactId>skoice.velocity</artifactId>

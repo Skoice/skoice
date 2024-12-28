@@ -32,10 +32,36 @@
                 <version>3.6.0</version>
                 <configuration>
                     <minimizeJar>true</minimizeJar>
+                    <artifactSet>
+                        <includes>
+                            <include>net.clementraynaud:skoice.common</include>
+                            <include>net.kyori:adventure*</include>
+                            <include>net.kyori:examination*</include>
+                            <include>org.bstats:bstats*</include>
+                        </includes>
+                    </artifactSet>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.bstats
+                            </shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.adventure</pattern>
+                            <shadedPattern>
+                                ${project.groupId}.${project.artifactId}.libraries.net.kyori.adventure
+                            </shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.examination</pattern>
+                            <shadedPattern>
+                                ${project.groupId}.${project.artifactId}.libraries.net.kyori.examination
+                            </shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.clementraynaud.skoice.common</pattern>
+                            <shadedPattern>
+                                ${project.groupId}.${project.artifactId}.libraries.net.clementraynaud.skoice.common
                             </shadedPattern>
                         </relocation>
                     </relocations>
@@ -108,7 +134,6 @@
             <groupId>net.clementraynaud</groupId>
             <artifactId>skoice.common</artifactId>
             <version>3.2.3</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.discordsrv</groupId>

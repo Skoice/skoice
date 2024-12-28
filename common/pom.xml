@@ -33,91 +33,91 @@
                     <relocations>
                         <relocation>
                             <pattern>ch.qos.logback</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.ch.qos.logback
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.ch.qos.logback
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.apache.commons.collections4</pattern>
                             <shadedPattern>
-                                ${project.groupId}.${project.artifactId}.libraries.org.apache.commons.collections4
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.org.apache.commons.collections4
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.intellij.lang.annotations</pattern>
                             <shadedPattern>
-                                ${project.groupId}.${project.artifactId}.libraries.org.intellij.lang.annotations
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.org.intellij.lang.annotations
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.jetbrains.annotations</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.jetbrains.annotations
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.org.jetbrains.annotations
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.simpleyaml</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.simpleyaml
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.org.simpleyaml
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.slf4j</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.org.slf4j
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.org.slf4j
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.dv8tion.jda</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.net.dv8tion.jda
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.net.dv8tion.jda
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>kotlin</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.kotlin</shadedPattern>
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.kotlin</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.fasterxml.jackson</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.fasterxml.jackson
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.com.fasterxml.jackson
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.neovisionaries.ws.client</pattern>
                             <shadedPattern>
-                                ${project.groupId}.${project.artifactId}.libraries.com.neovisionaries.ws.client
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.com.neovisionaries.ws.client
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.google.crypto</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.crypto
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.com.google.crypto
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.google.errorprone</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.errorprone
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.com.google.errorprone
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.google.gson</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.com.google.gson
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.com.google.gson
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>gnu.trove</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.gnu.trove</shadedPattern>
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.gnu.trove</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>okhttp3</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.okhttp3</shadedPattern>
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.okhttp3</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>okio</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.okio</shadedPattern>
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.okio</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>google.protobuf</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.google.protobuf
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.google.protobuf
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>javax.annotation</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.libraries.javax.annotation
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.javax.annotation
                             </shadedPattern>
                         </relocation>
                     </relocations>
