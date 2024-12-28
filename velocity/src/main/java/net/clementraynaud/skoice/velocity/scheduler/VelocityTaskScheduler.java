@@ -2,8 +2,8 @@ package net.clementraynaud.skoice.velocity.scheduler;
 
 import com.velocitypowered.api.scheduler.ScheduledTask;
 import com.velocitypowered.api.scheduler.Scheduler;
-import net.clementraynaud.skoice.velocity.SkoicePluginVelocity;
 import net.clementraynaud.skoice.common.model.scheduler.SkoiceTaskScheduler;
+import net.clementraynaud.skoice.velocity.SkoicePluginVelocity;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;

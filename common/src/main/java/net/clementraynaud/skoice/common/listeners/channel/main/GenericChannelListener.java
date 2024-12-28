@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.common.listeners.channel.main;
 
 import net.clementraynaud.skoice.common.Skoice;
-import net.clementraynaud.skoice.common.commands.CommandInfo;
 import net.clementraynaud.skoice.common.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.common.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.common.menus.EmbeddedMenu;

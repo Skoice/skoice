@@ -1,7 +1,7 @@
 package net.clementraynaud.skoice.spigot.commands.skoice;
 
-import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.common.commands.skoice.SkoiceCommand;
+import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.spigot.minecraft.SpigotBasePlayer;
 import net.clementraynaud.skoice.spigot.minecraft.SpigotCommandSender;
 import org.bukkit.command.Command;

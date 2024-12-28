@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.common.tasks;
 
 import com.bugsnag.Severity;
-
 import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.system.ActionBarAlert;

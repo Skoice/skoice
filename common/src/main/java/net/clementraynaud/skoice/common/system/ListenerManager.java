@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.common.system;
 
 import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.bot.BotStatus;
-import net.clementraynaud.skoice.common.commands.CommandInfo;
 import net.clementraynaud.skoice.common.handlers.player.PlayerJoinHandler;
 import net.clementraynaud.skoice.common.handlers.player.PlayerQuitHandler;
 import net.clementraynaud.skoice.common.listeners.StatusChangeListener;

@@ -24,7 +24,6 @@ import net.clementraynaud.skoice.common.bot.BotStatus;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
-import net.kyori.adventure.text.event.HoverEvent;
 
 import java.util.concurrent.CompletableFuture;
 

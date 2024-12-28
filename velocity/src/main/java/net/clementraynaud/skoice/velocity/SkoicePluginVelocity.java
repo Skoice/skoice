@@ -12,9 +12,9 @@ import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
-import net.clementraynaud.skoice.velocity.minecraft.VelocityBasePlayer;
 import net.clementraynaud.skoice.common.model.JsonModel;
 import net.clementraynaud.skoice.common.model.minecraft.PlayerInfo;
+import net.clementraynaud.skoice.velocity.minecraft.VelocityBasePlayer;
 import org.slf4j.Logger;
 
 import java.io.ByteArrayInputStream;

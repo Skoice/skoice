@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.common.lang;
 
 
-import net.clementraynaud.skoice.common.util.ComponentUtil;
 import net.clementraynaud.skoice.common.util.MapUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

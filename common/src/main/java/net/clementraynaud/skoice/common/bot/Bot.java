@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.common.bot;
 
 import net.clementraynaud.skoice.common.Skoice;
-import net.clementraynaud.skoice.common.commands.CommandInfo;
 import net.clementraynaud.skoice.common.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.common.lang.DiscordLang;
 import net.clementraynaud.skoice.common.lang.LangInfo;

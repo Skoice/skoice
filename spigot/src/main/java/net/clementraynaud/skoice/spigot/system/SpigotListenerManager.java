@@ -1,15 +1,15 @@
 package net.clementraynaud.skoice.spigot.system;
 
 import net.clementraynaud.skoice.common.Skoice;
-import net.clementraynaud.skoice.spigot.SkoiceSpigot;
-import net.clementraynaud.skoice.common.system.ListenerManager;
-import net.clementraynaud.skoice.spigot.handlers.SpigotPlayerJoinHandler;
 import net.clementraynaud.skoice.common.handlers.player.PlayerJoinHandler;
+import net.clementraynaud.skoice.common.listeners.guild.voice.GuildVoiceUpdateListener;
+import net.clementraynaud.skoice.common.system.ListenerManager;
+import net.clementraynaud.skoice.spigot.SkoiceSpigot;
+import net.clementraynaud.skoice.spigot.handlers.SpigotPlayerJoinHandler;
 import net.clementraynaud.skoice.spigot.jda.SpigotGuildVoiceUpdateListener;
 import net.clementraynaud.skoice.spigot.listeners.PlayerJoinListener;
 import net.clementraynaud.skoice.spigot.listeners.PlayerQuitListener;
 import net.clementraynaud.skoice.spigot.listeners.ServerCommandListener;
-import net.clementraynaud.skoice.common.listeners.guild.voice.GuildVoiceUpdateListener;
 import org.bukkit.event.HandlerList;
 
 public class SpigotListenerManager extends ListenerManager {

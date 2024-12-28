@@ -19,9 +19,8 @@
 
 package net.clementraynaud.skoice.spigot.analytics;
 
-import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.common.analytics.AnalyticManager;
-
+import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.spigot.utils.ChartUtil;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;

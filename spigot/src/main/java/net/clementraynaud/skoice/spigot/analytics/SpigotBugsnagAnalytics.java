@@ -1,9 +1,9 @@
 package net.clementraynaud.skoice.spigot.analytics;
 
 import com.bugsnag.Report;
-import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.common.analytics.AnalyticManager;
 import net.clementraynaud.skoice.common.analytics.BugsnagAnalytics;
+import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 
 public class SpigotBugsnagAnalytics extends BugsnagAnalytics {
 
