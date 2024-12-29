@@ -34,6 +34,9 @@ public class PlayerQuitHandler {
             Networks.getAll().stream()
                     .filter(network -> network.contains(player))
                     .forEach(network -> network.remove(player));
+        }).exceptionally(e -> {
+            e.printStackTrace();
+            return null;
         });
     }
 }

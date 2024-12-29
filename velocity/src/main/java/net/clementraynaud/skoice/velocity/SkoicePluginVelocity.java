@@ -98,6 +98,10 @@ public class SkoicePluginVelocity {
         }
         event.setResult(PluginMessageEvent.ForwardResult.handled());
 
+        if (!(event.getSource() instanceof ServerConnection backend)) {
+            return;
+        }
+
         ByteArrayInputStream bais = new ByteArrayInputStream(event.getData());
         DataInputStream in = new DataInputStream(bais);
         String json;
@@ -108,9 +112,6 @@ public class SkoicePluginVelocity {
         }
         JsonModel model = JsonModel.fromJson(json, PlayerInfo.class);
         if (model instanceof PlayerInfo info) {
-            if (!(event.getSource() instanceof ServerConnection backend)) {
-                return;
-            }
             info.setWorld(info.getWorld() + ":" + backend.getServerInfo().getName());
             this.skoice.setPlayerInfo(info);
         }

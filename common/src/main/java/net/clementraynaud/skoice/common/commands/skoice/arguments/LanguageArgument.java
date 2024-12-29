@@ -25,8 +25,6 @@ import net.clementraynaud.skoice.common.lang.LangInfo;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 
-import java.util.concurrent.CompletableFuture;
-
 public class LanguageArgument extends Argument {
 
     private final String arg;
@@ -56,7 +54,7 @@ public class LanguageArgument extends Argument {
             super.plugin.getConfigYamlFile().set(ConfigField.LANG.toString(), language.toString());
             super.plugin.getLang().load(language);
             super.plugin.getBot().getLang().load(language);
-            CompletableFuture.runAsync(() -> super.plugin.getListenerManager().update());
+            this.plugin.getScheduler().runTaskAsynchronously(() -> super.plugin.getListenerManager().update());
 
             if (this.plugin.getBot().getStatus() != BotStatus.NOT_CONNECTED) {
                 this.plugin.getBot().getCommands().register();

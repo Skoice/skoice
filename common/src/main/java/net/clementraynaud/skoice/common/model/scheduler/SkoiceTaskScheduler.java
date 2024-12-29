@@ -4,7 +4,9 @@ public interface SkoiceTaskScheduler {
 
     int runTaskTimerAsynchronously(Runnable task, long delay, long period);
 
-    int runTaskLaterAsynchronously(Runnable task, long delay);
+    void runTaskLaterAsynchronously(Runnable task, long delay);
+
+    void runTaskAsynchronously(Runnable task);
 
     void cancelTask(int taskId);
 }

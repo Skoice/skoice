@@ -37,9 +37,7 @@ public class SkoiceCommandSpigot extends SkoiceCommand implements CommandExecuto
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (SkoicePluginSpigot.isProxyMode()) {
-            if (sender.hasPermission(Argument.MANAGE_PERMISSION)) {
-            } else {
-            }
+            sender.sendMessage("Proxy mode enabled.");
             return true;
         }
         if (sender instanceof Player) {

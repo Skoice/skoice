@@ -26,8 +26,6 @@ import net.clementraynaud.skoice.common.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.kyori.adventure.text.event.HoverEvent;
 
-import java.util.concurrent.CompletableFuture;
-
 public class ConfigureArgument extends Argument {
 
     public ConfigureArgument(Skoice plugin, SkoiceCommandSender sender) {
@@ -39,7 +37,7 @@ public class ConfigureArgument extends Argument {
         BasePlayer player = (BasePlayer) this.sender;
         if (super.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
             if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-                CompletableFuture.runAsync(() -> {
+                this.plugin.getScheduler().runTaskAsynchronously(() -> {
                     player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-creation-interactive", this.plugin.getLang().getComponentMessage("interaction.this-page")
                                             .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", "https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")))
                                             .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://github.com/Skoice/skoice/wiki/Creating-a-Discord-Bot-for-Skoice")),

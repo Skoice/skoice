@@ -59,7 +59,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class Bot {
@@ -118,7 +117,7 @@ public class Bot {
         }
 
         byte[] finalBase64TokenBytes = base64TokenBytes;
-        CompletableFuture.runAsync(() -> {
+        this.plugin.getScheduler().runTaskAsynchronously(() -> {
             try {
                 this.jda = JDABuilder.createDefault(new String(finalBase64TokenBytes))
                         .addEventListeners(new ReadyListener(this.plugin))
@@ -181,7 +180,7 @@ public class Bot {
 
     public void setDefaultAvatar() {
         if (this.jda.getSelfUser().getDefaultAvatarUrl().equals(this.jda.getSelfUser().getEffectiveAvatarUrl())) {
-            CompletableFuture.runAsync(() -> {
+            this.plugin.getScheduler().runTaskAsynchronously(() -> {
                 try (InputStream inputStream = new URL("https://clementraynaud.net/Skoice.jpeg").openStream()) {
                     Icon icon = Icon.from(inputStream);
                     this.jda.getSelfUser().getManager().setAvatar(icon).queue();
@@ -321,6 +320,11 @@ public class Bot {
         if (player.hasPermission(Argument.MANAGE_PERMISSION) || force) {
             if (this.status == BotStatus.NOT_CONNECTED) {
                 if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
+                    boolean joinEvent = !sendIfPermissionMissing && !force;
+                    int delay = 0;
+                    if (joinEvent) {
+                        delay = 2000;
+                    }
                     this.plugin.getScheduler().runTaskLaterAsynchronously(() -> player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-interactive",
                                     this.plugin.getLang().getComponentMessage("interaction.here")
                                             .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.execute", "/skoice configure")))
@@ -329,7 +333,7 @@ public class Bot {
                                             .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.shortcut", "/skoice language")))
                                             .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice language "))
                             )
-                    ), 2000);
+                    ), delay);
                 } else {
                     player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator"));
                 }
