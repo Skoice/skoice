@@ -42,7 +42,7 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, SkoicePluginSpigot.CHANNEL);
 
         this.skoice = new SkoiceSpigot(this);
-        this.skoice.onEnable();
+        this.skoice.start();
     }
 
     public File getFile() {
@@ -51,7 +51,7 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
 
     @Override
     public void onDisable() {
-        this.skoice.onDisable();
+        this.skoice.shutdown();
     }
 
     @Override
@@ -76,14 +76,14 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
     @EventHandler
     public void onSystemReady(SystemReadyEvent event) {
         if (SkoicePluginSpigot.PROXY_MODE) {
-            this.skoice.onDisable();
+            this.skoice.shutdown();
         }
     }
 
     private void enableProxyMode() {
         SkoicePluginSpigot.PROXY_MODE = true;
         this.runProxyTask();
-        this.skoice.onDisable();
+        this.skoice.shutdown();
         System.out.println("Proxy mode enabled");
     }
 

@@ -46,7 +46,7 @@ public class SkoicePluginVelocity {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         this.proxy.getChannelRegistrar().register(SkoicePluginVelocity.IDENTIFIER);
         this.skoice = new SkoiceVelocity(this);
-        this.skoice.onEnable();
+        this.skoice.start();
         this.serverInfo = JsonModel.toJson(new ProxyInfo(this.skoice.getVersion()));
     }
 
@@ -56,7 +56,7 @@ public class SkoicePluginVelocity {
 
     @Subscribe
     public void onProxyShutdown(ProxyShutdownEvent event) {
-        this.skoice.onDisable();
+        this.skoice.shutdown();
     }
 
     @Subscribe

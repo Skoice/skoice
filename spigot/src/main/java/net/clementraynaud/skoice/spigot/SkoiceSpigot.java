@@ -50,13 +50,13 @@ public class SkoiceSpigot extends Skoice {
     }
 
     @Override
-    public void onEnable() {
+    public void start() {
         if (!this.isMinecraftServerCompatible()) {
             this.getLogger().severe(SkoiceSpigot.OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE);
             this.getPlugin().getServer().getPluginManager().disablePlugin(this.getPlugin());
             return;
         }
-        super.onEnable();
+        super.start();
         SkoiceSpigot.api = new SkoiceAPI(this);
         SkoiceSpigot.adventure = BukkitAudiences.create(this.plugin);
         this.hookManager = new HookManager(this);
@@ -76,12 +76,12 @@ public class SkoiceSpigot extends Skoice {
     }
 
     @Override
-    public void onDisable() {
+    public void shutdown() {
         if (SkoiceSpigot.adventure != null) {
             SkoiceSpigot.adventure.close();
         }
         this.hookManager.close();
-        super.onDisable();
+        super.shutdown();
     }
 
     public HookManager getHookManager() {
