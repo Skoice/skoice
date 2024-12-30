@@ -1,6 +1,5 @@
 package net.clementraynaud.skoice.spigot;
 
-import net.clementraynaud.skoice.common.bot.BotStatus;
 import net.clementraynaud.skoice.common.model.JsonModel;
 import net.clementraynaud.skoice.common.model.minecraft.PlayerInfo;
 import net.clementraynaud.skoice.common.model.minecraft.ProxyInfo;
@@ -31,7 +30,6 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
     private static boolean PROXY_MODE = false;
     private final Map<UUID, String> latestMessagesSent = new ConcurrentHashMap<>();
     private SkoiceSpigot skoice;
-    private int proxyTaskId;
 
     public static boolean isProxyMode() {
         return SkoicePluginSpigot.PROXY_MODE;
@@ -71,31 +69,26 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
             throw new RuntimeException(e);
         }
         if (JsonModel.fromJson(json, ProxyInfo.class) != null) {
-            if (this.skoice.getBot().getStatus() != BotStatus.READY) {
-                this.enableProxyMode();
-            }
+            this.enableProxyMode();
         }
     }
 
     @EventHandler
     public void onSystemReady(SystemReadyEvent event) {
-        this.disableProxyMode();
-    }
-
-    private void disableProxyMode() {
-        SkoicePluginSpigot.PROXY_MODE = false;
-        this.getServer().getScheduler().cancelTask(this.proxyTaskId);
-        System.out.println("Proxy mode disabled");
+        if (SkoicePluginSpigot.PROXY_MODE) {
+            this.skoice.onDisable();
+        }
     }
 
     private void enableProxyMode() {
         SkoicePluginSpigot.PROXY_MODE = true;
         this.runProxyTask();
+        this.skoice.onDisable();
         System.out.println("Proxy mode enabled");
     }
 
     private void runProxyTask() {
-        this.proxyTaskId = this.getServer().getScheduler().runTaskTimer(this, () -> {
+        this.getServer().getScheduler().runTaskTimer(this, () -> {
             this.getServer().getOnlinePlayers().parallelStream().forEach(player -> {
                 Scoreboard scoreboard = player.getScoreboard();
                 Team playerTeam = scoreboard.getEntryTeam(player.getName());
@@ -120,6 +113,6 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
                     player.sendPluginMessage(this, SkoicePluginSpigot.CHANNEL, b.toByteArray());
                 }
             });
-        }, 0L, 20L).getTaskId();
+        }, 0L, 20L);
     }
 }

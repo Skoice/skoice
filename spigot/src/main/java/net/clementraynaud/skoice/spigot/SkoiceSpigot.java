@@ -82,7 +82,6 @@ public class SkoiceSpigot extends Skoice {
         }
         this.hookManager.close();
         super.onDisable();
-
     }
 
     public HookManager getHookManager() {

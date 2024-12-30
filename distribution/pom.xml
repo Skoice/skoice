@@ -87,12 +87,12 @@
         <dependency>
             <groupId>net.clementraynaud</groupId>
             <artifactId>skoice.velocity</artifactId>
-            <version>3.2.3</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>net.clementraynaud</groupId>
             <artifactId>skoice.spigot</artifactId>
-            <version>3.2.3</version>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 </project>

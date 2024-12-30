@@ -92,7 +92,7 @@
         <dependency>
             <groupId>net.clementraynaud</groupId>
             <artifactId>skoice.common</artifactId>
-            <version>3.2.3</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
