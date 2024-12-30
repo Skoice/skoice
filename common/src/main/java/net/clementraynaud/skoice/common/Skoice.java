@@ -66,6 +66,10 @@ public abstract class Skoice {
         this.scheduler = scheduler;
     }
 
+    public static AnalyticManager analyticManager() {
+        return Skoice.analyticManager;
+    }
+
     public void start() {
         this.saveDefaultConfig();
         this.configYamlFile = new ConfigYamlFile(this);
@@ -176,10 +180,6 @@ public abstract class Skoice {
         } catch (IOException ex) {
             this.logger.severe("Could not save " + outFile.getName() + " to " + outFile);
         }
-    }
-
-    public static AnalyticManager analyticManager() {
-        return Skoice.analyticManager;
     }
 
     public SkoiceLogger getLogger() {

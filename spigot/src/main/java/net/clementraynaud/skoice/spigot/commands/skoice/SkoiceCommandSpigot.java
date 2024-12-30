@@ -1,7 +1,6 @@
 package net.clementraynaud.skoice.spigot.commands.skoice;
 
 import net.clementraynaud.skoice.common.commands.skoice.SkoiceCommand;
-import net.clementraynaud.skoice.common.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.spigot.SkoicePluginSpigot;
 import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.spigot.minecraft.SpigotBasePlayer;
