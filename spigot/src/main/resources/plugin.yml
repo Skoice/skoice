@@ -16,7 +16,7 @@
 # along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 
 name: Skoice
-version: ${project.version}
+version: ${project.parent.version}
 main: net.clementraynaud.skoice.spigot.SkoicePluginSpigot
 api-version: 1.13
 authors: [ carlodrift, Lucas_Cdry ]

@@ -27,7 +27,6 @@ import net.clementraynaud.skoice.common.lang.LangInfo;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BugsnagAnalytics {
@@ -47,7 +46,7 @@ public class BugsnagAnalytics {
         if (this.bugsnag == null) {
             return;
         }
-        CompletableFuture.runAsync(() -> {
+        this.plugin.getScheduler().runTaskAsynchronously(() -> {
             String exceptionKey = this.createExceptionKey(throwable);
 
             if (this.reportedExceptions.contains(exceptionKey)) {

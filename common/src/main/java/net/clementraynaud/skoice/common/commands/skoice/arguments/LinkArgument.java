@@ -30,8 +30,6 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
-import java.util.concurrent.CompletableFuture;
-
 public class LinkArgument extends Argument {
 
     private final String arg;
@@ -43,7 +41,7 @@ public class LinkArgument extends Argument {
 
     @Override
     public void run() {
-        CompletableFuture.runAsync(() -> {
+        this.plugin.getScheduler().runTaskAsynchronously(() -> {
             BasePlayer player = (BasePlayer) this.sender;
             if (super.plugin.getBot().getStatus() != BotStatus.READY) {
                 super.plugin.getBot().sendIncompleteConfigurationAlert(player, true, false);

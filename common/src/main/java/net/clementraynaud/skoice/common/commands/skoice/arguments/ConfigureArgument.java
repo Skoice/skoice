@@ -25,8 +25,6 @@ import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 
-import java.util.concurrent.CompletableFuture;
-
 public class ConfigureArgument extends Argument {
 
     public ConfigureArgument(Skoice plugin, SkoiceCommandSender sender) {
@@ -38,7 +36,7 @@ public class ConfigureArgument extends Argument {
         BasePlayer player = (BasePlayer) this.sender;
         if (super.plugin.getBot().getStatus() == BotStatus.NOT_CONNECTED) {
             if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-                CompletableFuture.runAsync(() -> {
+                this.plugin.getScheduler().runTaskAsynchronously(() -> {
                     player.sendMessage(this.plugin.getLang()
                             .getInteractiveMessage("chat.configuration.bot-creation-interactive"));
                 });

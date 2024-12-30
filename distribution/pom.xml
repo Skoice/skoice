@@ -11,6 +11,10 @@
 
     <artifactId>skoice.distribution</artifactId>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -83,13 +87,12 @@
         <dependency>
             <groupId>net.clementraynaud</groupId>
             <artifactId>skoice.velocity</artifactId>
-            <version>3.2.3</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>net.clementraynaud</groupId>
             <artifactId>skoice.spigot</artifactId>
-            <version>3.2.3</version>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
-
 </project>

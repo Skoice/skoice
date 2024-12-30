@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -12,8 +12,7 @@
     <artifactId>skoice.common</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.release>8</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -32,11 +31,6 @@
                     <minimizeJar>true</minimizeJar>
                     <relocations>
                         <relocation>
-                            <pattern>ch.qos.logback</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.ch.qos.logback
-                            </shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>org.apache.commons.collections4</pattern>
                             <shadedPattern>
                                 ${project.parent.groupId}.${project.parent.artifactId}.libraries.org.apache.commons.collections4
@@ -50,31 +44,31 @@
                         </relocation>
                         <relocation>
                             <pattern>org.jetbrains.annotations</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.org.jetbrains.annotations
+                            <shadedPattern>
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.org.jetbrains.annotations
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.simpleyaml</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.org.simpleyaml
-                            </shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.slf4j</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.org.slf4j
+                            <shadedPattern>
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.org.simpleyaml
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.dv8tion.jda</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.net.dv8tion.jda
+                            <shadedPattern>
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.net.dv8tion.jda
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>kotlin</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.kotlin</shadedPattern>
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.kotlin
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.fasterxml.jackson</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.com.fasterxml.jackson
+                            <shadedPattern>
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.com.fasterxml.jackson
                             </shadedPattern>
                         </relocation>
                         <relocation>
@@ -85,39 +79,47 @@
                         </relocation>
                         <relocation>
                             <pattern>com.google.crypto</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.com.google.crypto
+                            <shadedPattern>
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.com.google.crypto
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.google.errorprone</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.com.google.errorprone
+                            <shadedPattern>
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.com.google.errorprone
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.google.gson</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.com.google.gson
+                            <shadedPattern>
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.com.google.gson
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>gnu.trove</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.gnu.trove</shadedPattern>
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.gnu.trove
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>okhttp3</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.okhttp3</shadedPattern>
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.okhttp3
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>okio</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.okio</shadedPattern>
+                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.okio
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>google.protobuf</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.google.protobuf
+                            <shadedPattern>
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.google.protobuf
                             </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>javax.annotation</pattern>
-                            <shadedPattern>${project.parent.groupId}.${project.parent.artifactId}.libraries.javax.annotation
+                            <shadedPattern>
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.javax.annotation
                             </shadedPattern>
                         </relocation>
                     </relocations>
@@ -179,7 +181,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.2.1</version>
+            <version>5.2.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
@@ -204,6 +206,12 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
             <version>4.18.0</version>
@@ -214,22 +222,6 @@
             <artifactId>adventure-text-serializer-legacy</artifactId>
             <version>4.18.0</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-serializer-plain</artifactId>
-            <version>4.18.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.11.0</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.5.6</version>
         </dependency>
     </dependencies>
 

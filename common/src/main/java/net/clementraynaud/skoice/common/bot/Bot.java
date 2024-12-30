@@ -117,7 +117,7 @@ public class Bot {
         }
 
         byte[] finalBase64TokenBytes = base64TokenBytes;
-        CompletableFuture.runAsync(() -> {
+        this.plugin.getScheduler().runTaskAsynchronously(() -> {
             try {
                 this.jda = JDABuilder.createDefault(new String(finalBase64TokenBytes))
                         .addEventListeners(new ReadyListener(this.plugin))
@@ -180,7 +180,7 @@ public class Bot {
 
     public void setDefaultAvatar() {
         if (this.jda.getSelfUser().getDefaultAvatarUrl().equals(this.jda.getSelfUser().getEffectiveAvatarUrl())) {
-            CompletableFuture.runAsync(() -> {
+            this.plugin.getScheduler().runTaskAsynchronously(() -> {
                 try (InputStream inputStream = new URL("https://clementraynaud.net/Skoice.jpeg").openStream()) {
                     Icon icon = Icon.from(inputStream);
                     this.jda.getSelfUser().getManager().setAvatar(icon).queue();
@@ -314,10 +314,14 @@ public class Bot {
         if (player.hasPermission(Argument.MANAGE_PERMISSION) || force) {
             if (this.status == BotStatus.NOT_CONNECTED) {
                 if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-                    CompletableFuture.runAsync(() -> {
-                        player.sendMessage(this.plugin.getLang()
-                                .getInteractiveMessage("chat.configuration.incomplete-configuration-operator-interactive"));
-                    });
+                    boolean joinEvent = !sendIfPermissionMissing && !force;
+                    int delay = 0;
+                    if (joinEvent) {
+                        delay = 2000;
+                    }
+                    this.plugin.getScheduler().runTaskLaterAsynchronously(() -> {
+                        player.sendMessage(this.plugin.getLang().getInteractiveMessage("chat.configuration.incomplete-configuration-operator-interactive"));
+                    }, delay);
                 } else {
                     player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator"));
                 }

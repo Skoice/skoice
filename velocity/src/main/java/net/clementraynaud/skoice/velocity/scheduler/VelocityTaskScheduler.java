@@ -35,6 +35,19 @@ public class VelocityTaskScheduler implements SkoiceTaskScheduler {
     }
 
     @Override
+    public void runTaskLaterAsynchronously(Runnable task, long delay) {
+        this.taskScheduler.buildTask(this.plugin, task)
+                .delay(delay, TimeUnit.MILLISECONDS)
+                .schedule();
+    }
+
+    @Override
+    public void runTaskAsynchronously(Runnable task) {
+        this.taskScheduler.buildTask(this.plugin, task)
+                .schedule();
+    }
+
+    @Override
     public void cancelTask(int taskId) {
         ScheduledTask task = this.tasks.remove(taskId);
         if (task != null) {

@@ -2,6 +2,7 @@ package net.clementraynaud.skoice.velocity;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.command.PlayerAvailableCommandsEvent;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
 import com.velocitypowered.api.event.player.ServerPostConnectEvent;
@@ -9,16 +10,21 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
+import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import net.clementraynaud.skoice.common.model.JsonModel;
 import net.clementraynaud.skoice.common.model.minecraft.PlayerInfo;
+import net.clementraynaud.skoice.common.model.minecraft.ProxyInfo;
 import net.clementraynaud.skoice.velocity.minecraft.VelocityBasePlayer;
 import org.slf4j.Logger;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -34,12 +40,14 @@ public class SkoicePluginVelocity {
     @DataDirectory
     @Inject
     private Path dataDirectory;
+    private String serverInfo;
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         this.proxy.getChannelRegistrar().register(SkoicePluginVelocity.IDENTIFIER);
         this.skoice = new SkoiceVelocity(this);
-        this.skoice.onEnable();
+        this.skoice.start();
+        this.serverInfo = JsonModel.toJson(new ProxyInfo(this.skoice.getVersion()));
     }
 
     public Path getDataDirectory() {
@@ -48,7 +56,7 @@ public class SkoicePluginVelocity {
 
     @Subscribe
     public void onProxyShutdown(ProxyShutdownEvent event) {
-        this.skoice.onDisable();
+        this.skoice.shutdown();
     }
 
     @Subscribe
@@ -58,7 +66,7 @@ public class SkoicePluginVelocity {
     }
 
     @Subscribe
-    public void onServerPostConnectEvent(ServerPostConnectEvent event) {
+    public void onServerPostConnect(ServerPostConnectEvent event) {
         if (event.getPreviousServer() != null) {
             this.skoice.getListenerManager().onPlayerQuit(new VelocityBasePlayer(event.getPlayer())).thenAccept(aVoid -> {
                 this.skoice.removePlayerInfo(event.getPlayer().getUniqueId());
@@ -67,6 +75,20 @@ public class SkoicePluginVelocity {
         } else {
             this.skoice.getListenerManager().onPlayerJoin(new VelocityBasePlayer(event.getPlayer()), false);
         }
+
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        try {
+            out.writeUTF(this.serverInfo);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.sendPluginMessageToBackendUsingPlayer(event.getPlayer(), SkoicePluginVelocity.IDENTIFIER, b.toByteArray());
+    }
+
+    @Subscribe
+    public void onPlayerAvailableCommands(PlayerAvailableCommandsEvent event) {
+        event.getRootNode().removeChildByName("skoice:skoice");
     }
 
     @Subscribe
@@ -75,6 +97,10 @@ public class SkoicePluginVelocity {
             return;
         }
         event.setResult(PluginMessageEvent.ForwardResult.handled());
+
+        if (!(event.getSource() instanceof ServerConnection backend)) {
+            return;
+        }
 
         ByteArrayInputStream bais = new ByteArrayInputStream(event.getData());
         DataInputStream in = new DataInputStream(bais);
@@ -86,13 +112,15 @@ public class SkoicePluginVelocity {
         }
         JsonModel model = JsonModel.fromJson(json, PlayerInfo.class);
         if (model instanceof PlayerInfo info) {
-            if (!(event.getSource() instanceof ServerConnection backend)) {
-                return;
-            }
             info.setWorld(info.getWorld() + ":" + backend.getServerInfo().getName());
             this.skoice.setPlayerInfo(info);
         }
+    }
 
+
+    public boolean sendPluginMessageToBackendUsingPlayer(Player player, ChannelIdentifier identifier, byte[] data) {
+        var connection = player.getCurrentServer();
+        return connection.map(serverConnection -> serverConnection.sendPluginMessage(identifier, data)).orElse(false);
     }
 
     public Logger getLogger() {

@@ -40,8 +40,8 @@ public class SpigotListenerManager extends ListenerManager {
     }
 
     @Override
-    protected GuildVoiceUpdateListener createGuildVoiceUpdate() {
-        return new SpigotGuildVoiceUpdateListener(this.plugin);
+    protected GuildVoiceUpdateListener createGuildVoiceUpdate(Skoice plugin) {
+        return new SpigotGuildVoiceUpdateListener((SkoiceSpigot) plugin);
     }
 
     @Override

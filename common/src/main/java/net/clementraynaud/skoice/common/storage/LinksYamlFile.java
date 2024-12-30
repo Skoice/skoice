@@ -39,7 +39,6 @@ import org.simpleyaml.configuration.ConfigurationSection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class LinksYamlFile extends YamlFile {
@@ -72,7 +71,7 @@ public class LinksYamlFile extends YamlFile {
         if (player == null) {
             return;
         }
-        CompletableFuture.runAsync(() -> new LinkedPlayer(this.plugin, this.plugin.getFullPlayer(player), discordId));
+        this.plugin.getScheduler().runTaskAsynchronously(() -> new LinkedPlayer(this.plugin, this.plugin.getFullPlayer(player), discordId));
         if (this.plugin.getBot().getStatus() == BotStatus.READY) {
             this.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
                 VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
@@ -101,7 +100,7 @@ public class LinksYamlFile extends YamlFile {
         if (player == null) {
             return;
         }
-        CompletableFuture.runAsync(() -> {
+        this.plugin.getScheduler().runTaskAsynchronously(() -> {
             Networks.getAll().stream()
                     .filter(network -> network.contains(this.plugin.getFullPlayer(player)))
                     .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(this.plugin.getFullPlayer(player)));

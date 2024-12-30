@@ -2,16 +2,21 @@ package net.clementraynaud.skoice.spigot;
 
 import net.clementraynaud.skoice.common.model.JsonModel;
 import net.clementraynaud.skoice.common.model.minecraft.PlayerInfo;
+import net.clementraynaud.skoice.common.model.minecraft.ProxyInfo;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceGameMode;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceLocation;
+import net.clementraynaud.skoice.spigot.api.events.system.SystemReadyEvent;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +27,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListener, Listener {
 
     private static final String CHANNEL = "skoice:main";
+    private static boolean PROXY_MODE = false;
     private final Map<UUID, String> latestMessagesSent = new ConcurrentHashMap<>();
     private SkoiceSpigot skoice;
+
+    public static boolean isProxyMode() {
+        return SkoicePluginSpigot.PROXY_MODE;
+    }
 
     @Override
     public void onEnable() {
@@ -32,8 +42,52 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, SkoicePluginSpigot.CHANNEL);
 
         this.skoice = new SkoiceSpigot(this);
-        this.skoice.onEnable();
+        this.skoice.start();
+    }
 
+    public File getFile() {
+        return super.getFile();
+    }
+
+    @Override
+    public void onDisable() {
+        this.skoice.shutdown();
+    }
+
+    @Override
+    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+        if (!SkoicePluginSpigot.CHANNEL.equals(channel)) {
+            return;
+        }
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(message);
+        DataInputStream in = new DataInputStream(bais);
+        String json;
+        try {
+            json = in.readUTF();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if (JsonModel.fromJson(json, ProxyInfo.class) != null) {
+            this.enableProxyMode();
+        }
+    }
+
+    @EventHandler
+    public void onSystemReady(SystemReadyEvent event) {
+        if (SkoicePluginSpigot.PROXY_MODE) {
+            this.skoice.shutdown();
+        }
+    }
+
+    private void enableProxyMode() {
+        SkoicePluginSpigot.PROXY_MODE = true;
+        this.runProxyTask();
+        this.skoice.shutdown();
+        System.out.println("Proxy mode enabled");
+    }
+
+    private void runProxyTask() {
         this.getServer().getScheduler().runTaskTimer(this, () -> {
             this.getServer().getOnlinePlayers().parallelStream().forEach(player -> {
                 Scoreboard scoreboard = player.getScoreboard();
@@ -60,18 +114,5 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
                 }
             });
         }, 0L, 20L);
-    }
-
-    public File getFile() {
-        return super.getFile();
-    }
-
-    @Override
-    public void onDisable() {
-        this.skoice.onDisable();
-    }
-
-    @Override
-    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
     }
 }
