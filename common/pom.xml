@@ -223,6 +223,11 @@
             <version>4.18.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-plain</artifactId>
+            <version>4.18.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
-
 </project>
