@@ -57,7 +57,7 @@ public abstract class ListenerManager {
         this.playerQuitHandler = new PlayerQuitHandler();
         this.playerJoinHandler = this.createPlayerJoinHandler(plugin);
         this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
-        this.guildVoiceUpdateListener = this.createGuildVoiceUpdate();
+        this.guildVoiceUpdateListener = this.createGuildVoiceUpdate(this.plugin);
         this.genericChannelListener = new GenericChannelListener(this.plugin);
     }
 
@@ -65,8 +65,8 @@ public abstract class ListenerManager {
         return new PlayerJoinHandler(plugin);
     }
 
-    protected GuildVoiceUpdateListener createGuildVoiceUpdate() {
-        return new GuildVoiceUpdateListener(this.plugin);
+    protected GuildVoiceUpdateListener createGuildVoiceUpdate(Skoice plugin) {
+        return new GuildVoiceUpdateListener(plugin);
     }
 
     public PlayerJoinHandler getPlayerJoinHandler() {
