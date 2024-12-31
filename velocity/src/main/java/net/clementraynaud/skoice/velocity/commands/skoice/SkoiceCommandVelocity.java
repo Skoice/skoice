@@ -44,6 +44,7 @@ public class SkoiceCommandVelocity extends SkoiceCommand implements SimpleComman
     public void init() {
         CommandManager commandManager = this.plugin.getPlugin().getProxy().getCommandManager();
         commandManager.register(commandManager.metaBuilder("skoice")
+                .aliases("skoice:skoice")
                 .plugin(this.plugin.getPlugin())
                 .build(), this);
     }

@@ -88,7 +88,7 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
         SkoicePluginSpigot.PROXY_MODE = true;
         this.runProxyTask();
         this.disableStandaloneSkoice();
-        System.out.println("Proxy mode enabled");
+        this.getLogger().info("Proxy mode enabled.");
     }
 
     private void disableStandaloneSkoice() {
