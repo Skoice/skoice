@@ -1,0 +1,11 @@
+{
+  "id": "skoice",
+  "name": "Skoice",
+  "version": "${project.parent.version}",
+  "authors": [
+    "carlodrift",
+    "Lucas_Cdry"
+  ],
+  "dependencies": [],
+  "main": "net.clementraynaud.skoice.velocity.SkoicePluginVelocity"
+}

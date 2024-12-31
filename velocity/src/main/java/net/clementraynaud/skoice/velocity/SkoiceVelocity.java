@@ -65,7 +65,10 @@ public class SkoiceVelocity extends Skoice {
 
     @Override
     public String getVersion() {
-        return "3.2.3";
+        return this.plugin.getProxy()
+                .getPluginManager()
+                .getPlugin("skoice").flatMap(plugin -> plugin.getDescription().getVersion())
+                .orElse("");
     }
 
     @Override

@@ -5,6 +5,7 @@ import net.clementraynaud.skoice.common.model.minecraft.PlayerInfo;
 import net.clementraynaud.skoice.common.model.minecraft.ProxyInfo;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceGameMode;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceLocation;
+import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.spigot.api.events.system.SystemReadyEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -56,7 +57,7 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-        if (!SkoicePluginSpigot.CHANNEL.equals(channel)) {
+        if (!SkoicePluginSpigot.CHANNEL.equals(channel) || SkoicePluginSpigot.PROXY_MODE) {
             return;
         }
 
@@ -76,15 +77,23 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
     @EventHandler
     public void onSystemReady(SystemReadyEvent event) {
         if (SkoicePluginSpigot.PROXY_MODE) {
-            this.skoice.shutdown();
+            this.disableStandaloneSkoice();
         }
     }
 
     private void enableProxyMode() {
+        if (SkoicePluginSpigot.PROXY_MODE) {
+            return;
+        }
         SkoicePluginSpigot.PROXY_MODE = true;
         this.runProxyTask();
+        this.disableStandaloneSkoice();
+        this.getLogger().info("Proxy mode enabled.");
+    }
+
+    private void disableStandaloneSkoice() {
+        this.skoice.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
         this.skoice.shutdown();
-        System.out.println("Proxy mode enabled");
     }
 
     private void runProxyTask() {

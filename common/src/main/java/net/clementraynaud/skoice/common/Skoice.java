@@ -67,6 +67,10 @@ public abstract class Skoice {
         this.scheduler = scheduler;
     }
 
+    public static AnalyticManager analyticManager() {
+        return Skoice.analyticManager;
+    }
+
     public void start() {
         this.saveDefaultConfig();
         this.configYamlFile = new ConfigYamlFile(this);
@@ -74,7 +78,7 @@ public abstract class Skoice {
         this.configYamlFile.saveDefaultValues();
         this.lang = new MinecraftLang();
         this.lang.load(LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())));
-        this.log(Level.INFO, "logger.info.plugin-enabled");
+        this.logger.info(this.lang.getMessage("logger.info.plugin-enabled"));
         this.linksYamlFile = this.createLinksYamlFile();
         this.linksYamlFile.load();
         new OutdatedConfig(this).update();
@@ -118,7 +122,7 @@ public abstract class Skoice {
 
     public void shutdown() {
         this.bot.shutdown();
-        this.log(Level.INFO, "logger.info.plugin-disabled");
+        this.logger.info(this.lang.getMessage("logger.info.plugin-disabled"));
     }
 
     public InputStream getResource(String filename) {
@@ -181,10 +185,6 @@ public abstract class Skoice {
 
     public void log(Level level, String path) {
         this.getLogger().log(level, this.getLang().getConsoleMessage(path));
-    }
-
-    public static AnalyticManager analyticManager() {
-        return Skoice.analyticManager;
     }
 
     public SkoiceLogger getLogger() {

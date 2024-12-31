@@ -2,13 +2,11 @@ package net.clementraynaud.skoice.velocity;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
-import com.velocitypowered.api.event.command.PlayerAvailableCommandsEvent;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
 import com.velocitypowered.api.event.player.ServerPostConnectEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
-import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -28,7 +26,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 
-@Plugin(id = "skoice", name = "Skoice", version = "3.2.3", authors = {"carlodrift", "Lucas_Cdry"})
 public class SkoicePluginVelocity {
 
     private static final MinecraftChannelIdentifier IDENTIFIER = MinecraftChannelIdentifier.from("skoice:main");
@@ -84,11 +81,6 @@ public class SkoicePluginVelocity {
             e.printStackTrace();
         }
         this.sendPluginMessageToBackendUsingPlayer(event.getPlayer(), SkoicePluginVelocity.IDENTIFIER, b.toByteArray());
-    }
-
-    @Subscribe
-    public void onPlayerAvailableCommands(PlayerAvailableCommandsEvent event) {
-        event.getRootNode().removeChildByName("skoice:skoice");
     }
 
     @Subscribe
