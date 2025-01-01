@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.common;
 
 import com.bugsnag.Severity;
+import net.clementraynaud.skoice.common.menus.selectors.ReleaseChannelSelector;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 
 import java.io.File;
@@ -78,19 +79,23 @@ public class Updater {
                 if (expectedHash != null) {
                     this.update(version, expectedHash);
                 } else {
-                    this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                            this.plugin.getVersion(),
-                            version,
-                            "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861")
-                    );
+                    this.logOutdatedVersion(version);
                 }
             }
         });
     }
 
+    private void logOutdatedVersion(String version) {
+        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
+                this.plugin.getVersion(),
+                version,
+                "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861")
+        );
+    }
+
     private void updateReleaseChannel() {
         String releaseChannel = Updater.LATEST_CHANNEL;
-        if ("beta".equals(this.plugin.getConfigYamlFile().getString(ConfigField.RELEASE_CHANNEL.toString()))) {
+        if (this.isBetaChannel()) {
             releaseChannel = Updater.BETA_CHANNEL;
         }
         this.fullURL = String.format("%s/%s", Updater.UPDATER_URL, releaseChannel);
@@ -123,11 +128,11 @@ public class Updater {
     private synchronized void update(String version, String expectedHash) {
         File updateFolder = this.plugin.getUpdateFolderFile();
         if (updateFolder == null || this.pluginPath == null) {
-            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                    this.plugin.getVersion(),
-                    version,
-                    "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861")
-            );
+            if (this.isBetaChannel()) {
+                this.plugin.getConfigYamlFile().set(ConfigField.RELEASE_CHANNEL.toString(), ReleaseChannelSelector.PRODUCTION);
+            } else {
+                this.logOutdatedVersion(version);
+            }
             return;
         }
         File tempUpdateFile = new File(updateFolder, "Skoice.jar.temp");
@@ -158,11 +163,7 @@ public class Updater {
                 throw new IOException("File integrity check failed");
             }
         } catch (IOException | NoSuchAlgorithmException exception) {
-            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
-                    this.plugin.getVersion(),
-                    version,
-                    "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861")
-            );
+            this.logOutdatedVersion(version);
             try {
                 Files.delete(tempUpdateFile.toPath());
             } catch (IOException ignored) {
@@ -173,6 +174,10 @@ public class Updater {
                 connection.disconnect();
             }
         }
+    }
+
+    private boolean isBetaChannel() {
+        return ReleaseChannelSelector.BETA.equals(this.plugin.getConfigYamlFile().getString(ConfigField.RELEASE_CHANNEL.toString()));
     }
 
     private String fetchHashFromServer() {
