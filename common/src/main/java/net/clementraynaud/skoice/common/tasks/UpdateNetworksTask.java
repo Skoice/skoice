@@ -33,6 +33,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -57,8 +58,8 @@ public class UpdateNetworksTask {
     public void start() {
         this.taskId = this.plugin.getScheduler().runTaskTimerAsynchronously(
                 this::run,
-                0,
-                500
+                Duration.ZERO,
+                Duration.ofMillis(500)
         );
     }
 

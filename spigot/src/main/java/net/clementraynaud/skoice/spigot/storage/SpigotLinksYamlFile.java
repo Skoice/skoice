@@ -22,7 +22,7 @@ public class SpigotLinksYamlFile extends LinksYamlFile {
     @Override
     protected void additionalLinkProcessing(String minecraftId, String discordId) {
         this.plugin.getHookManager().linkUser(minecraftId, discordId);
-        this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
+        this.plugin.getScheduler().runTask(() -> {
             AccountLinkEvent event = new AccountLinkEvent(minecraftId, discordId);
             this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
         });
@@ -31,7 +31,7 @@ public class SpigotLinksYamlFile extends LinksYamlFile {
     @Override
     protected void additionalUnlinkProcessing(String minecraftId) {
         this.plugin.getHookManager().unlinkUser(minecraftId);
-        this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
+        this.plugin.getScheduler().runTask(() -> {
             AccountUnlinkEvent event = new AccountUnlinkEvent(minecraftId);
             this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
         });
@@ -39,7 +39,7 @@ public class SpigotLinksYamlFile extends LinksYamlFile {
 
     @Override
     protected void callPlayerProximityConnectEvent(String minecraftId, String memberId) {
-        this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
+        this.plugin.getScheduler().runTask(() -> {
             PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, memberId);
             this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
         });
@@ -48,7 +48,7 @@ public class SpigotLinksYamlFile extends LinksYamlFile {
     @Override
     protected void callPlayerProximityDisconnectEventIfConnected(String minecraftId) {
         if (SkoiceSpigot.api().isProximityConnected(UUID.fromString(minecraftId))) {
-            this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
+            this.plugin.getScheduler().runTask(() -> {
                 PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId);
                 this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
             });

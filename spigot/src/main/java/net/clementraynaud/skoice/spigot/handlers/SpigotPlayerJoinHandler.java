@@ -15,7 +15,7 @@ public class SpigotPlayerJoinHandler extends PlayerJoinHandler {
 
     @Override
     protected void callPlayerProximityConnectEvent(String minecraftId, String memberId) {
-        this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
+        this.plugin.getScheduler().runTask(() -> {
             PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, memberId);
             this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
         });

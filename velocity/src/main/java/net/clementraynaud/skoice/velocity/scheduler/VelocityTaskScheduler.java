@@ -5,8 +5,8 @@ import com.velocitypowered.api.scheduler.Scheduler;
 import net.clementraynaud.skoice.common.model.scheduler.SkoiceTaskScheduler;
 import net.clementraynaud.skoice.velocity.SkoicePluginVelocity;
 
+import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VelocityTaskScheduler implements SkoiceTaskScheduler {
@@ -22,11 +22,16 @@ public class VelocityTaskScheduler implements SkoiceTaskScheduler {
     }
 
     @Override
-    public int runTaskTimerAsynchronously(Runnable task, long delay, long period) {
+    public int runTaskTimerAsynchronously(Runnable task, Duration delay, Duration period) {
+        return this.runTaskTimer(task, delay, period);
+    }
+
+    @Override
+    public int runTaskTimer(Runnable task, Duration delay, Duration period) {
         int taskId = this.taskIdCounter.incrementAndGet();
         ScheduledTask scheduledTask = this.taskScheduler.buildTask(this.plugin, task)
-                .repeat(period, TimeUnit.MILLISECONDS)
-                .delay(delay, TimeUnit.MILLISECONDS)
+                .delay(delay)
+                .repeat(period)
                 .schedule();
 
         this.tasks.put(taskId, scheduledTask);
@@ -35,14 +40,19 @@ public class VelocityTaskScheduler implements SkoiceTaskScheduler {
     }
 
     @Override
-    public void runTaskLaterAsynchronously(Runnable task, long delay) {
+    public void runTaskLaterAsynchronously(Runnable task, Duration delay) {
         this.taskScheduler.buildTask(this.plugin, task)
-                .delay(delay, TimeUnit.MILLISECONDS)
+                .delay(delay)
                 .schedule();
     }
 
     @Override
     public void runTaskAsynchronously(Runnable task) {
+        this.runTask(task);
+    }
+
+    @Override
+    public void runTask(Runnable task) {
         this.taskScheduler.buildTask(this.plugin, task)
                 .schedule();
     }

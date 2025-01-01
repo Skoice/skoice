@@ -16,7 +16,7 @@ public class SpigotInterruptSystemTask extends InterruptSystemTask {
 
     @Override
     protected void callSystemInterruptionEvent() {
-        this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
+        this.plugin.getScheduler().runTask(() -> {
             SystemInterruptionEvent event = new SystemInterruptionEvent();
             this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
         });

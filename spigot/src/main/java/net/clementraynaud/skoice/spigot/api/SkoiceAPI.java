@@ -86,7 +86,7 @@ public class SkoiceAPI implements Listener {
     @EventHandler
     private void onPlayerLeft(PlayerQuitEvent event) {
         if (this.isLinked(event.getPlayer().getUniqueId()) && this.isProximityConnected(event.getPlayer().getUniqueId())) {
-            this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
+            this.plugin.getScheduler().runTask(() -> {
                 PlayerProximityDisconnectEvent newEvent = new PlayerProximityDisconnectEvent(event.getPlayer().getUniqueId().toString());
                 this.plugin.getPlugin().getServer().getPluginManager().callEvent(newEvent);
             });
