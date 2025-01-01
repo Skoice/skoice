@@ -41,17 +41,29 @@ public class ReleaseChannelSelector extends Selector {
 
     @Override
     public SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("field.production-channel.title"), ReleaseChannelSelector.PRODUCTION)
-                        .withEmoji(MenuEmoji.PACKAGE.get())
-                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description")),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("field.beta-channel.title"), ReleaseChannelSelector.BETA)
-                        .withEmoji(MenuEmoji.TEST_TUBE.get())
-                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.undesirable.description"))));
+        boolean disabled = false;
+        List<SelectOption> options = new ArrayList<>();
+        String defaultValue;
 
-        String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.RELEASE_CHANNEL.toString());
+        if (super.plugin.getUpdateFolderFile() == null) {
+            options.add(SelectOption.of("Unavailable", "unavailable")
+                    .withEmoji(MenuEmoji.X.get()));
+            defaultValue = "unavailable";
+            disabled = true;
+        } else {
+            options.addAll(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("field.production-channel.title"), ReleaseChannelSelector.PRODUCTION)
+                            .withEmoji(MenuEmoji.PACKAGE.get())
+                            .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description")),
+                    SelectOption.of(super.plugin.getBot().getLang().getMessage("field.beta-channel.title"), ReleaseChannelSelector.BETA)
+                            .withEmoji(MenuEmoji.TEST_TUBE.get())
+                            .withDescription(super.plugin.getBot().getLang().getMessage("select-option.undesirable.description"))));
+
+            defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.RELEASE_CHANNEL.toString());
+        }
 
         return StringSelectMenu.create("release-channel-selection")
                 .addOptions(options)
+                .setDisabled(disabled)
                 .setDefaultValues(defaultValue).build();
     }
 }

@@ -38,24 +38,36 @@ public class LinkSynchronizationSelector extends Selector {
 
     @Override
     public SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of("DiscordSRV",
-                                ConfigField.DISCORDSRV_SYNCHRONIZATION.toString())
-                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
-                        .withEmoji(MenuEmoji.ELECTRIC_PLUG.get()),
-                SelectOption.of("EssentialsX",
-                                ConfigField.ESSENTIALSX_SYNCHRONIZATION.toString())
-                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
-                        .withEmoji(MenuEmoji.ELECTRIC_PLUG.get())));
+        boolean disabled = false;
+        List<SelectOption> options = new ArrayList<>();
         List<String> defaultValues = new ArrayList<>();
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.DISCORDSRV_SYNCHRONIZATION.toString())) {
-            defaultValues.add(ConfigField.DISCORDSRV_SYNCHRONIZATION.toString());
+
+        if (super.plugin.areHooksAvailable()) {
+            options.addAll(Arrays.asList(SelectOption.of("DiscordSRV",
+                                    ConfigField.DISCORDSRV_SYNCHRONIZATION.toString())
+                            .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
+                            .withEmoji(MenuEmoji.ELECTRIC_PLUG.get()),
+                    SelectOption.of("EssentialsX",
+                                    ConfigField.ESSENTIALSX_SYNCHRONIZATION.toString())
+                            .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
+                            .withEmoji(MenuEmoji.ELECTRIC_PLUG.get())));
+            if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.DISCORDSRV_SYNCHRONIZATION.toString())) {
+                defaultValues.add(ConfigField.DISCORDSRV_SYNCHRONIZATION.toString());
+            }
+            if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.ESSENTIALSX_SYNCHRONIZATION.toString())) {
+                defaultValues.add(ConfigField.ESSENTIALSX_SYNCHRONIZATION.toString());
+            }
+        } else {
+            options.add(SelectOption.of("Unavailable", "unavailable")
+                    .withEmoji(MenuEmoji.X.get()));
+            defaultValues.add("unavailable");
+            disabled = true;
         }
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.ESSENTIALSX_SYNCHRONIZATION.toString())) {
-            defaultValues.add(ConfigField.ESSENTIALSX_SYNCHRONIZATION.toString());
-        }
+
         return StringSelectMenu.create("link-synchronization-selection")
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.link-synchronization.select-menu.placeholder"))
                 .addOptions(options)
+                .setDisabled(disabled)
                 .setRequiredRange(0, options.size())
                 .setDefaultValues(defaultValues).build();
     }
