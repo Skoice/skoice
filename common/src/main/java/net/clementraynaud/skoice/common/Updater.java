@@ -17,10 +17,9 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.spigot;
+package net.clementraynaud.skoice.common;
 
 import com.bugsnag.Severity;
-import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 
 import java.io.File;
@@ -53,17 +52,25 @@ public class Updater {
     private static final String LATEST_CHANNEL = "skoice-latest";
     private static final String BETA_CHANNEL = "skoice-beta";
 
-    private final SkoiceSpigot plugin;
+    private final Skoice plugin;
     private final String pluginPath;
     private String fullURL;
     private String downloadedVersion;
 
-    public Updater(SkoiceSpigot plugin, String pluginPath) {
+    public Updater(Skoice plugin, String pluginPath) {
         this.plugin = plugin;
         this.pluginPath = pluginPath;
     }
 
-    public void checkVersion() {
+    public void runUpdaterTaskTimer() {
+        this.plugin.getScheduler().runTaskTimer(
+                this::checkVersion,
+                Updater.BEFORE_VERSION_CHECKING,
+                Updater.BETWEEN_VERSION_CHECKING
+        );
+    }
+
+    private void checkVersion() {
         this.updateReleaseChannel();
         this.getVersion(version -> {
             if (version != null && !this.plugin.getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
@@ -79,14 +86,6 @@ public class Updater {
                 }
             }
         });
-    }
-
-    public void runUpdaterTaskTimer() {
-        this.plugin.getScheduler().runTaskTimer(
-                this::checkVersion,
-                Updater.BEFORE_VERSION_CHECKING,
-                Updater.BETWEEN_VERSION_CHECKING
-        );
     }
 
     private void updateReleaseChannel() {
@@ -122,7 +121,15 @@ public class Updater {
     }
 
     private synchronized void update(String version, String expectedHash) {
-        File updateFolder = this.plugin.getPlugin().getServer().getUpdateFolderFile();
+        File updateFolder = this.plugin.getUpdateFolderFile();
+        if (updateFolder == null || this.pluginPath == null) {
+            this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.warning.outdated-version",
+                    this.plugin.getVersion(),
+                    version,
+                    "https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861")
+            );
+            return;
+        }
         File tempUpdateFile = new File(updateFolder, "Skoice.jar.temp");
         File finalUpdateFile = new File(updateFolder, this.pluginPath.substring(this.pluginPath.lastIndexOf(File.separator) + 1));
 

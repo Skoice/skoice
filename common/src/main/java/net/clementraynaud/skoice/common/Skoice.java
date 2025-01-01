@@ -91,6 +91,8 @@ public abstract class Skoice {
         this.runBot();
         this.updateNetworksTask = new UpdateNetworksTask(this);
         this.setSkoiceCommand().init();
+        Updater updater = new Updater(this, this.getPluginFilePath());
+        updater.runUpdaterTaskTimer();
     }
 
     protected AnalyticManager createAnalyticManager() {
@@ -239,4 +241,10 @@ public abstract class Skoice {
     public abstract FullPlayer getFullPlayer(BasePlayer player);
 
     public abstract String getVersion();
+
+    public abstract File getUpdateFolderFile();
+
+    public abstract String getPluginFilePath();
+
+    public abstract boolean areHooksAvailable();
 }

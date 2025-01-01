@@ -80,8 +80,6 @@ public class SkoiceSpigot extends Skoice {
         SkoiceSpigot.adventure = BukkitAudiences.create(this.plugin);
         this.hookManager = new HookManager(this);
         this.hookManager.initialize();
-        Updater updater = new Updater(this, this.plugin.getFile().getAbsolutePath());
-        updater.runUpdaterTaskTimer();
     }
 
     @Override
@@ -156,6 +154,21 @@ public class SkoiceSpigot extends Skoice {
     @Override
     public String getVersion() {
         return this.plugin.getDescription().getVersion();
+    }
+
+    @Override
+    public File getUpdateFolderFile() {
+        return this.plugin.getServer().getUpdateFolderFile();
+    }
+
+    @Override
+    public String getPluginFilePath() {
+        return this.plugin.getFile().getAbsolutePath();
+    }
+
+    @Override
+    public boolean areHooksAvailable() {
+        return true;
     }
 
     @Override

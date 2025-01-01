@@ -91,6 +91,21 @@ public class SkoiceVelocity extends Skoice {
     }
 
     @Override
+    public File getUpdateFolderFile() {
+        return null;
+    }
+
+    @Override
+    public String getPluginFilePath() {
+        return null;
+    }
+
+    @Override
+    public boolean areHooksAvailable() {
+        return false;
+    }
+
+    @Override
     public SkoiceCommand setSkoiceCommand() {
         return new SkoiceCommandVelocity(this);
     }
