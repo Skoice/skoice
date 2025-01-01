@@ -21,6 +21,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -97,31 +98,29 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
     }
 
     private void runProxyTask() {
-        this.getServer().getScheduler().runTaskTimer(this, () -> {
-            this.getServer().getOnlinePlayers().parallelStream().forEach(player -> {
-                Scoreboard scoreboard = player.getScoreboard();
-                Team playerTeam = scoreboard.getEntryTeam(player.getName());
-                PlayerInfo info = new PlayerInfo(player.getUniqueId(),
-                        player.isDead(),
-                        SkoiceGameMode.valueOf(player.getGameMode().toString()),
-                        player.getWorld().getName(),
-                        new SkoiceLocation(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()),
-                        playerTeam == null ? null : playerTeam.getName(),
-                        this.getDescription().getVersion());
-                String json = JsonModel.toJson(info);
+        this.skoice.getScheduler().runTaskTimer(() -> this.getServer().getOnlinePlayers().parallelStream().forEach(player -> {
+            Scoreboard scoreboard = player.getScoreboard();
+            Team playerTeam = scoreboard.getEntryTeam(player.getName());
+            PlayerInfo info = new PlayerInfo(player.getUniqueId(),
+                    player.isDead(),
+                    SkoiceGameMode.valueOf(player.getGameMode().toString()),
+                    player.getWorld().getName(),
+                    new SkoiceLocation(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()),
+                    playerTeam == null ? null : playerTeam.getName(),
+                    this.getDescription().getVersion());
+            String json = JsonModel.toJson(info);
 
-                if (!json.equals(this.latestMessagesSent.get(player.getUniqueId()))) {
-                    this.latestMessagesSent.put(player.getUniqueId(), json);
-                    ByteArrayOutputStream b = new ByteArrayOutputStream();
-                    DataOutputStream out = new DataOutputStream(b);
-                    try {
-                        out.writeUTF(json);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    player.sendPluginMessage(this, SkoicePluginSpigot.CHANNEL, b.toByteArray());
+            if (!json.equals(this.latestMessagesSent.get(player.getUniqueId()))) {
+                this.latestMessagesSent.put(player.getUniqueId(), json);
+                ByteArrayOutputStream b = new ByteArrayOutputStream();
+                DataOutputStream out = new DataOutputStream(b);
+                try {
+                    out.writeUTF(json);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            });
-        }, 0L, 20L);
+                player.sendPluginMessage(this, SkoicePluginSpigot.CHANNEL, b.toByteArray());
+            }
+        }), Duration.ZERO, Duration.ofSeconds(1));
     }
 }

@@ -36,11 +36,6 @@ public class SkoiceCommandVelocity extends SkoiceCommand implements SimpleComman
     }
 
     @Override
-    public boolean hasPermission(Invocation invocation) {
-        return SimpleCommand.super.hasPermission(invocation);
-    }
-
-    @Override
     public void init() {
         CommandManager commandManager = this.plugin.getPlugin().getProxy().getCommandManager();
         commandManager.register(commandManager.metaBuilder("skoice")

@@ -321,9 +321,9 @@ public class Bot {
             if (this.status == BotStatus.NOT_CONNECTED) {
                 if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
                     boolean joinEvent = !sendIfPermissionMissing && !force;
-                    int delay = 0;
+                    Duration delay = Duration.ZERO;
                     if (joinEvent) {
-                        delay = 2000;
+                        delay = Duration.ofSeconds(2);
                     }
                     this.plugin.getScheduler().runTaskLaterAsynchronously(() -> player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.incomplete-configuration-operator-interactive",
                                     this.plugin.getLang().getComponentMessage("interaction.here")

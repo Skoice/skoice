@@ -15,7 +15,7 @@ public class SpigotGuildVoiceUpdateListener extends GuildVoiceUpdateListener {
 
     @Override
     protected void callPlayerProximityDisconnectEvent(String minecraftId) {
-        this.plugin.getPlugin().getServer().getScheduler().runTask(this.plugin.getPlugin(), () -> {
+        this.plugin.getScheduler().runTask(() -> {
             PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId);
             this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
         });

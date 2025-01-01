@@ -54,7 +54,7 @@ public class DiscordSRVHookImpl {
     }
 
     public void linkUserDiscordSRV(String minecraftId, String discordId) {
-        this.plugin.getPlugin().getServer().getScheduler().runTaskAsynchronously(this.plugin.getPlugin(), () -> {
+        this.plugin.getScheduler().runTaskAsynchronously(() -> {
             try {
                 DiscordSRV.getPlugin().getAccountLinkManager().link(discordId, UUID.fromString(minecraftId));
             } catch (Throwable ignored) {
@@ -63,7 +63,7 @@ public class DiscordSRVHookImpl {
     }
 
     public void unlinkUserDiscordSRV(String minecraftId) {
-        this.plugin.getPlugin().getServer().getScheduler().runTaskAsynchronously(this.plugin.getPlugin(), () -> {
+        this.plugin.getScheduler().runTaskAsynchronously(() -> {
             try {
                 DiscordSRV.getPlugin().getAccountLinkManager().unlink(UUID.fromString(minecraftId));
             } catch (Throwable ignored) {

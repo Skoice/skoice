@@ -35,13 +35,14 @@ import java.nio.file.StandardCopyOption;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
 public class Updater {
 
-    private static final long TICKS_BETWEEN_VERSION_CHECKING = 720000L;
-    private static final long TICKS_BEFORE_VERSION_CHECKING = 1200L;
+    private static final Duration BETWEEN_VERSION_CHECKING = Duration.ofHours(10);
+    private static final Duration BEFORE_VERSION_CHECKING = Duration.ofMinutes(1);
 
     private static final String UPDATER_URL = "https://clementraynaud.net/files";
 
@@ -81,11 +82,10 @@ public class Updater {
     }
 
     public void runUpdaterTaskTimer() {
-        this.plugin.getPlugin().getServer().getScheduler().runTaskTimer(
-                this.plugin.getPlugin(),
+        this.plugin.getScheduler().runTaskTimer(
                 this::checkVersion,
-                Updater.TICKS_BEFORE_VERSION_CHECKING,
-                Updater.TICKS_BETWEEN_VERSION_CHECKING
+                Updater.BEFORE_VERSION_CHECKING,
+                Updater.BETWEEN_VERSION_CHECKING
         );
     }
 
@@ -98,7 +98,7 @@ public class Updater {
     }
 
     private void getVersion(final Consumer<String> consumer) {
-        this.plugin.getPlugin().getServer().getScheduler().runTaskAsynchronously(this.plugin.getPlugin(), () -> {
+        this.plugin.getScheduler().runTaskAsynchronously(() -> {
             HttpURLConnection connection = null;
             try {
                 URL url = new URL(this.fullURL + Updater.VERSION_ENDPOINT);
