@@ -20,8 +20,6 @@
 package net.clementraynaud.skoice.common.storage;
 
 import net.clementraynaud.skoice.common.Skoice;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -59,7 +57,7 @@ public class YamlFile extends YamlConfiguration {
     }
 
     @Override
-    public void set(@NotNull String path, @Nullable Object value) {
+    public void set(String path, Object value) {
         super.set(path, value);
         this.save();
     }
