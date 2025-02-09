@@ -87,12 +87,12 @@ public class UpdateNetworksTask {
             this.mergeNetworks();
             this.manageMoves();
 
-            Set<Member> connectedMembers = new HashSet<>(mainVoiceChannel.getMembers());
-            connectedMembers.addAll(ProximityChannels.getInitialized().stream()
+            Set<Member> connectedMembers = ProximityChannels.getInitialized().stream()
                     .map(ProximityChannel::getChannel)
                     .filter(Objects::nonNull)
                     .flatMap(channel -> channel.getMembers().stream())
-                    .collect(Collectors.toSet()));
+                    .collect(Collectors.toCollection(HashSet::new));
+            connectedMembers.addAll(mainVoiceChannel.getMembers());
 
             for (Member member : connectedMembers) {
                 Network network = null;
@@ -130,7 +130,8 @@ public class UpdateNetworksTask {
             Networks.clean();
 
             int possibleUsers = (int) connectedMembers.stream()
-                    .map(member -> LinkedPlayer.fromMemberId(member.getId()))
+                    .map(Member::getId)
+                    .map(LinkedPlayer::fromMemberId)
                     .filter(Objects::nonNull)
                     .count();
             ProximityChannels.clean(possibleUsers);
