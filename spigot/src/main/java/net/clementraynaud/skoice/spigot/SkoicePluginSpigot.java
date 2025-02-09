@@ -140,6 +140,6 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
                 }
                 player.sendPluginMessage(this, SkoicePluginSpigot.CHANNEL, b.toByteArray());
             }
-        }), Duration.ZERO, Duration.ofSeconds(1));
+        }), Duration.ZERO, Duration.ofMillis(500));
     }
 }
