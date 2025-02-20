@@ -31,45 +31,45 @@ import java.util.UUID;
 
 public class SpigotLinksYamlFile extends LinksYamlFile {
 
-    private final SkoiceSpigot plugin;
+    private final SkoiceSpigot spigotPlugin;
 
-    public SpigotLinksYamlFile(SkoiceSpigot plugin) {
-        super(plugin);
-        this.plugin = plugin;
+    public SpigotLinksYamlFile(SkoiceSpigot spigotPlugin) {
+        super(spigotPlugin);
+        this.spigotPlugin = spigotPlugin;
     }
 
     @Override
     protected void additionalLinkProcessing(String minecraftId, String discordId) {
-        this.plugin.getHookManager().linkUser(minecraftId, discordId);
-        this.plugin.getScheduler().runTask(() -> {
+        this.spigotPlugin.getHookManager().linkUser(minecraftId, discordId);
+        this.spigotPlugin.getScheduler().runTask(() -> {
             AccountLinkEvent event = new AccountLinkEvent(minecraftId, discordId);
-            this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
+            this.spigotPlugin.getPlugin().getServer().getPluginManager().callEvent(event);
         });
     }
 
     @Override
     protected void additionalUnlinkProcessing(String minecraftId) {
-        this.plugin.getHookManager().unlinkUser(minecraftId);
-        this.plugin.getScheduler().runTask(() -> {
+        this.spigotPlugin.getHookManager().unlinkUser(minecraftId);
+        this.spigotPlugin.getScheduler().runTask(() -> {
             AccountUnlinkEvent event = new AccountUnlinkEvent(minecraftId);
-            this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
+            this.spigotPlugin.getPlugin().getServer().getPluginManager().callEvent(event);
         });
     }
 
     @Override
     protected void callPlayerProximityConnectEvent(String minecraftId, String memberId) {
-        this.plugin.getScheduler().runTask(() -> {
+        this.spigotPlugin.getScheduler().runTask(() -> {
             PlayerProximityConnectEvent event = new PlayerProximityConnectEvent(minecraftId, memberId);
-            this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
+            this.spigotPlugin.getPlugin().getServer().getPluginManager().callEvent(event);
         });
     }
 
     @Override
     protected void callPlayerProximityDisconnectEventIfConnected(String minecraftId) {
         if (SkoiceSpigot.api().isProximityConnected(UUID.fromString(minecraftId))) {
-            this.plugin.getScheduler().runTask(() -> {
+            this.spigotPlugin.getScheduler().runTask(() -> {
                 PlayerProximityDisconnectEvent event = new PlayerProximityDisconnectEvent(minecraftId);
-                this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
+                this.spigotPlugin.getPlugin().getServer().getPluginManager().callEvent(event);
             });
         }
     }

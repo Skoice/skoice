@@ -68,6 +68,7 @@ public class YamlFile extends YamlConfiguration {
         }
     }
 
+    @Override
     public void remove(String path) {
         this.set(path, null);
     }

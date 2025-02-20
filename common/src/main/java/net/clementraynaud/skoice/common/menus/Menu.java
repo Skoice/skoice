@@ -240,8 +240,7 @@ public class Menu {
 
     private List<Menu> getChildren() {
         return this.plugin.getBot().getMenuFactory().getMenus().values().stream()
-                .filter(menu -> menu.parent != null)
-                .filter(menu -> menu.parent.equals(this.menuId))
+                .filter(menu -> menu.parent != null && menu.parent.equals(this.menuId))
                 .collect(Collectors.toList());
     }
 

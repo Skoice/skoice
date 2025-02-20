@@ -41,7 +41,7 @@ public enum LangInfo {
     TR("Türkçe", "U+1F1F9U+1F1F7");
 
     private static final Set<String> langList;
-    private static final String joinedLangList;
+    private static final String JOINED_LANG_LIST;
 
     static {
         langList = Stream.of(LangInfo.values())
@@ -49,7 +49,7 @@ public enum LangInfo {
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
 
-        joinedLangList = "<" + String.join("/", LangInfo.langList) + ">";
+        JOINED_LANG_LIST = "<" + String.join("/", LangInfo.langList) + ">";
     }
 
     private final String fullName;
@@ -65,7 +65,7 @@ public enum LangInfo {
     }
 
     public static String getJoinedList() {
-        return LangInfo.joinedLangList;
+        return LangInfo.JOINED_LANG_LIST;
     }
 
     public String getFullName() {

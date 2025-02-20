@@ -36,7 +36,7 @@ public abstract class SkoiceCommand {
     private final Skoice plugin;
     private final ArgumentFactory argumentFactory;
 
-    public SkoiceCommand(Skoice plugin) {
+    protected SkoiceCommand(Skoice plugin) {
         this.plugin = plugin;
         this.argumentFactory = new ArgumentFactory();
     }

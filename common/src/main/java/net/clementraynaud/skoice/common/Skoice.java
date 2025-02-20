@@ -61,7 +61,7 @@ public abstract class Skoice {
     private Bot bot;
     private UpdateNetworksTask updateNetworksTask;
 
-    public Skoice(SkoiceLogger logger, SkoiceTaskScheduler scheduler) {
+    protected Skoice(SkoiceLogger logger, SkoiceTaskScheduler scheduler) {
         this.logger = logger;
         this.scheduler = scheduler;
     }

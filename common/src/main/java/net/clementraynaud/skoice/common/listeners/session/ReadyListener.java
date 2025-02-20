@@ -39,6 +39,7 @@ import java.util.function.Consumer;
 
 public class ReadyListener extends ListenerAdapter {
 
+    public static final String DISCORD_APPLICATIONS_PANEL = "https://discord.com/developers/applications/";
     private final Skoice plugin;
 
     public ReadyListener(Skoice plugin) {
@@ -106,7 +107,7 @@ public class ReadyListener extends ListenerAdapter {
         String botId = this.plugin.getBot().getJDA().getSelfUser().getApplicationId();
         this.plugin.getBot().getJDA().shutdown();
         this.plugin.getListenerManager().update();
-        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
+        this.plugin.getLogger().warning(this.plugin.getLang().getMessage("logger.error.public-bot", DISCORD_APPLICATIONS_PANEL + botId + "/bot"));
 
         if (tokenManager == null) {
             return;
@@ -114,12 +115,12 @@ public class ReadyListener extends ListenerAdapter {
 
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
             tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot-interactive", this.plugin.getLang().getComponentMessage("interaction.this-page")
-                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", "https://discord.com/developers/applications/" + botId + "/bot")))
-                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://discord.com/developers/applications/" + botId + "/bot"))
+                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", DISCORD_APPLICATIONS_PANEL + botId + "/bot")))
+                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl(DISCORD_APPLICATIONS_PANEL + botId + "/bot"))
                     )
             );
         } else {
-            tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot", "https://discord.com/developers/applications/" + botId + "/bot"));
+            tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.public-bot", DISCORD_APPLICATIONS_PANEL + botId + "/bot"));
         }
     }
 

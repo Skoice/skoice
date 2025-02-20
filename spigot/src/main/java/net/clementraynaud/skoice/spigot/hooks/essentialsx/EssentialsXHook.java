@@ -45,9 +45,9 @@ public class EssentialsXHook {
             this.plugin.getPlugin().getServer().getServicesManager().load(DiscordLinkService.class).hashCode();
             this.plugin.getPlugin().getServer().getServicesManager().load(DiscordService.class).hashCode();
             ((EssentialsDiscordLink) this.plugin.getPlugin().getServer().getPluginManager().getPlugin("EssentialsDiscordLink")).getAccountStorage().hashCode();
-            EssentialsXHookImpl essentialsXHookImpl = new EssentialsXHookImpl(this.plugin);
-            essentialsXHookImpl.initialize();
-            this.essentialsXHookImpl = essentialsXHookImpl;
+            EssentialsXHookImpl newEssentialsXHookImpl = new EssentialsXHookImpl(this.plugin);
+            newEssentialsXHookImpl.initialize();
+            this.essentialsXHookImpl = newEssentialsXHookImpl;
         } catch (Throwable ignored) {
         }
     }

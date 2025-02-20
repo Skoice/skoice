@@ -52,7 +52,7 @@ public abstract class ListenerManager {
     private final GuildVoiceUpdateListener guildVoiceUpdateListener;
     private final GenericChannelListener genericChannelListener;
 
-    public ListenerManager(Skoice plugin) {
+    protected ListenerManager(Skoice plugin) {
         this.plugin = plugin;
         this.playerQuitHandler = new PlayerQuitHandler();
         this.playerJoinHandler = this.createPlayerJoinHandler(plugin);

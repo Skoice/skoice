@@ -86,7 +86,7 @@ public class SkoiceVelocity extends Skoice {
     public String getVersion() {
         return this.plugin.getProxy()
                 .getPluginManager()
-                .getPlugin("skoice").flatMap(plugin -> plugin.getDescription().getVersion())
+                .getPlugin("skoice").flatMap(skoice -> skoice.getDescription().getVersion())
                 .orElse("");
     }
 
@@ -114,6 +114,7 @@ public class SkoiceVelocity extends Skoice {
         return this.plugin;
     }
 
+    @Override
     public VelocityListenerManager getListenerManager() {
         return (VelocityListenerManager) super.getListenerManager();
     }

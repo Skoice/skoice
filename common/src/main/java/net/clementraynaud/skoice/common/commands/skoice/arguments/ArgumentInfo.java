@@ -32,7 +32,7 @@ public enum ArgumentInfo {
     UNLINK(false, false, false);
 
     private static final Set<String> consoleAllowedList;
-    private static final String joinedConsoleAllowedList;
+    private static final String JOINED_CONSOLE_ALLOWED_LIST;
 
     static {
         consoleAllowedList = Stream.of(ArgumentInfo.values())
@@ -41,7 +41,7 @@ public enum ArgumentInfo {
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
 
-        joinedConsoleAllowedList = ArgumentInfo.consoleAllowedList.size() == 1
+        JOINED_CONSOLE_ALLOWED_LIST = ArgumentInfo.consoleAllowedList.size() == 1
                 ? String.join("/", ArgumentInfo.consoleAllowedList)
                 : "<" + String.join("/", ArgumentInfo.consoleAllowedList) + ">";
     }
@@ -79,7 +79,7 @@ public enum ArgumentInfo {
     }
 
     public static String getJoinedConsoleAllowedList() {
-        return ArgumentInfo.joinedConsoleAllowedList;
+        return ArgumentInfo.JOINED_CONSOLE_ALLOWED_LIST;
     }
 
     public boolean isAllowedInConsole() {

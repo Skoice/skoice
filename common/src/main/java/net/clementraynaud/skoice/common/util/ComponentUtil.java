@@ -24,6 +24,9 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public final class ComponentUtil {
 
+    private ComponentUtil() {
+    }
+
     public static Component translateAlternateColorCodes(String message) {
         return LegacyComponentSerializer.legacyAmpersand().deserialize(message);
     }

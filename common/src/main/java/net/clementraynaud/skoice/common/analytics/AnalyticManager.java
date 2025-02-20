@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 
 import java.util.EnumSet;
+import java.util.Set;
 
 public class AnalyticManager {
 
@@ -46,7 +47,7 @@ public class AnalyticManager {
     protected void initializeAdditionalAnalytics() {
     }
 
-    public EnumSet<ConfigField> getSharedConfigFields() {
+    public Set<ConfigField> getSharedConfigFields() {
         return EnumSet.of(
                 ConfigField.LANG,
                 ConfigField.LOGIN_NOTIFICATION,
@@ -64,7 +65,7 @@ public class AnalyticManager {
         );
     }
 
-    public EnumSet<ConfigField> getSharedIntConfigFields() {
+    public Set<ConfigField> getSharedIntConfigFields() {
         EnumSet<ConfigField> fields = EnumSet.noneOf(ConfigField.class);
         if (this.plugin.getConfigYamlFile().contains(ConfigField.HORIZONTAL_RADIUS.toString())) {
             fields.add(ConfigField.HORIZONTAL_RADIUS);

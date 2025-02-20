@@ -34,23 +34,23 @@ import org.bukkit.event.HandlerList;
 public class SpigotListenerManager extends ListenerManager {
 
     private final PlayerQuitListener playerQuitListener;
-    private final SkoiceSpigot plugin;
+    private final SkoiceSpigot spigotPlugin;
 
-    public SpigotListenerManager(SkoiceSpigot plugin) {
-        super(plugin);
-        this.plugin = plugin;
+    public SpigotListenerManager(SkoiceSpigot spigotPlugin) {
+        super(spigotPlugin);
+        this.spigotPlugin = spigotPlugin;
         this.playerQuitListener = new PlayerQuitListener(this);
     }
 
     @Override
     public void registerPermanentMinecraftListeners() {
-        this.plugin.getPlugin().getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this.plugin.getPlugin());
-        this.plugin.getPlugin().getServer().getPluginManager().registerEvents(new ServerCommandListener(this), this.plugin.getPlugin());
+        this.spigotPlugin.getPlugin().getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this.spigotPlugin.getPlugin());
+        this.spigotPlugin.getPlugin().getServer().getPluginManager().registerEvents(new ServerCommandListener(this), this.spigotPlugin.getPlugin());
     }
 
     @Override
     public void registerMinecraftListeners() {
-        this.plugin.getPlugin().getServer().getPluginManager().registerEvents(this.playerQuitListener, this.plugin.getPlugin());
+        this.spigotPlugin.getPlugin().getServer().getPluginManager().registerEvents(this.playerQuitListener, this.spigotPlugin.getPlugin());
     }
 
     @Override
@@ -68,7 +68,7 @@ public class SpigotListenerManager extends ListenerManager {
         return new SpigotPlayerJoinHandler((SkoiceSpigot) skoice);
     }
 
-    public SkoiceSpigot getPlugin() {
-        return this.plugin;
+    public SkoiceSpigot getSpigotPlugin() {
+        return this.spigotPlugin;
     }
 }
