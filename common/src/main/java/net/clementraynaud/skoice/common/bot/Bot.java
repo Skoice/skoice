@@ -121,6 +121,7 @@ public class Bot {
             try {
                 this.jda = JDABuilder.createDefault(new String(finalBase64TokenBytes))
                         .addEventListeners(new ReadyListener(this.plugin))
+                        .setMaxReconnectDelay(150)
                         .build();
             } catch (InvalidTokenException | IllegalArgumentException | ErrorResponseException e) {
                 this.acknowledgeStatus();
