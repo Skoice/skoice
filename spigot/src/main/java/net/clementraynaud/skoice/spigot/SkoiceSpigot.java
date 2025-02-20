@@ -77,6 +77,7 @@ public class SkoiceSpigot extends Skoice {
         }
         super.start();
         SkoiceSpigot.api = new SkoiceAPI(this);
+        this.plugin.getServer().getPluginManager().registerEvents(SkoiceSpigot.api, this.plugin);
         SkoiceSpigot.adventure = BukkitAudiences.create(this.plugin);
         this.hookManager = new HookManager(this);
         this.hookManager.initialize();
