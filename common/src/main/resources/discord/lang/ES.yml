@@ -177,7 +177,7 @@ field:
     title: "Modo de corta distancia"
     description: "Elige este modo si planeas jugar modos de juego que solo requieren un área limitada."
   customized:
-    title: "Customized"
+    title: "Personalizado"
     description: "Ajustar las distancias según tus preferencias personales."
   production-channel:
     title: "Production Channel"

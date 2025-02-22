@@ -177,7 +177,7 @@ field:
     title: "Krátký dosah"
     description: "Choose this mode if you plan to play game modes that only require a limited area."
   customized:
-    title: "Customized"
+    title: "Přizpůsobený"
     description: "Set distances according to your personal preferences."
   production-channel:
     title: "Production Channel"
