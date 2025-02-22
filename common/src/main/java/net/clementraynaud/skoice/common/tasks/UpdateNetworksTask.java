@@ -55,10 +55,14 @@ public class UpdateNetworksTask {
     }
 
     public void start() {
+        Duration period = Duration.ofMillis(500);
+        if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.LUDICROUS.toString())){
+            period = Duration.ofMillis(100);
+        }
         this.taskId = this.plugin.getScheduler().runTaskTimerAsynchronously(
                 this::run,
                 Duration.ZERO,
-                Duration.ofMillis(500)
+                period
         );
     }
 

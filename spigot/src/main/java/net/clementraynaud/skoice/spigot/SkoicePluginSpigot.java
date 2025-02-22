@@ -118,6 +118,10 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
     }
 
     private void runProxyTask() {
+        Duration period = Duration.ofMillis(500);
+        if (skoice.getConfigYamlFile().getBoolean(ConfigField.LUDICROUS.toString())){
+            period = Duration.ofMillis(100);
+        }
         this.skoice.getScheduler().runTaskTimer(() -> this.getServer().getOnlinePlayers().parallelStream().forEach(player -> {
             Scoreboard scoreboard = player.getScoreboard();
             Team playerTeam = scoreboard.getEntryTeam(player.getName());
@@ -141,6 +145,6 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
                 }
                 player.sendPluginMessage(this, SkoicePluginSpigot.CHANNEL, b.toByteArray());
             }
-        }), Duration.ZERO, Duration.ofMillis(500));
+        }), Duration.ZERO, period);
     }
 }

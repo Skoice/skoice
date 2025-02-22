@@ -40,7 +40,8 @@ public enum ConfigField {
     ESSENTIALSX_SYNCHRONIZATION,
     RELEASE_CHANNEL,
     UNREVIEWED_SETTINGS,
-    SESSION_REPORTED;
+    SESSION_REPORTED,
+    LUDICROUS;
 
     private final String lowerCaseName;
     private final String camelCaseName;

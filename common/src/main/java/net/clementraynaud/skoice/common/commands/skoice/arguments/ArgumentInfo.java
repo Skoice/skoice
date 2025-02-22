@@ -29,7 +29,8 @@ public enum ArgumentInfo {
     TOKEN(true, true, false),
     LANGUAGE(true, true, false),
     LINK(false, false, false),
-    UNLINK(false, false, false);
+    UNLINK(false, false, false),
+    LUDICROUS(true, true, true);
 
     private static final Set<String> consoleAllowedList;
     private static final String JOINED_CONSOLE_ALLOWED_LIST;
