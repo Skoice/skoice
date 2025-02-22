@@ -6,7 +6,7 @@ Skoice allows players on a Minecraft server to communicate with each other by vo
 
 The defining feature of our plugin is that it works with Discord. Therefore, users will not have to download any additional software in order to use the proximity voice chat.
 
-Skoice is currently available in the following languages: English, Danish, German, Spanish, French, Italian, Japanese, Norwegian, Polish, Portuguese, Russian and Turkish.
+Skoice is currently available in the following languages: English, Czech, Danish, German, Spanish, French, Italian, Japanese, Norwegian, Polish, Portuguese, Russian and Turkish.
 You can help us translate Skoice by [joining Crowdin](https://crowdin.com/project/skoice).
 
 ## Download

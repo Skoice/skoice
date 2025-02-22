@@ -1,0 +1,100 @@
+#Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#This file is part of Skoice.
+#Skoice is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#Skoice is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
+logger:
+  info:
+    plugin-enabled: "Plugin povolen."
+    plugin-disabled: "Plugin zakázán."
+    plugin-updated: "Skoice byl aktualizován na nejnovější verzi. Prosím restartujte váš Minecraft server pro použití změn."
+    skoice-3: "You are now using Skoice 3. To get your bot working properly, follow our migration guide here: %s."
+    configuration-complete: "Skoice je nyní nakonfigurováno. Zadejte \"/link\" na vašem Discord serveru pro propojení vašeho Discord účtu s Minecraftem. Hráči musí propojit své účty, aby mohli používat hlasový chat."
+    bot-connecting: "Váš bot se pokouší připojit."
+    bot-connected: "Váš bot je připojen."
+  warning:
+    outdated-version: "You are using an outdated version (%s). Download the latest version (%s) here: %s."
+    no-token: "Token není nastaven. Připojte se k Minecraft serveru pro nastavení Skoice."
+    no-guild: "Váš bot není na Discord serveru. Otevře tento odkaz a pozvěte jej: %s."
+    multiple-guilds: "Váš bot je na více Discord serverech. Napiš \"/configure\" na vašem Discord serveru a vyber jej."
+    two-factor-authentication: "Two-factor authentication required. Enable two-factor authentication on the bot owner's account or disable \"Require 2FA for moderator actions\" in server settings."
+    no-voice-channel: "Hlasový kanál není nastaven. Zadejte \"/configure\" na tvém Discord serveru pro nastavení Skoice."
+    no-radius: "Rádius není nastaven. Pro nastavení Skoice zadejte na serveru Discord příkaz \"/configure\"."
+    old-bot: "You are using an old bot. Make sure it is configured as indicated and you only use it for Skoice."
+    shared-bot: "It seems like your bot is running multiple programs. However, it must be dedicated to Skoice in order to work properly. You can create a new one by following the instructions on this page: %s. Once you have retrieved its token, type \"/skoice token\" followed by the token."
+  error:
+    missing-permission: "Neudělil jsi botovi oprávnění \"Administrátor\" na tvém Dicord serveru. Otevři tento odkaz a přidej jej: %s."
+    bot-could-not-connect: "Váš bot se nemohl připojit. Chcete-li aktualizovat token, napište \"/skoice token\" a nový token."
+    invalid-bot: "Your bot is not configured correctly. Join your Minecraft server to create a new one."
+    public-bot: "Your bot is not configured correctly. Run the command again once you have unselected \"Public Bot\" and clicked \"Save Changes\" on this page: %s."
+  exception:
+    unexpected-value: "Neočekávaná hodnota: %s"
+chat:
+  configuration:
+    bot-creation-interactive:
+      - " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on "
+      - "&7.\n&8• &7Once you have retrieved its token, insert it "
+      - "&7.\n \nIf you cannot interact with this message, type \"&e/skoice tooltips&7\".\n "
+    bot-creation: " \n%s Configuration: &fBot Creation\n \n&8• &7Skoice needs a Discord bot to work. To create one, follow the instructions on this page: &b%s&7.\n&8• &7Once you have retrieved its token, type \"&e/skoice token&7\" followed by the token.\n "
+    no-token: "%s You have &cnot provided a token&7. To use this command, type \"&e/skoice token&7\" followed by the token."
+    no-guild-interactive:
+      - "%s Your bot is &cnot on a Discord server&7. Open "
+      - " &7to invite it. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+    no-guild: "%s Your bot is &cnot on a Discord server&7. Open this page to invite it: &b%s&7."
+    bot-connecting: "%s Your bot is &aattempting to connect&7."
+    bot-connected: "%s Your bot is &anow connected&7."
+    bot-connected-incomplete-configuration-discord: "%s Your bot is &anow connected&7. Type \"&e/configure&7\" on your Discord server to set it up."
+    old-bot: "%s You are &cusing an old bot&7. Make sure it is configured as indicated and you only use it for Skoice."
+    bot-already-connected: "%s You have &aupdated the token&7. Restart your Minecraft server to connect your bot."
+    bot-could-not-connect: "%s Your bot &ccould not connect&7. Try again with a valid token."
+    invalid-bot: "%s Your bot is &cnot configured correctly&7. Please follow the instructions again to create a new one."
+    public-bot-interactive:
+      - "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on "
+      - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+    public-bot: "%s Your bot &cis not configured correctly&7. Run the command again once you have unselected \"&ePublic Bot&7\" and clicked \"&eSave Changes&7\" on this page: &b%s&7."
+    incomplete-configuration: "%s Skoice is &cnot configured correctly&7. Please contact an administrator of the server."
+    incomplete-configuration-operator-interactive:
+      - "%s Skoice is &cnot configured correctly&7. Click "
+      - " &7to set it up. You can change the language by clicking "
+      - "&7. If you cannot interact with this message, type \"&e/skoice tooltips&7\"."
+    incomplete-configuration-operator: "%s Skoice is &cnot configured correctly&7. Type \"&e/skoice configure&7\" to set it up. You can change the language with \"&e/skoice language&7\" followed by the language."
+    incomplete-configuration-operator-discord: "%s Skoice is &cnot configured correctly&7. Type \"&e/configure&7\" on your Discord server to set it up."
+    already-configured: "%s Skoice is &calready configured&7. Type \"&e/configure&7\" on your Discord server to update its settings."
+    tooltips-enabled: "%s You have &aenabled interactive messages&7."
+    tooltips-disabled: "%s You have &adisabled interactive messages&7. If you were trying to configure Skoice, type \"&e/skoice configure&7\"."
+    no-language: "%s You have &cnot provided a language&7. To use this command, type \"&e/skoice language %s&7\"."
+    invalid-language: "%s You have &cnot provided a valid language&7. To use this command, type \"&e/skoice language %s&7\"."
+    language-already-set: "%s The language is &calready set &7to \"&e%s&7\"."
+    language-updated: "%s You have &aupdated the language &7to \"&e%s&7\"."
+  player:
+    no-code: "%s You have &cnot provided a code&7. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to receive one."
+    invalid-code: "%s You have &cnot provided a valid code&7. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to receive one."
+    account-linked: "%s You have &alinked your Minecraft account &7to Discord."
+    account-unlinked: "%s You have &aunlinked your Minecraft account &7from Discord."
+    account-not-linked: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat."
+    account-not-linked-remind-once: "%s You have &cnot linked your Minecraft account &7to Discord. Type \"&e/link&7\" on the Discord server \"&e%s&7\" to link it and use the proximity voice chat. You will not receive this notification again."
+    account-already-linked: "%s You have &calready linked your Minecraft account &7to Discord. Type \"&e/skoice unlink&7\" to unlink it."
+    connected: "%s You are &anow connected &7to the proximity voice chat. To disable Discord sounds and have a more immersive experience, you can enable \"&eStreamer Mode&7\" in Discord settings."
+    not-connected: "%s You are &cnot connected &7to the proximity voice chat. Join the voice channel \"&e%s&7\" on the Discord server \"&e%s&7\" to use it."
+    disconnected: "%s You are &cnow disconnected &7from the proximity voice chat."
+  error:
+    no-parameter: "%s You have &cnot provided an argument&7. To use this command, type \"&e/skoice %s&7\"."
+    invalid-parameter: "%s You have &cnot provided a valid argument&7. To use this command, type \"&e/skoice %s&7\"."
+    illegal-executor: "%s This command is &conly executable &7by players."
+    missing-permission: "%s This command is &conly executable &7by operators."
+action-bar:
+  connecting-alert: "&a⚠️ &7Jsi &av blízkosti je hráča&7. Pozdrav!"
+  disconnecting-alert: "&c⚠ &7You are &cmoving away &7from near players."
+interaction:
+  here: "zde"
+  this-page: "tato stránka"
+  execute: "Provést"
+  shortcut: "&8☀ &bZkratka: &7%s"
+  link: "&8☀️ &bOtevřít v prohlížeči: &7%s"

@@ -28,6 +28,7 @@ import java.util.stream.Stream;
 public enum LangInfo {
 
     EN("English", "U+1F1ECU+1F1E7"),
+    CS("Čeština", "U+1F1E8U+1F1FF"),
     DA("Dansk", "U+1F1E9U+1F1F0"),
     DE("Deutsch", "U+1F1E9U+1F1EA"),
     ES("Español", "U+1F1EAU+1F1F8"),

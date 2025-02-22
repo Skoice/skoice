@@ -28,7 +28,7 @@ logger:
     no-voice-channel: "Salon vocal non défini. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
     no-radius: "Rayons non définis. Tapez \"/configure\" sur votre serveur Discord pour configurer Skoice."
     old-bot: "Vous utilisez un ancien bot. Assurez-vous qu'il est configuré comme indiqué et que vous ne l'utilisez que pour Skoice."
-    shared-bot: "It seems like your bot is running multiple programs. However, it must be dedicated to Skoice in order to work properly. You can create a new one by following the instructions on this page: %s. Once you have retrieved its token, type \"/skoice token\" followed by the token."
+    shared-bot: "Il semble que votre bot exécute plusieurs programmes. Cependant, il doit être dédié à Skoice pour fonctionner correctement. Vous pouvez en créer un nouveau en suivant les instructions sur cette page : %s. Une fois son token récupéré, tapez \"/skoice token\" suivi du token."
   error:
     missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : %s."
     bot-could-not-connect: "Votre bot n'a pas pu se connecter. Pour mettre à jour le token, tapez \"/skoice token\" suivi du nouveau token."
@@ -42,7 +42,7 @@ chat:
       - " %s Configuration : &fCréation du bot\n\n&8• &7Skoice fonctionne avec un bot Discord. Pour en créer un, suivez les instructions sur "
       - "&7.\n&8• &7Une fois son token récupéré, entrez-le "
       - "&7.\n \nSi vous ne pouvez pas interagir avec ce message, tapez \"&e/skoice tooltips&7\". "
-    bot-creation: " %s Configuration : &fCréation du bot\n\n&8• &7Skoice fonctionne avec un bot Discord. Pour en créer un, suivez les instructions sur cette page : &b%s&7.\n&8• &7Une fois son token récupéré, tapez \"&e/skoice token&7\" suivi par le token. "
+    bot-creation: " %s Configuration : &fCréation du bot\n\n&8• &7Skoice fonctionne avec un bot Discord. Pour en créer un, suivez les instructions sur cette page : &b%s&7.\n&8• &7Une fois son token récupéré, tapez \"&e/skoice token&7\" suivi du token. "
     no-token: "%s Vous n'avez &cpas fourni de token&7. Pour utiliser cette commande, tapez \"&e/skoice token&7\" suivi du token."
     no-guild-interactive:
       - "%s Votre bot n'est &cpas sur un serveur Discord&7. Ouvrez "
@@ -51,7 +51,7 @@ chat:
     bot-connecting: "%s Votre bot &atente de se connecter&7."
     bot-connected: "%s Votre bot est &adésormais connecté&7."
     bot-connected-incomplete-configuration-discord: "%s Votre bot est &adésormais connecté&7. Tapez \"&e/configure&7\" sur votre serveur Discord pour le configurer."
-    old-bot: "%s You are &cusing an old bot&7. Make sure it is configured as indicated and you only use it for Skoice."
+    old-bot: "%s Vous &cutilisez un ancien bot&7. Assurez-vous qu'il est configuré comme indiqué et que vous ne l'utilisez que pour Skoice."
     bot-already-connected: "%s Vous avez &amis à jour le token&7. Redémarrez votre serveur Minecraft pour connecter votre bot."
     bot-could-not-connect: "%s Votre bot &cn'a pas pu se connecter&7. Essayez de nouveau avec un token valide."
     invalid-bot: "%s Votre bot n'est &cpas configuré correctement&7. Veuillez suivre à nouveau les instructions pour en créer un nouveau."
