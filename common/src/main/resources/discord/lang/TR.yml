@@ -31,7 +31,7 @@ menu:
     description: "Discord sunucun bot sahibi olan hesabın iki aşamalı doğrulamayı açmasını gerektiriyor. 2AD'yi açın veya bu zorunluluğu sunucu ayarlarından `Moderasyon > Güvenlik Kurulumu > Moderatör eylemleri için İki Aşamalı Doğrulama gerektir` yolunu izleyerek kapatın."
   permissions:
     title: "İzinler"
-    description: "Botunuzun düzgün çalışması için Discord sunucunuzda \"Yönetici\" iznine ihtiyacı var. To do this, add a role with `Administrator` permission to the bot."
+    description: "Botun doğru düzgün çalışması için `Yönetici` iznine sahip olması gerekiyor. Bunun için `Yönetici` iznine sahip bir rolü bota verebilirsin."
   voice-chat:
     title: "Sesli sohbet"
   range:
@@ -46,7 +46,7 @@ menu:
           label: "Kısa-Mesafe Modu"
         customized:
           label: "Özelleştirimiş"
-        description: "Horizontal Radius: %s blocks — Vertical Radius: %s blocks"
+        description: "Yatay Menzil: %s blok — Dikey Menzil: %s blok"
   active-worlds:
     title: "Aktif Dünyalar"
     description: "Skoice'in aktif olacağı dünyaları seçin."
@@ -64,11 +64,11 @@ menu:
   separated-teams:
     title: "Takımları Ayır"
     shortened-description: "Takımların birbirini duyup duyamayacağını seçin."
-    description: "Choose whether or not teams should be isolated. When this option is enabled, each team created with the `/team` command in Minecraft or with plugins that manage the built-in team system will have a dedicated proximity voice chat. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
+    description: "Takımların izole olup olamaması gerektiğini seç. Bu seçenek açık olduğu zaman Minecraft'ın `/team` komutu veya bir eklenti ile oluşturulmuş bütün takımlar kendilerine özel proximity chat kanalına sahip olur. Minecraft 1.12 veya daha eski bir sürümde isen `/team` değil `/scoreboard teams` komutunu kullanmalısın."
   chaining:
     title: "Zincirleme"
     shortened-description: "Zincirlemenin maksimum ne kadar uzağa gidebileceğini seçin."
-    description: "Select the additional distance allowed when players are chaining. Chaining usually happens when a player is between two other players who should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."
+    description: "Zincirlenen kişilerin arasındaki ekstra izin verilen mesafeyi ayarla. Birbirini duyamaması gereken iki kişi arasında başka biri olduğu zaman zincirleme yaşanır ve üç kişide birbirini duyabilir."
     select-menu:
       disabled:
         label: "Kapalı - Zincirleme yok"
@@ -82,7 +82,7 @@ menu:
     title: "Discord İntegrasyonu"
   voice-channel:
     title: "Ana Ses Kanalı"
-    description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Please note that players will automatically be muted in this channel."
+    description: "Oyuncuların proximity chat'i kullanmak için girmesi gereken ses kanalını seçin. Bu kanal bir kategori içinde olmalı. Bu kanaldaki herkesin otomatik olarak susturulacağını unutmayın."
     shortened-description: "Oyuncuların proximity chat'i kullanmak için girmesi gereken ses kanalını seçin."
     select-menu:
       placeholder: "Lütfen bir ses kanalını seçin."
@@ -126,7 +126,7 @@ menu:
   link-synchronization:
     title: "Senkronize Linkler"
     shortened-description: "Skoice ile harici eklentilerin senkronize olup olmayacağını ayarlayın."
-    description: "Toggle the synchronization of external plugins with Skoice. When players link their accounts via Skoice or a selected plugin, real-time synchronization occurs on both sides. Updating this option requires you to restart your Minecraft server for it to take effect."
+    description: "Diğer eklentilerin Skoice ile senkronize olup olmayacağını seçin. Oyuncular hesaplarını Skoice veya başka bir eklenti ile bağladıklarında gerçek zamanlı senkronize iki tarafta da yaşanır. Bu ayarı güncelledikten sonra Minecraft sunucunu yeniden başlatmalısın."
     select-menu:
       placeholder: "Lütfenen istenen eklentileri seçin."
   release-channel:
@@ -160,7 +160,7 @@ field:
     description: "Yapılandırmayı bitirip Skoice'i kullanmaya başlamak için %s yazın veya aşağıdaki butona tıklayın."
   incomplete-configuration-alternative-server-manager:
     title: "Tamamlanmamış Yapılandırma"
-    description: "You have deleted the main voice channel. Type %s to complete the configuration and use Skoice."
+    description: "Ana ses kanalını sildin. Ayarlamayı tamamlamak ve Skoice'i kullanmaya başlamak için %s yaz."
   download:
     title: "İndir"
     description: "[Eklentiyi indir](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) ve Minecraft sunucuna kur."
