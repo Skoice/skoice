@@ -41,8 +41,8 @@ public class ConfigureArgument extends Argument {
             if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
                 this.plugin.getScheduler().runTaskAsynchronously(() -> {
                     player.sendMessage(this.plugin.getLang().getMessage("chat.configuration.bot-creation-interactive", this.plugin.getLang().getComponentMessage("interaction.this-page")
-                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", GUIDE_URL)))
-                                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl(GUIDE_URL)),
+                                            .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.link", ConfigureArgument.GUIDE_URL)))
+                                            .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl(ConfigureArgument.GUIDE_URL)),
                                     this.plugin.getLang().getComponentMessage("interaction.here")
                                             .hoverEvent(HoverEvent.showText(this.plugin.getLang().getComponentMessage("interaction.shortcut", "/skoice token")))
                                             .clickEvent(net.kyori.adventure.text.event.ClickEvent.suggestCommand("/skoice token "))
@@ -51,7 +51,7 @@ public class ConfigureArgument extends Argument {
                 });
             } else {
                 player.sendMessage(super.plugin.getLang().getMessage("chat.configuration.bot-creation",
-                        GUIDE_URL)
+                        ConfigureArgument.GUIDE_URL)
                 );
             }
         } else {

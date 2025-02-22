@@ -30,6 +30,6 @@ public class ProxyInfo extends JsonModel {
     }
 
     public String getPluginVersion() {
-        return pluginVersion;
+        return this.pluginVersion;
     }
 }
