@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -17,10 +17,10 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.spigot;
+package net.clementraynaud.skoice.common;
 
 import com.bugsnag.Severity;
-import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.menus.selectors.ReleaseChannelSelector;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 
 import java.io.File;
@@ -54,30 +54,14 @@ public class Updater {
     private static final String LATEST_CHANNEL = "skoice-latest";
     private static final String BETA_CHANNEL = "skoice-beta";
 
-    private final SkoiceSpigot plugin;
+    private final Skoice plugin;
     private final String pluginPath;
     private String fullURL;
     private String downloadedVersion;
 
-    public Updater(SkoiceSpigot plugin, String pluginPath) {
+    public Updater(Skoice plugin, String pluginPath) {
         this.plugin = plugin;
         this.pluginPath = pluginPath;
-    }
-
-    public void checkVersion() {
-        this.updateReleaseChannel();
-        this.getVersion(version -> {
-            if (version != null && !this.plugin.getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
-                String expectedHash = this.fetchHashFromServer();
-                this.plugin.getLang().getFormatter().set("current-version", this.plugin.getVersion());
-                this.plugin.getLang().getFormatter().set("latest-version", version);
-                if (expectedHash != null) {
-                    this.update(version, expectedHash);
-                } else {
-                    this.plugin.log(Level.WARNING, "logger.warning.outdated-version");
-                }
-            }
-        });
     }
 
     public void runUpdaterTaskTimer() {
@@ -88,9 +72,27 @@ public class Updater {
         );
     }
 
+    private void checkVersion() {
+        this.updateReleaseChannel();
+        this.getVersion(version -> {
+            if (version != null && !this.plugin.getVersion().equals(version) && !version.equals(this.downloadedVersion)) {
+                String expectedHash = this.fetchHashFromServer();
+                if (expectedHash != null) {
+                    this.update(version, expectedHash);
+                } else {
+                    this.logOutdatedVersion(version);
+                }
+            }
+        });
+    }
+
+    private void logOutdatedVersion(String version) {
+        this.plugin.log(Level.WARNING, "logger.warning.outdated-version");
+    }
+
     private void updateReleaseChannel() {
         String releaseChannel = Updater.LATEST_CHANNEL;
-        if ("beta".equals(this.plugin.getConfigYamlFile().getString(ConfigField.RELEASE_CHANNEL.toString()))) {
+        if (this.isBetaChannel()) {
             releaseChannel = Updater.BETA_CHANNEL;
         }
         this.fullURL = String.format("%s/%s", Updater.UPDATER_URL, releaseChannel);
@@ -121,7 +123,15 @@ public class Updater {
     }
 
     private synchronized void update(String version, String expectedHash) {
-        File updateFolder = this.plugin.getPlugin().getServer().getUpdateFolderFile();
+        File updateFolder = this.plugin.getUpdateFolderFile();
+        if (updateFolder == null || this.pluginPath == null) {
+            if (this.isBetaChannel()) {
+                this.plugin.getConfigYamlFile().set(ConfigField.RELEASE_CHANNEL.toString(), ReleaseChannelSelector.PRODUCTION);
+            } else {
+                this.logOutdatedVersion(version);
+            }
+            return;
+        }
         File tempUpdateFile = new File(updateFolder, "Skoice.jar.temp");
         File finalUpdateFile = new File(updateFolder, this.pluginPath.substring(this.pluginPath.lastIndexOf(File.separator) + 1));
 
@@ -141,7 +151,7 @@ public class Updater {
             if (this.verifyFileIntegrity(tempUpdateFile, expectedHash)) {
                 Files.copy(tempUpdateFile.toPath(), finalUpdateFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 this.downloadedVersion = version;
-                this.plugin.log(Level.INFO, "logger.info.plugin-updated");
+                this.plugin.getLogger().info(this.plugin.getLang().getMessage("logger.info.plugin-updated"));
                 try {
                     Files.delete(tempUpdateFile.toPath());
                 } catch (IOException ignored) {
@@ -150,7 +160,7 @@ public class Updater {
                 throw new IOException("File integrity check failed");
             }
         } catch (IOException | NoSuchAlgorithmException exception) {
-            this.plugin.log(Level.WARNING, "logger.warning.outdated-version");
+            this.logOutdatedVersion(version);
             try {
                 Files.delete(tempUpdateFile.toPath());
             } catch (IOException ignored) {
@@ -161,6 +171,10 @@ public class Updater {
                 connection.disconnect();
             }
         }
+    }
+
+    private boolean isBetaChannel() {
+        return ReleaseChannelSelector.BETA.equals(this.plugin.getConfigYamlFile().getString(ConfigField.RELEASE_CHANNEL.toString()));
     }
 
     private String fetchHashFromServer() {
