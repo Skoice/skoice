@@ -29,12 +29,17 @@ import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
+
 
 public class UpdateVoiceStateTask {
 
     private static final Set<String> mutedUsers = ConcurrentHashMap.newKeySet();
+    private static final Map<String, ReentrantLock> memberLocks = new HashMap<>();
 
     private final Skoice plugin;
     private final Member member;
@@ -50,6 +55,12 @@ public class UpdateVoiceStateTask {
         return UpdateVoiceStateTask.mutedUsers;
     }
 
+    private static ReentrantLock getLockForMember(Member member) {
+        synchronized (UpdateVoiceStateTask.memberLocks) {
+            return UpdateVoiceStateTask.memberLocks.computeIfAbsent(member.getId(), k -> new ReentrantLock());
+        }
+    }
+
     public void run() {
         if (this.member.getVoiceState() == null) {
             return;
@@ -61,30 +72,37 @@ public class UpdateVoiceStateTask {
         }
 
         boolean isMainVoiceChannel = this.channel.getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()));
-        if (isMainVoiceChannel) {
-            if (!this.member.getVoiceState().isGuildMuted()
-                    && this.member.hasPermission(this.channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
-                    && !this.member.getUser().isBot()
-                    && this.plugin.getBot().isAdministrator()) {
-                this.member.mute(true).queue(success -> {
-                    UpdateVoiceStateTask.mutedUsers.add(this.member.getId());
-                    this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD,
-                            new ArrayList<>(UpdateVoiceStateTask.mutedUsers));
-                }, new ErrorHandler().ignore(ErrorResponse.USER_NOT_CONNECTED));
+        ReentrantLock memberLock = UpdateVoiceStateTask.getLockForMember(this.member);
+
+        memberLock.lock();
+        try {
+            if (isMainVoiceChannel) {
+                if (!this.member.getVoiceState().isGuildMuted()
+                        && this.member.hasPermission(this.channel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
+                        && !this.member.getUser().isBot()
+                        && this.plugin.getBot().isAdministrator()) {
+                    this.member.mute(true).queue(success -> {
+                        UpdateVoiceStateTask.mutedUsers.add(this.member.getId());
+                        this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD,
+                                new ArrayList<>(UpdateVoiceStateTask.mutedUsers));
+                    }, new ErrorHandler().ignore(ErrorResponse.USER_NOT_CONNECTED));
+                }
+            } else {
+                VoiceChannel afkChannel = this.plugin.getBot().getGuild().getAfkChannel();
+                if (afkChannel != null && this.channel.getId().equals(afkChannel.getId())) {
+                    return;
+                }
+                if (UpdateVoiceStateTask.mutedUsers.contains(this.member.getId())
+                        || this.member.hasPermission(Permission.VOICE_MUTE_OTHERS)) {
+                    this.member.mute(false).queue(success -> {
+                        UpdateVoiceStateTask.mutedUsers.remove(this.member.getId());
+                        this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD,
+                                new ArrayList<>(UpdateVoiceStateTask.mutedUsers));
+                    }, new ErrorHandler().ignore(ErrorResponse.USER_NOT_CONNECTED));
+                }
             }
-        } else {
-            VoiceChannel afkChannel = this.plugin.getBot().getGuild().getAfkChannel();
-            if (afkChannel != null && this.channel.getId().equals(afkChannel.getId())) {
-                return;
-            }
-            if (UpdateVoiceStateTask.mutedUsers.contains(this.member.getId())
-                    || this.member.hasPermission(Permission.VOICE_MUTE_OTHERS)) {
-                this.member.mute(false).queue(success -> {
-                    UpdateVoiceStateTask.mutedUsers.remove(this.member.getId());
-                    this.plugin.getTempYamlFile().set(TempYamlFile.MUTED_USERS_ID_FIELD,
-                            new ArrayList<>(UpdateVoiceStateTask.mutedUsers));
-                }, new ErrorHandler().ignore(ErrorResponse.USER_NOT_CONNECTED));
-            }
+        } finally {
+            memberLock.unlock();
         }
     }
 }
