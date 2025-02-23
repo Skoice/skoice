@@ -6,7 +6,7 @@
     <parent>
         <groupId>net.clementraynaud</groupId>
         <artifactId>skoice</artifactId>
-        <version>3.2.3</version>
+        <version>3.2.4</version>
     </parent>
 
     <artifactId>skoice.velocity</artifactId>
@@ -87,6 +87,13 @@
             </resource>
         </resources>
     </build>
+
+    <repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>

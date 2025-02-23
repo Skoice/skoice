@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -239,8 +239,7 @@ public class Menu {
 
     private List<Menu> getChildren() {
         return this.plugin.getBot().getMenuFactory().getMenus().values().stream()
-                .filter(menu -> menu.parent != null)
-                .filter(menu -> menu.parent.equals(this.menuId))
+                .filter(menu -> menu.parent != null && menu.parent.equals(this.menuId))
                 .collect(Collectors.toList());
     }
 

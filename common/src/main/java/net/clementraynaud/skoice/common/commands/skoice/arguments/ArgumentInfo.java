@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -29,10 +29,11 @@ public enum ArgumentInfo {
     TOKEN(true, true, false),
     LANGUAGE(true, true, false),
     LINK(false, false, false),
-    UNLINK(false, false, false);
+    UNLINK(false, false, false),
+    LUDICROUS(true, true, true);
 
     private static final Set<String> consoleAllowedList;
-    private static final String joinedConsoleAllowedList;
+    private static final String JOINED_CONSOLE_ALLOWED_LIST;
 
     static {
         consoleAllowedList = Stream.of(ArgumentInfo.values())
@@ -41,7 +42,7 @@ public enum ArgumentInfo {
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
 
-        joinedConsoleAllowedList = ArgumentInfo.consoleAllowedList.size() == 1
+        JOINED_CONSOLE_ALLOWED_LIST = ArgumentInfo.consoleAllowedList.size() == 1
                 ? String.join("/", ArgumentInfo.consoleAllowedList)
                 : "<" + String.join("/", ArgumentInfo.consoleAllowedList) + ">";
     }
@@ -79,7 +80,7 @@ public enum ArgumentInfo {
     }
 
     public static String getJoinedConsoleAllowedList() {
-        return ArgumentInfo.joinedConsoleAllowedList;
+        return ArgumentInfo.JOINED_CONSOLE_ALLOWED_LIST;
     }
 
     public boolean isAllowedInConsole() {

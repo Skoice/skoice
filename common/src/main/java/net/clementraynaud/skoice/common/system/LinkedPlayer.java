@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -87,10 +87,7 @@ public final class LinkedPlayer {
 
     public Set<LinkedPlayer> getPlayersWithinRange() {
         return LinkedPlayer.onlineLinkedPlayers.stream()
-                .filter(p -> p.isInMainVoiceChannel() || p.isInAnyProximityChannel())
-                .filter(p -> !p.equals(this))
-                .filter(LinkedPlayer::isStateEligible)
-                .filter(p -> p.isCloseEnoughToPlayer(this, false))
+                .filter(p -> (p.isInMainVoiceChannel() || p.isInAnyProximityChannel()) && !p.equals(this) && p.isStateEligible() && p.isCloseEnoughToPlayer(this, false))
                 .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
     }
 
@@ -114,8 +111,8 @@ public final class LinkedPlayer {
 
     public boolean isInAnyProximityChannel() {
         return ProximityChannels.getInitialized().stream()
-                .flatMap(proximityChannel -> proximityChannel.getChannel().getMembers().stream())
-                .anyMatch(member -> member.getId().equals(this.discordId));
+                .anyMatch(proximityChannel -> proximityChannel.getChannel().getMembers().stream()
+                        .anyMatch(member -> member.getId().equals(this.discordId)));
     }
 
     public boolean isCloseEnoughToPlayer(LinkedPlayer linkedPlayer, boolean falloff) {

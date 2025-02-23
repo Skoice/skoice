@@ -20,23 +20,26 @@
 package net.clementraynaud.skoice.common.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.bot.BotStatus;
+import net.clementraynaud.skoice.common.lang.LangInfo;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 
-public class TooltipsArgument extends Argument {
+public class LudicrousArgument extends Argument {
 
-    public TooltipsArgument(Skoice plugin, SkoiceCommandSender sender) {
-        super(plugin, sender, ArgumentInfo.TOOLTIPS.isAllowedInConsole(), ArgumentInfo.TOOLTIPS.isPermissionRequired(), ArgumentInfo.TOOLTIPS.isHidden());
+    public LudicrousArgument(Skoice plugin, SkoiceCommandSender sender) {
+        super(plugin, sender, ArgumentInfo.LUDICROUS.isAllowedInConsole(), ArgumentInfo.LUDICROUS.isPermissionRequired(), ArgumentInfo.LUDICROUS.isHidden());
     }
 
     @Override
     public void run() {
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
-            super.plugin.getConfigYamlFile().set(ConfigField.TOOLTIPS.toString(), false);
-            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.tooltips-disabled"));
+        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.LUDICROUS.toString())) {
+            super.plugin.getConfigYamlFile().set(ConfigField.LUDICROUS.toString(), false);
+            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.ludicrous-disabled"));
         } else {
-            super.plugin.getConfigYamlFile().set(ConfigField.TOOLTIPS.toString(), true);
-            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.tooltips-enabled"));
+            super.plugin.getConfigYamlFile().set(ConfigField.LUDICROUS.toString(), true);
+            this.sender.sendMessage(super.plugin.getLang().getMessage("chat.configuration.ludicrous-enabled"));
         }
     }
+
 }

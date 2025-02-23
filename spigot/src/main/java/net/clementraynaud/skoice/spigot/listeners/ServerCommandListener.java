@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -41,11 +41,11 @@ public class ServerCommandListener implements Listener {
         if (command.startsWith("op ")) {
             String playerName = command.substring(3);
             if (!playerName.isEmpty()) {
-                Player player = this.listenerManager.getPlugin().getPlugin().getServer().getPlayerExact(playerName);
+                Player player = this.listenerManager.getSpigotPlugin().getPlugin().getServer().getPlayerExact(playerName);
                 if (player != null
                         && !player.isOp()
-                        && this.listenerManager.getPlugin().getBot().getStatus() != BotStatus.READY) {
-                    this.listenerManager.getPlugin().getBot().sendIncompleteConfigurationAlert(new SpigotBasePlayer(player), false, true);
+                        && this.listenerManager.getSpigotPlugin().getBot().getStatus() != BotStatus.READY) {
+                    this.listenerManager.getSpigotPlugin().getBot().sendIncompleteConfigurationAlert(new SpigotBasePlayer(player), false, true);
                 }
             }
         }

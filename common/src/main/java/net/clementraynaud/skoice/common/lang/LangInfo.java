@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -28,6 +28,7 @@ import java.util.stream.Stream;
 public enum LangInfo {
 
     EN("English", "U+1F1ECU+1F1E7"),
+    CS("Čeština", "U+1F1E8U+1F1FF"),
     DA("Dansk", "U+1F1E9U+1F1F0"),
     DE("Deutsch", "U+1F1E9U+1F1EA"),
     ES("Español", "U+1F1EAU+1F1F8"),
@@ -41,7 +42,7 @@ public enum LangInfo {
     TR("Türkçe", "U+1F1F9U+1F1F7");
 
     private static final Set<String> langList;
-    private static final String joinedLangList;
+    private static final String JOINED_LANG_LIST;
 
     static {
         langList = Stream.of(LangInfo.values())
@@ -49,7 +50,7 @@ public enum LangInfo {
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
 
-        joinedLangList = "<" + String.join("/", LangInfo.langList) + ">";
+        JOINED_LANG_LIST = "<" + String.join("/", LangInfo.langList) + ">";
     }
 
     private final String fullName;
@@ -65,7 +66,7 @@ public enum LangInfo {
     }
 
     public static String getJoinedList() {
-        return LangInfo.joinedLangList;
+        return LangInfo.JOINED_LANG_LIST;
     }
 
     public String getFullName() {

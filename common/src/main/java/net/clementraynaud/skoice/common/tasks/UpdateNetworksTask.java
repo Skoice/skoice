@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -56,10 +56,14 @@ public class UpdateNetworksTask {
     }
 
     public void start() {
+        Duration period = Duration.ofMillis(500);
+        if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.LUDICROUS.toString())){
+            period = Duration.ofMillis(100);
+        }
         this.taskId = this.plugin.getScheduler().runTaskTimerAsynchronously(
                 this::run,
                 Duration.ZERO,
-                Duration.ofMillis(500)
+                period
         );
     }
 
@@ -88,12 +92,12 @@ public class UpdateNetworksTask {
             this.mergeNetworks();
             this.manageMoves();
 
-            Set<Member> connectedMembers = new HashSet<>(mainVoiceChannel.getMembers());
-            connectedMembers.addAll(ProximityChannels.getInitialized().stream()
+            Set<Member> connectedMembers = ProximityChannels.getInitialized().stream()
                     .map(ProximityChannel::getChannel)
                     .filter(Objects::nonNull)
                     .flatMap(channel -> channel.getMembers().stream())
-                    .collect(Collectors.toSet()));
+                    .collect(Collectors.toCollection(HashSet::new));
+            connectedMembers.addAll(mainVoiceChannel.getMembers());
 
             for (Member member : connectedMembers) {
                 Network network = null;
@@ -147,7 +151,8 @@ public class UpdateNetworksTask {
             Networks.clean();
 
             int possibleUsers = (int) connectedMembers.stream()
-                    .map(member -> LinkedPlayer.fromMemberId(member.getId()))
+                    .map(Member::getId)
+                    .map(LinkedPlayer::fromMemberId)
                     .filter(Objects::nonNull)
                     .count();
             ProximityChannels.clean(possibleUsers);

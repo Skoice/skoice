@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -38,6 +38,8 @@ public class ArgumentFactory {
                 return new LinkArgument(plugin, sender, arg);
             case UNLINK:
                 return new UnlinkArgument(plugin, sender);
+            case LUDICROUS:
+                return new LudicrousArgument(plugin, sender);
             default:
                 return null;
         }

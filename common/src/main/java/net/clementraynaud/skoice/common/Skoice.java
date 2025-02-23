@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -38,12 +38,12 @@ import net.clementraynaud.skoice.common.system.ListenerManager;
 import net.clementraynaud.skoice.common.tasks.UpdateNetworksTask;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -62,7 +62,7 @@ public abstract class Skoice {
     private Bot bot;
     private UpdateNetworksTask updateNetworksTask;
 
-    public Skoice(SkoiceLogger logger, SkoiceTaskScheduler scheduler) {
+    protected Skoice(SkoiceLogger logger, SkoiceTaskScheduler scheduler) {
         this.logger = logger;
         this.scheduler = scheduler;
     }
@@ -92,6 +92,8 @@ public abstract class Skoice {
         this.runBot();
         this.updateNetworksTask = new UpdateNetworksTask(this);
         this.setSkoiceCommand().init();
+        Updater updater = new Updater(this, this.getPluginFilePath());
+        updater.runUpdaterTaskTimer();
     }
 
     protected AnalyticManager createAnalyticManager() {
@@ -125,7 +127,7 @@ public abstract class Skoice {
         this.logger.info(this.lang.getMessage("logger.info.plugin-disabled"));
     }
 
-    public InputStream getResource(String filename) {
+    private InputStream getResource(String filename) {
         if (filename == null) {
             throw new IllegalArgumentException("Filename cannot be null");
         }
@@ -146,8 +148,8 @@ public abstract class Skoice {
         }
     }
 
-    public void saveResource(String resourcePath, boolean replace) {
-        if (resourcePath == null || "".equals(resourcePath)) {
+    private void saveResource(String resourcePath, boolean replace) {
+        if (resourcePath == null || resourcePath.isEmpty()) {
             throw new IllegalArgumentException("ResourcePath cannot be null or empty");
         }
 
@@ -159,7 +161,7 @@ public abstract class Skoice {
 
         File outFile = new File(this.getDataFolder(), resourcePath);
         int lastIndex = resourcePath.lastIndexOf('/');
-        File outDir = new File(this.getDataFolder(), resourcePath.substring(0, lastIndex >= 0 ? lastIndex : 0));
+        File outDir = new File(this.getDataFolder(), resourcePath.substring(0, Math.max(lastIndex, 0)));
 
         if (!outDir.exists()) {
             outDir.mkdirs();
@@ -167,7 +169,7 @@ public abstract class Skoice {
 
         try {
             if (!outFile.exists() || replace) {
-                OutputStream out = new FileOutputStream(outFile);
+                OutputStream out = Files.newOutputStream(outFile.toPath());
                 byte[] buf = new byte[1024];
                 int len;
                 while ((len = in.read(buf)) > 0) {
@@ -175,8 +177,6 @@ public abstract class Skoice {
                 }
                 out.close();
                 in.close();
-            } else {
-                this.logger.warning("Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
             }
         } catch (IOException ex) {
             this.logger.severe("Could not save " + outFile.getName() + " to " + outFile);
@@ -244,4 +244,10 @@ public abstract class Skoice {
     public abstract FullPlayer getFullPlayer(BasePlayer player);
 
     public abstract String getVersion();
+
+    public abstract File getUpdateFolderFile();
+
+    public abstract String getPluginFilePath();
+
+    public abstract boolean areHooksAvailable();
 }

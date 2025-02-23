@@ -1,3 +1,22 @@
+/*
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ *
+ * This file is part of Skoice.
+ *
+ * Skoice is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Skoice is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package net.clementraynaud.skoice.spigot;
 
 import net.clementraynaud.skoice.common.model.JsonModel;
@@ -29,12 +48,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListener, Listener {
 
     private static final String CHANNEL = "skoice:main";
-    private static boolean PROXY_MODE = false;
+    private static boolean proxyMode = false;
     private final Map<UUID, String> latestMessagesSent = new ConcurrentHashMap<>();
     private SkoiceSpigot skoice;
 
     public static boolean isProxyMode() {
-        return SkoicePluginSpigot.PROXY_MODE;
+        return SkoicePluginSpigot.proxyMode;
     }
 
     @Override
@@ -47,6 +66,7 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
         this.skoice.start();
     }
 
+    @Override
     public File getFile() {
         return super.getFile();
     }
@@ -58,7 +78,7 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-        if (!SkoicePluginSpigot.CHANNEL.equals(channel) || SkoicePluginSpigot.PROXY_MODE) {
+        if (!SkoicePluginSpigot.CHANNEL.equals(channel) || SkoicePluginSpigot.proxyMode) {
             return;
         }
 
@@ -77,16 +97,16 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
 
     @EventHandler
     public void onSystemReady(SystemReadyEvent event) {
-        if (SkoicePluginSpigot.PROXY_MODE) {
+        if (SkoicePluginSpigot.proxyMode) {
             this.disableStandaloneSkoice();
         }
     }
 
     private void enableProxyMode() {
-        if (SkoicePluginSpigot.PROXY_MODE) {
+        if (SkoicePluginSpigot.proxyMode) {
             return;
         }
-        SkoicePluginSpigot.PROXY_MODE = true;
+        SkoicePluginSpigot.proxyMode = true;
         this.runProxyTask();
         this.disableStandaloneSkoice();
         this.getLogger().info("Proxy mode enabled.");
@@ -98,6 +118,10 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
     }
 
     private void runProxyTask() {
+        Duration period = Duration.ofMillis(500);
+        if (skoice.getConfigYamlFile().getBoolean(ConfigField.LUDICROUS.toString())){
+            period = Duration.ofMillis(100);
+        }
         this.skoice.getScheduler().runTaskTimer(() -> this.getServer().getOnlinePlayers().parallelStream().forEach(player -> {
             Scoreboard scoreboard = player.getScoreboard();
             Team playerTeam = scoreboard.getEntryTeam(player.getName());
@@ -121,6 +145,6 @@ public class SkoicePluginSpigot extends JavaPlugin implements PluginMessageListe
                 }
                 player.sendPluginMessage(this, SkoicePluginSpigot.CHANNEL, b.toByteArray());
             }
-        }), Duration.ZERO, Duration.ofSeconds(1));
+        }), Duration.ZERO, period);
     }
 }

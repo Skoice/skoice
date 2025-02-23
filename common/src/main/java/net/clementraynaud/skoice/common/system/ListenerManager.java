@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -54,7 +54,7 @@ public abstract class ListenerManager {
     private final GuildVoiceUpdateListener guildVoiceUpdateListener;
     private final GenericChannelListener genericChannelListener;
 
-    public ListenerManager(Skoice plugin) {
+    protected ListenerManager(Skoice plugin) {
         this.plugin = plugin;
         this.playerQuitHandler = new PlayerQuitHandler();
         this.playerJoinHandler = this.createPlayerJoinHandler(plugin);

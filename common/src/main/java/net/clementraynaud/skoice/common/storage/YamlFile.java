@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -20,8 +20,6 @@
 package net.clementraynaud.skoice.common.storage;
 
 import net.clementraynaud.skoice.common.Skoice;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -59,7 +57,7 @@ public class YamlFile extends YamlConfiguration {
     }
 
     @Override
-    public void set(@NotNull String path, @Nullable Object value) {
+    public void set(String path, Object value) {
         super.set(path, value);
         this.save();
     }
@@ -70,6 +68,7 @@ public class YamlFile extends YamlConfiguration {
         }
     }
 
+    @Override
     public void remove(String path) {
         this.set(path, null);
     }

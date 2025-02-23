@@ -6,7 +6,7 @@
     <parent>
         <groupId>net.clementraynaud</groupId>
         <artifactId>skoice</artifactId>
-        <version>3.2.3</version>
+        <version>3.2.4</version>
     </parent>
 
     <artifactId>skoice.spigot</artifactId>
@@ -117,6 +117,10 @@
     </build>
 
     <repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
         <repository>
             <id>essentialsx</id>
             <url>https://repo.essentialsx.net/releases/</url>

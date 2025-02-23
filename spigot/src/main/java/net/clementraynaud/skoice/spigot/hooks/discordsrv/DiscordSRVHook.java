@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -41,9 +41,9 @@ public class DiscordSRVHook {
         }
         try {
             DiscordSRV.api.hashCode();
-            DiscordSRVHookImpl discordSRVHookImpl = new DiscordSRVHookImpl(this.plugin);
-            discordSRVHookImpl.initialize();
-            this.discordSRVHookImpl = discordSRVHookImpl;
+            DiscordSRVHookImpl newDiscordSRVHookImpl = new DiscordSRVHookImpl(this.plugin);
+            newDiscordSRVHookImpl.initialize();
+            this.discordSRVHookImpl = newDiscordSRVHookImpl;
         } catch (Throwable ignored) {
         }
     }

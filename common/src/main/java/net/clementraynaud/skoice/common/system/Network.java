@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -52,20 +52,14 @@ public class Network {
         if (!player.isStateEligible()) {
             return false;
         }
-        return this.players.stream()
-                .filter(LinkedPlayer::isStateEligible)
-                .filter(p -> p.isCloseEnoughToPlayer(player, false))
-                .anyMatch(p -> !p.equals(player));
+        return this.players.stream().anyMatch(p -> p.isStateEligible() && p.isCloseEnoughToPlayer(player, false) && !p.equals(player));
     }
 
     public boolean canPlayerStayConnected(LinkedPlayer player) {
         if (!player.isStateEligible()) {
             return false;
         }
-        return this.players.stream()
-                .filter(LinkedPlayer::isStateEligible)
-                .filter(p -> p.isCloseEnoughToPlayer(player, true))
-                .anyMatch(p -> !p.equals(player));
+        return this.players.stream().anyMatch(p -> p.isStateEligible() && p.isCloseEnoughToPlayer(player, true) && !p.equals(player));
     }
 
     public void splitIfSpread() {

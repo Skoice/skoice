@@ -1,5 +1,5 @@
 /*
- * Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
  *
  * This file is part of Skoice.
  *
@@ -37,7 +37,7 @@ public abstract class SkoiceCommand {
     private final Skoice plugin;
     private final ArgumentFactory argumentFactory;
 
-    public SkoiceCommand(Skoice plugin) {
+    protected SkoiceCommand(Skoice plugin) {
         this.plugin = plugin;
         this.argumentFactory = new ArgumentFactory();
     }

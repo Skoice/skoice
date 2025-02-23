@@ -1,3 +1,22 @@
+/*
+ * Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ *
+ * This file is part of Skoice.
+ *
+ * Skoice is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Skoice is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package net.clementraynaud.skoice.spigot;
 
 import net.clementraynaud.skoice.common.Skoice;
@@ -59,11 +78,10 @@ public class SkoiceSpigot extends Skoice {
         }
         super.start();
         SkoiceSpigot.api = new SkoiceAPI(this);
+        this.plugin.getServer().getPluginManager().registerEvents(SkoiceSpigot.api, this.plugin);
         SkoiceSpigot.adventure = BukkitAudiences.create(this.plugin);
         this.hookManager = new HookManager(this);
         this.hookManager.initialize();
-        Updater updater = new Updater(this, this.plugin.getFile().getAbsolutePath());
-        updater.runUpdaterTaskTimer();
     }
 
     @Override
@@ -138,6 +156,21 @@ public class SkoiceSpigot extends Skoice {
     @Override
     public String getVersion() {
         return this.plugin.getDescription().getVersion();
+    }
+
+    @Override
+    public File getUpdateFolderFile() {
+        return this.plugin.getServer().getUpdateFolderFile();
+    }
+
+    @Override
+    public String getPluginFilePath() {
+        return this.plugin.getFile().getAbsolutePath();
+    }
+
+    @Override
+    public boolean areHooksAvailable() {
+        return true;
     }
 
     @Override
