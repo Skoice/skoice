@@ -11,34 +11,34 @@
 #You should have received a copy of the GNU General Public License
 #along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 command-description:
-  configure: "Konfigurieren Sie Skoice."
+  configure: "Konfiguriere Skoice."
   link: "Verbinde dein Discord-Konto mit Minecraft."
-  unlink: "Entkopple deinen Discord-Account von Minecraft."
-  invite: "Holen Sie sich den Sprachchat im Nahbereich auf Ihren Server."
+  unlink: "Entkopple dein Discord-Konto von Minecraft."
+  invite: "Hole den Sprachchat im Nahbereich auf deinen Server."
 menu:
   invite-footer: "Du willst Skoice auf deinem Server nutzen? Gib \"/invite\" ein!"
   review-footer: "Hast du Spaß mit Skoice? Bewerte uns auf SpigotMC!"
-  contributors-footer: "Skoice • carlodrift, Lucas_Cdry und andere Beitragende"
+  contributors-footer: "Skoice • carlodrift, Lucas_Cdry und weitere Mitwirkende"
   configuration:
     title: "Konfiguration"
   server:
     title: "Server"
-    description: "Damit Ihr Bot richtig funktioniert, darf er nicht auf mehreren Discord-Servern vorhanden sein. Wählen Sie den Server aus, auf dem der Sprachchat im Nahbereich aktiv sein soll. Ihr Bot wird die anderen Server automatisch verlassen."
+    description: "Damit dein Bot richtig funktioniert, darf er nicht auf mehreren Discord-Servern vorhanden sein. Wähle den Server aus, auf dem der Sprachchat im Nahbereich aktiv sein soll. Dein Bot wird die anderen Server automatisch verlassen."
     select-menu:
-      placeholder: "Bitte wählen Sie einen Server aus."
+      placeholder: "Bitte wähle einen Server aus."
   two-factor-authentication:
     title: "Zwei-Faktor-Authentifizierung"
-    description: "Your Discord server requires the bot owner's account to have two-factor authentication enabled. Set it up or disable this requirement in server settings by following this path: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
+    description: "Dein Discord-Server erfordert, dass der Bot-Besitzer die Zwei-Faktor-Authentifizierung aktiviert hat. Richte sie ein oder deaktiviere diese Anforderung in den Servereinstellungen über folgenden Pfad: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
   permissions:
     title: "Berechtigungen"
-    description: "Um richtig zu funktionieren, muss dein Bot die Berechtigung `Administrator` auf deinem Discord-Server haben. To do this, add a role with `Administrator` permission to the bot."
+    description: "Um richtig zu funktionieren, muss dein Bot die Berechtigung `Administrator` auf deinem Discord-Server haben. Füge dazu dem Bot eine Rolle mit der Berechtigung `Administrator` hinzu."
   voice-chat:
     title: "Sprachchat"
   range:
     title: "Reichweite"
-    description: "Passen Sie den Bereich des Näherungs-Sprech-Chats an."
+    description: "Passe den Bereich des Sprachchats im Nahbereich an."
     select-menu:
-      placeholder: "Bitte wähle eine Distanz aus."
+      placeholder: "Bitte wähle eine Reichweite aus."
       select-option:
         long-range-mode:
           label: "Langstrecken-Modus"
@@ -56,51 +56,51 @@ menu:
     title: "Einbezogene Spieler"
     description: "Wähle aus, welche Arten von Spielern in den abstandsbasierten Sprachchat einbezogen werden."
     select-menu:
-      placeholder: "Bitte wähle die beabsichtigte Art von Spielern aus."
+      placeholder: "Bitte wähle die gewünschten Spielertypen aus."
       players-on-death-screen-included:
-        label: "Spieler in der Todesnachricht"
+        label: "Spieler auf dem Todesbildschirm"
       spectators-included:
         label: "Zuschauer"
   separated-teams:
     title: "Getrennte Teams"
     shortened-description: "Lege fest, ob Teams isoliert werden sollen oder nicht."
-    description: "Wähle, ob Teams isoliert werden sollen oder nicht. Wenn diese Option aktiviert ist, wird jedes Team, das mit dem `/team` Befehl in Minecraft erstellt wurde, oder mit Plugins, die das eingebaute Teamsystem verwalten, einen dedizierten Sprachchat in der Nähe haben. Wenn auf deinem Server Minecraft 1.12 oder älter ist, ist der zu verwendende Befehl `/scoreboard teams`."
+    description: "Wähle, ob Teams isoliert werden sollen oder nicht. Wenn diese Option aktiviert ist, wird jedes Team, das mit dem `/team` Befehl in Minecraft erstellt wurde, oder mit Plugins, die das eingebaute Teamsystem verwalten, einen eigenen Sprachchat im Nahbereich haben. Bei Minecraft 1.12 oder älter ist der zu verwendende Befehl `/scoreboard teams`."
   chaining:
     title: "Verkettung"
-    shortened-description: "Select the additional distance allowed when players are chaining."
-    description: "Select the additional distance allowed when players are chaining. Chaining usually happens when a player is between two other players who should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."
+    shortened-description: "Wähle den zusätzlichen Abstand, der bei der Verkettung von Spielern erlaubt ist."
+    description: "Wähle den zusätzlichen Abstand, der bei der Verkettung von Spielern erlaubt ist. Verkettung tritt üblicherweise auf, wenn ein Spieler zwischen zwei anderen Spielern steht, die eigentlich nicht kommunizieren können sollten. In diesem Fall wird die Reichweite erweitert, damit alle drei Spieler sich hören können."
     select-menu:
       disabled:
-        label: "Disabled — No chaining allowed"
+        label: "Deaktiviert — Keine Verkettung erlaubt"
       short:
-        label: "Short — +25% of the initial range"
+        label: "Kurz — +25% der ursprünglichen Reichweite"
       medium:
-        label: "Medium — +50% of the initial range"
+        label: "Mittel — +50% der ursprünglichen Reichweite"
       long:
-        label: "Long — +100% of the initial range"
+        label: "Lang — +100% der ursprünglichen Reichweite"
   discord-integration:
-    title: "Discord Integration"
+    title: "Discord-Integration"
   voice-channel:
     title: "Sprachkanal"
-    description: "Select the channel players have to join to use the proximity voice chat. It must be in a category. Please note that players will automatically be muted in this channel."
-    shortened-description: "Wählen Sie den Kanal, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen."
+    description: "Wähle den Kanal, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen. Er muss sich in einer Kategorie befinden. Beachte, dass Spieler in diesem Kanal automatisch stummgeschaltet werden."
+    shortened-description: "Wähle den Kanal, dem die Spieler beitreten müssen, um den Sprachchat im Nahbereich zu nutzen."
     select-menu:
-      placeholder: "Bitte wählen Sie einen Sprachkanal."
+      placeholder: "Bitte wähle einen Sprachkanal aus."
       select-option:
         new-voice-channel:
           label: "Neuer Sprachkanal"
           description: "Skoice wird automatisch einen Sprachkanal einrichten."
   text-chat:
     title: "Text-Chat"
-    description: "Choose whether or not players can send text messages in proximity channels."
+    description: "Wähle, ob Spieler Textnachrichten in Nahbereichskanälen senden können oder nicht."
   channel-visibility:
-    title: "Sichtbarkeit der Kanäle"
-    description: "Schaltet die Sichtbarkeit der von Skoice erstellten temporären Kanäle um."
+    title: "Kanalvisibilität"
+    description: "Schalte die Sichtbarkeit der von Skoice erstellten temporären Kanäle um."
   in-game-messages:
-    title: "In-Game Nachrichten"
+    title: "Spielinterne Nachrichten"
   login-notification:
-    title: "Login Benachrichtigung"
-    description: "De/Aktiviere die Nachricht, die Spielern beim Login geschickt wird, wenn sie ihren Account nicht verlinkt haben."
+    title: "Login-Benachrichtigung"
+    description: "Schalte die Nachricht um, die Spielern beim Einloggen gesendet wird, wenn sie ihr Konto nicht verknüpft haben."
     select-menu:
       always-remind:
         label: "Immer erinnern"
@@ -109,32 +109,32 @@ menu:
       never-remind:
         label: "Nie erinnern"
   action-bar-alerts:
-    title: "Actionbar Benachrichtigung"
-    description: "De/aktiviere die Benachrichtigungen an Spieler, die den Abstands-basierten Sprachchat nutzen."
+    title: "Aktionsleisten-Benachrichtigungen"
+    description: "Schalte die Benachrichtigungen für Spieler um, die den Sprachchat im Nahbereich nutzen."
     select-menu:
-      placeholder: "Bitte wähle die gewünschten Benachrichtigungen."
+      placeholder: "Bitte wähle die gewünschten Benachrichtigungen aus."
       connecting-alert:
         label: "\"Du bist in der Nähe anderer Spieler. Sag Hallo!\""
       disconnecting-alert:
-        label: "\"Du bewegst dich von den Spielern in der Nähe weg.\""
+        label: "\"Du bewegst dich von nahestehenden Spielern weg.\""
   tooltips:
     title: "Tooltips"
-    shortened-description: "De/aktiviere interaktive Nachrichten auf deinem Minecraft Server."
-    description: "De/aktiviere interaktive Nachrichten auf deinem Minecraft-Server. Du kannst diese Einstellung zum Beispiel aktivieren, wenn du Minecraft Bedrock benutzt oder wenn Tooltips in den Minecraft Einstellungen deaktiviert sind. Nur Operatoren können interaktive Nachrichten empfangen."
+    shortened-description: "Schalte interaktive Nachrichten auf deinem Minecraft-Server um."
+    description: "Schalte interaktive Nachrichten auf deinem Minecraft-Server um. Du könntest diese Einstellung deaktivieren wollen, wenn dein Server auf Bedrock Edition läuft oder wenn Tooltips in den Minecraft-Einstellungen deaktiviert sind. Nur Operatoren können interaktive Nachrichten empfangen."
   advanced-settings:
     title: "Erweiterte Einstellungen"
   link-synchronization:
-    title: "Link Synchronization"
-    shortened-description: "Toggle the synchronization of external plugins with Skoice."
-    description: "Toggle the synchronization of external plugins with Skoice. When players link their accounts via Skoice or a selected plugin, real-time synchronization occurs on both sides. Updating this option requires you to restart your Minecraft server for it to take effect."
+    title: "Verknüpfungssynchronisation"
+    shortened-description: "Schalte die Synchronisierung externer Plugins mit Skoice um."
+    description: "Schalte die Synchronisierung externer Plugins mit Skoice um. Wenn Spieler ihre Konten über Skoice oder ein ausgewähltes Plugin verknüpfen, erfolgt eine Echtzeitsynchronisierung auf beiden Seiten. Die Aktualisierung dieser Option erfordert einen Neustart deines Minecraft-Servers, damit sie wirksam wird."
     select-menu:
-      placeholder: "Please select the desired plugins."
+      placeholder: "Bitte wähle die gewünschten Plugins aus."
   release-channel:
     title: "Release-Kanal"
-    description: "Select the version of Skoice you want to use."
+    description: "Wähle die Version von Skoice, die du verwenden möchtest."
   language:
     title: "Sprache"
-    description: "Wähle die Sprache, in der Nachrichten angezeigt werden. Deine Sprache fehlt oder ist nicht vollständig? [Übersetze unser Plugin mit Crowdin](https://crowdin.com/project/skoice)!"
+    description: "Wähle die Sprache, in der Nachrichten angezeigt werden. Deine Sprache fehlt oder ist unvollständig? [Übersetze unser Plugin mit Crowdin](https://crowdin.com/project/skoice)!"
     shortened-description: "Wähle die Sprache aus, in der Nachrichten angezeigt werden."
   skoice-proximity-voice-chat:
     title: "Skoice: Sprachchat im Nahbereich"
@@ -145,104 +145,104 @@ menu:
 field:
   configuration-complete:
     title: "Konfiguration abgeschlossen"
-    description: "Skoice is now configured. Type %s to link your Discord account to Minecraft. Players must link their accounts to use the proximity voice chat."
+    description: "Skoice ist jetzt konfiguriert. Gib %s ein, um dein Discord-Konto mit Minecraft zu verknüpfen. Spieler müssen ihre Konten verknüpfen, um den Sprachchat im Nahbereich zu nutzen."
   get-the-most-out-of-skoice:
-    title: "Get the Most Out of Skoice"
-    description: "Skoice is ready to be used but can offer you some more customization! Follow the **green buttons** to go through all the features.\n\nProgression: %s"
+    title: "Hole das Beste aus Skoice heraus"
+    description: "Skoice ist einsatzbereit, kann dir aber noch mehr Anpassungsmöglichkeiten bieten! Folge den **grünen Schaltflächen**, um alle Funktionen zu erkunden.\n\nFortschritt: %s"
   notified-players-cleared:
-    title: "Benachrichtigung Spieler gelöscht"
-    description: "Du hast die Liste der bereits benachrichtigten Spieler geleert. Spieler, die bereits eine Erinnerung zum Verlinken der Accounts erhalten haben, werden nun erneut erinnert."
+    title: "Benachrichtigte Spieler zurückgesetzt"
+    description: "Du hast die benachrichtigten Spieler zurückgesetzt. Spieler, die bereits eine Erinnerung zum Verknüpfen ihrer Konten erhalten haben, werden jetzt erneut benachrichtigt."
   incomplete-configuration:
     title: "Unvollständige Konfiguration"
-    description: "Skoice ist nicht richtig konfiguriert. Bitte wenden Sie sich an einen Administrator des Servers."
+    description: "Skoice ist nicht richtig konfiguriert. Bitte wende dich an einen Administrator des Servers."
   incomplete-configuration-server-manager:
     title: "Unvollständige Konfiguration"
-    description: "Type %s or click the button below to complete the configuration and use Skoice."
+    description: "Gib %s ein oder klicke auf die Schaltfläche unten, um die Konfiguration abzuschließen und Skoice zu verwenden."
   incomplete-configuration-alternative-server-manager:
     title: "Unvollständige Konfiguration"
-    description: "You have deleted the main voice channel. Type %s to complete the configuration and use Skoice."
+    description: "Du hast den Hauptsprachkanal gelöscht. Gib %s ein, um die Konfiguration abzuschließen und Skoice zu verwenden."
   download:
-    title: "Herunterladen"
-    description: "[Holen Sie sich das Plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) und installieren Sie es auf Ihrem Minecraft-Server."
+    title: "Download"
+    description: "[Hole dir das Plugin](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861/) und installiere es auf deinem Minecraft-Server."
   donating:
-    title: "Spenden Sie"
-    description: "Skoice ist kostenlos. Wenn du Skoice magst, freuen wir uns, wenn du [spendest](https://opencollective.com/skoice)."
+    title: "Spenden"
+    description: "Skoice ist eine kostenlose Software. Wenn du es magst, kannst du uns durch [Spenden](https://opencollective.com/skoice) unterstützen."
   contributing:
-    title: "Beitragen"
-    description: "Willst du uns bei der Weiterentwicklung von Skoice helfen? [Trage auf unserer GitHub-Seite dazu bei](https://github.com/Skoice/skoice) oder [übersetze das Plugin bei Crowdin](https://crowdin.com/project/skoice)!"
+    title: "Mitwirken"
+    description: "Möchtest du uns helfen, die Zukunft von Skoice zu gestalten? [Trage auf unserer GitHub-Seite bei](https://github.com/Skoice/skoice) und [übersetze unser Plugin mit Crowdin](https://crowdin.com/project/skoice)!"
   long-range-mode:
     title: "Langstrecken-Modus"
-    description: "Wählen Sie diesen Modus, wenn Sie die Spielmodi der offenen Welt spielen möchten."
+    description: "Wähle diesen Modus, wenn du Open-World-Spielmodi spielen willst."
   short-range-mode:
     title: "Kurzstrecken-Modus"
-    description: "Wählen Sie diesen Modus, wenn Sie Spielmodi spielen möchten, die nur einen begrenzten Bereich erfordern."
+    description: "Wähle diesen Modus, wenn du Spielmodi spielen willst, die nur einen begrenzten Bereich erfordern."
   customized:
     title: "Benutzerdefiniert"
-    description: "Stellen Sie die Entfernungen nach Ihren persönlichen Vorlieben ein."
+    description: "Stelle die Entfernungen nach deinen persönlichen Vorlieben ein."
   production-channel:
     title: "Produktionskanal"
-    description: "Choose this channel to use the public version. It is more likely to offer a stable experience."
+    description: "Wähle diesen Kanal, um die öffentliche Version zu verwenden. Diese bietet wahrscheinlich ein stabileres Erlebnis."
   beta-channel:
-    title: "Betakanal"
-    description: "Choose this channel to discover and test our latest features that are not yet released to the public. This version may contain bugs."
+    title: "Beta-Kanal"
+    description: "Wähle diesen Kanal, um unsere neuesten Funktionen zu entdecken und zu testen, die noch nicht öffentlich verfügbar sind. Diese Version kann Fehler enthalten."
   verification-code:
     title: "Verifizierungscode"
-    description: "Geben Sie `/skoice link %s` im Spiel ein, um den Vorgang abzuschließen."
+    description: "Gib `/skoice link %s` im Spiel ein, um den Vorgang abzuschließen."
   account-linked:
-    title: "Verbundenes Konto"
-    description: "Dein Discord Account wurde mit Minecraft verlinkt. Betritt den Sprachkanal %s, um den abstandsbasierten Sprachchat zu nutzen."
+    title: "Konto verknüpft"
+    description: "Dein Discord-Konto wurde mit Minecraft verknüpft. Tritt dem Sprachkanal %s bei, um den Sprachchat im Nahbereich zu nutzen."
   account-unlinked:
-    title: "Unverknüpftes Konto"
-    description: "Dein Discord-Account wurde von Minecraft entkoppelt."
+    title: "Konto getrennt"
+    description: "Dein Discord-Konto wurde von Minecraft getrennt."
   account-not-linked:
     title: "Konto nicht verknüpft"
-    description: "Dein Discord-Account ist nicht mit Minecraft verknüpft. Nutze %s um es zu verknüpfen und den Proximity-Sprachchat zu nutzen."
+    description: "Dein Discord-Konto ist nicht mit Minecraft verknüpft. Gib %s ein, um es zu verknüpfen und den Sprachchat im Nahbereich zu nutzen."
   account-already-linked:
-    title: "Bereits verknüpftes Konto"
-    description: "Dein Discord-Account ist bereits mit Minecraft verknüpft. Gib %s ein, um die Verknüpfung zu lösen."
+    title: "Konto bereits verknüpft"
+    description: "Dein Discord-Konto ist bereits mit Minecraft verknüpft. Gib %s ein, um die Verknüpfung aufzuheben."
   restricted-command:
-    title: "Restricted Command"
-    description: "This command must be performed on a Discord server."
+    title: "Eingeschränkter Befehl"
+    description: "Dieser Befehl muss auf einem Discord-Server ausgeführt werden."
   access-denied:
-    title: "Zugang verweigert"
-    description: "You do not have the required permission to perform this command."
+    title: "Zugriff verweigert"
+    description: "Du hast nicht die erforderliche Berechtigung, um diesen Befehl auszuführen."
   illegal-value:
-    title: "Unzulässige Wert"
+    title: "Ungültiger Wert"
     description: "Die Werte müssen ganze Zahlen größer als 0 sein."
   proximity-channel-deleted:
-    title: "Proximity Channel Deleted"
-    description: "You have deleted a channel used by the proximity voice chat. These channels are automatically deleted when they are no longer needed. You should not be doing it manually."
+    title: "Nahbereichskanal gelöscht"
+    description: "Du hast einen Kanal gelöscht, der vom Sprachchat im Nahbereich verwendet wird. Diese Kanäle werden automatisch gelöscht, wenn sie nicht mehr benötigt werden. Du solltest dies nicht manuell tun."
 button-label:
   back: "Zurück"
   configure-now: "Jetzt konfigurieren"
-  display-issues: "Display Issues"
-  support-server: "Support Server"
-  clear-notified-players: "Leere Liste der bereits benachrichtigten Spieler"
-  refresh: "Auffrischen"
+  display-issues: "Anzeigeprobleme"
+  support-server: "Support-Server"
+  clear-notified-players: "Benachrichtigte Spieler zurücksetzen"
+  refresh: "Aktualisieren"
   update-permissions: "Berechtigungen aktualisieren"
 select-option:
   default:
-    description: "Diese Option ist standardmäßig aktiviert."
+    description: "Diese Option ist standardmäßig ausgewählt."
   undesirable:
-    description: "This option can cause undesirable behaviors."
+    description: "Diese Option kann unerwünschtes Verhalten verursachen."
   enabled:
     label: "Aktiviert"
   disabled:
-    label: "Behinderte"
+    label: "Deaktiviert"
   too-many-options:
     label: "Zu viele Optionen"
-    description: "Skoice ist nicht aktiviert, um mehr Optionen zu laden."
+    description: "Skoice kann nicht mehr Optionen laden."
 text-input:
   category-name:
-    label: "Name der Kategorie"
+    label: "Kategoriename"
     default-value: "Skoice"
   voice-channel-name:
-    label: "Name des Sprachkanals"
+    label: "Sprachkanalname"
     default-value: "Sprachchat im Nahbereich"
   horizontal-radius:
     label: "Horizontaler Radius"
   vertical-radius:
     label: "Vertikaler Radius"
-display-issues: "If you cannot see the message above, you probably have disabled embeds in Discord settings. To use Skoice properly, you must enable them by following this path: `App Settings › Chat › Show embeds and preview website links pasted into chat`."
-voice-channel-status: "Sprechen unmöglich — Keine Spieler da"
-proximity-channel-name: "Proximity Channel"
+display-issues: "Wenn du die Nachricht oben nicht sehen kannst, hast du wahrscheinlich Einbettungen in den Discord-Einstellungen deaktiviert. Um Skoice ordnungsgemäß nutzen zu können, musst du sie aktivieren, indem du diesem Pfad folgst: `App Settings › Chat › Show embeds and preview website links pasted into chat`."
+voice-channel-status: "Sprechen nicht möglich — Keine Spieler in der Nähe"
+proximity-channel-name: "Nahbereichskanal"
