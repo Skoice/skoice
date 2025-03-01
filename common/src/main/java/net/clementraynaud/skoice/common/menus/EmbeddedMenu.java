@@ -57,7 +57,7 @@ public class EmbeddedMenu {
     public void message(User user) {
         user.openPrivateChannel()
                 .flatMap(channel -> channel.sendMessage(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args)))
-                .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER));
+                .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER, ErrorResponse.OPEN_DM_TOO_FAST));
     }
 
     public void reply(IReplyCallback interaction) {
