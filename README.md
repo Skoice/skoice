@@ -17,6 +17,7 @@ Skoice is supported on servers that run any Minecraft version from 1.8 to 1.21.
 
 You can use Skoice on the following server software:
 - **Spigot** (or derivative like [Paper](https://papermc.io/downloads/paper), [Purpur](https://purpurmc.org/downloads))
+- **Velocity** (using our [Proxy Guide](https://github.com/Skoice/skoice/wiki/Proxy-Guide))
 - **Fabric** (using [Cardboard](https://cardboardpowered.org/))
 - **Forge** (using [Magma](https://magmafoundation.org/) or [Mohist](https://mohistmc.com/))
 
