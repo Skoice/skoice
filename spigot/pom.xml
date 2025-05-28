@@ -6,7 +6,7 @@
     <parent>
         <groupId>net.clementraynaud</groupId>
         <artifactId>skoice</artifactId>
-        <version>3.2.5</version>
+        <version>3.2.6</version>
     </parent>
 
     <artifactId>skoice.spigot</artifactId>
@@ -145,7 +145,7 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.3.4</version>
+            <version>4.4.0</version>
         </dependency>
 
         <dependency>
