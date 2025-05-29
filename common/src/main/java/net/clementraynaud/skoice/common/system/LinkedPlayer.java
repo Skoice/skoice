@@ -111,7 +111,9 @@ public final class LinkedPlayer {
 
     public boolean isInAnyProximityChannel() {
         return ProximityChannels.getInitialized().stream()
-                .anyMatch(proximityChannel -> proximityChannel.getChannel().getMembers().stream()
+                .map(ProximityChannel::getChannel)
+                .filter(Objects::nonNull)
+                .anyMatch(channel -> channel.getMembers().stream()
                         .anyMatch(member -> member.getId().equals(this.discordId)));
     }
 

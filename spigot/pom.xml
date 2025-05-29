@@ -6,7 +6,7 @@
     <parent>
         <groupId>net.clementraynaud</groupId>
         <artifactId>skoice</artifactId>
-        <version>3.2.4</version>
+        <version>3.2.7</version>
     </parent>
 
     <artifactId>skoice.spigot</artifactId>
@@ -36,6 +36,7 @@
                             <include>net.clementraynaud:skoice.common</include>
                             <include>net.kyori:adventure*</include>
                             <include>net.kyori:examination*</include>
+                            <include>net.kyori:option*</include>
                             <include>org.bstats:bstats*</include>
                         </includes>
                     </artifactSet>
@@ -55,6 +56,12 @@
                             <pattern>net.kyori.examination</pattern>
                             <shadedPattern>
                                 ${project.groupId}.${project.artifactId}.libraries.net.kyori.examination
+                            </shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.option</pattern>
+                            <shadedPattern>
+                                ${project.groupId}.${project.artifactId}.libraries.net.kyori.option
                             </shadedPattern>
                         </relocation>
                         <relocation>
@@ -145,7 +152,7 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.3.4</version>
+            <version>4.4.0</version>
         </dependency>
 
         <dependency>
