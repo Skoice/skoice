@@ -57,7 +57,6 @@ public enum MenuEmoji {
     PACKAGE("U+1F4E6"),
     PENCIL2("U+270F"),
     PROHIBITED("U+1F6AB"),
-    QUESTION("U+2753"),
     REPEAT("U+1F501"),
     REPEAT_ONE("U+1F502"),
     ROBOT("U+1F916"),

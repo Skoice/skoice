@@ -215,7 +215,6 @@ field:
 button-label:
   back: "Retour"
   configure-now: "Configurer maintenant"
-  display-issues: "Problèmes d'affichage"
   support-server: "Serveur support"
   clear-notified-players: "Effacer les joueurs notifiés"
   refresh: "Rafraîchir"
@@ -243,6 +242,5 @@ text-input:
     label: "Rayon horizontal"
   vertical-radius:
     label: "Rayon vertical"
-display-issues: "Si vous ne pouvez pas voir le message ci-dessus, vous avez probablement désactivé les intégrations dans les paramètres Discord. Pour utiliser Skoice correctement, vous devez les activer en suivant ce chemin : `Paramètres de l'application › Discuter › Montre les intégrations et les aperçus des liens envoyés dans la discussion`."
 voice-channel-status: "Impossible de parler — Aucun joueur proche"
 proximity-channel-name: "Salon de proximité"

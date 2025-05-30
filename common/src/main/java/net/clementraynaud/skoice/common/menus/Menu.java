@@ -212,9 +212,6 @@ public class Menu {
             secondaryButtons.add(backButton);
         }
 
-        secondaryButtons.add(Button.secondary("display-issues",
-                        this.plugin.getBot().getLang().getMessage("button-label.display-issues"))
-                .withEmoji(MenuEmoji.QUESTION.get()));
         secondaryButtons.add(Button.link("https://discord.gg/skoice-proximity-voice-chat-741375523275407461",
                         this.plugin.getBot().getLang().getMessage("button-label.support-server"))
                 .withEmoji(MenuEmoji.SCREWDRIVER.get()));

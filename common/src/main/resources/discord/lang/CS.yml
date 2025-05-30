@@ -215,7 +215,6 @@ field:
 button-label:
   back: "Back"
   configure-now: "Configure Now"
-  display-issues: "Display Issues"
   support-server: "Support Server"
   clear-notified-players: "Clear Notified Players"
   refresh: "Refresh"
@@ -243,6 +242,5 @@ text-input:
     label: "Horizontal Radius"
   vertical-radius:
     label: "Vertical Radius"
-display-issues: "If you cannot see the message above, you probably have disabled embeds in Discord settings. To use Skoice properly, you must enable them by following this path: `App Settings › Chat › Show embeds and preview website links pasted into chat`."
 voice-channel-status: "Unable to talk — No players nearby"
 proximity-channel-name: "Proximity Channel"

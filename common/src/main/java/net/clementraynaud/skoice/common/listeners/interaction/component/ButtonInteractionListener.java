@@ -59,11 +59,7 @@ public class ButtonInteractionListener extends ListenerAdapter {
 
         Member member = event.getMember();
 
-        if ("display-issues".equals(buttonId)) {
-            event.reply(this.plugin.getBot().getLang().getMessage("display-issues"))
-                    .setEphemeral(true).queue();
-
-        } else if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
+        if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
             if ("configure-now".equals(buttonId)) {
                 ConfigurationMenu menu = new ConfigurationMenu(this.plugin.getBot());
                 menu.reply(event);
