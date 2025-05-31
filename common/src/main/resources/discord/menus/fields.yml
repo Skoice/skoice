@@ -17,73 +17,47 @@
 
 configuration-complete:
   emoji: heavy_check_mark
-  inline: false
-get-the-most-out-of-skoice:
-  emoji: bulb
-  inline: false
 notified-players-cleared:
   emoji: heavy_check_mark
-  inline: false
 incomplete-configuration:
   emoji: x
-  inline: false
 incomplete-configuration-server-manager:
   emoji: x
-  inline: false
 incomplete-configuration-alternative-server-manager:
   emoji: x
-  inline: false
 download:
   emoji: inbox_tray
-  inline: false
 donating:
   emoji: green_heart
-  inline: false
 contributing:
   emoji: hammer
-  inline: false
 long-range-mode:
   emoji: loud_sound
-  inline: true
 short-range-mode:
   emoji: sound
-  inline: true
 customized:
   emoji: pencil2
-  inline: true
 production-channel:
   emoji: package
-  inline: true
 beta-channel:
   emoji: test_tube
-  inline: true
 account-linked:
   emoji: heavy_check_mark
-  inline: false
 account-unlinked:
   emoji: heavy_check_mark
-  inline: false
 account-already-linked:
   emoji: x
-  inline: false
 account-not-linked:
   emoji: x
-  inline: false
 verification-code:
   emoji: key
-  inline: false
 restricted-command:
   emoji: file_cabinet
-  inline: false
 access-denied:
   emoji: no_entry
-  inline: false
 illegal-value:
   emoji: x
-  inline: false
 proximity-channel-deleted:
   emoji: x
-  inline: false
 shared-bot:
   emoji: robot
-  inline: false

@@ -25,7 +25,6 @@ public enum MenuEmoji {
 
     ARROWS_COUNTERCLOCKWISE("U+1F504"),
     BELL("U+1F514"),
-    BULB("U+1F4A1"),
     BUST_IN_SILHOUETTE("U+1F464"),
     BUSTS_IN_SILHOUETTE("U+1F465"),
     CARD_BOX("U+1F5C3"),

@@ -82,16 +82,6 @@ public class ButtonInteractionListener extends ListenerAdapter {
                     if (unreviewedSettings.contains(buttonId)) {
                         unreviewedSettings.remove(buttonId);
                         this.plugin.getConfigYamlFile().set(ConfigField.UNREVIEWED_SETTINGS.toString(), unreviewedSettings);
-
-                        int stepSize = 3;
-                        int progressBarState = (3 - unreviewedSettings.size()) * stepSize;
-                        int progressBarSize = 3 * stepSize;
-
-                        String progressBar = String.join("", Collections.nCopies(progressBarState, ":green_square:"))
-                                + String.join("", Collections.nCopies(progressBarSize - progressBarState, ":black_large_square:"))
-                                + ":tada:";
-
-                        this.plugin.getBot().getLang().getFormatter().set("unreviewed-settings-progress-bar", progressBar);
                     }
                     menu.setContent(buttonId).edit(event);
                 });

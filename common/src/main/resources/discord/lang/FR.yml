@@ -146,9 +146,6 @@ field:
   configuration-complete:
     title: "Configuration terminée"
     description: "Skoice est maintenant configuré. Tapez {link-discord-command} pour lier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
-  get-the-most-out-of-skoice:
-    title: "Tirez le maximum de Skoice"
-    description: "Skoice est prêt à être utilisé mais peut vous offrir plus de personnalisation ! Suivez les **boutons verts** pour passer en revue toutes les fonctionnalités.\n\nProgression : {unreviewed-settings-progress-bar}"
   notified-players-cleared:
     title: "Joueurs notifiés effacés"
     description: "Vous avez effacté les joueurs notifiés. Les joueurs qui ont déjà reçu le rappel de lier leurs comptes seront à nouveau avertis."

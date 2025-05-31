@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.common.menus;
 
 import net.clementraynaud.skoice.common.Skoice;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.components.textdisplay.TextDisplay;
 import org.simpleyaml.configuration.ConfigurationSection;
 
 import java.util.Map;
@@ -30,17 +30,18 @@ public class MenuField {
     private final Skoice plugin;
     private final String name;
     private final MenuEmoji emoji;
-    private final boolean inline;
 
     public MenuField(Skoice plugin, ConfigurationSection field) {
         this.plugin = plugin;
         this.name = field.getName();
         this.emoji = MenuEmoji.valueOf(field.getString("emoji").toUpperCase());
-        this.inline = field.getBoolean("inline");
     }
 
-    public MessageEmbed.Field build(Map<String, String> args) {
-        return new MessageEmbed.Field(this.emoji + this.getTitle(), this.getDescription(args), this.inline);
+    public TextDisplay build(Map<String, String> args, boolean indented) {
+        if (indented) {
+            return TextDisplay.of("> **" + this.emoji + this.getTitle() + "**\n> " + this.getDescription(args));
+        }
+        return TextDisplay.of("**" + this.emoji + this.getTitle() + "**\n" + this.getDescription(args));
     }
 
     private String getTitle() {

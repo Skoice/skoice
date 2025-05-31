@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.common.listeners.interaction.component;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.bot.BotStatus;
 import net.clementraynaud.skoice.common.lang.DiscordLang;
 import net.clementraynaud.skoice.common.lang.LangInfo;
 import net.clementraynaud.skoice.common.menus.ConfigurationMenu;
@@ -65,6 +66,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
         if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
             String componentId = event.getComponentId();
             List<SelectOption> options = new ArrayList<>(event.getComponent().getOptions());
+            BotStatus oldStatus = this.plugin.getBot().getStatus();
 
             switch (componentId) {
                 case "server-selection":
@@ -98,12 +100,12 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     this.plugin.getBot().getLang().load(language);
                     this.plugin.getListenerManager().update();
                     this.plugin.getBot().getCommands().register();
-                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent("language").edit(event));
+                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     break;
 
                 case "voice-channel-selection":
                     if ("refresh".equals(event.getSelectedOptions().get(0).getValue())) {
-                        ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent("voice-channel").edit(event));
+                        ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     } else {
                         if ("new-voice-channel".equals(event.getSelectedOptions().get(0).getValue())) {
                             TextInput categoryName = TextInput.create("category-name",
@@ -130,7 +132,12 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                             if (voiceChannel != null && voiceChannel.getParentCategory() != null) {
                                 this.plugin.getBot().getVoiceChannel().setup(voiceChannel, event.getUser());
                             }
-                            ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> menu.refreshId().edit(event));
+                            ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> {
+                                if (oldStatus != this.plugin.getBot().getStatus()) {
+                                    menu.refreshId();
+                                }
+                                menu.edit(event);
+                            });
                         }
                     }
                     break;
@@ -140,12 +147,22 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
                         this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 40);
                         this.plugin.getListenerManager().update(event.getUser());
-                        ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.refreshId().edit(event));
+                        ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> {
+                            if (oldStatus != this.plugin.getBot().getStatus()) {
+                                menu.refreshId();
+                            }
+                            menu.edit(event);
+                        });
                     } else if ("short-range-mode".equals(event.getSelectedOptions().get(0).getValue())) {
                         this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 40);
                         this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 20);
                         this.plugin.getListenerManager().update(event.getUser());
-                        ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.refreshId().edit(event));
+                        ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> {
+                            if (oldStatus != this.plugin.getBot().getStatus()) {
+                                menu.refreshId();
+                            }
+                            menu.edit(event);
+                        });
                     } else if ("customized".equals(event.getSelectedOptions().get(0).getValue())) {
                         TextInput horizontalRadius = TextInput.create("horizontal-radius",
                                         this.plugin.getBot().getLang().getMessage("text-input.horizontal-radius.label"),
@@ -169,45 +186,33 @@ public class StringSelectInteractionListener extends ListenerAdapter {
 
                 case "login-notification-selection":
                     this.plugin.getConfigYamlFile().set(ConfigField.LOGIN_NOTIFICATION.toString(), event.getSelectedOptions().get(0).getValue());
-                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent("login-notification").edit(event));
-                    break;
-
-                case "action-bar-alerts-selection":
-                    options.removeAll(event.getSelectedOptions());
-                    options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
-                    event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
-                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent("action-bar-alerts").edit(event));
-                    break;
-
-                case "included-players-selection":
-                    options.removeAll(event.getSelectedOptions());
-                    options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
-                    event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
-                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent("included-players").edit(event));
+                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     break;
 
                 case "active-worlds-selection":
                     options.removeAll(event.getSelectedOptions());
                     this.plugin.getConfigYamlFile().set(ConfigField.DISABLED_WORLDS.toString(),
                             options.stream().map(SelectOption::getValue).collect(Collectors.toList()));
-                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent("active-worlds").edit(event));
+                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     break;
 
                 case "chaining-selection":
                     this.plugin.getConfigYamlFile().set(ConfigField.CHAINING.toString(), event.getSelectedOptions().get(0).getValue());
-                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent("chaining").edit(event));
-                    break;
-
-                case "link-synchronization-selection":
-                    options.removeAll(event.getSelectedOptions());
-                    options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
-                    event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
-                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent("link-synchronization").edit(event));
+                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     break;
 
                 case "release-channel-selection":
                     this.plugin.getConfigYamlFile().set(ConfigField.RELEASE_CHANNEL.toString(), event.getSelectedOptions().get(0).getValue());
-                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent("release-channel").edit(event));
+                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
+                    break;
+
+                case "action-bar-alerts-selection":
+                case "included-players-selection":
+                case "link-synchronization-selection":
+                    options.removeAll(event.getSelectedOptions());
+                    options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
+                    event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
+                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     break;
 
                 default:
@@ -215,7 +220,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         ConfigField configField = ConfigField.valueOf(componentId.replace("-", "_").toUpperCase());
                         this.plugin.getConfigYamlFile().set(configField.toString(),
                                 Boolean.valueOf(event.getSelectedOptions().get(0).getValue()));
-                        ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.setContent(componentId).edit(event));
+                        ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     } catch (IllegalArgumentException ignored) {
                     }
             }

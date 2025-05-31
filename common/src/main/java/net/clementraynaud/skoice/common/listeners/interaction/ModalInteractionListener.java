@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.common.listeners.interaction;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.bot.BotStatus;
 import net.clementraynaud.skoice.common.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.common.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
@@ -47,6 +48,8 @@ public class ModalInteractionListener extends ListenerAdapter {
             return;
         }
 
+        BotStatus oldStatus = this.plugin.getBot().getStatus();
+
         if ("new-voice-channel".equals(event.getModalId())) {
             ModalMapping categoryValue = event.getValue("category-name");
             ModalMapping voiceChannelValue = event.getValue("voice-channel-name");
@@ -58,7 +61,12 @@ public class ModalInteractionListener extends ListenerAdapter {
             guild.createCategory(categoryName).queue(category ->
                     guild.createVoiceChannel(voiceChannelName, category).queue(channel -> {
                         this.plugin.getBot().getVoiceChannel().setup(channel, event.getUser());
-                        ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> menu.refreshId().edit(event));
+                        ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> {
+                            if (oldStatus != this.plugin.getBot().getStatus()) {
+                                menu.refreshId();
+                            }
+                            menu.edit(event);
+                        });
                     }));
 
         } else if ("customized".equals(event.getModalId())) {
@@ -79,12 +87,17 @@ public class ModalInteractionListener extends ListenerAdapter {
                 new EmbeddedMenu(this.plugin.getBot()).setContent("illegal-value")
                         .reply(event);
                 ConfigurationMenus.getFromMessageId(event.getMessage().getId())
-                        .ifPresent(menu -> menu.setContent("range").editFromHook());
+                        .ifPresent(EmbeddedMenu::editFromHook);
             } else {
                 this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
                 this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
                 this.plugin.getListenerManager().update(event.getUser());
-                ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> menu.refreshId().edit(event));
+                ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> {
+                    if (oldStatus != this.plugin.getBot().getStatus()) {
+                        menu.refreshId();
+                    }
+                    menu.edit(event);
+                });
             }
         }
     }
