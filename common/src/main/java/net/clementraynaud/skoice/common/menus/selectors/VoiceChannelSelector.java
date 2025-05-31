@@ -23,10 +23,10 @@ import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.menus.MenuEmoji;
 import net.clementraynaud.skoice.common.system.ProximityChannel;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
+import net.dv8tion.jda.api.components.selections.SelectMenu;
+import net.dv8tion.jda.api.components.selections.SelectOption;
+import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -22,9 +22,9 @@ package net.clementraynaud.skoice.common.menus.selectors;
 import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.menus.MenuEmoji;
 import net.clementraynaud.skoice.common.util.ConfigurationUtil;
-import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
+import net.dv8tion.jda.api.components.selections.SelectMenu;
+import net.dv8tion.jda.api.components.selections.SelectOption;
+import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 
 import java.util.Collections;

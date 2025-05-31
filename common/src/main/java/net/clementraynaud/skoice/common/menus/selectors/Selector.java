@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.common.menus.selectors;
 
 import net.clementraynaud.skoice.common.Skoice;
-import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
+import net.dv8tion.jda.api.components.selections.SelectMenu;
 
 public abstract class Selector {
 

@@ -24,7 +24,7 @@ import net.clementraynaud.skoice.common.menus.selectors.LoginNotificationSelecto
 import net.clementraynaud.skoice.common.menus.selectors.SelectorFactory;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.util.ConfigurationUtil;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.components.buttons.Button;
 import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 

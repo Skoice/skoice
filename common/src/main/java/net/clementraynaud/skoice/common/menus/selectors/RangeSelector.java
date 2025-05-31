@@ -24,9 +24,9 @@ import net.clementraynaud.skoice.common.bot.BotStatus;
 import net.clementraynaud.skoice.common.menus.MenuEmoji;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.util.MapUtil;
-import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
+import net.dv8tion.jda.api.components.selections.SelectMenu;
+import net.dv8tion.jda.api.components.selections.SelectOption;
+import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;

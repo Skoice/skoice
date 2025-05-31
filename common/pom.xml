@@ -179,9 +179,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.dv8tion</groupId>
+            <groupId>io.github.JDA-Fork</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.5.1</version>
+            <version>8909551e4f</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
@@ -226,7 +226,7 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-plain</artifactId>
-            <version>4.18.0</version>
+            <version>4.21.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
