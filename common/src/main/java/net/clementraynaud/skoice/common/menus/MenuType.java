@@ -19,7 +19,7 @@
 
 package net.clementraynaud.skoice.common.menus;
 
-import java.awt.*;
+import java.awt.Color;
 
 public enum MenuType {
 
