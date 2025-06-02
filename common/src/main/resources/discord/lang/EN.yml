@@ -217,7 +217,7 @@ button-label:
   clear-notified-players: "Clear Notified Players"
   refresh: "Refresh"
   update-permissions: "Update Permissions"
-  explore-new-settings: "Explore New Settings"
+  explore-more-settings: "Explore More Settings"
 select-option:
   default:
     description: "This option is selected by default."

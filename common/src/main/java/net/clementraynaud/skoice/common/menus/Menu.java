@@ -44,7 +44,6 @@ public class Menu {
 
     private static final Separator SMALL_INVISIBLE_SEPARATOR = Separator.createInvisible(Separator.Spacing.SMALL);
     private static final Separator LARGE_INVISIBLE_SEPARATOR = Separator.createInvisible(Separator.Spacing.LARGE);
-    private static final Separator SMALL_DIVIDER_SEPARATOR = Separator.createDivider(Separator.Spacing.SMALL);
     private static final Separator LARGE_DIVIDER_SEPARATOR = Separator.createDivider(Separator.Spacing.LARGE);
 
     private final Skoice plugin;
@@ -188,7 +187,7 @@ public class Menu {
         } else {
             List<String> unreviewedSettings = this.plugin.getConfigYamlFile().getStringList(ConfigField.UNREVIEWED_SETTINGS.toString());
             childComponents.add(Section.of(unreviewedSettings.contains(this.menuId)
-                            ? Button.of(ButtonStyle.SUCCESS, this.menuId, this.plugin.getBot().getLang().getMessage("button-label.explore-new-settings") + " ❯")
+                            ? Button.of(ButtonStyle.SUCCESS, this.menuId, this.plugin.getBot().getLang().getMessage("button-label.explore-more-settings") + " ❯")
                             : Button.of(ButtonStyle.SECONDARY, this.menuId, "❯"),
                     text
             ));
