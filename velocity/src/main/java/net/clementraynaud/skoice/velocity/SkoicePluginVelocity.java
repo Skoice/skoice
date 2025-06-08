@@ -89,7 +89,7 @@ public class SkoicePluginVelocity {
                 this.skoice.getListenerManager().onPlayerJoin(new VelocityBasePlayer(event.getPlayer()), false);
             });
         } else {
-            this.skoice.getListenerManager().onPlayerJoin(new VelocityBasePlayer(event.getPlayer()), false);
+            this.skoice.getListenerManager().onPlayerJoin(new VelocityBasePlayer(event.getPlayer()), true);
         }
 
         ByteArrayOutputStream b = new ByteArrayOutputStream();
