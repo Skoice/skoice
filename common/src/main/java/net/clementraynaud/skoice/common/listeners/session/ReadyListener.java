@@ -137,6 +137,7 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getConfigYamlFile().removeInvalidVoiceChannelId();
 
         this.plugin.getBot().setDefaultAvatar();
+        this.plugin.getBot().createApplicationEmojis();
         this.plugin.getBot().retrieveMutedUsers();
         this.plugin.getBot().getMenuFactory().loadAll(this.plugin);
 

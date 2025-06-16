@@ -124,7 +124,7 @@ chaining:
   type: default
   parent:
 discord-integration:
-  emoji: sound
+  emoji: discord
   footer: review
   type: default
   parent: settings

@@ -25,6 +25,7 @@ import net.clementraynaud.skoice.common.lang.DiscordLang;
 import net.clementraynaud.skoice.common.lang.LangInfo;
 import net.clementraynaud.skoice.common.listeners.session.ReadyListener;
 import net.clementraynaud.skoice.common.menus.EmbeddedMenu;
+import net.clementraynaud.skoice.common.menus.MenuEmoji;
 import net.clementraynaud.skoice.common.menus.MenuFactory;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceCommandSender;
@@ -189,6 +190,10 @@ public class Bot {
                 }
             });
         }
+    }
+
+    public void createApplicationEmojis() {
+        MenuEmoji.createApplicationEmojis(this.plugin);
     }
 
     public void notifyIfUnlinked(Member member) {

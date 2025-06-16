@@ -19,7 +19,16 @@
 
 package net.clementraynaud.skoice.common.menus;
 
+import net.clementraynaud.skoice.common.Skoice;
+import net.dv8tion.jda.api.entities.Icon;
+import net.dv8tion.jda.api.entities.emoji.ApplicationEmoji;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum MenuEmoji {
 
@@ -70,7 +79,11 @@ public enum MenuEmoji {
     WARNING("U+26A0"),
     WASTEBASKET("U+1F5D1"),
     WRENCH("U+1F527"),
-    X("U+274C");
+    X("U+274C"),
+    DISCORD(null);
+
+    private static final Map<String, Long> CUSTOM_EMOJI_ID = new HashMap<>();
+    private static final String APPLICATION_EMOJI_PREFIX = "skoice_";
 
     private final String unicode;
 
@@ -79,11 +92,58 @@ public enum MenuEmoji {
     }
 
     public Emoji get() {
-        return Emoji.fromUnicode(this.unicode);
+        if (this.unicode != null) {
+            return Emoji.fromUnicode(this.unicode);
+        } else {
+            return Emoji.fromCustom(MenuEmoji.APPLICATION_EMOJI_PREFIX + this.name().toLowerCase(),
+                    MenuEmoji.CUSTOM_EMOJI_ID.getOrDefault(this.name().toLowerCase(), 0L),
+                    false);
+        }
     }
 
     @Override
     public String toString() {
-        return ":" + this.name().toLowerCase() + ": ";
+        if (this.unicode != null) {
+            return ":" + this.name().toLowerCase() + ": ";
+        } else {
+            return "<:" + MenuEmoji.APPLICATION_EMOJI_PREFIX + this.name().toLowerCase() + ":"
+                    + MenuEmoji.CUSTOM_EMOJI_ID.getOrDefault(this.name().toLowerCase(), 0L) + "> ";
+        }
+    }
+
+    public static void createApplicationEmojis(Skoice plugin) {
+        plugin.getBot().getJDA().retrieveApplicationEmojis().queue(emojis ->
+                Arrays.stream(MenuEmoji.values())
+                        .filter(emoji -> emoji.unicode == null)
+                        .forEach(emoji -> {
+                            String name = emoji.name().toLowerCase();
+
+                            ApplicationEmoji existingEmoji = emojis.stream()
+                                    .filter(e -> e.getName().equals(MenuEmoji.APPLICATION_EMOJI_PREFIX + name))
+                                    .findFirst()
+                                    .orElse(null);
+
+                            if (existingEmoji != null) {
+                                MenuEmoji.CUSTOM_EMOJI_ID.put(name, existingEmoji.getIdLong());
+                                return;
+                            }
+
+                            InputStream inputStream = MenuEmoji.class.getClassLoader()
+                                    .getResourceAsStream("discord/menus/emojis/" + name + ".png");
+
+                            if (inputStream == null) {
+                                return;
+                            }
+
+                            try {
+                                Icon icon = Icon.from(inputStream);
+                                plugin.getBot().getJDA()
+                                        .createApplicationEmoji(MenuEmoji.APPLICATION_EMOJI_PREFIX + name, icon)
+                                        .queue(applicationEmoji ->
+                                                MenuEmoji.CUSTOM_EMOJI_ID.put(name, applicationEmoji.getIdLong()));
+                            } catch (IOException ignored) {
+                            }
+                        })
+        );
     }
 }
