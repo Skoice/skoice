@@ -127,7 +127,7 @@ public class SkoiceVelocity extends Skoice {
             this.plugin.getProxy().getPlayer(newInfo.getId()).ifPresent(player -> {
                 var newPlayer = new VelocityBasePlayer(player);
                 this.playerInfo.put(newInfo.getId(), new FullPlayer(new VelocityBasePlayer(player), newInfo));
-                this.getListenerManager().onPlayerJoin(newPlayer, true);
+                this.getListenerManager().onPlayerJoin(newPlayer, false);
             });
         }
     }
