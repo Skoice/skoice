@@ -50,6 +50,8 @@ import java.util.UUID;
 public abstract class Skoice {
 
     private static AnalyticManager analyticManager;
+    private static SkoiceAPI api;
+    private static EventBus eventBus;
     private final SkoiceLogger logger;
     private final SkoiceTaskScheduler scheduler;
     private MinecraftLang lang;
@@ -70,6 +72,14 @@ public abstract class Skoice {
         return Skoice.analyticManager;
     }
 
+    public static SkoiceAPI api() {
+        return Skoice.api;
+    }
+
+    public static EventBus eventBus() {
+        return Skoice.eventBus;
+    }
+
     public void start() {
         this.saveDefaultConfig();
         this.configYamlFile = new ConfigYamlFile(this);
@@ -85,6 +95,8 @@ public abstract class Skoice {
         this.tempYamlFile.load();
         this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
         this.loginNotificationYamlFile.load();
+        Skoice.eventBus = new EventBus();
+        Skoice.api = new SkoiceAPI(this);
         Skoice.analyticManager = this.createAnalyticManager();
         Skoice.analyticManager.initialize();
         this.listenerManager.registerPermanentMinecraftListeners();
@@ -123,6 +135,9 @@ public abstract class Skoice {
 
     public void shutdown() {
         this.bot.shutdown();
+        if (Skoice.eventBus != null) {
+            Skoice.eventBus.shutdown();
+        }
         this.logger.info(this.lang.getMessage("logger.info.plugin-disabled"));
     }
 

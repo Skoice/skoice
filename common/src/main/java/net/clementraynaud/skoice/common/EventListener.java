@@ -17,23 +17,39 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.spigot.api.events;
+package net.clementraynaud.skoice.common;
 
-import java.util.UUID;
+import net.clementraynaud.skoice.common.api.events.SkoiceEvent;
 
-public class SkoiceEventMinecraft extends SkoiceEvent {
+import java.util.Objects;
+import java.util.function.Consumer;
 
-    private UUID minecraftId;
+class EventListener<T extends SkoiceEvent> {
 
-    public SkoiceEventMinecraft(String minecraftId) {
-        super();
-        try {
-            this.minecraftId = UUID.fromString(minecraftId);
-        } catch (IllegalArgumentException ignored) {
-        }
+    private final Consumer<T> handler;
+
+    public EventListener(Consumer<T> handler) {
+        this.handler = handler;
     }
 
-    public UUID getMinecraftId() {
-        return this.minecraftId;
+    public void handle(T event) {
+        this.handler.accept(event);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
+        EventListener<?> that = (EventListener<?>) obj;
+        return Objects.equals(this.handler, that.handler);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.handler);
     }
 }

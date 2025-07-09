@@ -20,8 +20,6 @@
 package net.clementraynaud.skoice.common.commands.skoice.arguments;
 
 import net.clementraynaud.skoice.common.Skoice;
-import net.clementraynaud.skoice.common.bot.BotStatus;
-import net.clementraynaud.skoice.common.lang.LangInfo;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceCommandSender;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 

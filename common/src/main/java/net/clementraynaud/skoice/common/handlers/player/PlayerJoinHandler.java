@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.common.handlers.player;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.common.bot.BotStatus;
 import net.clementraynaud.skoice.common.menus.selectors.LoginNotificationSelector;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
@@ -51,7 +52,7 @@ public class PlayerJoinHandler {
                         AudioChannel audioChannel = voiceState.getChannel();
                         if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
                             player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
-                            this.callPlayerProximityConnectEvent(player.getUniqueId().toString(), member.getId());
+                            Skoice.eventBus().fireAsync(new PlayerProximityConnectEvent(player.getUniqueId().toString(), member.getId()));
                         }
                     }
                 }
@@ -65,9 +66,6 @@ public class PlayerJoinHandler {
                 }
             }
         }
-    }
-
-    protected void callPlayerProximityConnectEvent(String minecraftId, String memberId) {
     }
 
     private void sendLoginNotification(BasePlayer player) {

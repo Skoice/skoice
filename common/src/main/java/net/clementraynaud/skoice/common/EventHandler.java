@@ -17,26 +17,31 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.spigot.tasks;
+package net.clementraynaud.skoice.common;
 
-import net.clementraynaud.skoice.common.tasks.InterruptSystemTask;
-import net.clementraynaud.skoice.spigot.SkoiceSpigot;
-import net.clementraynaud.skoice.spigot.api.events.system.SystemInterruptionEvent;
+import net.clementraynaud.skoice.common.api.events.SkoiceEvent;
 
-public class SpigotInterruptSystemTask extends InterruptSystemTask {
+public class EventHandler<T extends SkoiceEvent> {
 
-    private final SkoiceSpigot plugin;
+    private final EventBus eventBus;
+    private final Class<T> eventClass;
+    private final EventListener<T> listener;
+    private volatile boolean active = true;
 
-    public SpigotInterruptSystemTask(SkoiceSpigot plugin) {
-        super(plugin);
-        this.plugin = plugin;
+    EventHandler(EventBus eventBus, Class<T> eventClass, EventListener<T> listener) {
+        this.eventBus = eventBus;
+        this.eventClass = eventClass;
+        this.listener = listener;
     }
 
-    @Override
-    protected void callSystemInterruptionEvent() {
-        this.plugin.getScheduler().runTask(() -> {
-            SystemInterruptionEvent event = new SystemInterruptionEvent();
-            this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
-        });
+    public void unsubscribe() {
+        if (this.active) {
+            this.eventBus.unsubscribe(this.eventClass, this.listener);
+            this.active = false;
+        }
+    }
+
+    public boolean isActive() {
+        return this.active;
     }
 }
