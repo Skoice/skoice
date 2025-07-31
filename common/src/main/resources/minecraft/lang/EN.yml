@@ -45,7 +45,7 @@ chat:
     public-bot: "Your bot {error}is not configured correctly{default}. Run the command again once you have unselected \"Public Bot\" and clicked \"Save Changes\" on this page: {bot-page-url}."
     incomplete-configuration: "Skoice is {error}not configured correctly{default}. Please contact an administrator of the server."
     incomplete-configuration-operator-interactive: "Skoice is {error}not configured correctly{default}. Click {run:configure-minecraft-command} to set it up. You can change the language by clicking {suggest:language-minecraft-command}. If you cannot interact with this message, type \"{tooltips-minecraft-command}\"."
-    incomplete-configuration-operator: "Skoice is {error}not configured correctly{default}. Type \"{configure-discord-command}\" to set it up. You can change the language with \"{language-minecraft-command}\" followed by the language."
+    incomplete-configuration-operator: "Skoice is {error}not configured correctly{default}. Type \"{configure-minecraft-command}\" to set it up. You can change the language with \"{language-minecraft-command}\" followed by the language."
     incomplete-configuration-operator-discord: "Skoice is {error}not configured correctly{default}. Type \"{configure-discord-command}\" on your Discord server to set it up."
     already-configured: "Skoice is {error}already configured{default}. Type \"{configure-discord-command}\" on your Discord server to update its settings."
     tooltips-enabled: "You have {success}enabled interactive messages{default}."
