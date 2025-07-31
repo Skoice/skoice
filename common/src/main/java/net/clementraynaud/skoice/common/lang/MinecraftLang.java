@@ -72,7 +72,7 @@ public class MinecraftLang extends Lang {
 
         message = message.replaceAll("[\"「](.+?)[\"」]",
                         "\"" + super.formatter.get("highlight") + "$1" + super.formatter.get("default") + "\"")
-                .replaceAll("\\{.+?-url}",
+                .replaceAll("\\{([^{}]*?)-url}",
                         super.formatter.get("interactive") + "$0" + super.formatter.get("default"));
 
         message = this.formatter.format(message, args);
