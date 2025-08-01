@@ -137,10 +137,18 @@ public class UpdateNetworksTask {
                         && awaitingMove.getRight().cancel(false)) {
                     GuildVoiceState voiceState = member.getVoiceState();
                     if (voiceState != null && voiceState.getChannel() != shouldBeInChannel) {
+                        boolean sendConnectingAlert = this.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())
+                                && linkedPlayer != null
+                                && linkedPlayer.isInMainVoiceChannel();
                         this.awaitingMoves.put(member.getId(), Pair.of(
                                 shouldBeInChannel.getId(),
                                 this.plugin.getBot().getGuild().moveVoiceMember(member, shouldBeInChannel)
-                                        .submit().whenCompleteAsync((v, t) -> this.awaitingMoves.remove(member.getId()))
+                                        .submit().whenCompleteAsync((v, t) -> {
+                                            this.awaitingMoves.remove(member.getId());
+                                            if (sendConnectingAlert) {
+                                                linkedPlayer.addActionBarAlert(ActionBarAlert.CONNECTING);
+                                            }
+                                        })
                         ));
                     }
                 }
@@ -196,22 +204,12 @@ public class UpdateNetworksTask {
                         playersWithinRange.stream()
                                 .filter(LinkedPlayer::isInAnyNetwork)
                                 .findFirst()
-                                .ifPresent(playerInNearNetwork -> {
-                                    playerInNearNetwork.getNetwork().add(p);
-
-                                    if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
-                                        p.addActionBarAlert(ActionBarAlert.CONNECTING);
-                                    }
-                                });
+                                .ifPresent(playerInNearNetwork -> playerInNearNetwork.getNetwork().add(p));
 
                         if (!p.isInAnyNetwork()
                                 && this.plugin.getConfigYamlFile().getCategory().getChannels().size() != 50) {
                             playersWithinRange.add(p);
                             new Network(this.plugin, playersWithinRange).build();
-
-                            if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
-                                playersWithinRange.forEach(playerWithinRange -> playerWithinRange.addActionBarAlert(ActionBarAlert.CONNECTING));
-                            }
                         }
                     }
                 });
