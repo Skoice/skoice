@@ -70,6 +70,10 @@ public class MinecraftLang extends Lang {
     public String getMessage(String path, Map<String, String> args) {
         String message = super.getRawMessage(path);
 
+        if (message == null || message.trim().isEmpty()) {
+            return String.format("!%s!", path);
+        }
+
         message = message.replaceAll("[\"「](.+?)[\"」]",
                         "\"" + super.formatter.get("highlight") + "$1" + super.formatter.get("default") + "\"")
                 .replaceAll("\\{([^{}]*?)-url}",
@@ -140,6 +144,11 @@ public class MinecraftLang extends Lang {
 
     public String getConsoleMessage(String path, Map<String, String> args) {
         String message = super.getRawMessage(path);
+
+        if (message == null || message.trim().isEmpty()) {
+            return String.format("!%s!", path);
+        }
+
         String formattedMessage = this.formatter.format(message, args);
         Component component = MinecraftLang.LEGACY_SERIALIZER.deserialize(formattedMessage);
         return PlainTextComponentSerializer.plainText().serialize(component);

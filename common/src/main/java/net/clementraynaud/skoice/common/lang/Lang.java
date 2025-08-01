@@ -61,13 +61,20 @@ public abstract class Lang {
     protected String getRawMessage(String path) {
         if (this.active != null && this.active.containsKey(path)) {
             return this.active.get(path);
-        } else {
-            return this.english.getOrDefault(path, "");
+        } else if (this.english.containsKey(path)) {
+            return this.english.get(path);
         }
+        return null;
     }
 
     public String getMessage(String path, Map<String, String> args) {
-        return this.formatter.format(this.getRawMessage(path), args);
+        String message = this.getRawMessage(path);
+
+        if (message == null || message.trim().isEmpty()) {
+            return String.format("!%s!", path);
+        }
+
+        return this.formatter.format(message, args);
     }
 
     public String getMessage(String path) {
