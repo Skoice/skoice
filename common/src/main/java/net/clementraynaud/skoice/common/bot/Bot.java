@@ -277,7 +277,7 @@ public class Bot {
 
                 } else if (!this.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
                     this.status = BotStatus.MISSING_PERMISSION;
-                    this.plugin.log(Level.WARNING, "logger.error.missing-permission");
+                    this.plugin.log(Level.WARNING, "logger.warning.missing-permission");
 
                 } else if (!this.plugin.getConfigYamlFile().contains(ConfigField.VOICE_CHANNEL_ID.toString())) {
                     this.status = BotStatus.NO_VOICE_CHANNEL;

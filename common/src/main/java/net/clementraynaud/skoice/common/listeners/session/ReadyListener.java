@@ -126,7 +126,7 @@ public class ReadyListener extends ListenerAdapter {
         this.plugin.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
         this.plugin.getBot().getJDA().shutdown();
         this.plugin.getListenerManager().update();
-        this.plugin.log(Level.WARNING, "logger.error.invalid-bot");
+        this.plugin.log(Level.WARNING, "logger.warning.invalid-bot");
 
         if (tokenManager != null) {
             tokenManager.sendMessage(this.plugin.getLang().getMessage("chat.configuration.invalid-bot"));
