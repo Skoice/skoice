@@ -152,7 +152,7 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.4.0</version>
+            <version>4.4.1</version>
         </dependency>
 
         <dependency>
@@ -164,7 +164,7 @@
         <dependency>
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
-            <version>1.29.0</version>
+            <version>1.30.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
