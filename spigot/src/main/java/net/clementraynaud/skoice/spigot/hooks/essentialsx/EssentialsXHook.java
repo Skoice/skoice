@@ -23,7 +23,6 @@ import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.essentialsx.api.v2.services.discord.DiscordService;
 import net.essentialsx.api.v2.services.discordlink.DiscordLinkService;
-import net.essentialsx.discordlink.EssentialsDiscordLink;
 
 public class EssentialsXHook {
 
@@ -44,7 +43,6 @@ public class EssentialsXHook {
         try {
             this.plugin.getPlugin().getServer().getServicesManager().load(DiscordLinkService.class).hashCode();
             this.plugin.getPlugin().getServer().getServicesManager().load(DiscordService.class).hashCode();
-            ((EssentialsDiscordLink) this.plugin.getPlugin().getServer().getPluginManager().getPlugin("EssentialsDiscordLink")).getAccountStorage().hashCode();
             EssentialsXHookImpl newEssentialsXHookImpl = new EssentialsXHookImpl(this.plugin);
             newEssentialsXHookImpl.initialize();
             this.essentialsXHookImpl = newEssentialsXHookImpl;

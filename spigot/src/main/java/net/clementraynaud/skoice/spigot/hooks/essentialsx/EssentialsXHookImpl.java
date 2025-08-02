@@ -23,11 +23,9 @@ import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.essentialsx.api.v2.events.discordlink.DiscordLinkStatusChangeEvent;
 import net.essentialsx.api.v2.services.discord.DiscordService;
 import net.essentialsx.api.v2.services.discordlink.DiscordLinkService;
-import net.essentialsx.discordlink.EssentialsDiscordLink;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -37,7 +35,6 @@ public class EssentialsXHookImpl implements Listener {
     private final SkoiceSpigot plugin;
     private DiscordLinkService essentialsLinkApi;
     private DiscordService essentialsDiscordApi;
-    private Map<String, String> essentialsLinkedAccounts;
     private boolean synchronizationComplete = false;
 
     public EssentialsXHookImpl(SkoiceSpigot plugin) {
@@ -48,11 +45,7 @@ public class EssentialsXHookImpl implements Listener {
     public void initialize() {
         this.essentialsLinkApi = this.plugin.getPlugin().getServer().getServicesManager().load(DiscordLinkService.class);
         this.essentialsDiscordApi = this.plugin.getPlugin().getServer().getServicesManager().load(DiscordService.class);
-        EssentialsDiscordLink ess = (EssentialsDiscordLink) this.plugin.getPlugin().getServer().getPluginManager().getPlugin("EssentialsDiscordLink");
-        if (ess != null && ess.getAccountStorage() != null) {
-            this.essentialsLinkedAccounts = Collections.unmodifiableMap(ess.getAccountStorage().getRawStorageMap());
-            this.synchronizeAccountLinks();
-        }
+        this.synchronizeAccountLinks();
     }
 
     public void linkUserEssentialsX(String minecraftId, String discordId) {
@@ -90,7 +83,7 @@ public class EssentialsXHookImpl implements Listener {
             return;
         }
 
-        Map<String, String> existingHookLinks = this.essentialsLinkedAccounts;
+        Map<String, String> existingHookLinks = this.essentialsLinkApi.getAllLinkedPlayers();
         Map<String, String> existingSkoiceLinks = new HashMap<>(SkoiceSpigot.api().getLinkedAccounts());
 
         existingHookLinks.forEach((minecraftId, discordId) -> {
