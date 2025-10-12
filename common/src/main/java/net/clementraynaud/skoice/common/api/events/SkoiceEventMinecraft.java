@@ -17,10 +17,22 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.spigot.api.events.system;
+package net.clementraynaud.skoice.common.api.events;
 
-import net.clementraynaud.skoice.spigot.api.events.SkoiceEvent;
+import java.util.UUID;
 
-public class SystemInterruptionEvent extends SkoiceEvent {
+public abstract class SkoiceEventMinecraft implements SkoiceEvent {
 
+    private UUID minecraftId;
+
+    public SkoiceEventMinecraft(String minecraftId) {
+        try {
+            this.minecraftId = UUID.fromString(minecraftId);
+        } catch (IllegalArgumentException ignored) {
+        }
+    }
+
+    public UUID getMinecraftId() {
+        return this.minecraftId;
+    }
 }

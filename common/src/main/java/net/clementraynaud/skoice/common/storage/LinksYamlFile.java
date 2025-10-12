@@ -20,6 +20,10 @@
 package net.clementraynaud.skoice.common.storage;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.api.events.account.AccountLinkEvent;
+import net.clementraynaud.skoice.common.api.events.account.AccountUnlinkEvent;
+import net.clementraynaud.skoice.common.api.events.player.PlayerProximityConnectEvent;
+import net.clementraynaud.skoice.common.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.common.bot.BotStatus;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
@@ -52,6 +56,7 @@ public class LinksYamlFile extends YamlFile {
     public void linkUser(String minecraftId, String discordId) {
         this.linkUserDirectly(minecraftId, discordId);
         this.additionalLinkProcessing(minecraftId, discordId);
+        Skoice.eventBus().fireAsync(new AccountLinkEvent(minecraftId, discordId));
     }
 
     protected void additionalLinkProcessing(String minecraftId, String discordId) {
@@ -60,6 +65,7 @@ public class LinksYamlFile extends YamlFile {
     public void unlinkUser(String minecraftId) {
         this.unlinkUserDirectly(minecraftId);
         this.additionalUnlinkProcessing(minecraftId);
+        Skoice.eventBus().fireAsync(new AccountUnlinkEvent(minecraftId));
     }
 
     protected void additionalUnlinkProcessing(String minecraftId) {
@@ -80,7 +86,7 @@ public class LinksYamlFile extends YamlFile {
                     AudioChannel audioChannel = voiceState.getChannel();
                     if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
                         player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
-                        this.callPlayerProximityConnectEvent(minecraftId, discordId);
+                        Skoice.eventBus().fireAsync(new PlayerProximityConnectEvent(minecraftId, discordId));
                     } else {
                         player.sendMessage(super.plugin.getLang().getMessage("chat.player.not-connected",
                                 MapUtil.of("voice-channel", mainVoiceChannel.getName())));
@@ -88,9 +94,6 @@ public class LinksYamlFile extends YamlFile {
                 }
             });
         }
-    }
-
-    protected void callPlayerProximityConnectEvent(String minecraftId, String discordId) {
     }
 
     public void unlinkUserDirectly(String minecraftId) {
@@ -107,10 +110,9 @@ public class LinksYamlFile extends YamlFile {
 
             LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getFullPlayer().equals(player));
         });
-        this.callPlayerProximityDisconnectEventIfConnected(minecraftId);
-    }
-
-    protected void callPlayerProximityDisconnectEventIfConnected(String minecraftId) {
+        if (Skoice.api().isProximityConnected(UUID.fromString(minecraftId))) {
+            Skoice.eventBus().fireAsync(new PlayerProximityDisconnectEvent(minecraftId));
+        }
     }
 
     public Map<String, String> getLinks() {

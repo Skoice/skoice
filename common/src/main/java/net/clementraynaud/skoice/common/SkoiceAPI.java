@@ -17,36 +17,52 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.spigot.api;
+package net.clementraynaud.skoice.common;
 
+import net.clementraynaud.skoice.common.api.events.player.PlayerProximityConnectEvent;
+import net.clementraynaud.skoice.common.api.events.player.PlayerProximityDisconnectEvent;
+import net.clementraynaud.skoice.common.api.events.system.SystemInterruptionEvent;
 import net.clementraynaud.skoice.common.bot.BotStatus;
-import net.clementraynaud.skoice.spigot.SkoiceSpigot;
-import net.clementraynaud.skoice.spigot.api.events.player.PlayerProximityConnectEvent;
-import net.clementraynaud.skoice.spigot.api.events.player.PlayerProximityDisconnectEvent;
-import net.clementraynaud.skoice.spigot.api.events.system.SystemInterruptionEvent;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class SkoiceAPI implements Listener {
+public class SkoiceAPI {
 
-    private final SkoiceSpigot plugin;
-    private final Set<UUID> proximityConnectedPlayers = new HashSet<>();
+    private final Skoice plugin;
+    private final Set<UUID> proximityConnectedPlayers = ConcurrentHashMap.newKeySet();
 
-    public SkoiceAPI(SkoiceSpigot plugin) {
+    SkoiceAPI(Skoice plugin) {
         this.plugin = plugin;
+
+        Skoice.eventBus().subscribe(
+                PlayerProximityDisconnectEvent.class,
+                event -> {
+                    this.proximityConnectedPlayers.remove(event.getMinecraftId());
+                }
+        );
+        Skoice.eventBus().subscribe(
+                PlayerProximityConnectEvent.class,
+                event -> {
+                    this.proximityConnectedPlayers.add(event.getMinecraftId());
+                }
+        );
+        Skoice.eventBus().subscribe(
+                SystemInterruptionEvent.class,
+                event -> {
+                    this.proximityConnectedPlayers.clear();
+                }
+        );
     }
 
     public Map<String, String> getLinkedAccounts() {
         return Collections.unmodifiableMap(this.plugin.getLinksYamlFile().getLinks());
     }
 
+    @SuppressWarnings("unused")
     public boolean linkUser(UUID minecraftId, String discordId) {
         if (this.plugin.getLinksYamlFile().getLinks().containsKey(minecraftId.toString()) || this.plugin.getLinksYamlFile().getLinks().containsValue(discordId)) {
             return false;
@@ -55,6 +71,7 @@ public class SkoiceAPI implements Listener {
         return true;
     }
 
+    @SuppressWarnings("unused")
     public boolean unlinkUser(UUID minecraftId) {
         if (this.plugin.getLinksYamlFile().getLinks().get(minecraftId.toString()) == null) {
             return false;
@@ -67,6 +84,7 @@ public class SkoiceAPI implements Listener {
         return this.getLinkedAccounts().containsKey(minecraftId.toString());
     }
 
+    @SuppressWarnings("unused")
     public boolean isLinked(String discordId) {
         return this.getLinkedAccounts().containsValue(discordId);
     }
@@ -75,36 +93,13 @@ public class SkoiceAPI implements Listener {
         return this.proximityConnectedPlayers.contains(minecraftId);
     }
 
+    @SuppressWarnings("unused")
     public Set<UUID> getProximityConnectedPlayers() {
         return Collections.unmodifiableSet(this.proximityConnectedPlayers);
     }
 
+    @SuppressWarnings("unused")
     public boolean isSystemReady() {
         return this.plugin.getBot().getStatus() == BotStatus.READY;
-    }
-
-    @EventHandler
-    private void onPlayerLeft(PlayerQuitEvent event) {
-        if (this.isLinked(event.getPlayer().getUniqueId()) && this.isProximityConnected(event.getPlayer().getUniqueId())) {
-            this.plugin.getScheduler().runTask(() -> {
-                PlayerProximityDisconnectEvent newEvent = new PlayerProximityDisconnectEvent(event.getPlayer().getUniqueId().toString());
-                this.plugin.getPlugin().getServer().getPluginManager().callEvent(newEvent);
-            });
-        }
-    }
-
-    @EventHandler
-    private void onPlayerProximityDisconnect(PlayerProximityDisconnectEvent event) {
-        this.proximityConnectedPlayers.remove(event.getMinecraftId());
-    }
-
-    @EventHandler
-    private void onPlayerProximityConnect(PlayerProximityConnectEvent event) {
-        this.proximityConnectedPlayers.add(event.getMinecraftId());
-    }
-
-    @EventHandler
-    private void onSystemInterruption(SystemInterruptionEvent event) {
-        this.proximityConnectedPlayers.clear();
     }
 }

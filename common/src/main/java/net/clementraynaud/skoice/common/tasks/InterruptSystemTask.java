@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.common.tasks;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.api.events.system.SystemInterruptionEvent;
 import net.clementraynaud.skoice.common.system.Networks;
 import net.clementraynaud.skoice.common.system.ProximityChannel;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
@@ -79,10 +80,7 @@ public class InterruptSystemTask {
         Networks.clear();
 
         if (this.plugin.isEnabled()) {
-            this.callSystemInterruptionEvent();
+            Skoice.eventBus().fireAsync(new SystemInterruptionEvent());
         }
-    }
-
-    protected void callSystemInterruptionEvent() {
     }
 }

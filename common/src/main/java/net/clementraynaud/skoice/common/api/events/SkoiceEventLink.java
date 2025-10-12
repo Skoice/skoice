@@ -17,9 +17,9 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.spigot.api.events;
+package net.clementraynaud.skoice.common.api.events;
 
-public class SkoiceEventLink extends SkoiceEventMinecraft {
+public abstract class SkoiceEventLink extends SkoiceEventMinecraft {
 
     private final String discordId;
 
