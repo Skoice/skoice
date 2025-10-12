@@ -20,6 +20,8 @@
 package net.clementraynaud.skoice.common.bot;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.api.events.player.PlayerProximityConnectEvent;
+import net.clementraynaud.skoice.common.api.events.system.SystemReadyEvent;
 import net.clementraynaud.skoice.common.commands.CommandInfo;
 import net.clementraynaud.skoice.common.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.common.lang.DiscordLang;
@@ -201,12 +203,9 @@ public class Bot {
             BasePlayer player = this.plugin.getPlayer(UUID.fromString(minecraftId));
             if (player != null) {
                 player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
-                this.callPlayerProximityConnectEvent(minecraftId, member.getId());
+                Skoice.eventBus().fireAsync(new PlayerProximityConnectEvent(minecraftId, member.getId()));
             }
         }
-    }
-
-    protected void callPlayerProximityConnectEvent(String minecraftId, String memberId) {
     }
 
     public void retrieveMutedUsers() {
@@ -291,7 +290,7 @@ public class Bot {
 
                 } else {
                     this.status = BotStatus.READY;
-                    this.callSystemReadyEvent();
+                    Skoice.eventBus().fireAsync(new SystemReadyEvent());
                 }
             }
 
@@ -299,9 +298,6 @@ public class Bot {
         }
 
         this.isStatusAcknowledged = true;
-    }
-
-    protected void callSystemReadyEvent() {
     }
 
     public void updateActivity() {

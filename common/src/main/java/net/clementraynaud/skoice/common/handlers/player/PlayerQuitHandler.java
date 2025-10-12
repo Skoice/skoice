@@ -19,6 +19,8 @@
 
 package net.clementraynaud.skoice.common.handlers.player;
 
+import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.system.LinkedPlayer;
 import net.clementraynaud.skoice.common.system.Networks;
@@ -29,6 +31,10 @@ import java.util.concurrent.CompletionStage;
 public class PlayerQuitHandler {
 
     public CompletionStage<Void> onPlayerQuit(BasePlayer player) {
+        if (Skoice.api().isLinked(player.getUniqueId()) && Skoice.api().isProximityConnected(player.getUniqueId())) {
+            Skoice.eventBus().fireAsync(new PlayerProximityDisconnectEvent(player.getUniqueId().toString()));
+        }
+
         return CompletableFuture.runAsync(() -> {
             LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getFullPlayer().equals(player));
             Networks.getAll().stream()

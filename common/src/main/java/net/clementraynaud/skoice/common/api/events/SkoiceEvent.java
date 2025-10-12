@@ -17,24 +17,8 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.spigot.api.events;
+package net.clementraynaud.skoice.common.api.events;
 
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
+public interface SkoiceEvent {
 
-public class SkoiceEvent extends Event {
-
-    protected static final HandlerList HANDLERS = new HandlerList();
-
-    public SkoiceEvent() {
-    }
-
-    public static HandlerList getHandlerList() {
-        return SkoiceEvent.HANDLERS;
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return SkoiceEvent.HANDLERS;
-    }
 }

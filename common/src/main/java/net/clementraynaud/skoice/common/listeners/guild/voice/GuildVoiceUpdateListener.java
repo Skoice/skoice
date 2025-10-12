@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.common.listeners.guild.voice;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.api.events.player.PlayerProximityDisconnectEvent;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.system.Networks;
@@ -89,11 +90,8 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         if (player != null) {
             Networks.getAll().forEach(network -> network.remove(player));
             player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
-            this.callPlayerProximityDisconnectEvent(minecraftId);
+            Skoice.eventBus().fireAsync(new PlayerProximityDisconnectEvent(minecraftId));
         }
-    }
-
-    protected void callPlayerProximityDisconnectEvent(String minecraftId) {
     }
 
     private void manageMovingToChannel(Member member, AudioChannelUnion audioChannelLeft, AudioChannelUnion audioChannelJoined) {
@@ -135,12 +133,12 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
 
                 if (!voiceChannelJoined.getId().equals(mainVoiceChannelId)) {
                     player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
-                    this.callPlayerProximityDisconnectEvent(minecraftId);
+                    Skoice.eventBus().fireAsync(new PlayerProximityDisconnectEvent(minecraftId));
                 }
 
             } else if (voiceChannelLeft.getId().equals(mainVoiceChannelId)) {
                 player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
-                this.callPlayerProximityDisconnectEvent(minecraftId);
+                Skoice.eventBus().fireAsync(new PlayerProximityDisconnectEvent(minecraftId));
             }
         }
     }

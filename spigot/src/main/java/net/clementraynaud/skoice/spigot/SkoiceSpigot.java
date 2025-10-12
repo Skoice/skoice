@@ -21,13 +21,11 @@ package net.clementraynaud.skoice.spigot;
 
 import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.analytics.AnalyticManager;
-import net.clementraynaud.skoice.common.bot.Bot;
 import net.clementraynaud.skoice.common.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.storage.LinksYamlFile;
 import net.clementraynaud.skoice.spigot.analytics.SpigotAnalyticManager;
-import net.clementraynaud.skoice.spigot.api.SkoiceAPI;
 import net.clementraynaud.skoice.spigot.commands.skoice.SkoiceCommandSpigot;
 import net.clementraynaud.skoice.spigot.hooks.HookManager;
 import net.clementraynaud.skoice.spigot.logger.JULLoggerAdapter;
@@ -50,7 +48,6 @@ public class SkoiceSpigot extends Skoice {
 
     private static final String OUTDATED_MINECRAFT_SERVER_ERROR_MESSAGE = "Skoice only supports Minecraft 1.8 or later. Please update your Minecraft server to use the proximity voice chat.";
     private static BukkitAudiences adventure;
-    private static SkoiceAPI api;
     private final SkoicePluginSpigot plugin;
     private HookManager hookManager;
 
@@ -58,10 +55,6 @@ public class SkoiceSpigot extends Skoice {
         super(new JULLoggerAdapter(plugin.getLogger()), new SpigotTaskScheduler(plugin));
         this.plugin = plugin;
         super.setListenerManager(new SpigotListenerManager(this));
-    }
-
-    public static SkoiceAPI api() {
-        return SkoiceSpigot.api;
     }
 
     public static BukkitAudiences adventure() {
@@ -76,16 +69,9 @@ public class SkoiceSpigot extends Skoice {
             return;
         }
         super.start();
-        SkoiceSpigot.api = new SkoiceAPI(this);
-        this.plugin.getServer().getPluginManager().registerEvents(SkoiceSpigot.api, this.plugin);
         SkoiceSpigot.adventure = BukkitAudiences.create(this.plugin);
         this.hookManager = new HookManager(this);
         this.hookManager.initialize();
-    }
-
-    @Override
-    public Bot createBot() {
-        return new SpigotBot(this);
     }
 
     @Override
