@@ -23,15 +23,14 @@ import net.clementraynaud.skoice.common.util.MapUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.Map;
 
 public class MinecraftLang extends Lang {
 
-    private static final String CHAT_PREFIX = "&d" + "Skoice " + "&8" + "• " + "&7";
-    private static final LegacyComponentSerializer LEGACY_SERIALIZER = LegacyComponentSerializer.legacyAmpersand();
+    private static final String CHAT_PREFIX = "<light_purple>" + "Skoice " + "<dark_gray>" + "• " + "<gray>";
+    private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 
     @Override
     protected String getPath(LangInfo langInfo) {
@@ -39,13 +38,13 @@ public class MinecraftLang extends Lang {
     }
 
     protected void loadFormatter() {
-        super.formatter.set("title", "&f");
-        super.formatter.set("dark", "&8");
-        super.formatter.set("success", "&a");
-        super.formatter.set("error", "&c");
-        super.formatter.set("highlight", "&e");
-        super.formatter.set("interactive", "&b");
-        super.formatter.set("default", "&7");
+        super.formatter.set("title-color", "<white>");
+        super.formatter.set("dark-color", "<dark_gray>");
+        super.formatter.set("success-color", "<green>");
+        super.formatter.set("error-color", "<red>");
+        super.formatter.set("highlight-color", "<yellow>");
+        super.formatter.set("interactive-color", "<aqua>");
+        super.formatter.set("default-color", "<gray>");
 
         super.formatter.set("skoice-minecraft-command", "/skoice");
         super.formatter.set("configure-minecraft-command", "/skoice configure");
@@ -109,30 +108,30 @@ public class MinecraftLang extends Lang {
             if (parts.length == 1
                     || !this.formatter.contains(parts[1])
                     || !"suggest".equals(parts[0]) && !"run".equals(parts[0]) && !"open".equals(parts[0])) {
-                result = result.append(MinecraftLang.LEGACY_SERIALIZER.deserialize(this.formatter.get("default") + string));
+                result = result.append(MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("default") + string));
                 continue;
             }
 
             String value = this.formatter.get(parts[1]);
 
             if ("suggest".equals(parts[0])) {
-                Component hoverText = MinecraftLang.LEGACY_SERIALIZER.deserialize(this.getMessage("interaction.shortcut",
+                Component hoverText = MinecraftLang.MINI_MESSAGE.deserialize(this.getMessage("interaction.shortcut",
                         MapUtil.of("minecraft-command", value)));
-                Component clickableText = MinecraftLang.LEGACY_SERIALIZER.deserialize(this.formatter.get("interactive") + this.getMessage("interaction.here"))
+                Component clickableText = MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("interactive") + this.getMessage("interaction.here"))
                         .hoverEvent(HoverEvent.showText(hoverText))
                         .clickEvent(ClickEvent.suggestCommand(value + " "));
                 result = result.append(clickableText);
             } else if ("run".equals(parts[0])) {
-                Component hoverText = MinecraftLang.LEGACY_SERIALIZER.deserialize(this.getMessage("interaction.execute",
+                Component hoverText = MinecraftLang.MINI_MESSAGE.deserialize(this.getMessage("interaction.execute",
                         MapUtil.of("minecraft-command", value)));
-                Component clickableText = MinecraftLang.LEGACY_SERIALIZER.deserialize(this.formatter.get("interactive") + this.getMessage("interaction.here"))
+                Component clickableText = MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("interactive") + this.getMessage("interaction.here"))
                         .hoverEvent(HoverEvent.showText(hoverText))
                         .clickEvent(ClickEvent.runCommand(value));
                 result = result.append(clickableText);
             } else if ("open".equals(parts[0])) {
-                Component hoverText = MinecraftLang.LEGACY_SERIALIZER.deserialize(this.getMessage("interaction.link",
+                Component hoverText = MinecraftLang.MINI_MESSAGE.deserialize(this.getMessage("interaction.link",
                         MapUtil.of("url", value)));
-                Component clickableText = MinecraftLang.LEGACY_SERIALIZER.deserialize(this.formatter.get("interactive") + this.getMessage("interaction.this-page"))
+                Component clickableText = MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("interactive") + this.getMessage("interaction.this-page"))
                         .hoverEvent(HoverEvent.showText(hoverText))
                         .clickEvent(ClickEvent.openUrl(value));
                 result = result.append(clickableText);
@@ -150,8 +149,7 @@ public class MinecraftLang extends Lang {
         }
 
         String formattedMessage = this.formatter.format(message, args);
-        Component component = MinecraftLang.LEGACY_SERIALIZER.deserialize(formattedMessage);
-        return PlainTextComponentSerializer.plainText().serialize(component);
+        return MinecraftLang.MINI_MESSAGE.stripTags(formattedMessage);
     }
 
     public String getConsoleMessage(String path) {

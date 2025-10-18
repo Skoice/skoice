@@ -20,14 +20,16 @@
 package net.clementraynaud.skoice.common.util;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public final class ComponentUtil {
+
+    private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 
     private ComponentUtil() {
     }
 
     public static Component translateAlternateColorCodes(String message) {
-        return LegacyComponentSerializer.legacyAmpersand().deserialize(message);
+        return ComponentUtil.MINI_MESSAGE.deserialize(message);
     }
 }
