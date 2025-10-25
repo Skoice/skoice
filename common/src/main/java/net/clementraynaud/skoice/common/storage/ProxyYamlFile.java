@@ -17,19 +17,24 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.common.model.minecraft;
+package net.clementraynaud.skoice.common.storage;
 
-import net.clementraynaud.skoice.common.model.JsonModel;
+import net.clementraynaud.skoice.common.Skoice;
 
-public class ProxyInfo extends JsonModel {
+public class ProxyYamlFile extends YamlFile {
 
-    private final String pluginVersion;
+    public static final String ENABLED_FIELD = "enabled";
 
-    public ProxyInfo(String pluginVersion) {
-        this.pluginVersion = pluginVersion;
+    public ProxyYamlFile(Skoice plugin) {
+        super(plugin, "proxy");
     }
 
-    public String getPluginVersion() {
-        return this.pluginVersion;
+    public void saveDefaultValues() {
+        this.setDefault(ProxyYamlFile.ENABLED_FIELD, false);
+    }
+
+    @Override
+    protected void saveHeader() {
+        this.options().header("https://github.com/Skoice/skoice/wiki/Proxy-Guide");
     }
 }

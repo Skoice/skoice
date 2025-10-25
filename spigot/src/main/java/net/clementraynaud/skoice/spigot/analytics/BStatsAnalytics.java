@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.spigot.analytics;
 
 import net.clementraynaud.skoice.common.analytics.AnalyticManager;
+import net.clementraynaud.skoice.common.storage.ProxyYamlFile;
 import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 import net.clementraynaud.skoice.spigot.utils.ChartUtil;
 import org.bstats.bukkit.Metrics;
@@ -55,5 +56,9 @@ public class BStatsAnalytics {
         metrics.addCustomChart(ChartUtil.createDrilldownPie("linkedUsers", linkedUsers, 0, 10, 11));
 
         metrics.addCustomChart(new SimplePie("botStatus", () -> this.plugin.getBot().getStatus().toString()));
+
+        if (this.plugin.getProxyYamlFile() != null) {
+            metrics.addCustomChart(new SimplePie("proxyMode", () -> String.valueOf(this.plugin.getProxyYamlFile().getBoolean(ProxyYamlFile.ENABLED_FIELD))));
+        }
     }
 }

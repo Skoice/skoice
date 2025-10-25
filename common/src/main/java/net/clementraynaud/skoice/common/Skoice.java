@@ -30,6 +30,7 @@ import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.model.scheduler.SkoiceTaskScheduler;
 import net.clementraynaud.skoice.common.storage.LinksYamlFile;
 import net.clementraynaud.skoice.common.storage.LoginNotificationYamlFile;
+import net.clementraynaud.skoice.common.storage.ProxyYamlFile;
 import net.clementraynaud.skoice.common.storage.TempYamlFile;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.storage.config.ConfigYamlFile;
@@ -59,6 +60,7 @@ public abstract class Skoice {
     private LinksYamlFile linksYamlFile;
     private TempYamlFile tempYamlFile;
     private LoginNotificationYamlFile loginNotificationYamlFile;
+    private ProxyYamlFile proxyYamlFile;
     private ListenerManager listenerManager;
     private Bot bot;
     private UpdateNetworksTask updateNetworksTask;
@@ -95,6 +97,11 @@ public abstract class Skoice {
         this.tempYamlFile.load();
         this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
         this.loginNotificationYamlFile.load();
+        this.proxyYamlFile = this.createProxyYamlFile();
+        if (this.proxyYamlFile != null) {
+            this.proxyYamlFile.load();
+            this.proxyYamlFile.saveDefaultValues();
+        }
         Skoice.eventBus = new EventBus();
         Skoice.api = new SkoiceAPI(this);
         Skoice.analyticManager = this.createAnalyticManager();
@@ -122,6 +129,10 @@ public abstract class Skoice {
 
     protected LinksYamlFile createLinksYamlFile() {
         return new LinksYamlFile(this);
+    }
+
+    protected ProxyYamlFile createProxyYamlFile() {
+        return null;
     }
 
     public abstract SkoiceCommand setSkoiceCommand();
@@ -219,6 +230,10 @@ public abstract class Skoice {
 
     public LoginNotificationYamlFile getLoginNotificationYamlFile() {
         return this.loginNotificationYamlFile;
+    }
+
+    public ProxyYamlFile getProxyYamlFile() {
+        return this.proxyYamlFile;
     }
 
     public ListenerManager getListenerManager() {

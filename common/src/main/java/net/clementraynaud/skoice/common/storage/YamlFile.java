@@ -49,11 +49,15 @@ public class YamlFile extends YamlConfiguration {
     }
 
     public void save() {
-        this.options().header(YamlFile.FILE_HEADER);
+        this.saveHeader();
         try {
             this.save(this.file);
         } catch (IOException ignored) {
         }
+    }
+
+    protected void saveHeader() {
+        this.options().header(YamlFile.FILE_HEADER);
     }
 
     @Override
