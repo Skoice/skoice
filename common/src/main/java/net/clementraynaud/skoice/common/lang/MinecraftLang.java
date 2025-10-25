@@ -74,9 +74,9 @@ public class MinecraftLang extends Lang {
         }
 
         message = message.replaceAll("[\"「](.+?)[\"」]",
-                        "\"" + super.formatter.get("highlight") + "$1" + super.formatter.get("default") + "\"")
+                        "\"" + super.formatter.get("highlight-color") + "$1" + super.formatter.get("default-color") + "\"")
                 .replaceAll("\\{([^{}]*?)-url}",
-                        super.formatter.get("interactive") + "$0" + super.formatter.get("default"));
+                        super.formatter.get("interactive-color") + "$0" + super.formatter.get("default-color"));
 
         message = this.formatter.format(message, args);
 
@@ -108,7 +108,7 @@ public class MinecraftLang extends Lang {
             if (parts.length == 1
                     || !this.formatter.contains(parts[1])
                     || !"suggest".equals(parts[0]) && !"run".equals(parts[0]) && !"open".equals(parts[0])) {
-                result = result.append(MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("default") + string));
+                result = result.append(MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("default-color") + string));
                 continue;
             }
 
@@ -117,21 +117,21 @@ public class MinecraftLang extends Lang {
             if ("suggest".equals(parts[0])) {
                 Component hoverText = MinecraftLang.MINI_MESSAGE.deserialize(this.getMessage("interaction.shortcut",
                         MapUtil.of("minecraft-command", value)));
-                Component clickableText = MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("interactive") + this.getMessage("interaction.here"))
+                Component clickableText = MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("interactive-color") + this.getMessage("interaction.here"))
                         .hoverEvent(HoverEvent.showText(hoverText))
                         .clickEvent(ClickEvent.suggestCommand(value + " "));
                 result = result.append(clickableText);
             } else if ("run".equals(parts[0])) {
                 Component hoverText = MinecraftLang.MINI_MESSAGE.deserialize(this.getMessage("interaction.execute",
                         MapUtil.of("minecraft-command", value)));
-                Component clickableText = MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("interactive") + this.getMessage("interaction.here"))
+                Component clickableText = MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("interactive-color") + this.getMessage("interaction.here"))
                         .hoverEvent(HoverEvent.showText(hoverText))
                         .clickEvent(ClickEvent.runCommand(value));
                 result = result.append(clickableText);
             } else if ("open".equals(parts[0])) {
                 Component hoverText = MinecraftLang.MINI_MESSAGE.deserialize(this.getMessage("interaction.link",
                         MapUtil.of("url", value)));
-                Component clickableText = MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("interactive") + this.getMessage("interaction.this-page"))
+                Component clickableText = MinecraftLang.MINI_MESSAGE.deserialize(this.formatter.get("interactive-color") + this.getMessage("interaction.this-page"))
                         .hoverEvent(HoverEvent.showText(hoverText))
                         .clickEvent(ClickEvent.openUrl(value));
                 result = result.append(clickableText);
