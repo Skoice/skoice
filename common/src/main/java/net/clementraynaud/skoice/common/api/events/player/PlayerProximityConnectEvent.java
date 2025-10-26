@@ -21,6 +21,24 @@ package net.clementraynaud.skoice.common.api.events.player;
 
 import net.clementraynaud.skoice.common.api.events.SkoiceEventLink;
 
+/**
+ * Called when a player connects to proximity chat.
+ * <p>
+ * After this event, {@link net.clementraynaud.skoice.common.SkoiceAPI#isProximityConnected}
+ * will return true for this player.
+ *
+ * <p><b>Example usage:</b>
+ * <pre>{@code
+ * eventBus.subscribe(PlayerProximityConnectEvent.class, event -> {
+ *     UUID minecraftId = event.getMinecraftId();
+ *     String discordId = event.getDiscordId();
+ *     // Player connected to proximity chat
+ * });
+ * }</pre>
+ *
+ * @see net.clementraynaud.skoice.common.SkoiceAPI#isProximityConnected
+ * @see PlayerProximityDisconnectEvent
+ */
 public class PlayerProximityConnectEvent extends SkoiceEventLink {
 
     public PlayerProximityConnectEvent(String minecraftId, String discordId) {

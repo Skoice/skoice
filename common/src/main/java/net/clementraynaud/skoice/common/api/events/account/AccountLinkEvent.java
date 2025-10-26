@@ -21,6 +21,24 @@ package net.clementraynaud.skoice.common.api.events.account;
 
 import net.clementraynaud.skoice.common.api.events.SkoiceEventLink;
 
+/**
+ * Called when a Minecraft account is linked to a Discord account through the Skoice in-game linking process.
+ * <p>
+ * This event is fired after a successful link is established between a Minecraft
+ * player and a Discord user through the in-game command. It is not fired when using
+ * {@link net.clementraynaud.skoice.common.SkoiceAPI#linkUser}.
+ *
+ * <p><b>Example usage:</b>
+ * <pre>{@code
+ * eventBus.subscribe(AccountLinkEvent.class, event -> {
+ *     UUID minecraftId = event.getMinecraftId();
+ *     String discordId = event.getDiscordId();
+ *     // Handle the account linking
+ * });
+ * }</pre>
+ *
+ * @see AccountUnlinkEvent
+ */
 public class AccountLinkEvent extends SkoiceEventLink {
 
     public AccountLinkEvent(String minecraftId, String discordId) {

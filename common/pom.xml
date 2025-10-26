@@ -161,6 +161,24 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.12.0</version>
+                <configuration>
+                    <sourcepath>src/main/java</sourcepath>
+                    <sourceFileIncludes>
+                        <include>net/clementraynaud/skoice/common/api/**/*.java</include>
+                        <include>net/clementraynaud/skoice/common/SkoiceAPI.java</include>
+                        <include>net/clementraynaud/skoice/common/EventBus.java</include>
+                        <include>net/clementraynaud/skoice/common/EventHandler.java</include>
+                    </sourceFileIncludes>
+                    <show>public</show>
+                    <doctitle>Skoice API Documentation</doctitle>
+                    <windowtitle>Skoice API</windowtitle>
+                    <overview>${project.basedir}/src/main/javadoc/overview.html</overview>
+                </configuration>
+            </plugin>
         </plugins>
         <resources>
             <resource>

@@ -74,10 +74,47 @@ public abstract class Skoice {
         return Skoice.analyticManager;
     }
 
+    /**
+     * Gets the Skoice API instance.
+     * <p>
+     * This is the main entry point for interacting with Skoice's developer API.
+     * The API provides methods for checking player states, managing account links,
+     * and querying system status.
+     *
+     * <p><b>Example usage:</b>
+     * <pre>{@code
+     * SkoiceAPI api = Skoice.api();
+     * if (api != null && api.isSystemReady()) {
+     *     boolean isConnected = api.isProximityConnected(playerUuid);
+     * }
+     * }</pre>
+     *
+     * @return the Skoice API instance, or null if not initialized
+     * @see SkoiceAPI
+     */
     public static SkoiceAPI api() {
         return Skoice.api;
     }
 
+    /**
+     * Gets the event bus instance.
+     * <p>
+     * The event bus allows you to subscribe to various Skoice events such as
+     * player proximity connections, account linking, and system state changes.
+     *
+     * <p><b>Example usage:</b>
+     * <pre>{@code
+     * EventBus eventBus = Skoice.eventBus();
+     * if (eventBus != null) {
+     *     eventBus.subscribe(PlayerProximityConnectEvent.class, event -> {
+     *         // Handle player connecting to proximity chat
+     *     });
+     * }
+     * }</pre>
+     *
+     * @return the event bus instance, or null if not initialized
+     * @see EventBus
+     */
     public static EventBus eventBus() {
         return Skoice.eventBus;
     }

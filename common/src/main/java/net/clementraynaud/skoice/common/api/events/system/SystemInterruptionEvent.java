@@ -21,6 +21,25 @@ package net.clementraynaud.skoice.common.api.events.system;
 
 import net.clementraynaud.skoice.common.api.events.SkoiceEvent;
 
+/**
+ * Called when the proximity voice chat system is interrupted.
+ * <p>
+ * This event is fired when proximity voice chat stops running. After this event,
+ * {@link net.clementraynaud.skoice.common.SkoiceAPI#isSystemReady} will return false,
+ * and all players will be considered disconnected from proximity chat.
+ *
+ * <p>A {@link SystemReadyEvent} will be fired if proximity chat becomes operational again.
+ *
+ * <p><b>Example usage:</b>
+ * <pre>{@code
+ * eventBus.subscribe(SystemInterruptionEvent.class, event -> {
+ *     // Proximity chat is no longer running
+ * });
+ * }</pre>
+ *
+ * @see net.clementraynaud.skoice.common.SkoiceAPI#isSystemReady
+ * @see SystemReadyEvent
+ */
 public class SystemInterruptionEvent implements SkoiceEvent {
 
 }

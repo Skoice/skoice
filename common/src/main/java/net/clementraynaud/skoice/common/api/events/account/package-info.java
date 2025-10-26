@@ -17,35 +17,13 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.common.api.events;
-
-import java.util.UUID;
-
 /**
- * Base class for all Skoice events involving a Minecraft player.
+ * Events related to Discord-Minecraft account linking and unlinking.
  * <p>
- * This abstract class provides access to the Minecraft player's UUID
- * for events related to specific players.
+ * This package contains events that are fired when players link or unlink their
+ * Minecraft accounts with their Discord accounts.
  *
- * @see SkoiceEvent
+ * @see net.clementraynaud.skoice.common.api.events.account.AccountLinkEvent
+ * @see net.clementraynaud.skoice.common.api.events.account.AccountUnlinkEvent
  */
-public abstract class SkoiceEventMinecraft implements SkoiceEvent {
-
-    private UUID minecraftId;
-
-    protected SkoiceEventMinecraft(String minecraftId) {
-        try {
-            this.minecraftId = UUID.fromString(minecraftId);
-        } catch (IllegalArgumentException ignored) {
-        }
-    }
-
-    /**
-     * Gets the Minecraft player's UUID.
-     *
-     * @return the player's UUID, or null if the UUID string was invalid
-     */
-    public UUID getMinecraftId() {
-        return this.minecraftId;
-    }
-}
+package net.clementraynaud.skoice.common.api.events.account;

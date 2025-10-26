@@ -19,6 +19,37 @@
 
 package net.clementraynaud.skoice.common.api.events;
 
+/**
+ * Base marker interface for all Skoice events.
+ * <p>
+ * All events fired by Skoice implement this interface. You can subscribe to
+ * any event type through the {@link net.clementraynaud.skoice.common.EventBus}.
+ *
+ * <h2>Event Types</h2>
+ * <p>Skoice provides several categories of events:
+ * <ul>
+ *   <li><b>Player Events:</b> Events related to player proximity chat connections
+ *       <ul>
+ *         <li>{@link net.clementraynaud.skoice.common.api.events.player.PlayerProximityConnectEvent}</li>
+ *         <li>{@link net.clementraynaud.skoice.common.api.events.player.PlayerProximityDisconnectEvent}</li>
+ *       </ul>
+ *   </li>
+ *   <li><b>Account Events:</b> Events related to Discord-Minecraft account linking
+ *       <ul>
+ *         <li>{@link net.clementraynaud.skoice.common.api.events.account.AccountLinkEvent}</li>
+ *         <li>{@link net.clementraynaud.skoice.common.api.events.account.AccountUnlinkEvent}</li>
+ *       </ul>
+ *   </li>
+ *   <li><b>System Events:</b> Events related to Skoice system state
+ *       <ul>
+ *         <li>{@link net.clementraynaud.skoice.common.api.events.system.SystemReadyEvent}</li>
+ *         <li>{@link net.clementraynaud.skoice.common.api.events.system.SystemInterruptionEvent}</li>
+ *       </ul>
+ *   </li>
+ * </ul>
+ *
+ * @see net.clementraynaud.skoice.common.EventBus
+ */
 public interface SkoiceEvent {
 
 }

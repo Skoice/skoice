@@ -19,15 +19,28 @@
 
 package net.clementraynaud.skoice.common.api.events;
 
+/**
+ * Base class for all Skoice events involving both a Minecraft player and a Discord user.
+ * <p>
+ * This abstract class extends {@link SkoiceEventMinecraft} and adds Discord user information
+ * for events that involve a link between Minecraft and Discord accounts.
+ *
+ * @see SkoiceEventMinecraft
+ */
 public abstract class SkoiceEventLink extends SkoiceEventMinecraft {
 
     private final String discordId;
 
-    public SkoiceEventLink(String minecraftId, String discordId) {
+    protected SkoiceEventLink(String minecraftId, String discordId) {
         super(minecraftId);
         this.discordId = discordId;
     }
 
+    /**
+     * Gets the Discord user's ID.
+     *
+     * @return the Discord user ID
+     */
     public String getDiscordId() {
         return this.discordId;
     }
