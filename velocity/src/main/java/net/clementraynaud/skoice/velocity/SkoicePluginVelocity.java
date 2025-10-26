@@ -27,21 +27,16 @@ import com.velocitypowered.api.event.player.ServerPostConnectEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
-import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
-import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import net.clementraynaud.skoice.common.model.JsonModel;
 import net.clementraynaud.skoice.common.model.minecraft.PlayerInfo;
-import net.clementraynaud.skoice.common.model.minecraft.ProxyInfo;
 import net.clementraynaud.skoice.velocity.minecraft.VelocityBasePlayer;
 import org.slf4j.Logger;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -56,14 +51,12 @@ public class SkoicePluginVelocity {
     @DataDirectory
     @Inject
     private Path dataDirectory;
-    private String serverInfo;
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         this.proxy.getChannelRegistrar().register(SkoicePluginVelocity.IDENTIFIER);
         this.skoice = new SkoiceVelocity(this);
         this.skoice.start();
-        this.serverInfo = JsonModel.toJson(new ProxyInfo(this.skoice.getVersion()));
     }
 
     public Path getDataDirectory() {
@@ -91,15 +84,6 @@ public class SkoicePluginVelocity {
         } else {
             this.skoice.getListenerManager().onPlayerJoin(new VelocityBasePlayer(event.getPlayer()), true);
         }
-
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        try {
-            out.writeUTF(this.serverInfo);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.sendPluginMessageToBackendUsingPlayer(event.getPlayer(), SkoicePluginVelocity.IDENTIFIER, b.toByteArray());
     }
 
     @Subscribe
@@ -126,12 +110,6 @@ public class SkoicePluginVelocity {
             info.setWorld(info.getWorld() + ":" + backend.getServerInfo().getName());
             this.skoice.setPlayerInfo(info);
         }
-    }
-
-
-    public boolean sendPluginMessageToBackendUsingPlayer(Player player, ChannelIdentifier identifier, byte[] data) {
-        var connection = player.getCurrentServer();
-        return connection.map(serverConnection -> serverConnection.sendPluginMessage(identifier, data)).orElse(false);
     }
 
     public Logger getLogger() {

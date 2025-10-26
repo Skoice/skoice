@@ -21,6 +21,23 @@ package net.clementraynaud.skoice.common.api.events.account;
 
 import net.clementraynaud.skoice.common.api.events.SkoiceEventMinecraft;
 
+/**
+ * Called when a Minecraft account is unlinked from its Discord account through in-game or Discord commands.
+ * <p>
+ * This event is fired after a link between a Minecraft player and Discord user
+ * has been removed through the in-game or Discord commands. It is not fired when using
+ * {@link net.clementraynaud.skoice.common.SkoiceAPI#unlinkUser}.
+ *
+ * <p><b>Example usage:</b>
+ * <pre>{@code
+ * eventBus.subscribe(AccountUnlinkEvent.class, event -> {
+ *     UUID minecraftId = event.getMinecraftId();
+ *     // Handle the account unlinking
+ * });
+ * }</pre>
+ *
+ * @see AccountLinkEvent
+ */
 public class AccountUnlinkEvent extends SkoiceEventMinecraft {
 
     public AccountUnlinkEvent(String minecraftId) {

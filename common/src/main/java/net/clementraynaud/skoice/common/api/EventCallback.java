@@ -21,8 +21,33 @@ package net.clementraynaud.skoice.common.api;
 
 import net.clementraynaud.skoice.common.api.events.SkoiceEvent;
 
+/**
+ * A functional interface for handling Skoice events.
+ * <p>
+ * This interface can be used as an alternative to {@link java.util.function.Consumer}
+ * when subscribing to events via {@link net.clementraynaud.skoice.common.EventBus#subscribeCallback(Class, EventCallback)}.
+ *
+ * <p><b>Example usage:</b>
+ * <pre>{@code
+ * EventCallback<PlayerProximityConnectEvent> callback = event -> {
+ *     UUID playerId = event.getMinecraftId();
+ *     String discordId = event.getDiscordId();
+ *     // Handle the event
+ * };
+ *
+ * eventBus.subscribeCallback(PlayerProximityConnectEvent.class, callback);
+ * }</pre>
+ *
+ * @param <T> the type of event this callback handles
+ * @see net.clementraynaud.skoice.common.EventBus#subscribeCallback(Class, EventCallback)
+ */
 @FunctionalInterface
 public interface EventCallback<T extends SkoiceEvent> {
 
+    /**
+     * Handles the given event.
+     *
+     * @param event the event to handle
+     */
     void handle(T event);
 }

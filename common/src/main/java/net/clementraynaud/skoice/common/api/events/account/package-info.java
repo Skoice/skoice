@@ -17,19 +17,13 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.common.model.minecraft;
-
-import net.clementraynaud.skoice.common.model.JsonModel;
-
-public class ProxyInfo extends JsonModel {
-
-    private final String pluginVersion;
-
-    public ProxyInfo(String pluginVersion) {
-        this.pluginVersion = pluginVersion;
-    }
-
-    public String getPluginVersion() {
-        return this.pluginVersion;
-    }
-}
+/**
+ * Events related to Discord-Minecraft account linking and unlinking.
+ * <p>
+ * This package contains events that are fired when players link or unlink their
+ * Minecraft accounts with their Discord accounts.
+ *
+ * @see net.clementraynaud.skoice.common.api.events.account.AccountLinkEvent
+ * @see net.clementraynaud.skoice.common.api.events.account.AccountUnlinkEvent
+ */
+package net.clementraynaud.skoice.common.api.events.account;

@@ -6,7 +6,7 @@
     <parent>
         <groupId>net.clementraynaud</groupId>
         <artifactId>skoice</artifactId>
-        <version>3.2.8</version>
+        <version>3.2.9</version>
     </parent>
 
     <artifactId>skoice.common</artifactId>
@@ -26,7 +26,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.6.1</version>
                 <configuration>
                     <minimizeJar>true</minimizeJar>
                     <relocations>
@@ -161,6 +161,24 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.12.0</version>
+                <configuration>
+                    <sourcepath>src/main/java</sourcepath>
+                    <sourceFileIncludes>
+                        <include>net/clementraynaud/skoice/common/api/**/*.java</include>
+                        <include>net/clementraynaud/skoice/common/SkoiceAPI.java</include>
+                        <include>net/clementraynaud/skoice/common/EventBus.java</include>
+                        <include>net/clementraynaud/skoice/common/EventHandler.java</include>
+                    </sourceFileIncludes>
+                    <show>public</show>
+                    <doctitle>Skoice API Documentation</doctitle>
+                    <windowtitle>Skoice API</windowtitle>
+                    <overview>${project.basedir}/src/main/javadoc/overview.html</overview>
+                </configuration>
+            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -191,7 +209,7 @@
         </dependency>
         <dependency>
             <groupId>com.bugsnag</groupId>
-            <version>3.7.2</version>
+            <version>3.8.0</version>
             <artifactId>bugsnag</artifactId>
         </dependency>
         <dependency>
@@ -208,7 +226,7 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.13.1</version>
+            <version>2.13.2</version>
         </dependency>
 
         <dependency>

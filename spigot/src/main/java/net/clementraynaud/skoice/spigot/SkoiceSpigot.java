@@ -25,6 +25,7 @@ import net.clementraynaud.skoice.common.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.storage.LinksYamlFile;
+import net.clementraynaud.skoice.common.storage.ProxyYamlFile;
 import net.clementraynaud.skoice.spigot.analytics.SpigotAnalyticManager;
 import net.clementraynaud.skoice.spigot.commands.skoice.SkoiceCommandSpigot;
 import net.clementraynaud.skoice.spigot.hooks.HookManager;
@@ -78,6 +79,11 @@ public class SkoiceSpigot extends Skoice {
     @Override
     public LinksYamlFile createLinksYamlFile() {
         return new SpigotLinksYamlFile(this);
+    }
+
+    @Override
+    protected ProxyYamlFile createProxyYamlFile() {
+        return new ProxyYamlFile(this);
     }
 
     @Override

@@ -17,35 +17,21 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.common.api.events;
-
-import java.util.UUID;
-
 /**
- * Base class for all Skoice events involving a Minecraft player.
+ * Core event types and base classes for the Skoice event system.
  * <p>
- * This abstract class provides access to the Minecraft player's UUID
- * for events related to specific players.
+ * This package contains the base interfaces and abstract classes that all Skoice
+ * events extend from. Concrete event implementations are organized into subpackages
+ * by category.
  *
- * @see SkoiceEvent
+ * <h2>Event Categories</h2>
+ * <ul>
+ *   <li>{@link net.clementraynaud.skoice.common.api.events.player} - Player proximity chat events</li>
+ *   <li>{@link net.clementraynaud.skoice.common.api.events.account} - Account linking events</li>
+ *   <li>{@link net.clementraynaud.skoice.common.api.events.system} - System state events</li>
+ * </ul>
+ *
+ * @see net.clementraynaud.skoice.common.EventBus
+ * @see net.clementraynaud.skoice.common.api.events.SkoiceEvent
  */
-public abstract class SkoiceEventMinecraft implements SkoiceEvent {
-
-    private UUID minecraftId;
-
-    protected SkoiceEventMinecraft(String minecraftId) {
-        try {
-            this.minecraftId = UUID.fromString(minecraftId);
-        } catch (IllegalArgumentException ignored) {
-        }
-    }
-
-    /**
-     * Gets the Minecraft player's UUID.
-     *
-     * @return the player's UUID, or null if the UUID string was invalid
-     */
-    public UUID getMinecraftId() {
-        return this.minecraftId;
-    }
-}
+package net.clementraynaud.skoice.common.api.events;

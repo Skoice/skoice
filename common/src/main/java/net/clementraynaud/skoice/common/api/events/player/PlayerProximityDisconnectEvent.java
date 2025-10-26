@@ -21,6 +21,23 @@ package net.clementraynaud.skoice.common.api.events.player;
 
 import net.clementraynaud.skoice.common.api.events.SkoiceEventMinecraft;
 
+/**
+ * Called when a player disconnects from proximity chat.
+ * <p>
+ * After this event, {@link net.clementraynaud.skoice.common.SkoiceAPI#isProximityConnected}
+ * will return false for this player.
+ *
+ * <p><b>Example usage:</b>
+ * <pre>{@code
+ * eventBus.subscribe(PlayerProximityDisconnectEvent.class, event -> {
+ *     UUID minecraftId = event.getMinecraftId();
+ *     // Player disconnected from proximity chat
+ * });
+ * }</pre>
+ *
+ * @see net.clementraynaud.skoice.common.SkoiceAPI#isProximityConnected
+ * @see PlayerProximityConnectEvent
+ */
 public class PlayerProximityDisconnectEvent extends SkoiceEventMinecraft {
 
     public PlayerProximityDisconnectEvent(String minecraftId) {

@@ -21,6 +21,25 @@ package net.clementraynaud.skoice.common.api.events.system;
 
 import net.clementraynaud.skoice.common.api.events.SkoiceEvent;
 
+/**
+ * Called when the proximity voice chat system becomes ready.
+ * <p>
+ * This event is fired when proximity voice chat starts running. After this event,
+ * {@link net.clementraynaud.skoice.common.SkoiceAPI#isSystemReady} will return true.
+ *
+ * <p>This event is useful for performing tasks that should only occur when proximity
+ * chat is active, such as enforcing voice chat requirements.
+ *
+ * <p><b>Example usage:</b>
+ * <pre>{@code
+ * eventBus.subscribe(SystemReadyEvent.class, event -> {
+ *     // Proximity chat is now running
+ * });
+ * }</pre>
+ *
+ * @see net.clementraynaud.skoice.common.SkoiceAPI#isSystemReady
+ * @see SystemInterruptionEvent
+ */
 public class SystemReadyEvent implements SkoiceEvent {
 
 }

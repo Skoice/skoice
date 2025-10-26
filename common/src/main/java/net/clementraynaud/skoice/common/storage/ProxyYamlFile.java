@@ -17,35 +17,24 @@
  * along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.clementraynaud.skoice.common.api.events;
+package net.clementraynaud.skoice.common.storage;
 
-import java.util.UUID;
+import net.clementraynaud.skoice.common.Skoice;
 
-/**
- * Base class for all Skoice events involving a Minecraft player.
- * <p>
- * This abstract class provides access to the Minecraft player's UUID
- * for events related to specific players.
- *
- * @see SkoiceEvent
- */
-public abstract class SkoiceEventMinecraft implements SkoiceEvent {
+public class ProxyYamlFile extends YamlFile {
 
-    private UUID minecraftId;
+    public static final String ENABLED_FIELD = "enabled";
 
-    protected SkoiceEventMinecraft(String minecraftId) {
-        try {
-            this.minecraftId = UUID.fromString(minecraftId);
-        } catch (IllegalArgumentException ignored) {
-        }
+    public ProxyYamlFile(Skoice plugin) {
+        super(plugin, "proxy");
     }
 
-    /**
-     * Gets the Minecraft player's UUID.
-     *
-     * @return the player's UUID, or null if the UUID string was invalid
-     */
-    public UUID getMinecraftId() {
-        return this.minecraftId;
+    public void saveDefaultValues() {
+        this.setDefault(ProxyYamlFile.ENABLED_FIELD, false);
+    }
+
+    @Override
+    protected void saveHeader() {
+        this.options().header("https://github.com/Skoice/skoice/wiki/Proxy-Guide");
     }
 }
