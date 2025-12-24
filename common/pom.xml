@@ -197,9 +197,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.github.JDA-Fork</groupId>
+            <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>8909551e4f</version>
+            <version>6.2.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>

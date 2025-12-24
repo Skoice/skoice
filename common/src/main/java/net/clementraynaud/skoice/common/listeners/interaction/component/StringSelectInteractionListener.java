@@ -28,7 +28,7 @@ import net.clementraynaud.skoice.common.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.common.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.label.Label;
 import net.dv8tion.jda.api.components.selections.SelectOption;
 import net.dv8tion.jda.api.components.textinput.TextInput;
 import net.dv8tion.jda.api.components.textinput.TextInputStyle;
@@ -37,7 +37,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.modals.Modal;
+import net.dv8tion.jda.api.modals.Modal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,22 +109,23 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     } else {
                         if ("new-voice-channel".equals(event.getSelectedOptions().get(0).getValue())) {
                             TextInput categoryName = TextInput.create("category-name",
-                                            this.plugin.getBot().getLang().getMessage("text-input.category-name.label"),
                                             TextInputStyle.SHORT)
                                     .setValue(this.plugin.getBot().getLang().getMessage("text-input.category-name.default-value",
                                             DiscordLang.MAX_SHORT_TEXT_INPUT_VALUE_LENGTH))
                                     .setRequiredRange(1, 25)
                                     .build();
                             TextInput voiceChannelName = TextInput.create("voice-channel-name",
-                                            this.plugin.getBot().getLang().getMessage("text-input.voice-channel-name.label"),
                                             TextInputStyle.SHORT)
                                     .setValue(this.plugin.getBot().getLang().getMessage("text-input.voice-channel-name.default-value",
                                             DiscordLang.MAX_SHORT_TEXT_INPUT_VALUE_LENGTH))
                                     .setRequiredRange(1, 25)
                                     .build();
-                            Modal modal = Modal.create("new-voice-channel",
+                            net.dv8tion.jda.api.modals.Modal modal = net.dv8tion.jda.api.modals.Modal.create("new-voice-channel",
                                             this.plugin.getBot().getLang().getMessage("menu.voice-channel.select-menu.select-option.new-voice-channel.label"))
-                                    .addComponents(ActionRow.of(categoryName), ActionRow.of(voiceChannelName))
+                                    .addComponents(
+                                            Label.of(this.plugin.getBot().getLang().getMessage("text-input.category-name.label"), categoryName),
+                                            Label.of(this.plugin.getBot().getLang().getMessage("text-input.voice-channel-name.label"), voiceChannelName)
+                                    )
                                     .build();
                             event.replyModal(modal).queue();
                         } else {
@@ -165,20 +166,21 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         });
                     } else if ("customized".equals(event.getSelectedOptions().get(0).getValue())) {
                         TextInput horizontalRadius = TextInput.create("horizontal-radius",
-                                        this.plugin.getBot().getLang().getMessage("text-input.horizontal-radius.label"),
                                         TextInputStyle.SHORT)
                                 .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.HORIZONTAL_RADIUS.toString()))
                                 .setRequiredRange(1, 3)
                                 .build();
                         TextInput verticalRadius = TextInput.create("vertical-radius",
-                                        this.plugin.getBot().getLang().getMessage("text-input.vertical-radius.label"),
                                         TextInputStyle.SHORT)
                                 .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.VERTICAL_RADIUS.toString()))
                                 .setRequiredRange(1, 3)
                                 .build();
                         Modal modal = Modal.create("customized",
                                         this.plugin.getBot().getLang().getMessage("field.customized.title"))
-                                .addComponents(ActionRow.of(horizontalRadius), ActionRow.of(verticalRadius))
+                                .addComponents(
+                                        Label.of(this.plugin.getBot().getLang().getMessage("text-input.horizontal-radius.label"), horizontalRadius),
+                                        Label.of(this.plugin.getBot().getLang().getMessage("text-input.vertical-radius.label"), verticalRadius)
+                                )
                                 .build();
                         event.replyModal(modal).queue();
                     }

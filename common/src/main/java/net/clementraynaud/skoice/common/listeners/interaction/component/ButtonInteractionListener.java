@@ -48,16 +48,12 @@ public class ButtonInteractionListener extends ListenerAdapter {
             return;
         }
 
-        String buttonId = event.getButton().getId();
-        if (buttonId == null) {
-            return;
-        }
-
         if (!ConfigurationMenus.contains(event.getMessageId())) {
             new ConfigurationMenu(this.plugin.getBot(), event.getMessageId());
         }
 
         Member member = event.getMember();
+        String buttonId = event.getComponentId();
 
         if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
             if ("configure-now".equals(buttonId)) {
