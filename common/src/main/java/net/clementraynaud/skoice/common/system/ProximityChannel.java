@@ -81,17 +81,15 @@ public class ProximityChannel {
     }
 
     public void delete() {
+        ProximityChannels.remove(this);
+
         VoiceChannel channel = this.getChannel();
         if (channel != null) {
-            channel.delete().queue(null, new ErrorHandler().handle(ErrorResponse.UNKNOWN_CHANNEL, e ->
-                    ProximityChannels.remove(this)
-            ));
-        } else {
-            ProximityChannels.remove(this);
+            channel.delete().queue(null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_CHANNEL));
         }
     }
 
-    public int getTheoreticalSize() {
+    public int getSize() {
         VoiceChannel channel = this.getChannel();
         if (channel == null) {
             return 0;

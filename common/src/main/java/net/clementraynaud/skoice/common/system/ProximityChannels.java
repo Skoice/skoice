@@ -66,7 +66,7 @@ public final class ProximityChannels {
 
         ProximityChannels.PROXIMITY_CHANNEL_SET.stream()
                 .filter(proximityChannel -> proximityChannel.getChannel() != null
-                        && proximityChannel.getTheoreticalSize() == 0)
+                        && proximityChannel.getSize() == 0)
                 .forEach(proximityChannel -> {
                     if (ProximityChannels.getAll().size() > possibleNetworks + ProximityChannels.EXTRA_CHANNELS
                             || possibleUsers == 0 && possibleIsolatedUsers == 0) {
