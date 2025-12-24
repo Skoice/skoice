@@ -44,7 +44,14 @@ public class Network {
     public void build() {
         this.proximityChannel = ProximityChannels.getAll().stream()
                 .filter(channel -> !Networks.getProximityChannels().contains(channel))
-                .filter(channel -> !ProximityChannels.getIsolationChannelMap().containsValue(channel))
+                .filter(channel ->
+                        ProximityChannels.getIsolationChannelMap().entrySet().stream()
+                                .filter(entry -> entry.getValue().equals(channel))
+                                .allMatch(entry ->
+                                        this.players.stream()
+                                                .anyMatch(p -> p.getDiscordId().equals(entry.getKey()))
+                                )
+                )
                 .min(Comparator.comparing(ProximityChannel::getChannelId))
                 .orElseGet(() -> new ProximityChannel(this.plugin, this));
     }

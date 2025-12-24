@@ -95,6 +95,8 @@ public class UpdateNetworksTask {
             this.mergeNetworks();
             this.manageMoves();
 
+            Networks.clean();
+
             Set<Member> connectedMembers = ProximityChannels.getInitialized().stream()
                     .map(ProximityChannel::getChannel)
                     .filter(Objects::nonNull)
@@ -178,8 +180,6 @@ public class UpdateNetworksTask {
             }
 
             LinkedPlayer.sendActionBarAlerts();
-
-            Networks.clean();
 
             int possibleUsers = (int) connectedMembers.stream()
                     .map(Member::getId)
