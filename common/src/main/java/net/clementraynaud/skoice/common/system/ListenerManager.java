@@ -32,7 +32,6 @@ import net.clementraynaud.skoice.common.listeners.guild.member.GuildMemberRoleAd
 import net.clementraynaud.skoice.common.listeners.guild.member.GuildMemberRoleRemoveListener;
 import net.clementraynaud.skoice.common.listeners.guild.override.GenericPermissionOverrideListener;
 import net.clementraynaud.skoice.common.listeners.guild.update.GuildUpdateMFALevelListener;
-import net.clementraynaud.skoice.common.listeners.guild.voice.GuildVoiceGuildMuteListener;
 import net.clementraynaud.skoice.common.listeners.guild.voice.GuildVoiceUpdateListener;
 import net.clementraynaud.skoice.common.listeners.interaction.ModalInteractionListener;
 import net.clementraynaud.skoice.common.listeners.interaction.command.SlashCommandInteractionListener;
@@ -50,7 +49,6 @@ public abstract class ListenerManager {
     protected final Skoice plugin;
     protected final PlayerQuitHandler playerQuitHandler;
     private final PlayerJoinHandler playerJoinHandler;
-    private final GuildVoiceGuildMuteListener guildVoiceGuildMuteListener;
     private final GuildVoiceUpdateListener guildVoiceUpdateListener;
     private final GenericChannelListener genericChannelListener;
 
@@ -58,7 +56,6 @@ public abstract class ListenerManager {
         this.plugin = plugin;
         this.playerQuitHandler = new PlayerQuitHandler();
         this.playerJoinHandler = this.createPlayerJoinHandler(plugin);
-        this.guildVoiceGuildMuteListener = new GuildVoiceGuildMuteListener(this.plugin);
         this.guildVoiceUpdateListener = this.createGuildVoiceUpdate(this.plugin);
         this.genericChannelListener = new GenericChannelListener(this.plugin);
     }
@@ -91,7 +88,6 @@ public abstract class ListenerManager {
             this.plugin.getBot().getVoiceChannel().notifyUnlinkedUsers();
             this.plugin.getBot().getVoiceChannel().setStatus();
             this.plugin.getBot().getVoiceChannel().updatePermissions();
-            this.plugin.getBot().updateVoiceState();
             if (!ProximityChannels.getInitialized().isEmpty()) {
                 this.plugin.getBot().retrieveProximityChannels();
             }
@@ -139,7 +135,6 @@ public abstract class ListenerManager {
 
     public void registerBotListeners() {
         this.plugin.getBot().getJDA().addEventListener(
-                this.guildVoiceGuildMuteListener,
                 this.guildVoiceUpdateListener,
                 this.genericChannelListener
         );
@@ -147,7 +142,6 @@ public abstract class ListenerManager {
 
     public void unregisterBotListeners() {
         this.plugin.getBot().getJDA().removeEventListener(
-                this.guildVoiceGuildMuteListener,
                 this.guildVoiceUpdateListener,
                 this.genericChannelListener
         );

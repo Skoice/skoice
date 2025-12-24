@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.common.system;
 
 
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -27,57 +28,55 @@ import java.util.stream.Collectors;
 public final class ProximityChannels {
 
     private static final int EXTRA_CHANNELS = 1;
-    private static final Set<ProximityChannel> proximityChannelSet = ConcurrentHashMap.newKeySet();
+    private static final Set<ProximityChannel> PROXIMITY_CHANNEL_SET = ConcurrentHashMap.newKeySet();
+    private static final Map<String, ProximityChannel> ISOLATION_CHANNEL_MAP = new ConcurrentHashMap<>();
 
     private ProximityChannels() {
     }
 
     public static Set<ProximityChannel> getAll() {
-
-        return ProximityChannels.proximityChannelSet;
+        return ProximityChannels.PROXIMITY_CHANNEL_SET;
     }
 
     public static Set<ProximityChannel> getInitialized() {
-
-        return ProximityChannels.proximityChannelSet.stream()
+        return ProximityChannels.PROXIMITY_CHANNEL_SET.stream()
                 .filter(ProximityChannel::isInitialized)
                 .collect(Collectors.toSet());
     }
 
-    public static void add(ProximityChannel proximityChannel) {
+    public static Map<String, ProximityChannel> getIsolationChannelMap() {
+        return ProximityChannels.ISOLATION_CHANNEL_MAP;
+    }
 
-        ProximityChannels.proximityChannelSet.add(proximityChannel);
+    public static void add(ProximityChannel proximityChannel) {
+        ProximityChannels.PROXIMITY_CHANNEL_SET.add(proximityChannel);
     }
 
     public static void remove(ProximityChannel proximityChannel) {
-
-        ProximityChannels.proximityChannelSet.remove(proximityChannel);
+        ProximityChannels.PROXIMITY_CHANNEL_SET.remove(proximityChannel);
     }
 
     public static void remove(String channelId) {
-
-        ProximityChannels.proximityChannelSet.removeIf(proximityChannel ->
+        ProximityChannels.PROXIMITY_CHANNEL_SET.removeIf(proximityChannel ->
                 proximityChannel.getChannelId().equals(channelId));
     }
 
-    public static void clean(int possibleUsers) {
+    public static void clean(int possibleUsers, int possibleIsolatedUsers) {
+        int possibleNetworks = possibleIsolatedUsers + (possibleUsers - possibleIsolatedUsers) / 2;
 
-        int possibleNetworks = possibleUsers / 2;
-
-        ProximityChannels.proximityChannelSet.stream()
+        ProximityChannels.PROXIMITY_CHANNEL_SET.stream()
                 .filter(proximityChannel -> proximityChannel.getChannel() != null
-                        && proximityChannel.getChannel().getMembers().isEmpty())
+                        && proximityChannel.getTheoreticalSize() == 0)
                 .forEach(proximityChannel -> {
                     if (ProximityChannels.getAll().size() > possibleNetworks + ProximityChannels.EXTRA_CHANNELS
-                            || possibleUsers == 0) {
+                            || possibleUsers == 0 && possibleIsolatedUsers == 0) {
                         proximityChannel.delete();
                     }
                 });
     }
 
     public static void clear() {
-
-        ProximityChannels.proximityChannelSet.clear();
+        ProximityChannels.PROXIMITY_CHANNEL_SET.clear();
     }
 
     public static boolean isProximityChannel(String voiceChannelId) {

@@ -117,6 +117,10 @@ public final class LinkedPlayer {
                         .anyMatch(member -> member.getId().equals(this.discordId)));
     }
 
+    public boolean isInAnyIsolationChannel() {
+        return ProximityChannels.getIsolationChannelMap().containsKey(this.discordId);
+    }
+
     public boolean isCloseEnoughToPlayer(LinkedPlayer linkedPlayer, boolean falloff) {
         if (!this.player.getWorld().equals(linkedPlayer.player.getWorld())) {
             return false;

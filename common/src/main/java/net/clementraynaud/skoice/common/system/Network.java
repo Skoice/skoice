@@ -44,6 +44,7 @@ public class Network {
     public void build() {
         this.proximityChannel = ProximityChannels.getAll().stream()
                 .filter(channel -> !Networks.getProximityChannels().contains(channel))
+                .filter(channel -> !ProximityChannels.getIsolationChannelMap().containsValue(channel))
                 .min(Comparator.comparing(ProximityChannel::getChannelId))
                 .orElseGet(() -> new ProximityChannel(this.plugin, this));
     }

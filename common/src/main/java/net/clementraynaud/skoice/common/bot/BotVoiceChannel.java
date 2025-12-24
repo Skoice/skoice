@@ -49,7 +49,6 @@ public class BotVoiceChannel {
             this.plugin.getBot().getVoiceChannel().notifyUnlinkedUsers();
             this.plugin.getBot().getVoiceChannel().setStatus();
             this.plugin.getBot().getVoiceChannel().updatePermissions();
-            this.plugin.getBot().updateVoiceState();
         } else {
             this.plugin.getListenerManager().update(user);
         }

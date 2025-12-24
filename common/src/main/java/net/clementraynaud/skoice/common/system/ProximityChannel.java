@@ -27,6 +27,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
+import net.dv8tion.jda.internal.utils.tuple.Pair;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -88,6 +89,20 @@ public class ProximityChannel {
         } else {
             ProximityChannels.remove(this);
         }
+    }
+
+    public int getTheoreticalSize() {
+        VoiceChannel channel = this.getChannel();
+        if (channel == null) {
+            return 0;
+        }
+        return channel.getMembers().size() + (int) this.plugin.getUpdateNetworksTask()
+                .getAwaitingMoves()
+                .values()
+                .stream()
+                .map(Pair::getLeft)
+                .filter(channelId -> channelId.equals(this.channelId))
+                .count();
     }
 
     public String getChannelId() {

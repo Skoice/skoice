@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.common.bot;
 import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.api.events.player.PlayerProximityConnectEvent;
 import net.clementraynaud.skoice.common.api.events.system.SystemReadyEvent;
-import net.clementraynaud.skoice.common.commands.CommandInfo;
 import net.clementraynaud.skoice.common.commands.skoice.arguments.Argument;
 import net.clementraynaud.skoice.common.lang.DiscordLang;
 import net.clementraynaud.skoice.common.lang.LangInfo;
@@ -37,7 +36,6 @@ import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.system.ProximityChannel;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
 import net.clementraynaud.skoice.common.tasks.InterruptSystemTask;
-import net.clementraynaud.skoice.common.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.common.util.MapUtil;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -61,7 +59,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -208,23 +205,6 @@ public class Bot {
             if (player != null) {
                 player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
                 Skoice.eventBus().fireAsync(new PlayerProximityConnectEvent(minecraftId, member.getId()));
-            }
-        }
-    }
-
-    public void retrieveMutedUsers() {
-        UpdateVoiceStateTask.getMutedUsers().clear();
-        UpdateVoiceStateTask.getMutedUsers().addAll(this.plugin.getTempYamlFile().getStringList(TempYamlFile.MUTED_USERS_ID_FIELD));
-    }
-
-    public void updateVoiceState() {
-        Guild guild = this.plugin.getBot().getGuild();
-        if (guild == null) {
-            return;
-        }
-        for (VoiceChannel channel : guild.getVoiceChannels()) {
-            for (Member member : channel.getMembers()) {
-                new UpdateVoiceStateTask(this.plugin, member, channel).run();
             }
         }
     }

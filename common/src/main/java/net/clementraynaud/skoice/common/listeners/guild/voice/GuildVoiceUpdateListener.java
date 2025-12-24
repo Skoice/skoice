@@ -25,7 +25,6 @@ import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.system.Networks;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
-import net.clementraynaud.skoice.common.tasks.UpdateVoiceStateTask;
 import net.clementraynaud.skoice.common.util.MapUtil;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
@@ -62,7 +61,6 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
             return;
         }
         VoiceChannel voiceChannel = audioChannel.asVoiceChannel();
-        new UpdateVoiceStateTask(this.plugin, member, voiceChannel).run();
 
         if (voiceChannel.getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))
                 || ProximityChannels.getInitialized().stream().anyMatch(proximityChannel -> proximityChannel.getChannelId().equals(voiceChannel.getId()))) {
@@ -74,6 +72,8 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         if (audioChannel.getType() != ChannelType.VOICE) {
             return;
         }
+
+        ProximityChannels.getIsolationChannelMap().remove(member.getId());
 
         VoiceChannel voiceChannel = audioChannel.asVoiceChannel();
         if (!voiceChannel.getId().equals(this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString()))
@@ -100,7 +100,6 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         }
 
         VoiceChannel voiceChannelJoined = audioChannelJoined.asVoiceChannel();
-        new UpdateVoiceStateTask(this.plugin, member, voiceChannelJoined).run();
 
         if (audioChannelLeft.getType() != ChannelType.VOICE) {
             return;
@@ -118,6 +117,8 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         }
 
         if (!ProximityChannels.isProximityChannel(voiceChannelJoined.getId())) {
+            ProximityChannels.getIsolationChannelMap().remove(member.getId());
+
             String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
             if (minecraftId == null) {
                 return;
