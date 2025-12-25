@@ -58,7 +58,8 @@ public class ModalInteractionListener extends ListenerAdapter {
             }
             String categoryName = categoryValue.getAsString();
             String voiceChannelName = voiceChannelValue.getAsString();
-            guild.createCategory(categoryName).queue(category ->
+            guild.createCategory(categoryName).queue(category -> {
+                    category.getManager().setPosition(0).queue();
                     guild.createVoiceChannel(voiceChannelName, category).queue(channel -> {
                         this.plugin.getBot().getVoiceChannel().setup(channel, event.getUser());
                         ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> {
@@ -67,7 +68,8 @@ public class ModalInteractionListener extends ListenerAdapter {
                             }
                             menu.edit(event);
                         });
-                    }));
+                    });
+            });
 
         } else if ("customized".equals(event.getModalId())) {
             int horizontalRadius = 0;
