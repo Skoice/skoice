@@ -126,8 +126,12 @@ public final class LinkedPlayer {
             return false;
         }
 
+        String playerTeam = this.player.getTeam();
+        if (playerTeam != null && playerTeam.equals(linkedPlayer.player.getTeam())) {
+            return true;
+        }
+
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SEPARATED_TEAMS.toString())) {
-            String playerTeam = this.player.getTeam();
             if (playerTeam == null) {
                 if (linkedPlayer.getFullPlayer().getTeam() != null) {
                     return false;

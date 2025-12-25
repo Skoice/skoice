@@ -210,6 +210,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
 
                 case "action-bar-alerts-selection":
                 case "included-players-selection":
+                case "teams-selection":
                 case "link-synchronization-selection":
                     options.removeAll(event.getSelectedOptions());
                     options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));

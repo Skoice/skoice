@@ -9,6 +9,7 @@ deafened-alert: true
 tooltips: true
 players-on-death-screen-included: false
 spectators-included: false
+team-communication: false
 separated-teams: false
 text-chat: true
 channel-visibility: true

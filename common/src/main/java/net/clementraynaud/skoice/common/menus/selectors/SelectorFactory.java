@@ -37,6 +37,8 @@ public class SelectorFactory {
                 return new LoginNotificationSelector(plugin);
             case "included-players":
                 return new IncludedPlayersSelector(plugin);
+            case "teams":
+                return new TeamsSelector(plugin);
             case "action-bar-alerts":
                 return new ActionBarAlertsSelector(plugin);
             case "active-worlds":
@@ -48,7 +50,6 @@ public class SelectorFactory {
             case "release-channel":
                 return new ReleaseChannelSelector(plugin);
             case "tooltips":
-            case "separated-teams":
             case "text-chat":
             case "channel-visibility":
                 return new ToggleSelector(plugin, menuId);

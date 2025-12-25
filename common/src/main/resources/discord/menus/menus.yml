@@ -113,7 +113,7 @@ included-players:
   footer: review
   type: default
   parent: voice-chat
-separated-teams:
+teams:
   emoji: crossed_swords
   footer: review
   type: default
