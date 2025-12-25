@@ -58,6 +58,7 @@ public class AnalyticManager {
                 ConfigField.TOOLTIPS,
                 ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED,
                 ConfigField.SPECTATORS_INCLUDED,
+                ConfigField.TEAM_COMMUNICATION,
                 ConfigField.SEPARATED_TEAMS,
                 ConfigField.TEXT_CHAT,
                 ConfigField.CHANNEL_VISIBILITY,
