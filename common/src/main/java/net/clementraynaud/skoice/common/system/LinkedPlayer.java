@@ -127,7 +127,10 @@ public final class LinkedPlayer {
         }
 
         String playerTeam = this.player.getTeam();
-        if (playerTeam != null && playerTeam.equals(linkedPlayer.player.getTeam())) {
+        
+        if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TEAM_COMMUNICATION.toString())
+                && playerTeam != null &&
+                playerTeam.equals(linkedPlayer.player.getTeam())) {
             return true;
         }
 
