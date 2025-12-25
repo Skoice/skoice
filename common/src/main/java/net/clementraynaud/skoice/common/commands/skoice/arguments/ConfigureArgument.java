@@ -38,10 +38,10 @@ public class ConfigureArgument extends Argument {
             if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TOOLTIPS.toString())) {
                 this.plugin.getScheduler().runTaskAsynchronously(() -> {
                     player.sendMessage(this.plugin.getLang()
-                            .getInteractiveMessage("chat.configuration.bot-creation-interactive"));
+                            .getInteractiveMessage("chat.configuration.discord-integration-interactive"));
                 });
             } else {
-                player.sendMessage(super.plugin.getLang().getMessage("chat.configuration.bot-creation"));
+                player.sendMessage(super.plugin.getLang().getMessage("chat.configuration.discord-integration"));
             }
         } else {
             if (super.plugin.getBot().getStatus() == BotStatus.READY) {
