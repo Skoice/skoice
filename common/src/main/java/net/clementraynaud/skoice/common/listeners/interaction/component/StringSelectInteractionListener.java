@@ -100,6 +100,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     this.plugin.getBot().getLang().load(language);
                     this.plugin.getListenerManager().update();
                     this.plugin.getBot().getCommands().register();
+                    this.plugin.getBot().getVoiceChannel().setStatus();
                     ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     break;
 
