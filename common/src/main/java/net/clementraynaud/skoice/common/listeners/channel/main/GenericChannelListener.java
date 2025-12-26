@@ -35,7 +35,9 @@ import net.dv8tion.jda.api.events.channel.GenericChannelEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateNameEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateParentEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateVoiceStatusEvent;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 
 public class GenericChannelListener extends ListenerAdapter {
 
@@ -91,7 +93,12 @@ public class GenericChannelListener extends ListenerAdapter {
                 && channel.asVoiceChannel().getParentCategory() == null) {
             channel.asVoiceChannel().getManager()
                     .setParent(event.getOldValue())
-                    .queue();
+                    .queue(
+                            null,
+                            new ErrorHandler().handle(ErrorResponse.INVALID_FORM_BODY, e ->
+                                    this.checkForValidVoiceChannel(event)
+                            )
+                    );
         }
 
         if (channel.asVoiceChannel().getParentCategory() != null) {

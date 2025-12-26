@@ -161,7 +161,7 @@ field:
     description: "Type {configure-discord-command} or click the button below to complete the configuration and use Skoice."
   incomplete-configuration-alternative-server-manager:
     title: "Incomplete Configuration"
-    description: "You have deleted the main voice channel. Type {configure-discord-command} to complete the configuration and use Skoice."
+    description: "You have deleted the main voice channel or its category. Type {configure-discord-command} to complete the configuration and use Skoice."
   download:
     title: "Download"
     description: "[Get the plugin]({spigotmc-url}) and install it on your Minecraft server."

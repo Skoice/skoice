@@ -30,7 +30,9 @@ import net.dv8tion.jda.api.entities.channel.unions.ChannelUnion;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateNameEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateParentEvent;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 
 public class GenericChannelListener extends ListenerAdapter {
 
@@ -49,7 +51,7 @@ public class GenericChannelListener extends ListenerAdapter {
         }
 
         Networks.getInitialized().stream()
-                .filter(network -> event.getChannel().getId().equals(network.getProximityChannel().getChannelId()))
+                .filter(network -> channel.getId().equals(network.getProximityChannel().getChannelId()))
                 .forEach(Networks::remove);
 
         ProximityChannels.remove(channel.getId());
@@ -80,7 +82,17 @@ public class GenericChannelListener extends ListenerAdapter {
                 && (event.getNewValue() == null
                 || !event.getNewValue().getId().equals(this.plugin.getConfigYamlFile().getCategory().getId()))) {
             event.getChannel().asVoiceChannel().getManager()
-                    .setParent(event.getOldValue()).queue();
+                    .setParent(event.getOldValue())
+                    .queue(
+                            null,
+                            new ErrorHandler().handle(ErrorResponse.INVALID_FORM_BODY, e ->
+                                    channel.delete()
+                                            .queue(
+                                                    null,
+                                                    new ErrorHandler().ignore(ErrorResponse.UNKNOWN_CHANNEL)
+                                            )
+                            )
+                    );
         }
     }
 
@@ -92,8 +104,9 @@ public class GenericChannelListener extends ListenerAdapter {
         if (channel.getType() == ChannelType.VOICE
                 && ProximityChannels.isProximityChannel(channel.getId())
                 && !event.getChannel().asVoiceChannel().getName().equals(expectedName)) {
-            channel.asVoiceChannel().getManager().
-                    setName(expectedName).queue();
+            channel.asVoiceChannel().getManager()
+                    .setName(expectedName)
+                    .queue();
         }
     }
 }
