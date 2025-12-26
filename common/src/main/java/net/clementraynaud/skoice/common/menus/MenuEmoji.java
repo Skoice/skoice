@@ -82,7 +82,9 @@ public enum MenuEmoji {
     WASTEBASKET("U+1F5D1"),
     WRENCH("U+1F527"),
     X("U+274C"),
-    DISCORD(null);
+    DISCORD(null),
+    DISCORDSRV(null),
+    ESSENTIALSX(null);
 
     private static final Map<String, Long> CUSTOM_EMOJI_ID = new HashMap<>();
     private static final String APPLICATION_EMOJI_PREFIX = "skoice_";

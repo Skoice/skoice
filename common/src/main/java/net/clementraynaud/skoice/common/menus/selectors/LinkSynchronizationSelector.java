@@ -46,11 +46,11 @@ public class LinkSynchronizationSelector extends Selector {
             options.addAll(Arrays.asList(SelectOption.of("DiscordSRV",
                                     ConfigField.DISCORDSRV_SYNCHRONIZATION.toString())
                             .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
-                            .withEmoji(MenuEmoji.ELECTRIC_PLUG.get()),
+                            .withEmoji(MenuEmoji.DISCORDSRV.get()),
                     SelectOption.of("EssentialsX",
                                     ConfigField.ESSENTIALSX_SYNCHRONIZATION.toString())
                             .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
-                            .withEmoji(MenuEmoji.ELECTRIC_PLUG.get())));
+                            .withEmoji(MenuEmoji.ESSENTIALSX.get())));
             if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.DISCORDSRV_SYNCHRONIZATION.toString())) {
                 defaultValues.add(ConfigField.DISCORDSRV_SYNCHRONIZATION.toString());
             }
