@@ -25,7 +25,6 @@ logger:
 chat:
   configuration:
     no-token: "{error-color}Nie podałeś tokenu{default-color}."
-    no-guild: "Twój bot {error-color}nie jest na serwerze Discord{default-color}. Otwórz ten link, żeby go zaprosić: {bot-invite-url}."
     bot-connecting: "Twój bot {success-color}próbuje się połączyć{default-color}."
     bot-connected: "Twój bot jest teraz {success-color}Połączony{default-color}."
     bot-connected-incomplete-configuration-discord: "Twoj bot jest teraz {success-color}Połączony{default-color}. Wpisz \"{configure-discord-command}\" na twoim serwerze Discord aby go skonfigurować."
@@ -46,8 +45,6 @@ chat:
     invalid-parameter: "{error-color}Nie podałeś prawidłowego argumentu{default-color}. Aby użyć tego polecenia, wpisz \"{skoice-minecraft-command} {args}\"."
     illegal-executor: "Ta komenda może {error-color}być tylko wykonana {default-color}przez graczy."
     missing-permission: "Ta komenda może {error-color}być tylko wykonana {default-color}przez operatorów."
-action-bar:
-  disconnecting-alert: "{error-color}⚠ Oddalasz się {default-color}od pobliskich graczy."
 interaction:
   here: "tutaj"
   this-page: "ta strona"

@@ -25,10 +25,8 @@ menu:
       placeholder: "Per Favore Selezionare un server."
   permissions:
     title: "Permessi"
-    description: "Per funzionare correttamente, il tuo bot deve avere il permesso `Administrator` sul tuo server di Discord."
   voice-channel:
     title: "Canale vocale"
-    description: "Seleziona il canale che i giocatori devono unirsi per utilizzare la chat vocale di prossimità."
     select-menu:
       placeholder: "Ti preghiamo di selezionare un canale di vendita."
       select-option:
@@ -42,7 +40,6 @@ menu:
     title: "Impostazioni avanzate"
   language:
     title: "Lingua"
-    description: "Scegli la lingua utilizzata per visualizzare i messaggi."
   skoice-proximity-voice-chat:
     title: "Skoice: Prossimità Chat Vocale"
   linking-process:
@@ -60,7 +57,6 @@ field:
     title: "Iscrizioni incomplete"
   download:
     title: "Scarica"
-    description: "[Ottieni il plugin]({spigotmc-url}) e installalo sul tuo server Minecraft."
   donating:
     title: "Donazioni"
     description: "Skoice è un software libero. Se ti piace, puoi aiutarci da [donating]({open-collective-url})."

@@ -15,12 +15,17 @@ logger:
     plugin-enabled: "Plugin aktiviert."
     plugin-disabled: "Plugin deaktiviert."
     plugin-updated: "Skoice wurde auf die neueste Version aktualisiert. Bitte starten Sie Ihren Minecraft-Server neu, um die Änderungen zu übernehmen."
+    skoice-3: "Du benutzt jetzt Skoice 3. Um deinen Bot richtig zum Laufen zu bringen, folge unserem Migrations-Leitfaden hier: {migration-guide-url}."
     configuration-complete: "Skoice ist jetzt konfiguriert. Gib \"{link-discord-command}\" auf deinem Discord-Server ein, um deinen Discord-Account mit Minecraft zu verknüpfen. Spieler müssen ihre Konten verknüpfen, um den Sprachchat im Nahbereich zu nutzen."
   warning:
+    outdated-version: "Du benutzt eine veraltete Version ({current-version}). Lade die neueste Version ({latest-version}) hier herunter: {spigotmc-url}."
     no-token: "Token nicht gesetzt. Tritt deinem Minecraft-Server bei, um Skoice einzurichten."
     multiple-guilds: "Dein Bot befindet sich auf mehreren Discord-Servern. Tippe \"{configure-discord-command}\" auf deinem Discord-Server ein, um einen auszuwählen."
+    two-factor-authentication: "Zwei-Faktor-Authentifizierung erforderlich. Aktiviere die Zwei-Faktor-Authentifizierung für das Konto des Bot-Besitzers oder deaktiviere \"2FA für Moderations-Aktionen erforderlich\" in den Servereinstellungen."
     no-voice-channel: "Sprachkanal nicht eingestellt. Tippe \"{configure-discord-command}\" auf deinem Discord-Server ein, um Skoice einzurichten."
     no-radius: "Radius nicht eingestellt. Tippe \"{configure-discord-command}\" auf deinem Discord-Server ein, um Skoice einzurichten."
+    missing-permission: "Du hast deinem Bot nicht die Berechtigung \"Administrator\" auf deinem Discord-Server erteilt. Öffne diesen Link, um sie hinzuzufügen: {bot-invite-url}."
+    invalid-bot: "Dein Bot ist nicht korrekt konfiguriert. Tritt deinem Minecraft-Server bei, um einen neuen zu erstellen."
 chat:
   configuration:
     no-token: "Sie haben {error-color}nicht einen Token zur Verfügung gestellt{default-color}. Um diesen Befehl zu verwenden, geben Sie \"{token-minecraft-command}\" gefolgt von dem Token ein."
@@ -31,7 +36,6 @@ chat:
     bot-could-not-connect: "Ihr Bot {error-color}konnte keine Verbindung herstellen{default-color}. Um das Token zu aktualisieren, geben Sie \"{token-minecraft-command}\" gefolgt vom neuen Token ein."
     incomplete-configuration: "Skoice ist {error-color}nicht korrekt konfiguriert{default-color}. Bitte wenden Sie sich an einen Administrator des Servers."
     incomplete-configuration-operator-interactive: "Skoice ist {error-color}nicht richtig konfiguriert{default-color}. Klicken Sie auf {run:configure-minecraft-command} zur Einrichtung. Wechsle die Sprache durch anklicken von {suggest:language-minecraft-command}. Wenn du mit dieser Nachricht nicht interagieren kannst, gib \"{tooltips-minecraft-command}\" ein."
-    incomplete-configuration-operator: "Skoice ist {error-color}nicht korrekt konfiguriert{default-color}. Gib \"{configure-minecraft-command}\" ein, um das Plugin einzurichten. Du kannst die Sprache durch Eingabe von \"{language-minecraft-command}\" (gefolgt von der jeweiligen Sprache) wechseln."
     incomplete-configuration-operator-discord: "Skoice ist {error-color}nicht richtig konfiguriert{default-color}. Gib \"{configure-discord-command}\" auf deinem Discord-Server ein, um es einzurichten."
     already-configured: "Skoice ist {error-color}bereits konfiguriert{default-color}. Geben Sie \"{configure-discord-command}\" auf Ihrem Discord-Server ein, um seine Einstellungen zu aktualisieren."
     tooltips-enabled: "Du hast interaktive Nachrichten {success-color}aktiviert{default-color}."
@@ -48,7 +52,6 @@ chat:
     account-not-linked: "Du hast deinen Minecraft Account {error-color}nicht zu Discord verlinkt {default-color}. Gib \"{link-discord-command}\" auf dem Discord-Server ein \"{guild}\", um dich zu verlinken und den abstandsbasierten Sprachchat zu nutzen."
     account-not-linked-remind-once: "Du hast deinen Minecraft Account {error-color}nicht zu Discord verlinkt {default-color}. Gib \"{link-discord-command}\" auf dem Discord-Server ein \"{guild}\", um dich zu verlinken und den abstandsbasierten Sprachchat zu nutzen. Du wirst diese Nachricht nicht erneut erhalten."
     account-already-linked: "Du hast {error-color}deinen Minecraft-Account{default-color} bereits mit Discord verknüpft. Gib \"{unlink-minecraft-command}\" ein, um die Verknüpfung zu lösen."
-    not-connected: "Die Verbindung zum Sprachchat im Nahbereich wird {error-color}nicht hergestellt7. Treten Sie dem Sprachkanal \"{voice-channel}\" auf dem Discord-Server \"{guild}\" ein, um ihn zu nutzen."
     disconnected: "Die Verbindung zum Sprachchat im Nahbereich ist {error-color}jetzt unterbrochen{default-color}."
   error:
     no-parameter: "Sie haben {error-color}kein Argument angegeben{default-color}. Um diesen Befehl zu verwenden, geben Sie \"{skoice-minecraft-command} {args}\" ein."

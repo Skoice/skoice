@@ -23,25 +23,18 @@ logger:
     no-radius: "Canale vocale non impostato. Digita \"{configure-discord-command}\" sul tuo server Discord per configurare Skoice."
 chat:
   configuration:
-    no-token: "Hai &non fornito un token{default-color}. Per usare questo comando, digita \"{token-minecraft-command}\" seguito dal token."
     bot-connecting: "Il tuo bot {success-color}sta tentando di connettersi{default-color}."
     bot-connected: "Il tuo bot è {success-color}ora connesso{default-color}."
     bot-connected-incomplete-configuration-discord: "Il tuo bot è {success-color}ora connesso{default-color}. Digita \"{configure-discord-command}\" sul tuo server Discord per configurarlo."
     bot-already-connected: "Hai {success-color}aggiornato il token{default-color}. Riavvia il tuo server Minecraft per collegare il tuo bot."
     bot-could-not-connect: "Il tuo bot {error-color}non può connettersi {default-color}. Per aggiornare il token, digita \"{token-minecraft-command}\" seguito dal nuovo token."
-    incomplete-configuration-operator-discord: "Il tuo bot è {success-color}ora connesso{default-color}. Digita \"{configure-discord-command}\" sul tuo server Discord per configurarlo."
-    already-configured: "Il tuo bot è {success-color}ora connesso{default-color}. Digita \"{configure-discord-command}\" sul tuo server Discord per configurarlo."
   player:
-    no-code: "&nNon hai fornito un codice{default-color}. Digita \"{link-discord-command}\" sul server Discord \"{guild}\" per riceverne uno."
-    invalid-code: "&nNon hai fornito un codice{default-color}. Digita \"{link-discord-command}\" sul server Discord \"{guild}\" per riceverne uno."
     account-linked: "Hai {success-color}inserito il tuo account Minecraft {default-color}a Discord."
     account-unlinked: "Hai {success-color}inserito il tuo account Minecraft {default-color}a Discord."
     account-already-linked: "{error-color}Hai già collegato il tuo account Minecraft {default-color}a Discord. Digita \"{unlink-minecraft-command}\" per scollegarlo."
     not-connected: "Sei {error-color}non connesso {default-color}alla chat vocale di prossimità. Entra nel canale vocale \"{voice-channel}\" sul server Discord \"{guild}\" per utilizzarlo."
     disconnected: "Sei {error-color}ora disconnesso {default-color}dalla chat vocale di prossimità."
   error:
-    no-parameter: "&nNon hai fornito un argomento {default-color}. Per usare questo comando, digita \"{skoice-minecraft-command} {args}\"."
-    invalid-parameter: "&nNon hai fornito un argomento {default-color}. Per usare questo comando, digita \"{skoice-minecraft-command} {args}\"."
     illegal-executor: "Questo comando è {error-color}eseguibile solo {default-color}dai giocatori."
     missing-permission: "Questo comando è {error-color}eseguibile solo {default-color}dai giocatori."
 action-bar:

@@ -25,7 +25,6 @@ menu:
       placeholder: "Prosze wybrać serwer."
   permissions:
     title: "Uprawnienia"
-    description: "Aby działął poprawnie, twój bot musi mieć uprawnienie `Administrator` na twoim serwerze Discord."
   range:
     title: "Range"
     select-menu:
@@ -36,7 +35,6 @@ menu:
           label: "Short-Range Mode"
   voice-channel:
     title: "Kanał głosowy"
-    description: "Wybierz kanał, do którego gracze mają dołączyć, aby korzystać ze zbliżeniowego czatu głosowego."
     select-menu:
       placeholder: "Proszę wybrać kanał głosowy."
       select-option:
@@ -58,7 +56,6 @@ menu:
     title: "Zaawansowane ustawienia"
   language:
     title: "Język"
-    description: "Wybierz język używany do wyświetlania wiadomości."
   skoice-proximity-voice-chat:
     title: "Skoice: Zbliżeniowy czat głosowy"
   linking-process:
@@ -76,7 +73,6 @@ field:
     title: "Konfiguracja Niedokończona"
   download:
     title: "Pobierz"
-    description: "[Zdobądź plugin]({spigotmc-url}) i zainstaluj go na swoim serwerze Minecraft."
   donating:
     title: "Darowizny"
     description: "Skoice jest darmowy. Jeśli Ci się podoba, możesz nam pomóc, przekazując [darowiznę]({open-collective-url})."

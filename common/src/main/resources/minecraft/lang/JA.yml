@@ -30,7 +30,6 @@ chat:
     bot-already-connected: "{success-color}トークンを更新しました{default-color}。botを接続するにはMinecraftサーバーを再起動してください。"
     bot-could-not-connect: "あなたのbotは{error-color}接続できませんでした{default-color}。トークンを更新するには、「{token-minecraft-command}」に続けて新しいトークンを入力してください。"
     incomplete-configuration: "Skoiceが{error-color}正しく設定されていません{default-color}。サーバーの管理者に連絡してください。"
-    incomplete-configuration-operator: "Skoiceは{error-color}正しく設定されていません{default-color}。「{configure-minecraft-command}」と入力して設定してください。「\"{language-minecraft-command}\"」に続けて言語を入力することで、言語を変更することができます。"
     incomplete-configuration-operator-discord: "Skoiceが{error-color}正しく設定されていません{default-color}。Discordサーバーに「{configure-discord-command}」と入力してセットアップしてください。"
     already-configured: "Skoiceは{error-color}既に設定されています{default-color}。設定を更新するには、Discordサーバーに「\"{configure-discord-command}\"」と入力してください。"
     tooltips-enabled: "あなたは{success-color}対話メッセージが有効{default-color}になっています。"
@@ -45,7 +44,6 @@ chat:
     account-linked: "あなたの{success-color}MinecraftアカウントをDiscordとリンク{default-color}しました。"
     account-unlinked: "あなたの{success-color}MinceaftアカウントをDisocrdからリンク解除{default-color}しました。"
     account-not-linked: "あなたの{error-color}MinecraftアカウントはDiscordとリンクされていません{default-color}。Discordサーバー「{guild}」で「{link-discord-command}」と入力してリンクし、近接ボイスチャットを使用します。"
-    account-not-linked-remind-once: "あなたの{error-color}MinecraftアカウントはDiscordとリンクされていません{default-color}。Discordサーバー「{guild}」で「{link-discord-command}{default-color}」と入力してリンクし、近接ボイスチャットを使用します。以後、この通知は届きません。"
     account-already-linked: "あなたは{error-color}既にMincraftアカウントをDisocrdをリンクしています{default-color}。「{unlink-minecraft-command}」と入力して、リンクを解除してください。"
     not-connected: "あなたは近接ボイスチャットに{error-color}接続していません{default-color}。使用するには、Discordサーバ「{guild}」のボイスチャンネル「{voice-channel}」に参加してください。"
     disconnected: "あなたは近接ボイスチャットから{error-color}切断されました{default-color}。"
@@ -58,5 +56,4 @@ action-bar:
   disconnecting-alert: "{error-color}⚠ {default-color}あなたは近くのプレイヤーから{error-color}離れています{default-color}。"
 interaction:
   execute: "{dark-color}☀ {interactive-color}実行: {default-color}{minecraft-command}"
-  shortcut: "{dark-color}☀ &ショートカット: {default-color}{minecraft-command}"
   link: "{dark-color}☀ {interactive-color}Webブラウザで開く: {default-color}{url}"

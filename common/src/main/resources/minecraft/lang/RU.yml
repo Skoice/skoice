@@ -15,11 +15,16 @@ logger:
     plugin-enabled: "Плагин включен."
     plugin-disabled: "Плагин отключен."
     plugin-updated: "Skoice был обновлен до последней версии. Пожалуйста, перезапустите ваш сервер Minecraft, чтобы применить изменения."
+    skoice-3: "Теперь вы используете Skoice 3. Чтобы ваш бот работал правильно, следуйте нашему руководству по миграции здесь: {migration-guide-url}."
   warning:
-    no-token: "Токен не установлен. Присоединяйтесь к серверу Minecraft, чтобы настроить Skoice."
+    outdated-version: "Вы используете устаревшую версию ({current-version}). Загрузите последнюю версию ({latest-version}) здесь: {spigotmc-url}."
+    no-token: "Токен не установлен. Присоединитесь к серверу Minecraft, чтобы настроить Skoice."
     multiple-guilds: "Ваш бот на нескольких Discord серверах. Введите \"{configure-discord-command}\" на вашем Discord сервере, чтобы выбрать его."
+    two-factor-authentication: "Требуется двухфакторная аутентификация. Включите двухфакторную аутентификацию на аккаунте владельца бота или отключите \"Требовать 2FA для действий модератора\" в настройках сервера."
     no-voice-channel: "Голосовой канал не установлен. Введите \"{configure-discord-command}\" на вашем сервере Discord, чтобы настроить Skoice."
     no-radius: "Радиус не установлен. Введите \"{configure-discord-command}\" на вашем сервере Discord, чтобы настроить Skoice."
+    missing-permission: "Вы не предоставили вашему боту разрешение \"Администратор\" на сервере Discord. Откройте эту ссылку, чтобы добавить его: {bot-invite-url}."
+    invalid-bot: "Ваш бот настроен неправильно. Присоединитесь к вашему серверу Minecraft, чтобы создать нового."
 chat:
   configuration:
     no-token: "Вы {error-color}не указали токен{default-color}. Чтобы использовать эту команду, введите \"{token-minecraft-command}\", а затем токен бота."
@@ -29,13 +34,10 @@ chat:
     bot-already-connected: "Вы {success-color}обновили токен{default-color}. Перезагрузите ваш сервер, чтобы подключить бота."
     bot-could-not-connect: "Ваш бот {error-color}не смог подключиться{default-color}. Чтобы обновить токен, введите \"{token-minecraft-command}\", а затем новый токен."
     incomplete-configuration-operator-interactive: "Skoice {error-color}настроен некорректно{default-color}. Нажмите {run:configure-minecraft-command} чтобы настроить его. Вы можете изменить язык, нажав {suggest:language-minecraft-command}. Если вы не можете взаимодействовать с этим сообщением, введите \"{tooltips-minecraft-command}\"."
-    incomplete-configuration-operator: "Skoice {error-color}настроен неправильно{default-color}. Введите \"{configure-minecraft-command}\" Чтобы настроить его. Вы можете изменить язык введя \"{language-minecraft-command}\" и через пробел название языка."
     incomplete-configuration-operator-discord: "Skoice {error-color}не настроен корректно{default-color}. Введите \"{configure-discord-command}\" на вашем сервере Discord, чтобы настроить его."
     already-configured: "Skoice {error-color}уже настроен{default-color}. Введите \"{configure-discord-command}\" на вашем сервере Discord, чтобы обновить настройки."
     tooltips-enabled: "У вас {success-color}включены интерактивные сообщения{default-color}."
     tooltips-disabled: "Вы {success-color}отключили интерактивные сообщения{default-color}. Если вы пытались настроить Skoice, введите \"{configure-minecraft-command}\"."
-    no-language: "Вы {success-color}не ввели название языка{default-color}. Чтобы использовать эту команду, введите \"{language-minecraft-command} {lang-list}\"."
-    invalid-language: "Вы &ввели неверный язык{default-color}. Чтобы использовать эту команду, введите \"{language-minecraft-command} {lang-list}\"."
     language-already-set: "Язык {error-color}уже установлен {default-color}на \"{lang}\"."
     language-updated: "Вы {success-color}изменили язык {default-color}на \"{lang}\"."
   player:

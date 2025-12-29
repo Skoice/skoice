@@ -25,10 +25,8 @@ menu:
       placeholder: "Vennligst velg en server."
   permissions:
     title: "Tillatelser"
-    description: "For å fungere skikkelig, må boten din ha `Administrator` tillatelse på Discord-serveren din."
   voice-channel:
     title: "Talekanal navn"
-    description: "Velg kanalen spillere må delta i for å bruke proximity chat."
     select-menu:
       placeholder: "Velg en talekanal."
       select-option:
@@ -42,7 +40,6 @@ menu:
     title: "Avanserte innstillinger"
   language:
     title: "Språk"
-    description: "Velg språket som skal vises for meldinger."
   skoice-proximity-voice-chat:
     title: "Skoice: Proximity chat"
   linking-process:
@@ -60,7 +57,6 @@ field:
     title: "Ufullstendig konfigurasjon"
   download:
     title: "Nedlast"
-    description: "[Få plugin]({spigotmc-url}) og installer den på din Minecraftserver."
   donating:
     title: "Donere"
     description: "Skoice er en fri programvare. Hvis du liker det, kan du hjelpe oss ved å [donating]({open-collective-url})."

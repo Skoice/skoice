@@ -25,7 +25,6 @@ menu:
       placeholder: "Vælg venligst en server."
   permissions:
     title: "Tilladelser"
-    description: "For at fungere korrekt, skal din bot have tilladelse til `Administrator` på din Discord server."
   range:
     title: "Rækkevidde"
     select-menu:
@@ -36,7 +35,6 @@ menu:
           label: "Kort-række-tilstand"
   voice-channel:
     title: "Stemmekanal"
-    description: "Vælg kanalen spillere skal join for at bruge nærhedsbaseret stemmechat."
     select-menu:
       placeholder: "Vælg venligst en stemmekanal."
       select-option:
@@ -58,7 +56,6 @@ menu:
     title: "Avancerede Indstillinger"
   language:
     title: "Sprog"
-    description: "Vælg sproget der bruges til at vise meddelelser."
   skoice-proximity-voice-chat:
     title: "Skoice: Proximity Voice Chat"
   linking-process:
@@ -75,8 +72,6 @@ field:
     title: "Ufuldstændig konfiguration"
   incomplete-configuration-alternative-server-manager:
     title: "Ufuldstændig konfiguration"
-  download:
-    description: "[Hent pluginet]({spigotmc-url}) og installer det på din Minecraft-server."
   donating:
     title: "Donationer"
     description: "Skoice er et gratis software. Hvis du kan lide det, kan du hjælpe os ved at [donere]({open-collective-url})."

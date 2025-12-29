@@ -1,4 +1,4 @@
-#Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
 #This file is part of Skoice.
 #Skoice is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@ command-description:
   unlink: "Discord hesabınıza bağlı Minecraft hesabımızın bağlantısını kaldır."
   invite: "Proximity chat'i sunucuna kur."
 menu:
-  invite-footer: "Skoice'i kendi sunucunda istermisin? \"/invite\"'ı kullan!"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry ve katkıda bulunanlar tarafından"
   configuration:
     title: "Ayarlar"
@@ -26,19 +25,31 @@ menu:
     select-menu:
       placeholder: "Lütfen bir sunucuyu seçin."
   two-factor-authentication:
+    title: "İki Aşamalı Doğrulama"
     description: "Discord sunucun bot sahibi olan hesabın iki aşamalı doğrulamayı açmasını gerektiriyor. 2AD'yi açın veya bu zorunluluğu sunucu ayarlarından `Moderasyon > Güvenlik Kurulumu > Moderatör eylemleri için İki Aşamalı Doğrulama gerektir` yolunu izleyerek kapatın."
   permissions:
     title: "İzinler"
-    description: "Botunuzun düzgün çalışması için Discord sunucunuzda \"Yönetici\" iznine ihtiyacı var."
+    description: "Botun doğru düzgün çalışması için `Yönetici` iznine sahip olması gerekiyor. Bunun için `Yönetici` iznine sahip bir rolü bota verebilirsin."
+  voice-chat:
+    title: "Sesli sohbet"
   range:
     title: "Konuşma Mesafesi"
     description: "Proximity chat'in mesafesini özelleştir."
     select-menu:
+      placeholder: "Lütfen bir menzil seçin."
       select-option:
         long-range-mode:
           label: "Uzak-Mesafe Modu"
         short-range-mode:
           label: "Kısa-Mesafe Modu"
+        customized:
+          label: "Özelleştirimiş"
+        description: "Yatay Menzil: {horizontal-radius} blok — Dikey Menzil: {vertical-radius} blok"
+  active-worlds:
+    title: "Aktif Dünyalar"
+    description: "Skoice'in aktif olacağı dünyaları seçin."
+    select-menu:
+      placeholder: "Lütfen istenen dünyaları seçin."
   included-players:
     title: "Dahil Oyuncular"
     description: "Proximity Chat'i kullanmasını istediğiniz oyuncu türlerini seçin."
@@ -48,15 +59,32 @@ menu:
         label: "Ölüm Ekranındaki Oyuncular"
       spectators-included:
         label: "İzleyiciler"
+  chaining:
+    title: "Zincirleme"
+    description: "Zincirlenen kişilerin arasındaki ekstra izin verilen mesafeyi ayarla. Birbirini duyamaması gereken iki kişi arasında başka biri olduğu zaman zincirleme yaşanır ve üç kişide birbirini duyabilir."
+    select-menu:
+      disabled:
+        label: "Kapalı - Zincirleme yok"
+      short:
+        label: "Kısa - Ana menzilin %25 daha fazlasına kadar"
+      medium:
+        label: "Orta - Ana menzilin %50 daha fazlasına kadar"
+      long:
+        label: "Uzun - Ana menzilin iki katına kadar"
+  discord-integration:
+    title: "Discord İntegrasyonu"
   voice-channel:
     title: "Ana Ses Kanalı"
-    description: "Oyuncuların proximity chat'i kullanmak için girmesi gereken ses kanalını seçin."
+    description: "Oyuncuların proximity chat'i kullanmak için girmesi gereken ses kanalını seçin. Bu kanal bir kategori içinde olmalı. Bu kanaldaki herkesin otomatik olarak susturulacağını unutmayın."
     select-menu:
       placeholder: "Lütfen bir ses kanalını seçin."
       select-option:
         new-voice-channel:
           label: "Yeni Ses Kanalı"
           description: "Skoice otomatik olarak bir ses kanalına kurulacak."
+  text-chat:
+    title: "Yazılı Sohbet"
+    description: "Oyuncuların proximity kanallarında yazı yazıp yazamayacağını seçin."
   channel-visibility:
     title: "Kanal Görünürlüğü"
     description: "Skoice tarafından oluşturulan geçici kanalların görünürlüğünü ayarla."
@@ -83,14 +111,20 @@ menu:
         label: "\"Diğer oyunculardan uzaklaşıyorsun.\""
   tooltips:
     title: "İpuçları"
-    description: "Minecraft sunucundaki interaktif mesajları ayarla."
-    full-description: "Eğer Minecraft ayarlarında ipuçları kapalı ise beya Bedrock Edition kullanıyorsanız bunu kapatmak isteyebilirsiniz. Sadece yöneticiler interaktif mesajlar alabilir."
+    description: "Minecraft sunucundaki interaktif mesajları ayarla. Eğer Minecraft ayarlarında ipuçları kapalı ise beya Bedrock Edition kullanıyorsanız bunu kapatmak isteyebilirsiniz. Sadece yöneticiler interaktif mesajlar alabilir."
   advanced-settings:
     title: "Gelişmiş Ayarlar"
+  link-synchronization:
+    title: "Senkronize Linkler"
+    description: "Diğer eklentilerin Skoice ile senkronize olup olmayacağını seçin. Oyuncular hesaplarını Skoice veya başka bir eklenti ile bağladıklarında gerçek zamanlı senkronize iki tarafta da yaşanır. Bu ayarı güncelledikten sonra Minecraft sunucunu yeniden başlatmalısın."
+    select-menu:
+      placeholder: "Lütfenen istenen eklentileri seçin."
+  release-channel:
+    title: "Kanal Türü"
+    description: "Skoice'in kullanmak istediğiniz sürümünü seçin."
   language:
     title: "Dil"
-    description: "Mesajları göstermek için kullanılacak dili seçin."
-    full-description: "Kendi diliniz tam değil veya eksikmi? [Crowdin'den kendiniz çevirin]({crowdin-url})!"
+    description: "Mesajları göstermek için kullanılacak dili seçin. Kendi diliniz tam değil veya eksikmi? [Crowdin'den kendiniz çevirin]({crowdin-url})!"
   skoice-proximity-voice-chat:
     title: "Skoice: Minecraft'ta Proximity Chat"
   linking-process:
@@ -114,13 +148,11 @@ field:
     title: "Tamamlanmamış Yapılandırma"
   download:
     title: "İndir"
-    description: "[Eklentiyi indir]({spigotmc-url}) ve Minecraft sunucuna kur."
   donating:
     title: "Bağış"
     description: "Skoice ücretsiz bir yazılımdır. Eğer beğenirseniz bize [bağış yaparak]({open-collective-url}) yardım edebilirsiniz."
   contributing:
     title: "Katkıda bulunma"
-    description: "Skoice'in geleceğini şekillendirmeye ilgilimisiniz! [Github sayfamıza katkıda bulunabilir]({github-url}) veya [Crowdin ile eklentimizi çeşitli dillere çevirebilirsiniz]({crowdin-url})!"
   long-range-mode:
     title: "Uzak-Mesafe Modu"
     description: "Açık dünya modlarında oynayacaksanız bu modu seçin."
@@ -128,7 +160,14 @@ field:
     title: "Kısa-Mesafe Modu"
     description: "Sadece kısıtlı bir alana ihtiyacı olan oyun modlarını oynamayı düşünüyorsanız bu modu seçin."
   customized:
+    title: "Özelleştirilmiş"
     description: "Mesafeleri kendi tercihlerine göre ayarla."
+  production-channel:
+    title: "Normal Kanal"
+    description: "Herkese açık sürümü kullanmak için bu kanalı seçin. Büyük ihtimal daha iyi bir deneyim sunacaktır."
+  beta-channel:
+    title: "Beta Kanal"
+    description: "Daha yayınlanmamış en güncel özelliklerimizi denemek için bu kanalı seçin. Bu sürümde hatalar bulunabilir."
   verification-code:
     title: "Doğrulama Kodu"
     description: "`{link-minecraft-command} {code}` komutunu kullanın ve doğrulamayı tamamlayın."
@@ -144,19 +183,30 @@ field:
   account-already-linked:
     title: "Hesap Zaten Bağlanmış"
     description: "Discord hesabın zaten Minecraft'a bağlı. Bağlantıyı kaldırmak için {unlink-discord-command} yaz."
+  restricted-command:
+    title: "Kısıtlanmış Komut"
+    description: "Bu komut bir Discord sunucusunda kullanılmalı."
   access-denied:
     title: "Erişim Reddedildi"
+    description: "Bu komutu kullanmak için gerekli izinlere sahip değilsin."
   illegal-value:
     title: "Geçersiz Değer"
     description: "Değerler 0'dan büyük bir tam sayı olmalıdır."
+  proximity-channel-deleted:
+    title: "Proximity Kanalı Silindi"
+    description: "Proximity chat sistemi tarafından kullanılan bir kanalı sildin. Bu kanallar gerek olmadığı zaman otomatik olarak silinir. Bunu manuel olarak yapmamalısın."
 button-label:
   back: "Geri"
+  configure-now: "Şimdi Ayarla"
+  support-server: "Destek Sunucusu"
   clear-notified-players: "Bildirilen Oyuncuları Temizle"
   refresh: "Yenile"
   update-permissions: "İzinleri Güncelle"
 select-option:
   default:
     description: "Varsayılan Ayar."
+  undesirable:
+    description: "Bu ayar istenmeyen davranışlara sebep olabilir."
   enabled:
     label: "Etkinleştirildi"
   disabled:

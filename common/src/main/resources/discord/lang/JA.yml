@@ -16,7 +16,6 @@ command-description:
   unlink: "あなたのDiscordアカウントとMinecraftのリンクを解除します。"
   invite: "あなたのサーバーに近接ボイスチャットを呼びます。"
 menu:
-  invite-footer: "あなたのサーバにSkoiceが欲しいですか？「/invite」と入力してください！"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry and contributors"
   configuration:
     title: "設定"
@@ -27,7 +26,6 @@ menu:
       placeholder: "サーバーを選択してください。"
   permissions:
     title: "権限"
-    description: "正常に動作させるために、Discordサーバー上でbotに `管理者` 権限が必要です。"
   range:
     title: "範囲"
     select-menu:
@@ -47,7 +45,6 @@ menu:
         label: "スペクテイター"
   voice-channel:
     title: "ボイスチャンネル"
-    description: "近接ボイスチャットを使用するためにプレイヤーが参加するチャンネルを選択します。"
     select-menu:
       placeholder: "ボイスチャンネルを選択してください。"
       select-option:
@@ -80,12 +77,10 @@ menu:
         label: "「あなたは近くのプレイヤーから離れています。」"
   tooltips:
     title: "ツールチップ"
-    description: "Minecraftサーバー上の対話型メッセージを切り替えます。"
-    full-description: "サーバーが統合版で実行されている場合や、Minecraft設定でツールチップが無効人なっている場合、この設定を無効にすることができます。操作者のみが対話型メッセージを受信できます。"
+    description: "Minceaftサーバー上で対話型メッセージを切り替えます。サーバーが統合版で実行されている場合や、Minecraft設定でツールチップが無効人なっている場合、この設定を無効にすることができます。操作者のみが対話型メッセージを受信できます。"
   language:
     title: "言語"
-    description: "メッセージの表示に使用する言語を選択してください。"
-    full-description: "あなたの言語が無いか不完全ですか？[Crowdinでプライグインを翻訳してください]({crowdin-url})！"
+    description: "メッセージの表示に使用する言語を選択してください。あなたの言語が無いか不完全ですか？[Crowdinでプライグインを翻訳してください]({crowdin-url})！"
   skoice-proximity-voice-chat:
     title: "Skoice：近接ボイスチャット"
   linking-process:
@@ -107,13 +102,11 @@ field:
     title: "未完了の設定"
   download:
     title: "ダウンロード"
-    description: "[プラグインを入手]({spigotmc-url}) して、あなたのMinecraftサーバーにインストールしてください。"
   donating:
     title: "寄付"
     description: "Skoiceはフリーソフトウェアです。もし気に入っていただけたなら、 [寄付]({open-collective-url}) することでご支援いただけます。"
   contributing:
     title: "貢献"
-    description: "Skoiceの未来を形作るのに興味がありますか？ [GitHubでコントリビュート]({github-url}) し [Crowdinでプラグインを翻訳]({crowdin-url}) してください！"
   long-range-mode:
     title: "長距離モード"
     description: "オープンワールドなゲームモードをプレイする場合は、このモードを選択してください。"

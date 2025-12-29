@@ -13,11 +13,9 @@
 command-description:
   configure: "Configurer Skoice."
   link: "Lier votre compte Discord à Minecraft."
-  unlink: "Délier votre compte Discord de Minecraft."
+  unlink: "Dissocier votre compte Discord de Minecraft."
   invite: "Obtenir le chat vocal de proximité sur votre serveur."
 menu:
-  invite-footer: "Envie de Skoice sur votre serveur ? Tapez \"/invite\" !"
-  review-footer: "Skoice vous plaît ? Pensez à mettre un avis sur SpigotMC !"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry et les contributeurs"
   configuration:
     title: "Configuration"
@@ -61,14 +59,9 @@ menu:
         label: "Joueurs sur l'écran de mort"
       spectators-included:
         label: "Spectateurs"
-  separated-teams:
-    title: "Équipes séparées"
-    description: "Choisissez si les équipes doivent être isolées."
-    full-description: "Lorsque cette option est activée, chaque équipe créée avec la commande `/team` dans Minecraft ou avec des plugins qui gèrent le système d'équipe intégré aura un chat vocal de proximité dédié. Si votre serveur utilise Minecraft 1.12 ou une version antérieure, la commande à utiliser est `/scoreboard teams`."
   chaining:
     title: "Chaînage"
-    description: "Sélectionnez la distance supplémentaire autorisée lorsque les joueurs s'enchaînent."
-    full-description: "L'enchaînement se produit généralement lorsqu'un joueur se trouve entre deux autres joueurs qui ne devraient pas pouvoir communiquer. Dans ce cas, la portée est étendue pour permettre aux trois joueurs de s'entendre."
+    description: "Sélectionnez la distance supplémentaire autorisée lorsque les joueurs s'enchaînent. L'enchaînement se produit généralement lorsqu'un joueur se trouve entre deux autres joueurs qui ne devraient pas pouvoir communiquer. Dans ce cas, la portée est étendue pour permettre aux trois joueurs de s'entendre."
     select-menu:
       disabled:
         label: "Désactivé - Aucun enchaînement autorisé"
@@ -82,8 +75,7 @@ menu:
     title: "Intégration dans Discord"
   voice-channel:
     title: "Salon vocal"
-    description: "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité."
-    full-description: "Il doit se trouver dans une catégorie. Veuillez noter que les joueurs seront automatiquement rendus muets dans ce salon."
+    description: "Sélectionnez le salon que les joueurs doivent rejoindre pour utiliser le chat vocal de proximité. Il doit se trouver dans une catégorie. Veuillez noter que les joueurs seront automatiquement rendus muets dans ce salon."
     select-menu:
       placeholder: "Veuillez sélectionner un salon vocal."
       select-option:
@@ -116,17 +108,15 @@ menu:
       connecting-alert:
         label: "\"Vous êtes proche d'autres joueurs. Dites bonjour !\""
       disconnecting-alert:
-        label: "\"Vous vous éloignez des joueurs à proximité.\""
+        label: "\"Vous vous éloignez des joueurs proches.\""
   tooltips:
     title: "Infobulles"
-    description: "Activez ou désactivez les messages interactifs sur votre serveur Minecraft."
-    full-description: "Vous pouvez désactiver ce paramètre si votre serveur utilise Bedrock Edition ou si les infobulles sont désactivées dans les paramètres de Minecraft. Seuls les opérateurs peuvent recevoir des messages interactifs."
+    description: "Activez ou désactivez les messages interactifs sur votre serveur Minecraft. Vous pouvez désactiver ce paramètre si votre serveur utilise Bedrock Edition ou si les infobulles sont désactivées dans les paramètres de Minecraft. Seuls les opérateurs peuvent recevoir des messages interactifs."
   advanced-settings:
     title: "Réglages avancés"
   link-synchronization:
     title: "Synchronisation des liaisons"
-    description: "Activez ou désactivez la synchronisation de plugins externes avec Skoice."
-    full-description: "Lorsque les joueurs lient leurs comptes via Skoice ou un plugin sélectionné, une synchronisation en temps réel se produit des deux côtés. La mise à jour de cette option nécessite de redémarrer votre serveur Minecraft pour qu'elle soit effective."
+    description: "Activez ou désactivez la synchronisation de plugins externes avec Skoice. Lorsque les joueurs lient leurs comptes via Skoice ou un plugin sélectionné, une synchronisation en temps réel se produit des deux côtés. La mise à jour de cette option nécessite de redémarrer votre serveur Minecraft pour qu'elle soit effective."
     select-menu:
       placeholder: "Veuillez sélectionner les plugins souhaités."
   release-channel:
@@ -134,8 +124,7 @@ menu:
     description: "Sélectionnez la version de Skoice que vous voulez utiliser."
   language:
     title: "Langue"
-    description: "Choisissez la langue utilisée pour afficher les messages."
-    full-description: "Votre langue est manquante ou incomplète ? [Traduisez notre plugin avec Crowdin]({crowdin-url}) !"
+    description: "Choisissez la langue utilisée pour afficher les messages. Votre langue est manquante ou incomplète ? [Traduisez notre plugin avec Crowdin]({crowdin-url}) !"
   skoice-proximity-voice-chat:
     title: "Skoice : Chat vocal de proximité"
   linking-process:
@@ -157,16 +146,13 @@ field:
     description: "Tapez {configure-discord-command} ou cliquez sur le bouton ci-dessous pour terminer la configuration et utiliser Skoice."
   incomplete-configuration-alternative-server-manager:
     title: "Configuration non terminée"
-    description: "Vous avez supprimé le salon vocal principal. Tapez {configure-discord-command} pour terminer la configuration et utiliser Skoice."
   download:
     title: "Téléchargement"
-    description: "[Obtenez le plugin]({spigotmc-url}) et installez-le sur votre serveur Minecraft."
   donating:
     title: "Faire un don"
-    description: "Skoice est un logiciel gratuit. Si vous l'aimez, vous pouvez nous aider en [faisant un don]({open-collective-url})."
+    description: "Skoice est un logiciel gratuit. Si vous l'appréciez, vous pouvez nous aider en [faisant un don]({open-collective-url})."
   contributing:
     title: "Contribuer"
-    description: "Vous voulez nous aider à façonner le futur de Skoice ? [Contribuez sur notre page GitHub]({github-url}) et [traduisez notre plugin avec Crowdin]({crowdin-url}) !"
   long-range-mode:
     title: "Mode longue portée"
     description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu en monde ouvert."
@@ -189,14 +175,14 @@ field:
     title: "Compte lié"
     description: "Votre compte Discord a été lié à Minecraft. Rejoignez le salon vocal {voice-channel} pour utiliser le chat vocal de proximité."
   account-unlinked:
-    title: "Compte délié"
-    description: "Votre compte Discord a été délié de Minecraft."
+    title: "Compte dissocié"
+    description: "Votre compte Discord a été dissocié de Minecraft."
   account-not-linked:
     title: "Compte non lié"
     description: "Votre compte Discord n'est pas lié à Minecraft. Tapez {link-discord-command} pour le lier et utiliser le chat vocal de proximité."
   account-already-linked:
     title: "Compte déjà lié"
-    description: "Votre compte Discord est déjà lié à Minecraft. Tapez {unlink-discord-command} pour le déconnecter."
+    description: "Votre compte Discord est déjà lié à Minecraft. Tapez {unlink-discord-command} pour le dissocier."
   restricted-command:
     title: "Commande restreinte"
     description: "Cette commande doit être effectuée sur un serveur Discord."

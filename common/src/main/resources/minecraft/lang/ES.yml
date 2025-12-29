@@ -1,4 +1,4 @@
-#Copyright 2020, 2021, 2022, 2023, 2024 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
 #This file is part of Skoice.
 #Skoice is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -15,18 +15,20 @@ logger:
     plugin-enabled: "Plug-in habilitado."
     plugin-disabled: "Plug-in deshabilitado."
     plugin-updated: "Skoice se ha actualizado a la última versión. Reinicie su servidor de Minecraft para aplicar los cambios."
+    skoice-3: "Ahora estás usando Skoice 3. Para que tu bot funcione correctamente, sigue nuestra guía de migración aquí: {migration-guide-url}."
     configuration-complete: "Skoice está configurado. Escribe \"{link-discord-command}\" en tu servidor de Discord para vincular tu cuenta de Discord con Minecraft. Los jugadores deben vincular sus cuentas para usar el chat de voz de proximidad."
   warning:
+    outdated-version: "Estás usando una versión desactualizada ({current-version}). Descarga la versión más reciente ({latest-version}) aquí: {spigotmc-url}."
     no-token: "Token no establecido. Unete a tu servidor de Minecraft para configurar Skoice."
     multiple-guilds: "Tu bot está en múltiples servidores de Discord. Escribe \"{configure-discord-command}\" en tu servidor de Discord para elegir uno."
+    two-factor-authentication: "Se requiere autenticación en dos pasos. Habilita la autenticación en dos pasos en la cuenta del propietario del bot o desactiva \"Requerir 2FA para acciones de moderador\" en la configuración del servidor."
     no-voice-channel: "Canal de voz no establecido. Escribe \"{configure-discord-command}\" en tu servidor de Discord para configurar Skoice."
     no-radius: "Radio no establecido. Escribe \"{configure-discord-command}\" en tu servidor de Discord para configurar Skoice."
     missing-permission: "No has concedido a tu bot el permiso de \"Administrador\" en tu servidor de Discord. Abre este enlace para añadirlo: {bot-invite-url}."
+    invalid-bot: "Tu bot no está configurado correctamente. Únete a tu servidor de Minecraft para crear uno nuevo."
 chat:
   configuration:
-    bot-creation-interactive: " \nConfiguración: {title-color}Bot Creation\n \n{dark-color}• {default-color}Skoice necesita un bot de Discord para funcionar. Para crear uno, siga las instrucciones en {open:creation-guide-url}.\n{dark-color}• {default-color}Cuando hayas recuperado su token, colócalo {suggest:token-minecraft-command}. Si acaso no puede interactuar con este mensaje, escriba lo siguiente \"{tooltips-minecraft-command}\".\n "
     no-token: "{error-color}No has proporcionado un token{default-color}. Para usar este comando, escriba \"{token-minecraft-command}\" seguido del token."
-    no-guild: "Tu bot {error-color}no está en un servidor de Discord{default-color}. Abre este enlace para invitarlo: {bot-invite-url}."
     bot-connecting: "Su bot está {success-color}intentando conectarse{default-color}."
     bot-connected: "Su bot está {success-color}ahora conectado{default-color}."
     bot-connected-incomplete-configuration-discord: "Su bot está {success-color}ahora conectado{default-color}. Escribe \"{configure-discord-command}\" en tu servidor de Discord para configurarlo."
@@ -34,26 +36,10 @@ chat:
     bot-could-not-connect: "Su bot {error-color}no pudo conectarse{default-color}. Para actualizar el token, escriba \"{token-minecraft-command}\" seguido del nuevo token."
     incomplete-configuration: "Skoice {error-color}no está configurado correctamente{default-color}. Por favor, póngase en contacto con un administrador del servidor."
     incomplete-configuration-operator-interactive: "Skoice {error-color}no está configurado correctamente{default-color}. Haga clic en {run:configure-minecraft-command} para configurarlo. Puedes cambiar el idioma haciendo clic en {suggest:language-minecraft-command}. Si acaso no puede interactuar con este mensaje, escriba lo siguiente \"{tooltips-minecraft-command}\"."
-    incomplete-configuration-operator: "Skoice no está configurado correctamente{default-color}. Escribe \"{configure-minecraft-command}\" para configurarlo. Puedes cambiar el idioma con \"{language-minecraft-command}\" seguido por el idioma."
     incomplete-configuration-operator-discord: "Skoice {error-color}no está configurado correctamente{default-color}. Escribe \"{configure-discord-command}\" en tu servidor de Discord para configurarlo."
     already-configured: "Skoice {error-color}ya está configurado{default-color}. Escribe \"{configure-discord-command}\" en tu servidor de Discord para actualizar sus ajustes."
     tooltips-enabled: "Tienes {success-color}habilitados mensajes interactivos{default-color}."
     tooltips-disabled: "{success-color}Has desactivado los mensajes interactivos {default-color}. Si estaba intentando configurar Skoice, escriba \"{configure-minecraft-command}\"."
-  player:
-    no-code: "No has proporcionado un código{default-color}. Escribe \"{link-discord-command}\" en el servidor de Discord \"{guild}\" para recibir uno."
-    invalid-code: "No has proporcionado un código válido{default-color}. Escribe \"{link-discord-command}\" en el servidor de Discord \"{guild}\" para recibir uno."
-    account-linked: "Has vinculado tu cuenta de Minecraft {default-color}a Discord."
-    account-unlinked: "Has desvinculado tu cuenta de Minecraft {default-color}de Discord."
-    account-already-linked: "Ya has vinculado tu cuenta de Minecraft {default-color}a Discord. Escribe \"{unlink-minecraft-command}\" para desvincularla."
-    not-connected: "No estás conectado {default-color}al chat de voz por proximidad. Únete al canal de voz \"{voice-channel}\" en el servidor de Discord \"{guild}\" para usarlo."
-    disconnected: "Ahora estás desconectado {default-color}del chat de voz por proximidad."
-  error:
-    no-parameter: "No has proporcionado un argumento{default-color}. Para usar este comando, escribe \"{skoice-minecraft-command} {args}\"."
-    invalid-parameter: "No has proporcionado un argumento válido{default-color}. Para usar este comando, escribe \"{skoice-minecraft-command} {args}\"."
-    illegal-executor: "Este comando sólo se puede ejecutar {default-color}por jugadores."
-    missing-permission: "Este comando sólo se puede ejecutar {default-color}por operadores."
-action-bar:
-  disconnecting-alert: "{error-color}⚠ {default-color}Te estás alejando de los jugadores cercanos."
 interaction:
   here: "aquí"
   this-page: "página actual"

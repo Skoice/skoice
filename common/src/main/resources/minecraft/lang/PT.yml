@@ -15,12 +15,17 @@ logger:
     plugin-enabled: "Plugin habilitado."
     plugin-disabled: "Plugin desabilitado."
     plugin-updated: "Skoice foi atualizado para a última versão. Reinicie seu servidor de Minecraft para aplicar as mudanças."
+    skoice-3: "Você agora está usando Skoice 3. Para que seu bot funcione corretamente, siga nosso guia de migração aqui: {migration-guide-url}."
     configuration-complete: "Skoice configurado. Envie \"{link-discord-command}\" em seu servidor do Discord para conectar sua conta do Discord com o Minecraft. Jogadores devem conectar suas contas para utilizar o chat de voz por proximidade."
   warning:
+    outdated-version: "Você está usando uma versão desatualizada ({current-version}). Baixe a última versão ({latest-version}) aqui: {spigotmc-url}."
     no-token: "Token não configurado. Entre em seu servidor de Minecraft para configurar o Skoice."
     multiple-guilds: "Seu bot está em múltiplos servidores do Discord. Envie \"{configure-discord-command}\" no servidor que você deseja utilizar."
+    two-factor-authentication: "Autenticação de dois fatores necessária. Ative a autenticação de dois fatores na conta do proprietário do bot ou desative \"Exigir 2FA para ações de moderação\" nas configurações do servidor."
     no-voice-channel: "Canal de voz não configurado. Envie \"{configure-discord-command}\" no seu servidor do Discord para configurar o Skoice."
     no-radius: "Raio não configurado. Envie \"{configure-discord-command}\" no seu servidor do Discord para configurar o Skoice."
+    missing-permission: "Você não concedeu a permissão \"Administrador\" ao seu bot no servidor do Discord. Abra este link para adicioná-la: {bot-invite-url}."
+    invalid-bot: "Seu bot não está configurado corretamente. Entre no seu servidor de Minecraft para criar um novo."
 chat:
   configuration:
     no-token: "Você {error-color}não configurou um token{default-color}. Para usar esse comando, envie \"{token-minecraft-command}\" seguido do token."
