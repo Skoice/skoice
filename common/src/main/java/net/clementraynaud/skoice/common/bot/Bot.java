@@ -248,7 +248,9 @@ public class Bot {
             } else {
                 this.guildId = guilds.get(0).getId();
                 this.plugin.getLang().getFormatter().set("guild",
-                        this.getGuild().getName().replace(Character.toString('&'), ""));
+                        this.getGuild().getName()
+                                .replace(Character.toString('&'), "")
+                                .replace(Character.toString('§'), ""));
 
                 if (this.getGuild().getRequiredMFALevel() == Guild.MFALevel.TWO_FACTOR_AUTH
                         && !this.jda.getSelfUser().isMfaEnabled()) {
