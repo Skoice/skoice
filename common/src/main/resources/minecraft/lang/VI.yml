@@ -1,0 +1,24 @@
+#Copyright 2020, 2021, 2022, 2023, 2024, 2025 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+#This file is part of Skoice.
+#Skoice is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#Skoice is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
+logger:
+  info:
+    plugin-enabled: "Đã bật plugin."
+    plugin-disabled: "Đã vô hiệu plugin"
+    plugin-updated: "Skoice đã được cập nhật lên phiên bản mới nhất. Vui lòng khởi động lại máy chủ Minecraft của bạn để áp dụng các thay đổi."
+    skoice-3: "Hiện tại bạn đang sử dụng Skoice 3. Để bot của bạn hoạt động bình thường, hãy làm theo hướng dẫn di chuyển của chúng tôi tại đây: {migration-guide-url}."
+  warning:
+    outdated-version: "Bạn đang sử dụng phiên bản cũ ({current-version}). Tải xuống phiên bản mới nhất ({latest-version}) tại đây: {spigotmc-url}."
+    no-token: "Mã thông báo chưa được thiết lập. Hãy tham gia máy chủ Minecraft của bạn để thiết lập Skoice."
+    two-factor-authentication: "Yêu cầu xác thực hai yếu tố. Bật xác thực hai yếu tố trên tài khoản của chủ sở hữu bot hoặc tắt tùy chọn \"Yêu cầu xác thực hai yếu tố cho hành động của người kiểm duyệt\" trong cài đặt máy chủ."
+    missing-permission: "Bạn chưa cấp quyền \"Quản trị viên\" cho bot trên máy chủ Discord của mình. Hãy mở liên kết này để thêm quyền: {bot-invite-url}."
+    invalid-bot: "Bot của bạn chưa được cấu hình đúng. Hãy tham gia máy chủ Minecraft của bạn để tạo một máy chủ mới."

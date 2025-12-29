@@ -39,7 +39,8 @@ public enum LangInfo {
     PL("Polski", "U+1F1F5U+1F1F1"),
     PT("Português", "U+1F1F5U+1F1F9"),
     RU("Русский", "U+1F1F7U+1F1FA"),
-    TR("Türkçe", "U+1F1F9U+1F1F7");
+    TR("Türkçe", "U+1F1F9U+1F1F7"),
+    VI("Tiếng Việt", "U+1F1FBU+1F1F3");
 
     private static final Set<String> langList;
     private static final String JOINED_LANG_LIST;
