@@ -11,16 +11,18 @@
 #You should have received a copy of the GNU General Public License
 #along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 command-description:
-  configure: "Configure Skoice."
-  link: "Liên kết tài khoản discord của bạn với minecraft."
+  configure: "Cấu hình Skoice."
+  link: "Liên kết tài khoản Discord của bạn với Minecraft."
   unlink: "Hủy liên kết tài khoản Discord của bạn khỏi Minecraft."
   invite: "Nhận tính năng trò chuyện bằng giọng nói gần trên máy chủ của bạn."
 menu:
+  invite-footer: "Bạn muốn Skoice trên máy chủ của mình? Nhập {invite-discord-command}!"
+  review-footer: "Bạn thích Skoice? Hãy cân nhắc [để lại đánh giá trên SpigotMC]({spigotmc-url})!"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry và những người đóng góp"
   configuration:
-    title: "Configuration"
+    title: "Cấu hình"
   server:
-    title: "Server"
+    title: "Máy chủ"
     description: "Để hoạt động bình thường, bot của bạn không thể hiện diện trên nhiều máy chủ Discord. Hãy chọn máy chủ mà bạn muốn tính năng trò chuyện thoại gần hoạt động. Bot của bạn sẽ tự động rời khỏi các máy chủ khác."
     select-menu:
       placeholder: "Vui lòng chọn máy chủ."
@@ -59,6 +61,15 @@ menu:
         label: "Người chơi trên màn hình tử thần"
       spectators-included:
         label: "Khán giả"
+  teams:
+    title: "Đội nhóm"
+    description: "Chọn hành vi sẽ áp dụng cho các đội nhóm. Tùy chọn này áp dụng cho các đội được tạo bằng lệnh `/team` trong Minecraft hoặc bằng plugin quản lý hệ thống đội tích hợp sẵn. Nếu máy chủ của bạn đang chạy Minecraft 1.12 hoặc cũ hơn, lệnh cần dùng là `/scoreboard teams`."
+    select-menu:
+      placeholder: "Vui lòng chọn hành vi mong muốn."
+      team-communication:
+        label: "Luôn cho phép thành viên đội giao tiếp với nhau"
+      separated-teams:
+        label: "Ngăn chặn giao tiếp giữa các đội"
   chaining:
     title: "Xâu chuỗi"
     description: "Chọn khoảng cách bổ sung được phép khi người chơi đang nối chuỗi. Việc nối chuỗi thường xảy ra khi một người chơi ở giữa hai người chơi khác mà đáng lẽ ra không thể giao tiếp. Trong trường hợp đó, phạm vi sẽ được mở rộng để cả ba người chơi đều có thể nghe thấy nhau."
@@ -72,15 +83,15 @@ menu:
       long:
         label: "Dài — +100% phạm vi ban đầu"
   discord-integration:
-    title: "Discord tích hợp"
+    title: "Tích hợp Discord"
   voice-channel:
-    title: "Voice Channel"
+    title: "Kênh thoại"
     description: "Chọn kênh mà người chơi phải tham gia để sử dụng tính năng trò chuyện thoại gần. Kênh này phải thuộc một danh mục. Xin lưu ý rằng người chơi sẽ tự động bị tắt tiếng trong kênh này."
     select-menu:
       placeholder: "Vui lòng chọn kênh thoại."
       select-option:
         new-voice-channel:
-          label: "New Voice Channel"
+          label: "Kênh thoại mới"
           description: "Skoice sẽ tự động thiết lập kênh thoại."
   text-chat:
     title: "Trò chuyện văn bản"
@@ -109,6 +120,10 @@ menu:
         label: "\"Bạn đang ở gần những người chơi khác. Chào họ đi!\""
       disconnecting-alert:
         label: "\"Bạn đang di chuyển ra xa những người chơi ở gần.\""
+      muted-alert:
+        label: "\"Đã tắt tiếng.\""
+      deafened-alert:
+        label: "\"Đã tắt loa.\""
   tooltips:
     title: "Chú giải công cụ"
     description: "Bật/tắt tin nhắn tương tác trên máy chủ Minecraft của bạn. Bạn có thể muốn tắt cài đặt này nếu máy chủ của bạn đang chạy trên Bedrock Edition hoặc nếu chú giải công cụ bị tắt trong cài đặt Minecraft. Chỉ người điều hành mới có thể nhận được tin nhắn tương tác."
@@ -145,14 +160,17 @@ field:
     title: "Cấu hình chưa hoàn chỉnh"
     description: "Nhập {configure-discord-command} hoặc nhấp vào nút bên dưới để hoàn tất cấu hình và sử dụng Skoice."
   incomplete-configuration-alternative-server-manager:
-    title: "Incomplete Configuration"
+    title: "Cấu hình chưa hoàn chỉnh"
+    description: "Bạn đã xóa kênh thoại chính hoặc danh mục của nó. Nhập {configure-discord-command} để hoàn tất cấu hình và sử dụng Skoice."
   download:
     title: "Tải xuống"
+    description: "[Tải plugin]({spigotmc-url}) và cài đặt nó trên máy chủ Minecraft của bạn."
   donating:
-    title: "Donating"
+    title: "Quyên góp"
     description: "Skoice là một phần mềm miễn phí. Nếu bạn thích, hãy giúp chúng tôi bằng cách [quyên góp]({open-collective-url})."
   contributing:
     title: "Đóng góp"
+    description: "Bạn muốn giúp chúng tôi định hình tương lai của Skoice? [Đóng góp trên trang GitHub của chúng tôi]({github-url}) và [dịch plugin của chúng tôi bằng Crowdin]({crowdin-url})!"
   long-range-mode:
     title: "Chế độ phạm vi xa"
     description: "Chọn chế độ này nếu bạn dự định chơi chế độ trò chơi thế giới mở."
@@ -160,16 +178,17 @@ field:
     title: "Chế độ phạm vi ngắn"
     description: "Chọn chế độ này nếu bạn định chơi các chế độ trò chơi chỉ yêu cầu khu vực hạn chế."
   customized:
-    title: "tùy chỉnh"
+    title: "Tùy chỉnh"
     description: "Đặt khoảng cách theo sở thích cá nhân của bạn."
   production-channel:
-    title: "Kênh sản xuất"
+    title: "Kênh chính thức"
     description: "Chọn kênh này để sử dụng phiên bản công khai. Phiên bản này có nhiều khả năng mang lại trải nghiệm ổn định hơn."
   beta-channel:
-    title: "Beta Channel"
+    title: "Kênh Beta"
     description: "Hãy chọn kênh này để khám phá và thử nghiệm các tính năng mới nhất của chúng tôi chưa được phát hành rộng rãi. Phiên bản này có thể chứa lỗi."
   verification-code:
     title: "Mã xác minh"
+    description: "Nhập `{link-minecraft-command} {code}` trong trò chơi để hoàn tất quá trình."
   account-linked:
     title: "Đã liên kết tài khoản"
     description: "Tài khoản Discord của bạn đã được liên kết với Minecraft. Hãy tham gia kênh thoại {voice-channel} để sử dụng tính năng trò chuyện gần."
@@ -194,22 +213,26 @@ field:
   proximity-channel-deleted:
     title: "Đã xóa Kênh lân cận"
     description: "Bạn đã xóa một kênh được sử dụng cho tính năng trò chuyện thoại gần. Các kênh này sẽ tự động bị xóa khi không còn cần thiết nữa. Bạn không nên xóa thủ công."
+  shared-bot:
+    title: "Bot dùng chung"
+    description: "Có vẻ như bot của bạn đang chạy nhiều chương trình. Tuy nhiên, nó phải được dành riêng cho Skoice để hoạt động bình thường. Bạn có thể tạo một bot mới bằng cách [làm theo hướng dẫn này]({creation-guide-url}). Sau khi bạn đã lấy được token, nhập `{token-minecraft-command}` theo sau là token trên máy chủ Minecraft của bạn. Nếu bot của bạn không chạy nhiều chương trình, vui lòng yêu cầu trợ giúp trên máy chủ Discord của chúng tôi bằng cách nhấn nút bên dưới."
 button-label:
-  back: "Back"
-  configure-now: "Configure Now"
-  support-server: "Support Server"
+  back: "Quay lại"
+  configure-now: "Cấu hình ngay"
+  support-server: "Máy chủ hỗ trợ"
   clear-notified-players: "Xóa người chơi được thông báo"
-  refresh: "Refresh"
+  refresh: "Làm mới"
   update-permissions: "Cập nhật quyền"
+  explore-more-settings: "Khám phá thêm cài đặt"
 select-option:
   default:
     description: "Tùy chọn này được chọn theo mặc định."
   undesirable:
     description: "Tùy chọn này có thể gây ra những hành vi không mong muốn."
   enabled:
-    label: "Enabled"
+    label: "Đã bật"
   disabled:
-    label: "Disabled"
+    label: "Đã tắt"
   too-many-options:
     label: "Quá nhiều lựa chọn"
     description: "Skoice không thể tải thêm tùy chọn."
@@ -218,11 +241,11 @@ text-input:
     label: "Tên danh mục"
     default-value: "Skoice"
   voice-channel-name:
-    label: "Voice Channel Name"
-    default-value: "Proximity Voice Chat"
+    label: "Tên kênh thoại"
+    default-value: "Trò chuyện thoại gần"
   horizontal-radius:
     label: "Bán kính ngang"
   vertical-radius:
     label: "Bán kính dọc"
 voice-channel-status: "Không thể nói chuyện — Không có người chơi nào ở gần"
-proximity-channel-name: "Proximity Channel"
+proximity-channel-name: "Kênh lân cận"
