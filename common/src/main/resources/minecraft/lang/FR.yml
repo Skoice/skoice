@@ -26,9 +26,14 @@ logger:
     no-radius: "Rayons non définis. Tapez \"{configure-discord-command}\" sur votre serveur Discord pour configurer Skoice."
     missing-permission: "Vous n'avez pas accordé à votre bot la permission \"Administrateur\" sur votre serveur Discord. Ouvrez ce lien pour l'ajouter : {bot-invite-url}."
     invalid-bot: "Votre bot n'est pas configuré correctement. Rejoignez votre serveur Minecraft pour en créer un nouveau."
+    shared-bot: "Il semble que votre bot exécute plusieurs programmes. Cependant, il doit être dédié à Skoice afin de fonctionner correctement. Vous pouvez en créer un nouveau en suivant les instructions sur cette page : {creation-guide-url}. Une fois que vous avez récupéré son token, tapez \"{token-minecraft-command}\" suivi du token."
 chat:
   configuration:
+    discord-integration-interactive: " \nConfiguration: {title-color}Discord Integration\n \n{dark-color}• {default-color}Skoice needs a Discord bot to work. To set up one easily, follow the instructions on {open:creation-guide-url}.\n{dark-color}• {default-color}Once you have retrieved its token, insert it {suggest:token-minecraft-command}.\n \nIf you cannot interact with this message, type \"{tooltips-minecraft-command}\".\n "
+    discord-integration: " \nConfiguration: {title-color}Discord Integration\n \n{dark-color}• {default-color}Skoice needs a Discord bot to work. To set up one easily, follow the instructions on this page: {creation-guide-url}.\n{dark-color}• {default-color}Once you have retrieved its token, type \"{token-minecraft-command}\" followed by the token.\n "
     no-token: "Vous n'avez {error-color}pas fourni de token{default-color}. Pour utiliser cette commande, tapez \"{token-minecraft-command}\" suivi du token."
+    no-guild-interactive: "Votre bot {error-color}n'est sur aucun serveur Discord{default-color}. Ouvrez {open:bot-invite-url} pour l'inviter. Ensuite, cliquez {run:configure-minecraft-command} pour le configurer. Si vous ne pouvez pas interagir avec ce message, tapez \"{tooltips-minecraft-command}\"."
+    no-guild: "Votre bot {error-color}n'est sur aucun serveur Discord{default-color}. Ouvrez cette page pour l'inviter : {bot-invite-url}. Ensuite, tapez \"{configure-minecraft-command}\" pour le configurer."
     bot-connecting: "Votre bot {success-color}tente de se connecter{default-color}."
     bot-connected: "Votre bot est {success-color}désormais connecté{default-color}."
     bot-connected-incomplete-configuration-discord: "Votre bot est {success-color}désormais connecté{default-color}. Tapez \"{configure-discord-command}\" sur votre serveur Discord pour le configurer."
@@ -40,6 +45,7 @@ chat:
     public-bot: "Votre bot {error-color}n'est pas correctement configuré{default-color}. Exécutez la commande à nouveau après avoir désélectionné \"Public Bot\" et cliqué sur \"Save Changes\" sur cette page : {bot-page-url}."
     incomplete-configuration: "Skoice n'est {error-color}pas configuré correctement{default-color}. Veuillez contacter un administrateur du serveur."
     incomplete-configuration-operator-interactive: "Skoice n'est {error-color}pas configuré correctement{default-color}. Cliquez {run:configure-minecraft-command} pour le configurer. Vous pouvez changer la langue en cliquant {suggest:language-minecraft-command}. Si vous ne pouvez pas interagir avec ce message, tapez \"{tooltips-minecraft-command}\"."
+    incomplete-configuration-operator: "Skoice n'est {error-color}pas configuré correctement{default-color}. Tapez \"{configure-minecraft-command}\" pour le configurer. Vous pouvez changer la langue avec \"{language-minecraft-command}\" suivi de la langue."
     incomplete-configuration-operator-discord: "Skoice n'est {error-color}pas configuré correctement{default-color}. Tapez \"{configure-discord-command}\" sur votre serveur Discord pour le configurer."
     already-configured: "Skoice est {error-color}déjà configuré{default-color}. Tapez \"{configure-discord-command}\" sur votre serveur Discord pour mettre à jour ses réglages."
     tooltips-enabled: "Vous avez {success-color}activé les messages interactifs{default-color}."
@@ -67,6 +73,8 @@ chat:
 action-bar:
   connecting-alert: "{success-color}⚠ {default-color}Vous êtes {success-color}proche d'autres joueurs{default-color}. Dites bonjour !"
   disconnecting-alert: "{error-color}⚠ {default-color}Vous vous {error-color}éloignez {default-color}des joueurs proches."
+  muted-alert: "{error-color}⚠ {default-color}{error-color}Micro coupé{default-color}."
+  deafened-alert: "{error-color}⚠ {default-color}{error-color}Son coupé{default-color}."
 interaction:
   here: "ici"
   this-page: "cette page"

@@ -16,6 +16,8 @@ command-description:
   unlink: "Dissocier votre compte Discord de Minecraft."
   invite: "Obtenir le chat vocal de proximité sur votre serveur."
 menu:
+  invite-footer: "Vous voulez Skoice sur votre serveur ? Tapez {invite-discord-command} !"
+  review-footer: "Vous vous amusez avec Skoice ? Pensez à [laisser un avis sur SpigotMC]({spigotmc-url}) !"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry et les contributeurs"
   configuration:
     title: "Configuration"
@@ -59,6 +61,15 @@ menu:
         label: "Joueurs sur l'écran de mort"
       spectators-included:
         label: "Spectateurs"
+  teams:
+    title: "Équipes"
+    description: "Sélectionnez les comportements qui doivent s'appliquer aux équipes. Cette option s'applique aux équipes créées avec la commande `/team` dans Minecraft ou avec des plugins qui gèrent le système d'équipes intégré. Si votre serveur utilise Minecraft 1.12 ou une version antérieure, la commande à utiliser est `/scoreboard teams`."
+    select-menu:
+      placeholder: "Veuillez sélectionner les comportements souhaités."
+      team-communication:
+        label: "Toujours autoriser la communication entre membres d'équipe"
+      separated-teams:
+        label: "Empêcher la communication entre équipes"
   chaining:
     title: "Chaînage"
     description: "Sélectionnez la distance supplémentaire autorisée lorsque les joueurs s'enchaînent. L'enchaînement se produit généralement lorsqu'un joueur se trouve entre deux autres joueurs qui ne devraient pas pouvoir communiquer. Dans ce cas, la portée est étendue pour permettre aux trois joueurs de s'entendre."
@@ -109,6 +120,10 @@ menu:
         label: "\"Vous êtes proche d'autres joueurs. Dites bonjour !\""
       disconnecting-alert:
         label: "\"Vous vous éloignez des joueurs proches.\""
+      muted-alert:
+        label: "\"Micro coupé.\""
+      deafened-alert:
+        label: "\"Son coupé.\""
   tooltips:
     title: "Infobulles"
     description: "Activez ou désactivez les messages interactifs sur votre serveur Minecraft. Vous pouvez désactiver ce paramètre si votre serveur utilise Bedrock Edition ou si les infobulles sont désactivées dans les paramètres de Minecraft. Seuls les opérateurs peuvent recevoir des messages interactifs."
@@ -146,13 +161,16 @@ field:
     description: "Tapez {configure-discord-command} ou cliquez sur le bouton ci-dessous pour terminer la configuration et utiliser Skoice."
   incomplete-configuration-alternative-server-manager:
     title: "Configuration non terminée"
+    description: "Vous avez supprimé le salon vocal principal ou sa catégorie. Tapez {configure-discord-command} pour terminer la configuration et utiliser Skoice."
   download:
     title: "Téléchargement"
+    description: "[Obtenez le plugin]({spigotmc-url}) et installez-le sur votre serveur Minecraft."
   donating:
     title: "Faire un don"
     description: "Skoice est un logiciel gratuit. Si vous l'appréciez, vous pouvez nous aider en [faisant un don]({open-collective-url})."
   contributing:
     title: "Contribuer"
+    description: "Vous souhaitez nous aider à façonner l'avenir de Skoice ? [Contribuez sur notre page GitHub]({github-url}) et [traduisez notre plugin avec Crowdin]({crowdin-url}) !"
   long-range-mode:
     title: "Mode longue portée"
     description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu en monde ouvert."
@@ -195,6 +213,9 @@ field:
   proximity-channel-deleted:
     title: "Salon de proximité supprimé"
     description: "Vous avez supprimé un salon utilisé par le chat vocal de proximité. Ces salons sont automatiquement supprimés lorsqu'ils ne sont plus nécessaires. Vous ne devez pas le faire manuellement."
+  shared-bot:
+    title: "Bot partagé"
+    description: "Il semble que votre bot exécute plusieurs programmes. Cependant, il doit être dédié à Skoice afin de fonctionner correctement. Vous pouvez en créer un nouveau en [suivant ces instructions]({creation-guide-url}). Une fois que vous avez récupéré son token, tapez `{token-minecraft-command}` suivi du token sur votre serveur Minecraft. Si votre bot n'exécute pas plusieurs programmes, veuillez demander de l'aide sur notre serveur Discord en appuyant sur le bouton ci-dessous."
 button-label:
   back: "Retour"
   configure-now: "Configurer maintenant"
@@ -202,6 +223,7 @@ button-label:
   clear-notified-players: "Effacer les joueurs notifiés"
   refresh: "Rafraîchir"
   update-permissions: "Mettre à jour les permissions"
+  explore-more-settings: "Explorer plus de réglages"
 select-option:
   default:
     description: "Cette option est sélectionnée par défaut."
