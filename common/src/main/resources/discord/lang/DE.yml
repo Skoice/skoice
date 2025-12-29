@@ -16,6 +16,8 @@ command-description:
   unlink: "Entkopple dein Discord-Konto von Minecraft."
   invite: "Hole den Sprachchat im Nahbereich auf deinen Server."
 menu:
+  invite-footer: "Willst du Skoice auf deinem Server? Gib {invite-discord-command} ein!"
+  review-footer: "Hast du Spaß mit Skoice? Erwäge, [eine Bewertung auf SpigotMC zu hinterlassen]({spigotmc-url})!"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry und weitere Mitwirkende"
   configuration:
     title: "Konfiguration"
@@ -59,6 +61,15 @@ menu:
         label: "Spieler auf dem Todesbildschirm"
       spectators-included:
         label: "Zuschauer"
+  teams:
+    title: "Teams"
+    description: "Wähle die Verhaltensweisen aus, die auf Teams angewendet werden sollen. Diese Option gilt für Teams, die mit dem Befehl `/team` in Minecraft oder mit Plugins erstellt wurden, die das integrierte Team-System verwalten. Wenn dein Server Minecraft 1.12 oder älter ausführt, lautet der zu verwendende Befehl `/scoreboard teams`."
+    select-menu:
+      placeholder: "Bitte wähle die gewünschten Verhaltensweisen aus."
+      team-communication:
+        label: "Teammitgliedern immer die Kommunikation erlauben"
+      separated-teams:
+        label: "Kommunikation zwischen Teams verhindern"
   chaining:
     title: "Verkettung"
     description: "Wähle den zusätzlichen Abstand, der bei der Verkettung von Spielern erlaubt ist. Verkettung tritt üblicherweise auf, wenn ein Spieler zwischen zwei anderen Spielern steht, die eigentlich nicht kommunizieren können sollten. In diesem Fall wird die Reichweite erweitert, damit alle drei Spieler sich hören können."
@@ -109,6 +120,10 @@ menu:
         label: "\"Du bist in der Nähe anderer Spieler. Sag Hallo!\""
       disconnecting-alert:
         label: "\"Du bewegst dich von nahestehenden Spielern weg.\""
+      muted-alert:
+        label: "\"Mikrofon aus.\""
+      deafened-alert:
+        label: "\"Ton aus.\""
   tooltips:
     title: "Tooltips"
     description: "Schalte interaktive Nachrichten auf deinem Minecraft-Server um. Du könntest diese Einstellung deaktivieren wollen, wenn dein Server auf Bedrock Edition läuft oder wenn Tooltips in den Minecraft-Einstellungen deaktiviert sind. Nur Operatoren können interaktive Nachrichten empfangen."
@@ -146,13 +161,16 @@ field:
     description: "Gib {configure-discord-command} ein oder klicke auf die Schaltfläche unten, um die Konfiguration abzuschließen und Skoice zu verwenden."
   incomplete-configuration-alternative-server-manager:
     title: "Unvollständige Konfiguration"
+    description: "Du hast den Hauptsprachkanal oder seine Kategorie gelöscht. Gib {configure-discord-command} ein, um die Konfiguration abzuschließen und Skoice zu verwenden."
   download:
     title: "Download"
+    description: "[Hole das Plugin]({spigotmc-url}) und installiere es auf deinem Minecraft-Server."
   donating:
     title: "Spenden"
     description: "Skoice ist eine kostenlose Software. Wenn du es magst, kannst du uns durch [Spenden]({open-collective-url}) unterstützen."
   contributing:
     title: "Mitwirken"
+    description: "Möchtest du uns helfen, die Zukunft von Skoice zu gestalten? [Trage auf unserer GitHub-Seite bei]({github-url}) und [übersetze unser Plugin mit Crowdin]({crowdin-url})!"
   long-range-mode:
     title: "Langstrecken-Modus"
     description: "Wähle diesen Modus, wenn du Open-World-Spielmodi spielen willst."
@@ -170,7 +188,7 @@ field:
     description: "Wähle diesen Kanal, um unsere neuesten Funktionen zu entdecken und zu testen, die noch nicht öffentlich verfügbar sind. Diese Version kann Fehler enthalten."
   verification-code:
     title: "Verifizierungscode"
-    description: "Geben Sie `{link-minecraft-command} {code}` im Spiel ein, um den Vorgang abzuschließen."
+    description: "Gib `{link-minecraft-command} {code}` im Spiel ein, um den Vorgang abzuschließen."
   account-linked:
     title: "Konto verknüpft"
     description: "Dein Discord-Konto wurde mit Minecraft verknüpft. Tritt dem Sprachkanal {voice-channel} bei, um den Sprachchat im Nahbereich zu nutzen."
@@ -195,6 +213,9 @@ field:
   proximity-channel-deleted:
     title: "Nahbereichskanal gelöscht"
     description: "Du hast einen Kanal gelöscht, der vom Sprachchat im Nahbereich verwendet wird. Diese Kanäle werden automatisch gelöscht, wenn sie nicht mehr benötigt werden. Du solltest dies nicht manuell tun."
+  shared-bot:
+    title: "Geteilter Bot"
+    description: "Es scheint, dass dein Bot mehrere Programme ausführt. Er muss jedoch Skoice gewidmet sein, um richtig zu funktionieren. Du kannst einen neuen erstellen, indem du [diesen Anweisungen folgst]({creation-guide-url}). Sobald du seinen Token abgerufen hast, gib `{token-minecraft-command}` gefolgt vom Token auf deinem Minecraft-Server ein. Wenn dein Bot nicht mehrere Programme ausführt, bitte um Hilfe auf unserem Discord-Server, indem du die Schaltfläche unten drückst."
 button-label:
   back: "Zurück"
   configure-now: "Jetzt konfigurieren"
@@ -202,6 +223,7 @@ button-label:
   clear-notified-players: "Benachrichtigte Spieler zurücksetzen"
   refresh: "Aktualisieren"
   update-permissions: "Berechtigungen aktualisieren"
+  explore-more-settings: "Weitere Einstellungen erkunden"
 select-option:
   default:
     description: "Diese Option ist standardmäßig ausgewählt."
