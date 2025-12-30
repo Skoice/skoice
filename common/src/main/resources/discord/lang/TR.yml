@@ -12,16 +12,18 @@
 #along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
 command-description:
   configure: "Skoice'i yapılandır."
-  link: "Discord hesabını Minceraft hesabına bağla."
+  link: "Discord hesabını Minecraft hesabına bağla."
   unlink: "Discord hesabınıza bağlı Minecraft hesabımızın bağlantısını kaldır."
   invite: "Proximity chat'i sunucuna kur."
 menu:
+  invite-footer: "Skoice'i sunucunda mı istiyorsun? {invite-discord-command} komutunu kullan!"
+  review-footer: "Skoice ile eğleniyor musun? [SpigotMC'de inceleme bırakmayı]({spigotmc-url}) düşün!"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry ve katkıda bulunanlar tarafından"
   configuration:
     title: "Ayarlar"
   server:
     title: "Sunucu"
-    description: "Botunuzun düzgün çalışması için, birden fazla sunucuda kullanılmaması gerekitr. Proximity Voice Chat'in hangi sunucuda aktif olmasını istediğinizi seçin. Bot otomatik olarak diğer sunuculardan ayrılacak."
+    description: "Botunuzun düzgün çalışması için, birden fazla sunucuda kullanılmaması gerekir. Proximity Voice Chat'in hangi sunucuda aktif olmasını istediğinizi seçin. Bot otomatik olarak diğer sunuculardan ayrılacak."
     select-menu:
       placeholder: "Lütfen bir sunucuyu seçin."
   two-factor-authentication:
@@ -59,6 +61,15 @@ menu:
         label: "Ölüm Ekranındaki Oyuncular"
       spectators-included:
         label: "İzleyiciler"
+  teams:
+    title: "Takımlar"
+    description: "Takımlara uygulanacak davranışları seç. Bu seçenek Minecraft'ta `/team` komutuyla veya yerleşik takım sistemini yöneten eklentilerle oluşturulan takımlar için geçerlidir. Sunucun Minecraft 1.12 veya daha eski sürüm kullanıyorsa, kullanılacak komut `/scoreboard teams` olacaktır."
+    select-menu:
+      placeholder: "Lütfen istenen davranışları seçin."
+      team-communication:
+        label: "Takım Üyelerinin Her Zaman İletişim Kurmasına İzin Ver"
+      separated-teams:
+        label: "Takımlar Arası İletişimi Engelle"
   chaining:
     title: "Zincirleme"
     description: "Zincirlenen kişilerin arasındaki ekstra izin verilen mesafeyi ayarla. Birbirini duyamaması gereken iki kişi arasında başka biri olduğu zaman zincirleme yaşanır ve üç kişide birbirini duyabilir."
@@ -109,16 +120,20 @@ menu:
         label: "\"Diğer oyunculara yakınsın. Merhaba de!\""
       disconnecting-alert:
         label: "\"Diğer oyunculardan uzaklaşıyorsun.\""
+      muted-alert:
+        label: "\"Mikrofon kapalı.\""
+      deafened-alert:
+        label: "\"Ses kapalı.\""
   tooltips:
     title: "İpuçları"
-    description: "Minecraft sunucundaki interaktif mesajları ayarla. Eğer Minecraft ayarlarında ipuçları kapalı ise beya Bedrock Edition kullanıyorsanız bunu kapatmak isteyebilirsiniz. Sadece yöneticiler interaktif mesajlar alabilir."
+    description: "Minecraft sunucundaki interaktif mesajları ayarla. Eğer Minecraft ayarlarında ipuçları kapalı ise veya Bedrock Edition kullanıyorsanız bunu kapatmak isteyebilirsiniz. Sadece yöneticiler interaktif mesajlar alabilir."
   advanced-settings:
     title: "Gelişmiş Ayarlar"
   link-synchronization:
     title: "Senkronize Linkler"
     description: "Diğer eklentilerin Skoice ile senkronize olup olmayacağını seçin. Oyuncular hesaplarını Skoice veya başka bir eklenti ile bağladıklarında gerçek zamanlı senkronize iki tarafta da yaşanır. Bu ayarı güncelledikten sonra Minecraft sunucunu yeniden başlatmalısın."
     select-menu:
-      placeholder: "Lütfenen istenen eklentileri seçin."
+      placeholder: "Lütfen istenen eklentileri seçin."
   release-channel:
     title: "Kanal Türü"
     description: "Skoice'in kullanmak istediğiniz sürümünü seçin."
@@ -146,13 +161,16 @@ field:
     description: "Yapılandırmayı bitirip Skoice'i kullanmaya başlamak için {configure-discord-command} yazın veya aşağıdaki butona tıklayın."
   incomplete-configuration-alternative-server-manager:
     title: "Tamamlanmamış Yapılandırma"
+    description: "Ana ses kanalını veya kategorisini sildin. Yapılandırmayı tamamlamak ve Skoice'i kullanmak için {configure-discord-command} komutunu kullan."
   download:
     title: "İndir"
+    description: "[Eklentiyi indir]({spigotmc-url}) ve Minecraft sunucuna kur."
   donating:
     title: "Bağış"
     description: "Skoice ücretsiz bir yazılımdır. Eğer beğenirseniz bize [bağış yaparak]({open-collective-url}) yardım edebilirsiniz."
   contributing:
-    title: "Katkıda bulunma"
+    title: "Katkıda Bulunma"
+    description: "Skoice'in geleceğini şekillendirmemize yardım etmek ister misin? [GitHub sayfamızda katkıda bulun]({github-url}) ve [eklentimizi Crowdin ile çevir]({crowdin-url})!"
   long-range-mode:
     title: "Uzak-Mesafe Modu"
     description: "Açık dünya modlarında oynayacaksanız bu modu seçin."
@@ -195,6 +213,9 @@ field:
   proximity-channel-deleted:
     title: "Proximity Kanalı Silindi"
     description: "Proximity chat sistemi tarafından kullanılan bir kanalı sildin. Bu kanallar gerek olmadığı zaman otomatik olarak silinir. Bunu manuel olarak yapmamalısın."
+  shared-bot:
+    title: "Paylaşılan Bot"
+    description: "Botun birden fazla program çalıştırıyor gibi görünüyor. Ancak düzgün çalışması için Skoice'e özel olması gerekiyor. [Bu talimatları takip ederek]({creation-guide-url}) yeni bir tane oluşturabilirsin. Token'ı aldıktan sonra Minecraft sunucunda `{token-minecraft-command}` komutunu yazıp ardından token'ı gir. Eğer botun birden fazla program çalıştırmıyorsa, lütfen aşağıdaki butona basarak Discord sunucumuzdan yardım iste."
 button-label:
   back: "Geri"
   configure-now: "Şimdi Ayarla"
@@ -202,6 +223,7 @@ button-label:
   clear-notified-players: "Bildirilen Oyuncuları Temizle"
   refresh: "Yenile"
   update-permissions: "İzinleri Güncelle"
+  explore-more-settings: "Daha Fazla Ayarı Keşfet"
 select-option:
   default:
     description: "Varsayılan Ayar."
