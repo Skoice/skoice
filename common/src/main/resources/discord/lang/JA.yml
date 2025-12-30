@@ -16,6 +16,8 @@ command-description:
   unlink: "あなたのDiscordアカウントとMinecraftのリンクを解除します。"
   invite: "あなたのサーバーに近接ボイスチャットを呼びます。"
 menu:
+  invite-footer: "あなたのサーバーにSkoiceが欲しいですか？{invite-discord-command}と入力してください！"
+  review-footer: "Skoiceを楽しんでいますか？[SpigotMCでレビューを残す]({spigotmc-url})ことを検討してください！"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry and contributors"
   configuration:
     title: "設定"
@@ -24,16 +26,32 @@ menu:
     description: "正常に動作させるため、botを複数のDiscordサーバーに存在させることはできません。近接ボイスチャットを有効にしたいサーバーを選択してください。botはその他のサーバーから自動的に退出します。"
     select-menu:
       placeholder: "サーバーを選択してください。"
+  two-factor-authentication:
+    title: "二要素認証"
+    description: "あなたのDiscordサーバーは、ボット所有者のアカウントで二要素認証を有効にする必要があります。設定するか、サーバー設定でこの要件を無効にしてください。手順：`モデレーション › 安全性の設定 › (権限 ›) モデレーターアクションに2FAを要求する`。"
   permissions:
     title: "権限"
+    description: "正常に動作させるには、Discordサーバーでbotに`管理者`権限を付与する必要があります。これを行うには、botに`管理者`権限を持つロールを追加してください。"
+  voice-chat:
+    title: "ボイスチャット"
   range:
     title: "範囲"
+    description: "近接ボイスチャットの範囲をカスタマイズします。"
     select-menu:
+      placeholder: "範囲を選択してください。"
       select-option:
         long-range-mode:
           label: "長距離モード"
         short-range-mode:
           label: "短距離モード"
+        customized:
+          label: "カスタマイズ"
+        description: "水平半径：{horizontal-radius}ブロック — 垂直半径：{vertical-radius}ブロック"
+  active-worlds:
+    title: "アクティブなワールド"
+    description: "Skoiceをアクティブにするワールドを選択します。"
+    select-menu:
+      placeholder: "希望するワールドを選択してください。"
   included-players:
     title: "対象プレイヤー"
     description: "近接ボイスチャットに含まれるプレイヤーの種類を選択します。"
@@ -43,14 +61,41 @@ menu:
         label: "死亡画面状態のプレイヤー"
       spectators-included:
         label: "スペクテイター"
+  teams:
+    title: "チーム"
+    description: "チームに適用する動作を選択します。このオプションは、Minecraftの`/team`コマンドまたは組み込みチームシステムを管理するプラグインで作成されたチームに適用されます。サーバーがMinecraft 1.12以前を実行している場合、使用するコマンドは`/scoreboard teams`です。"
+    select-menu:
+      placeholder: "希望する動作を選択してください。"
+      team-communication:
+        label: "常にチームメンバー間の通信を許可する"
+      separated-teams:
+        label: "チーム間の通信を防ぐ"
+  chaining:
+    title: "チェイニング"
+    description: "プレイヤーがチェイニングしているときに許可される追加距離を選択します。チェイニングは通常、プレイヤーが通信できないはずの他の2人のプレイヤーの間にいる場合に発生します。この場合、範囲が拡張され、3人のプレイヤー全員がお互いを聞くことができます。"
+    select-menu:
+      disabled:
+        label: "無効 — チェイニングは許可されません"
+      short:
+        label: "短い — 初期範囲の+25%"
+      medium:
+        label: "中程度 — 初期範囲の+50%"
+      long:
+        label: "長い — 初期範囲の+100%"
+  discord-integration:
+    title: "Discord連携"
   voice-channel:
     title: "ボイスチャンネル"
+    description: "プレイヤーが近接ボイスチャットを使用するために参加する必要があるチャンネルを選択します。カテゴリ内にある必要があります。プレイヤーはこのチャンネルで自動的にミュートされることに注意してください。"
     select-menu:
       placeholder: "ボイスチャンネルを選択してください。"
       select-option:
         new-voice-channel:
           label: "新しいボイスチャンネル"
           description: "Skoiceは自動的にボイスチャンネルをセットアップします。"
+  text-chat:
+    title: "テキストチャット"
+    description: "プレイヤーが近接チャンネルでテキストメッセージを送信できるかどうかを選択します。"
   channel-visibility:
     title: "チャンネルの可視性"
     description: "Skoiceによって作成された一時チャンネルの可視性を切り替えます。"
@@ -75,12 +120,26 @@ menu:
         label: "「あなたはほかのプレイヤーの近くにいます。挨拶しましょう！」"
       disconnecting-alert:
         label: "「あなたは近くのプレイヤーから離れています。」"
+      muted-alert:
+        label: "「マイクオフ」"
+      deafened-alert:
+        label: "「スピーカーオフ」"
   tooltips:
     title: "ツールチップ"
-    description: "Minceaftサーバー上で対話型メッセージを切り替えます。サーバーが統合版で実行されている場合や、Minecraft設定でツールチップが無効人なっている場合、この設定を無効にすることができます。操作者のみが対話型メッセージを受信できます。"
+    description: "Minecraftサーバー上で対話型メッセージを切り替えます。サーバーが統合版で実行されている場合や、Minecraft設定でツールチップが無効になっている場合、この設定を無効にすることができます。操作者のみが対話型メッセージを受信できます。"
+  advanced-settings:
+    title: "詳細設定"
+  link-synchronization:
+    title: "リンク同期"
+    description: "外部プラグインとSkoiceの同期を切り替えます。プレイヤーがSkoiceまたは選択したプラグインを介してアカウントをリンクすると、両側でリアルタイム同期が行われます。このオプションを更新するには、Minecraftサーバーを再起動する必要があります。"
+    select-menu:
+      placeholder: "希望するプラグインを選択してください。"
+  release-channel:
+    title: "リリースチャンネル"
+    description: "使用したいSkoiceのバージョンを選択します。"
   language:
     title: "言語"
-    description: "メッセージの表示に使用する言語を選択してください。あなたの言語が無いか不完全ですか？[Crowdinでプライグインを翻訳してください]({crowdin-url})！"
+    description: "メッセージの表示に使用する言語を選択してください。あなたの言語が無いか不完全ですか？[Crowdinでプラグインを翻訳してください]({crowdin-url})！"
   skoice-proximity-voice-chat:
     title: "Skoice：近接ボイスチャット"
   linking-process:
@@ -90,6 +149,7 @@ menu:
 field:
   configuration-complete:
     title: "設定完了"
+    description: "Skoiceが設定されました。{link-discord-command}と入力して、DiscordアカウントをMinecraftにリンクしてください。プレイヤーは近接ボイスチャットを使用するためにアカウントをリンクする必要があります。"
   notified-players-cleared:
     title: "通知されたプレイヤーの消去"
     description: "通知を受け取ったプレイヤーを消去しました。既に通知を受け取っていたプレイヤーは再度通知されるようになります。"
@@ -98,15 +158,19 @@ field:
     description: "Skoiceが正しく設定されていません。サーバーの管理者に連絡してください。"
   incomplete-configuration-server-manager:
     title: "未完了の設定"
+    description: "{configure-discord-command}と入力するか、下のボタンをクリックして設定を完了し、Skoiceを使用してください。"
   incomplete-configuration-alternative-server-manager:
     title: "未完了の設定"
+    description: "メインボイスチャンネルまたはそのカテゴリを削除しました。{configure-discord-command}と入力して設定を完了し、Skoiceを使用してください。"
   download:
     title: "ダウンロード"
+    description: "[プラグインを入手]({spigotmc-url})して、Minecraftサーバーにインストールしてください。"
   donating:
     title: "寄付"
     description: "Skoiceはフリーソフトウェアです。もし気に入っていただけたなら、 [寄付]({open-collective-url}) することでご支援いただけます。"
   contributing:
     title: "貢献"
+    description: "Skoiceの未来を一緒に作りませんか？[GitHubページで貢献]({github-url})したり、[Crowdinでプラグインを翻訳]({crowdin-url})してください！"
   long-range-mode:
     title: "長距離モード"
     description: "オープンワールドなゲームモードをプレイする場合は、このモードを選択してください。"
@@ -114,7 +178,14 @@ field:
     title: "短距離モード"
     description: "限定されたエリアしか必要としないゲームモードをプレイする場合は、このモードを選択してください。"
   customized:
+    title: "カスタマイズ"
     description: "あなたの好みに応じた距離を設定します。"
+  production-channel:
+    title: "プロダクションチャンネル"
+    description: "公開バージョンを使用するには、このチャンネルを選択してください。より安定した体験を提供する可能性が高くなります。"
+  beta-channel:
+    title: "ベータチャンネル"
+    description: "まだ一般公開されていない最新機能を試すには、このチャンネルを選択してください。このバージョンにはバグが含まれている可能性があります。"
   verification-code:
     title: "確認コード"
     description: "ゲーム内で `{link-minecraft-command} {code}` と入力して手続きを完了します。"
@@ -126,26 +197,45 @@ field:
     description: "あなたのDiscordアカウントはMinecraftからリンク解除されました。"
   account-not-linked:
     title: "アカウントがリンクされていない"
+    description: "あなたのDiscordアカウントはMinecraftにリンクされていません。{link-discord-command}と入力してリンクし、近接ボイスチャットを使用してください。"
   account-already-linked:
     title: "アカウントリンク済み"
+    description: "あなたのDiscordアカウントはすでにMinecraftにリンクされています。{unlink-discord-command}と入力してリンクを解除してください。"
+  restricted-command:
+    title: "制限されたコマンド"
+    description: "このコマンドはDiscordサーバーで実行する必要があります。"
   access-denied:
     title: "アクセス拒否"
+    description: "このコマンドを実行するために必要な権限がありません。"
   illegal-value:
     title: "不正な値"
     description: "値は 0 より大きい数値でなければなりません。"
+  proximity-channel-deleted:
+    title: "近接チャンネル削除"
+    description: "近接ボイスチャットで使用されているチャンネルを削除しました。これらのチャンネルは不要になると自動的に削除されます。手動で削除しないでください。"
+  shared-bot:
+    title: "共有ボット"
+    description: "あなたのbotが複数のプログラムを実行しているようです。ただし、正しく動作するにはSkoice専用である必要があります。[こちらの手順に従って]({creation-guide-url})新しいbotを作成できます。トークンを取得したら、Minecraftサーバーで`{token-minecraft-command}`に続けてトークンを入力してください。botが複数のプログラムを実行していない場合は、下のボタンを押してDiscordサーバーでサポートを求めてください。"
 button-label:
   back: "戻る"
+  configure-now: "今すぐ設定する"
+  support-server: "サポートサーバー"
   clear-notified-players: "通知されたプレイヤーを消去"
   refresh: "更新"
+  update-permissions: "権限を更新"
+  explore-more-settings: "その他の設定を見る"
 select-option:
   default:
     description: "このオプションはデフォルトで選択されています。"
+  undesirable:
+    description: "このオプションは望ましくない動作を引き起こす可能性があります。"
   enabled:
     label: "有効"
   disabled:
     label: "無効"
   too-many-options:
     label: "多すぎるオプション"
+    description: "Skoice is unable to load more options."
 text-input:
   category-name:
     label: "カテゴリ名"
@@ -157,3 +247,5 @@ text-input:
     label: "水平半径"
   vertical-radius:
     label: "垂直半径"
+voice-channel-status: "通話不可 — 近くにプレイヤーなし"
+proximity-channel-name: "近接チャンネル"
