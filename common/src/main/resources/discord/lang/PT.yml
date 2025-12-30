@@ -16,6 +16,8 @@ command-description:
   unlink: "Desvincular sua conta do Discord do Minecraft."
   invite: "Obter o chat de voz por proximidade no seu servidor."
 menu:
+  invite-footer: "Quer o Skoice no seu servidor? Digite {invite-discord-command}!"
+  review-footer: "Se divertindo com o Skoice? Considere [deixar uma avaliação no SpigotMC]({spigotmc-url})!"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry e colaboradores"
   configuration:
     title: "Configuração"
@@ -59,6 +61,15 @@ menu:
         label: "Jogadores na tela de morte"
       spectators-included:
         label: "Espectadores"
+  teams:
+    title: "Equipes"
+    description: "Selecione os comportamentos que devem se aplicar às equipes. Esta opção se aplica às equipes criadas com o comando `/team` no Minecraft ou com plugins que gerenciam o sistema de equipes integrado. Se o seu servidor estiver executando o Minecraft 1.12 ou anterior, o comando a ser usado é `/scoreboard teams`."
+    select-menu:
+      placeholder: "Por favor, selecione os comportamentos desejados."
+      team-communication:
+        label: "Sempre Permitir que Membros da Equipe se Comuniquem"
+      separated-teams:
+        label: "Impedir Comunicação Entre Equipes"
   chaining:
     title: "Encadeamento"
     description: "Selecione a distância adicional permitida quando os jogadores estão encadeados. O encadeamento geralmente ocorre quando um jogador está entre dois outros jogadores que não deveriam conseguir se comunicar. Nesse caso, o alcance é expandido para permitir que todos os três jogadores se ouçam."
@@ -109,6 +120,10 @@ menu:
         label: "\"Você está perto de outros jogadores. Diga oi!\""
       disconnecting-alert:
         label: "\"Você está se distanciando de jogadores próximos.\""
+      muted-alert:
+        label: "\"Microfone desativado.\""
+      deafened-alert:
+        label: "\"Som desativado.\""
   tooltips:
     title: "Dicas"
     description: "Ative ou desative mensagens interativas no seu servidor Minecraft. Você pode querer desativar esta configuração se o seu servidor estiver rodando na Edição Bedrock ou se as dicas estiverem desativadas nas configurações do Minecraft. Apenas operadores podem receber mensagens interativas."
@@ -146,13 +161,16 @@ field:
     description: "Digite {configure-discord-command} ou clique no botão abaixo para completar a configuração e usar o Skoice."
   incomplete-configuration-alternative-server-manager:
     title: "Configuração incompleta"
+    description: "Você excluiu o canal de voz principal ou sua categoria. Digite {configure-discord-command} para completar a configuração e usar o Skoice."
   download:
     title: "Baixar"
+    description: "[Baixe o plugin]({spigotmc-url}) e instale-o no seu servidor de Minecraft."
   donating:
     title: "Doação"
     description: "O Skoice é um software gratuito. Se você gostar, pode nos ajudar [doando]({open-collective-url})."
   contributing:
     title: "Contribuição"
+    description: "Interessado em nos ajudar a moldar o futuro do Skoice? [Contribua em nossa página do GitHub]({github-url}) e [traduza nosso plugin com o Crowdin]({crowdin-url})!"
   long-range-mode:
     title: "Modo de longas distâncias"
     description: "Escolha este modo se planeja jogar em modos de jogo de mundo aberto."
@@ -195,6 +213,9 @@ field:
   proximity-channel-deleted:
     title: "Canal de proximidade excluído"
     description: "Você excluiu um canal usado pelo chat de voz por proximidade. Estes canais são automaticamente excluídos quando não são mais necessários. Você não deveria fazer isso manualmente."
+  shared-bot:
+    title: "Bot Compartilhado"
+    description: "Parece que seu bot está executando vários programas. No entanto, ele deve ser dedicado ao Skoice para funcionar corretamente. Você pode criar um novo [seguindo estas instruções]({creation-guide-url}). Depois de obter o token, digite `{token-minecraft-command}` seguido do token no seu servidor de Minecraft. Se o seu bot não está executando vários programas, peça ajuda no nosso servidor do Discord pressionando o botão abaixo."
 button-label:
   back: "Voltar"
   configure-now: "Configurar agora"
@@ -202,6 +223,7 @@ button-label:
   clear-notified-players: "Limpar jogadores notificados"
   refresh: "Recarregar"
   update-permissions: "Atualizar permissões"
+  explore-more-settings: "Explorar Mais Configurações"
 select-option:
   default:
     description: "Esta opção é selecionada por padrão."
