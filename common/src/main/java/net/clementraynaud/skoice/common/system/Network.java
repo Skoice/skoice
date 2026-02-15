@@ -25,6 +25,7 @@ import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -42,15 +43,17 @@ public class Network {
     }
 
     public void build() {
+        Set<ProximityChannel> usedChannels = Networks.getProximityChannels();
+        Set<String> playerDiscordIds = this.players.stream()
+                .map(LinkedPlayer::getDiscordId)
+                .collect(Collectors.toSet());
+        Map<String, ProximityChannel> isolationMap = ProximityChannels.getIsolationChannelMap();
         this.proximityChannel = ProximityChannels.getAll().stream()
-                .filter(channel -> !Networks.getProximityChannels().contains(channel))
+                .filter(channel -> !usedChannels.contains(channel))
                 .filter(channel ->
-                        ProximityChannels.getIsolationChannelMap().entrySet().stream()
+                        isolationMap.entrySet().stream()
                                 .filter(entry -> entry.getValue().equals(channel))
-                                .allMatch(entry ->
-                                        this.players.stream()
-                                                .anyMatch(p -> p.getDiscordId().equals(entry.getKey()))
-                                )
+                                .allMatch(entry -> playerDiscordIds.contains(entry.getKey()))
                 )
                 .min(Comparator.comparing(ProximityChannel::getChannelId))
                 .orElseGet(() -> new ProximityChannel(this.plugin, this));
