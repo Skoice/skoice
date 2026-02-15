@@ -181,18 +181,17 @@ public class UpdateNetworksTask {
 
             LinkedPlayer.sendActionBarAlerts();
 
-            int possibleUsers = (int) connectedMembers.stream()
-                    .map(Member::getId)
-                    .map(LinkedPlayer::fromMemberId)
-                    .filter(Objects::nonNull)
-                    .count();
-            int possibleIsolatedUsers = (int) connectedMembers.stream()
-                    .filter(member -> member.hasPermission(mainVoiceChannel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS))
-                    .filter(member -> !member.getUser().isBot())
-                    .map(Member::getId)
-                    .map(LinkedPlayer::fromMemberId)
-                    .filter(Objects::nonNull)
-                    .count();
+            int possibleUsers = 0;
+            int possibleIsolatedUsers = 0;
+            for (Member member : connectedMembers) {
+                if (LinkedPlayer.fromMemberId(member.getId()) != null) {
+                    possibleUsers++;
+                    if (member.hasPermission(mainVoiceChannel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
+                            && !member.getUser().isBot()) {
+                        possibleIsolatedUsers++;
+                    }
+                }
+            }
             ProximityChannels.clean(possibleUsers, possibleIsolatedUsers);
         } catch (Throwable throwable) {
             Skoice.analyticManager().getBugsnag().notify(throwable, Severity.ERROR);

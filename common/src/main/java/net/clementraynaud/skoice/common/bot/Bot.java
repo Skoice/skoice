@@ -55,6 +55,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -217,7 +218,7 @@ public class Bot {
             return;
         }
 
-        List<String> storedChannels = this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD);
+        Set<String> storedChannels = new HashSet<>(this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD));
         Set<VoiceChannel> remainingChannels = guild.getVoiceChannels().stream()
                 .filter(channel -> storedChannels.contains(channel.getId()))
                 .collect(Collectors.toSet());

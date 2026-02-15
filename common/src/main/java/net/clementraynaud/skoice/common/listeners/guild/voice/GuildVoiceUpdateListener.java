@@ -24,6 +24,7 @@ import net.clementraynaud.skoice.common.api.events.player.PlayerProximityDisconn
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.system.Networks;
+import net.clementraynaud.skoice.common.system.ProximityChannel;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
 import net.clementraynaud.skoice.common.util.MapUtil;
 import net.dv8tion.jda.api.entities.Member;
@@ -33,7 +34,9 @@ import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class GuildVoiceUpdateListener extends ListenerAdapter {
 
@@ -108,11 +111,15 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
 
         String mainVoiceChannelId = this.plugin.getConfigYamlFile().getString(ConfigField.VOICE_CHANNEL_ID.toString());
 
+        Set<String> proximityChannelIds = ProximityChannels.getInitialized().stream()
+                .map(ProximityChannel::getChannelId)
+                .collect(Collectors.toSet());
+
         if (voiceChannelJoined.getId().equals(mainVoiceChannelId)
-                && ProximityChannels.getInitialized().stream().noneMatch(proximityChannel -> proximityChannel.getChannelId().equals(voiceChannelLeft.getId()))
-                || ProximityChannels.getInitialized().stream().anyMatch(proximityChannel -> proximityChannel.getChannelId().equals(voiceChannelJoined.getId()))
+                && !proximityChannelIds.contains(voiceChannelLeft.getId())
+                || proximityChannelIds.contains(voiceChannelJoined.getId())
                 && !voiceChannelLeft.getId().equals(mainVoiceChannelId)
-                && ProximityChannels.getInitialized().stream().noneMatch(proximityChannel -> proximityChannel.getChannelId().equals(voiceChannelLeft.getId()))) {
+                && !proximityChannelIds.contains(voiceChannelLeft.getId())) {
             this.plugin.getBot().notifyIfUnlinked(member);
         }
 
