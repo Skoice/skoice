@@ -43,7 +43,7 @@
  * <dependency>
  *     <groupId>net.clementraynaud</groupId>
  *     <artifactId>skoice.spigot</artifactId>
- *     <version>3.2.9</version>
+ *     <version>3.3</version>
  *     <scope>provided</scope>
  *     <exclusions>
  *         <exclusion>
@@ -59,7 +59,7 @@
  * <dependency>
  *     <groupId>net.clementraynaud</groupId>
  *     <artifactId>skoice.common</artifactId>
- *     <version>3.2.9</version>
+ *     <version>3.3</version>
  *     <scope>provided</scope>
  * </dependency>
  * }</pre>
