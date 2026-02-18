@@ -19,59 +19,18 @@
 
 package net.clementraynaud.skoice.spigot;
 
-import net.clementraynaud.skoice.common.Skoice;
-import net.clementraynaud.skoice.common.api.events.system.SystemReadyEvent;
-import net.clementraynaud.skoice.common.model.JsonModel;
-import net.clementraynaud.skoice.common.model.minecraft.PlayerInfo;
-import net.clementraynaud.skoice.common.model.minecraft.SkoiceGameMode;
-import net.clementraynaud.skoice.common.model.minecraft.SkoiceLocation;
-import net.clementraynaud.skoice.common.storage.ProxyYamlFile;
-import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class SkoicePluginSpigot extends JavaPlugin {
 
-    private static final String CHANNEL = "skoice:main";
-    private static boolean proxyMode = false;
-    private final Map<UUID, String> latestMessagesSent = new ConcurrentHashMap<>();
     private SkoiceSpigot skoice;
-
-    public static boolean isProxyMode() {
-        return SkoicePluginSpigot.proxyMode;
-    }
 
     @Override
     public void onEnable() {
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, SkoicePluginSpigot.CHANNEL);
-
         this.skoice = new SkoiceSpigot(this);
         this.skoice.start();
-
-        if (this.skoice.getProxyYamlFile() != null
-                && this.skoice.getProxyYamlFile().getBoolean(ProxyYamlFile.ENABLED_FIELD)) {
-            this.enableProxyMode();
-            return;
-        }
-
-        Skoice.eventBus().subscribe(
-                SystemReadyEvent.class,
-                event -> {
-                    if (SkoicePluginSpigot.proxyMode) {
-                        this.disableStandaloneSkoice();
-                    }
-                }
-        );
     }
 
     @Override
@@ -82,51 +41,5 @@ public class SkoicePluginSpigot extends JavaPlugin {
     @Override
     public void onDisable() {
         this.skoice.shutdown();
-    }
-
-    private void enableProxyMode() {
-        if (SkoicePluginSpigot.proxyMode) {
-            return;
-        }
-        SkoicePluginSpigot.proxyMode = true;
-        this.runProxyTask();
-        this.disableStandaloneSkoice();
-        this.getLogger().info("Proxy mode enabled.");
-    }
-
-    private void disableStandaloneSkoice() {
-        this.skoice.getConfigYamlFile().remove(ConfigField.TOKEN.toString());
-        this.skoice.shutdown();
-    }
-
-    private void runProxyTask() {
-        Duration period = Duration.ofMillis(500);
-        if (this.skoice.getConfigYamlFile().getBoolean(ConfigField.LUDICROUS.toString())) {
-            period = Duration.ofMillis(100);
-        }
-        this.skoice.getScheduler().runTaskTimer(() -> this.getServer().getOnlinePlayers().parallelStream().forEach(player -> {
-            Scoreboard scoreboard = player.getScoreboard();
-            Team playerTeam = scoreboard.getEntryTeam(player.getName());
-            PlayerInfo info = new PlayerInfo(player.getUniqueId(),
-                    player.isDead(),
-                    SkoiceGameMode.valueOf(player.getGameMode().toString()),
-                    player.getWorld().getName(),
-                    new SkoiceLocation(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()),
-                    playerTeam == null ? null : playerTeam.getName(),
-                    this.getDescription().getVersion());
-            String json = JsonModel.toJson(info);
-
-            if (!json.equals(this.latestMessagesSent.get(player.getUniqueId()))) {
-                this.latestMessagesSent.put(player.getUniqueId(), json);
-                ByteArrayOutputStream b = new ByteArrayOutputStream();
-                DataOutputStream out = new DataOutputStream(b);
-                try {
-                    out.writeUTF(json);
-                } catch (IOException ignored) {
-                    return;
-                }
-                player.sendPluginMessage(this, SkoicePluginSpigot.CHANNEL, b.toByteArray());
-            }
-        }), Duration.ZERO, period);
     }
 }
