@@ -49,6 +49,8 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
+import okhttp3.Dispatcher;
+import okhttp3.OkHttpClient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -121,7 +123,13 @@ public class Bot {
         byte[] finalBase64TokenBytes = base64TokenBytes;
         this.plugin.getScheduler().runTaskAsynchronously(() -> {
             try {
+                Dispatcher dispatcher = new Dispatcher();
+                dispatcher.setMaxRequestsPerHost(64);
+                dispatcher.setMaxRequests(128);
+                OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder()
+                        .dispatcher(dispatcher);
                 this.jda = JDABuilder.createDefault(new String(finalBase64TokenBytes))
+                        .setHttpClientBuilder(httpClientBuilder)
                         .addEventListeners(new ReadyListener(this.plugin))
                         .setMaxReconnectDelay(150)
                         .build();
