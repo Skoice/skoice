@@ -6,6 +6,8 @@
     "carlodrift",
     "Lucas_Cdry"
   ],
-  "dependencies": [],
+  "dependencies": [
+    {"id": "packetevents", "optional": false}
+  ],
   "main": "net.clementraynaud.skoice.velocity.SkoicePluginVelocity"
 }
