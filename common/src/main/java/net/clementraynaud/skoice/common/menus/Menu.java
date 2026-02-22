@@ -89,39 +89,72 @@ public class Menu {
         return description.toString();
     }
 
-    private TextDisplay getContainerHeader() {
-        String title = "## " + this.getTitle(true);
-        String description = this.getDescription();
+    private ActionRow getMenuPathActionRow() {
+        List<Button> buttons = new ArrayList<>();
 
-        if (this.plugin.getBot().getStatus() != BotStatus.READY
-                || this.parent == null) {
-            return TextDisplay.of(title + "\n" + description);
-        } else {
-
-        StringBuilder menuPath = new StringBuilder();
-        String parentMenu = this.parent;
-
-        while (parentMenu != null) {
+        if ("language".equals(this.menuId)) {
+            String parentMenu;
+            parentMenu = this.plugin.getBot().getStatus().getMenuId();
             Menu menu = this.plugin.getBot().getMenuFactory().getMenu(parentMenu);
-            menuPath.insert(0, menu.getTitle(false) + " › ");
-            parentMenu = menu.parent;
+            buttons.add(Button.secondary(parentMenu,
+                    menu.getTitle(false) + " ›"));
+
+        } else if (this.plugin.getBot().getStatus() == BotStatus.READY) {
+            String parentMenu;
+            parentMenu = this.parent;
+
+            while (parentMenu != null) {
+                Menu menu = this.plugin.getBot().getMenuFactory().getMenu(parentMenu);
+                buttons.add(0, Button.secondary(parentMenu,
+                        menu.getTitle(false) + " ›"));
+                parentMenu = menu.parent;
+            }
         }
 
-        return TextDisplay.of("**" + menuPath + "**\n" + title + "\n" + description);
+        if (buttons.isEmpty()) {
+            return null;
         }
+
+        return ActionRow.of(buttons);
     }
 
-    private TextDisplay getContainerFooter() {
+    private ContainerChildComponent getTitleComponent() {
+        String title = "## " + this.getTitle(true);
+
+        if ("settings".equals(this.getRoot())) {
+            Menu languageMenu = this.plugin.getBot().getMenuFactory().getMenu("language");
+            return Section.of(Button.secondary(languageMenu.menuId, languageMenu.getTitle(false))
+                            .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()),
+                    TextDisplay.of(title));
+        }
+
+        return TextDisplay.of(title);
+    }
+
+    private Section getFooterSection() {
         if (this.footer == null) {
             return null;
         }
-        return TextDisplay.of("-# " + this.plugin.getBot().getLang().getMessage("menu." + this.footer + "-footer"));
+        return Section.of(Button.link("https://discord.gg/skoice-proximity-voice-chat-741375523275407461",
+                                this.plugin.getBot().getLang().getMessage("button-label.support-server"))
+                        .withEmoji(MenuEmoji.DISCORD.get()),
+                TextDisplay.of("-# " + this.plugin.getBot().getLang().getMessage("menu." + this.footer + "-footer")));
     }
 
     private Container getContainer(Map<String, String> args) {
         List<ContainerChildComponent> childComponents = new ArrayList<>();
 
-        childComponents.add(this.getContainerHeader());
+        ActionRow menuPathSection = this.getMenuPathActionRow();
+        if (menuPathSection != null) {
+            childComponents.add(menuPathSection);
+        }
+
+        childComponents.add(this.getTitleComponent());
+
+        if (!this.getDescription().isEmpty()) {
+            childComponents.add(TextDisplay.of(this.getDescription()));
+        }
+
         childComponents.add(Menu.LARGE_INVISIBLE_SEPARATOR);
 
         List<Menu> children = this.getChildren();
@@ -148,9 +181,8 @@ public class Menu {
         if (!buttons.isEmpty()) {
             childComponents.add(ActionRow.of(buttons));
         }
-        childComponents.add(this.getButtonActionRow());
         childComponents.add(Menu.SMALL_INVISIBLE_SEPARATOR);
-        childComponents.add(this.getContainerFooter());
+        childComponents.add(this.getFooterSection());
 
         if (this.type == MenuType.DEFAULT) {
             return Container.of(childComponents);
@@ -199,42 +231,6 @@ public class Menu {
         }
 
         return childComponents;
-    }
-
-    private ActionRow getButtonActionRow() {
-        List<Button> secondaryButtons = new ArrayList<>();
-
-        if ("settings".equals(this.getRoot()) || "language".equals(this.menuId)) {
-            if (this.plugin.getBot().getStatus() == BotStatus.READY || "language".equals(this.menuId)) {
-                String backButtonId;
-                if ("language".equals(this.menuId)) {
-                    backButtonId = "settings";
-                } else if (this.parent == null) {
-                    backButtonId = "unreachable";
-                } else {
-                    backButtonId = this.parent;
-                }
-
-                Button backButton = Button.secondary(backButtonId, "← " + this.plugin.getBot().getLang().getMessage("button-label.back"));
-                if (this.parent == null && !"language".equals(this.menuId)) {
-                    backButton = backButton.asDisabled();
-                }
-
-                secondaryButtons.add(backButton);
-            }
-
-            if (!"language".equals(this.menuId)) {
-                Menu languageMenu = this.plugin.getBot().getMenuFactory().getMenu("language");
-                secondaryButtons.add(Button.secondary(languageMenu.menuId, languageMenu.getTitle(false))
-                        .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get()));
-            }
-        }
-
-        secondaryButtons.add(Button.link("https://discord.gg/skoice-proximity-voice-chat-741375523275407461",
-                        this.plugin.getBot().getLang().getMessage("button-label.support-server"))
-                .withEmoji(MenuEmoji.SCREWDRIVER.get()));
-
-        return ActionRow.of(secondaryButtons);
     }
 
     private ActionRow getSelectMenuActionRow() {

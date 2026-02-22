@@ -70,7 +70,6 @@ public enum MenuEmoji {
     REPEAT("U+1F501"),
     REPEAT_ONE("U+1F502"),
     ROBOT("U+1F916"),
-    SCREWDRIVER("U+1FA9B"),
     SKULL("U+1F480"),
     SOUND("U+1F509"),
     SPEAKING_HEAD("U+1F5E3"),
