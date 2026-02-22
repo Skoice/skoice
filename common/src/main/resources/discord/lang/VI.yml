@@ -217,7 +217,6 @@ field:
     title: "Bot dùng chung"
     description: "Có vẻ như bot của bạn đang chạy nhiều chương trình. Tuy nhiên, nó phải được dành riêng cho Skoice để hoạt động bình thường. Bạn có thể tạo một bot mới bằng cách [làm theo hướng dẫn này]({creation-guide-url}). Sau khi bạn đã lấy được token, nhập `{token-minecraft-command}` theo sau là token trên máy chủ Minecraft của bạn. Nếu bot của bạn không chạy nhiều chương trình, vui lòng yêu cầu trợ giúp trên máy chủ Discord của chúng tôi bằng cách nhấn nút bên dưới."
 button-label:
-  back: "Quay lại"
   configure-now: "Cấu hình ngay"
   support-server: "Máy chủ hỗ trợ"
   clear-notified-players: "Xóa người chơi được thông báo"

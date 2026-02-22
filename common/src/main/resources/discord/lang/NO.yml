@@ -82,7 +82,6 @@ field:
     title: "Ulovlig verdi"
     description: "Verdier må være hele tall større enn 0."
 button-label:
-  back: "Tilbake"
   refresh: "Oppdater"
 select-option:
   default:

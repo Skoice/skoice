@@ -217,7 +217,6 @@ field:
     title: "Współdzielony bot"
     description: "Wygląda na to, że twój bot uruchamia wiele programów. Jednak musi być dedykowany Skoice, aby działać prawidłowo. Możesz utworzyć nowy, [postępując zgodnie z tymi instrukcjami]({creation-guide-url}). Po pobraniu jego tokena wpisz `{token-minecraft-command}`, a następnie token na swoim serwerze Minecraft. Jeśli twój bot nie uruchamia wielu programów, poproś o pomoc na naszym serwerze Discord, naciskając przycisk poniżej."
 button-label:
-  back: "Wróć"
   configure-now: "Skonfiguruj teraz"
   support-server: "Serwer wsparcia"
   clear-notified-players: "Wyczyść powiadomionych graczy"

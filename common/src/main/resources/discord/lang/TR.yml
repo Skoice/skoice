@@ -217,7 +217,6 @@ field:
     title: "Paylaşılan Bot"
     description: "Botun birden fazla program çalıştırıyor gibi görünüyor. Ancak düzgün çalışması için Skoice'e özel olması gerekiyor. [Bu talimatları takip ederek]({creation-guide-url}) yeni bir tane oluşturabilirsin. Token'ı aldıktan sonra Minecraft sunucunda `{token-minecraft-command}` komutunu yazıp ardından token'ı gir. Eğer botun birden fazla program çalıştırmıyorsa, lütfen aşağıdaki butona basarak Discord sunucumuzdan yardım iste."
 button-label:
-  back: "Geri"
   configure-now: "Şimdi Ayarla"
   support-server: "Destek Sunucusu"
   clear-notified-players: "Bildirilen Oyuncuları Temizle"

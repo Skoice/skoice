@@ -103,7 +103,6 @@ field:
     title: "Ugyldig værdi"
     description: "Værdier skal være hele tal, der er større end 0."
 button-label:
-  back: "Tilbage"
   refresh: "Opdater"
 select-option:
   default:

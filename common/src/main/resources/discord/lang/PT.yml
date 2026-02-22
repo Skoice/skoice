@@ -217,7 +217,6 @@ field:
     title: "Bot Compartilhado"
     description: "Parece que seu bot está executando vários programas. No entanto, ele deve ser dedicado ao Skoice para funcionar corretamente. Você pode criar um novo [seguindo estas instruções]({creation-guide-url}). Depois de obter o token, digite `{token-minecraft-command}` seguido do token no seu servidor de Minecraft. Se o seu bot não está executando vários programas, peça ajuda no nosso servidor do Discord pressionando o botão abaixo."
 button-label:
-  back: "Voltar"
   configure-now: "Configurar agora"
   support-server: "Servidor de suporte"
   clear-notified-players: "Limpar jogadores notificados"

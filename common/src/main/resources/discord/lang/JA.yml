@@ -217,7 +217,6 @@ field:
     title: "共有ボット"
     description: "あなたのbotが複数のプログラムを実行しているようです。ただし、正しく動作するにはSkoice専用である必要があります。[こちらの手順に従って]({creation-guide-url})新しいbotを作成できます。トークンを取得したら、Minecraftサーバーで`{token-minecraft-command}`に続けてトークンを入力してください。botが複数のプログラムを実行していない場合は、下のボタンを押してDiscordサーバーでサポートを求めてください。"
 button-label:
-  back: "戻る"
   configure-now: "今すぐ設定する"
   support-server: "サポートサーバー"
   clear-notified-players: "通知されたプレイヤーを消去"

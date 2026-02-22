@@ -82,7 +82,6 @@ field:
     title: "Valore non valido"
     description: "I passi devono essere un numero maggiore di 0."
 button-label:
-  back: "Indietro"
   refresh: "Aggiorna"
 select-option:
   default:
