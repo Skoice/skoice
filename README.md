@@ -35,7 +35,8 @@ Skoice can be heavily customized directly from Discord. Here are a few things yo
 - Customize the range of the proximity voice chat.
 - Include or exclude certain types of players (spectators, dead players).
 - Choose worlds where Skoice is active.
-- Create multiple teams that cannot communicate with each other.
+- Create teams whose members are always connected to each other.
+- Create teams that cannot communicate with each other.
 - Select which messages from the plugin you want to display to your players.
 - Toggle the synchronization of external plugins with Skoice (DiscordSRV, EssentialsX).
 
