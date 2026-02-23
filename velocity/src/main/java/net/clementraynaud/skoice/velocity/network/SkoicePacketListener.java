@@ -30,6 +30,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerJo
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerRespawn;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateHealth;
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.clementraynaud.skoice.common.model.minecraft.PlayerInfo;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceGameMode;
@@ -58,9 +59,6 @@ public class SkoicePacketListener extends PacketListenerAbstract {
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getUser() == null || event.getUser().getUUID() == null) {
-            return;
-        }
         UUID uuid = event.getUser().getUUID();
         PlayerState state = this.states.computeIfAbsent(uuid, k -> new PlayerState());
 
@@ -143,9 +141,6 @@ public class SkoicePacketListener extends PacketListenerAbstract {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        if (event.getUser() == null || event.getUser().getUUID() == null) {
-            return;
-        }
         UUID uuid = event.getUser().getUUID();
         PlayerState state = this.states.get(uuid);
         if (state == null) {
@@ -177,7 +172,7 @@ public class SkoicePacketListener extends PacketListenerAbstract {
                 this.mapGameMode(state.gameMode),
                 state.worldName + ":" + state.serverName,
                 new SkoiceLocation(state.x, state.y, state.z),
-                state.teamName
+                state.teamName + ":" + state.serverName
         );
         this.skoice.setPlayerInfo(info);
     }
@@ -193,7 +188,7 @@ public class SkoicePacketListener extends PacketListenerAbstract {
 
     private String getServerName(UUID uuid) {
         return this.proxy.getPlayer(uuid)
-                .flatMap(p -> p.getCurrentServer())
+                .flatMap(Player::getCurrentServer)
                 .map(sc -> sc.getServerInfo().getName())
                 .orElse("unknown");
     }
