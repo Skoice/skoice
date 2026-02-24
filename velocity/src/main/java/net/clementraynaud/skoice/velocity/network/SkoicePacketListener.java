@@ -178,7 +178,7 @@ public class SkoicePacketListener extends PacketListenerAbstract {
                 this.mapGameMode(state.gameMode),
                 state.worldName + ":" + state.serverName,
                 new SkoiceLocation(state.x, state.y, state.z),
-                state.teamName + ":" + state.serverName
+                state.teamName != null ? state.teamName + ":" + state.serverName : null
         );
         this.skoice.setPlayerInfo(info);
     }
