@@ -59,6 +59,9 @@ public class SkoicePacketListener extends PacketListenerAbstract {
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
+        if (event.getUser() == null || event.getUser().getUUID() == null) {
+            return;
+        }
         UUID uuid = event.getUser().getUUID();
         PlayerState state = this.states.computeIfAbsent(uuid, k -> new PlayerState());
 
@@ -141,6 +144,9 @@ public class SkoicePacketListener extends PacketListenerAbstract {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
+        if (event.getUser() == null || event.getUser().getUUID() == null) {
+            return;
+        }
         UUID uuid = event.getUser().getUUID();
         PlayerState state = this.states.get(uuid);
         if (state == null) {
