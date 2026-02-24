@@ -16,10 +16,14 @@ To download our plugin, please [head to our Spigot page](https://www.spigotmc.or
 Skoice is supported on servers that run any Minecraft version from 1.8 to 1.21.
 
 You can use Skoice on the following server software:
-- **Spigot** (or derivative like [Paper](https://papermc.io/downloads/paper), [Purpur](https://purpurmc.org/downloads))
+- **Spigot** (or derivative like [Paper ⭐](https://papermc.io/downloads/paper), [Purpur](https://purpurmc.org/downloads))
 - **Velocity** (using our [Proxy Guide](https://github.com/Skoice/skoice/wiki/Proxy-Guide))
-- **Fabric** (using [Cardboard](https://cardboardpowered.org/))
-- **Forge** (using [Magma](https://magmafoundation.org/) or [Mohist](https://mohistmc.com/))
+- **Fabric** (using [Velocity ⭐](https://github.com/Skoice/skoice/wiki/Proxy-Guide), [Cardboard](https://cardboardpowered.org/) or [ArcLight](https://github.com/IzzelAliz/Arclight))
+- **Forge** (using [Velocity ⭐](https://github.com/Skoice/skoice/wiki/Proxy-Guide), [Magma](https://magmafoundation.org/), [Mohist](https://mohistmc.com/) or [ArcLight](https://github.com/IzzelAliz/Arclight))
+- **NeoForge** (using [Velocity ⭐](https://github.com/Skoice/skoice/wiki/Proxy-Guide) or [ArcLight](https://github.com/IzzelAliz/Arclight))
+- **Folia** (using [Velocity](https://github.com/Skoice/skoice/wiki/Proxy-Guide))
+
+⭐ = Recommended way to run Skoice on this server software
 
 If your server allows players from **Bedrock Edition** (with [Geyser](https://geysermc.org/) for example), they can use Skoice just like on Java Edition.
 
