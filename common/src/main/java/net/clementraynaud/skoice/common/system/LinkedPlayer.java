@@ -122,16 +122,16 @@ public final class LinkedPlayer {
     }
 
     public boolean isCloseEnoughToPlayer(LinkedPlayer linkedPlayer, boolean falloff) {
-        if (!this.player.getWorld().equals(linkedPlayer.player.getWorld())) {
-            return false;
-        }
-
         String playerTeam = this.player.getTeam();
 
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TEAM_COMMUNICATION.toString())
                 && playerTeam != null
                 && playerTeam.equals(linkedPlayer.player.getTeam())) {
             return true;
+        }
+
+        if (!this.player.getWorld().equals(linkedPlayer.player.getWorld())) {
+            return false;
         }
 
         if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SEPARATED_TEAMS.toString())) {
