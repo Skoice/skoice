@@ -34,7 +34,7 @@ public class Network {
 
     private final Skoice plugin;
     private final Set<LinkedPlayer> players = ConcurrentHashMap.newKeySet();
-    private ProximityChannel proximityChannel;
+    private volatile ProximityChannel proximityChannel;
 
     public Network(Skoice plugin, Set<LinkedPlayer> players) {
         this.plugin = plugin;
