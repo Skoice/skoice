@@ -176,9 +176,9 @@ public class Menu {
         if (selectMenuActionRow != null) {
             childComponents.add(selectMenuActionRow);
         }
-        childComponents.add(Menu.LARGE_INVISIBLE_SEPARATOR);
         List<Button> buttons = this.plugin.getBot().getMenuFactory().getButtons(this.plugin, this.menuId);
         if (!buttons.isEmpty()) {
+            childComponents.add(Menu.LARGE_INVISIBLE_SEPARATOR);
             childComponents.add(ActionRow.of(buttons));
         }
         childComponents.add(Menu.SMALL_INVISIBLE_SEPARATOR);
