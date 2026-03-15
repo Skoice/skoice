@@ -74,7 +74,7 @@ action-bar:
   connecting-alert: "{success-color}⚠ {default-color}Vous êtes {success-color}proche d'autres joueurs{default-color}. Dites bonjour !"
   disconnecting-alert: "{error-color}⚠ {default-color}Vous vous {error-color}éloignez {default-color}des joueurs proches."
   muted-alert: "{error-color}⚠ {default-color}Micro {error-color}coupé{default-color}."
-  deafened-alert: "{error-color}⚠ {default-color}{error-color}Son coupé{default-color}."
+  deafened-alert: "{error-color}⚠ {default-color}Son {error-color}coupé{default-color}."
 interaction:
   here: "ici"
   this-page: "cette page"
