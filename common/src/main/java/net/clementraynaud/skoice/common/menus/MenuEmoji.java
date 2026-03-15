@@ -59,7 +59,6 @@ public enum MenuEmoji {
     MAG("U+1F50D"),
     MAP("U+1F5FA"),
     MEMO("U+1F4DD"),
-    MUTE("U+1F507"),
     NO_BELL("U+1F515"),
     NO_ENTRY("U+26D4"),
     OUTBOX_TRAY("U+1F4E4"),
@@ -74,16 +73,17 @@ public enum MenuEmoji {
     SOUND("U+1F509"),
     SPEAKING_HEAD("U+1F5E3"),
     SPEECH_BALLOON("U+1F4AC"),
-    STUDIO_MICROPHONE("U+1F399"),
     TEST_TUBE("U+1F9EA"),
     THOUGHT_BALLOON("U+1F4AD"),
     WARNING("U+26A0"),
     WASTEBASKET("U+1F5D1"),
     WRENCH("U+1F527"),
     X("U+274C"),
+    MUTED(null),
     DISCORD(null),
     DISCORDSRV(null),
-    ESSENTIALSX(null);
+    ESSENTIALSX(null),
+    DEAFENED(null);
 
     private static final Map<String, Long> CUSTOM_EMOJI_ID = new HashMap<>();
     private static final String APPLICATION_EMOJI_PREFIX = "skoice_";

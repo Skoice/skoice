@@ -46,10 +46,10 @@ public class ActionBarAlertsSelector extends Selector {
                         .withEmoji(MenuEmoji.OUTBOX_TRAY.get()),
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.muted-alert.label"), ActionBarAlert.MUTED.toString())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
-                        .withEmoji(MenuEmoji.STUDIO_MICROPHONE.get()),
+                        .withEmoji(MenuEmoji.MUTED.get()),
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.deafened-alert.label"), ActionBarAlert.DEAFENED.toString())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
-                        .withEmoji(MenuEmoji.MUTE.get())));
+                        .withEmoji(MenuEmoji.DEAFENED.get())));
         List<String> defaultValues = new ArrayList<>();
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
             defaultValues.add(ConfigField.CONNECTING_ALERT.toString());
