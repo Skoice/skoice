@@ -37,6 +37,7 @@ import net.clementraynaud.skoice.common.system.ProximityChannel;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
 import net.clementraynaud.skoice.common.tasks.InterruptSystemTask;
 import net.clementraynaud.skoice.common.util.MapUtil;
+import net.dv8tion.jda.api.GatewayEncoding;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -49,6 +50,10 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
@@ -128,7 +133,14 @@ public class Bot {
                 dispatcher.setMaxRequests(128);
                 OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder()
                         .dispatcher(dispatcher);
-                this.jda = JDABuilder.createDefault(new String(finalBase64TokenBytes))
+                this.jda = JDABuilder.createLight(new String(finalBase64TokenBytes), GatewayIntent.GUILD_VOICE_STATES)
+                        .setMemberCachePolicy(MemberCachePolicy.VOICE)
+                        .enableCache(CacheFlag.VOICE_STATE, CacheFlag.MEMBER_OVERRIDES)
+                        .setChunkingFilter(ChunkingFilter.NONE)
+                        .setLargeThreshold(50)
+                        .setBulkDeleteSplittingEnabled(false)
+                        .setEnableShutdownHook(false)
+                        .setGatewayEncoding(GatewayEncoding.ETF)
                         .setHttpClientBuilder(httpClientBuilder)
                         .addEventListeners(new ReadyListener(this.plugin))
                         .setMaxReconnectDelay(150)
