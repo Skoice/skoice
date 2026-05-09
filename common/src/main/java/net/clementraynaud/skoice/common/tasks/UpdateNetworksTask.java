@@ -159,7 +159,9 @@ public class UpdateNetworksTask {
                         proximityChannel = ProximityChannels.getAll().stream()
                                 .filter(channel -> !Networks.getProximityChannels().contains(channel))
                                 .filter(channel -> !ProximityChannels.getIsolationChannelMap().containsValue(channel))
-                                .min(Comparator.comparing(ProximityChannel::getChannelId))
+                                .min(Comparator.comparing((ProximityChannel channel) ->
+                                                !channel.getChannelId().equals(currentChannel.getId()))
+                                        .thenComparing(ProximityChannel::getChannelId))
                                 .orElseGet(() -> new ProximityChannel(this.plugin, (Network) null));
                         ProximityChannels.getIsolationChannelMap().put(memberId, proximityChannel);
                     }

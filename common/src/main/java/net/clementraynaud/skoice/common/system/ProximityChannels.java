@@ -62,13 +62,13 @@ public final class ProximityChannels {
     }
 
     public static void clean(int userCount, int maxIsolatedUsers) {
-        int maxNetworks = maxIsolatedUsers + (userCount - maxIsolatedUsers) / 2;
+        int maxProximityChannels = maxIsolatedUsers + (userCount - maxIsolatedUsers) / 2;
 
         ProximityChannels.PROXIMITY_CHANNEL_SET.stream()
                 .filter(proximityChannel -> proximityChannel.getChannel() != null
                         && proximityChannel.getSize() == 0)
                 .forEach(proximityChannel -> {
-                    if (ProximityChannels.getAll().size() > maxNetworks + ProximityChannels.EXTRA_CHANNELS
+                    if (ProximityChannels.getAll().size() > maxProximityChannels + ProximityChannels.EXTRA_CHANNELS
                             || userCount == 0 && maxIsolatedUsers == 0) {
                         proximityChannel.delete();
                     }
