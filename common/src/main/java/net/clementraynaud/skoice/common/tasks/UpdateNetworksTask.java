@@ -43,7 +43,6 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
 public class UpdateNetworksTask {
 
@@ -89,23 +88,30 @@ public class UpdateNetworksTask {
                 return;
             }
 
-            this.manageConnectedPlayers();
-            this.splitSpreadNetworks();
-            this.manageIsolatedPlayers();
-            this.mergeNetworks();
-            this.manageMoves();
+            Set<String> membersInMainVoiceChannel = new HashSet<>();
+            mainVoiceChannel.getMembers().forEach(member -> membersInMainVoiceChannel.add(member.getId()));
 
-            Networks.clean();
-
-            Set<Member> connectedMembers = ProximityChannels.getInitialized().stream()
+            Set<String> membersInProximityChannels = new HashSet<>();
+            ProximityChannels.getInitialized().stream()
                     .map(ProximityChannel::getChannel)
                     .filter(Objects::nonNull)
                     .flatMap(channel -> channel.getMembers().stream())
-                    .collect(Collectors.toCollection(HashSet::new));
-            connectedMembers.addAll(mainVoiceChannel.getMembers());
+                    .forEach(member -> membersInProximityChannels.add(member.getId()));
 
-            for (Member member : connectedMembers) {
-                if (member.getVoiceState() == null || member.getVoiceState().getChannel() == null) {
+            Set<String> connectedMembers = new HashSet<>(membersInMainVoiceChannel);
+            connectedMembers.addAll(membersInProximityChannels);
+
+            this.manageConnectedPlayers();
+            this.splitSpreadNetworks(connectedMembers);
+            this.manageIsolatedPlayers(connectedMembers);
+            this.mergeNetworks();
+            this.manageMoves(connectedMembers);
+
+            Networks.clean();
+
+            for (String memberId : connectedMembers) {
+                Member member = this.plugin.getBot().getGuild().getMemberById(memberId);
+                if (member == null || member.getVoiceState() == null || member.getVoiceState().getChannel() == null) {
                     continue;
                 }
 
@@ -113,13 +119,13 @@ public class UpdateNetworksTask {
                 GuildVoiceState voiceState = member.getVoiceState();
                 VoiceChannel currentChannel = voiceState.getChannel().asVoiceChannel();
 
-                LinkedPlayer linkedPlayer = LinkedPlayer.fromMemberId(member.getId());
+                LinkedPlayer linkedPlayer = LinkedPlayer.fromMemberId(memberId);
                 if (linkedPlayer != null) {
                     network = linkedPlayer.getNetwork();
 
                     if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.MUTED_ALERT.toString())
                             && voiceState.isMuted()
-                            && !linkedPlayer.isInMainVoiceChannel()
+                            && !membersInMainVoiceChannel.contains(memberId)
                             && !linkedPlayer.isInAnyIsolationChannel()) {
                         linkedPlayer.addActionBarAlert(ActionBarAlert.MUTED);
                     }
@@ -135,28 +141,28 @@ public class UpdateNetworksTask {
                     if (shouldBeInChannel == null) {
                         continue;
                     }
-                    ProximityChannels.getIsolationChannelMap().remove(member.getId());
+                    ProximityChannels.getIsolationChannelMap().remove(memberId);
                 } else if (member.hasPermission(mainVoiceChannel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
                         && !member.getUser().isBot()) {
-                    ProximityChannel proximityChannel = ProximityChannels.getIsolationChannelMap().get(member.getId());
+                    ProximityChannel proximityChannel = ProximityChannels.getIsolationChannelMap().get(memberId);
                     if (proximityChannel == null) {
                         proximityChannel = ProximityChannels.getAll().stream()
                                 .filter(channel -> !Networks.getProximityChannels().contains(channel))
                                 .filter(channel -> !ProximityChannels.getIsolationChannelMap().containsValue(channel))
                                 .min(Comparator.comparing(ProximityChannel::getChannelId))
                                 .orElseGet(() -> new ProximityChannel(this.plugin, (Network) null));
-                        ProximityChannels.getIsolationChannelMap().put(member.getId(), proximityChannel);
+                        ProximityChannels.getIsolationChannelMap().put(memberId, proximityChannel);
                     }
                     shouldBeInChannel = proximityChannel.getChannel();
                     if (shouldBeInChannel == null) {
                         continue;
                     }
                 } else {
-                    ProximityChannels.getIsolationChannelMap().remove(member.getId());
+                    ProximityChannels.getIsolationChannelMap().remove(memberId);
                     shouldBeInChannel = mainVoiceChannel;
                 }
 
-                Pair<String, CompletableFuture<Void>> awaitingMove = this.awaitingMoves.get(member.getId());
+                Pair<String, CompletableFuture<Void>> awaitingMove = this.awaitingMoves.get(memberId);
 
                 if (awaitingMove == null
                         || !awaitingMove.getLeft().equals(shouldBeInChannel.getId())
@@ -164,12 +170,12 @@ public class UpdateNetworksTask {
                     if (currentChannel != shouldBeInChannel) {
                         boolean sendConnectingAlert = this.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())
                                 && linkedPlayer != null
-                                && (linkedPlayer.isInMainVoiceChannel() || linkedPlayer.isInAnyIsolationChannel());
-                        this.awaitingMoves.put(member.getId(), Pair.of(
+                                && (membersInMainVoiceChannel.contains(memberId) || linkedPlayer.isInAnyIsolationChannel());
+                        this.awaitingMoves.put(memberId, Pair.of(
                                 shouldBeInChannel.getId(),
                                 this.plugin.getBot().getGuild().moveVoiceMember(member, shouldBeInChannel)
                                         .submit().whenCompleteAsync((v, t) -> {
-                                            this.awaitingMoves.remove(member.getId());
+                                            this.awaitingMoves.remove(memberId);
                                             if (sendConnectingAlert) {
                                                 linkedPlayer.addActionBarAlert(ActionBarAlert.CONNECTING);
                                             }
@@ -183,13 +189,16 @@ public class UpdateNetworksTask {
 
             int possibleUsers = 0;
             int possibleIsolatedUsers = 0;
-            for (Member member : connectedMembers) {
-                if (LinkedPlayer.fromMemberId(member.getId()) != null) {
-                    possibleUsers++;
-                    if (member.hasPermission(mainVoiceChannel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
-                            && !member.getUser().isBot()) {
-                        possibleIsolatedUsers++;
-                    }
+            for (String memberId : connectedMembers) {
+                Member member = this.plugin.getBot().getGuild().getMemberById(memberId);
+                if (member == null || LinkedPlayer.fromMemberId(memberId) == null) {
+                    continue;
+                }
+
+                possibleUsers++;
+                if (member.hasPermission(mainVoiceChannel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
+                        && !member.getUser().isBot()) {
+                    possibleIsolatedUsers++;
                 }
             }
             ProximityChannels.clean(possibleUsers, possibleIsolatedUsers);
@@ -217,17 +226,17 @@ public class UpdateNetworksTask {
                 });
     }
 
-    private void splitSpreadNetworks() {
-        Networks.getAll().forEach(Network::splitIfSpread);
+    private void splitSpreadNetworks(Set<String> connectedMembers) {
+        Networks.getAll().forEach(network -> network.splitIfSpread(connectedMembers));
     }
 
-    private void manageIsolatedPlayers() {
+    private void manageIsolatedPlayers(Set<String> connectedMembers) {
         LinkedPlayer.getOnlineLinkedPlayers().stream()
                 .filter(LinkedPlayer::isStateEligible)
-                .filter(p -> p.isInMainVoiceChannel() || p.isInAnyProximityChannel())
+                .filter(p -> connectedMembers.contains(p.getDiscordId()))
                 .filter(p -> !p.isInAnyNetwork())
                 .forEach(p -> {
-                    Set<LinkedPlayer> playersWithinRange = p.getPlayersWithinRange();
+                    Set<LinkedPlayer> playersWithinRange = p.getPlayersWithinRange(connectedMembers);
 
                     if (!playersWithinRange.isEmpty()) {
                         playersWithinRange.stream()
@@ -254,9 +263,9 @@ public class UpdateNetworksTask {
                 );
     }
 
-    private void manageMoves() {
+    private void manageMoves(Set<String> connectedMembers) {
         LinkedPlayer.getOnlineLinkedPlayers().stream()
-                .filter(p -> !p.isInMainVoiceChannel() && !p.isInAnyProximityChannel())
+                .filter(p -> !connectedMembers.contains(p.getDiscordId()))
                 .map(p -> this.awaitingMoves.get(p.getDiscordId()))
                 .filter(Objects::nonNull)
                 .forEach(pair -> pair.getRight().cancel(false));

@@ -73,12 +73,12 @@ public class Network {
         return this.players.stream().anyMatch(p -> p.isStateEligible() && p.isCloseEnoughToPlayer(player, true) && !p.equals(player));
     }
 
-    public void splitIfSpread() {
+    public void splitIfSpread(Set<String> connectedMembers) {
         if (this.size() < 4) {
             return;
         }
 
-        Set<LinkedPlayer> playersWithinRange = this.getChainingPlayers(this.players.iterator().next());
+        Set<LinkedPlayer> playersWithinRange = this.getChainingPlayers(connectedMembers, this.players.iterator().next());
         if (playersWithinRange.size() == 1 || playersWithinRange.size() + 1 >= this.size()) {
             return;
         }
@@ -95,13 +95,13 @@ public class Network {
         new Network(this.plugin, playersToExclude).build();
     }
 
-    private Set<LinkedPlayer> getChainingPlayers(LinkedPlayer startingPoint) {
-        return this.getChainingPlayers(new HashSet<>(Collections.singleton(startingPoint)), Collections.singleton(startingPoint));
+    private Set<LinkedPlayer> getChainingPlayers(Set<String> connectedMembers, LinkedPlayer startingPoint) {
+        return this.getChainingPlayers(connectedMembers, new HashSet<>(Collections.singleton(startingPoint)), Collections.singleton(startingPoint));
     }
 
-    private Set<LinkedPlayer> getChainingPlayers(Set<LinkedPlayer> chainingPlayers, Set<LinkedPlayer> children) {
+    private Set<LinkedPlayer> getChainingPlayers(Set<String> connectedMembers, Set<LinkedPlayer> chainingPlayers, Set<LinkedPlayer> children) {
         Set<LinkedPlayer> newChildren = new HashSet<>();
-        children.forEach(p -> p.getPlayersWithinRange().stream()
+        children.forEach(p -> p.getPlayersWithinRange(connectedMembers).stream()
                 .filter(this::contains)
                 .filter(playerWithingRange -> !chainingPlayers.contains(playerWithingRange))
                 .forEach(newChildren::add)
@@ -112,7 +112,7 @@ public class Network {
         }
 
         chainingPlayers.addAll(newChildren);
-        return this.getChainingPlayers(chainingPlayers, newChildren);
+        return this.getChainingPlayers(connectedMembers, chainingPlayers, newChildren);
     }
 
     public void engulf(Network network) {

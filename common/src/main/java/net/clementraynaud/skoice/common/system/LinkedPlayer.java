@@ -88,18 +88,13 @@ public final class LinkedPlayer {
         }
     }
 
-    public Set<LinkedPlayer> getPlayersWithinRange() {
+    public Set<LinkedPlayer> getPlayersWithinRange(Set<String> connectedMembers) {
         return LinkedPlayer.onlineLinkedPlayers.stream()
-                .filter(p -> (p.isInMainVoiceChannel() || p.isInAnyProximityChannel()) && !p.equals(this) && p.isStateEligible() && p.isCloseEnoughToPlayer(this, false))
+                .filter(p -> connectedMembers.contains(p.getDiscordId()))
+                .filter(p -> !p.equals(this))
+                .filter(LinkedPlayer::isStateEligible)
+                .filter(p -> p.isCloseEnoughToPlayer(this, false))
                 .collect(Collectors.toCollection(ConcurrentHashMap::newKeySet));
-    }
-
-    public boolean isInMainVoiceChannel() {
-        VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
-        if (mainVoiceChannel == null) {
-            return false;
-        }
-        return mainVoiceChannel.getMembers().stream().anyMatch(member -> this.discordId.equals(member.getId()));
     }
 
     public boolean isInAnyNetwork() {
@@ -110,14 +105,6 @@ public final class LinkedPlayer {
         return Networks.getAll().stream()
                 .filter(network -> network.contains(this))
                 .findFirst().orElse(null);
-    }
-
-    public boolean isInAnyProximityChannel() {
-        return ProximityChannels.getInitialized().stream()
-                .map(ProximityChannel::getChannel)
-                .filter(Objects::nonNull)
-                .anyMatch(channel -> channel.getMembers().stream()
-                        .anyMatch(member -> member.getId().equals(this.discordId)));
     }
 
     public boolean isInAnyIsolationChannel() {
