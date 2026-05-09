@@ -63,6 +63,7 @@ public class OutdatedConfig {
                 this.plugin.getLinksYamlFile().loadFromString(this.plugin.getLinksYamlFile().saveToString());
             } catch (IOException ignored) {
             }
+            this.plugin.getLinksYamlFile().rebuildCache();
 
             try {
                 Files.delete(outdatedConfig.toPath());

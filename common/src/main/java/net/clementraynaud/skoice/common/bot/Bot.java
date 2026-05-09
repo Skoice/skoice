@@ -36,7 +36,6 @@ import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.system.ProximityChannel;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
 import net.clementraynaud.skoice.common.tasks.InterruptSystemTask;
-import net.clementraynaud.skoice.common.util.MapUtil;
 import net.dv8tion.jda.api.GatewayEncoding;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -218,7 +217,7 @@ public class Bot {
     }
 
     public void notifyIfUnlinked(Member member) {
-        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
+        String minecraftId = this.plugin.getLinksYamlFile().getMinecraftIdFromDiscordId(member.getId());
         if (minecraftId == null) {
             new EmbeddedMenu(this).setContent("account-not-linked").message(member.getUser());
         } else {

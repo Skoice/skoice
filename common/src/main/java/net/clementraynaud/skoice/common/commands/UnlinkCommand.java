@@ -22,7 +22,6 @@ package net.clementraynaud.skoice.common.commands;
 import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
-import net.clementraynaud.skoice.common.util.MapUtil;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
@@ -39,7 +38,7 @@ public class UnlinkCommand extends Command {
 
     @Override
     public void run() {
-        String minecraftId = MapUtil.getKeyFromValue(super.plugin.getLinksYamlFile().getLinks(), super.executor.getUser().getId());
+        String minecraftId = super.plugin.getLinksYamlFile().getMinecraftIdFromDiscordId(super.executor.getUser().getId());
         if (minecraftId == null) {
             new EmbeddedMenu(super.plugin.getBot()).setContent("account-not-linked")
                     .reply(super.interaction);
