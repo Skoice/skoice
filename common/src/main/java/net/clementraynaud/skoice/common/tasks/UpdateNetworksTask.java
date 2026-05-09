@@ -110,7 +110,7 @@ public class UpdateNetworksTask {
             Networks.clean();
 
             int userCount = 0;
-            int maxIsolatedUserCount = 0;
+            int maxIsolatedUsers = 0;
 
             for (String memberId : connectedMembers) {
                 Member member = this.plugin.getBot().getGuild().getMemberById(memberId);
@@ -143,7 +143,7 @@ public class UpdateNetworksTask {
                 if (member.hasPermission(mainVoiceChannel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
                         && !member.getUser().isBot()) {
                     shouldBeIsolated = true;
-                    maxIsolatedUserCount++;
+                    maxIsolatedUsers++;
                 }
 
                 VoiceChannel shouldBeInChannel;
@@ -197,7 +197,7 @@ public class UpdateNetworksTask {
 
             LinkedPlayer.sendActionBarAlerts();
 
-            ProximityChannels.clean(userCount, maxIsolatedUserCount);
+            ProximityChannels.clean(userCount, maxIsolatedUsers);
 
         } catch (Throwable throwable) {
             Skoice.analyticManager().getBugsnag().notify(throwable, Severity.ERROR);
