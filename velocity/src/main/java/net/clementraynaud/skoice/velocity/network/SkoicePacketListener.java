@@ -118,14 +118,14 @@ public class SkoicePacketListener extends PacketListenerAbstract {
 
             if (mode == WrapperPlayServerTeams.TeamMode.CREATE
                     || mode == WrapperPlayServerTeams.TeamMode.ADD_ENTITIES) {
-                if (teams.getPlayers().contains(playerName)) {
+                if (teams.getPlayers().contains(playerName) && !teamName.equals(state.teamName)) {
                     state.teamName = teamName;
                     changed = true;
                 }
             }
 
             if (mode == WrapperPlayServerTeams.TeamMode.REMOVE_ENTITIES) {
-                if (teams.getPlayers().contains(playerName)) {
+                if (teamName.equals(state.teamName) && teams.getPlayers().contains(playerName)) {
                     state.teamName = null;
                     changed = true;
                 }
