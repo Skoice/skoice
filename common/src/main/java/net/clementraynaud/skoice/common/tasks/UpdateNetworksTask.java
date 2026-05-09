@@ -109,6 +109,9 @@ public class UpdateNetworksTask {
 
             Networks.clean();
 
+            int userCount = 0;
+            int maxIsolatedUserCount = 0;
+
             for (String memberId : connectedMembers) {
                 Member member = this.plugin.getBot().getGuild().getMemberById(memberId);
                 if (member == null || member.getVoiceState() == null || member.getVoiceState().getChannel() == null) {
@@ -121,6 +124,7 @@ public class UpdateNetworksTask {
 
                 LinkedPlayer linkedPlayer = LinkedPlayer.fromMemberId(memberId);
                 if (linkedPlayer != null) {
+                    userCount++;
                     network = linkedPlayer.getNetwork();
 
                     if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.MUTED_ALERT.toString())
@@ -135,6 +139,13 @@ public class UpdateNetworksTask {
                     }
                 }
 
+                boolean shouldBeIsolated = false;
+                if (member.hasPermission(mainVoiceChannel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
+                        && !member.getUser().isBot()) {
+                    shouldBeIsolated = true;
+                    maxIsolatedUserCount++;
+                }
+
                 VoiceChannel shouldBeInChannel;
                 if (network != null) {
                     shouldBeInChannel = network.getProximityChannel().getChannel();
@@ -142,8 +153,7 @@ public class UpdateNetworksTask {
                         continue;
                     }
                     ProximityChannels.getIsolationChannelMap().remove(memberId);
-                } else if (member.hasPermission(mainVoiceChannel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
-                        && !member.getUser().isBot()) {
+                } else if (shouldBeIsolated) {
                     ProximityChannel proximityChannel = ProximityChannels.getIsolationChannelMap().get(memberId);
                     if (proximityChannel == null) {
                         proximityChannel = ProximityChannels.getAll().stream()
@@ -187,21 +197,8 @@ public class UpdateNetworksTask {
 
             LinkedPlayer.sendActionBarAlerts();
 
-            int possibleUsers = 0;
-            int possibleIsolatedUsers = 0;
-            for (String memberId : connectedMembers) {
-                Member member = this.plugin.getBot().getGuild().getMemberById(memberId);
-                if (member == null || LinkedPlayer.fromMemberId(memberId) == null) {
-                    continue;
-                }
+            ProximityChannels.clean(userCount, maxIsolatedUserCount);
 
-                possibleUsers++;
-                if (member.hasPermission(mainVoiceChannel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
-                        && !member.getUser().isBot()) {
-                    possibleIsolatedUsers++;
-                }
-            }
-            ProximityChannels.clean(possibleUsers, possibleIsolatedUsers);
         } catch (Throwable throwable) {
             Skoice.analyticManager().getBugsnag().notify(throwable, Severity.ERROR);
             throw throwable;
