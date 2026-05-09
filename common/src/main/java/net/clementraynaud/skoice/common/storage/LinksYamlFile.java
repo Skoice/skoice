@@ -40,17 +40,44 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.simpleyaml.configuration.ConfigurationSection;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class LinksYamlFile extends YamlFile {
 
     public static final String LINKS_FIELD = "links";
 
+    private final Map<String, String> linksCache = new ConcurrentHashMap<>();
+    private final Map<String, String> reverseCache = new ConcurrentHashMap<>();
+
     public LinksYamlFile(Skoice plugin) {
         super(plugin, "links");
+    }
+
+    @Override
+    public void load() {
+        super.load();
+        this.rebuildCache();
+    }
+
+    public void rebuildCache() {
+        this.linksCache.clear();
+        this.reverseCache.clear();
+        ConfigurationSection linksSection = super.getConfigurationSection(LinksYamlFile.LINKS_FIELD);
+        if (linksSection != null) {
+            for (Map.Entry<String, Object> entry : linksSection.getValues(false).entrySet()) {
+                String discordId = entry.getValue().toString();
+                this.linksCache.put(entry.getKey(), discordId);
+                this.reverseCache.put(discordId, entry.getKey());
+            }
+        }
+    }
+
+    public String getMinecraftIdFromDiscordId(String discordId) {
+        return this.reverseCache.get(discordId);
     }
 
     public void linkUser(String minecraftId, String discordId) {
@@ -73,6 +100,11 @@ public class LinksYamlFile extends YamlFile {
 
     public void linkUserDirectly(String minecraftId, String discordId) {
         super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
+        String previousDiscordId = this.linksCache.put(minecraftId, discordId);
+        if (previousDiscordId != null) {
+            this.reverseCache.remove(previousDiscordId);
+        }
+        this.reverseCache.put(discordId, minecraftId);
         BasePlayer player = this.plugin.getPlayer(UUID.fromString(minecraftId));
         if (player == null) {
             return;
@@ -98,6 +130,10 @@ public class LinksYamlFile extends YamlFile {
 
     public void unlinkUserDirectly(String minecraftId) {
         super.remove(LinksYamlFile.LINKS_FIELD + "." + minecraftId);
+        String discordId = this.linksCache.remove(minecraftId);
+        if (discordId != null) {
+            this.reverseCache.remove(discordId);
+        }
 
         BasePlayer player = this.plugin.getPlayer(UUID.fromString(minecraftId));
         if (player == null) {
@@ -116,15 +152,7 @@ public class LinksYamlFile extends YamlFile {
     }
 
     public Map<String, String> getLinks() {
-        Map<String, String> castedLinks = new HashMap<>();
-        ConfigurationSection linksSection = super.getConfigurationSection(LinksYamlFile.LINKS_FIELD);
-        if (linksSection != null) {
-            Map<String, Object> links = new HashMap<>(linksSection.getValues(false));
-            for (Map.Entry<String, Object> entry : links.entrySet()) {
-                castedLinks.put(entry.getKey(), entry.getValue().toString());
-            }
-        }
-        return castedLinks;
+        return Collections.unmodifiableMap(this.linksCache);
     }
 
     public boolean retrieveMember(UUID minecraftId, Consumer<Member> success, Consumer<ErrorResponseException> failure) {

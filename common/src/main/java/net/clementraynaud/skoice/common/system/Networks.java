@@ -37,7 +37,10 @@ public final class Networks {
 
     public static Set<Network> getInitialized() {
         return Networks.networkSet.stream()
-                .filter(network -> network.getProximityChannel().isInitialized())
+                .filter(network -> {
+                    ProximityChannel pc = network.getProximityChannel();
+                    return pc != null && pc.isInitialized();
+                })
                 .collect(Collectors.toSet());
     }
 

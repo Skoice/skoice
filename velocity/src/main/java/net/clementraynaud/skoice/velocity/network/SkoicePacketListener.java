@@ -59,6 +59,9 @@ public class SkoicePacketListener extends PacketListenerAbstract {
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
+        if (event.getUser() == null || event.getUser().getUUID() == null) {
+            return;
+        }
         UUID uuid = event.getUser().getUUID();
         PlayerState state = this.states.computeIfAbsent(uuid, k -> new PlayerState());
 
@@ -141,6 +144,9 @@ public class SkoicePacketListener extends PacketListenerAbstract {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
+        if (event.getUser() == null || event.getUser().getUUID() == null) {
+            return;
+        }
         UUID uuid = event.getUser().getUUID();
         PlayerState state = this.states.get(uuid);
         if (state == null) {
@@ -172,7 +178,7 @@ public class SkoicePacketListener extends PacketListenerAbstract {
                 this.mapGameMode(state.gameMode),
                 state.worldName + ":" + state.serverName,
                 new SkoiceLocation(state.x, state.y, state.z),
-                state.teamName + ":" + state.serverName
+                state.teamName != null ? state.teamName + ":" + state.serverName : null
         );
         this.skoice.setPlayerInfo(info);
     }

@@ -131,11 +131,11 @@ public class UpdateNetworksTask {
 
                 VoiceChannel shouldBeInChannel;
                 if (network != null) {
-                    if (!network.getProximityChannel().isInitialized()) {
+                    shouldBeInChannel = network.getProximityChannel().getChannel();
+                    if (shouldBeInChannel == null) {
                         continue;
                     }
                     ProximityChannels.getIsolationChannelMap().remove(member.getId());
-                    shouldBeInChannel = network.getProximityChannel().getChannel();
                 } else if (member.hasPermission(mainVoiceChannel, Permission.VOICE_SPEAK, Permission.VOICE_MUTE_OTHERS)
                         && !member.getUser().isBot()) {
                     ProximityChannel proximityChannel = ProximityChannels.getIsolationChannelMap().get(member.getId());
@@ -147,10 +147,10 @@ public class UpdateNetworksTask {
                                 .orElseGet(() -> new ProximityChannel(this.plugin, (Network) null));
                         ProximityChannels.getIsolationChannelMap().put(member.getId(), proximityChannel);
                     }
-                    if (!proximityChannel.isInitialized()) {
+                    shouldBeInChannel = proximityChannel.getChannel();
+                    if (shouldBeInChannel == null) {
                         continue;
                     }
-                    shouldBeInChannel = proximityChannel.getChannel();
                 } else {
                     ProximityChannels.getIsolationChannelMap().remove(member.getId());
                     shouldBeInChannel = mainVoiceChannel;

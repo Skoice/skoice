@@ -50,7 +50,12 @@ public class InterruptSystemTask {
                 || this.plugin.getBot().getJDA().getSelfUser().isMfaEnabled())) {
             VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
             for (ProximityChannel proximityChannel : ProximityChannels.getInitialized()) {
-                List<Member> members = proximityChannel.getChannel().getMembers();
+                VoiceChannel proximityVoiceChannel = proximityChannel.getChannel();
+                if (proximityVoiceChannel == null) {
+                    proximityChannel.delete();
+                    continue;
+                }
+                List<Member> members = proximityVoiceChannel.getMembers();
                 if (voiceChannel != null && !members.isEmpty()) {
                     for (int i = 0; i < members.size(); i++) {
                         Member member = members.get(i);

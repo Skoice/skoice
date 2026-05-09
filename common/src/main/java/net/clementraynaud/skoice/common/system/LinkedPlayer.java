@@ -26,6 +26,7 @@ import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.util.DistanceUtil;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Set;
@@ -37,7 +38,7 @@ public final class LinkedPlayer {
     private static final int FALLOFF = 3;
 
     private static final Set<LinkedPlayer> onlineLinkedPlayers = ConcurrentHashMap.newKeySet();
-    private final EnumSet<ActionBarAlert> alerts = EnumSet.noneOf(ActionBarAlert.class);
+    private final Set<ActionBarAlert> alerts = Collections.synchronizedSet(EnumSet.noneOf(ActionBarAlert.class));
 
     private final Skoice plugin;
     private final FullPlayer player;
@@ -77,12 +78,14 @@ public final class LinkedPlayer {
     }
 
     public void sendActionBarAlert() {
-        ActionBarAlert priorityAlert = ActionBarAlert.getPriorityAlert(this.alerts);
+        ActionBarAlert priorityAlert;
+        synchronized (this.alerts) {
+            priorityAlert = ActionBarAlert.getPriorityAlert(this.alerts);
+            this.alerts.clear();
+        }
         if (priorityAlert != null) {
             this.player.sendActionBar(this.plugin.getLang().getMessage("action-bar." + priorityAlert));
         }
-
-        this.alerts.clear();
     }
 
     public Set<LinkedPlayer> getPlayersWithinRange() {

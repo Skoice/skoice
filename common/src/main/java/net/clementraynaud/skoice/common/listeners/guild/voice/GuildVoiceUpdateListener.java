@@ -26,7 +26,6 @@ import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.system.Networks;
 import net.clementraynaud.skoice.common.system.ProximityChannel;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
-import net.clementraynaud.skoice.common.util.MapUtil;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
@@ -84,7 +83,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
             return;
         }
 
-        String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
+        String minecraftId = this.plugin.getLinksYamlFile().getMinecraftIdFromDiscordId(member.getId());
         if (minecraftId == null) {
             return;
         }
@@ -126,7 +125,7 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
         if (!ProximityChannels.isProximityChannel(voiceChannelJoined.getId())) {
             ProximityChannels.getIsolationChannelMap().remove(member.getId());
 
-            String minecraftId = MapUtil.getKeyFromValue(this.plugin.getLinksYamlFile().getLinks(), member.getId());
+            String minecraftId = this.plugin.getLinksYamlFile().getMinecraftIdFromDiscordId(member.getId());
             if (minecraftId == null) {
                 return;
             }

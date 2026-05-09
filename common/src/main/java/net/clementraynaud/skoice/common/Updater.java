@@ -138,15 +138,17 @@ public class Updater {
         updateFolder.mkdirs();
         HttpURLConnection connection = null;
 
-        try (FileOutputStream outputStream = new FileOutputStream(tempUpdateFile)) {
-            URL url = new URL(this.fullURL + Updater.DOWNLOAD_ENDPOINT);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setConnectTimeout(20000);
-            connection.setReadTimeout(240000);
-            connection.connect();
+        try {
+            try (FileOutputStream outputStream = new FileOutputStream(tempUpdateFile)) {
+                URL url = new URL(this.fullURL + Updater.DOWNLOAD_ENDPOINT);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setConnectTimeout(20000);
+                connection.setReadTimeout(240000);
+                connection.connect();
 
-            outputStream.getChannel()
-                    .transferFrom(Channels.newChannel(connection.getInputStream()), 0, Long.MAX_VALUE);
+                outputStream.getChannel()
+                        .transferFrom(Channels.newChannel(connection.getInputStream()), 0, Long.MAX_VALUE);
+            }
 
             if (this.verifyFileIntegrity(tempUpdateFile, expectedHash)) {
                 Files.copy(tempUpdateFile.toPath(), finalUpdateFile.toPath(), StandardCopyOption.REPLACE_EXISTING);

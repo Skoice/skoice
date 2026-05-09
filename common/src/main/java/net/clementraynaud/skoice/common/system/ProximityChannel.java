@@ -36,8 +36,8 @@ import java.util.stream.Collectors;
 public class ProximityChannel {
 
     private final Skoice plugin;
-    private boolean initialized = false;
-    private String channelId;
+    private volatile boolean initialized = false;
+    private volatile String channelId;
 
     public ProximityChannel(Skoice plugin, Network network) {
         this.plugin = plugin;

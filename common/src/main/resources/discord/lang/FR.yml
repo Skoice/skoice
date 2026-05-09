@@ -152,7 +152,7 @@ field:
     description: "Skoice est maintenant configuré. Tapez {link-discord-command} pour lier votre compte Discord à Minecraft. Les joueurs doivent lier leurs comptes pour utiliser le chat vocal de proximité."
   notified-players-cleared:
     title: "Joueurs notifiés effacés"
-    description: "Vous avez effacté les joueurs notifiés. Les joueurs qui ont déjà reçu le rappel de lier leurs comptes seront à nouveau avertis."
+    description: "Vous avez effacé les joueurs notifiés. Les joueurs qui ont déjà reçu le rappel de lier leurs comptes seront à nouveau avertis."
   incomplete-configuration:
     title: "Configuration non terminée"
     description: "Skoice n'est pas configuré correctement. Veuillez contacter un administrateur du serveur."
