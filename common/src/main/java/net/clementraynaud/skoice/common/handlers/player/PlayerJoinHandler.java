@@ -27,6 +27,7 @@ import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.storage.LoginNotificationYamlFile;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.system.LinkedPlayer;
+import net.clementraynaud.skoice.common.system.ProximityChannels;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 
@@ -50,7 +51,8 @@ public class PlayerJoinHandler {
                     GuildVoiceState voiceState = member.getVoiceState();
                     if (voiceState != null) {
                         AudioChannel audioChannel = voiceState.getChannel();
-                        if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
+                        if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())
+                                || ProximityChannels.getIsolationChannelMap().containsKey(member.getId())) {
                             player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
                             Skoice.eventBus().fireAsync(new PlayerProximityConnectEvent(player.getUniqueId().toString(), member.getId()));
                         }

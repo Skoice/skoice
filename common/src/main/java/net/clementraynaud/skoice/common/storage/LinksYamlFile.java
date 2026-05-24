@@ -29,6 +29,7 @@ import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.system.LinkedPlayer;
 import net.clementraynaud.skoice.common.system.Networks;
+import net.clementraynaud.skoice.common.system.ProximityChannels;
 import net.clementraynaud.skoice.common.util.MapUtil;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
@@ -116,7 +117,8 @@ public class LinksYamlFile extends YamlFile {
                 GuildVoiceState voiceState = member.getVoiceState();
                 if (voiceState != null) {
                     AudioChannel audioChannel = voiceState.getChannel();
-                    if (audioChannel != null && audioChannel.equals(this.plugin.getConfigYamlFile().getVoiceChannel())) {
+                    if (audioChannel != null && audioChannel.getId().equals(mainVoiceChannel.getId())
+                            || ProximityChannels.getIsolationChannelMap().containsKey(member.getId())) {
                         player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
                         Skoice.eventBus().fireAsync(new PlayerProximityConnectEvent(minecraftId, discordId));
                     } else {
