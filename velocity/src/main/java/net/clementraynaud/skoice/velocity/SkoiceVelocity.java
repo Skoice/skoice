@@ -34,6 +34,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,6 +42,7 @@ public class SkoiceVelocity extends Skoice {
 
     private final SkoicePluginVelocity plugin;
     private final Map<UUID, FullPlayer> playerInfo = new ConcurrentHashMap<>();
+    private final Set<String> discoveredWorlds = ConcurrentHashMap.newKeySet();
 
     public SkoiceVelocity(SkoicePluginVelocity plugin) {
         super(new SLF4JLoggerAdapter(plugin.getLogger()), new VelocityTaskScheduler(plugin));
@@ -71,7 +73,7 @@ public class SkoiceVelocity extends Skoice {
 
     @Override
     public Collection<String> getWorlds() {
-        return Collections.emptyList();
+        return Collections.unmodifiableCollection(this.discoveredWorlds);
     }
 
     @Override
@@ -120,6 +122,10 @@ public class SkoiceVelocity extends Skoice {
     }
 
     public void setPlayerInfo(PlayerInfo newInfo) {
+        String world = newInfo.getWorld();
+        if (world != null && !world.startsWith("unknown:") && !world.endsWith(":unknown")) {
+            this.discoveredWorlds.add(world);
+        }
         if (this.playerInfo.containsKey(newInfo.getId())) {
             FullPlayer info = this.playerInfo.get(newInfo.getId());
             info.setPlayerInfo(newInfo);
