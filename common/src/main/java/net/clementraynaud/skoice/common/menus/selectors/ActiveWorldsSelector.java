@@ -27,7 +27,9 @@ import net.dv8tion.jda.api.components.selections.SelectOption;
 import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ActiveWorldsSelector extends Selector {
 
@@ -40,7 +42,9 @@ public class ActiveWorldsSelector extends Selector {
         List<SelectOption> options = new ArrayList<>();
         List<String> disabledWorlds = super.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString());
         List<String> defaultValues = new ArrayList<>();
-        for (String world : super.plugin.getWorlds()) {
+        Set<String> worlds = new LinkedHashSet<>(super.plugin.getWorlds());
+        worlds.addAll(disabledWorlds);
+        for (String world : worlds) {
             options.add(SelectOption.of(world, world)
                     .withEmoji(MenuEmoji.MAP.get()));
 
