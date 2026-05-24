@@ -30,8 +30,6 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerJo
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerRespawn;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateHealth;
-import com.velocitypowered.api.proxy.Player;
-import com.velocitypowered.api.proxy.ProxyServer;
 import net.clementraynaud.skoice.common.model.minecraft.PlayerInfo;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceGameMode;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceLocation;
@@ -44,17 +42,21 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SkoicePacketListener extends PacketListenerAbstract {
 
     private final SkoiceVelocity skoice;
-    private final ProxyServer proxy;
     private final Map<UUID, PlayerState> states = new ConcurrentHashMap<>();
 
-    public SkoicePacketListener(SkoiceVelocity skoice, ProxyServer proxy) {
+    public SkoicePacketListener(SkoiceVelocity skoice) {
         super(PacketListenerPriority.NORMAL);
         this.skoice = skoice;
-        this.proxy = proxy;
     }
 
     public void removePlayer(UUID uuid) {
         this.states.remove(uuid);
+    }
+
+    public void setServerName(UUID uuid, String serverName) {
+        PlayerState state = this.states.computeIfAbsent(uuid, k -> new PlayerState());
+        state.serverName = serverName;
+        this.updatePlayerInfo(uuid, state);
     }
 
     @Override
@@ -74,7 +76,6 @@ public class SkoicePacketListener extends PacketListenerAbstract {
             state.x = 0;
             state.y = 0;
             state.z = 0;
-            state.serverName = this.getServerName(uuid);
             this.updatePlayerInfo(uuid, state);
             return;
         }
@@ -83,7 +84,6 @@ public class SkoicePacketListener extends PacketListenerAbstract {
             WrapperPlayServerRespawn respawn = new WrapperPlayServerRespawn(event);
             state.gameMode = respawn.getGameMode().getId();
             state.worldName = respawn.getWorldName().orElse(state.worldName);
-            state.serverName = this.getServerName(uuid);
             this.updatePlayerInfo(uuid, state);
             return;
         }
@@ -190,13 +190,6 @@ public class SkoicePacketListener extends PacketListenerAbstract {
             case 3 -> SkoiceGameMode.SPECTATOR;
             default -> SkoiceGameMode.SURVIVAL;
         };
-    }
-
-    private String getServerName(UUID uuid) {
-        return this.proxy.getPlayer(uuid)
-                .flatMap(Player::getCurrentServer)
-                .map(sc -> sc.getServerInfo().getName())
-                .orElse("unknown");
     }
 
     private static final class PlayerState {

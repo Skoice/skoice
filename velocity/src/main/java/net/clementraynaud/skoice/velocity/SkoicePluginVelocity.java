@@ -52,7 +52,7 @@ public class SkoicePluginVelocity {
         this.skoice = new SkoiceVelocity(this);
         this.skoice.start();
 
-        this.packetListener = new SkoicePacketListener(this.skoice, this.proxy);
+        this.packetListener = new SkoicePacketListener(this.skoice);
         PacketEvents.getAPI().getEventManager().registerListeners(this.packetListener);
     }
 
@@ -70,6 +70,11 @@ public class SkoicePluginVelocity {
 
     @Subscribe
     public void onServerPostConnect(ServerPostConnectEvent event) {
+        String serverName = event.getPlayer().getCurrentServer()
+                .map(sc -> sc.getServerInfo().getName())
+                .orElse("unknown");
+        this.packetListener.setServerName(event.getPlayer().getUniqueId(), serverName);
+
         if (event.getPreviousServer() != null) {
             this.skoice.getListenerManager().onPlayerQuit(new VelocityBasePlayer(event.getPlayer())).thenAccept(aVoid -> {
                 this.skoice.removePlayerInfo(event.getPlayer().getUniqueId());
