@@ -114,7 +114,7 @@ menu:
         label: "Never Remind"
   action-bar-alerts:
     title: "Action Bar Alerts"
-    description: "Toggle the alerts sent to players who are using the proximity voice chat."
+    description: "Toggle the alerts sent to players in your Minecraft server related to the proximity voice chat."
     select-menu:
       placeholder: "Please select the desired alerts."
       connecting-alert:
@@ -125,6 +125,8 @@ menu:
         label: "\"You are muted.\""
       deafened-alert:
         label: "\"You are deafened.\""
+      linking-suggestion:
+        label: "\"Near players are using Skoice. Type \"/skoice link\" to join!\""
   invite-link:
     title: "Invite Link"
     description: "Toggle whether the Discord server name appears as a clickable invite link in Minecraft chat messages. Skoice creates a permanent invite on your configured proximity voice channel. Disable this if you do not want one."

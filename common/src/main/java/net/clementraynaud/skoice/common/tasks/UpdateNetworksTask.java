@@ -21,6 +21,8 @@ package net.clementraynaud.skoice.common.tasks;
 
 import com.bugsnag.Severity;
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
+import net.clementraynaud.skoice.common.model.minecraft.SkoiceLocation;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.system.ActionBarAlert;
 import net.clementraynaud.skoice.common.system.LinkedPlayer;
@@ -28,6 +30,7 @@ import net.clementraynaud.skoice.common.system.Network;
 import net.clementraynaud.skoice.common.system.Networks;
 import net.clementraynaud.skoice.common.system.ProximityChannel;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
+import net.clementraynaud.skoice.common.util.DistanceUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -37,12 +40,15 @@ import net.dv8tion.jda.internal.utils.tuple.Pair;
 import java.time.Duration;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 public class UpdateNetworksTask {
 
@@ -198,6 +204,7 @@ public class UpdateNetworksTask {
             }
 
             LinkedPlayer.sendActionBarAlerts();
+            this.sendLinkingSuggestion(connectedMembers);
 
             ProximityChannels.clean(userCount, maxIsolatedUsers);
 
@@ -272,5 +279,56 @@ public class UpdateNetworksTask {
 
     public Map<String, Pair<String, CompletableFuture<Void>>> getAwaitingMoves() {
         return this.awaitingMoves;
+    }
+
+    private void sendLinkingSuggestion(Set<String> connectedMembers) {
+        if (!this.plugin.getConfigYamlFile().getBoolean(ConfigField.LINKING_SUGGESTION.toString())) {
+            return;
+        }
+
+        List<FullPlayer> usingPlayers = LinkedPlayer.getOnlineLinkedPlayers().stream()
+                .filter(p -> connectedMembers.contains(p.getDiscordId()))
+                .filter(LinkedPlayer::isStateEligible)
+                .map(LinkedPlayer::getFullPlayer)
+                .collect(Collectors.toList());
+
+        if (usingPlayers.isEmpty()) {
+            return;
+        }
+
+        Set<UUID> usingPlayerIds = usingPlayers.stream()
+                .map(FullPlayer::getUniqueId)
+                .collect(Collectors.toSet());
+
+        List<String> disabledWorlds = this.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString());
+        int horizontalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
+        int verticalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString());
+
+        for (FullPlayer player : this.plugin.getOnlinePlayers()) {
+            if (usingPlayerIds.contains(player.getUniqueId())) {
+                continue;
+            }
+            if (disabledWorlds.contains(player.getWorld())) {
+                continue;
+            }
+            SkoiceLocation playerLocation = player.getLocation();
+            if (playerLocation == null) {
+                continue;
+            }
+            for (FullPlayer usingPlayer : usingPlayers) {
+                if (!player.getWorld().equals(usingPlayer.getWorld())) {
+                    continue;
+                }
+                SkoiceLocation usingLocation = usingPlayer.getLocation();
+                if (usingLocation == null) {
+                    continue;
+                }
+                if (DistanceUtil.getHorizontalDistance(playerLocation, usingLocation) <= horizontalRadius
+                        && DistanceUtil.getVerticalDistance(playerLocation, usingLocation) <= verticalRadius) {
+                    player.sendActionBar(this.plugin.getLang().getMessage("action-bar.linking-suggestion"));
+                    break;
+                }
+            }
+        }
     }
 }

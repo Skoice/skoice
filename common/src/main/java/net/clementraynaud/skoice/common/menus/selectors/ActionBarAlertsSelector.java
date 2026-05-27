@@ -49,7 +49,10 @@ public class ActionBarAlertsSelector extends Selector {
                         .withEmoji(MenuEmoji.MUTED.get()),
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.deafened-alert.label"), ActionBarAlert.DEAFENED.toString())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
-                        .withEmoji(MenuEmoji.DEAFENED.get())));
+                        .withEmoji(MenuEmoji.DEAFENED.get()),
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.linking-suggestion.label"), ConfigField.LINKING_SUGGESTION.toString())
+                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
+                        .withEmoji(MenuEmoji.LINK.get())));
         List<String> defaultValues = new ArrayList<>();
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
             defaultValues.add(ConfigField.CONNECTING_ALERT.toString());
@@ -62,6 +65,9 @@ public class ActionBarAlertsSelector extends Selector {
         }
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.DEAFENED_ALERT.toString())) {
             defaultValues.add(ConfigField.DEAFENED_ALERT.toString());
+        }
+        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.LINKING_SUGGESTION.toString())) {
+            defaultValues.add(ConfigField.LINKING_SUGGESTION.toString());
         }
         return StringSelectMenu.create("action-bar-alerts-selection")
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.placeholder"))
