@@ -24,7 +24,7 @@ import net.clementraynaud.skoice.common.api.events.player.PlayerProximityConnect
 import net.clementraynaud.skoice.common.bot.BotStatus;
 import net.clementraynaud.skoice.common.menus.selectors.LoginNotificationSelector;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
-import net.clementraynaud.skoice.common.storage.LoginNotificationYamlFile;
+import net.clementraynaud.skoice.common.storage.LoginNotificationStore;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.system.LinkedPlayer;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
@@ -75,10 +75,10 @@ public class PlayerJoinHandler {
         if (LoginNotificationSelector.ALWAYS_REMIND.equals(loginNotificationStatus)) {
             player.sendMessage(this.plugin.getLang().getMessage("chat.player.account-not-linked"));
         } else if (LoginNotificationSelector.REMIND_ONCE.equals(loginNotificationStatus)) {
-            List<String> notifiedPlayers = this.plugin.getLoginNotificationYamlFile().getStringList(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD);
+            List<String> notifiedPlayers = this.plugin.getLoginNotificationYamlFile().getStringList(LoginNotificationStore.NOTIFIED_PLAYERS_ID_FIELD);
             if (!notifiedPlayers.contains(player.getUniqueId().toString())) {
                 notifiedPlayers.add(player.getUniqueId().toString());
-                this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, notifiedPlayers);
+                this.plugin.getLoginNotificationYamlFile().set(LoginNotificationStore.NOTIFIED_PLAYERS_ID_FIELD, notifiedPlayers);
                 player.sendMessage(this.plugin.getLang().getMessage("chat.player.account-not-linked-remind-once"));
             }
         }

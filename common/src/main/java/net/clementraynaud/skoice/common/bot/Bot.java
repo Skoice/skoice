@@ -31,7 +31,7 @@ import net.clementraynaud.skoice.common.menus.MenuEmoji;
 import net.clementraynaud.skoice.common.menus.MenuFactory;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceCommandSender;
-import net.clementraynaud.skoice.common.storage.TempYamlFile;
+import net.clementraynaud.skoice.common.storage.TempStore;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.system.ProximityChannel;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
@@ -243,12 +243,12 @@ public class Bot {
             return;
         }
 
-        Set<String> storedChannels = new HashSet<>(this.plugin.getTempYamlFile().getStringList(TempYamlFile.VOICE_CHANNELS_ID_FIELD));
+        Set<String> storedChannels = new HashSet<>(this.plugin.getTempYamlFile().getStringList(TempStore.VOICE_CHANNELS_ID_FIELD));
         Set<VoiceChannel> remainingChannels = guild.getVoiceChannels().stream()
                 .filter(channel -> storedChannels.contains(channel.getId()))
                 .collect(Collectors.toSet());
         remainingChannels.forEach(channel -> new ProximityChannel(this.plugin, channel.getId()));
-        this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD,
+        this.plugin.getTempYamlFile().set(TempStore.VOICE_CHANNELS_ID_FIELD,
                 remainingChannels.stream()
                         .map(ISnowflake::getId)
                         .collect(Collectors.toList())

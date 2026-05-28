@@ -28,11 +28,13 @@ import net.clementraynaud.skoice.common.model.logger.SkoiceLogger;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.model.scheduler.SkoiceTaskScheduler;
-import net.clementraynaud.skoice.common.storage.LinksYamlFile;
-import net.clementraynaud.skoice.common.storage.LoginNotificationYamlFile;
-import net.clementraynaud.skoice.common.storage.TempYamlFile;
+import net.clementraynaud.skoice.common.storage.LinksStore;
+import net.clementraynaud.skoice.common.storage.LoginNotificationStore;
+import net.clementraynaud.skoice.common.storage.MvStore;
+import net.clementraynaud.skoice.common.storage.StorageMigrator;
+import net.clementraynaud.skoice.common.storage.TempStore;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
-import net.clementraynaud.skoice.common.storage.config.ConfigYamlFile;
+import net.clementraynaud.skoice.common.storage.config.ConfigStore;
 import net.clementraynaud.skoice.common.storage.config.OutdatedConfig;
 import net.clementraynaud.skoice.common.system.ListenerManager;
 import net.clementraynaud.skoice.common.tasks.UpdateNetworksTask;
@@ -56,10 +58,11 @@ public abstract class Skoice {
     private final SkoiceLogger logger;
     private final SkoiceTaskScheduler scheduler;
     private MinecraftLang lang;
-    private ConfigYamlFile configYamlFile;
-    private LinksYamlFile linksYamlFile;
-    private TempYamlFile tempYamlFile;
-    private LoginNotificationYamlFile loginNotificationYamlFile;
+    private MvStore mvStore;
+    private ConfigStore configYamlFile;
+    private LinksStore linksYamlFile;
+    private TempStore tempYamlFile;
+    private LoginNotificationStore loginNotificationYamlFile;
     private ListenerManager listenerManager;
     private Bot bot;
     private UpdateNetworksTask updateNetworksTask;
@@ -120,19 +123,17 @@ public abstract class Skoice {
 
     public void start() {
         this.saveDefaultConfig();
-        this.configYamlFile = new ConfigYamlFile(this);
-        this.configYamlFile.load();
+        this.mvStore = new MvStore(this);
+        new StorageMigrator(this, this.mvStore).run();
+        this.configYamlFile = new ConfigStore(this, this.mvStore);
         this.configYamlFile.saveDefaultValues();
         this.lang = new MinecraftLang();
         this.lang.load(LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())));
         this.logger.info(this.lang.getMessage("logger.info.plugin-enabled"));
-        this.linksYamlFile = this.createLinksYamlFile();
-        this.linksYamlFile.load();
+        this.linksYamlFile = this.createLinksYamlFile(this.mvStore);
         new OutdatedConfig(this).update();
-        this.tempYamlFile = new TempYamlFile(this);
-        this.tempYamlFile.load();
-        this.loginNotificationYamlFile = new LoginNotificationYamlFile(this);
-        this.loginNotificationYamlFile.load();
+        this.tempYamlFile = new TempStore(this, this.mvStore);
+        this.loginNotificationYamlFile = new LoginNotificationStore(this, this.mvStore);
         Skoice.eventBus = new EventBus();
         Skoice.api = new SkoiceAPI(this);
         Skoice.analyticManager = this.createAnalyticManager();
@@ -158,8 +159,8 @@ public abstract class Skoice {
         return new Bot(this);
     }
 
-    protected LinksYamlFile createLinksYamlFile() {
-        return new LinksYamlFile(this);
+    protected LinksStore createLinksYamlFile(MvStore mvStore) {
+        return new LinksStore(this, mvStore);
     }
 
     public abstract SkoiceCommand setSkoiceCommand();
@@ -175,6 +176,9 @@ public abstract class Skoice {
         this.bot.shutdown();
         if (Skoice.eventBus != null) {
             Skoice.eventBus.shutdown();
+        }
+        if (this.mvStore != null) {
+            this.mvStore.close();
         }
         this.logger.info(this.lang.getMessage("logger.info.plugin-disabled"));
     }
@@ -247,19 +251,19 @@ public abstract class Skoice {
         return this.lang;
     }
 
-    public ConfigYamlFile getConfigYamlFile() {
+    public ConfigStore getConfigYamlFile() {
         return this.configYamlFile;
     }
 
-    public LinksYamlFile getLinksYamlFile() {
+    public LinksStore getLinksYamlFile() {
         return this.linksYamlFile;
     }
 
-    public TempYamlFile getTempYamlFile() {
+    public TempStore getTempYamlFile() {
         return this.tempYamlFile;
     }
 
-    public LoginNotificationYamlFile getLoginNotificationYamlFile() {
+    public LoginNotificationStore getLoginNotificationYamlFile() {
         return this.loginNotificationYamlFile;
     }
 

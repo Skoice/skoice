@@ -39,46 +39,45 @@ import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-import org.simpleyaml.configuration.ConfigurationSection;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-public class LinksYamlFile extends YamlFile {
+public class LinksStore extends MvStoreFile<String> {
 
-    public static final String LINKS_FIELD = "links";
+    public static final String MAP_NAME = "links";
 
-    private final Map<String, String> linksCache = new ConcurrentHashMap<>();
     private final Map<String, String> reverseCache = new ConcurrentHashMap<>();
 
-    public LinksYamlFile(Skoice plugin) {
-        super(plugin, "links");
+    public LinksStore(Skoice plugin, MvStore store) {
+        super(plugin, store, LinksStore.MAP_NAME);
+        this.rebuildReverseCache();
     }
 
-    @Override
-    public void load() {
-        super.load();
-        this.rebuildCache();
-    }
-
-    public void rebuildCache() {
-        this.linksCache.clear();
+    public void rebuildReverseCache() {
         this.reverseCache.clear();
-        ConfigurationSection linksSection = super.getConfigurationSection(LinksYamlFile.LINKS_FIELD);
-        if (linksSection != null) {
-            for (Map.Entry<String, Object> entry : linksSection.getValues(false).entrySet()) {
-                String discordId = entry.getValue().toString();
-                this.linksCache.put(entry.getKey(), discordId);
-                this.reverseCache.put(discordId, entry.getKey());
-            }
+        for (Map.Entry<String, String> entry : super.getMap().entrySet()) {
+            this.reverseCache.put(entry.getValue(), entry.getKey());
         }
     }
 
     public String getMinecraftIdFromDiscordId(String discordId) {
         return this.reverseCache.get(discordId);
+    }
+
+    public Map<String, String> getLinks() {
+        return Collections.unmodifiableMap(new HashMap<>(super.getMap()));
+    }
+
+    public void putAllRaw(Map<String, String> links) {
+        super.getMap().putAll(links);
+        for (Map.Entry<String, String> entry : links.entrySet()) {
+            this.reverseCache.put(entry.getValue(), entry.getKey());
+        }
     }
 
     public void linkUser(String minecraftId, String discordId) {
@@ -100,10 +99,9 @@ public class LinksYamlFile extends YamlFile {
     }
 
     public void linkUserDirectly(String minecraftId, String discordId) {
-        super.set(LinksYamlFile.LINKS_FIELD + "." + minecraftId, discordId);
-        String previousDiscordId = this.linksCache.put(minecraftId, discordId);
-        if (previousDiscordId != null) {
-            this.reverseCache.remove(previousDiscordId);
+        String previousValue = super.getMap().put(minecraftId, discordId);
+        if (previousValue != null) {
+            this.reverseCache.remove(previousValue);
         }
         this.reverseCache.put(discordId, minecraftId);
         BasePlayer player = this.plugin.getPlayer(UUID.fromString(minecraftId));
@@ -113,7 +111,7 @@ public class LinksYamlFile extends YamlFile {
         this.plugin.getScheduler().runTaskAsynchronously(() -> new LinkedPlayer(this.plugin, this.plugin.getFullPlayer(player), discordId));
         if (this.plugin.getBot().getStatus() == BotStatus.READY) {
             this.plugin.getBot().getGuild().retrieveMemberById(discordId).queue(member -> {
-                VoiceChannel mainVoiceChannel = super.plugin.getConfigYamlFile().getVoiceChannel();
+                VoiceChannel mainVoiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
                 GuildVoiceState voiceState = member.getVoiceState();
                 if (voiceState != null) {
                     AudioChannel audioChannel = voiceState.getChannel();
@@ -122,7 +120,7 @@ public class LinksYamlFile extends YamlFile {
                         player.sendMessage(this.plugin.getLang().getMessage("chat.player.connected"));
                         Skoice.eventBus().fireAsync(new PlayerProximityConnectEvent(minecraftId, discordId));
                     } else {
-                        player.sendMessage(super.plugin.getLang().getMessage("chat.player.not-connected",
+                        player.sendMessage(this.plugin.getLang().getMessage("chat.player.not-connected",
                                 MapUtil.of("voice-channel", mainVoiceChannel.getName())));
                     }
                 }
@@ -131,10 +129,9 @@ public class LinksYamlFile extends YamlFile {
     }
 
     public void unlinkUserDirectly(String minecraftId) {
-        super.remove(LinksYamlFile.LINKS_FIELD + "." + minecraftId);
-        String discordId = this.linksCache.remove(minecraftId);
-        if (discordId != null) {
-            this.reverseCache.remove(discordId);
+        String removed = super.getMap().remove(minecraftId);
+        if (removed != null) {
+            this.reverseCache.remove(removed);
         }
 
         BasePlayer player = this.plugin.getPlayer(UUID.fromString(minecraftId));
@@ -153,17 +150,13 @@ public class LinksYamlFile extends YamlFile {
         }
     }
 
-    public Map<String, String> getLinks() {
-        return Collections.unmodifiableMap(this.linksCache);
-    }
-
     public boolean retrieveMember(UUID minecraftId, Consumer<Member> success, Consumer<ErrorResponseException> failure) {
         String discordId = this.getLinks().get(minecraftId.toString());
         if (discordId == null) {
             return false;
         }
 
-        Guild guild = super.plugin.getBot().getGuild();
+        Guild guild = this.plugin.getBot().getGuild();
         if (guild == null) {
             return false;
         }

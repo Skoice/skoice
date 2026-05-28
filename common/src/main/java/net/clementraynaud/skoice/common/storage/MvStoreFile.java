@@ -20,12 +20,41 @@
 package net.clementraynaud.skoice.common.storage;
 
 import net.clementraynaud.skoice.common.Skoice;
+import org.h2.mvstore.MVMap;
 
-public class LoginNotificationYamlFile extends YamlFile {
+public abstract class MvStoreFile<V> {
 
-    public static final String NOTIFIED_PLAYERS_ID_FIELD = "notified-players-id";
+    protected final Skoice plugin;
+    private final MVMap<String, V> map;
 
-    public LoginNotificationYamlFile(Skoice plugin) {
-        super(plugin, "login-notification");
+    protected MvStoreFile(Skoice plugin, MvStore store, String mapName) {
+        this.plugin = plugin;
+        this.map = store.openMap(mapName);
+    }
+
+    public boolean contains(String path) {
+        return this.map.containsKey(path);
+    }
+
+    public void set(String path, V value) {
+        if (value == null) {
+            this.map.remove(path);
+        } else {
+            this.map.put(path, value);
+        }
+    }
+
+    public void remove(String path) {
+        this.map.remove(path);
+    }
+
+    public void setDefault(String path, V value) {
+        if (value != null) {
+            this.map.putIfAbsent(path, value);
+        }
+    }
+
+    protected MVMap<String, V> getMap() {
+        return this.map;
     }
 }

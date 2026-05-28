@@ -24,7 +24,8 @@ import net.clementraynaud.skoice.common.analytics.AnalyticManager;
 import net.clementraynaud.skoice.common.commands.skoice.SkoiceCommand;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
-import net.clementraynaud.skoice.common.storage.LinksYamlFile;
+import net.clementraynaud.skoice.common.storage.LinksStore;
+import net.clementraynaud.skoice.common.storage.MvStore;
 import net.clementraynaud.skoice.spigot.analytics.SpigotAnalyticManager;
 import net.clementraynaud.skoice.spigot.commands.skoice.SkoiceCommandSpigot;
 import net.clementraynaud.skoice.spigot.hooks.HookManager;
@@ -32,7 +33,7 @@ import net.clementraynaud.skoice.spigot.logger.JULLoggerAdapter;
 import net.clementraynaud.skoice.spigot.minecraft.SpigotBasePlayer;
 import net.clementraynaud.skoice.spigot.minecraft.SpigotFullPlayer;
 import net.clementraynaud.skoice.spigot.scheduler.SpigotTaskScheduler;
-import net.clementraynaud.skoice.spigot.storage.SpigotLinksYamlFile;
+import net.clementraynaud.skoice.spigot.storage.SpigotLinksStore;
 import net.clementraynaud.skoice.spigot.system.SpigotListenerManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.GameMode;
@@ -76,8 +77,8 @@ public class SkoiceSpigot extends Skoice {
     }
 
     @Override
-    public LinksYamlFile createLinksYamlFile() {
-        return new SpigotLinksYamlFile(this);
+    public LinksStore createLinksYamlFile(MvStore mvStore) {
+        return new SpigotLinksStore(this, mvStore);
     }
 
     @Override

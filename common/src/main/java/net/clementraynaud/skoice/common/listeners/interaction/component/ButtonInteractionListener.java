@@ -24,7 +24,7 @@ import net.clementraynaud.skoice.common.bot.BotStatus;
 import net.clementraynaud.skoice.common.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.common.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.common.menus.EmbeddedMenu;
-import net.clementraynaud.skoice.common.storage.LoginNotificationYamlFile;
+import net.clementraynaud.skoice.common.storage.LoginNotificationStore;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -68,7 +68,7 @@ public class ButtonInteractionListener extends ListenerAdapter {
                 ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.refreshId().edit(event));
 
             } else if ("clear-notified-players".equals(buttonId)) {
-                this.plugin.getLoginNotificationYamlFile().set(LoginNotificationYamlFile.NOTIFIED_PLAYERS_ID_FIELD, Collections.emptyList());
+                this.plugin.getLoginNotificationYamlFile().set(LoginNotificationStore.NOTIFIED_PLAYERS_ID_FIELD, Collections.emptyList());
                 new EmbeddedMenu(this.plugin.getBot()).setContent("notified-players-cleared")
                         .reply(event);
 

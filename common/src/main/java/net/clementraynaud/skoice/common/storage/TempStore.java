@@ -21,11 +21,12 @@ package net.clementraynaud.skoice.common.storage;
 
 import net.clementraynaud.skoice.common.Skoice;
 
-public class TempYamlFile extends YamlFile {
+public class TempStore extends ObjectMvStoreFile {
 
     public static final String VOICE_CHANNELS_ID_FIELD = "voice-channels-id";
+    public static final String MAP_NAME = "temp";
 
-    public TempYamlFile(Skoice plugin) {
-        super(plugin, "temp");
+    public TempStore(Skoice plugin, MvStore store) {
+        super(plugin, store, TempStore.MAP_NAME);
     }
 }

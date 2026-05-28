@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.common.system;
 
 import net.clementraynaud.skoice.common.Skoice;
-import net.clementraynaud.skoice.common.storage.TempYamlFile;
+import net.clementraynaud.skoice.common.storage.TempStore;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -66,7 +66,7 @@ public class ProximityChannel {
                     this.channelId = voiceChannel.getId();
                     ProximityChannels.add(this);
                     this.initialized = true;
-                    this.plugin.getTempYamlFile().set(TempYamlFile.VOICE_CHANNELS_ID_FIELD,
+                    this.plugin.getTempYamlFile().set(TempStore.VOICE_CHANNELS_ID_FIELD,
                             ProximityChannels.getInitialized().stream()
                                     .map(ProximityChannel::getChannelId)
                                     .collect(Collectors.toList()));

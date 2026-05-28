@@ -20,20 +20,22 @@
 package net.clementraynaud.skoice.common.storage.config;
 
 import net.clementraynaud.skoice.common.Skoice;
-import net.clementraynaud.skoice.common.storage.YamlFile;
+import net.clementraynaud.skoice.common.storage.MvStore;
+import net.clementraynaud.skoice.common.storage.ObjectMvStoreFile;
 import net.clementraynaud.skoice.common.util.ConfigurationUtil;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 
-public class ConfigYamlFile extends YamlFile {
+public class ConfigStore extends ObjectMvStoreFile {
 
-    public ConfigYamlFile(Skoice plugin) {
-        super(plugin, "config");
+    public static final String MAP_NAME = "config";
+
+    public ConfigStore(Skoice plugin, MvStore store) {
+        super(plugin, store, ConfigStore.MAP_NAME);
     }
 
     public void saveDefaultValues() {
@@ -41,8 +43,7 @@ public class ConfigYamlFile extends YamlFile {
         if (defaultConfiguration == null) {
             return;
         }
-        Map<String, Object> defaultValues = new HashMap<>(defaultConfiguration.getValues(false));
-        for (Map.Entry<String, Object> entry : defaultValues.entrySet()) {
+        for (Map.Entry<String, Object> entry : defaultConfiguration.getValues(false).entrySet()) {
             this.setDefault(entry.getKey(), entry.getValue());
         }
     }

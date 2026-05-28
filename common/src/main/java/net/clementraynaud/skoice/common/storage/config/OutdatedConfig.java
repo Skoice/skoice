@@ -20,7 +20,6 @@
 package net.clementraynaud.skoice.common.storage.config;
 
 import net.clementraynaud.skoice.common.Skoice;
-import net.clementraynaud.skoice.common.storage.LinksYamlFile;
 import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlConfiguration;
@@ -43,7 +42,7 @@ public class OutdatedConfig {
     }
 
     public void update() {
-        this.convertOldData(this.plugin.getConfigYamlFile(), "action-bar-alert", ConfigField.DISCONNECTING_ALERT, true);
+        this.renameActionBarAlertField();
 
         File outdatedConfig = new File(this.plugin.getDataFolder(), "data.yml");
         if (outdatedConfig.exists()) {
@@ -58,12 +57,6 @@ public class OutdatedConfig {
             this.convertOldData(oldData, "mainVoiceChannelID", ConfigField.VOICE_CHANNEL_ID, false);
             this.convertOldRadius(oldData);
             this.convertOldLinks(oldData);
-
-            try {
-                this.plugin.getLinksYamlFile().loadFromString(this.plugin.getLinksYamlFile().saveToString());
-            } catch (IOException ignored) {
-            }
-            this.plugin.getLinksYamlFile().rebuildCache();
 
             try {
                 Files.delete(outdatedConfig.toPath());
@@ -103,8 +96,15 @@ public class OutdatedConfig {
             for (int i = 0; i < subkeys.size(); i += 2) {
                 links.put(iterator.next(), iterator.next());
             }
-            links.putAll(this.plugin.getLinksYamlFile().getLinks());
-            this.plugin.getLinksYamlFile().set(LinksYamlFile.LINKS_FIELD, links);
+            this.plugin.getLinksYamlFile().putAllRaw(links);
+        }
+    }
+
+    private void renameActionBarAlertField() {
+        ConfigStore config = this.plugin.getConfigYamlFile();
+        if (config.contains("action-bar-alert")) {
+            config.set(ConfigField.DISCONNECTING_ALERT.toString(), config.getBoolean("action-bar-alert"));
+            config.remove("action-bar-alert");
         }
     }
 

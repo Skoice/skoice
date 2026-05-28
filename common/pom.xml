@@ -55,6 +55,12 @@
                             </shadedPattern>
                         </relocation>
                         <relocation>
+                            <pattern>org.h2</pattern>
+                            <shadedPattern>
+                                ${project.parent.groupId}.${project.parent.artifactId}.libraries.org.h2
+                            </shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>net.dv8tion.jda</pattern>
                             <shadedPattern>
                                 ${project.parent.groupId}.${project.parent.artifactId}.libraries.net.dv8tion.jda
@@ -222,6 +228,11 @@
                     <artifactId>Simple-Configuration</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2-mvstore</artifactId>
+            <version>2.4.240</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>

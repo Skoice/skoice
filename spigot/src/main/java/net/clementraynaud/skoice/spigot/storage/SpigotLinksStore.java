@@ -19,16 +19,16 @@
 
 package net.clementraynaud.skoice.spigot.storage;
 
-
-import net.clementraynaud.skoice.common.storage.LinksYamlFile;
+import net.clementraynaud.skoice.common.storage.LinksStore;
+import net.clementraynaud.skoice.common.storage.MvStore;
 import net.clementraynaud.skoice.spigot.SkoiceSpigot;
 
-public class SpigotLinksYamlFile extends LinksYamlFile {
+public class SpigotLinksStore extends LinksStore {
 
     private final SkoiceSpigot spigotPlugin;
 
-    public SpigotLinksYamlFile(SkoiceSpigot spigotPlugin) {
-        super(spigotPlugin);
+    public SpigotLinksStore(SkoiceSpigot spigotPlugin, MvStore store) {
+        super(spigotPlugin, store);
         this.spigotPlugin = spigotPlugin;
     }
 
