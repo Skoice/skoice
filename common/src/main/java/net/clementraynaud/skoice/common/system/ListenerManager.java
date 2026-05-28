@@ -26,6 +26,7 @@ import net.clementraynaud.skoice.common.handlers.player.PlayerJoinHandler;
 import net.clementraynaud.skoice.common.handlers.player.PlayerQuitHandler;
 import net.clementraynaud.skoice.common.listeners.StatusChangeListener;
 import net.clementraynaud.skoice.common.listeners.channel.network.GenericChannelListener;
+import net.clementraynaud.skoice.common.listeners.guild.GuildInviteDeleteListener;
 import net.clementraynaud.skoice.common.listeners.guild.GuildJoinListener;
 import net.clementraynaud.skoice.common.listeners.guild.GuildLeaveListener;
 import net.clementraynaud.skoice.common.listeners.guild.member.GuildMemberRoleAddListener;
@@ -122,6 +123,7 @@ public abstract class ListenerManager {
                 new GuildUpdateMFALevelListener(this.plugin),
                 new GuildMemberRoleAddListener(this.plugin),
                 new GuildMemberRoleRemoveListener(this.plugin),
+                new GuildInviteDeleteListener(this.plugin),
                 new RoleUpdatePermissionsListener(this.plugin),
                 new net.clementraynaud.skoice.common.listeners.channel.main.GenericChannelListener(this.plugin),
                 new GenericPermissionOverrideListener(this.plugin),

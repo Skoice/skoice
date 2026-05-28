@@ -84,6 +84,10 @@ error:
     type: error
     fields:
       - proximity-channel-deleted
+  invite-link-revoked:
+    type: error
+    fields:
+      - invite-link-revoked
   shared-bot:
     type: error
     fields:
@@ -155,6 +159,11 @@ login-notification:
   parent: in-game-messages
 action-bar-alerts:
   emoji: warning
+  footer: review
+  type: default
+  parent: in-game-messages
+invite-link:
+  emoji: link
   footer: review
   type: default
   parent: in-game-messages

@@ -44,11 +44,14 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.Icon;
+import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.interactions.Interaction;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
@@ -83,6 +86,8 @@ public class Bot {
     private String guildId;
     private String inviteUrl;
     private String ownerId;
+    private String guildInviteUrl;
+    private String guildInviteCode;
 
     public Bot(Skoice plugin) {
         this.plugin = plugin;
@@ -133,7 +138,7 @@ public class Bot {
                 dispatcher.setMaxRequests(128);
                 OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder()
                         .dispatcher(dispatcher);
-                this.jda = JDABuilder.createLight(new String(finalBase64TokenBytes), GatewayIntent.GUILD_VOICE_STATES)
+                this.jda = JDABuilder.createLight(new String(finalBase64TokenBytes), GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_INVITES)
                         .setMemberCachePolicy(MemberCachePolicy.VOICE)
                         .enableCache(CacheFlag.VOICE_STATE, CacheFlag.MEMBER_OVERRIDES)
                         .setChunkingFilter(ChunkingFilter.NONE)
@@ -268,10 +273,7 @@ public class Bot {
                 this.plugin.log(Level.WARNING, "logger.warning.multiple-guilds");
             } else {
                 this.guildId = guilds.get(0).getId();
-                this.plugin.getLang().getFormatter().set("guild",
-                        this.getGuild().getName()
-                                .replace(Character.toString('&'), "")
-                                .replace(Character.toString('§'), ""));
+                this.refreshGuildFormatter();
 
                 if (this.getGuild().getRequiredMFALevel() == Guild.MFALevel.TWO_FACTOR_AUTH
                         && !this.jda.getSelfUser().isMfaEnabled()) {
@@ -293,6 +295,7 @@ public class Bot {
 
                 } else {
                     this.status = BotStatus.READY;
+                    this.ensureGuildInvite();
                     Skoice.eventBus().fireAsync(new SystemReadyEvent());
                 }
             }
@@ -417,5 +420,75 @@ public class Bot {
 
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public String getGuildInviteCode() {
+        return this.guildInviteCode;
+    }
+
+    public void clearGuildInvite() {
+        this.guildInviteUrl = null;
+        this.guildInviteCode = null;
+        this.refreshGuildFormatter();
+    }
+
+    public void refreshGuildFormatter() {
+        Guild guild = this.getGuild();
+        if (guild == null) {
+            return;
+        }
+        String name = guild.getName()
+                .replace(Character.toString('&'), "")
+                .replace(Character.toString('§'), "");
+        if (this.guildInviteUrl != null
+                && this.plugin.getConfigYamlFile().getBoolean(ConfigField.INVITE_LINK.toString())) {
+            this.plugin.getLang().getFormatter().set("guild",
+                    "<click:open_url:'" + this.guildInviteUrl + "'>" + name + "</click>");
+        } else {
+            this.plugin.getLang().getFormatter().set("guild", name);
+        }
+    }
+
+    public void ensureGuildInvite() {
+        if (!this.plugin.getConfigYamlFile().getBoolean(ConfigField.INVITE_LINK.toString())) {
+            return;
+        }
+        if (this.guildInviteCode != null) {
+            return;
+        }
+        VoiceChannel voiceChannel = this.plugin.getConfigYamlFile().getVoiceChannel();
+        if (voiceChannel == null) {
+            return;
+        }
+        String selfId = this.jda.getSelfUser().getId();
+        voiceChannel.retrieveInvites().queue(invites -> {
+            Invite existing = invites.stream()
+                    .filter(invite -> invite.getInviter() != null && selfId.equals(invite.getInviter().getId()))
+                    .filter(invite -> invite.getMaxAge() == 0 && invite.getMaxUses() == 0)
+                    .findFirst()
+                    .orElse(null);
+            if (existing != null) {
+                this.storeGuildInvite(existing.getUrl(), existing.getCode());
+                return;
+            }
+            voiceChannel.createInvite()
+                    .setMaxAge(0)
+                    .setMaxUses(0)
+                    .queue(invite -> this.storeGuildInvite(invite.getUrl(), invite.getCode()),
+                            new ErrorHandler().ignore(
+                                    ErrorResponse.MISSING_PERMISSIONS,
+                                    ErrorResponse.MAX_INVITES,
+                                    ErrorResponse.UNKNOWN_CHANNEL
+                            ));
+        }, new ErrorHandler().ignore(
+                ErrorResponse.MISSING_PERMISSIONS,
+                ErrorResponse.UNKNOWN_CHANNEL
+        ));
+    }
+
+    private void storeGuildInvite(String url, String code) {
+        this.guildInviteUrl = url;
+        this.guildInviteCode = code;
+        this.refreshGuildFormatter();
     }
 }

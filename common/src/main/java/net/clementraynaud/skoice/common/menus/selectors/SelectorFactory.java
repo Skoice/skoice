@@ -52,6 +52,7 @@ public class SelectorFactory {
             case "tooltips":
             case "text-chat":
             case "channel-visibility":
+            case "invite-link":
                 return new ToggleSelector(plugin, menuId);
             default:
                 return null;

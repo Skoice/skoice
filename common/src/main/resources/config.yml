@@ -6,6 +6,7 @@ connecting-alert: false
 disconnecting-alert: true
 muted-alert: true
 deafened-alert: true
+invite-link: true
 tooltips: true
 players-on-death-screen-included: false
 spectators-included: false

@@ -59,5 +59,7 @@ illegal-value:
   emoji: x
 proximity-channel-deleted:
   emoji: x
+invite-link-revoked:
+  emoji: x
 shared-bot:
   emoji: robot

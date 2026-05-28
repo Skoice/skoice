@@ -125,6 +125,9 @@ menu:
         label: "\"You are muted.\""
       deafened-alert:
         label: "\"You are deafened.\""
+  invite-link:
+    title: "Invite Link"
+    description: "Toggle whether the Discord server name appears as a clickable invite link in Minecraft chat messages. Skoice creates a permanent invite on your configured proximity voice channel. Disable this if you do not want one."
   tooltips:
     title: "Tooltips"
     description: "Toggle interactive messages on your Minecraft server. You may want to disable this setting if your server is running on Bedrock Edition or if tooltips are disabled in Minecraft settings. Only operators can receive interactive messages."
@@ -214,6 +217,9 @@ field:
   proximity-channel-deleted:
     title: "Proximity Channel Deleted"
     description: "You have deleted a channel used by the proximity voice chat. These channels are automatically deleted when they are no longer needed. You should not be doing it manually."
+  invite-link-revoked:
+    title: "Invite Link Revoked"
+    description: "You have revoked an invite link that Skoice was using to let Minecraft players join your Discord server. Skoice will recreate one when needed. To stop this, disable the `Invite Link` setting in `Configuration › In-Game Messages` by running {configure-discord-command}."
   shared-bot:
     title: "Shared Bot"
     description: "It seems like your bot is running multiple programs. However, it must be dedicated to Skoice in order to work properly. You can create a new one by [following these instructions]({creation-guide-url}). Once you have retrieved its token, type `{token-minecraft-command}` followed by the token on your Minecraft server. If your bot is not running multiple programs, please ask for help on our Discord server by pressing the button below."

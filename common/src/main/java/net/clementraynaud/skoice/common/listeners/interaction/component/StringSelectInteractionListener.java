@@ -224,6 +224,10 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                         ConfigField configField = ConfigField.valueOf(componentId.replace("-", "_").toUpperCase());
                         this.plugin.getConfigYamlFile().set(configField.toString(),
                                 Boolean.valueOf(event.getSelectedOptions().get(0).getValue()));
+                        if (configField == ConfigField.INVITE_LINK) {
+                            this.plugin.getBot().ensureGuildInvite();
+                            this.plugin.getBot().refreshGuildFormatter();
+                        }
                         ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     } catch (IllegalArgumentException ignored) {
                     }
