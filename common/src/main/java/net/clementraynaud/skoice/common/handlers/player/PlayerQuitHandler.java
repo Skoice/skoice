@@ -36,7 +36,7 @@ public class PlayerQuitHandler {
         }
 
         return CompletableFuture.runAsync(() -> {
-            LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getFullPlayer().equals(player));
+            LinkedPlayer.removeOnline(player);
             Networks.getAll().stream()
                     .filter(network -> network.contains(player))
                     .forEach(network -> network.remove(player));

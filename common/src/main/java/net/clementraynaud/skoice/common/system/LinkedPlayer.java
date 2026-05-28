@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.common.system;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceGameMode;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
@@ -27,6 +28,7 @@ import net.clementraynaud.skoice.common.util.DistanceUtil;
 
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,18 +39,20 @@ public final class LinkedPlayer {
     private static final int FALLOFF = 3;
 
     private static final Set<LinkedPlayer> onlineLinkedPlayers = ConcurrentHashMap.newKeySet();
+    private static final Map<String, LinkedPlayer> byDiscordId = new ConcurrentHashMap<>();
     private final Set<ActionBarAlert> alerts = Collections.synchronizedSet(EnumSet.noneOf(ActionBarAlert.class));
 
     private final Skoice plugin;
     private final FullPlayer player;
     private final String discordId;
+    private volatile Network network;
 
     public LinkedPlayer(Skoice plugin, FullPlayer player, String discordId) {
         this.plugin = plugin;
         this.player = player;
         this.discordId = discordId;
-        if (this.player != null) {
-            LinkedPlayer.onlineLinkedPlayers.add(this);
+        if (this.player != null && LinkedPlayer.onlineLinkedPlayers.add(this)) {
+            LinkedPlayer.byDiscordId.put(discordId, this);
         }
     }
 
@@ -61,9 +65,22 @@ public final class LinkedPlayer {
     }
 
     public static LinkedPlayer fromMemberId(String memberId) {
-        return LinkedPlayer.onlineLinkedPlayers.stream()
-                .filter(p -> p.getDiscordId().equals(memberId))
+        return LinkedPlayer.byDiscordId.get(memberId);
+    }
+
+    public static void removeOnline(BasePlayer player) {
+        LinkedPlayer match = LinkedPlayer.onlineLinkedPlayers.stream()
+                .filter(p -> p.getFullPlayer().equals(player))
                 .findFirst().orElse(null);
+        if (match != null) {
+            LinkedPlayer.onlineLinkedPlayers.remove(match);
+            LinkedPlayer.byDiscordId.remove(match.discordId, match);
+        }
+    }
+
+    public static void clearOnline() {
+        LinkedPlayer.onlineLinkedPlayers.clear();
+        LinkedPlayer.byDiscordId.clear();
     }
 
     public boolean isStateEligible() {
@@ -97,13 +114,15 @@ public final class LinkedPlayer {
     }
 
     public boolean isInAnyNetwork() {
-        return Networks.getAll().stream().anyMatch(network -> network.contains(this));
+        return this.network != null;
     }
 
     public Network getNetwork() {
-        return Networks.getAll().stream()
-                .filter(network -> network.contains(this))
-                .findFirst().orElse(null);
+        return this.network;
+    }
+
+    void setNetwork(Network network) {
+        this.network = network;
     }
 
     public boolean isInAnyIsolationChannel() {

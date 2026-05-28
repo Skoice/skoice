@@ -143,7 +143,7 @@ public class LinksStore extends MvStoreFile<String> {
                     .filter(network -> network.contains(this.plugin.getFullPlayer(player)))
                     .findFirst().ifPresent(playerNetwork -> playerNetwork.remove(this.plugin.getFullPlayer(player)));
 
-            LinkedPlayer.getOnlineLinkedPlayers().removeIf(p -> p.getFullPlayer().equals(player));
+            LinkedPlayer.removeOnline(player);
         });
         if (Skoice.api().isProximityConnected(UUID.fromString(minecraftId))) {
             Skoice.eventBus().fireAsync(new PlayerProximityDisconnectEvent(minecraftId));
@@ -175,7 +175,7 @@ public class LinksStore extends MvStoreFile<String> {
     }
 
     public void refreshOnlineLinkedPlayers() {
-        LinkedPlayer.getOnlineLinkedPlayers().clear();
+        LinkedPlayer.clearOnline();
 
         for (FullPlayer player : this.plugin.getOnlinePlayers()) {
             this.retrieveMember(player.getUniqueId(),

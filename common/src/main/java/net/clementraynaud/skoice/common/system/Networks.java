@@ -55,7 +55,9 @@ public final class Networks {
     }
 
     public static void remove(Network network) {
-        Networks.networkSet.remove(network);
+        if (Networks.networkSet.remove(network)) {
+            network.clear();
+        }
     }
 
     public static void merge(Network network1, Network network2) {
@@ -73,6 +75,9 @@ public final class Networks {
     }
 
     public static void clear() {
+        for (Network network : Networks.networkSet) {
+            network.clear();
+        }
         Networks.networkSet.clear();
     }
 }

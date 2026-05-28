@@ -39,6 +39,9 @@ public class Network {
     public Network(Skoice plugin, Set<LinkedPlayer> players) {
         this.plugin = plugin;
         this.players.addAll(players);
+        for (LinkedPlayer player : players) {
+            player.setNetwork(this);
+        }
         Networks.add(this);
     }
 
@@ -116,24 +119,44 @@ public class Network {
     }
 
     public void engulf(Network network) {
+        for (LinkedPlayer player : network.players) {
+            player.setNetwork(this);
+        }
         this.players.addAll(network.players);
         network.players.clear();
     }
 
     public void clear() {
+        for (LinkedPlayer player : this.players) {
+            if (player.getNetwork() == this) {
+                player.setNetwork(null);
+            }
+        }
         this.players.clear();
     }
 
     public void add(LinkedPlayer player) {
-        this.players.add(player);
+        if (this.players.add(player)) {
+            player.setNetwork(this);
+        }
     }
 
     public void remove(LinkedPlayer player) {
-        this.players.remove(player);
+        if (this.players.remove(player) && player.getNetwork() == this) {
+            player.setNetwork(null);
+        }
     }
 
     public void remove(BasePlayer player) {
-        this.players.removeIf(p -> p.getFullPlayer().equals(player));
+        LinkedPlayer match = this.players.stream()
+                .filter(p -> p.getFullPlayer().equals(player))
+                .findFirst().orElse(null);
+        if (match != null) {
+            this.players.remove(match);
+            if (match.getNetwork() == this) {
+                match.setNetwork(null);
+            }
+        }
     }
 
     public boolean contains(LinkedPlayer player) {

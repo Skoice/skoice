@@ -38,6 +38,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.internal.utils.tuple.Pair;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -114,6 +115,15 @@ public class UpdateNetworksTask {
             int userCount = 0;
             int maxIsolatedUsers = 0;
 
+            Set<ProximityChannel> usedByNetworks = Networks.getProximityChannels();
+            Map<String, ProximityChannel> isolationMap = ProximityChannels.getIsolationChannelMap();
+            Set<ProximityChannel> reservedChannels = new HashSet<>(usedByNetworks);
+            reservedChannels.addAll(isolationMap.values());
+            List<ProximityChannel> availableChannels = ProximityChannels.getAll().stream()
+                    .filter(channel -> !reservedChannels.contains(channel))
+                    .sorted(Comparator.comparing(ProximityChannel::getChannelId))
+                    .collect(Collectors.toCollection(ArrayList::new));
+
             for (String memberId : connectedMembers) {
                 Member member = this.plugin.getBot().getGuild().getMemberById(memberId);
                 if (member == null || member.getVoiceState() == null || member.getVoiceState().getChannel() == null) {
@@ -156,16 +166,19 @@ public class UpdateNetworksTask {
                     }
                     ProximityChannels.getIsolationChannelMap().remove(memberId);
                 } else if (shouldBeIsolated) {
-                    ProximityChannel proximityChannel = ProximityChannels.getIsolationChannelMap().get(memberId);
+                    ProximityChannel proximityChannel = isolationMap.get(memberId);
                     if (proximityChannel == null) {
-                        proximityChannel = ProximityChannels.getAll().stream()
-                                .filter(channel -> !Networks.getProximityChannels().contains(channel))
-                                .filter(channel -> !ProximityChannels.getIsolationChannelMap().containsValue(channel))
+                        proximityChannel = availableChannels.stream()
                                 .min(Comparator.comparing((ProximityChannel channel) ->
                                                 !channel.getChannelId().equals(currentChannel.getId()))
                                         .thenComparing(ProximityChannel::getChannelId))
-                                .orElseGet(() -> new ProximityChannel(this.plugin, (Network) null));
-                        ProximityChannels.getIsolationChannelMap().put(memberId, proximityChannel);
+                                .orElse(null);
+                        if (proximityChannel != null) {
+                            availableChannels.remove(proximityChannel);
+                        } else {
+                            proximityChannel = new ProximityChannel(this.plugin, (Network) null);
+                        }
+                        isolationMap.put(memberId, proximityChannel);
                     }
                     shouldBeInChannel = proximityChannel.getChannel();
                     if (shouldBeInChannel == null) {
