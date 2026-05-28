@@ -216,7 +216,7 @@ public class UpdateNetworksTask {
             }
 
             LinkedPlayer.sendActionBarAlerts();
-            this.sendLinkingSuggestion(connectedMembers);
+            this.sendLinkingSuggestion(connectedMembers, spatialIndex);
 
             ProximityChannels.clean(userCount, maxIsolatedUsers);
 
@@ -318,24 +318,20 @@ public class UpdateNetworksTask {
         return this.awaitingMoves;
     }
 
-    private void sendLinkingSuggestion(Set<String> connectedMembers) {
+    private void sendLinkingSuggestion(Set<String> connectedMembers, SpatialIndex spatialIndex) {
         if (!this.plugin.getConfigYamlFile().getBoolean(ConfigField.LINKING_SUGGESTION.toString())) {
             return;
         }
 
-        List<FullPlayer> usingPlayers = LinkedPlayer.getOnlineLinkedPlayers().stream()
+        Set<UUID> usingPlayerIds = LinkedPlayer.getOnlineLinkedPlayers().stream()
                 .filter(p -> connectedMembers.contains(p.getDiscordId()))
                 .filter(LinkedPlayer::isStateEligible)
-                .map(LinkedPlayer::getFullPlayer)
-                .collect(Collectors.toList());
+                .map(p -> p.getFullPlayer().getUniqueId())
+                .collect(Collectors.toSet());
 
-        if (usingPlayers.isEmpty()) {
+        if (usingPlayerIds.isEmpty()) {
             return;
         }
-
-        Set<UUID> usingPlayerIds = usingPlayers.stream()
-                .map(FullPlayer::getUniqueId)
-                .collect(Collectors.toSet());
 
         List<String> disabledWorlds = this.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString());
         int horizontalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
@@ -352,7 +348,11 @@ public class UpdateNetworksTask {
             if (playerLocation == null) {
                 continue;
             }
-            for (FullPlayer usingPlayer : usingPlayers) {
+            for (LinkedPlayer candidate : spatialIndex.spatialNeighbors(player.getWorld(), playerLocation)) {
+                if (!connectedMembers.contains(candidate.getDiscordId())) {
+                    continue;
+                }
+                FullPlayer usingPlayer = candidate.getFullPlayer();
                 if (!player.getWorld().equals(usingPlayer.getWorld())) {
                     continue;
                 }

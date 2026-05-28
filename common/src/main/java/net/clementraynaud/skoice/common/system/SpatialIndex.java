@@ -62,24 +62,8 @@ public final class SpatialIndex {
     }
 
     public Set<LinkedPlayer> candidatesFor(LinkedPlayer player) {
-        Set<LinkedPlayer> candidates = new LinkedHashSet<>();
-        SkoiceLocation location = player.getFullPlayer().getLocation();
-        if (location != null) {
-            String world = player.getFullPlayer().getWorld();
-            int cx = Math.floorDiv((int) location.getX(), this.bucketSize);
-            int cy = Math.floorDiv((int) location.getY(), this.bucketSize);
-            int cz = Math.floorDiv((int) location.getZ(), this.bucketSize);
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dy = -1; dy <= 1; dy++) {
-                    for (int dz = -1; dz <= 1; dz++) {
-                        List<LinkedPlayer> bucket = this.buckets.get(new BucketKey(world, cx + dx, cy + dy, cz + dz));
-                        if (bucket != null) {
-                            candidates.addAll(bucket);
-                        }
-                    }
-                }
-            }
-        }
+        Set<LinkedPlayer> candidates = this.spatialNeighbors(player.getFullPlayer().getWorld(),
+                player.getFullPlayer().getLocation());
         if (this.teamCommunication) {
             String team = player.getFullPlayer().getTeam();
             if (team != null) {
@@ -92,7 +76,29 @@ public final class SpatialIndex {
         return candidates;
     }
 
+    public Set<LinkedPlayer> spatialNeighbors(String world, SkoiceLocation location) {
+        Set<LinkedPlayer> candidates = new LinkedHashSet<>();
+        if (location == null) {
+            return candidates;
+        }
+        int cx = Math.floorDiv((int) location.getX(), this.bucketSize);
+        int cy = Math.floorDiv((int) location.getY(), this.bucketSize);
+        int cz = Math.floorDiv((int) location.getZ(), this.bucketSize);
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    List<LinkedPlayer> bucket = this.buckets.get(new BucketKey(world, cx + dx, cy + dy, cz + dz));
+                    if (bucket != null) {
+                        candidates.addAll(bucket);
+                    }
+                }
+            }
+        }
+        return candidates;
+    }
+
     private static final class BucketKey {
+
         private final String world;
         private final int x;
         private final int y;
