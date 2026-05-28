@@ -19,11 +19,9 @@
 
 package net.clementraynaud.skoice.common.model.minecraft;
 
-import net.clementraynaud.skoice.common.model.JsonModel;
-
 import java.util.UUID;
 
-public class PlayerInfo extends JsonModel {
+public class PlayerInfo {
 
     private final UUID id;
     private final boolean dead;
