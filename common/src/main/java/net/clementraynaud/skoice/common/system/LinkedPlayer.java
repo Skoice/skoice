@@ -24,7 +24,6 @@ import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceGameMode;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.util.DistanceUtil;
-import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
 import java.util.Collections;
 import java.util.EnumSet;

@@ -94,26 +94,6 @@ public enum MenuEmoji {
         this.unicode = unicode;
     }
 
-    public Emoji get() {
-        if (this.unicode != null) {
-            return Emoji.fromUnicode(this.unicode);
-        } else {
-            return Emoji.fromCustom(MenuEmoji.APPLICATION_EMOJI_PREFIX + this.name().toLowerCase(),
-                    MenuEmoji.CUSTOM_EMOJI_ID.getOrDefault(this.name().toLowerCase(), 0L),
-                    false);
-        }
-    }
-
-    @Override
-    public String toString() {
-        if (this.unicode != null) {
-            return ":" + this.name().toLowerCase() + ": ";
-        } else {
-            return "<:" + MenuEmoji.APPLICATION_EMOJI_PREFIX + this.name().toLowerCase() + ":"
-                    + MenuEmoji.CUSTOM_EMOJI_ID.getOrDefault(this.name().toLowerCase(), 0L) + "> ";
-        }
-    }
-
     public static void createApplicationEmojis(Skoice plugin) {
         plugin.getBot().getJDA().retrieveApplicationEmojis().queue(emojis ->
                 Arrays.stream(MenuEmoji.values())
@@ -148,5 +128,25 @@ public enum MenuEmoji {
                             }
                         })
         );
+    }
+
+    public Emoji get() {
+        if (this.unicode != null) {
+            return Emoji.fromUnicode(this.unicode);
+        } else {
+            return Emoji.fromCustom(MenuEmoji.APPLICATION_EMOJI_PREFIX + this.name().toLowerCase(),
+                    MenuEmoji.CUSTOM_EMOJI_ID.getOrDefault(this.name().toLowerCase(), 0L),
+                    false);
+        }
+    }
+
+    @Override
+    public String toString() {
+        if (this.unicode != null) {
+            return ":" + this.name().toLowerCase() + ": ";
+        } else {
+            return "<:" + MenuEmoji.APPLICATION_EMOJI_PREFIX + this.name().toLowerCase() + ":"
+                    + MenuEmoji.CUSTOM_EMOJI_ID.getOrDefault(this.name().toLowerCase(), 0L) + "> ";
+        }
     }
 }

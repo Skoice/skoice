@@ -66,9 +66,9 @@ public class ReadyListener extends ListenerAdapter {
 
                     applicationInfo.setRequiredScopes("applications.commands");
                     this.plugin.getBot().setInviteUrl(applicationInfo.getInviteUrl(Permission.ADMINISTRATOR));
-            if (applicationInfo.getOwner() != null) {
-                this.plugin.getBot().setOwnerId(applicationInfo.getOwner().getId());
-            }
+                    if (applicationInfo.getOwner() != null) {
+                        this.plugin.getBot().setOwnerId(applicationInfo.getOwner().getId());
+                    }
 
                     this.setup(tokenManager);
                 }, new ErrorHandler().handle(ErrorResponse.fromCode(-1), e ->

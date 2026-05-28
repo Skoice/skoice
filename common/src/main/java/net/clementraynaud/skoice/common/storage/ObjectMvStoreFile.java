@@ -31,6 +31,16 @@ public abstract class ObjectMvStoreFile extends MvStoreFile<Object> {
         super(plugin, store, mapName);
     }
 
+    private static Object coerce(Object value) {
+        if (value instanceof List) {
+            return new ArrayList<Object>((List<?>) value);
+        }
+        if (value instanceof Collection) {
+            return new ArrayList<Object>((Collection<?>) value);
+        }
+        return value;
+    }
+
     public String getString(String path) {
         Object value = this.getMap().get(path);
         return value == null ? null : value.toString();
@@ -81,15 +91,5 @@ public abstract class ObjectMvStoreFile extends MvStoreFile<Object> {
     @Override
     public void setDefault(String path, Object value) {
         super.setDefault(path, ObjectMvStoreFile.coerce(value));
-    }
-
-    private static Object coerce(Object value) {
-        if (value instanceof List) {
-            return new ArrayList<Object>((List<?>) value);
-        }
-        if (value instanceof Collection) {
-            return new ArrayList<Object>((Collection<?>) value);
-        }
-        return value;
     }
 }
