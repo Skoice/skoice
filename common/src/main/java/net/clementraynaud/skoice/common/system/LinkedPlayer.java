@@ -26,6 +26,7 @@ import net.clementraynaud.skoice.common.model.minecraft.SkoiceGameMode;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.util.DistanceUtil;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
@@ -104,8 +105,11 @@ public final class LinkedPlayer {
         }
     }
 
-    public Set<LinkedPlayer> getPlayersWithinRange(Set<String> connectedMembers) {
-        return LinkedPlayer.onlineLinkedPlayers.stream()
+    public Set<LinkedPlayer> getPlayersWithinRange(Set<String> connectedMembers, SpatialIndex index) {
+        Collection<LinkedPlayer> candidates = index != null
+                ? index.candidatesFor(this)
+                : LinkedPlayer.onlineLinkedPlayers;
+        return candidates.stream()
                 .filter(p -> connectedMembers.contains(p.getDiscordId()))
                 .filter(p -> !p.equals(this))
                 .filter(LinkedPlayer::isStateEligible)

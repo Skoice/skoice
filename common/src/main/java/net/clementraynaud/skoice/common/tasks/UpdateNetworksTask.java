@@ -30,6 +30,7 @@ import net.clementraynaud.skoice.common.system.Network;
 import net.clementraynaud.skoice.common.system.Networks;
 import net.clementraynaud.skoice.common.system.ProximityChannel;
 import net.clementraynaud.skoice.common.system.ProximityChannels;
+import net.clementraynaud.skoice.common.system.SpatialIndex;
 import net.clementraynaud.skoice.common.util.DistanceUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
@@ -104,10 +105,12 @@ public class UpdateNetworksTask {
             Set<String> connectedMembers = new HashSet<>(membersInMainVoiceChannel);
             connectedMembers.addAll(membersInProximityChannels);
 
+            SpatialIndex spatialIndex = this.buildSpatialIndex();
+
             this.manageConnectedPlayers();
-            this.splitSpreadNetworks(connectedMembers);
-            this.manageIsolatedPlayers(connectedMembers);
-            this.mergeNetworks();
+            this.splitSpreadNetworks(connectedMembers, spatialIndex);
+            this.manageIsolatedPlayers(connectedMembers, spatialIndex);
+            this.mergeNetworks(spatialIndex);
             this.manageMoves(connectedMembers);
 
             Networks.clean();
@@ -241,17 +244,17 @@ public class UpdateNetworksTask {
                 });
     }
 
-    private void splitSpreadNetworks(Set<String> connectedMembers) {
-        Networks.getAll().forEach(network -> network.splitIfSpread(connectedMembers));
+    private void splitSpreadNetworks(Set<String> connectedMembers, SpatialIndex spatialIndex) {
+        Networks.getAll().forEach(network -> network.splitIfSpread(connectedMembers, spatialIndex));
     }
 
-    private void manageIsolatedPlayers(Set<String> connectedMembers) {
+    private void manageIsolatedPlayers(Set<String> connectedMembers, SpatialIndex spatialIndex) {
         LinkedPlayer.getOnlineLinkedPlayers().stream()
                 .filter(LinkedPlayer::isStateEligible)
                 .filter(p -> connectedMembers.contains(p.getDiscordId()))
                 .filter(p -> !p.isInAnyNetwork())
                 .forEach(p -> {
-                    Set<LinkedPlayer> playersWithinRange = p.getPlayersWithinRange(connectedMembers);
+                    Set<LinkedPlayer> playersWithinRange = p.getPlayersWithinRange(connectedMembers, spatialIndex);
 
                     if (!playersWithinRange.isEmpty()) {
                         playersWithinRange.stream()
@@ -268,14 +271,39 @@ public class UpdateNetworksTask {
                 });
     }
 
-    private void mergeNetworks() {
-        Networks.getAll()
-                .forEach(network -> LinkedPlayer.getOnlineLinkedPlayers().stream()
-                        .filter(LinkedPlayer::isInAnyNetwork)
-                        .filter(p -> !p.getNetwork().equals(network))
-                        .filter(network::canPlayerConnect)
-                        .forEach(p -> Networks.merge(network, p.getNetwork()))
-                );
+    private void mergeNetworks(SpatialIndex spatialIndex) {
+        for (LinkedPlayer p : LinkedPlayer.getOnlineLinkedPlayers()) {
+            Network myNetwork = p.getNetwork();
+            if (myNetwork == null) {
+                continue;
+            }
+            for (LinkedPlayer other : spatialIndex.candidatesFor(p)) {
+                if (other.equals(p) || !other.isStateEligible() || !p.isStateEligible()) {
+                    continue;
+                }
+                Network otherNetwork = other.getNetwork();
+                Network currentMyNetwork = p.getNetwork();
+                if (otherNetwork == null || currentMyNetwork == null || otherNetwork.equals(currentMyNetwork)) {
+                    continue;
+                }
+                if (p.isCloseEnoughToPlayer(other, false)) {
+                    Networks.merge(currentMyNetwork, otherNetwork);
+                }
+            }
+        }
+    }
+
+    private SpatialIndex buildSpatialIndex() {
+        int horizontalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
+        int verticalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString());
+        boolean teamCommunication = this.plugin.getConfigYamlFile().getBoolean(ConfigField.TEAM_COMMUNICATION.toString());
+        SpatialIndex index = new SpatialIndex(horizontalRadius, verticalRadius, teamCommunication);
+        for (LinkedPlayer player : LinkedPlayer.getOnlineLinkedPlayers()) {
+            if (player.isStateEligible()) {
+                index.add(player);
+            }
+        }
+        return index;
     }
 
     private void manageMoves(Set<String> connectedMembers) {

@@ -77,11 +77,15 @@ public class Network {
     }
 
     public void splitIfSpread(Set<String> connectedMembers) {
+        this.splitIfSpread(connectedMembers, null);
+    }
+
+    public void splitIfSpread(Set<String> connectedMembers, SpatialIndex index) {
         if (this.size() < 4) {
             return;
         }
 
-        Set<LinkedPlayer> playersWithinRange = this.getChainingPlayers(connectedMembers, this.players.iterator().next());
+        Set<LinkedPlayer> playersWithinRange = this.getChainingPlayers(connectedMembers, this.players.iterator().next(), index);
         if (playersWithinRange.size() == 1 || playersWithinRange.size() + 1 >= this.size()) {
             return;
         }
@@ -98,13 +102,13 @@ public class Network {
         new Network(this.plugin, playersToExclude).build();
     }
 
-    private Set<LinkedPlayer> getChainingPlayers(Set<String> connectedMembers, LinkedPlayer startingPoint) {
-        return this.getChainingPlayers(connectedMembers, new HashSet<>(Collections.singleton(startingPoint)), Collections.singleton(startingPoint));
+    private Set<LinkedPlayer> getChainingPlayers(Set<String> connectedMembers, LinkedPlayer startingPoint, SpatialIndex index) {
+        return this.getChainingPlayers(connectedMembers, new HashSet<>(Collections.singleton(startingPoint)), Collections.singleton(startingPoint), index);
     }
 
-    private Set<LinkedPlayer> getChainingPlayers(Set<String> connectedMembers, Set<LinkedPlayer> chainingPlayers, Set<LinkedPlayer> children) {
+    private Set<LinkedPlayer> getChainingPlayers(Set<String> connectedMembers, Set<LinkedPlayer> chainingPlayers, Set<LinkedPlayer> children, SpatialIndex index) {
         Set<LinkedPlayer> newChildren = new HashSet<>();
-        children.forEach(p -> p.getPlayersWithinRange(connectedMembers).stream()
+        children.forEach(p -> p.getPlayersWithinRange(connectedMembers, index).stream()
                 .filter(this::contains)
                 .filter(playerWithingRange -> !chainingPlayers.contains(playerWithingRange))
                 .forEach(newChildren::add)
@@ -115,7 +119,7 @@ public class Network {
         }
 
         chainingPlayers.addAll(newChildren);
-        return this.getChainingPlayers(connectedMembers, chainingPlayers, newChildren);
+        return this.getChainingPlayers(connectedMembers, chainingPlayers, newChildren, index);
     }
 
     public void engulf(Network network) {
