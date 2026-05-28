@@ -82,6 +82,7 @@ public class Bot {
     private String tokenManagerId;
     private String guildId;
     private String inviteUrl;
+    private String ownerId;
 
     public Bot(Skoice plugin) {
         this.plugin = plugin;
@@ -408,5 +409,13 @@ public class Bot {
     public void setInviteUrl(String inviteUrl) {
         this.inviteUrl = inviteUrl;
         this.plugin.getLang().getFormatter().set("bot-invite-url", inviteUrl);
+    }
+
+    public String getOwnerId() {
+        return this.ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 }

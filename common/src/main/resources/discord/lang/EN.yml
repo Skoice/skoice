@@ -31,7 +31,8 @@ menu:
     description: "Your Discord server requires the bot owner's account to have two-factor authentication enabled. Set it up or disable this requirement in server settings by following this path: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
   permissions:
     title: "Permissions"
-    description: "In order to work properly, your bot must have the `Administrator` permission on your Discord server. To do this, add a role with `Administrator` permission to the bot."
+    description: "In order to work properly, your bot must have the `Administrator` permission on your Discord server. Click the button below to grant it."
+    description-non-owner: "In order to work properly, your bot must have the `Administrator` permission on your Discord server. To do this, either add a role with `Administrator` permission to the bot, or ask {bot-owner-mention} to run {configure-discord-command} to update its permissions."
   voice-chat:
     title: "Voice Chat"
   range:

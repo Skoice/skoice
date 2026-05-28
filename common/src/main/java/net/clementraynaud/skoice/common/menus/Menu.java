@@ -81,12 +81,15 @@ public class Menu {
                 this.plugin.getBot().getLang().getMessage("menu." + this.section + ".title");
     }
 
-    private String getDescription() {
-        StringBuilder description = new StringBuilder();
-        if (this.plugin.getBot().getLang().contains("menu." + this.section + ".description")) {
-            description.append(this.plugin.getBot().getLang().getMessage("menu." + this.section + ".description"));
+    private String getDescription(Map<String, String> args) {
+        String descriptionKey = "menu." + this.section + ".description";
+        if ("permissions".equals(this.section) && !"true".equals(args.get("invoker-is-bot-owner"))) {
+            descriptionKey = "menu." + this.section + ".description-non-owner";
         }
-        return description.toString();
+        if (this.plugin.getBot().getLang().contains(descriptionKey)) {
+            return this.plugin.getBot().getLang().getMessage(descriptionKey, args);
+        }
+        return "";
     }
 
     private ActionRow getMenuPathActionRow() {
@@ -151,8 +154,9 @@ public class Menu {
 
         childComponents.add(this.getTitleComponent());
 
-        if (!this.getDescription().isEmpty()) {
-            childComponents.add(TextDisplay.of(this.getDescription()));
+        String description = this.getDescription(args);
+        if (!description.isEmpty()) {
+            childComponents.add(TextDisplay.of(description));
         }
 
         childComponents.add(Menu.LARGE_INVISIBLE_SEPARATOR);
@@ -176,7 +180,7 @@ public class Menu {
         if (selectMenuActionRow != null) {
             childComponents.add(selectMenuActionRow);
         }
-        List<Button> buttons = this.plugin.getBot().getMenuFactory().getButtons(this.plugin, this.menuId);
+        List<Button> buttons = this.plugin.getBot().getMenuFactory().getButtons(this.plugin, this.menuId, args);
         if (!buttons.isEmpty()) {
             childComponents.add(Menu.LARGE_INVISIBLE_SEPARATOR);
             childComponents.add(ActionRow.of(buttons));
@@ -195,7 +199,7 @@ public class Menu {
     private List<ContainerChildComponent> getCompactForm(Map<String, String> args) {
         List<ContainerChildComponent> childComponents = new ArrayList<>();
 
-        String description = this.getDescription();
+        String description = this.getDescription(args);
         if (description.isEmpty()) {
             description = this.getChildren().stream()
                     .map(menu -> "> " + menu.getTitle(true))
@@ -225,7 +229,7 @@ public class Menu {
             ));
         }
 
-        List<Button> buttons = this.plugin.getBot().getMenuFactory().getButtons(this.plugin, this.menuId);
+        List<Button> buttons = this.plugin.getBot().getMenuFactory().getButtons(this.plugin, this.menuId, args);
         if (!buttons.isEmpty()) {
             childComponents.add(ActionRow.of(buttons));
         }

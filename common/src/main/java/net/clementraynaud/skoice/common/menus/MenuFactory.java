@@ -80,7 +80,7 @@ public class MenuFactory {
         }
     }
 
-    public List<Button> getButtons(Skoice plugin, String menuId) {
+    public List<Button> getButtons(Skoice plugin, String menuId, Map<String, String> args) {
         List<Button> buttons = new ArrayList<>();
         switch (menuId) {
             case "incomplete-configuration-server-manager":
@@ -96,10 +96,11 @@ public class MenuFactory {
                 break;
 
             case "permissions":
-                // TODO: Only the bot owner should have this button.
-//                buttons.add(Button.link(plugin.getBot().getInviteUrl(),
-//                                plugin.getBot().getLang().getMessage("button-label.update-permissions"))
-//                        .withEmoji(MenuEmoji.CARD_BOX.get()));
+                if ("true".equals(args.get("invoker-is-bot-owner")) && plugin.getBot().getInviteUrl() != null) {
+                    buttons.add(Button.link(plugin.getBot().getInviteUrl(),
+                                    plugin.getBot().getLang().getMessage("button-label.update-permissions"))
+                            .withEmoji(MenuEmoji.CARD_BOX.get()));
+                }
                 break;
 
             case "login-notification":

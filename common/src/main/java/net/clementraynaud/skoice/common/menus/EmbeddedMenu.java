@@ -27,9 +27,11 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.callbacks.IMessageEditCallback;
 import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import net.dv8tion.jda.api.requests.ErrorResponse;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -40,6 +42,7 @@ public class EmbeddedMenu {
     protected Map<String, String> args;
     protected String messageId;
     protected InteractionHook hook;
+    protected String invokerUserId;
 
     public EmbeddedMenu(Bot bot) {
         this.bot = bot;
@@ -61,14 +64,16 @@ public class EmbeddedMenu {
     }
 
     public void message(User user) {
+        this.invokerUserId = user.getId();
         user.openPrivateChannel()
-                .flatMap(channel -> channel.sendMessage(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args)))
+                .flatMap(channel -> channel.sendMessage(this.buildMessage()))
                 .queue(null, new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER, ErrorResponse.OPEN_DM_TOO_FAST));
     }
 
     public void reply(IReplyCallback interaction) {
         this.hook = interaction.getHook();
-        interaction.reply(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args))
+        this.invokerUserId = interaction.getUser().getId();
+        interaction.reply(this.buildMessage())
                 .setEphemeral(true)
                 .flatMap(InteractionHook::retrieveOriginal)
                 .queue(message -> this.messageId = message.getId());
@@ -76,7 +81,8 @@ public class EmbeddedMenu {
 
     public void edit(IMessageEditCallback interaction) {
         this.hook = interaction.getHook();
-        interaction.editMessage(MessageEditData.fromCreateData(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args)))
+        this.invokerUserId = interaction.getUser().getId();
+        interaction.editMessage(MessageEditData.fromCreateData(this.buildMessage()))
                 .queue(null, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.forget()));
     }
 
@@ -85,11 +91,22 @@ public class EmbeddedMenu {
             return;
         }
 
-        this.hook.editOriginal(MessageEditData.fromCreateData(this.bot.getMenuFactory().getMenu(this.menuId).build(this.args)))
+        this.hook.editOriginal(MessageEditData.fromCreateData(this.buildMessage()))
                 .queue(null, new ErrorHandler().handle(EnumSet.of(
                         ErrorResponse.UNKNOWN_MESSAGE,
                         ErrorResponse.INVALID_WEBHOOK_TOKEN
                 ), e -> this.forget()));
+    }
+
+    private MessageCreateData buildMessage() {
+        Map<String, String> renderArgs = this.args != null ? new HashMap<>(this.args) : new HashMap<>();
+        String ownerId = this.bot.getOwnerId();
+        if (ownerId != null) {
+            renderArgs.put("bot-owner-mention", "<@" + ownerId + ">");
+        }
+        renderArgs.put("invoker-is-bot-owner",
+                String.valueOf(ownerId != null && ownerId.equals(this.invokerUserId)));
+        return this.bot.getMenuFactory().getMenu(this.menuId).build(renderArgs);
     }
 
     protected boolean isHookValid() {
