@@ -86,6 +86,16 @@ public class EmbeddedMenu {
                 .queue(null, new ErrorHandler().handle(ErrorResponse.UNKNOWN_MESSAGE, e -> this.forget()));
     }
 
+    public void sendFollowup(InteractionHook hook) {
+        this.hook = hook;
+        if (this.invokerUserId == null) {
+            this.invokerUserId = hook.getInteraction().getUser().getId();
+        }
+        hook.editOriginal(MessageEditData.fromCreateData(this.buildMessage()))
+                .queue(message -> this.messageId = message.getId(),
+                        new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE, ErrorResponse.INVALID_WEBHOOK_TOKEN));
+    }
+
     public void editFromHook() {
         if (!this.isHookValid()) {
             return;

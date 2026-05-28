@@ -206,7 +206,7 @@ field:
     description: "Your Discord account is not linked to Minecraft. Type {link-discord-command} to link it and use the proximity voice chat."
   account-already-linked:
     title: "Account Already Linked"
-    description: "Your Discord account is already linked to Minecraft. Type {unlink-discord-command} to unlink it."
+    description: "Your Discord account is already linked to the Minecraft account `{minecraft-username}`. Type {unlink-discord-command} to unlink it."
   restricted-command:
     title: "Restricted Command"
     description: "This command must be performed on a Discord server."

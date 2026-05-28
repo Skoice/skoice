@@ -62,7 +62,7 @@ chat:
     account-unlinked: "You have {success-color}unlinked your Minecraft account {default-color}from Discord."
     account-not-linked: "You have {error-color}not linked your Minecraft account {default-color}to Discord. Type \"{link-discord-command}\" on the Discord server \"{guild}\" to link it and use the proximity voice chat."
     account-not-linked-remind-once: "You have {error-color}not linked your Minecraft account {default-color}to Discord. Type \"{link-discord-command}\" on the Discord server \"{guild}\" to link it and use the proximity voice chat. You will not receive this notification again."
-    account-already-linked: "You have {error-color}already linked your Minecraft account {default-color}to Discord. Type \"{unlink-minecraft-command}\" to unlink it."
+    account-already-linked: "You have {error-color}already linked your Minecraft account {default-color}to the Discord account \"{discord-username}\". Type \"{unlink-minecraft-command}\" to unlink it."
     connected: "You are {success-color}now connected {default-color}to the proximity voice chat. To disable Discord sounds and have a more immersive experience, you can enable \"Streamer Mode\" in Discord settings."
     not-connected: "You are {error-color}not connected {default-color}to the proximity voice chat. Join the voice channel \"{voice-channel}\" on the Discord server \"{guild}\" to use it."
     disconnected: "You are {error-color}now disconnected {default-color}from the proximity voice chat."

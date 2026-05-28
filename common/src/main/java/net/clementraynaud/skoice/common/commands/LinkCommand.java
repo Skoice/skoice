@@ -23,10 +23,12 @@ package net.clementraynaud.skoice.common.commands;
 import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.common.util.MapUtil;
+import net.clementraynaud.skoice.common.util.MojangUsernameCache;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LinkCommand extends Command {
@@ -46,8 +48,25 @@ public class LinkCommand extends Command {
     @Override
     public void run() {
 
-        if (super.plugin.getLinksYamlFile().getLinks().containsValue(super.executor.getUser().getId())) {
-            new EmbeddedMenu(this.plugin.getBot()).setContent("account-already-linked").reply(super.interaction);
+        String discordId = super.executor.getUser().getId();
+        String linkedMinecraftId = super.plugin.getLinksYamlFile().getMinecraftIdFromDiscordId(discordId);
+        if (linkedMinecraftId != null) {
+            String fallback = linkedMinecraftId;
+            UUID minecraftUuid = null;
+            if (linkedMinecraftId != null) {
+                try {
+                    minecraftUuid = UUID.fromString(linkedMinecraftId);
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+            UUID uuidForLookup = minecraftUuid;
+            super.interaction.deferReply(true).queue(hook ->
+                    MojangUsernameCache.retrieve(super.plugin, uuidForLookup, name ->
+                            new EmbeddedMenu(this.plugin.getBot())
+                                    .setContent("account-already-linked",
+                                            MapUtil.of("minecraft-username",
+                                                    name != null ? name : fallback))
+                                    .sendFollowup(hook)));
             return;
         }
 

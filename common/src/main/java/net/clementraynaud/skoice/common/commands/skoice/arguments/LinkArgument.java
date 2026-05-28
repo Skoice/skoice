@@ -39,6 +39,15 @@ public class LinkArgument extends Argument {
         this.arg = arg;
     }
 
+    private void sendAlreadyLinked(BasePlayer player, String discordId) {
+        super.plugin.getBot().getJDA().retrieveUserById(discordId).queue(user ->
+                        player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-already-linked",
+                                MapUtil.of("discord-username", user.getName()))),
+                new ErrorHandler().handle(ErrorResponse.UNKNOWN_USER, e ->
+                        player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-already-linked",
+                                MapUtil.of("discord-username", discordId)))));
+    }
+
     @Override
     public void run() {
         this.plugin.getScheduler().runTaskAsynchronously(() -> {
@@ -47,8 +56,9 @@ public class LinkArgument extends Argument {
                 super.plugin.getBot().sendIncompleteConfigurationAlert(player, true, false);
                 return;
             }
-            if (super.plugin.getLinksYamlFile().getLinks().containsKey(player.getUniqueId().toString())) {
-                player.sendMessage(super.plugin.getLang().getMessage("chat.player.account-already-linked"));
+            String linkedDiscordId = super.plugin.getLinksYamlFile().getLinks().get(player.getUniqueId().toString());
+            if (linkedDiscordId != null) {
+                this.sendAlreadyLinked(player, linkedDiscordId);
                 return;
             }
             if (this.arg.isEmpty()) {
