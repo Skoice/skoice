@@ -38,8 +38,6 @@ public class ArgumentFactory {
                 return new LinkArgument(plugin, sender, arg);
             case UNLINK:
                 return new UnlinkArgument(plugin, sender);
-            case LUDICROUS:
-                return new LudicrousArgument(plugin, sender);
             default:
                 return null;
         }
