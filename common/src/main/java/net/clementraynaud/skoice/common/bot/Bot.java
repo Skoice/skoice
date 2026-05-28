@@ -368,6 +368,10 @@ public class Bot {
         return this.lang;
     }
 
+    public Skoice getPlugin() {
+        return this.plugin;
+    }
+
     public BotCommands getCommands() {
         return this.commands;
     }

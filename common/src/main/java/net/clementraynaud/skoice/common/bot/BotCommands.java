@@ -20,15 +20,21 @@
 package net.clementraynaud.skoice.common.bot;
 
 import net.clementraynaud.skoice.common.commands.CommandInfo;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 
 import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class BotCommands {
+
+    private static final int MAX_APPLICATION_COMMANDS_CODE = 30032;
 
     private final Bot bot;
 
@@ -37,10 +43,26 @@ public class BotCommands {
     }
 
     public CompletableFuture<Void> register() {
-        return this.bot.getJDA().updateCommands().addCommands(this.getCommands()).submit()
-                .thenAccept(commands -> commands.forEach(command ->
-                        this.bot.getLang().getFormatter().set(command.getName() + "-discord-command", command.getAsMention()))
-                );
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        this.bot.getJDA().updateCommands().addCommands(this.getCommands()).queue(
+                commands -> {
+                    commands.forEach(command ->
+                            this.bot.getLang().getFormatter().set(command.getName() + "-discord-command", command.getAsMention()));
+                    future.complete(null);
+                },
+                new ErrorHandler()
+                        .handle(ErrorResponse.MAX_DAILY_APPLICATION_COMMAND_CREATES,
+                                e -> this.warnCommandLimitReached(future))
+                        .handle(throwable -> throwable instanceof ErrorResponseException
+                                        && ((ErrorResponseException) throwable).getErrorCode() == BotCommands.MAX_APPLICATION_COMMANDS_CODE,
+                                e -> this.warnCommandLimitReached(future))
+        );
+        return future;
+    }
+
+    private void warnCommandLimitReached(CompletableFuture<Void> future) {
+        this.bot.getPlugin().log(Level.WARNING, "logger.warning.commands-not-registered");
+        future.complete(null);
     }
 
     public void clearGuildCommands() {
