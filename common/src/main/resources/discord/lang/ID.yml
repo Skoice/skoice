@@ -1,0 +1,260 @@
+ #Copyright 2020, 2021, 2022, 2023, 2024, 2025, 2026 Clément "carlodrift" Raynaud, Lucas "Lucas_Cdry" Cadiry and contributors
+ #This file is part of Skoice.
+ #Skoice is free software: you can redistribute it and/or modify
+ #it under the terms of the GNU General Public License as published by
+ #the Free Software Foundation, either version 3 of the License, or
+ #(at your option) any later version.
+ #Skoice is distributed in the hope that it will be useful,
+ #but WITHOUT ANY WARRANTY; without even the implied warranty of
+ #MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ #GNU General Public License for more details.
+ #You should have received a copy of the GNU General Public License
+ #along with Skoice.  If not, see <https://www.gnu.org/licenses/>.
+command-description:
+  configure: "Konfigurasikan Skoice."
+  link: "Tautkan akun Discord Anda ke Minecraft."
+  unlink: "Lepaskan tautan akun Discord Anda dari Minecraft."
+  invite: "Dapatkan proximity voice chat di server Anda."
+menu:
+  invite-footer: "Mau Skoice di server Anda? Ketik {invite-discord-command}!"
+  review-footer: "Menikmati Skoice? Pertimbangkan untuk [memberi ulasan di SpigotMC]({spigotmc-url})!"
+  contributors-footer: "Skoice • carlodrift, Lucas_Cdry dan kontributor"
+  configuration:
+	title: "Konfigurasi"
+  server:
+	title: "Server"
+	description: "Agar berfungsi dengan baik, bot Anda tidak boleh berada di beberapa server Discord. Pilih server tempat Anda ingin proximity voice chat aktif. Bot Anda akan otomatis keluar dari server lainnya."
+	select-menu:
+	  placeholder: "Silakan pilih server."
+  two-factor-authentication:
+	title: "Autentikasi Dua Faktor"
+	description: "Server Discord Anda mengharuskan akun pemilik bot memiliki autentikasi dua faktor. Siapkan atau nonaktifkan persyaratan ini di pengaturan server pada jalur: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
+  permissions:
+	title: "Izin"
+	description: "Agar bekerja dengan baik, bot Anda harus memiliki izin `Administrator` di server Discord Anda. Klik tombol di bawah untuk memberikannya."
+	description-non-owner: "Agar bekerja dengan baik, bot Anda harus memiliki izin `Administrator` di server Discord Anda. Untuk melakukannya, tambahkan peran dengan izin `Administrator` ke bot, atau minta {bot-owner-mention} menjalankan {configure-discord-command} untuk memperbarui izinnya."
+  voice-chat:
+	title: "Voice Chat"
+  range:
+	title: "Jangkauan"
+	description: "Sesuaikan jangkauan proximity voice chat."
+	select-menu:
+	  placeholder: "Silakan pilih jangkauan."
+	  select-option:
+		long-range-mode:
+		  label: "Mode Jangkauan Panjang"
+		short-range-mode:
+		  label: "Mode Jangkauan Pendek"
+		customized:
+		  label: "Kustom"
+		description: "Radius Horizontal: {horizontal-radius} blok — Radius Vertikal: {vertical-radius} blok"
+  active-worlds:
+	title: "Dunia Aktif"
+	description: "Pilih dunia tempat Skoice aktif."
+	select-menu:
+	  placeholder: "Silakan pilih dunia yang diinginkan."
+  included-players:
+	title: "Pemain yang Disertakan"
+	description: "Pilih jenis pemain yang termasuk dalam proximity voice chat."
+	select-menu:
+	  placeholder: "Silakan pilih jenis pemain yang diinginkan."
+	  players-on-death-screen-included:
+		label: "Pemain di Layar Kematian"
+	  spectators-included:
+		label: "Spectator"
+  teams:
+	title: "Tim"
+	description: "Pilih perilaku yang berlaku untuk tim. Opsi ini berlaku untuk tim yang dibuat dengan perintah `/team` di Minecraft atau plugin yang mengelola sistem tim bawaan. Jika server Anda menjalankan Minecraft 1.12 atau lebih lama, perintah yang digunakan adalah `/scoreboard teams`."
+	select-menu:
+	  placeholder: "Silakan pilih perilaku yang diinginkan."
+	  team-communication:
+		label: "Selalu Izinkan Komunikasi Antar Anggota Tim"
+	  separated-teams:
+		label: "Cegah Komunikasi Antar Tim"
+  chaining:
+	title: "Chaining"
+	description: "Pilih jarak tambahan yang diizinkan saat pemain sedang chaining. Chaining biasanya terjadi ketika seorang pemain berada di antara dua pemain lain yang seharusnya tidak dapat saling berkomunikasi. Dalam kasus tersebut, jangkauan diperluas agar ketiga pemain dapat saling mendengar."
+	select-menu:
+	  disabled:
+		label: "Dinonaktifkan — Tidak ada chaining yang diizinkan"
+	  short:
+		label: "Pendek — +25% dari jangkauan awal"
+	  medium:
+		label: "Sedang — +50% dari jangkauan awal"
+	  long:
+		label: "Panjang — +100% dari jangkauan awal"
+  discord-integration:
+	title: "Integrasi Discord"
+  voice-channel:
+	title: "Channel Suara"
+	description: "Pilih channel yang harus diikuti pemain untuk menggunakan proximity voice chat. Channel ini harus berada di dalam kategori. Harap dicatat pemain akan otomatis dibisukan di channel ini."
+	select-menu:
+	  placeholder: "Silakan pilih channel suara."
+	  select-option:
+		new-voice-channel:
+		  label: "Channel Suara Baru"
+		  description: "Skoice akan otomatis menyiapkan channel suara."
+  text-chat:
+	title: "Chat Teks"
+	description: "Pilih apakah pemain dapat mengirim pesan teks di channel proximity."
+  channel-visibility:
+	title: "Visibilitas Channel"
+	description: "Beralih visibilitas channel sementara yang dibuat oleh Skoice."
+  in-game-messages:
+	title: "Pesan Dalam Game"
+  login-notification:
+	title: "Notifikasi Login"
+	description: "Beralih pesan yang dikirim ke pemain yang belum menautkan akun mereka saat mereka masuk ke server Minecraft Anda."
+	select-menu:
+	  always-remind:
+		label: "Selalu Ingatkan"
+	  remind-once:
+		label: "Ingatkan Sekali"
+	  never-remind:
+		label: "Jangan Pernah Ingatkan"
+  action-bar-alerts:
+	title: "Peringatan Action Bar"
+	description: "Beralih peringatan yang dikirim ke pemain di server Minecraft Anda terkait proximity voice chat."
+	select-menu:
+	  placeholder: "Silakan pilih peringatan yang diinginkan."
+	  connecting-alert:
+		label: "\"Anda berada dekat pemain lain. Sapa mereka!\""
+	  disconnecting-alert:
+		label: "\"Anda menjauh dari pemain terdekat.\""
+	  muted-alert:
+		label: "\"Anda dibisukan.\""
+	  deafened-alert:
+		label: "\"Anda dibisu.\""
+	  linking-suggestion:
+		label: "\"Pemain terdekat menggunakan Skoice. Ketik \"/skoice link\" untuk bergabung!\""
+  invite-link:
+	title: "Tautan Undangan"
+	description: "Beralih apakah nama server Discord muncul sebagai tautan undangan yang dapat diklik di pesan chat Minecraft. Skoice membuat undangan permanen pada channel proximity yang dikonfigurasi. Nonaktifkan ini jika Anda tidak menginginkannya."
+  tooltips:
+	title: "Tooltips"
+	description: "Beralih pesan interaktif di server Minecraft Anda. Anda mungkin ingin menonaktifkan pengaturan ini jika server Anda menjalankan Bedrock Edition atau jika tooltips dinonaktifkan di pengaturan Minecraft. Hanya operator yang dapat menerima pesan interaktif."
+  advanced-settings:
+	title: "Pengaturan Lanjutan"
+  link-synchronization:
+	title: "Sinkronisasi Tautan"
+	description: "Beralih sinkronisasi plugin eksternal dengan Skoice. Ketika pemain menautkan akun melalui Skoice atau plugin yang dipilih, sinkronisasi waktu nyata terjadi di kedua sisi. Mengubah opsi ini membutuhkan restart server Minecraft agar berlaku."
+	select-menu:
+	  placeholder: "Silakan pilih plugin yang diinginkan."
+  release-channel:
+	title: "Channel Rilis"
+	description: "Pilih versi Skoice yang ingin Anda gunakan."
+  language:
+	title: "Bahasa"
+	description: "Pilih bahasa yang digunakan untuk menampilkan pesan. Bahasa Anda hilang atau tidak lengkap? [Terjemahkan plugin kami dengan Crowdin]({crowdin-url})!"
+  skoice-proximity-voice-chat:
+	title: "Skoice: Proximity Voice Chat"
+  linking-process:
+	title: "Proses Penautan"
+  error:
+	title: "Kesalahan"
+field:
+  configuration-complete:
+	title: "Konfigurasi Selesai"
+	description: "Skoice sekarang dikonfigurasi. Ketik {link-discord-command} untuk menautkan akun Discord Anda ke Minecraft. Pemain harus menautkan akun mereka untuk menggunakan proximity voice chat."
+  notified-players-cleared:
+	title: "Daftar Pemain Terberi Notifikasi Dibersihkan"
+	description: "Anda telah membersihkan daftar pemain yang diberi notifikasi. Pemain yang sebelumnya sudah menerima pengingat untuk menautkan akun mereka sekarang akan diberitahu lagi."
+  incomplete-configuration:
+	title: "Konfigurasi Tidak Lengkap"
+	description: "Skoice tidak dikonfigurasi dengan benar. Silakan hubungi administrator server."
+  incomplete-configuration-server-manager:
+	title: "Konfigurasi Tidak Lengkap"
+	description: "Ketik {configure-discord-command} atau klik tombol di bawah untuk menyelesaikan konfigurasi dan menggunakan Skoice."
+  incomplete-configuration-alternative-server-manager:
+	title: "Konfigurasi Tidak Lengkap"
+	description: "Anda telah menghapus channel utama atau kategorinya. Ketik {configure-discord-command} untuk menyelesaikan konfigurasi dan menggunakan Skoice."
+  download:
+	title: "Unduh"
+	description: "[Dapatkan plugin]({spigotmc-url}) dan instal di server Minecraft Anda."
+  donating:
+	title: "Mendukung"
+	description: "Skoice adalah perangkat lunak bebas. Jika Anda menyukainya, Anda dapat membantu kami dengan [mendonasikan]({open-collective-url})."
+  contributing:
+	title: "Berkontribusi"
+	description: "Tertarik membantu mengembangkan Skoice? [Berkontribusi di GitHub]({github-url}) dan [terjemahkan plugin kami di Crowdin]({crowdin-url})!"
+  long-range-mode:
+	title: "Mode Jangkauan Panjang"
+	description: "Pilih mode ini jika Anda bermain di mode dunia terbuka."
+  short-range-mode:
+	title: "Mode Jangkauan Pendek"
+	description: "Pilih mode ini jika Anda bermain di mode yang hanya membutuhkan area terbatas."
+  customized:
+	title: "Kustom"
+	description: "Atur jarak sesuai preferensi pribadi Anda."
+  production-channel:
+	title: "Channel Produksi"
+	description: "Pilih channel ini untuk menggunakan versi publik. Versi ini cenderung lebih stabil."
+  beta-channel:
+	title: "Channel Beta"
+	description: "Pilih channel ini untuk menemukan dan menguji fitur terbaru yang belum dirilis ke publik. Versi ini mungkin mengandung bug."
+  verification-code:
+	title: "Kode Verifikasi"
+	description: "Ketik `{link-minecraft-command} {code}` di game untuk menyelesaikan proses."
+  account-linked:
+	title: "Akun Terhubung"
+	description: "Akun Discord Anda telah ditautkan ke Minecraft. Bergabunglah ke voice channel {voice-channel} untuk menggunakan proximity voice chat."
+  account-unlinked:
+	title: "Akun Terputus"
+	description: "Akun Discord Anda telah dilepaskan dari tautan dengan Minecraft."
+  account-not-linked:
+	title: "Akun Belum Ditautkan"
+	description: "Akun Discord Anda belum ditautkan ke Minecraft. Ketik {link-discord-command} untuk menautkannya dan menggunakan proximity voice chat."
+  account-already-linked:
+	title: "Akun Sudah Ditautkan"
+	description: "Akun Discord Anda sudah ditautkan ke akun Minecraft `{minecraft-username}`. Ketik {unlink-discord-command} untuk melepaskan tautan."
+  restricted-command:
+	title: "Perintah Terbatas"
+	description: "Perintah ini harus dijalankan di server Discord."
+  access-denied:
+	title: "Akses Ditolak"
+	description: "Anda tidak memiliki izin yang diperlukan untuk menjalankan perintah ini."
+  illegal-value:
+	title: "Nilai Tidak Sah"
+	description: "Nilai harus berupa bilangan bulat lebih besar dari 0."
+  proximity-channel-deleted:
+	title: "Channel Proximity Dihapus"
+	description: "Anda telah menghapus channel yang digunakan oleh proximity voice chat. Channel ini biasanya dihapus otomatis saat tidak diperlukan. Anda sebaiknya tidak menghapusnya secara manual."
+  invite-link-revoked:
+	title: "Tautan Undangan Dicabut"
+	description: "Anda telah mencabut tautan undangan yang digunakan Skoice untuk membiarkan pemain Minecraft bergabung ke server Discord Anda. Skoice akan membuat ulang jika diperlukan. Untuk menghentikannya, nonaktifkan pengaturan `Invite Link` di `Configuration › In-Game Messages` dengan menjalankan {configure-discord-command}."
+  shared-bot:
+	title: "Bot Bersama"
+	description: "Sepertinya bot Anda menjalankan beberapa program. Namun, bot harus didedikasikan untuk Skoice agar berfungsi dengan baik. Anda dapat membuat yang baru dengan [mengikuti instruksi ini]({creation-guide-url}). Setelah Anda mendapatkan tokennya, ketik `{token-minecraft-command}` diikuti token tersebut di server Minecraft Anda. Jika bot Anda tidak menjalankan beberapa program, silakan minta bantuan di server Discord kami dengan menekan tombol di bawah."
+button-label:
+  configure-now: "Konfigurasikan Sekarang"
+  support-server: "Server Dukungan"
+  clear-notified-players: "Bersihkan Daftar Pemberitahuan"
+  refresh: "Segarkan"
+  update-permissions: "Perbarui Izin"
+  explore-more-settings: "Jelajahi Pengaturan Lainnya"
+select-option:
+  default:
+	description: "Opsi ini dipilih secara default."
+  undesirable:
+	description: "Opsi ini dapat menyebabkan perilaku yang tidak diinginkan."
+  enabled:
+	label: "Diaktifkan"
+  disabled:
+	label: "Dinonaktifkan"
+  too-many-options:
+	label: "Terlalu Banyak Opsi"
+	description: "Skoice tidak dapat memuat lebih banyak opsi."
+text-input:
+  category-name:
+	label: "Nama Kategori"
+	default-value: "Skoice"
+  voice-channel-name:
+	label: "Nama Voice Channel"
+	default-value: "Proximity Voice Chat"
+  horizontal-radius:
+	label: "Radius Horizontal"
+  vertical-radius:
+	label: "Radius Vertikal"
+voice-channel-status: "Tidak dapat bicara — Tidak ada pemain di dekat"
+proximity-channel-name: "Proximity Channel"
+
