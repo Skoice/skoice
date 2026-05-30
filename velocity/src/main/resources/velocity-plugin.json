@@ -7,7 +7,8 @@
     "Lucas_Cdry"
   ],
   "dependencies": [
-    {"id": "packetevents", "optional": false}
+    {"id": "packetevents", "optional": false},
+    {"id": "parties", "optional": true}
   ],
   "main": "net.clementraynaud.skoice.velocity.SkoicePluginVelocity"
 }

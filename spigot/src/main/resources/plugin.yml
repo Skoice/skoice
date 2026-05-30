@@ -5,7 +5,7 @@ api-version: 1.13
 authors: [ carlodrift, Lucas_Cdry ]
 description: Proximity Voice Chat in Minecraft using Discord
 website: ${project.url}
-softdepend: [ DiscordSRV, EssentialsDiscordLink ]
+softdepend: [ DiscordSRV, EssentialsDiscordLink, Parties ]
 
 commands:
   skoice:

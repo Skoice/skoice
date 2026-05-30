@@ -39,6 +39,8 @@ public class SelectorFactory {
                 return new IncludedPlayersSelector(plugin);
             case "teams":
                 return new TeamsSelector(plugin);
+            case "team-provider":
+                return new TeamProviderSelector(plugin);
             case "action-bar-alerts":
                 return new ActionBarAlertsSelector(plugin);
             case "active-worlds":

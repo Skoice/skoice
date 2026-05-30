@@ -209,6 +209,12 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     break;
 
+                case "team-provider-selection":
+                    this.plugin.getConfigYamlFile().set(ConfigField.TEAM_PROVIDER.toString(), event.getSelectedOptions().get(0).getValue());
+                    this.plugin.getTeamProviderManager().resolve();
+                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
+                    break;
+
                 case "action-bar-alerts-selection":
                 case "included-players-selection":
                 case "teams-selection":

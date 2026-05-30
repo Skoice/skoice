@@ -297,7 +297,7 @@ public class UpdateNetworksTask {
         int horizontalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
         int verticalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString());
         boolean teamCommunication = this.plugin.getConfigYamlFile().getBoolean(ConfigField.TEAM_COMMUNICATION.toString());
-        SpatialIndex index = new SpatialIndex(horizontalRadius, verticalRadius, teamCommunication);
+        SpatialIndex index = new SpatialIndex(horizontalRadius, verticalRadius, teamCommunication, this.plugin.getTeamProviderManager());
         for (LinkedPlayer player : LinkedPlayer.getOnlineLinkedPlayers()) {
             if (player.isStateEligible()) {
                 index.add(player);

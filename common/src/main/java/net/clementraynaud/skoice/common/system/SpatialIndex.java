@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.common.system;
 
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceLocation;
+import net.clementraynaud.skoice.common.system.team.TeamProviderManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,12 +36,14 @@ public final class SpatialIndex {
 
     private final int bucketSize;
     private final boolean teamCommunication;
+    private final TeamProviderManager teamProviderManager;
     private final Map<BucketKey, List<LinkedPlayer>> buckets = new HashMap<>();
     private final Map<String, List<LinkedPlayer>> byTeam = new HashMap<>();
 
-    public SpatialIndex(int horizontalRadius, int verticalRadius, boolean teamCommunication) {
+    public SpatialIndex(int horizontalRadius, int verticalRadius, boolean teamCommunication, TeamProviderManager teamProviderManager) {
         this.bucketSize = Math.max(1, Math.max(horizontalRadius, verticalRadius) + SpatialIndex.FALLOFF);
         this.teamCommunication = teamCommunication;
+        this.teamProviderManager = teamProviderManager;
     }
 
     public void add(LinkedPlayer player) {
@@ -54,7 +57,7 @@ public final class SpatialIndex {
         }
 
         if (this.teamCommunication) {
-            String team = player.getFullPlayer().getTeam();
+            String team = this.teamProviderManager.getTeam(player.getFullPlayer());
             if (team != null) {
                 this.byTeam.computeIfAbsent(team, k -> new ArrayList<>()).add(player);
             }
@@ -65,7 +68,7 @@ public final class SpatialIndex {
         Set<LinkedPlayer> candidates = this.spatialNeighbors(player.getFullPlayer().getWorld(),
                 player.getFullPlayer().getLocation());
         if (this.teamCommunication) {
-            String team = player.getFullPlayer().getTeam();
+            String team = this.teamProviderManager.getTeam(player.getFullPlayer());
             if (team != null) {
                 List<LinkedPlayer> mates = this.byTeam.get(team);
                 if (mates != null) {

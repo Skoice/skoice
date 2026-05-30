@@ -64,13 +64,25 @@ menu:
         label: "Spectators"
   teams:
     title: "Teams"
-    description: "Select the behaviors that should apply to teams. This option applies to teams created with the `/team` command in Minecraft or with plugins that manage the built-in team system. If your server is running Minecraft 1.12 or older, the command to use is `/scoreboard teams`."
+    description: "Select the behaviors that should apply to teams. These behaviors apply to the teams defined by the selected team provider, whether they come from Minecraft's built-in team system or a supported plugin."
     select-menu:
       placeholder: "Please select the desired behaviors."
       team-communication:
         label: "Always Allow Team Members to Communicate"
       separated-teams:
         label: "Prevent Cross-Team Communication"
+  team-provider:
+    title: "Team Provider"
+    description: "Select the system Skoice uses to determine which players belong to the same team. These teams are then used by the team settings. Besides Minecraft's built-in teams, Skoice supports third-party plugins such as [Parties](https://www.spigotmc.org/resources/parties-an-advanced-parties-manager.3709/). The matching plugin must be installed for a provider to work, otherwise team features are disabled."
+    select-menu:
+      placeholder: "Please select a team provider."
+      select-option:
+        vanilla:
+          label: "Vanilla"
+          description: "Minecraft's built-in teams, set with /team or by plugins and datapacks that manage them."
+        parties:
+          label: "Parties by AlessioDP"
+          description: "Players in the same party are treated as teammates."
   chaining:
     title: "Chaining"
     description: "Select the additional distance allowed when players are chaining. Chaining usually happens when a player is between two other players who should not be able to communicate. In that case, the range is expanded to allow all three players to hear each other."

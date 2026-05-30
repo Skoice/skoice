@@ -37,6 +37,7 @@ import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.storage.config.ConfigStore;
 import net.clementraynaud.skoice.common.storage.config.OutdatedConfig;
 import net.clementraynaud.skoice.common.system.ListenerManager;
+import net.clementraynaud.skoice.common.system.team.TeamProviderManager;
 import net.clementraynaud.skoice.common.tasks.UpdateNetworksTask;
 
 import java.io.File;
@@ -64,6 +65,7 @@ public abstract class Skoice {
     private TempStore tempYamlFile;
     private LoginNotificationStore loginNotificationYamlFile;
     private ListenerManager listenerManager;
+    private TeamProviderManager teamProviderManager;
     private Bot bot;
     private UpdateNetworksTask updateNetworksTask;
 
@@ -127,6 +129,8 @@ public abstract class Skoice {
         new StorageMigrator(this, this.mvStore).run();
         this.configYamlFile = new ConfigStore(this, this.mvStore);
         this.configYamlFile.saveDefaultValues();
+        this.teamProviderManager = new TeamProviderManager(this);
+        this.teamProviderManager.resolve();
         this.lang = new MinecraftLang();
         this.lang.load(LangInfo.valueOf(this.configYamlFile.getString(ConfigField.LANG.toString())));
         this.logger.info(this.lang.getMessage("logger.info.plugin-enabled"));
@@ -269,6 +273,10 @@ public abstract class Skoice {
 
     public ListenerManager getListenerManager() {
         return this.listenerManager;
+    }
+
+    public TeamProviderManager getTeamProviderManager() {
+        return this.teamProviderManager;
     }
 
     public void setListenerManager(ListenerManager listenerManager) {
