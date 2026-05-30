@@ -52,6 +52,11 @@ public class HookManager {
     }
 
     public void close() {
-        this.discordSRVHook.close();
+        if (this.discordSRVHook != null) {
+            this.discordSRVHook.close();
+        }
+        if (this.essentialsXHook != null) {
+            this.essentialsXHook.close();
+        }
     }
 }

@@ -61,4 +61,10 @@ public class EssentialsXHook {
             this.essentialsXHookImpl.unlinkUserEssentialsX(minecraftId);
         }
     }
+
+    public void close() {
+        if (this.essentialsXHookImpl != null) {
+            this.essentialsXHookImpl.close();
+        }
+    }
 }

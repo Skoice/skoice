@@ -24,6 +24,7 @@ import net.essentialsx.api.v2.events.discordlink.DiscordLinkStatusChangeEvent;
 import net.essentialsx.api.v2.services.discord.DiscordService;
 import net.essentialsx.api.v2.services.discordlink.DiscordLinkService;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import java.util.HashMap;
@@ -46,6 +47,13 @@ public class EssentialsXHookImpl implements Listener {
         this.essentialsLinkApi = this.plugin.getPlugin().getServer().getServicesManager().load(DiscordLinkService.class);
         this.essentialsDiscordApi = this.plugin.getPlugin().getServer().getServicesManager().load(DiscordService.class);
         this.synchronizeAccountLinks();
+    }
+
+    public void close() {
+        try {
+            HandlerList.unregisterAll(this);
+        } catch (Throwable ignored) {
+        }
     }
 
     public void linkUserEssentialsX(String minecraftId, String discordId) {
