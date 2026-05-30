@@ -21,11 +21,6 @@ package net.clementraynaud.skoice.common.system.team;
 
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 
-/**
- * The built-in team provider, backed by Minecraft's native team system: the
- * scoreboard on Spigot and team packets on Velocity. Both are exposed through
- * {@link FullPlayer#getTeam()}.
- */
 public class VanillaTeamProvider implements TeamProvider {
 
     public static final String ID = "vanilla";

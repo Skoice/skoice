@@ -26,13 +26,6 @@ import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Resolves and exposes the team provider selected in the configuration.
- * <p>
- * If the configured provider's backend is unavailable, team features are
- * disabled ({@link #getTeam(FullPlayer)} returns {@code null} for everyone)
- * rather than falling back to another provider, and a warning is logged.
- */
 public class TeamProviderManager {
 
     private final Skoice plugin;

@@ -26,13 +26,10 @@ import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import java.util.UUID;
 
 /**
- * Team provider backed by AlessioDP's <a href="https://alessiodp.com/docs/parties">Parties</a>
- * plugin. A player's team is their party id, which is stable and global across
- * a Velocity network, so party members on different backend servers stay grouped.
+ * Team provider backed by AlessioDP's Parties plugin. A player's team is their party id, which is stable and global
+ * across a Velocity network, so party members on different backend servers stay grouped.
  * <p>
- * The Parties API is shared by the Bukkit and Velocity builds, so this provider
- * works on both platforms. Every API call is wrapped so that a missing,
- * disabled or misbehaving Parties installation can never affect Skoice.
+ * The Parties API is shared by the Bukkit and Velocity builds, so this provider works on both platforms.
  */
 public class PartiesTeamProvider implements TeamProvider {
 

@@ -75,12 +75,7 @@ public class SkoicePluginVelocity {
                 .orElse("unknown");
         this.packetListener.setServerName(event.getPlayer().getUniqueId(), serverName);
 
-        if (event.getPreviousServer() != null) {
-            this.skoice.getListenerManager().onPlayerQuit(new VelocityBasePlayer(event.getPlayer())).thenAccept(aVoid -> {
-                this.skoice.removePlayerInfo(event.getPlayer().getUniqueId());
-                this.skoice.getListenerManager().onPlayerJoin(new VelocityBasePlayer(event.getPlayer()), false);
-            });
-        } else {
+        if (event.getPreviousServer() == null) {
             this.skoice.getListenerManager().onPlayerJoin(new VelocityBasePlayer(event.getPlayer()), true);
         }
     }

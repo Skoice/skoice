@@ -21,32 +21,11 @@ package net.clementraynaud.skoice.common.system.team;
 
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 
-/**
- * A source of team membership used by Skoice's team-communication and
- * separated-teams features. Implementations map a player to a stable team
- * identifier so that two players sharing the same identifier are considered
- * teammates.
- * <p>
- * Providers are treated as low-priority integrations: they must never throw
- * into Skoice's hot paths. Implementations should return {@code null} rather
- * than propagating exceptions.
- */
 public interface TeamProvider {
 
-    /**
-     * @return the config identifier of this provider (e.g. {@code "vanilla"}).
-     */
     String getId();
 
-    /**
-     * @return whether the backing team system is present and usable.
-     */
     boolean isAvailable();
 
-    /**
-     * @param player the player to resolve
-     * @return a stable team identifier for the player, or {@code null} if the
-     * player is in no team or the team cannot be resolved.
-     */
     String getTeam(FullPlayer player);
 }
