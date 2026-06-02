@@ -45,6 +45,10 @@ public class ActiveWorldsSelector extends Selector {
         Set<String> worlds = new LinkedHashSet<>(super.plugin.getWorlds());
         worlds.addAll(disabledWorlds);
         for (String world : worlds) {
+            if (options.size() == SelectMenu.OPTIONS_MAX_AMOUNT) {
+                break;
+            }
+
             options.add(SelectOption.of(world, world)
                     .withEmoji(MenuEmoji.MAP.get()));
 
