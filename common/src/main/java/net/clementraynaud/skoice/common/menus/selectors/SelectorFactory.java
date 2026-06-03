@@ -37,6 +37,8 @@ public class SelectorFactory {
                 return new LoginNotificationSelector(plugin);
             case "included-players":
                 return new IncludedPlayersSelector(plugin);
+            case "excluded-players":
+                return new ExcludedPlayersSelector(plugin);
             case "teams":
                 return new TeamsSelector(plugin);
             case "team-provider":

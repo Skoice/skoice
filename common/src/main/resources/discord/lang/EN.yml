@@ -62,6 +62,16 @@ menu:
         label: "Players on Death Screen"
       spectators-included:
         label: "Spectators"
+  excluded-players:
+    title: "Excluded Players"
+    description: "Choose whether players excluded from the proximity voice chat can still communicate with one another."
+    select-menu:
+      in-range:
+        label: "Communicate When in Range"
+      same-world:
+        label: "Always Communicate in the Same World"
+      disabled:
+        label: "Never Communicate"
   teams:
     title: "Teams"
     description: "Select the behaviors that should apply to teams. These behaviors apply to the teams defined by the selected team provider, whether they come from Minecraft's built-in team system or a supported plugin."

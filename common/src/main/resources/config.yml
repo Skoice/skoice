@@ -11,6 +11,7 @@ linking-suggestion: true
 tooltips: true
 players-on-death-screen-included: false
 spectators-included: false
+excluded-players-communication: same-world
 team-provider: vanilla
 team-communication: false
 separated-teams: false

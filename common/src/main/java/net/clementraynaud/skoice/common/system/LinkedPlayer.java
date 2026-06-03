@@ -20,6 +20,7 @@
 package net.clementraynaud.skoice.common.system;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.menus.selectors.ExcludedPlayersSelector;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceGameMode;
@@ -85,9 +86,22 @@ public final class LinkedPlayer {
     }
 
     public boolean isStateEligible() {
-        return (this.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString()) || !this.player.isDead())
-                && (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString()) || this.player.getGameMode() != SkoiceGameMode.SPECTATOR)
-                && !this.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString()).contains(this.player.getWorld());
+        if (this.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString()).contains(this.player.getWorld())) {
+            return false;
+        }
+        if (this.isExcluded()) {
+            return !ExcludedPlayersSelector.DISABLED.equals(
+                    this.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()));
+        }
+        return true;
+    }
+
+    private boolean isExcluded() {
+        boolean onDeathScreenExcluded = !this.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())
+                && this.player.isDead();
+        boolean spectatorExcluded = !this.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString())
+                && this.player.getGameMode() == SkoiceGameMode.SPECTATOR;
+        return onDeathScreenExcluded || spectatorExcluded;
     }
 
     public void addActionBarAlert(ActionBarAlert alert) {
@@ -134,6 +148,10 @@ public final class LinkedPlayer {
     }
 
     public boolean isCloseEnoughToPlayer(LinkedPlayer linkedPlayer, boolean falloff) {
+        if (this.isExcluded() != linkedPlayer.isExcluded()) {
+            return false;
+        }
+
         String playerTeam = this.plugin.getTeamProviderManager().getTeam(this.player);
         String otherTeam = this.plugin.getTeamProviderManager().getTeam(linkedPlayer.player);
 
@@ -155,6 +173,12 @@ public final class LinkedPlayer {
             } else if (!playerTeam.equals(otherTeam)) {
                 return false;
             }
+        }
+
+        if (this.isExcluded()
+                && ExcludedPlayersSelector.SAME_WORLD.equals(
+                this.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()))) {
+            return true;
         }
 
         int horizontalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
