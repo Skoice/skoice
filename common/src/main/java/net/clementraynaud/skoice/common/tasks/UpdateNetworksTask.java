@@ -325,7 +325,6 @@ public class UpdateNetworksTask {
 
         Set<UUID> usingPlayerIds = LinkedPlayer.getOnlineLinkedPlayers().stream()
                 .filter(p -> connectedMembers.contains(p.getDiscordId()))
-                .filter(LinkedPlayer::isStateEligible)
                 .map(p -> p.getFullPlayer().getUniqueId())
                 .collect(Collectors.toSet());
 
