@@ -161,6 +161,8 @@ public class UpdateNetworksTask {
                     maxIsolatedUsers++;
                 }
 
+                boolean wasIsolated = linkedPlayer != null && linkedPlayer.isInAnyIsolationChannel();
+
                 VoiceChannel shouldBeInChannel;
                 if (network != null) {
                     shouldBeInChannel = network.getProximityChannel().getChannel();
@@ -200,7 +202,8 @@ public class UpdateNetworksTask {
                     if (currentChannel != shouldBeInChannel) {
                         boolean sendConnectingAlert = this.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())
                                 && linkedPlayer != null
-                                && (membersInMainVoiceChannel.contains(memberId) || linkedPlayer.isInAnyIsolationChannel());
+                                && network != null
+                                && (membersInMainVoiceChannel.contains(memberId) || wasIsolated);
                         this.awaitingMoves.put(memberId, Pair.of(
                                 shouldBeInChannel.getId(),
                                 this.plugin.getBot().getGuild().moveVoiceMember(member, shouldBeInChannel)
