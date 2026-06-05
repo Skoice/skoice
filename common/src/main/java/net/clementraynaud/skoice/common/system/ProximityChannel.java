@@ -48,7 +48,8 @@ public class ProximityChannel {
                 this.plugin.getConfigYamlFile().getBoolean(ConfigField.CHANNEL_VISIBILITY.toString())
                         ? Permission.VOICE_CONNECT
                         : Permission.VIEW_CHANNEL,
-                Permission.VOICE_MOVE_OTHERS
+                Permission.VOICE_MOVE_OTHERS,
+                Permission.VOICE_USE_SOUNDBOARD
         );
         if (!this.plugin.getConfigYamlFile().getBoolean(ConfigField.TEXT_CHAT.toString())) {
             deniedPermissions.add(Permission.MESSAGE_SEND);
