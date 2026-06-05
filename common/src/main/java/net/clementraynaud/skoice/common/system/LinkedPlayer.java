@@ -104,6 +104,12 @@ public final class LinkedPlayer {
         return onDeathScreenExcluded || spectatorExcluded;
     }
 
+    public boolean communicatesWorldWide() {
+        return this.isExcluded()
+                && ExcludedPlayersSelector.SAME_WORLD.equals(
+                        this.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()));
+    }
+
     public void addActionBarAlert(ActionBarAlert alert) {
         this.alerts.add(alert);
     }

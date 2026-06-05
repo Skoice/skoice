@@ -39,6 +39,7 @@ public final class SpatialIndex {
     private final TeamProviderManager teamProviderManager;
     private final Map<BucketKey, List<LinkedPlayer>> buckets = new HashMap<>();
     private final Map<String, List<LinkedPlayer>> byTeam = new HashMap<>();
+    private final Map<String, List<LinkedPlayer>> byWorld = new HashMap<>();
 
     public SpatialIndex(int horizontalRadius, int verticalRadius, boolean teamCommunication, TeamProviderManager teamProviderManager) {
         this.bucketSize = Math.max(1, Math.max(horizontalRadius, verticalRadius) + SpatialIndex.FALLOFF);
@@ -62,6 +63,10 @@ public final class SpatialIndex {
                 this.byTeam.computeIfAbsent(team, k -> new ArrayList<>()).add(player);
             }
         }
+
+        if (player.communicatesWorldWide()) {
+            this.byWorld.computeIfAbsent(player.getFullPlayer().getWorld(), k -> new ArrayList<>()).add(player);
+        }
     }
 
     public Set<LinkedPlayer> candidatesFor(LinkedPlayer player) {
@@ -74,6 +79,12 @@ public final class SpatialIndex {
                 if (mates != null) {
                     candidates.addAll(mates);
                 }
+            }
+        }
+        if (player.communicatesWorldWide()) {
+            List<LinkedPlayer> worldMates = this.byWorld.get(player.getFullPlayer().getWorld());
+            if (worldMates != null) {
+                candidates.addAll(worldMates);
             }
         }
         return candidates;
