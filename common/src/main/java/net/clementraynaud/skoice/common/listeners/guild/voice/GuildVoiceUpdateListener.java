@@ -147,6 +147,12 @@ public class GuildVoiceUpdateListener extends ListenerAdapter {
                 player.sendMessage(this.plugin.getLang().getMessage("chat.player.disconnected"));
                 Skoice.eventBus().fireAsync(new PlayerProximityDisconnectEvent(minecraftId));
             }
+
+        } else {
+            ProximityChannel assignedChannel = ProximityChannels.getIsolationChannelMap().get(member.getId());
+            if (assignedChannel != null && !voiceChannelJoined.getId().equals(assignedChannel.getChannelId())) {
+                ProximityChannels.getIsolationChannelMap().remove(member.getId());
+            }
         }
     }
 }
