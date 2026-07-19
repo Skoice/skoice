@@ -27,7 +27,7 @@ logger:
     missing-permission: "Discord sunucunda botuna \"Yönetici\" izni vermedin. Eklemek için bu bağlantıyı aç: {bot-invite-url}."
     invalid-bot: "Botun doğru olarak yapılandırılmamış. Yeni bir tane oluşturmak için Minecraft sunucuna katıl."
     shared-bot: "Botun birden fazla program çalıştırıyor gibi görünüyor. Ancak düzgün çalışması için Skoice'e özel olması gerekiyor. Bu sayfadaki talimatları takip ederek yeni bir tane oluşturabilirsin: {creation-guide-url}. Token'ı aldıktan sonra \"{token-minecraft-command}\" komutunu yazıp ardından token'ı gir."
-    commands-not-registered: "Skoice, Discord komutlarını ekleyemedi çünkü uygulama komut sınırına erişilmiş. Kullanılmayan botları sunucudan acıp biraz komut alanı açıp Minecraft sunucusunu yeniden başlatın."
+    commands-not-registered: "Skoice, Discord komutlarını kaydedemedi çünkü uygulama komut sınırına ulaşılmış. Komut alanı açmak için kullanılmayan botları Discord sunucundan çıkarıp Minecraft sunucunu yeniden başlat."
 chat:
   configuration:
     discord-integration-interactive: " \nYapılandırma: {title-color}Discord Entegrasyonu\n \n{dark-color}• {default-color}Skoice'in çalışması için bir Discord botu gerekiyor. Kolayca kurmak için {open:creation-guide-url} adresindeki talimatları takip et.\n{dark-color}• {default-color}Token'ı aldıktan sonra {suggest:token-minecraft-command} ile ekle.\n \nBu mesajla etkileşime geçemiyorsan \"{tooltips-minecraft-command}\" komutunu kullan.\n "
