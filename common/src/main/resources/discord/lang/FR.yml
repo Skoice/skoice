@@ -31,6 +31,8 @@ menu:
     description: "Votre serveur Discord exige que l'authentification à deux facteurs soit activée sur le compte du propriétaire du bot. Configurez-la ou désactivez cette exigence dans les paramètres du serveur en suivant ce chemin : `Modération › Configuration de sécurité › (Permissions ›) Exiger une A2F pour les actions des modérateurs`."
   permissions:
     title: "Permissions"
+    description: "Afin de fonctionner correctement, votre bot doit disposer de la permission `Administrateur` sur votre serveur Discord. Cliquez sur le bouton ci-dessous pour la lui accorder."
+    description-non-owner: "Afin de fonctionner correctement, votre bot doit disposer de la permission `Administrateur` sur votre serveur Discord. Pour cela, attribuez au bot un rôle disposant de la permission `Administrateur`, ou demandez à {bot-owner-mention} d'exécuter {configure-discord-command} pour mettre à jour ses permissions."
   voice-chat:
     title: "Chat vocal"
   range:
@@ -60,14 +62,37 @@ menu:
         label: "Joueurs sur l'écran de mort"
       spectators-included:
         label: "Spectateurs"
+  excluded-players:
+    title: "Joueurs exclus"
+    description: "Choisissez si les joueurs exclus du chat vocal de proximité peuvent tout de même communiquer entre eux."
+    select-menu:
+      in-range:
+        label: "Communiquer à portée"
+      same-world:
+        label: "Toujours communiquer dans le même monde"
+      disabled:
+        label: "Ne jamais communiquer"
   teams:
     title: "Équipes"
+    description: "Sélectionnez les comportements à appliquer aux équipes. Ces comportements s'appliquent aux équipes définies par le fournisseur d'équipes sélectionné, qu'elles proviennent du système d'équipes intégré de Minecraft ou d'un plugin pris en charge."
     select-menu:
       placeholder: "Veuillez sélectionner les comportements souhaités."
       team-communication:
         label: "Toujours autoriser la communication entre membres d'équipe"
       separated-teams:
         label: "Empêcher la communication entre équipes"
+  team-provider:
+    title: "Fournisseur d'équipes"
+    description: "Sélectionnez le système que Skoice utilise pour déterminer quels joueurs appartiennent à la même équipe. Ces équipes sont ensuite utilisées par les paramètres d'équipe. En plus des équipes intégrées de Minecraft, Skoice prend en charge des plugins tiers tels que [Parties](https://www.spigotmc.org/resources/parties-an-advanced-parties-manager.3709/). Le plugin correspondant doit être installé pour qu'un fournisseur fonctionne, sinon les fonctionnalités d'équipe sont désactivées."
+    select-menu:
+      placeholder: "Veuillez sélectionner un fournisseur d'équipes."
+      select-option:
+        vanilla:
+          label: "Vanilla"
+          description: "Les équipes intégrées de Minecraft, définies avec /team ou par des plugins et des datapacks qui les gèrent."
+        parties:
+          label: "Parties par AlessioDP"
+          description: "Les joueurs d'un même groupe sont considérés comme des coéquipiers."
   chaining:
     title: "Chaînage"
     description: "Sélectionnez la distance supplémentaire autorisée lorsque les joueurs s'enchaînent. L'enchaînement se produit généralement lorsqu'un joueur se trouve entre deux autres joueurs qui ne devraient pas pouvoir communiquer. Dans ce cas, la portée est étendue pour permettre aux trois joueurs de s'entendre."
@@ -111,6 +136,7 @@ menu:
         label: "Ne jamais rappeler"
   action-bar-alerts:
     title: "Alertes dans la barre d'action"
+    description: "Activez ou désactivez les alertes envoyées aux joueurs de votre serveur Minecraft concernant le chat vocal de proximité."
     select-menu:
       placeholder: "Veuillez sélectionner les alertes souhaitées."
       connecting-alert:
@@ -121,6 +147,11 @@ menu:
         label: "\"Micro coupé.\""
       deafened-alert:
         label: "\"Son coupé.\""
+      linking-suggestion:
+        label: "\"Des joueurs proches utilisent Skoice. Tapez \"/skoice link\" pour les rejoindre !\""
+  invite-link:
+    title: "Lien d'invitation"
+    description: "Activez ou désactivez l'affichage du nom du serveur Discord en tant que lien d'invitation cliquable dans les messages du chat Minecraft. Skoice crée une invitation permanente sur le salon vocal de proximité que vous avez configuré. Désactivez cette option si vous n'en souhaitez pas."
   tooltips:
     title: "Infobulles"
     description: "Activez ou désactivez les messages interactifs sur votre serveur Minecraft. Vous pouvez désactiver ce paramètre si votre serveur utilise Bedrock Edition ou si les infobulles sont désactivées dans les paramètres de Minecraft. Seuls les opérateurs peuvent recevoir des messages interactifs."
@@ -197,6 +228,7 @@ field:
     description: "Votre compte Discord n'est pas lié à Minecraft. Tapez {link-discord-command} pour le lier et utiliser le chat vocal de proximité."
   account-already-linked:
     title: "Compte déjà lié"
+    description: "Votre compte Discord est déjà lié au compte Minecraft `{minecraft-username}`. Tapez {unlink-discord-command} pour le dissocier."
   restricted-command:
     title: "Commande restreinte"
     description: "Cette commande doit être effectuée sur un serveur Discord."
@@ -209,6 +241,9 @@ field:
   proximity-channel-deleted:
     title: "Salon de proximité supprimé"
     description: "Vous avez supprimé un salon utilisé par le chat vocal de proximité. Ces salons sont automatiquement supprimés lorsqu'ils ne sont plus nécessaires. Vous ne devez pas le faire manuellement."
+  invite-link-revoked:
+    title: "Lien d'invitation révoqué"
+    description: "Vous avez révoqué un lien d'invitation que Skoice utilisait pour permettre aux joueurs Minecraft de rejoindre votre serveur Discord. Skoice en recréera un lorsque nécessaire. Pour l'empêcher, désactivez le paramètre `Lien d'invitation` dans `Configuration › Messages en jeu` en exécutant {configure-discord-command}."
   shared-bot:
     title: "Bot partagé"
     description: "Il semble que votre bot exécute plusieurs programmes. Cependant, il doit être dédié à Skoice afin de fonctionner correctement. Vous pouvez en créer un nouveau en [suivant ces instructions]({creation-guide-url}). Une fois que vous avez récupéré son token, tapez `{token-minecraft-command}` suivi du token sur votre serveur Minecraft. Si votre bot n'exécute pas plusieurs programmes, veuillez demander de l'aide sur notre serveur Discord en appuyant sur le bouton ci-dessous."
