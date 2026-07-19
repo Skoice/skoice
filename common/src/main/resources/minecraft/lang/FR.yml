@@ -61,7 +61,6 @@ chat:
     account-unlinked: "Vous avez {success-color}dissocié votre compte Minecraft {default-color}de Discord."
     account-not-linked: "Vous n'avez {error-color}pas lié votre compte Minecraft {default-color}à Discord. Tapez \"{link-discord-command}\" sur le serveur Discord \"{guild}\" pour le lier et utiliser le chat vocal de proximité."
     account-not-linked-remind-once: "Vous n'avez {error-color}pas lié votre compte Minecraft {default-color}à Discord. Tapez \"{link-discord-command}\" sur le serveur Discord \"{guild}\" pour le lier et utiliser le chat vocal de proximité. Vous ne recevrez plus cette notification."
-    account-already-linked: "Vous avez {error-color}déjà lié votre compte Minecraft {default-color}à Discord. Tapez \"{unlink-minecraft-command}\" pour le dissocier."
     connected: "Vous êtes {success-color}désormais connecté {default-color}au chat vocal de proximité. Pour désactiver les sons de Discord et avoir une expérience plus immersive, vous pouvez activer le \"Mode streamer\" dans les paramètres de Discord."
     not-connected: "Vous n'êtes {error-color}pas connecté {default-color}au chat vocal de proximité. Rejoignez le salon vocal \"{voice-channel}\" sur le serveur Discord \"{guild}\" pour l'utiliser."
     disconnected: "Vous êtes {error-color}désormais déconnecté {default-color}du chat vocal de proximité."

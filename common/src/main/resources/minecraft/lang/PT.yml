@@ -61,7 +61,6 @@ chat:
     account-unlinked: "Você {success-color}desvinculou sua conta do Minecraft{default-color} do Discord."
     account-not-linked: "Você {error-color}não vinculou sua conta do Minecraft {default-color}ao Discord. Digite \"{link-discord-command}\" no servidor do Discord \"{guild}\" para vinculá-la e usar o chat de voz por proximidade."
     account-not-linked-remind-once: "Você {error-color}não vinculou sua conta do Minecraft {default-color}ao Discord. Digite \"{link-discord-command}\" no servidor do Discord \"{guild}\" para vinculá-la e usar o chat de voz por proximidade. Você não receberá esta notificação novamente."
-    account-already-linked: "Você já {error-color}vinculou sua conta do Minecraft {default-color}com o Discord. Envie \"{unlink-minecraft-command}\" para desvincular."
     connected: "Você está {success-color}agora conectado {default-color}ao chat de voz por proximidade. Para desativar os sons do Discord e ter uma experiência mais imersiva, você pode ativar o \"Modo Streamer\" nas configurações do Discord."
     not-connected: "Você {error-color}não está conectado {default-color}ao chat de voz por proximidade. Entre no canal de voz \"{voice-channel}\" no servidor do Discord \"{guild}\" para utilizar."
     disconnected: "Você {error-color}está desconectado {default-color}do chat de voz por proximidade."

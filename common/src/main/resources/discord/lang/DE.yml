@@ -31,7 +31,6 @@ menu:
     description: "Dein Discord-Server erfordert, dass der Bot-Besitzer die Zwei-Faktor-Authentifizierung aktiviert hat. Richte sie ein oder deaktiviere diese Anforderung in den Servereinstellungen über folgenden Pfad: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
   permissions:
     title: "Berechtigungen"
-    description: "Um richtig zu funktionieren, muss dein Bot die Berechtigung `Administrator` auf deinem Discord-Server haben. Füge dazu dem Bot eine Rolle mit der Berechtigung `Administrator` hinzu."
   voice-chat:
     title: "Sprachchat"
   range:
@@ -63,7 +62,6 @@ menu:
         label: "Zuschauer"
   teams:
     title: "Teams"
-    description: "Wähle die Verhaltensweisen aus, die auf Teams angewendet werden sollen. Diese Option gilt für Teams, die mit dem Befehl `/team` in Minecraft oder mit Plugins erstellt wurden, die das integrierte Team-System verwalten. Wenn dein Server Minecraft 1.12 oder älter ausführt, lautet der zu verwendende Befehl `/scoreboard teams`."
     select-menu:
       placeholder: "Bitte wähle die gewünschten Verhaltensweisen aus."
       team-communication:
@@ -113,7 +111,6 @@ menu:
         label: "Nie erinnern"
   action-bar-alerts:
     title: "Aktionsleisten-Benachrichtigungen"
-    description: "Schalte die Benachrichtigungen für Spieler um, die den Sprachchat im Nahbereich nutzen."
     select-menu:
       placeholder: "Bitte wähle die gewünschten Benachrichtigungen aus."
       connecting-alert:
@@ -200,7 +197,6 @@ field:
     description: "Dein Discord-Account ist nicht mit Minecraft verknüpft. Nutze {link-discord-command} um es zu verknüpfen und den Proximity-Sprachchat zu nutzen."
   account-already-linked:
     title: "Konto bereits verknüpft"
-    description: "Dein Discord-Konto ist bereits mit Minecraft verknüpft. Gib {unlink-discord-command} ein, um die Verknüpfung aufzuheben."
   restricted-command:
     title: "Eingeschränkter Befehl"
     description: "Dieser Befehl muss auf einem Discord-Server ausgeführt werden."

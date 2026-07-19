@@ -61,7 +61,6 @@ chat:
     account-unlinked: "Du hast {success-color}deinen Minecraft-Account {default-color}von Discord entkoppelt."
     account-not-linked: "Du hast deinen Minecraft-Account {error-color}nicht mit Discord verknüpft{default-color}. Gib \"{link-discord-command}\" auf dem Discord-Server \"{guild}\" ein, um ihn zu verknüpfen und den Sprachchat im Nahbereich zu nutzen."
     account-not-linked-remind-once: "Du hast deinen Minecraft-Account {error-color}nicht mit Discord verknüpft{default-color}. Gib \"{link-discord-command}\" auf dem Discord-Server \"{guild}\" ein, um ihn zu verknüpfen und den Sprachchat im Nahbereich zu nutzen. Du wirst diese Nachricht nicht erneut erhalten."
-    account-already-linked: "Du hast {error-color}deinen Minecraft-Account bereits {default-color}mit Discord verknüpft. Gib \"{unlink-minecraft-command}\" ein, um die Verknüpfung zu lösen."
     connected: "Du bist {success-color}jetzt verbunden {default-color}mit dem Sprachchat im Nahbereich. Um Discord-Sounds zu deaktivieren und ein immersiveres Erlebnis zu haben, kannst du den \"Streamer-Modus\" in den Discord-Einstellungen aktivieren."
     not-connected: "Du bist {error-color}nicht verbunden {default-color}mit dem Sprachchat im Nahbereich. Tritt dem Sprachkanal \"{voice-channel}\" auf dem Discord-Server \"{guild}\" bei, um ihn zu nutzen."
     disconnected: "Die Verbindung zum Sprachchat im Nahbereich ist {error-color}jetzt unterbrochen{default-color}."

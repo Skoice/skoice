@@ -31,7 +31,6 @@ menu:
     description: "Máy chủ Discord của bạn yêu cầu tài khoản của chủ sở hữu bot phải bật xác thực hai yếu tố. Hãy thiết lập hoặc tắt yêu cầu này trong cài đặt máy chủ bằng cách làm theo đường dẫn sau: `Kiểm duyệt › Thiết lập an toàn › (Quyền ›) Yêu cầu xác thực hai yếu tố cho các hành động của người kiểm duyệt`."
   permissions:
     title: "Quyền"
-    description: "Để hoạt động bình thường, bot của bạn phải có quyền `Quản trị viên` trên máy chủ Discord. Để thực hiện việc này, hãy thêm một vai trò có quyền `Quản trị viên` vào bot."
   voice-chat:
     title: "Trò chuyện thoại"
   range:
@@ -63,7 +62,6 @@ menu:
         label: "Khán giả"
   teams:
     title: "Đội nhóm"
-    description: "Chọn hành vi sẽ áp dụng cho các đội nhóm. Tùy chọn này áp dụng cho các đội được tạo bằng lệnh `/team` trong Minecraft hoặc bằng plugin quản lý hệ thống đội tích hợp sẵn. Nếu máy chủ của bạn đang chạy Minecraft 1.12 hoặc cũ hơn, lệnh cần dùng là `/scoreboard teams`."
     select-menu:
       placeholder: "Vui lòng chọn hành vi mong muốn."
       team-communication:
@@ -113,7 +111,6 @@ menu:
         label: "Không bao giờ nhắc nhở"
   action-bar-alerts:
     title: "Cảnh báo trên thanh hành động"
-    description: "Bật/tắt cảnh báo gửi đến người chơi đang sử dụng tính năng trò chuyện bằng giọng nói."
     select-menu:
       placeholder: "Vui lòng chọn cảnh báo mong muốn."
       connecting-alert:
@@ -200,7 +197,6 @@ field:
     description: "Tài khoản Discord của bạn chưa được liên kết với Minecraft. Hãy nhập {link-discord-command} để liên kết và sử dụng tính năng trò chuyện bằng giọng nói."
   account-already-linked:
     title: "Tài khoản đã được liên kết"
-    description: "Tài khoản Discord của bạn đã được liên kết với Minecraft. Nhập {unlink-discord-command} để hủy liên kết."
   restricted-command:
     title: "Lệnh hạn chế"
     description: "Lệnh này phải được thực hiện trên máy chủ Discord."

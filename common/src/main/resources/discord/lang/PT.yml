@@ -31,7 +31,6 @@ menu:
     description: "Seu servidor do Discord exige que a conta do proprietário do bot tenha a autenticação de dois fatores ativada. Configure-a ou desative este requisito nas configurações do servidor seguindo este caminho: `Moderação › Configuração de Segurança › (Permissões ›) Exigir 2FA para ações de moderador`."
   permissions:
     title: "Permissões"
-    description: "Para funcionar corretamente, seu bot deve ter a permissão de `Administrador` no seu servidor do Discord. Para isso, adicione um cargo com permissão de `Administrador` ao bot."
   voice-chat:
     title: "Chat de voz"
   range:
@@ -63,7 +62,6 @@ menu:
         label: "Espectadores"
   teams:
     title: "Equipes"
-    description: "Selecione os comportamentos que devem se aplicar às equipes. Esta opção se aplica às equipes criadas com o comando `/team` no Minecraft ou com plugins que gerenciam o sistema de equipes integrado. Se o seu servidor estiver executando o Minecraft 1.12 ou anterior, o comando a ser usado é `/scoreboard teams`."
     select-menu:
       placeholder: "Por favor, selecione os comportamentos desejados."
       team-communication:
@@ -113,7 +111,6 @@ menu:
         label: "Nunca lembrar"
   action-bar-alerts:
     title: "Alertas na barra de ação"
-    description: "Altere os alertas enviados aos jogadores que estão usando o chat de voz por proximidade."
     select-menu:
       placeholder: "Por favor, selecione os alertas desejados."
       connecting-alert:
@@ -200,7 +197,6 @@ field:
     description: "Sua conta do Discord não está vinculada ao Minecraft. Digite {link-discord-command} para vinculá-la e usar o chat de voz por proximidade."
   account-already-linked:
     title: "Conta já vinculada"
-    description: "Sua conta do Discord já está vinculada ao Minecraft. Digite {unlink-discord-command} para desvinculá-la."
   restricted-command:
     title: "Comando restrito"
     description: "Este comando deve ser executado em um servidor do Discord."

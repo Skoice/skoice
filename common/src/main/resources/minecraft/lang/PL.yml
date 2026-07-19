@@ -61,7 +61,6 @@ chat:
     account-unlinked: "{success-color}Odłączyłeś swoje konto Minecraft {default-color}od discorda."
     account-not-linked: "Twoje konto Minecraft {error-color}nie jest połączone {default-color}z Discord. Wpisz \"{link-discord-command}\" na serwerze Discord \"{guild}\", aby je połączyć i korzystać ze zbliżeniowego czatu głosowego."
     account-not-linked-remind-once: "Twoje konto Minecraft {error-color}nie jest połączone {default-color}z Discord. Wpisz \"{link-discord-command}\" na serwerze Discord \"{guild}\", aby je połączyć i korzystać ze zbliżeniowego czatu głosowego. Nie otrzymasz ponownie tego powiadomienia."
-    account-already-linked: "Twoje konto Minecraft {error-color}jest już połączone {default-color}do discorda. Wpisz \"{unlink-minecraft-command}\" aby je odłączyć."
     connected: "Jesteś teraz {success-color}połączony {default-color}ze zbliżeniowym czatem głosowym. Aby wyłączyć dźwięki Discord i mieć bardziej immersyjne doświadczenie, możesz włączyć \"Tryb Streamera\" w ustawieniach Discord."
     not-connected: "{error-color}Nie jesteś połączony {default-color}do zbliżeniowego czatu głosowego. Dołącz do kanału głosowego \"{voice-channel}\" na serwerze Discord \"{guild}\", aby go użyć."
     disconnected: "Jesteś teraz {error-color}odłączony {default-color}od zbliżeniowego czatu głosowego."

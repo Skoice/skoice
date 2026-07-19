@@ -35,7 +35,6 @@ chat:
     invalid-code: "Du har {error-color}ikke gitt en kode{default-color}. Skriv inn \"{link-discord-command}\" på Discord-serveren \"{guild}\" for å motta en."
     account-linked: "Du har {success-color}linket din Minecraft konto {default-color}til Discord."
     account-unlinked: "Du har {success-color}unlinket din Minecraft konto {default-color}fra Discord."
-    account-already-linked: "Du har {error-color}allerede koblet din Minecraft konto {default-color}til Discord. Skriv \"{unlink-minecraft-command}\" for å koble den fra."
     disconnected: "Du er {error-color}nå frakoblet {default-color}fra proximity chat."
   error:
     no-parameter: "Du har {error-color}ikke levert ett argument{default-color}. For å bruke denne kommandoen, skriv \"{skoice-minecraft-command} {args}\"."

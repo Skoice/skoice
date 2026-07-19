@@ -37,7 +37,6 @@ chat:
     invalid-code: "Du har {error-color}ikke angivet en gyldig kode{default-color}. Skriv \"{link-discord-command}\" på Discord serveren \"{guild}\" for at modtage en."
     account-linked: "Du har {success-color}tilknyttet din Minecraft konto {default-color}til Discord."
     account-unlinked: "Du har {success-color}frakoblet din Minecraft konto {default-color}fra Discord."
-    account-already-linked: "Du har {error-color}allerede tilknyttet din Minecraft konto {default-color}til Discord. Skriv \"{unlink-minecraft-command}\" for at frakoble den."
     not-connected: "Du er {error-color}ikke tilsluttet {default-color}til nærhedsbaseret stemmechat. Tilslut dig stemmekanalen \"{voice-channel}\" på Discord serveren \"{guild}\" for at bruge den."
     disconnected: "Du er {error-color}nu frakoblet {default-color}fra nærhedsbaseret stemmechat."
   error:

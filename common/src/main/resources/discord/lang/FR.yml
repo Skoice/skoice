@@ -31,7 +31,6 @@ menu:
     description: "Votre serveur Discord exige que l'authentification à deux facteurs soit activée sur le compte du propriétaire du bot. Configurez-la ou désactivez cette exigence dans les paramètres du serveur en suivant ce chemin : `Modération › Configuration de sécurité › (Permissions ›) Exiger une A2F pour les actions des modérateurs`."
   permissions:
     title: "Permissions"
-    description: "Afin de fonctionner correctement, votre bot doit avoir la permission `Administrateur` sur votre serveur Discord. Pour ce faire, ajoutez au bot un rôle avec la permission `Administrateur`."
   voice-chat:
     title: "Chat vocal"
   range:
@@ -63,7 +62,6 @@ menu:
         label: "Spectateurs"
   teams:
     title: "Équipes"
-    description: "Sélectionnez les comportements qui doivent s'appliquer aux équipes. Cette option s'applique aux équipes créées avec la commande `/team` dans Minecraft ou avec des plugins qui gèrent le système d'équipes intégré. Si votre serveur utilise Minecraft 1.12 ou une version antérieure, la commande à utiliser est `/scoreboard teams`."
     select-menu:
       placeholder: "Veuillez sélectionner les comportements souhaités."
       team-communication:
@@ -113,7 +111,6 @@ menu:
         label: "Ne jamais rappeler"
   action-bar-alerts:
     title: "Alertes dans la barre d'action"
-    description: "Activez ou désactivez les alertes envoyées aux joueurs qui utilisent le chat vocal de proximité."
     select-menu:
       placeholder: "Veuillez sélectionner les alertes souhaitées."
       connecting-alert:
@@ -200,7 +197,6 @@ field:
     description: "Votre compte Discord n'est pas lié à Minecraft. Tapez {link-discord-command} pour le lier et utiliser le chat vocal de proximité."
   account-already-linked:
     title: "Compte déjà lié"
-    description: "Votre compte Discord est déjà lié à Minecraft. Tapez {unlink-discord-command} pour le dissocier."
   restricted-command:
     title: "Commande restreinte"
     description: "Cette commande doit être effectuée sur un serveur Discord."

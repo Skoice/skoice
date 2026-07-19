@@ -31,7 +31,6 @@ menu:
     description: "あなたのDiscordサーバーは、ボット所有者のアカウントで二要素認証を有効にする必要があります。設定するか、サーバー設定でこの要件を無効にしてください。手順：`モデレーション › 安全性の設定 › (権限 ›) モデレーターアクションに2FAを要求する`。"
   permissions:
     title: "権限"
-    description: "正常に動作させるには、Discordサーバーでbotに`管理者`権限を付与する必要があります。これを行うには、botに`管理者`権限を持つロールを追加してください。"
   voice-chat:
     title: "ボイスチャット"
   range:
@@ -63,7 +62,6 @@ menu:
         label: "スペクテイター"
   teams:
     title: "チーム"
-    description: "チームに適用する動作を選択します。このオプションは、Minecraftの`/team`コマンドまたは組み込みチームシステムを管理するプラグインで作成されたチームに適用されます。サーバーがMinecraft 1.12以前を実行している場合、使用するコマンドは`/scoreboard teams`です。"
     select-menu:
       placeholder: "希望する動作を選択してください。"
       team-communication:
@@ -113,7 +111,6 @@ menu:
         label: "通知しない"
   action-bar-alerts:
     title: "アクションバー通知"
-    description: "近接ボイスチャットを使用しているプレイヤーに送信される通知を切り替えます。"
     select-menu:
       placeholder: "希望する通知を選択してください。"
       connecting-alert:
@@ -200,7 +197,6 @@ field:
     description: "あなたのDiscordアカウントはMinecraftにリンクされていません。{link-discord-command}と入力してリンクし、近接ボイスチャットを使用してください。"
   account-already-linked:
     title: "アカウントリンク済み"
-    description: "あなたのDiscordアカウントはすでにMinecraftにリンクされています。{unlink-discord-command}と入力してリンクを解除してください。"
   restricted-command:
     title: "制限されたコマンド"
     description: "このコマンドはDiscordサーバーで実行する必要があります。"

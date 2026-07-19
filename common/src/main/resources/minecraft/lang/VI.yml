@@ -61,7 +61,6 @@ chat:
     account-unlinked: "Bạn đã {success-color}hủy liên kết tài khoản Minecraft {default-color}khỏi Discord."
     account-not-linked: "Bạn {error-color}chưa liên kết tài khoản Minecraft {default-color}với Discord. Nhập \"{link-discord-command}\" trên máy chủ Discord \"{guild}\" để liên kết và sử dụng tính năng trò chuyện thoại gần."
     account-not-linked-remind-once: "Bạn {error-color}chưa liên kết tài khoản Minecraft {default-color}với Discord. Nhập \"{link-discord-command}\" trên máy chủ Discord \"{guild}\" để liên kết và sử dụng tính năng trò chuyện thoại gần. Bạn sẽ không nhận được thông báo này nữa."
-    account-already-linked: "Bạn đã {error-color}liên kết tài khoản Minecraft {default-color}với Discord rồi. Nhập \"{unlink-minecraft-command}\" để hủy liên kết."
     connected: "Bạn hiện đã {success-color}kết nối {default-color}với tính năng trò chuyện thoại gần. Để tắt âm thanh Discord và có trải nghiệm immersive hơn, bạn có thể bật \"Chế độ Streamer\" trong cài đặt Discord."
     not-connected: "Bạn {error-color}chưa kết nối {default-color}với tính năng trò chuyện thoại gần. Tham gia kênh thoại \"{voice-channel}\" trên máy chủ Discord \"{guild}\" để sử dụng."
     disconnected: "Bạn đã {error-color}ngắt kết nối {default-color}khỏi tính năng trò chuyện thoại gần."

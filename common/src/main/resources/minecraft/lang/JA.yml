@@ -61,7 +61,6 @@ chat:
     account-unlinked: "あなたの{success-color}MinceaftアカウントをDisocrdからリンク解除{default-color}しました。"
     account-not-linked: "あなたの{error-color}MinecraftアカウントはDiscordとリンクされていません{default-color}。Discordサーバー「{guild}」で「{link-discord-command}」と入力してリンクし、近接ボイスチャットを使用します。"
     account-not-linked-remind-once: "あなたの{error-color}MinecraftアカウントはDiscordとリンクされていません{default-color}。Discordサーバー「{guild}」で「{link-discord-command}」と入力してリンクし、近接ボイスチャットを使用してください。この通知は再度表示されません。"
-    account-already-linked: "あなたは{error-color}既にMincraftアカウントをDisocrdをリンクしています{default-color}。「{unlink-minecraft-command}」と入力して、リンクを解除してください。"
     connected: "近接ボイスチャットに{success-color}接続されました{default-color}。Discordの音を無効にして、より没入感のある体験を得るには、Discord設定で「配信モード」を有効にできます。"
     not-connected: "あなたは近接ボイスチャットに{error-color}接続していません{default-color}。使用するには、Discordサーバ「{guild}」のボイスチャンネル「{voice-channel}」に参加してください。"
     disconnected: "あなたは近接ボイスチャットから{error-color}切断されました{default-color}。"

@@ -61,7 +61,6 @@ chat:
     account-unlinked: "Вы {success-color}отвязали ваш аккаунт Minecraft {default-color}от Discord."
     account-not-linked: "Вы {error-color}не привязали вашу учётную запись Minecraft {default-color}к Discord. Введите \"{link-discord-command}\" на сервере Discord \"{guild}\", чтобы привязать её и использовать голосовой чат близости."
     account-not-linked-remind-once: "Вы {error-color}не привязали вашу учётную запись Minecraft {default-color}к Discord. Введите \"{link-discord-command}\" на сервере Discord \"{guild}\", чтобы привязать её и использовать голосовой чат близости. Вы не получите это уведомление снова."
-    account-already-linked: "Вы {error-color}уже привязали аккаунт Minecraft {default-color}к Discord. Введите \"{unlink-minecraft-command}\", чтобы отвязать его."
     connected: "Вы {success-color}теперь подключены {default-color}к голосовому чату близости. Чтобы отключить звуки Discord и получить более захватывающий опыт, вы можете включить \"Режим стримера\" в настройках Discord."
     not-connected: "Вы {error-color}не подключены {default-color}к голосовому чату. Присоединитесь к каналу \"{voice-channel}\" на сервере Discord \"{guild}\"."
     disconnected: "Вы {error-color}отключились {default-color}от голосового чата."

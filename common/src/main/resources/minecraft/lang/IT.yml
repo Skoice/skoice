@@ -31,7 +31,6 @@ chat:
   player:
     account-linked: "Hai {success-color}inserito il tuo account Minecraft {default-color}a Discord."
     account-unlinked: "Hai {success-color}inserito il tuo account Minecraft {default-color}a Discord."
-    account-already-linked: "{error-color}Hai già collegato il tuo account Minecraft {default-color}a Discord. Digita \"{unlink-minecraft-command}\" per scollegarlo."
     not-connected: "Sei {error-color}non connesso {default-color}alla chat vocale di prossimità. Entra nel canale vocale \"{voice-channel}\" sul server Discord \"{guild}\" per utilizzarlo."
     disconnected: "Sei {error-color}ora disconnesso {default-color}dalla chat vocale di prossimità."
   error:

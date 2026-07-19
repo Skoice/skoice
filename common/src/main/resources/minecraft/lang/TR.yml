@@ -27,6 +27,7 @@ logger:
     missing-permission: "Discord sunucunda botuna \"Yönetici\" izni vermedin. Eklemek için bu bağlantıyı aç: {bot-invite-url}."
     invalid-bot: "Botun doğru olarak yapılandırılmamış. Yeni bir tane oluşturmak için Minecraft sunucuna katıl."
     shared-bot: "Botun birden fazla program çalıştırıyor gibi görünüyor. Ancak düzgün çalışması için Skoice'e özel olması gerekiyor. Bu sayfadaki talimatları takip ederek yeni bir tane oluşturabilirsin: {creation-guide-url}. Token'ı aldıktan sonra \"{token-minecraft-command}\" komutunu yazıp ardından token'ı gir."
+    commands-not-registered: "Skoice, Discord komutlarını ekleyemedi çünkü uygulama komut sınırına erişilmiş. Kullanılmayan botları sunucudan acıp biraz komut alanı açıp Minecraft sunucusunu yeniden başlatın."
 chat:
   configuration:
     discord-integration-interactive: " \nYapılandırma: {title-color}Discord Entegrasyonu\n \n{dark-color}• {default-color}Skoice'in çalışması için bir Discord botu gerekiyor. Kolayca kurmak için {open:creation-guide-url} adresindeki talimatları takip et.\n{dark-color}• {default-color}Token'ı aldıktan sonra {suggest:token-minecraft-command} ile ekle.\n \nBu mesajla etkileşime geçemiyorsan \"{tooltips-minecraft-command}\" komutunu kullan.\n "
@@ -61,7 +62,7 @@ chat:
     account-unlinked: "Minecraft hesabının {success-color}Discord ile bağlantısını kaldırdın{default-color}."
     account-not-linked: "Minecraft hesabın {error-color}Discord hesabına bağlı değil{default-color}. \"{guild}\" adlı Discord sunucusunda \"{link-discord-command}\" komutunu kullanarak bağlayabilir ve proximity chat'i kullanabilirsin."
     account-not-linked-remind-once: "Minecraft hesabın {error-color}Discord hesabına bağlı değil{default-color}. \"{guild}\" adlı Discord sunucusunda \"{link-discord-command}\" komutunu kullanarak bağlayabilir ve proximity chat'i kullanabilirsin. Bu bildirimi bir daha almayacaksın."
-    account-already-linked: "Discord hesabın ile Minecraft hesabın {error-color}zaten bağlı{default-color}. İstersen \"{unlink-minecraft-command}\" komutu ile bağlantıyı kaldırabilirsin."
+    account-already-linked: "\"{discord-username}\" Discord hesabına Minecraft hesabını {error-color}zaten bağlamışsın{default-color}. Bağlantıyı kaldırmak için \"{unlink-minecraft-command}\" yaz."
     connected: "Şuanda proximity chat'e {success-color}bağlandın{default-color}. Daha iyi bir deneyim için Discord seslerini \"Bildirimler\" kısmından kapatabilir veya \"Yayıncı Modu\"nu açabilirsin."
     not-connected: "Proximity chat'e {error-color}bağlı değilsin{default-color}. \"{voice-channel}\" adlı ses kanalına \"{guild}\" Discord sunucusunda girerek kullanabilirsin."
     disconnected: "Proximity chat {error-color}bağlantını kestin{default-color}."
@@ -75,6 +76,7 @@ action-bar:
   disconnecting-alert: "{error-color}⚠ {default-color}{error-color}Diğer oyunculardan uzaklaşıyorsun{default-color}."
   muted-alert: "{error-color}⚠ {default-color}{error-color}Mikrofon kapalı{default-color}."
   deafened-alert: "{error-color}⚠ {default-color}{error-color}Ses kapalı{default-color}."
+  linking-suggestion: "{default-color}Yakınındaki kişiler {success-color}Skoice kullanıyor{default-color}. Katılmak için \"{link-minecraft-command}\" yaz!"
 interaction:
   here: "burda"
   this-page: "bu sayfa"

@@ -31,7 +31,6 @@ menu:
     description: "Twój serwer Discord wymaga, aby konto właściciela bota miało włączone uwierzytelnianie dwuskładnikowe. Skonfiguruj je lub wyłącz to wymaganie w ustawieniach serwera, podążając tą ścieżką: `Moderacja › Konfiguracja bezpieczeństwa › (Uprawnienia ›) Wymagaj 2FA do działań moderatorskich`."
   permissions:
     title: "Uprawnienia"
-    description: "Aby działać prawidłowo, twój bot musi mieć uprawnienie `Administrator` na twoim serwerze Discord. Aby to zrobić, dodaj botowi rolę z uprawnieniem `Administrator`."
   voice-chat:
     title: "Czat głosowy"
   range:
@@ -63,7 +62,6 @@ menu:
         label: "Obserwatorzy"
   teams:
     title: "Drużyny"
-    description: "Wybierz zachowania, które powinny mieć zastosowanie do drużyn. Ta opcja dotyczy drużyn utworzonych za pomocą komendy `/team` w Minecraft lub za pomocą wtyczek zarządzających wbudowanym systemem drużyn. Jeśli twój serwer używa Minecraft 1.12 lub starszego, komendą do użycia jest `/scoreboard teams`."
     select-menu:
       placeholder: "Proszę wybrać żądane zachowania."
       team-communication:
@@ -113,7 +111,6 @@ menu:
         label: "Nigdy nie przypominaj"
   action-bar-alerts:
     title: "Alerty na pasku akcji"
-    description: "Przełącz alerty wysyłane do graczy korzystających ze zbliżeniowego czatu głosowego."
     select-menu:
       placeholder: "Proszę wybrać żądane alerty."
       connecting-alert:
@@ -200,7 +197,6 @@ field:
     description: "Twoje konto Discord nie jest połączone z Minecraft. Wpisz {link-discord-command}, aby je połączyć i używać zbliżeniowego czatu głosowego."
   account-already-linked:
     title: "Konto już połączone"
-    description: "Twoje konto Discord jest już połączone z Minecraft. Wpisz {unlink-discord-command}, aby je odłączyć."
   restricted-command:
     title: "Ograniczona komenda"
     description: "Ta komenda musi być wykonana na serwerze Discord."
