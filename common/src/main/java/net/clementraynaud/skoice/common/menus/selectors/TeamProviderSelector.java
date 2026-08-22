@@ -40,17 +40,15 @@ public class TeamProviderSelector extends Selector {
     @Override
     public SelectMenu get() {
         List<SelectOption> options = Arrays.asList(
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.team-provider.select-menu.select-option.vanilla.label"), VanillaTeamProvider.ID)
-                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.team-provider.select-menu.select-option.vanilla.description"))
-                        .withEmoji(MenuEmoji.CROSSED_SWORDS.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.team-provider.select-menu.select-option.parties.label"), PartiesTeamProvider.ID)
-                        .withDescription(super.plugin.getBot().getLang().getMessage("menu.team-provider.select-menu.select-option.parties.description"))
-                        .withEmoji(MenuEmoji.BUSTS_IN_SILHOUETTE.get()));
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.teams.team-provider.select-menu.select-option.vanilla.label"), VanillaTeamProvider.ID)
+                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
+                        .withEmoji(MenuEmoji.MINECRAFT.get()),
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.teams.team-provider.select-menu.select-option.parties.label"), PartiesTeamProvider.ID)
+                        .withEmoji(MenuEmoji.PARTIES.get()));
 
         String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.TEAM_PROVIDER.toString());
 
         return StringSelectMenu.create("team-provider-selection")
-                .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.team-provider.select-menu.placeholder"))
                 .addOptions(options)
                 .setDefaultValues(defaultValue).build();
     }

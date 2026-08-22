@@ -30,17 +30,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TeamsSelector extends Selector {
+public class TeamBehaviorsSelector extends Selector {
 
-    public TeamsSelector(Skoice plugin) {
+    public TeamBehaviorsSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
     public SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.teams.select-menu.team-communication.label"), ConfigField.TEAM_COMMUNICATION.toString())
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.teams.team-behaviors.select-menu.team-communication.label"), ConfigField.TEAM_COMMUNICATION.toString())
                         .withEmoji(MenuEmoji.PAPERCLIPS.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.teams.select-menu.separated-teams.label"), ConfigField.SEPARATED_TEAMS.toString())
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.teams.team-behaviors.select-menu.separated-teams.label"), ConfigField.SEPARATED_TEAMS.toString())
                         .withEmoji(MenuEmoji.LOCKED.get())));
         List<String> defaultValues = new ArrayList<>();
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TEAM_COMMUNICATION.toString())) {
@@ -49,8 +49,8 @@ public class TeamsSelector extends Selector {
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.SEPARATED_TEAMS.toString())) {
             defaultValues.add(ConfigField.SEPARATED_TEAMS.toString());
         }
-        return StringSelectMenu.create("teams-selection")
-                .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.teams.select-menu.placeholder"))
+        return StringSelectMenu.create("team-behaviors-selection")
+                .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.teams.team-behaviors.select-menu.placeholder"))
                 .addOptions(options)
                 .setRequiredRange(0, options.size())
                 .setDefaultValues(defaultValues).build();

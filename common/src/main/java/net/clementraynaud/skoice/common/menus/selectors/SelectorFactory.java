@@ -21,6 +21,7 @@ package net.clementraynaud.skoice.common.menus.selectors;
 
 import net.clementraynaud.skoice.common.Skoice;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,9 +44,10 @@ public class SelectorFactory {
             case "excluded-players":
                 return Collections.singletonList(new ExcludedPlayersSelector(plugin));
             case "teams":
-                return Collections.singletonList(new TeamsSelector(plugin));
-            case "team-provider":
-                return Collections.singletonList(new TeamProviderSelector(plugin));
+                return Arrays.asList(
+                        new TeamProviderSelector(plugin),
+                        new TeamBehaviorsSelector(plugin)
+                );
             case "action-bar-alerts":
                 return Collections.singletonList(new ActionBarAlertsSelector(plugin));
             case "active-worlds":

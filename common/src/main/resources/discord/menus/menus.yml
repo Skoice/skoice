@@ -127,11 +127,6 @@ teams:
   footer: review
   type: default
   parent: voice-chat
-team-provider:
-  emoji: busts_in_silhouette
-  footer: review
-  type: default
-  parent: voice-chat
 chaining:
   emoji: chains
   footer: review
