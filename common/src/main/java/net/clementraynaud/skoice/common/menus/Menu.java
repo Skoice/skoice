@@ -36,6 +36,7 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.simpleyaml.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -176,10 +177,8 @@ public class Menu {
             childComponents.add(menuField.build(args, false));
         }
 
-        ActionRow selectMenuActionRow = this.getSelectMenuActionRow();
-        if (selectMenuActionRow != null) {
-            childComponents.add(selectMenuActionRow);
-        }
+        childComponents.addAll(this.getSelectMenuActionRows());
+
         List<Button> buttons = this.plugin.getBot().getMenuFactory().getButtons(this.plugin, this.menuId, args);
         if (!buttons.isEmpty()) {
             childComponents.add(Menu.LARGE_INVISIBLE_SEPARATOR);
@@ -215,10 +214,7 @@ public class Menu {
                 childComponents.add(menuField.build(args, true));
             }
 
-            ActionRow selectMenuActionRow = this.getSelectMenuActionRow();
-            if (selectMenuActionRow != null) {
-                childComponents.add(selectMenuActionRow);
-            }
+            childComponents.addAll(this.getSelectMenuActionRows());
 
         } else {
             List<String> unreviewedSettings = this.plugin.getConfigYamlFile().getStringList(ConfigField.UNREVIEWED_SETTINGS.toString());
@@ -237,15 +233,19 @@ public class Menu {
         return childComponents;
     }
 
-    private ActionRow getSelectMenuActionRow() {
-        Selector selector = this.plugin.getBot()
+    private List<ActionRow> getSelectMenuActionRows() {
+        List<Selector> selectors = this.plugin.getBot()
                 .getMenuFactory()
                 .getSelectorFactory()
-                .getSelector(this.plugin, this.menuId);
-        if (selector == null) {
-            return null;
+                .getSelectors(this.plugin, this.menuId);
+
+        if (selectors == null || selectors.isEmpty()) {
+            return Collections.emptyList();
         }
-        return ActionRow.of(selector.get());
+
+        return selectors.stream()
+                .map(selector -> ActionRow.of(selector.get()))
+                .collect(Collectors.toList());
     }
 
     private String getRoot() {

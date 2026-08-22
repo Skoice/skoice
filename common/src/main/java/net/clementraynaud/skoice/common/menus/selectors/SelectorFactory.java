@@ -21,45 +21,48 @@ package net.clementraynaud.skoice.common.menus.selectors;
 
 import net.clementraynaud.skoice.common.Skoice;
 
+import java.util.Collections;
+import java.util.List;
+
 public class SelectorFactory {
 
-    public Selector getSelector(Skoice plugin, String menuId) {
+    public List<Selector> getSelectors(Skoice plugin, String menuId) {
         switch (menuId) {
             case "server":
-                return new ServerSelector(plugin);
+                return Collections.singletonList(new ServerSelector(plugin));
             case "voice-channel":
-                return new VoiceChannelSelector(plugin);
+                return Collections.singletonList(new VoiceChannelSelector(plugin));
             case "range":
-                return new RangeSelector(plugin);
+                return Collections.singletonList(new RangeSelector(plugin));
             case "language":
-                return new LanguageSelector(plugin);
+                return Collections.singletonList(new LanguageSelector(plugin));
             case "login-notification":
-                return new LoginNotificationSelector(plugin);
+                return Collections.singletonList(new LoginNotificationSelector(plugin));
             case "included-players":
-                return new IncludedPlayersSelector(plugin);
+                return Collections.singletonList(new IncludedPlayersSelector(plugin));
             case "excluded-players":
-                return new ExcludedPlayersSelector(plugin);
+                return Collections.singletonList(new ExcludedPlayersSelector(plugin));
             case "teams":
-                return new TeamsSelector(plugin);
+                return Collections.singletonList(new TeamsSelector(plugin));
             case "team-provider":
-                return new TeamProviderSelector(plugin);
+                return Collections.singletonList(new TeamProviderSelector(plugin));
             case "action-bar-alerts":
-                return new ActionBarAlertsSelector(plugin);
+                return Collections.singletonList(new ActionBarAlertsSelector(plugin));
             case "active-worlds":
-                return new ActiveWorldsSelector(plugin);
+                return Collections.singletonList(new ActiveWorldsSelector(plugin));
             case "chaining":
-                return new ChainingSelector(plugin);
+                return Collections.singletonList(new ChainingSelector(plugin));
             case "link-synchronization":
-                return new LinkSynchronizationSelector(plugin);
+                return Collections.singletonList(new LinkSynchronizationSelector(plugin));
             case "release-channel":
-                return new ReleaseChannelSelector(plugin);
+                return Collections.singletonList(new ReleaseChannelSelector(plugin));
             case "tooltips":
             case "text-chat":
             case "channel-visibility":
             case "invite-link":
-                return new ToggleSelector(plugin, menuId);
+                return Collections.singletonList(new ToggleSelector(plugin, menuId));
             default:
-                return null;
+                return Collections.emptyList();
         }
     }
 }
