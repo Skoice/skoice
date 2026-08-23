@@ -131,7 +131,7 @@ menu:
         label: "Never Remind"
   action-bar-alerts:
     title: "Action Bar Alerts"
-    description: "Toggle the alerts sent to players in your Minecraft server related to the proximity voice chat."
+    description: "Toggle the alerts sent to players on your Minecraft server related to the proximity voice chat."
     select-menu:
       placeholder: "Please select the desired alerts."
       linking-suggestion:
