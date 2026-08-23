@@ -30,29 +30,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ExcludedPlayersSelector extends Selector {
+public class ExcludedPlayerBehaviorSelector extends Selector {
 
     public static final String IN_RANGE = "in-range";
     public static final String SAME_WORLD = "same-world";
     public static final String DISABLED = "false";
 
-    public ExcludedPlayersSelector(Skoice plugin) {
+    public ExcludedPlayerBehaviorSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
     public SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.select-menu.in-range.label"), ExcludedPlayersSelector.IN_RANGE)
-                        .withEmoji(MenuEmoji.SPEAKING_HEAD.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.select-menu.same-world.label"), ExcludedPlayersSelector.SAME_WORLD)
-                        .withEmoji(MenuEmoji.GLOBE_WITH_MERIDIANS.get())
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-behavior.select-menu.same-world.label"), ExcludedPlayerBehaviorSelector.SAME_WORLD)
+                        .withEmoji(MenuEmoji.MAP.get())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description")),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.select-menu.disabled.label"), ExcludedPlayersSelector.DISABLED)
-                        .withEmoji(MenuEmoji.PROHIBITED.get())));
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-behavior.select-menu.in-range.label"), ExcludedPlayerBehaviorSelector.IN_RANGE)
+                        .withEmoji(MenuEmoji.BUSTS_IN_SILHOUETTE.get()),
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-behavior.select-menu.disabled.label"), ExcludedPlayerBehaviorSelector.DISABLED)
+                        .withEmoji(MenuEmoji.MUTED.get())));
 
         String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString());
 
-        return StringSelectMenu.create("excluded-players-selection")
+        return StringSelectMenu.create("excluded-player-behavior-selection")
                 .addOptions(options)
                 .setDefaultValues(defaultValue).build();
     }

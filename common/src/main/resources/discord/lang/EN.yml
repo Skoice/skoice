@@ -53,25 +53,24 @@ menu:
     description: "Choose the worlds where Skoice is active."
     select-menu:
       placeholder: "Please select the desired worlds."
-  included-players:
-    title: "Included Players"
-    description: "Choose the types of players included in the proximity voice chat."
-    select-menu:
-      placeholder: "Please select the desired types of players."
-      players-on-death-screen-included:
-        label: "Players on Death Screen"
-      spectators-included:
-        label: "Spectators"
   excluded-players:
     title: "Excluded Players"
-    description: "Choose whether players excluded from the proximity voice chat can still communicate with one another."
-    select-menu:
-      in-range:
-        label: "Communicate When in Range"
-      same-world:
-        label: "Always Communicate in the Same World"
-      disabled:
-        label: "Never Communicate"
+    description: "Choose the types of players excluded from the proximity voice chat and whether they can still communicate with one another."
+    excluded-player-types:
+      select-menu:
+        placeholder: "Please select the excluded types of players."
+        players-on-death-screen-included:
+          label: "Players on Death Screen"
+        spectators-included:
+          label: "Spectators"
+    excluded-player-behavior:
+      select-menu:
+        same-world:
+          label: "Always Communicate in the Same World"
+        in-range:
+          label: "Communicate When in Range"
+        disabled:
+          label: "Never Communicate"
   teams:
     title: "Teams"
     description: "Select the system Skoice uses to determine which players belong to the same team and the behaviors that apply to teams. Minecraft's built-in team system can be used with `/team` or with plugins and datapacks that manage it. Skoice also supports third-party plugins such as [Parties](https://www.spigotmc.org/resources/parties-an-advanced-parties-manager.3709/). The matching plugin must be installed for a provider to work, otherwise team features are disabled."

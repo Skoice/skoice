@@ -39,10 +39,11 @@ public class SelectorFactory {
                 return Collections.singletonList(new LanguageSelector(plugin));
             case "login-notification":
                 return Collections.singletonList(new LoginNotificationSelector(plugin));
-            case "included-players":
-                return Collections.singletonList(new IncludedPlayersSelector(plugin));
             case "excluded-players":
-                return Collections.singletonList(new ExcludedPlayersSelector(plugin));
+                return Arrays.asList(
+                        new ExcludedPlayerTypesSelector(plugin),
+                        new ExcludedPlayerBehaviorSelector(plugin)
+                );
             case "teams":
                 return Arrays.asList(
                         new TeamProviderSelector(plugin),

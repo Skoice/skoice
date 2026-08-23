@@ -112,13 +112,8 @@ active-worlds:
   footer: review
   type: default
   parent: voice-chat
-included-players:
-  emoji: bust_in_silhouette
-  footer: review
-  type: default
-  parent: voice-chat
 excluded-players:
-  emoji: speaking_head
+  emoji: bust_in_silhouette
   footer: review
   type: default
   parent: voice-chat

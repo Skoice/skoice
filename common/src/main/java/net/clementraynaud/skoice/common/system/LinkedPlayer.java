@@ -20,7 +20,7 @@
 package net.clementraynaud.skoice.common.system;
 
 import net.clementraynaud.skoice.common.Skoice;
-import net.clementraynaud.skoice.common.menus.selectors.ExcludedPlayersSelector;
+import net.clementraynaud.skoice.common.menus.selectors.ExcludedPlayerBehaviorSelector;
 import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceGameMode;
@@ -90,7 +90,7 @@ public final class LinkedPlayer {
             return false;
         }
         if (this.isExcluded()) {
-            return !ExcludedPlayersSelector.DISABLED.equals(
+            return !ExcludedPlayerBehaviorSelector.DISABLED.equals(
                     this.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()));
         }
         return true;
@@ -106,7 +106,7 @@ public final class LinkedPlayer {
 
     public boolean communicatesWorldWide() {
         return this.isExcluded()
-                && ExcludedPlayersSelector.SAME_WORLD.equals(
+                && ExcludedPlayerBehaviorSelector.SAME_WORLD.equals(
                         this.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()));
     }
 
@@ -182,7 +182,7 @@ public final class LinkedPlayer {
         }
 
         if (this.isExcluded()
-                && ExcludedPlayersSelector.SAME_WORLD.equals(
+                && ExcludedPlayerBehaviorSelector.SAME_WORLD.equals(
                 this.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()))) {
             return true;
         }

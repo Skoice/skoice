@@ -30,27 +30,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class IncludedPlayersSelector extends Selector {
+public class ExcludedPlayerTypesSelector extends Selector {
 
-    public IncludedPlayersSelector(Skoice plugin) {
+    public ExcludedPlayerTypesSelector(Skoice plugin) {
         super(plugin);
     }
 
     @Override
     public SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.included-players.select-menu.players-on-death-screen-included.label"), ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-types.select-menu.players-on-death-screen-included.label"), ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())
                         .withEmoji(MenuEmoji.SKULL.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.included-players.select-menu.spectators-included.label"), ConfigField.SPECTATORS_INCLUDED.toString())
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-types.select-menu.spectators-included.label"), ConfigField.SPECTATORS_INCLUDED.toString())
                         .withEmoji(MenuEmoji.GHOST.get())));
         List<String> defaultValues = new ArrayList<>();
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())) {
+        if (!super.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())) {
             defaultValues.add(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString());
         }
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString())) {
+        if (!super.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString())) {
             defaultValues.add(ConfigField.SPECTATORS_INCLUDED.toString());
         }
-        return StringSelectMenu.create("included-players-selection")
-                .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.included-players.select-menu.placeholder"))
+        return StringSelectMenu.create("excluded-player-types-selection")
+                .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-types.select-menu.placeholder"))
                 .addOptions(options)
                 .setRequiredRange(0, options.size())
                 .setDefaultValues(defaultValues).build();

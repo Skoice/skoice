@@ -204,7 +204,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     break;
 
-                case "excluded-players-selection":
+                case "excluded-player-behavior-selection":
                     this.plugin.getConfigYamlFile().set(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString(), event.getSelectedOptions().get(0).getValue());
                     ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     break;
@@ -221,7 +221,7 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     break;
 
                 case "action-bar-alerts-selection":
-                case "included-players-selection":
+                case "excluded-player-types-selection":
                 case "team-behaviors-selection":
                 case "link-synchronization-selection":
                     options.removeAll(event.getSelectedOptions());
