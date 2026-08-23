@@ -72,11 +72,11 @@ chat:
     illegal-executor: "This command is {error-color}only executable {default-color}by players."
     missing-permission: "This command is {error-color}only executable {default-color}by operators."
 action-bar:
+  linking-suggestion: "{default-color}Near players are {success-color}using Skoice{default-color}. Type \"{link-minecraft-command}\" to join!"
   connecting-alert: "{success-color}⚠ {default-color}You are {success-color}near other players{default-color}. Say hi!"
   disconnecting-alert: "{error-color}⚠ {default-color}You are {error-color}moving away {default-color}from near players."
   muted-alert: "{error-color}⚠ {default-color}You are {error-color}muted{default-color}."
   deafened-alert: "{error-color}⚠ {default-color}You are {error-color}deafened{default-color}."
-  linking-suggestion: "{default-color}Near players are {success-color}using Skoice{default-color}. Type \"{link-minecraft-command}\" to join!"
 interaction:
   here: "here"
   this-page: "this page"

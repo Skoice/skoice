@@ -39,7 +39,10 @@ public class ActionBarAlertsSelector extends Selector {
 
     @Override
     public SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.connecting-alert.label"), ActionBarAlert.CONNECTING.toString())
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.linking-suggestion.label"), ConfigField.LINKING_SUGGESTION.toString())
+                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
+                        .withEmoji(MenuEmoji.LINK.get()),
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.connecting-alert.label"), ActionBarAlert.CONNECTING.toString())
                         .withEmoji(MenuEmoji.INBOX_TRAY.get()),
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.disconnecting-alert.label"), ActionBarAlert.DISCONNECTING.toString())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
@@ -49,10 +52,7 @@ public class ActionBarAlertsSelector extends Selector {
                         .withEmoji(MenuEmoji.MUTED.get()),
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.deafened-alert.label"), ActionBarAlert.DEAFENED.toString())
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
-                        .withEmoji(MenuEmoji.DEAFENED.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.linking-suggestion.label"), ConfigField.LINKING_SUGGESTION.toString())
-                        .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
-                        .withEmoji(MenuEmoji.LINK.get())));
+                        .withEmoji(MenuEmoji.DEAFENED.get())));
         List<String> defaultValues = new ArrayList<>();
         if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
             defaultValues.add(ConfigField.CONNECTING_ALERT.toString());

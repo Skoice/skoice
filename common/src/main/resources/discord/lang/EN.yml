@@ -134,6 +134,8 @@ menu:
     description: "Toggle the alerts sent to players in your Minecraft server related to the proximity voice chat."
     select-menu:
       placeholder: "Please select the desired alerts."
+      linking-suggestion:
+        label: "\"Near players are using Skoice. Type \"/skoice link\" to join!\""
       connecting-alert:
         label: "\"You are near other players. Say hi!\""
       disconnecting-alert:
@@ -142,8 +144,6 @@ menu:
         label: "\"You are muted.\""
       deafened-alert:
         label: "\"You are deafened.\""
-      linking-suggestion:
-        label: "\"Near players are using Skoice. Type \"/skoice link\" to join!\""
   invite-link:
     title: "Invite Link"
     description: "Toggle whether the Discord server name appears as a clickable invite link in Minecraft chat messages. Skoice creates a permanent invite on your configured proximity voice channel. Disable this if you do not want one."
