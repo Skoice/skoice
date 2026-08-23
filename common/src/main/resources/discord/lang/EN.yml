@@ -59,9 +59,9 @@ menu:
     excluded-player-types:
       select-menu:
         placeholder: "Please select the excluded types of players."
-        players-on-death-screen-included:
+        players-on-death-screen-excluded:
           label: "Players on Death Screen"
-        spectators-included:
+        spectators-excluded:
           label: "Spectators"
     excluded-player-behavior:
       select-menu:

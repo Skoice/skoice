@@ -97,9 +97,9 @@ public final class LinkedPlayer {
     }
 
     private boolean isExcluded() {
-        boolean onDeathScreenExcluded = !this.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())
+        boolean onDeathScreenExcluded = this.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_EXCLUDED.toString())
                 && this.player.isDead();
-        boolean spectatorExcluded = !this.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString())
+        boolean spectatorExcluded = this.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_EXCLUDED.toString())
                 && this.player.getGameMode() == SkoiceGameMode.SPECTATOR;
         return onDeathScreenExcluded || spectatorExcluded;
     }

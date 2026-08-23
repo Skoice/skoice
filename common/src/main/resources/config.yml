@@ -9,8 +9,8 @@ deafened-alert: true
 invite-link: true
 linking-suggestion: true
 tooltips: true
-players-on-death-screen-included: false
-spectators-included: false
+players-on-death-screen-excluded: true
+spectators-excluded: true
 excluded-players-communication: same-world
 team-provider: vanilla
 team-communication: false

@@ -38,16 +38,16 @@ public class ExcludedPlayerTypesSelector extends Selector {
 
     @Override
     public SelectMenu get() {
-        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-types.select-menu.players-on-death-screen-included.label"), ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())
+        List<SelectOption> options = new ArrayList<>(Arrays.asList(SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-types.select-menu.players-on-death-screen-excluded.label"), ConfigField.PLAYERS_ON_DEATH_SCREEN_EXCLUDED.toString())
                         .withEmoji(MenuEmoji.SKULL.get()),
-                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-types.select-menu.spectators-included.label"), ConfigField.SPECTATORS_INCLUDED.toString())
+                SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-types.select-menu.spectators-excluded.label"), ConfigField.SPECTATORS_EXCLUDED.toString())
                         .withEmoji(MenuEmoji.GHOST.get())));
         List<String> defaultValues = new ArrayList<>();
-        if (!super.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString())) {
-            defaultValues.add(ConfigField.PLAYERS_ON_DEATH_SCREEN_INCLUDED.toString());
+        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_EXCLUDED.toString())) {
+            defaultValues.add(ConfigField.PLAYERS_ON_DEATH_SCREEN_EXCLUDED.toString());
         }
-        if (!super.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_INCLUDED.toString())) {
-            defaultValues.add(ConfigField.SPECTATORS_INCLUDED.toString());
+        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_EXCLUDED.toString())) {
+            defaultValues.add(ConfigField.SPECTATORS_EXCLUDED.toString());
         }
         return StringSelectMenu.create("excluded-player-types-selection")
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-types.select-menu.placeholder"))
