@@ -43,6 +43,8 @@ public class OutdatedConfig {
 
     public void update() {
         this.renameActionBarAlertField();
+        this.invertIncludedPlayerField("players-on-death-screen-included", ConfigField.PLAYERS_ON_DEATH_SCREEN_EXCLUDED);
+        this.invertIncludedPlayerField("spectators-included", ConfigField.SPECTATORS_EXCLUDED);
 
         File outdatedConfig = new File(this.plugin.getDataFolder(), "data.yml");
         if (outdatedConfig.exists()) {
@@ -105,6 +107,14 @@ public class OutdatedConfig {
         if (config.contains("action-bar-alert")) {
             config.set(ConfigField.DISCONNECTING_ALERT.toString(), config.getBoolean("action-bar-alert"));
             config.remove("action-bar-alert");
+        }
+    }
+
+    private void invertIncludedPlayerField(String oldField, ConfigField newField) {
+        ConfigStore config = this.plugin.getConfigYamlFile();
+        if (config.contains(oldField)) {
+            config.set(newField.toString(), !config.getBoolean(oldField));
+            config.remove(oldField);
         }
     }
 
