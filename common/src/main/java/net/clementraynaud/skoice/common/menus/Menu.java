@@ -84,8 +84,8 @@ public class Menu {
 
     private String getDescription(Map<String, String> args) {
         String descriptionKey = "menu." + this.section + ".description";
-        if ("permissions".equals(this.section) && !"true".equals(args.get("invoker-is-bot-owner"))) {
-            descriptionKey = "menu." + this.section + ".description-non-owner";
+        if ("permissions".equals(this.section) && "true".equals(args.get("invoker-is-bot-owner"))) {
+            descriptionKey = "menu." + this.section + ".description-owner";
         }
         if (this.plugin.getBot().getLang().contains(descriptionKey)) {
             return this.plugin.getBot().getLang().getMessage(descriptionKey, args);
