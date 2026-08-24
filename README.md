@@ -12,7 +12,7 @@ Skoice is currently available in the following languages: English, Czech, Danish
 
 To download our plugin, please [head to our Spigot page](https://www.spigotmc.org/resources/skoice-proximity-voice-chat.82861). Consider leaving a review if you enjoy our work!
 
-Skoice is supported on servers that run any Minecraft version from 1.8 to 1.21.
+Skoice is supported on servers that run any Minecraft version from 1.8 to 26.2.
 
 You can use Skoice on the following server software:
 - **Spigot** (or derivative like [Paper ⭐](https://papermc.io/downloads/paper), [Purpur](https://purpurmc.org/downloads))
