@@ -22,6 +22,8 @@ package net.clementraynaud.skoice.common.storage;
 import net.clementraynaud.skoice.common.Skoice;
 import org.h2.mvstore.MVMap;
 
+import java.util.ArrayList;
+
 public abstract class MvStoreFile<V> {
 
     protected final Skoice plugin;
@@ -46,6 +48,14 @@ public abstract class MvStoreFile<V> {
 
     public void remove(String path) {
         this.map.remove(path);
+    }
+
+    public void removeKeysStartingWith(String prefix) {
+        for (String key : new ArrayList<>(this.map.keySet())) {
+            if (key.startsWith(prefix)) {
+                this.map.remove(key);
+            }
+        }
     }
 
     public void setDefault(String path, V value) {

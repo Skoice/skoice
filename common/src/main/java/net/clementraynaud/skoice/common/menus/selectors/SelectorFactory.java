@@ -20,39 +20,51 @@
 package net.clementraynaud.skoice.common.menus.selectors;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.storage.config.WorldOverrides;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class SelectorFactory {
 
-    public List<Selector> getSelectors(Skoice plugin, String menuId) {
+    public List<Selector> getSelectors(Skoice plugin, String menuId, Map<String, String> args) {
+        String overrideId = args.get(WorldOverrides.ARG);
+        if (overrideId != null && !WorldOverrides.isScopedMenu(menuId)) {
+            overrideId = null;
+        }
+
         switch (menuId) {
             case "server":
                 return Collections.singletonList(new ServerSelector(plugin));
             case "voice-channel":
                 return Collections.singletonList(new VoiceChannelSelector(plugin));
             case "range":
-                return Collections.singletonList(new RangeSelector(plugin));
+                return Collections.singletonList(new RangeSelector(plugin, overrideId));
             case "language":
                 return Collections.singletonList(new LanguageSelector(plugin));
             case "login-notification":
                 return Collections.singletonList(new LoginNotificationSelector(plugin));
             case "excluded-players":
                 return Arrays.asList(
-                        new ExcludedPlayerTypesSelector(plugin),
-                        new ExcludedPlayerBehaviorSelector(plugin)
+                        new ExcludedPlayerTypesSelector(plugin, overrideId),
+                        new ExcludedPlayerBehaviorSelector(plugin, overrideId)
                 );
             case "teams":
-                return Arrays.asList(
-                        new TeamProviderSelector(plugin),
-                        new TeamBehaviorsSelector(plugin)
-                );
+                return overrideId == null
+                        ? Arrays.asList(new TeamProviderSelector(plugin), new TeamBehaviorsSelector(plugin, null))
+                        : Collections.singletonList(new TeamBehaviorsSelector(plugin, overrideId));
             case "action-bar-alerts":
-                return Collections.singletonList(new ActionBarAlertsSelector(plugin));
+                return Collections.singletonList(new ActionBarAlertsSelector(plugin, overrideId));
             case "active-worlds":
-                return Collections.singletonList(new ActiveWorldsSelector(plugin));
+                return overrideId == null
+                        ? Collections.singletonList(new ActiveWorldsSelector(plugin))
+                        : Collections.singletonList(new WorldActivitySelector(plugin, overrideId));
+            case WorldOverrides.LIST_MENU_ID:
+                return Collections.singletonList(new WorldOverrideSelector(plugin));
+            case WorldOverrides.WORLDS_MENU_ID:
+                return Collections.singletonList(new WorldOverrideWorldsSelector(plugin, overrideId));
             case "chaining":
                 return Collections.singletonList(new ChainingSelector(plugin));
             case "link-synchronization":

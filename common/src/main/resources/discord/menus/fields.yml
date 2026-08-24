@@ -57,6 +57,8 @@ access-denied:
   emoji: no_entry
 illegal-value:
   emoji: x
+invalid-pattern:
+  emoji: x
 proximity-channel-deleted:
   emoji: x
 invite-link-revoked:

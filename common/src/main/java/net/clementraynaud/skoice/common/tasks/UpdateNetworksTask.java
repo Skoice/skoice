@@ -24,6 +24,7 @@ import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceLocation;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
+import net.clementraynaud.skoice.common.storage.config.ConfigScope;
 import net.clementraynaud.skoice.common.system.ActionBarAlert;
 import net.clementraynaud.skoice.common.system.LinkedPlayer;
 import net.clementraynaud.skoice.common.system.Network;
@@ -142,13 +143,13 @@ public class UpdateNetworksTask {
                     userCount++;
                     network = linkedPlayer.getNetwork();
 
-                    if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.MUTED_ALERT.toString())
+                    if (linkedPlayer.getConfigScope().getBoolean(ConfigField.MUTED_ALERT.toString())
                             && voiceState.isMuted()
                             && !membersInMainVoiceChannel.contains(memberId)
                             && !linkedPlayer.isInAnyIsolationChannel()) {
                         linkedPlayer.addActionBarAlert(ActionBarAlert.MUTED);
                     }
-                    if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.DEAFENED_ALERT.toString())
+                    if (linkedPlayer.getConfigScope().getBoolean(ConfigField.DEAFENED_ALERT.toString())
                             && voiceState.isDeafened()) {
                         linkedPlayer.addActionBarAlert(ActionBarAlert.DEAFENED);
                     }
@@ -200,8 +201,8 @@ public class UpdateNetworksTask {
                         || !awaitingMove.getLeft().equals(shouldBeInChannel.getId())
                         && awaitingMove.getRight().cancel(false)) {
                     if (currentChannel != shouldBeInChannel) {
-                        boolean sendConnectingAlert = this.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())
-                                && linkedPlayer != null
+                        boolean sendConnectingAlert = linkedPlayer != null
+                                && linkedPlayer.getConfigScope().getBoolean(ConfigField.CONNECTING_ALERT.toString())
                                 && network != null
                                 && (membersInMainVoiceChannel.contains(memberId) || wasIsolated);
                         this.awaitingMoves.put(memberId, Pair.of(
@@ -240,7 +241,7 @@ public class UpdateNetworksTask {
                     if (!network.canPlayerStayConnected(p)) {
                         network.remove(p);
 
-                    } else if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.DISCONNECTING_ALERT.toString())
+                    } else if (p.getConfigScope().getBoolean(ConfigField.DISCONNECTING_ALERT.toString())
                             && !network.canPlayerConnect(p)) {
                         p.addActionBarAlert(ActionBarAlert.DISCONNECTING);
                     }
@@ -297,9 +298,12 @@ public class UpdateNetworksTask {
     }
 
     private SpatialIndex buildSpatialIndex() {
-        int horizontalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
-        int verticalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString());
-        boolean teamCommunication = this.plugin.getConfigYamlFile().getBoolean(ConfigField.TEAM_COMMUNICATION.toString());
+        int horizontalRadius = this.plugin.getConfigYamlFile().getWorldOverrides()
+                .getHighestInt(ConfigField.HORIZONTAL_RADIUS.toString());
+        int verticalRadius = this.plugin.getConfigYamlFile().getWorldOverrides()
+                .getHighestInt(ConfigField.VERTICAL_RADIUS.toString());
+        boolean teamCommunication = this.plugin.getConfigYamlFile().getWorldOverrides()
+                .isEnabledAnywhere(ConfigField.TEAM_COMMUNICATION.toString());
         SpatialIndex index = new SpatialIndex(horizontalRadius, verticalRadius, teamCommunication, this.plugin.getTeamProviderManager());
         for (LinkedPlayer player : LinkedPlayer.getOnlineLinkedPlayers()) {
             if (player.isStateEligible()) {
@@ -322,7 +326,8 @@ public class UpdateNetworksTask {
     }
 
     private void sendLinkingSuggestion(Set<String> connectedMembers, SpatialIndex spatialIndex) {
-        if (!this.plugin.getConfigYamlFile().getBoolean(ConfigField.LINKING_SUGGESTION.toString())) {
+        if (!this.plugin.getConfigYamlFile().getWorldOverrides()
+                .isEnabledAnywhere(ConfigField.LINKING_SUGGESTION.toString())) {
             return;
         }
 
@@ -335,17 +340,19 @@ public class UpdateNetworksTask {
             return;
         }
 
-        List<String> disabledWorlds = this.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString());
-        int horizontalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
-        int verticalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString());
-
         for (FullPlayer player : this.plugin.getOnlinePlayers()) {
             if (usingPlayerIds.contains(player.getUniqueId())) {
                 continue;
             }
-            if (disabledWorlds.contains(player.getWorld())) {
+            if (!this.plugin.getConfigYamlFile().isWorldActive(player.getWorld())) {
                 continue;
             }
+            ConfigScope scope = this.plugin.getConfigYamlFile().forWorld(player.getWorld());
+            if (!scope.getBoolean(ConfigField.LINKING_SUGGESTION.toString())) {
+                continue;
+            }
+            int horizontalRadius = scope.getInt(ConfigField.HORIZONTAL_RADIUS.toString());
+            int verticalRadius = scope.getInt(ConfigField.VERTICAL_RADIUS.toString());
             SkoiceLocation playerLocation = player.getLocation();
             if (playerLocation == null) {
                 continue;

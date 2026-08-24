@@ -23,11 +23,19 @@ import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.bot.BotStatus;
 import net.clementraynaud.skoice.common.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.common.menus.EmbeddedMenu;
+import net.clementraynaud.skoice.common.menus.WorldOverrideMenus;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
+import net.clementraynaud.skoice.common.storage.config.ConfigScope;
+import net.clementraynaud.skoice.common.storage.config.WorldOverride;
+import net.clementraynaud.skoice.common.storage.config.WorldOverrides;
+import net.clementraynaud.skoice.common.util.MapUtil;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.modals.ModalMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModalInteractionListener extends ListenerAdapter {
 
@@ -49,8 +57,17 @@ public class ModalInteractionListener extends ListenerAdapter {
         }
 
         BotStatus oldStatus = this.plugin.getBot().getStatus();
+        String[] parts = WorldOverrides.split(event.getModalId());
+        String modalId = parts[0];
+        String overrideId = parts.length > 1 ? parts[1] : null;
 
-        if ("new-voice-channel".equals(event.getModalId())) {
+        if (WorldOverrides.CREATE_BUTTON_ID.equals(modalId) || WorldOverrides.EDIT_BUTTON_ID.equals(modalId)) {
+            this.saveWorldOverrideName(event, modalId, overrideId);
+
+        } else if (WorldOverrides.PATTERNS_BUTTON_ID.equals(modalId)) {
+            this.saveWorldOverridePatterns(event, overrideId);
+
+        } else if ("new-voice-channel".equals(modalId)) {
             ModalMapping categoryValue = event.getValue("category-name");
             ModalMapping voiceChannelValue = event.getValue("voice-channel-name");
             if (categoryValue == null || voiceChannelValue == null) {
@@ -71,7 +88,7 @@ public class ModalInteractionListener extends ListenerAdapter {
                 });
             });
 
-        } else if ("customized".equals(event.getModalId())) {
+        } else if ("customized".equals(modalId)) {
             int horizontalRadius = 0;
             int verticalRadius = 0;
             ModalMapping horizontalRadiusValue = event.getValue("horizontal-radius");
@@ -91,9 +108,12 @@ public class ModalInteractionListener extends ListenerAdapter {
                 ConfigurationMenus.getFromMessageId(event.getMessage().getId())
                         .ifPresent(EmbeddedMenu::editFromHook);
             } else {
-                this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
-                this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
-                this.plugin.getListenerManager().update(event.getUser());
+                ConfigScope scope = this.plugin.getConfigYamlFile().scope(overrideId);
+                scope.set(ConfigField.HORIZONTAL_RADIUS.toString(), horizontalRadius);
+                scope.set(ConfigField.VERTICAL_RADIUS.toString(), verticalRadius);
+                if (overrideId == null) {
+                    this.plugin.getListenerManager().update(event.getUser());
+                }
                 ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> {
                     if (oldStatus != this.plugin.getBot().getStatus()) {
                         menu.refreshId();
@@ -102,5 +122,76 @@ public class ModalInteractionListener extends ListenerAdapter {
                 });
             }
         }
+    }
+
+    private void saveWorldOverrideName(ModalInteractionEvent event, String modalId, String overrideId) {
+        ModalMapping nameValue = event.getValue(WorldOverrides.NAME_INPUT_ID);
+        if (nameValue == null) {
+            return;
+        }
+
+        WorldOverrides overrides = this.plugin.getConfigYamlFile().getWorldOverrides();
+
+        if (WorldOverrides.CREATE_BUTTON_ID.equals(modalId)) {
+            if (overrides.getAll().size() >= WorldOverrides.MAX_AMOUNT) {
+                this.show(event, WorldOverrides.LIST_MENU_ID, null);
+                return;
+            }
+            WorldOverride created = overrides.create(nameValue.getAsString());
+            if (created == null) {
+                this.show(event, WorldOverrides.LIST_MENU_ID, null);
+                return;
+            }
+            this.show(event, WorldOverrides.WORLDS_MENU_ID, created.getId());
+            return;
+        }
+
+        if (overrides.get(overrideId) == null) {
+            this.show(event, WorldOverrides.LIST_MENU_ID, null);
+            return;
+        }
+        overrides.rename(overrideId, nameValue.getAsString());
+        this.show(event, WorldOverrides.OVERRIDE_MENU_ID, overrideId);
+    }
+
+    private void saveWorldOverridePatterns(ModalInteractionEvent event, String overrideId) {
+        ModalMapping patternsValue = event.getValue(WorldOverrides.PATTERNS_INPUT_ID);
+        WorldOverrides overrides = this.plugin.getConfigYamlFile().getWorldOverrides();
+
+        if (patternsValue == null || overrides.get(overrideId) == null) {
+            this.show(event, WorldOverrides.LIST_MENU_ID, null);
+            return;
+        }
+
+        List<String> valid = new ArrayList<>();
+        List<String> invalid = new ArrayList<>();
+        for (String pattern : WorldOverrideMenus.readPatterns(patternsValue.getAsString())) {
+            if (WorldOverride.isValidPattern(pattern)) {
+                valid.add(pattern);
+            } else {
+                invalid.add(pattern);
+            }
+        }
+        overrides.setPatterns(overrideId, valid);
+
+        if (invalid.isEmpty()) {
+            this.show(event, WorldOverrides.WORLDS_MENU_ID, overrideId);
+            return;
+        }
+
+        new EmbeddedMenu(this.plugin.getBot())
+                .setContent("invalid-pattern",
+                        MapUtil.of("patterns", WorldOverrideMenus.format(invalid)))
+                .reply(event);
+        ConfigurationMenus.getFromMessageId(event.getMessage().getId())
+                .ifPresent(EmbeddedMenu::editFromHook);
+    }
+
+    private void show(ModalInteractionEvent event, String menuId, String overrideId) {
+        ConfigurationMenus.getFromMessageId(event.getMessage().getId())
+                .ifPresent(menu -> menu.setContent(menuId, overrideId == null
+                                ? MapUtil.of()
+                                : MapUtil.of(WorldOverrides.ARG, overrideId))
+                        .edit(event));
     }
 }

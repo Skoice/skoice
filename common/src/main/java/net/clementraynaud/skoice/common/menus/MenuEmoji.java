@@ -32,6 +32,9 @@ import java.util.Map;
 
 public enum MenuEmoji {
 
+    ARROW_DOWN("U+2B07"),
+    ARROW_LEFT("U+2B05"),
+    ARROW_UP("U+2B06"),
     ARROWS_COUNTERCLOCKWISE("U+1F504"),
     BELL("U+1F514"),
     BUST_IN_SILHOUETTE("U+1F464"),
@@ -40,6 +43,7 @@ public enum MenuEmoji {
     CHAINS("U+26D3"),
     CLOSED_LOCK_WITH_KEY("U+1F510"),
     CROSSED_SWORDS("U+2694"),
+    EARTH_AMERICAS("U+1F30D"),
     ELECTRIC_PLUG("U+1F50C"),
     FILE_CABINET("U+1F5C4"),
     GEAR("U+2699"),

@@ -34,8 +34,35 @@ public class ConfigStore extends ObjectMvStoreFile {
 
     public static final String MAP_NAME = "config";
 
+    private final WorldOverrides worldOverrides = new WorldOverrides(this);
+
     public ConfigStore(Skoice plugin, MvStore store) {
         super(plugin, store, ConfigStore.MAP_NAME);
+        this.worldOverrides.load();
+    }
+
+    public WorldOverrides getWorldOverrides() {
+        return this.worldOverrides;
+    }
+
+    public ConfigScope forWorld(String world) {
+        return this.worldOverrides.getScope(world);
+    }
+
+    public ConfigScope getGlobalScope() {
+        return this.worldOverrides.getGlobalScope();
+    }
+
+    public ConfigScope scope(String overrideId) {
+        return this.worldOverrides.getScope(this.worldOverrides.get(overrideId));
+    }
+
+    public boolean isWorldActive(String world) {
+        ConfigScope scope = this.forWorld(world);
+        if (scope.isOverridden(WorldOverrides.ACTIVE_FIELD)) {
+            return scope.getBoolean(WorldOverrides.ACTIVE_FIELD);
+        }
+        return !this.getStringList(ConfigField.DISABLED_WORLDS.toString()).contains(world);
     }
 
     public void saveDefaultValues() {

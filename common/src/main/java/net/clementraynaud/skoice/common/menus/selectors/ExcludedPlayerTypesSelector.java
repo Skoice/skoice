@@ -32,8 +32,8 @@ import java.util.List;
 
 public class ExcludedPlayerTypesSelector extends Selector {
 
-    public ExcludedPlayerTypesSelector(Skoice plugin) {
-        super(plugin);
+    public ExcludedPlayerTypesSelector(Skoice plugin, String overrideId) {
+        super(plugin, overrideId);
     }
 
     @Override
@@ -43,13 +43,13 @@ public class ExcludedPlayerTypesSelector extends Selector {
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-types.select-menu.spectators-excluded.label"), ConfigField.SPECTATORS_EXCLUDED.toString())
                         .withEmoji(MenuEmoji.GHOST.get())));
         List<String> defaultValues = new ArrayList<>();
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_EXCLUDED.toString())) {
+        if (super.getScope().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_EXCLUDED.toString())) {
             defaultValues.add(ConfigField.PLAYERS_ON_DEATH_SCREEN_EXCLUDED.toString());
         }
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_EXCLUDED.toString())) {
+        if (super.getScope().getBoolean(ConfigField.SPECTATORS_EXCLUDED.toString())) {
             defaultValues.add(ConfigField.SPECTATORS_EXCLUDED.toString());
         }
-        return StringSelectMenu.create("excluded-player-types-selection")
+        return StringSelectMenu.create(super.scopeId("excluded-player-types-selection"))
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-types.select-menu.placeholder"))
                 .addOptions(options)
                 .setRequiredRange(0, options.size())

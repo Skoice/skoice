@@ -27,6 +27,10 @@ import net.clementraynaud.skoice.common.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.common.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.common.menus.EmbeddedMenu;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
+import net.clementraynaud.skoice.common.storage.config.ConfigScope;
+import net.clementraynaud.skoice.common.storage.config.WorldOverride;
+import net.clementraynaud.skoice.common.storage.config.WorldOverrides;
+import net.clementraynaud.skoice.common.util.MapUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.components.label.Label;
 import net.dv8tion.jda.api.components.selections.SelectOption;
@@ -64,7 +68,10 @@ public class StringSelectInteractionListener extends ListenerAdapter {
 
         Member member = event.getMember();
         if (member == null || member.hasPermission(Permission.MANAGE_SERVER)) {
-            String componentId = event.getComponentId();
+            String[] parts = WorldOverrides.split(event.getComponentId());
+            String componentId = parts[0];
+            String overrideId = parts.length > 1 ? parts[1] : null;
+            ConfigScope scope = this.plugin.getConfigYamlFile().scope(overrideId);
             List<SelectOption> options = new ArrayList<>(event.getComponent().getOptions());
             BotStatus oldStatus = this.plugin.getBot().getStatus();
 
@@ -145,20 +152,14 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     break;
 
                 case "range-selection":
-                    if ("long-range-mode".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 80);
-                        this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 40);
-                        this.plugin.getListenerManager().update(event.getUser());
-                        ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> {
-                            if (oldStatus != this.plugin.getBot().getStatus()) {
-                                menu.refreshId();
-                            }
-                            menu.edit(event);
-                        });
-                    } else if ("short-range-mode".equals(event.getSelectedOptions().get(0).getValue())) {
-                        this.plugin.getConfigYamlFile().set(ConfigField.HORIZONTAL_RADIUS.toString(), 40);
-                        this.plugin.getConfigYamlFile().set(ConfigField.VERTICAL_RADIUS.toString(), 20);
-                        this.plugin.getListenerManager().update(event.getUser());
+                    if ("long-range-mode".equals(event.getSelectedOptions().get(0).getValue())
+                            || "short-range-mode".equals(event.getSelectedOptions().get(0).getValue())) {
+                        boolean longRange = "long-range-mode".equals(event.getSelectedOptions().get(0).getValue());
+                        scope.set(ConfigField.HORIZONTAL_RADIUS.toString(), longRange ? 80 : 40);
+                        scope.set(ConfigField.VERTICAL_RADIUS.toString(), longRange ? 40 : 20);
+                        if (overrideId == null) {
+                            this.plugin.getListenerManager().update(event.getUser());
+                        }
                         ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> {
                             if (oldStatus != this.plugin.getBot().getStatus()) {
                                 menu.refreshId();
@@ -168,15 +169,15 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     } else if ("customized".equals(event.getSelectedOptions().get(0).getValue())) {
                         TextInput horizontalRadius = TextInput.create("horizontal-radius",
                                         TextInputStyle.SHORT)
-                                .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.HORIZONTAL_RADIUS.toString()))
+                                .setValue(String.valueOf(scope.getInt(ConfigField.HORIZONTAL_RADIUS.toString())))
                                 .setRequiredRange(1, 3)
                                 .build();
                         TextInput verticalRadius = TextInput.create("vertical-radius",
                                         TextInputStyle.SHORT)
-                                .setValue(this.plugin.getConfigYamlFile().getString(ConfigField.VERTICAL_RADIUS.toString()))
+                                .setValue(String.valueOf(scope.getInt(ConfigField.VERTICAL_RADIUS.toString())))
                                 .setRequiredRange(1, 3)
                                 .build();
-                        Modal modal = Modal.create("customized",
+                        Modal modal = Modal.create(WorldOverrides.scopeId("customized", overrideId),
                                         this.plugin.getBot().getLang().getMessage("field.customized.title"))
                                 .addComponents(
                                         Label.of(this.plugin.getBot().getLang().getMessage("text-input.horizontal-radius.label"), horizontalRadius),
@@ -205,7 +206,37 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                     break;
 
                 case "excluded-player-behavior-selection":
-                    this.plugin.getConfigYamlFile().set(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString(), event.getSelectedOptions().get(0).getValue());
+                    scope.set(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString(), event.getSelectedOptions().get(0).getValue());
+                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
+                    break;
+
+                case WorldOverrides.SELECT_ID:
+                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu ->
+                            menu.setContent(WorldOverrides.OVERRIDE_MENU_ID,
+                                            MapUtil.of(WorldOverrides.ARG, event.getSelectedOptions().get(0).getValue()))
+                                    .edit(event));
+                    break;
+
+                case WorldOverrides.WORLDS_SELECT_ID: {
+                    WorldOverrides overrides = this.plugin.getConfigYamlFile().getWorldOverrides();
+                    WorldOverride override = overrides.get(overrideId);
+                    if (override != null) {
+                        List<String> offered = event.getComponent().getOptions().stream()
+                                .map(SelectOption::getValue)
+                                .collect(Collectors.toList());
+                        List<String> updated = override.getWorlds().stream()
+                                .filter(world -> !offered.contains(world))
+                                .collect(Collectors.toCollection(ArrayList::new));
+                        event.getSelectedOptions().forEach(option -> updated.add(option.getValue()));
+                        overrides.setWorlds(overrideId, updated);
+                    }
+                    ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
+                    break;
+                }
+
+                case WorldOverrides.ACTIVE_SELECT_ID:
+                    scope.set(WorldOverrides.ACTIVE_FIELD,
+                            Boolean.valueOf(event.getSelectedOptions().get(0).getValue()));
                     ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     break;
 
@@ -225,8 +256,8 @@ public class StringSelectInteractionListener extends ListenerAdapter {
                 case "team-behaviors-selection":
                 case "link-synchronization-selection":
                     options.removeAll(event.getSelectedOptions());
-                    options.forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), false));
-                    event.getSelectedOptions().forEach(option -> this.plugin.getConfigYamlFile().set(option.getValue(), true));
+                    options.forEach(option -> scope.set(option.getValue(), false));
+                    event.getSelectedOptions().forEach(option -> scope.set(option.getValue(), true));
                     ConfigurationMenus.getFromMessageId(event.getMessageId()).ifPresent(menu -> menu.edit(event));
                     break;
 

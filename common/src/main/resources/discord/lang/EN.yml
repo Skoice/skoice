@@ -51,8 +51,13 @@ menu:
   active-worlds:
     title: "Active Worlds"
     description: "Choose the worlds where Skoice is active."
+    override-title: "Activity"
+    override-description: "Choose whether Skoice is active in the worlds of this override."
     select-menu:
       placeholder: "Please select the desired worlds."
+      select-option:
+        overridden:
+          description: "Controlled by the \"{name}\" override."
   excluded-players:
     title: "Excluded Players"
     description: "Choose the types of players excluded from the proximity voice chat and whether they can still communicate with one another."
@@ -81,6 +86,7 @@ menu:
             label: "Vanilla"
           parties:
             label: "Parties"
+    override-description: "Select the behaviors that apply to teams in the worlds of this override. The team system itself is shared by every world and is selected in `Voice Chat › Teams`."
     team-behaviors:
       select-menu:
         placeholder: "Please select the desired behaviors."
@@ -150,6 +156,39 @@ menu:
   tooltips:
     title: "Tooltips"
     description: "Toggle interactive messages on your Minecraft server. You may want to disable this setting if your server is running on Bedrock Edition or if tooltips are disabled in Minecraft settings. Only operators can receive interactive messages."
+  world-overrides:
+    title: "Per-World Settings"
+    description: "Give a group of worlds its own range, active state, excluded players, teams and action bar alerts. Anything an override does not change is inherited from the global settings."
+    rule: "Worlds are matched by name or by regular expression. When several overrides match the same world, the **first one in the list** wins — reorder them from an override's own menu."
+    empty: "You have no override yet. Every world uses the global settings."
+    entry: "**{priority}. {name}**"
+    entry-worlds: "Worlds: {worlds}"
+    entry-patterns: "Patterns: {patterns}"
+    entry-empty: "*No world yet.*"
+    select-menu:
+      placeholder: "Please select an override to edit."
+    create-modal:
+      title: "Create an Override"
+    rename-modal:
+      title: "Rename the Override"
+  world-override:
+    title: "Override"
+    description: "Priority **{priority}** of **{total}** — when several overrides match the same world, the first one in the list wins."
+    empty: "-# This override covers no world yet. Open `Worlds` to choose some."
+    overridden: "Overridden"
+    inherited: "Inherited from the global settings"
+  world-override-worlds:
+    title: "Worlds"
+    description: "Choose the worlds this override applies to."
+    patterns: "Patterns: {patterns}"
+    no-pattern: "-# Worlds that do not exist yet — generated or temporary ones — can be covered by a regular expression instead."
+    select-menu:
+      placeholder: "Please select the desired worlds."
+    patterns-modal:
+      title: "Edit the Patterns"
+  world-override-deletion:
+    title: "Delete an Override"
+    description: "Are you sure you want to delete **{name}**? Its settings will be lost and its worlds will fall back to the global settings."
   advanced-settings:
     title: "Advanced Settings"
   link-synchronization:
@@ -233,6 +272,9 @@ field:
   illegal-value:
     title: "Illegal Value"
     description: "Values must be whole numbers greater than 0."
+  invalid-pattern:
+    title: "Invalid Patterns"
+    description: "{patterns} could not be saved because they are not valid regular expressions. Your other patterns were saved."
   proximity-channel-deleted:
     title: "Proximity Channel Deleted"
     description: "You have deleted a channel used by the proximity voice chat. These channels are automatically deleted when they are no longer needed. You should not be doing it manually."
@@ -249,9 +291,20 @@ button-label:
   refresh: "Refresh"
   update-permissions: "Update Permissions"
   explore-more-settings: "Explore More Settings"
+  create-override: "Create Override"
+  rename-override: "Rename"
+  edit-patterns: "Edit Patterns"
+  move-override-up: "Move Up"
+  move-override-down: "Move Down"
+  delete-override: "Delete"
+  confirm-deletion: "Delete Override"
+  cancel: "Cancel"
+  reset-to-global: "Reset to Global"
 select-option:
   default:
     description: "This option is selected by default."
+  inherited:
+    description: "This option is inherited from the global settings."
   undesirable:
     description: "This option can cause undesirable behaviors."
   enabled:
@@ -268,6 +321,13 @@ text-input:
   voice-channel-name:
     label: "Voice Channel Name"
     default-value: "Proximity Voice Chat"
+  override-name:
+    label: "Name"
+    default-value: "New Override"
+  override-patterns:
+    label: "Patterns"
+    description: "One regular expression per line."
+    placeholder: "minigame_.*"
   horizontal-radius:
     label: "Horizontal Radius"
   vertical-radius:

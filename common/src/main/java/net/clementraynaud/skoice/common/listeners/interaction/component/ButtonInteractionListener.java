@@ -24,8 +24,12 @@ import net.clementraynaud.skoice.common.bot.BotStatus;
 import net.clementraynaud.skoice.common.menus.ConfigurationMenu;
 import net.clementraynaud.skoice.common.menus.ConfigurationMenus;
 import net.clementraynaud.skoice.common.menus.EmbeddedMenu;
+import net.clementraynaud.skoice.common.menus.WorldOverrideMenus;
 import net.clementraynaud.skoice.common.storage.LoginNotificationStore;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
+import net.clementraynaud.skoice.common.storage.config.WorldOverride;
+import net.clementraynaud.skoice.common.storage.config.WorldOverrides;
+import net.clementraynaud.skoice.common.util.MapUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -33,6 +37,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class ButtonInteractionListener extends ListenerAdapter {
 
@@ -40,6 +45,10 @@ public class ButtonInteractionListener extends ListenerAdapter {
 
     public ButtonInteractionListener(Skoice plugin) {
         this.plugin = plugin;
+    }
+
+    private static Map<String, String> getArgs(String overrideId) {
+        return overrideId == null ? MapUtil.of() : MapUtil.of(WorldOverrides.ARG, overrideId);
     }
 
     @Override
@@ -73,13 +82,21 @@ public class ButtonInteractionListener extends ListenerAdapter {
                         .reply(event);
 
             } else {
+                String[] parts = WorldOverrides.split(buttonId);
+                String baseId = parts[0];
+                String overrideId = parts.length > 1 ? parts[1] : null;
+
+                if (this.handleWorldOverride(event, parts)) {
+                    return;
+                }
+
                 ConfigurationMenus.getFromMessageId(event.getMessage().getId()).ifPresent(menu -> {
                     List<String> unreviewedSettings = this.plugin.getConfigYamlFile().getStringList(ConfigField.UNREVIEWED_SETTINGS.toString());
-                    if (unreviewedSettings.contains(buttonId)) {
-                        unreviewedSettings.remove(buttonId);
+                    if (unreviewedSettings.contains(baseId)) {
+                        unreviewedSettings.remove(baseId);
                         this.plugin.getConfigYamlFile().set(ConfigField.UNREVIEWED_SETTINGS.toString(), unreviewedSettings);
                     }
-                    menu.setContent(buttonId).edit(event);
+                    menu.setContent(baseId, ButtonInteractionListener.getArgs(overrideId)).edit(event);
                 });
             }
 
@@ -87,5 +104,63 @@ public class ButtonInteractionListener extends ListenerAdapter {
             new EmbeddedMenu(this.plugin.getBot()).setContent("access-denied")
                     .reply(event);
         }
+    }
+
+    private boolean handleWorldOverride(ButtonInteractionEvent event, String[] parts) {
+        String baseId = parts[0];
+        String overrideId = parts.length > 1 ? parts[1] : null;
+        WorldOverrides overrides = this.plugin.getConfigYamlFile().getWorldOverrides();
+
+        if (WorldOverrides.CREATE_BUTTON_ID.equals(baseId)) {
+            event.replyModal(WorldOverrideMenus.getNameModal(this.plugin, null)).queue();
+            return true;
+        }
+
+        if (overrideId == null || !baseId.startsWith(WorldOverrides.OVERRIDE_MENU_ID)) {
+            return false;
+        }
+
+        WorldOverride override = overrides.get(overrideId);
+        if (override == null) {
+            this.show(event, WorldOverrides.LIST_MENU_ID, null);
+            return true;
+        }
+
+        if (WorldOverrides.EDIT_BUTTON_ID.equals(baseId)) {
+            event.replyModal(WorldOverrideMenus.getNameModal(this.plugin, override)).queue();
+
+        } else if (WorldOverrides.PATTERNS_BUTTON_ID.equals(baseId)) {
+            event.replyModal(WorldOverrideMenus.getPatternsModal(this.plugin, override)).queue();
+
+        } else if (WorldOverrides.MOVE_UP_BUTTON_ID.equals(baseId)) {
+            overrides.move(overrideId, -1);
+            this.show(event, WorldOverrides.OVERRIDE_MENU_ID, overrideId);
+
+        } else if (WorldOverrides.MOVE_DOWN_BUTTON_ID.equals(baseId)) {
+            overrides.move(overrideId, 1);
+            this.show(event, WorldOverrides.OVERRIDE_MENU_ID, overrideId);
+
+        } else if (WorldOverrides.DELETE_BUTTON_ID.equals(baseId)) {
+            this.show(event, WorldOverrides.DELETION_MENU_ID, overrideId);
+
+        } else if (WorldOverrides.DELETE_CONFIRM_BUTTON_ID.equals(baseId)) {
+            overrides.delete(overrideId);
+            this.show(event, WorldOverrides.LIST_MENU_ID, null);
+
+        } else if (WorldOverrides.RESET_BUTTON_ID.equals(baseId) && parts.length > 2) {
+            overrides.getScope(override).reset(WorldOverrides.getFields(parts[2]));
+            this.show(event, parts[2], overrideId);
+
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void show(ButtonInteractionEvent event, String menuId, String overrideId) {
+        ConfigurationMenus.getFromMessageId(event.getMessage().getId())
+                .ifPresent(menu -> menu.setContent(menuId, ButtonInteractionListener.getArgs(overrideId))
+                        .edit(event));
     }
 }

@@ -20,14 +20,34 @@
 package net.clementraynaud.skoice.common.menus.selectors;
 
 import net.clementraynaud.skoice.common.Skoice;
+import net.clementraynaud.skoice.common.storage.config.ConfigScope;
+import net.clementraynaud.skoice.common.storage.config.WorldOverrides;
 import net.dv8tion.jda.api.components.selections.SelectMenu;
 
 public abstract class Selector {
 
     protected final Skoice plugin;
+    private final String overrideId;
 
     protected Selector(Skoice plugin) {
+        this(plugin, null);
+    }
+
+    protected Selector(Skoice plugin, String overrideId) {
         this.plugin = plugin;
+        this.overrideId = overrideId;
+    }
+
+    protected ConfigScope getScope() {
+        return this.plugin.getConfigYamlFile().scope(this.overrideId);
+    }
+
+    protected String getOverrideId() {
+        return this.overrideId;
+    }
+
+    protected String scopeId(String componentId) {
+        return WorldOverrides.scopeId(componentId, this.overrideId);
     }
 
     public abstract SelectMenu get();

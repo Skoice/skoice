@@ -36,8 +36,8 @@ public class ExcludedPlayerBehaviorSelector extends Selector {
     public static final String SAME_WORLD = "same-world";
     public static final String DISABLED = "false";
 
-    public ExcludedPlayerBehaviorSelector(Skoice plugin) {
-        super(plugin);
+    public ExcludedPlayerBehaviorSelector(Skoice plugin, String overrideId) {
+        super(plugin, overrideId);
     }
 
     @Override
@@ -50,9 +50,9 @@ public class ExcludedPlayerBehaviorSelector extends Selector {
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.excluded-players.excluded-player-behavior.select-menu.disabled.label"), ExcludedPlayerBehaviorSelector.DISABLED)
                         .withEmoji(MenuEmoji.MUTED.get())));
 
-        String defaultValue = super.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString());
+        String defaultValue = super.getScope().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString());
 
-        return StringSelectMenu.create("excluded-player-behavior-selection")
+        return StringSelectMenu.create(super.scopeId("excluded-player-behavior-selection"))
                 .addOptions(options)
                 .setDefaultValues(defaultValue).build();
     }

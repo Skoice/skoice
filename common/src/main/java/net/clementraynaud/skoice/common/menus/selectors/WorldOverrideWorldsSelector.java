@@ -21,9 +21,8 @@ package net.clementraynaud.skoice.common.menus.selectors;
 
 import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.menus.MenuEmoji;
-import net.clementraynaud.skoice.common.storage.config.ConfigField;
 import net.clementraynaud.skoice.common.storage.config.WorldOverride;
-import net.clementraynaud.skoice.common.util.MapUtil;
+import net.clementraynaud.skoice.common.storage.config.WorldOverrides;
 import net.dv8tion.jda.api.components.selections.SelectMenu;
 import net.dv8tion.jda.api.components.selections.SelectOption;
 import net.dv8tion.jda.api.components.selections.StringSelectMenu;
@@ -33,38 +32,34 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ActiveWorldsSelector extends Selector {
+public class WorldOverrideWorldsSelector extends Selector {
 
-    public ActiveWorldsSelector(Skoice plugin) {
-        super(plugin);
+    public WorldOverrideWorldsSelector(Skoice plugin, String overrideId) {
+        super(plugin, overrideId);
+    }
+
+    public static List<String> getSelectableWorlds(Skoice plugin, WorldOverride override) {
+        Set<String> worlds = new LinkedHashSet<>(override == null ? new ArrayList<>() : override.getWorlds());
+        worlds.addAll(plugin.getWorlds());
+
+        List<String> selectable = new ArrayList<>(worlds);
+        return selectable.size() > SelectMenu.OPTIONS_MAX_AMOUNT
+                ? selectable.subList(0, SelectMenu.OPTIONS_MAX_AMOUNT)
+                : selectable;
     }
 
     @Override
     public SelectMenu get() {
+        WorldOverride override = super.plugin.getConfigYamlFile().getWorldOverrides().get(super.getOverrideId());
+        List<String> selectableWorlds = WorldOverrideWorldsSelector.getSelectableWorlds(super.plugin, override);
+
         List<SelectOption> options = new ArrayList<>();
-        List<String> disabledWorlds = super.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString());
         List<String> defaultValues = new ArrayList<>();
-        Set<String> worlds = new LinkedHashSet<>(super.plugin.getWorlds());
-        worlds.addAll(disabledWorlds);
-        for (String world : worlds) {
-            if (options.size() == SelectMenu.OPTIONS_MAX_AMOUNT) {
-                break;
-            }
+        for (String world : selectableWorlds) {
+            options.add(SelectOption.of(world, world)
+                    .withEmoji(MenuEmoji.MAP.get()));
 
-            SelectOption option = SelectOption.of(world, world)
-                    .withEmoji(MenuEmoji.MAP.get());
-
-            WorldOverride controller = super.plugin.getConfigYamlFile().getWorldOverrides()
-                    .getActivityController(world);
-            if (controller != null) {
-                option = option.withDescription(super.plugin.getBot().getLang().getMessage(
-                        "menu.active-worlds.select-menu.select-option.overridden.description",
-                        MapUtil.of("name", controller.getName())));
-            }
-
-            options.add(option);
-
-            if (!disabledWorlds.contains(world)) {
+            if (override != null && override.getWorlds().contains(world)) {
                 defaultValues.add(world);
             }
         }
@@ -73,12 +68,11 @@ public class ActiveWorldsSelector extends Selector {
         if (options.isEmpty()) {
             options.add(SelectOption.of("Unavailable", "unavailable")
                     .withEmoji(MenuEmoji.X.get()));
-            defaultValues.add("unavailable");
             disabled = true;
         }
 
-        return StringSelectMenu.create("active-worlds-selection")
-                .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.active-worlds.select-menu.placeholder"))
+        return StringSelectMenu.create(super.scopeId(WorldOverrides.WORLDS_SELECT_ID))
+                .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.world-override-worlds.select-menu.placeholder"))
                 .addOptions(options)
                 .setRequiredRange(0, options.size())
                 .setDisabled(disabled)

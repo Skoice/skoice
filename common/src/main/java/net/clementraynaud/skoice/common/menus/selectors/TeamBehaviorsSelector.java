@@ -32,8 +32,8 @@ import java.util.List;
 
 public class TeamBehaviorsSelector extends Selector {
 
-    public TeamBehaviorsSelector(Skoice plugin) {
-        super(plugin);
+    public TeamBehaviorsSelector(Skoice plugin, String overrideId) {
+        super(plugin, overrideId);
     }
 
     @Override
@@ -43,13 +43,13 @@ public class TeamBehaviorsSelector extends Selector {
                 SelectOption.of(super.plugin.getBot().getLang().getMessage("menu.teams.team-behaviors.select-menu.separated-teams.label"), ConfigField.SEPARATED_TEAMS.toString())
                         .withEmoji(MenuEmoji.LOCKED.get())));
         List<String> defaultValues = new ArrayList<>();
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.TEAM_COMMUNICATION.toString())) {
+        if (super.getScope().getBoolean(ConfigField.TEAM_COMMUNICATION.toString())) {
             defaultValues.add(ConfigField.TEAM_COMMUNICATION.toString());
         }
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.SEPARATED_TEAMS.toString())) {
+        if (super.getScope().getBoolean(ConfigField.SEPARATED_TEAMS.toString())) {
             defaultValues.add(ConfigField.SEPARATED_TEAMS.toString());
         }
-        return StringSelectMenu.create("team-behaviors-selection")
+        return StringSelectMenu.create(super.scopeId("team-behaviors-selection"))
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.teams.team-behaviors.select-menu.placeholder"))
                 .addOptions(options)
                 .setRequiredRange(0, options.size())

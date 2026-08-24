@@ -80,6 +80,10 @@ error:
     type: error
     fields:
       - illegal-value
+  invalid-pattern:
+    type: error
+    fields:
+      - invalid-pattern
   proximity-channel-deleted:
     type: error
     fields:
@@ -177,6 +181,31 @@ advanced-settings:
   footer: review
   type: default
   parent: settings
+world-overrides:
+  emoji: earth_americas
+  footer: review
+  type: default
+  parent: advanced-settings
+  navigable: true
+world-override:
+  emoji: earth_americas
+  footer: review
+  type: default
+  parent: world-overrides
+  hidden: true
+  compact: true
+world-override-worlds:
+  emoji: earth_americas
+  footer: review
+  type: default
+  parent: world-override
+  hidden: true
+world-override-deletion:
+  emoji: wastebasket
+  footer: review
+  type: default
+  parent: world-overrides
+  hidden: true
 link-synchronization:
   emoji: electric_plug
   footer: review

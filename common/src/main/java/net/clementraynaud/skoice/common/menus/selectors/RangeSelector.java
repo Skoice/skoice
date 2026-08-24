@@ -39,8 +39,8 @@ public class RangeSelector extends Selector {
     private static final String SHORT_RANGE_MODE_ID = "short-range-mode";
     private static final String CUSTOMIZED_ID = "customized";
 
-    public RangeSelector(Skoice plugin) {
-        super(plugin);
+    public RangeSelector(Skoice plugin, String overrideId) {
+        super(plugin, overrideId);
     }
 
     @Override
@@ -58,13 +58,13 @@ public class RangeSelector extends Selector {
                 .withEmoji(MenuEmoji.PENCIL2.get());
 
         String defaultValue = null;
-        int horizontalRadius = super.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
-        int verticalRadius = super.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString());
+        int horizontalRadius = super.getScope().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
+        int verticalRadius = super.getScope().getInt(ConfigField.VERTICAL_RADIUS.toString());
         if (horizontalRadius == 80 && verticalRadius == 40) {
             defaultValue = RangeSelector.LONG_RANGE_MODE_ID;
         } else if (horizontalRadius == 40 && verticalRadius == 20) {
             defaultValue = RangeSelector.SHORT_RANGE_MODE_ID;
-        } else if (super.plugin.getBot().getStatus() != BotStatus.NO_RADIUS) {
+        } else if (super.getOverrideId() != null || super.plugin.getBot().getStatus() != BotStatus.NO_RADIUS) {
             defaultValue = RangeSelector.CUSTOMIZED_ID;
             customizedOption = customizedOption.withDescription(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.select-option.description",
                     MapUtil.of("horizontal-radius", String.valueOf(horizontalRadius),
@@ -75,7 +75,7 @@ public class RangeSelector extends Selector {
 
         options.add(customizedOption);
 
-        return StringSelectMenu.create("range-selection")
+        return StringSelectMenu.create(super.scopeId("range-selection"))
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.range.select-menu.placeholder"))
                 .addOptions(options)
                 .setDefaultValues(defaultValue != null ? Collections.singleton(defaultValue) : Collections.emptyList()).build();

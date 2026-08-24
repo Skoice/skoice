@@ -23,6 +23,7 @@ import net.clementraynaud.skoice.common.Skoice;
 import net.clementraynaud.skoice.common.menus.selectors.LoginNotificationSelector;
 import net.clementraynaud.skoice.common.menus.selectors.SelectorFactory;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
+import net.clementraynaud.skoice.common.storage.config.WorldOverrides;
 import net.clementraynaud.skoice.common.util.ConfigurationUtil;
 import net.dv8tion.jda.api.components.buttons.Button;
 import org.simpleyaml.configuration.ConfigurationSection;
@@ -82,6 +83,17 @@ public class MenuFactory {
 
     public List<Button> getButtons(Skoice plugin, String menuId, Map<String, String> args) {
         List<Button> buttons = new ArrayList<>();
+        String scopedOverrideId = args.get(WorldOverrides.ARG);
+
+        if (scopedOverrideId != null && WorldOverrides.isOverridableMenu(menuId)
+                && plugin.getConfigYamlFile().scope(scopedOverrideId).isAnyOverridden(WorldOverrides.getFields(menuId))) {
+            buttons.add(Button.danger(WorldOverrides.scopeId(WorldOverrides.RESET_BUTTON_ID, scopedOverrideId)
+                                    + WorldOverrides.SCOPE_SEPARATOR + menuId,
+                            plugin.getBot().getLang().getMessage("button-label.reset-to-global"))
+                    .withEmoji(MenuEmoji.ARROWS_COUNTERCLOCKWISE.get()));
+            return buttons;
+        }
+
         switch (menuId) {
             case "incomplete-configuration-server-manager":
                 buttons.add(Button.primary("configure-now",
@@ -110,6 +122,65 @@ public class MenuFactory {
                             .withEmoji(MenuEmoji.WASTEBASKET.get()));
                 }
                 break;
+
+            case WorldOverrides.LIST_MENU_ID:
+                if (plugin.getConfigYamlFile().getWorldOverrides().getAll().size() < WorldOverrides.MAX_AMOUNT) {
+                    buttons.add(Button.primary(WorldOverrides.CREATE_BUTTON_ID,
+                                    plugin.getBot().getLang().getMessage("button-label.create-override"))
+                            .withEmoji(MenuEmoji.HEAVY_PLUS_SIGN.get()));
+                }
+                break;
+
+            case WorldOverrides.OVERRIDE_MENU_ID: {
+                String overrideId = args.get(WorldOverrides.ARG);
+                if (overrideId == null) {
+                    break;
+                }
+                WorldOverrides overrides = plugin.getConfigYamlFile().getWorldOverrides();
+                int index = overrides.getIndex(overrideId);
+                int amount = overrides.getAll().size();
+
+                buttons.add(Button.secondary(WorldOverrides.scopeId(WorldOverrides.EDIT_BUTTON_ID, overrideId),
+                                plugin.getBot().getLang().getMessage("button-label.rename-override"))
+                        .withEmoji(MenuEmoji.PENCIL2.get()));
+                buttons.add(Button.secondary(WorldOverrides.scopeId(WorldOverrides.MOVE_UP_BUTTON_ID, overrideId),
+                                plugin.getBot().getLang().getMessage("button-label.move-override-up"))
+                        .withEmoji(MenuEmoji.ARROW_UP.get())
+                        .withDisabled(index <= 0));
+                buttons.add(Button.secondary(WorldOverrides.scopeId(WorldOverrides.MOVE_DOWN_BUTTON_ID, overrideId),
+                                plugin.getBot().getLang().getMessage("button-label.move-override-down"))
+                        .withEmoji(MenuEmoji.ARROW_DOWN.get())
+                        .withDisabled(index < 0 || index >= amount - 1));
+                buttons.add(Button.danger(WorldOverrides.scopeId(WorldOverrides.DELETE_BUTTON_ID, overrideId),
+                                plugin.getBot().getLang().getMessage("button-label.delete-override"))
+                        .withEmoji(MenuEmoji.WASTEBASKET.get()));
+                break;
+            }
+
+            case WorldOverrides.WORLDS_MENU_ID: {
+                String overrideId = args.get(WorldOverrides.ARG);
+                if (overrideId == null) {
+                    break;
+                }
+                buttons.add(Button.secondary(WorldOverrides.scopeId(WorldOverrides.PATTERNS_BUTTON_ID, overrideId),
+                                plugin.getBot().getLang().getMessage("button-label.edit-patterns"))
+                        .withEmoji(MenuEmoji.PENCIL2.get()));
+                break;
+            }
+
+            case WorldOverrides.DELETION_MENU_ID: {
+                String overrideId = args.get(WorldOverrides.ARG);
+                if (overrideId == null) {
+                    break;
+                }
+                buttons.add(Button.danger(WorldOverrides.scopeId(WorldOverrides.DELETE_CONFIRM_BUTTON_ID, overrideId),
+                                plugin.getBot().getLang().getMessage("button-label.confirm-deletion"))
+                        .withEmoji(MenuEmoji.WASTEBASKET.get()));
+                buttons.add(Button.secondary(WorldOverrides.scopeId(WorldOverrides.OVERRIDE_MENU_ID, overrideId),
+                                plugin.getBot().getLang().getMessage("button-label.cancel"))
+                        .withEmoji(MenuEmoji.ARROW_LEFT.get()));
+                break;
+            }
 
             default:
                 break;

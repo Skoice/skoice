@@ -33,8 +33,8 @@ import java.util.List;
 
 public class ActionBarAlertsSelector extends Selector {
 
-    public ActionBarAlertsSelector(Skoice plugin) {
-        super(plugin);
+    public ActionBarAlertsSelector(Skoice plugin, String overrideId) {
+        super(plugin, overrideId);
     }
 
     @Override
@@ -54,22 +54,22 @@ public class ActionBarAlertsSelector extends Selector {
                         .withDescription(super.plugin.getBot().getLang().getMessage("select-option.default.description"))
                         .withEmoji(MenuEmoji.DEAFENED.get())));
         List<String> defaultValues = new ArrayList<>();
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
+        if (super.getScope().getBoolean(ConfigField.CONNECTING_ALERT.toString())) {
             defaultValues.add(ConfigField.CONNECTING_ALERT.toString());
         }
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.DISCONNECTING_ALERT.toString())) {
+        if (super.getScope().getBoolean(ConfigField.DISCONNECTING_ALERT.toString())) {
             defaultValues.add(ConfigField.DISCONNECTING_ALERT.toString());
         }
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.MUTED_ALERT.toString())) {
+        if (super.getScope().getBoolean(ConfigField.MUTED_ALERT.toString())) {
             defaultValues.add(ConfigField.MUTED_ALERT.toString());
         }
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.DEAFENED_ALERT.toString())) {
+        if (super.getScope().getBoolean(ConfigField.DEAFENED_ALERT.toString())) {
             defaultValues.add(ConfigField.DEAFENED_ALERT.toString());
         }
-        if (super.plugin.getConfigYamlFile().getBoolean(ConfigField.LINKING_SUGGESTION.toString())) {
+        if (super.getScope().getBoolean(ConfigField.LINKING_SUGGESTION.toString())) {
             defaultValues.add(ConfigField.LINKING_SUGGESTION.toString());
         }
-        return StringSelectMenu.create("action-bar-alerts-selection")
+        return StringSelectMenu.create(super.scopeId("action-bar-alerts-selection"))
                 .setPlaceholder(super.plugin.getBot().getLang().getMessage("menu.action-bar-alerts.select-menu.placeholder"))
                 .addOptions(options)
                 .setRequiredRange(0, options.size())

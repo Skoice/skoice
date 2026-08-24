@@ -25,6 +25,7 @@ import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.model.minecraft.FullPlayer;
 import net.clementraynaud.skoice.common.model.minecraft.SkoiceGameMode;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
+import net.clementraynaud.skoice.common.storage.config.ConfigScope;
 import net.clementraynaud.skoice.common.util.DistanceUtil;
 
 import java.util.Collection;
@@ -85,21 +86,26 @@ public final class LinkedPlayer {
         LinkedPlayer.byDiscordId.clear();
     }
 
+    public ConfigScope getConfigScope() {
+        return this.plugin.getConfigYamlFile().forWorld(this.player.getWorld());
+    }
+
     public boolean isStateEligible() {
-        if (this.plugin.getConfigYamlFile().getStringList(ConfigField.DISABLED_WORLDS.toString()).contains(this.player.getWorld())) {
+        if (!this.plugin.getConfigYamlFile().isWorldActive(this.player.getWorld())) {
             return false;
         }
         if (this.isExcluded()) {
             return !ExcludedPlayerBehaviorSelector.DISABLED.equals(
-                    this.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()));
+                    this.getConfigScope().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()));
         }
         return true;
     }
 
     private boolean isExcluded() {
-        boolean onDeathScreenExcluded = this.plugin.getConfigYamlFile().getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_EXCLUDED.toString())
+        ConfigScope scope = this.getConfigScope();
+        boolean onDeathScreenExcluded = scope.getBoolean(ConfigField.PLAYERS_ON_DEATH_SCREEN_EXCLUDED.toString())
                 && this.player.isDead();
-        boolean spectatorExcluded = this.plugin.getConfigYamlFile().getBoolean(ConfigField.SPECTATORS_EXCLUDED.toString())
+        boolean spectatorExcluded = scope.getBoolean(ConfigField.SPECTATORS_EXCLUDED.toString())
                 && this.player.getGameMode() == SkoiceGameMode.SPECTATOR;
         return onDeathScreenExcluded || spectatorExcluded;
     }
@@ -107,7 +113,7 @@ public final class LinkedPlayer {
     public boolean communicatesWorldWide() {
         return this.isExcluded()
                 && ExcludedPlayerBehaviorSelector.SAME_WORLD.equals(
-                this.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()));
+                this.getConfigScope().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()));
     }
 
     public void addActionBarAlert(ActionBarAlert alert) {
@@ -161,7 +167,8 @@ public final class LinkedPlayer {
         String playerTeam = this.plugin.getTeamProviderManager().getTeam(this.player);
         String otherTeam = this.plugin.getTeamProviderManager().getTeam(linkedPlayer.player);
 
-        if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.TEAM_COMMUNICATION.toString())
+        if (this.getConfigScope().getBoolean(ConfigField.TEAM_COMMUNICATION.toString())
+                && linkedPlayer.getConfigScope().getBoolean(ConfigField.TEAM_COMMUNICATION.toString())
                 && playerTeam != null
                 && playerTeam.equals(otherTeam)) {
             return true;
@@ -171,7 +178,9 @@ public final class LinkedPlayer {
             return false;
         }
 
-        if (this.plugin.getConfigYamlFile().getBoolean(ConfigField.SEPARATED_TEAMS.toString())) {
+        ConfigScope scope = this.getConfigScope();
+
+        if (scope.getBoolean(ConfigField.SEPARATED_TEAMS.toString())) {
             if (playerTeam == null) {
                 if (otherTeam != null) {
                     return false;
@@ -183,12 +192,12 @@ public final class LinkedPlayer {
 
         if (this.isExcluded()
                 && ExcludedPlayerBehaviorSelector.SAME_WORLD.equals(
-                this.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()))) {
+                scope.getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()))) {
             return true;
         }
 
-        int horizontalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.HORIZONTAL_RADIUS.toString());
-        int verticalRadius = this.plugin.getConfigYamlFile().getInt(ConfigField.VERTICAL_RADIUS.toString());
+        int horizontalRadius = scope.getInt(ConfigField.HORIZONTAL_RADIUS.toString());
+        int verticalRadius = scope.getInt(ConfigField.VERTICAL_RADIUS.toString());
         if (falloff) {
             horizontalRadius += LinkedPlayer.FALLOFF;
             verticalRadius += LinkedPlayer.FALLOFF;
