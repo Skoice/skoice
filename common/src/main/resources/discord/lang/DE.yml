@@ -31,6 +31,8 @@ menu:
     description: "Dein Discord-Server erfordert, dass der Bot-Besitzer die Zwei-Faktor-Authentifizierung aktiviert hat. Richte sie ein oder deaktiviere diese Anforderung in den Servereinstellungen über folgenden Pfad: `Moderation › Safety Setup › (Permissions ›) Require 2FA for moderator actions`."
   permissions:
     title: "Berechtigungen"
+    description: "Damit dein Bot ordnungsgemäß funktioniert, muss er auf deinem Discord-Server die Berechtigung `Administrator` besitzen. Weise dem Bot dazu entweder eine Rolle mit der Berechtigung `Administrator` zu oder bitte {bot-owner-mention}, {configure-discord-command} auszuführen, um seine Berechtigungen zu aktualisieren."
+    description-owner: "Damit dein Bot ordnungsgemäß funktioniert, muss er auf deinem Discord-Server die Berechtigung `Administrator` besitzen. Klicke auf die Schaltfläche unten, um sie zu erteilen."
   voice-chat:
     title: "Sprachchat"
   range:
@@ -51,23 +53,41 @@ menu:
     description: "Wähle die Welten, in denen Skoice aktiv ist."
     select-menu:
       placeholder: "Bitte wähle die gewünschten Welten aus."
-  included-players:
-    title: "Einbezogene Spieler"
-    description: "Wähle aus, welche Arten von Spielern in den abstandsbasierten Sprachchat einbezogen werden."
-    select-menu:
-      placeholder: "Bitte wähle die gewünschten Spielertypen aus."
-      players-on-death-screen-included:
-        label: "Spieler auf dem Todesbildschirm"
-      spectators-included:
-        label: "Zuschauer"
+  excluded-players:
+    title: "Ausgeschlossene Spieler"
+    description: "Wähle die Spielertypen, die vom Sprachchat im Nahbereich ausgeschlossen sind, und ob sie weiterhin miteinander kommunizieren können."
+    excluded-player-types:
+      select-menu:
+        placeholder: "Bitte wähle die ausgeschlossenen Spielertypen aus."
+        players-on-death-screen-excluded:
+          label: "Spieler auf dem Todesbildschirm"
+        spectators-excluded:
+          label: "Zuschauer"
+    excluded-player-behavior:
+      select-menu:
+        same-world:
+          label: "Immer in derselben Welt kommunizieren"
+        in-range:
+          label: "In Reichweite kommunizieren"
+        disabled:
+          label: "Nie kommunizieren"
   teams:
     title: "Teams"
-    select-menu:
-      placeholder: "Bitte wähle die gewünschten Verhaltensweisen aus."
-      team-communication:
-        label: "Teammitgliedern immer die Kommunikation erlauben"
-      separated-teams:
-        label: "Kommunikation zwischen Teams verhindern"
+    description: "Wähle das System, mit dem Skoice bestimmt, welche Spieler zum selben Team gehören, sowie die Verhaltensweisen, die für Teams gelten. Das integrierte Team-System von Minecraft kann mit `/team` oder mit Plugins und Datenpaketen verwendet werden, die es verwalten. Skoice unterstützt außerdem Drittanbieter-Plugins wie [Parties](https://www.spigotmc.org/resources/parties-an-advanced-parties-manager.3709/). Das entsprechende Plugin muss installiert sein, damit ein Anbieter funktioniert, andernfalls sind die Team-Funktionen deaktiviert."
+    team-provider:
+      select-menu:
+        select-option:
+          vanilla:
+            label: "Vanilla"
+          parties:
+            label: "Parties"
+    team-behaviors:
+      select-menu:
+        placeholder: "Bitte wähle die gewünschten Verhaltensweisen aus."
+        team-communication:
+          label: "Teammitgliedern immer die Kommunikation erlauben"
+        separated-teams:
+          label: "Kommunikation zwischen Teams verhindern"
   chaining:
     title: "Verkettung"
     description: "Wähle den zusätzlichen Abstand, der bei der Verkettung von Spielern erlaubt ist. Verkettung tritt üblicherweise auf, wenn ein Spieler zwischen zwei anderen Spielern steht, die eigentlich nicht kommunizieren können sollten. In diesem Fall wird die Reichweite erweitert, damit alle drei Spieler sich hören können."
@@ -111,8 +131,11 @@ menu:
         label: "Nie erinnern"
   action-bar-alerts:
     title: "Aktionsleisten-Benachrichtigungen"
+    description: "Schalte die Benachrichtigungen um, die an Spieler auf deinem Minecraft-Server im Zusammenhang mit dem Sprachchat im Nahbereich gesendet werden."
     select-menu:
       placeholder: "Bitte wähle die gewünschten Benachrichtigungen aus."
+      linking-suggestion:
+        label: "\"Spieler in der Nähe nutzen Skoice. Gib \"/skoice link\" ein, um beizutreten!\""
       connecting-alert:
         label: "\"Du bist in der Nähe anderer Spieler. Sag Hallo!\""
       disconnecting-alert:
@@ -121,6 +144,9 @@ menu:
         label: "\"Mikrofon aus.\""
       deafened-alert:
         label: "\"Ton aus.\""
+  invite-link:
+    title: "Einladungslink"
+    description: "Lege fest, ob der Name des Discord-Servers als anklickbarer Einladungslink in Minecraft-Chatnachrichten erscheint. Skoice erstellt eine permanente Einladung für deinen konfigurierten Sprachkanal im Nahbereich. Deaktiviere dies, wenn du keine möchtest."
   tooltips:
     title: "Tooltips"
     description: "Schalte interaktive Nachrichten auf deinem Minecraft-Server um. Du könntest diese Einstellung deaktivieren wollen, wenn dein Server auf Bedrock Edition läuft oder wenn Tooltips in den Minecraft-Einstellungen deaktiviert sind. Nur Operatoren können interaktive Nachrichten empfangen."
@@ -136,7 +162,7 @@ menu:
     description: "Wähle die Version von Skoice, die du verwenden möchtest."
   language:
     title: "Sprache"
-    description: "Wähle die Sprache, in der Nachrichten angezeigt werden. Deine Sprache fehlt oder ist unvollständig? [Übersetze unser Plugin mit Crowdin]({crowdin-url})!"
+    description: "Wähle die Sprache aus, in der Nachrichten angezeigt werden."
   skoice-proximity-voice-chat:
     title: "Skoice: Sprachchat im Nahbereich"
   linking-process:
@@ -167,7 +193,7 @@ field:
     description: "Skoice ist eine kostenlose Software. Wenn du es magst, kannst du uns durch [Spenden]({open-collective-url}) unterstützen."
   contributing:
     title: "Mitwirken"
-    description: "Möchtest du uns helfen, die Zukunft von Skoice zu gestalten? [Trage auf unserer GitHub-Seite bei]({github-url}) und [übersetze unser Plugin mit Crowdin]({crowdin-url})!"
+    description: "Möchten Sie uns helfen, die Zukunft von Skoice zu gestalten? [Beitragen auf unserer GitHub-Seite]({github-url})!"
   long-range-mode:
     title: "Langstrecken-Modus"
     description: "Wähle diesen Modus, wenn du Open-World-Spielmodi spielen willst."
@@ -197,6 +223,7 @@ field:
     description: "Dein Discord-Account ist nicht mit Minecraft verknüpft. Nutze {link-discord-command} um es zu verknüpfen und den Proximity-Sprachchat zu nutzen."
   account-already-linked:
     title: "Konto bereits verknüpft"
+    description: "Dein Discord-Konto ist bereits mit dem Minecraft-Konto `{minecraft-username}` verknüpft. Gib {unlink-discord-command} ein, um die Verknüpfung aufzuheben."
   restricted-command:
     title: "Eingeschränkter Befehl"
     description: "Dieser Befehl muss auf einem Discord-Server ausgeführt werden."
@@ -209,6 +236,9 @@ field:
   proximity-channel-deleted:
     title: "Nahbereichskanal gelöscht"
     description: "Du hast einen Kanal gelöscht, der vom Sprachchat im Nahbereich verwendet wird. Diese Kanäle werden automatisch gelöscht, wenn sie nicht mehr benötigt werden. Du solltest dies nicht manuell tun."
+  invite-link-revoked:
+    title: "Einladungslink widerrufen"
+    description: "Du hast einen Einladungslink widerrufen, den Skoice verwendet hat, um Minecraft-Spielern den Beitritt zu deinem Discord-Server zu ermöglichen. Skoice erstellt bei Bedarf einen neuen. Um dies zu verhindern, deaktiviere die Einstellung `Einladungslink` unter `Konfiguration › Spielinterne Nachrichten`, indem du {configure-discord-command} ausführst."
   shared-bot:
     title: "Geteilter Bot"
     description: "Es scheint, dass dein Bot mehrere Programme ausführt. Er muss jedoch Skoice gewidmet sein, um richtig zu funktionieren. Du kannst einen neuen erstellen, indem du [diesen Anweisungen folgst]({creation-guide-url}). Sobald du seinen Token abgerufen hast, gib `{token-minecraft-command}` gefolgt vom Token auf deinem Minecraft-Server ein. Wenn dein Bot nicht mehrere Programme ausführt, bitte um Hilfe auf unserem Discord-Server, indem du die Schaltfläche unten drückst."

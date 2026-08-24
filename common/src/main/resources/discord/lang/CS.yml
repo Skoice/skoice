@@ -16,11 +16,14 @@ command-description:
   unlink: "Odpoj svůj Discord účet od Minecraftu."
   invite: "Získej proximity voice chat na svém serveru."
 menu:
+  invite-footer: "Chceš Skoice na svém serveru? Napiš {invite-discord-command}!"
+  review-footer: "Baví tě Skoice? Zvaž [zanechání recenze na SpigotMC]({spigotmc-url})!"
   contributors-footer: "Skoice • carlodrift, Lucas_Cdry a přispěvatelé"
   configuration:
     title: "Konfigurace"
   server:
     title: "Server"
+    description: "Aby fungoval správně, tvůj bot nemůže být na více Discord serverech. Vyber server, na kterém chceš, aby byl proximity voice chat aktivní. Bot ostatní servery automaticky opustí."
     select-menu:
       placeholder: "Prosím, vyber server."
   two-factor-authentication:
@@ -28,6 +31,8 @@ menu:
     description: "Tvůj Discord server vyžaduje, aby účet majitele bota měl povolené dvoufaktorové ověřování. Nastavte 2FA nebo zakažte tento požadavek v nastavení serveru touto cestou: `Moderace › Nastavení bezpečnosti › (Oprávnění ›) Vyžadovat 2FA pro moderátorské akce."
   permissions:
     title: "Oprávnění"
+    description: "Aby fungoval správně, tvůj bot musí mít na tvém Discord serveru oprávnění `Administrator`. Buď botovi přiřaď roli s oprávněním `Administrator`, nebo požádej {bot-owner-mention}, aby spustil {configure-discord-command} a aktualizoval jeho oprávnění."
+    description-owner: "Aby fungoval správně, tvůj bot musí mít na tvém Discord serveru oprávnění `Administrator`. Klikni na tlačítko níže a udělíš mu ho."
   voice-chat:
     title: "Hlasový chat"
   range:
@@ -48,15 +53,58 @@ menu:
     description: "Vyber světy, ve kterých je Skoice aktivní."
     select-menu:
       placeholder: "Vyber prosím požadované světy."
-  included-players:
-    title: "Zahrnutí hráči"
+  excluded-players:
+    title: "Vyloučení hráči"
+    description: "Vyber typy hráčů vyloučených z proximity voice chatu a zda spolu mohou nadále komunikovat."
+    excluded-player-types:
+      select-menu:
+        placeholder: "Vyber prosím vyloučené typy hráčů."
+        players-on-death-screen-excluded:
+          label: "Hráči na obrazovce smrti"
+        spectators-excluded:
+          label: "Diváci"
+    excluded-player-behavior:
+      select-menu:
+        same-world:
+          label: "Vždy komunikovat ve stejném světě"
+        in-range:
+          label: "Komunikovat v dosahu"
+        disabled:
+          label: "Nikdy nekomunikovat"
+  teams:
+    title: "Týmy"
+    description: "Vyber systém, který Skoice používá k určení, kteří hráči patří do stejného týmu, a chování, která se na týmy vztahují. Vestavěný týmový systém Minecraftu lze používat pomocí `/team` nebo s pluginy a datapacky, které ho spravují. Skoice také podporuje pluginy třetích stran, jako je [Parties](https://www.spigotmc.org/resources/parties-an-advanced-parties-manager.3709/). Aby poskytovatel fungoval, musí být příslušný plugin nainstalován, jinak jsou týmové funkce vypnuté."
+    team-provider:
+      select-menu:
+        select-option:
+          vanilla:
+            label: "Vanilla"
+          parties:
+            label: "Parties"
+    team-behaviors:
+      select-menu:
+        placeholder: "Vyber prosím požadovaná chování."
+        team-communication:
+          label: "Vždy povolit členům týmu komunikovat"
+        separated-teams:
+          label: "Zabránit komunikaci mezi týmy"
+  chaining:
+    title: "Zřetězení"
+    description: "Vyber dodatečnou vzdálenost povolenou při zřetězení hráčů. Ke zřetězení obvykle dochází, když je hráč mezi dvěma dalšími hráči, kteří by spolu neměli moci komunikovat. V takovém případě se dosah rozšíří, aby se všichni tři hráči navzájem slyšeli."
     select-menu:
-      spectators-included:
-        label: "Spectatoři"
+      disabled:
+        label: "Vypnuto — Žádné zřetězení není povoleno"
+      short:
+        label: "Krátké — +25 % původního dosahu"
+      medium:
+        label: "Střední — +50 % původního dosahu"
+      long:
+        label: "Dlouhé — +100 % původního dosahu"
   discord-integration:
     title: "Integrace s Discordem"
   voice-channel:
     title: "Hlasový kanál"
+    description: "Vyber kanál, ke kterému se hráči musí připojit, aby mohli používat proximity voice chat. Musí být v kategorii. Upozorňujeme, že hráči budou v tomto kanálu automaticky ztlumeni."
     select-menu:
       placeholder: "Vyberte prosím hlasový kanál."
       select-option:
@@ -65,6 +113,10 @@ menu:
           description: "Skoice automaticky nastaví hlasový kanál."
   text-chat:
     title: "Textový Chat"
+    description: "Vyber, zda hráči mohou posílat textové zprávy v proximity kanálech."
+  channel-visibility:
+    title: "Viditelnost kanálů"
+    description: "Přepni viditelnost dočasných kanálů vytvořených Skoice."
   in-game-messages:
     title: "Zprávy ve hře"
   login-notification:
@@ -73,17 +125,152 @@ menu:
     select-menu:
       always-remind:
         label: "Vždy připomenout"
+      remind-once:
+        label: "Připomenout jednou"
+      never-remind:
+        label: "Nikdy nepřipomínat"
+  action-bar-alerts:
+    title: "Upozornění na akční liště"
+    description: "Přepni upozornění odesílaná hráčům na tvém Minecraft serveru související s proximity voice chatem."
+    select-menu:
+      placeholder: "Vyber prosím požadovaná upozornění."
+      linking-suggestion:
+        label: "\"Hráči poblíž používají Skoice. Napiš \"/skoice link\" a připoj se!\""
+      connecting-alert:
+        label: "\"Jsi blízko jiných hráčů. Pozdrav je!\""
+      disconnecting-alert:
+        label: "\"Vzdaluješ se od hráčů poblíž.\""
+      muted-alert:
+        label: "\"Máš ztlumený mikrofon.\""
+      deafened-alert:
+        label: "\"Máš ztlumený zvuk.\""
+  invite-link:
+    title: "Odkaz pozvánky"
+    description: "Přepni, zda se název Discord serveru zobrazuje jako klikací odkaz pozvánky ve zprávách Minecraft chatu. Skoice vytvoří trvalou pozvánku na tvém nastaveném proximity hlasovém kanálu. Pokud žádnou nechceš, tuto možnost vypni."
+  tooltips:
+    title: "Popisky"
+    description: "Přepni interaktivní zprávy na tvém Minecraft serveru. Toto nastavení možná budeš chtít vypnout, pokud tvůj server běží na Bedrock Edition nebo pokud jsou popisky vypnuté v nastavení Minecraftu. Interaktivní zprávy mohou dostávat pouze operátoři."
+  advanced-settings:
+    title: "Pokročilá nastavení"
+  link-synchronization:
+    title: "Synchronizace propojení"
+    description: "Přepni synchronizaci externích pluginů se Skoice. Když hráči propojí své účty přes Skoice nebo vybraný plugin, dojde k synchronizaci v reálném čase na obou stranách. Aktualizace této možnosti vyžaduje restart tvého Minecraft serveru, aby se projevila."
+    select-menu:
+      placeholder: "Vyber prosím požadované pluginy."
+  release-channel:
+    title: "Kanál vydání"
+    description: "Vyber verzi Skoice, kterou chceš používat."
   language:
     title: "Jazyk"
-    description: "Vyberte jazyk použitý k zobrazení zpráv. Tvůj jazyk chybí nebo je neúplný? [Přeložte náš plugin pomoci Crowdin]({crowdin-url})!"
+    description: "Vyberte jazyk použitý k zobrazení zpráv."
   skoice-proximity-voice-chat:
     title: "Skoice: Proximity Voice Chat (Hlasový chat v bezprostřední blízkosti)"
+  linking-process:
+    title: "Proces propojení"
   error:
     title: "Chyba"
 field:
+  configuration-complete:
+    title: "Konfigurace dokončena"
+    description: "Skoice je nyní nakonfigurován. Napiš {link-discord-command} pro propojení svého Discord účtu s Minecraftem. Hráči musí propojit své účty, aby mohli používat proximity voice chat."
+  notified-players-cleared:
+    title: "Upozornění hráči vymazáni"
+    description: "Vymazal jsi upozorněné hráče. Hráči, kteří již obdrželi připomínku k propojení svých účtů, budou nyní upozorněni znovu."
+  incomplete-configuration:
+    title: "Neúplná konfigurace"
+    description: "Skoice není nakonfigurován správně. Kontaktuj prosím administrátora serveru."
+  incomplete-configuration-server-manager:
+    title: "Neúplná konfigurace"
+    description: "Napiš {configure-discord-command} nebo klikni na tlačítko níže pro dokončení konfigurace a používání Skoice."
+  incomplete-configuration-alternative-server-manager:
+    title: "Neúplná konfigurace"
+    description: "Smazal jsi hlavní hlasový kanál nebo jeho kategorii. Napiš {configure-discord-command} pro dokončení konfigurace a používání Skoice."
+  download:
+    title: "Stáhnout"
+    description: "[Získej plugin]({spigotmc-url}) a nainstaluj ho na svůj Minecraft server."
+  donating:
+    title: "Darování"
+    description: "Skoice je svobodný software. Pokud se ti líbí, můžeš nám pomoci [darováním]({open-collective-url})."
+  contributing:
+    title: "Přispívání"
+    description: "Chceš nám pomoci utvářet budoucnost Skoice? [Přispěj na naší stránce GitHub]({github-url})!"
   long-range-mode:
     title: "Režim dlouhého dosahu"
+    description: "Zvol tento režim, pokud plánuješ hrát herní režimy v otevřeném světě."
   short-range-mode:
     title: "Krátký dosah"
+    description: "Zvol tento režim, pokud plánuješ hrát herní režimy, které vyžadují pouze omezenou oblast."
   customized:
     title: "Přizpůsobený"
+    description: "Nastav vzdálenosti podle svých osobních preferencí."
+  production-channel:
+    title: "Produkční kanál"
+    description: "Zvol tento kanál pro použití veřejné verze. S větší pravděpodobností nabídne stabilní zážitek."
+  beta-channel:
+    title: "Beta kanál"
+    description: "Zvol tento kanál pro objevování a testování našich nejnovějších funkcí, které ještě nebyly vydány veřejnosti. Tato verze může obsahovat chyby."
+  verification-code:
+    title: "Ověřovací kód"
+    description: "Napiš ve hře `{link-minecraft-command} {code}` pro dokončení procesu."
+  account-linked:
+    title: "Účet propojen"
+    description: "Tvůj Discord účet byl propojen s Minecraftem. Připoj se do hlasového kanálu {voice-channel} pro použití proximity voice chatu."
+  account-unlinked:
+    title: "Účet odpojen"
+    description: "Tvůj Discord účet byl odpojen od Minecraftu."
+  account-not-linked:
+    title: "Účet nepropojen"
+    description: "Tvůj Discord účet není propojen s Minecraftem. Napiš {link-discord-command} pro jeho propojení a použití proximity voice chatu."
+  account-already-linked:
+    title: "Účet již propojen"
+    description: "Tvůj Discord účet je již propojen s Minecraft účtem `{minecraft-username}`. Napiš {unlink-discord-command} pro jeho odpojení."
+  restricted-command:
+    title: "Omezený příkaz"
+    description: "Tento příkaz musí být proveden na Discord serveru."
+  access-denied:
+    title: "Přístup odepřen"
+    description: "Nemáš požadované oprávnění k provedení tohoto příkazu."
+  illegal-value:
+    title: "Neplatná hodnota"
+    description: "Hodnoty musí být celá čísla větší než 0."
+  proximity-channel-deleted:
+    title: "Proximity kanál smazán"
+    description: "Smazal jsi kanál používaný proximity voice chatem. Tyto kanály se automaticky mažou, když už nejsou potřeba. Neměl bys to dělat ručně."
+  invite-link-revoked:
+    title: "Odkaz pozvánky zrušen"
+    description: "Zrušil jsi odkaz pozvánky, který Skoice používal k tomu, aby se hráči Minecraftu mohli připojit k tvému Discord serveru. Skoice v případě potřeby vytvoří nový. Aby k tomu nedocházelo, vypni nastavení `Odkaz pozvánky` v `Konfigurace › Zprávy ve hře` spuštěním {configure-discord-command}."
+  shared-bot:
+    title: "Sdílený bot"
+    description: "Zdá se, že tvůj bot běží ve více programech. Musí však být určen výhradně pro Skoice, aby fungoval správně. Nový můžeš vytvořit [podle těchto pokynů]({creation-guide-url}). Jakmile získáš jeho token, napiš `{token-minecraft-command}` následované tokenem na svém Minecraft serveru. Pokud tvůj bot neběží ve více programech, požádej o pomoc na našem Discord serveru stisknutím tlačítka níže."
+button-label:
+  configure-now: "Nastavit nyní"
+  support-server: "Podpůrný server"
+  clear-notified-players: "Vymazat upozorněné hráče"
+  refresh: "Obnovit"
+  update-permissions: "Aktualizovat oprávnění"
+  explore-more-settings: "Prozkoumat další nastavení"
+select-option:
+  default:
+    description: "Tato možnost je vybrána ve výchozím nastavení."
+  undesirable:
+    description: "Tato možnost může způsobit nežádoucí chování."
+  enabled:
+    label: "Zapnuto"
+  disabled:
+    label: "Vypnuto"
+  too-many-options:
+    label: "Příliš mnoho možností"
+    description: "Skoice nemůže načíst více možností."
+text-input:
+  category-name:
+    label: "Název kategorie"
+    default-value: "Skoice"
+  voice-channel-name:
+    label: "Název hlasového kanálu"
+    default-value: "Proximity Voice Chat"
+  horizontal-radius:
+    label: "Horizontální poloměr"
+  vertical-radius:
+    label: "Vertikální poloměr"
+voice-channel-status: "Nelze mluvit — Žádní hráči poblíž"
+proximity-channel-name: "Proximity kanál"

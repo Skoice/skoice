@@ -27,6 +27,7 @@ logger:
     missing-permission: "Вы не предоставили вашему боту разрешение \"Администратор\" на сервере Discord. Откройте эту ссылку, чтобы добавить его: {bot-invite-url}."
     invalid-bot: "Ваш бот настроен неправильно. Присоединитесь к вашему серверу Minecraft, чтобы создать нового."
     shared-bot: "Похоже, ваш бот запускает несколько программ. Однако он должен быть предназначен исключительно для Skoice, чтобы работать правильно. Вы можете создать новый, следуя инструкциям на этой странице: {creation-guide-url}. После получения токена введите \"{token-minecraft-command}\", а затем токен."
+    commands-not-registered: "Skoice не удалось зарегистрировать свои команды Discord, так как достигнут лимит команд приложения. Удалите неиспользуемые боты с вашего сервера Discord, чтобы освободить команды, затем перезапустите ваш сервер Minecraft."
 chat:
   configuration:
     discord-integration-interactive: " \nКонфигурация: {title-color}Интеграция с Discord\n \n{dark-color}• {default-color}Для работы Skoice нужен бот Discord. Чтобы легко настроить его, следуйте инструкциям на {open:creation-guide-url}.\n{dark-color}• {default-color}После получения токена вставьте его {suggest:token-minecraft-command}.\n \nЕсли вы не можете взаимодействовать с этим сообщением, введите \"{tooltips-minecraft-command}\".\n "
@@ -61,6 +62,7 @@ chat:
     account-unlinked: "Вы {success-color}отвязали ваш аккаунт Minecraft {default-color}от Discord."
     account-not-linked: "Вы {error-color}не привязали вашу учётную запись Minecraft {default-color}к Discord. Введите \"{link-discord-command}\" на сервере Discord \"{guild}\", чтобы привязать её и использовать голосовой чат близости."
     account-not-linked-remind-once: "Вы {error-color}не привязали вашу учётную запись Minecraft {default-color}к Discord. Введите \"{link-discord-command}\" на сервере Discord \"{guild}\", чтобы привязать её и использовать голосовой чат близости. Вы не получите это уведомление снова."
+    account-already-linked: "Вы {error-color}уже привязали вашу учётную запись Minecraft {default-color}к учётной записи Discord \"{discord-username}\". Введите \"{unlink-minecraft-command}\", чтобы отвязать её."
     connected: "Вы {success-color}теперь подключены {default-color}к голосовому чату близости. Чтобы отключить звуки Discord и получить более захватывающий опыт, вы можете включить \"Режим стримера\" в настройках Discord."
     not-connected: "Вы {error-color}не подключены {default-color}к голосовому чату. Присоединитесь к каналу \"{voice-channel}\" на сервере Discord \"{guild}\"."
     disconnected: "Вы {error-color}отключились {default-color}от голосового чата."
@@ -70,6 +72,7 @@ chat:
     illegal-executor: "Эта команда {error-color}доступна только {default-color}для игроков."
     missing-permission: "Эта команда {error-color}доступна только {default-color}для операторов."
 action-bar:
+  linking-suggestion: "{default-color}Игроки поблизости {success-color}используют Skoice{default-color}. Введите \"{link-minecraft-command}\", чтобы присоединиться!"
   connecting-alert: "{success-color}⚠ {default-color}Вы {success-color}рядом с другими игроками{default-color}. Скажите привет!"
   disconnecting-alert: "{error-color}⚠ {default-color}Вы {error-color}отдаляетесь {default-color}от ближайших игроков."
   muted-alert: "{error-color}⚠ {default-color}{error-color}Микрофон отключён{default-color}."

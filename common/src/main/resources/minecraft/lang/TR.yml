@@ -72,11 +72,11 @@ chat:
     illegal-executor: "Bu komut {error-color}sadece oyuncular tarafından {default-color} kullanılabilir."
     missing-permission: "Bu komutu {error-color}sadece {default-color}yöneticiler çalıştırabilir."
 action-bar:
+  linking-suggestion: "{default-color}Yakınındaki kişiler {success-color}Skoice kullanıyor{default-color}. Katılmak için \"{link-minecraft-command}\" yaz!"
   connecting-alert: "{success-color}⚠ {default-color}{success-color}Diğer oyunculara yakınsın{default-color}. Merhaba de!"
   disconnecting-alert: "{error-color}⚠ {default-color}{error-color}Diğer oyunculardan uzaklaşıyorsun{default-color}."
   muted-alert: "{error-color}⚠ {default-color}{error-color}Mikrofon kapalı{default-color}."
   deafened-alert: "{error-color}⚠ {default-color}{error-color}Ses kapalı{default-color}."
-  linking-suggestion: "{default-color}Yakınındaki kişiler {success-color}Skoice kullanıyor{default-color}. Katılmak için \"{link-minecraft-command}\" yaz!"
 interaction:
   here: "burda"
   this-page: "bu sayfa"

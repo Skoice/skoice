@@ -27,6 +27,7 @@ logger:
     missing-permission: "No has concedido a tu bot el permiso de \"Administrador\" en tu servidor de Discord. Abre este enlace para añadirlo: {bot-invite-url}."
     invalid-bot: "Tu bot no está configurado correctamente. Únete a tu servidor de Minecraft para crear uno nuevo."
     shared-bot: "Parece que tu bot está ejecutando múltiples programas. Sin embargo, debe estar dedicado a Skoice para funcionar correctamente. Puedes crear uno nuevo siguiendo las instrucciones en esta página: {creation-guide-url}. Una vez que hayas obtenido su token, escribe \"{token-minecraft-command}\" seguido del token."
+    commands-not-registered: "Skoice no pudo registrar sus comandos de Discord porque se ha alcanzado el límite de comandos de la aplicación. Expulsa los bots que no uses de tu servidor de Discord para liberar comandos y luego reinicia tu servidor de Minecraft."
 chat:
   configuration:
     discord-integration-interactive: " \nConfiguración: {title-color}Integración con Discord\n \n{dark-color}• {default-color}Skoice necesita un bot de Discord para funcionar. Para configurar uno fácilmente, sigue las instrucciones en {open:creation-guide-url}.\n{dark-color}• {default-color}Una vez que hayas obtenido su token, insértalo en {suggest:token-minecraft-command}.\n \nSi no puedes interactuar con este mensaje, escribe \"{tooltips-minecraft-command}\".\n "
@@ -61,6 +62,7 @@ chat:
     account-unlinked: "Has {success-color}desvinculado tu cuenta de Minecraft {default-color}de Discord."
     account-not-linked: "{error-color}No has vinculado tu cuenta de Minecraft {default-color}con Discord. Escribe \"{link-discord-command}\" en el servidor de Discord \"{guild}\" para vincularla y usar el chat de voz de proximidad."
     account-not-linked-remind-once: "{error-color}No has vinculado tu cuenta de Minecraft {default-color}con Discord. Escribe \"{link-discord-command}\" en el servidor de Discord \"{guild}\" para vincularla y usar el chat de voz de proximidad. No recibirás esta notificación de nuevo."
+    account-already-linked: "Ya has {error-color}vinculado tu cuenta de Minecraft {default-color}a la cuenta de Discord \"{discord-username}\". Escribe \"{unlink-minecraft-command}\" para desvincularla."
     connected: "Ahora estás {success-color}conectado {default-color}al chat de voz de proximidad. Para desactivar los sonidos de Discord y tener una experiencia más inmersiva, puedes habilitar el \"Modo Streamer\" en la configuración de Discord."
     not-connected: "{error-color}No estás conectado {default-color}al chat de voz de proximidad. Únete al canal de voz \"{voice-channel}\" en el servidor de Discord \"{guild}\" para usarlo."
     disconnected: "Ahora estás {error-color}desconectado {default-color}del chat de voz de proximidad."
@@ -70,6 +72,7 @@ chat:
     illegal-executor: "Este comando {error-color}solo es ejecutable {default-color}por jugadores."
     missing-permission: "Este comando {error-color}solo es ejecutable {default-color}por operadores."
 action-bar:
+  linking-suggestion: "{default-color}Hay jugadores cerca {success-color}usando Skoice{default-color}. ¡Escribe \"{link-minecraft-command}\" para unirte!"
   connecting-alert: "{success-color}⚠ {default-color}Estás {success-color}cerca de otros jugadores{default-color}. ¡Saluda!"
   disconnecting-alert: "{error-color}⚠ {default-color}Te estás {error-color}alejando {default-color}de los jugadores cercanos."
   muted-alert: "{error-color}⚠ {default-color}{error-color}Micrófono apagado{default-color}."

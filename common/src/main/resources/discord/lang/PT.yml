@@ -31,6 +31,8 @@ menu:
     description: "Seu servidor do Discord exige que a conta do proprietário do bot tenha a autenticação de dois fatores ativada. Configure-a ou desative este requisito nas configurações do servidor seguindo este caminho: `Moderação › Configuração de Segurança › (Permissões ›) Exigir 2FA para ações de moderador`."
   permissions:
     title: "Permissões"
+    description: "Para funcionar corretamente, seu bot deve ter a permissão `Administrador` no seu servidor do Discord. Para isso, atribua ao bot um cargo com a permissão `Administrador` ou peça a {bot-owner-mention} para executar {configure-discord-command} para atualizar suas permissões."
+    description-owner: "Para funcionar corretamente, seu bot deve ter a permissão `Administrador` no seu servidor do Discord. Clique no botão abaixo para concedê-la."
   voice-chat:
     title: "Chat de voz"
   range:
@@ -51,23 +53,41 @@ menu:
     description: "Escolha os mundos onde o Skoice estará ativo."
     select-menu:
       placeholder: "Por favor, selecione os mundos desejados."
-  included-players:
-    title: "Jogadores incluídos"
-    description: "Escolha os tipos de jogadores incluídos no chat de voz por proximidade."
-    select-menu:
-      placeholder: "Por favor, selecione os tipos de jogadores desejados."
-      players-on-death-screen-included:
-        label: "Jogadores na tela de morte"
-      spectators-included:
-        label: "Espectadores"
+  excluded-players:
+    title: "Jogadores excluídos"
+    description: "Escolha os tipos de jogadores excluídos do chat de voz por proximidade e se eles ainda podem se comunicar entre si."
+    excluded-player-types:
+      select-menu:
+        placeholder: "Por favor, selecione os tipos de jogadores excluídos."
+        players-on-death-screen-excluded:
+          label: "Jogadores na tela de morte"
+        spectators-excluded:
+          label: "Espectadores"
+    excluded-player-behavior:
+      select-menu:
+        same-world:
+          label: "Sempre comunicar no mesmo mundo"
+        in-range:
+          label: "Comunicar quando estiver dentro do alcance"
+        disabled:
+          label: "Nunca comunicar"
   teams:
     title: "Equipes"
-    select-menu:
-      placeholder: "Por favor, selecione os comportamentos desejados."
-      team-communication:
-        label: "Sempre Permitir que Membros da Equipe se Comuniquem"
-      separated-teams:
-        label: "Impedir Comunicação Entre Equipes"
+    description: "Selecione o sistema que o Skoice usa para determinar quais jogadores pertencem à mesma equipe e os comportamentos que se aplicam às equipes. O sistema de equipes integrado do Minecraft pode ser usado com `/team` ou com plugins e datapacks que o gerenciam. O Skoice também oferece suporte a plugins de terceiros como [Parties](https://www.spigotmc.org/resources/parties-an-advanced-parties-manager.3709/). O plugin correspondente deve estar instalado para que um provedor funcione; caso contrário, os recursos de equipe são desativados."
+    team-provider:
+      select-menu:
+        select-option:
+          vanilla:
+            label: "Vanilla"
+          parties:
+            label: "Parties"
+    team-behaviors:
+      select-menu:
+        placeholder: "Por favor, selecione os comportamentos desejados."
+        team-communication:
+          label: "Sempre Permitir que Membros da Equipe se Comuniquem"
+        separated-teams:
+          label: "Impedir Comunicação Entre Equipes"
   chaining:
     title: "Encadeamento"
     description: "Selecione a distância adicional permitida quando os jogadores estão encadeados. O encadeamento geralmente ocorre quando um jogador está entre dois outros jogadores que não deveriam conseguir se comunicar. Nesse caso, o alcance é expandido para permitir que todos os três jogadores se ouçam."
@@ -111,8 +131,11 @@ menu:
         label: "Nunca lembrar"
   action-bar-alerts:
     title: "Alertas na barra de ação"
+    description: "Ative ou desative os alertas enviados aos jogadores no seu servidor Minecraft relacionados ao chat de voz por proximidade."
     select-menu:
       placeholder: "Por favor, selecione os alertas desejados."
+      linking-suggestion:
+        label: "\"Há jogadores por perto usando o Skoice. Digite \"/skoice link\" para participar!\""
       connecting-alert:
         label: "\"Você está perto de outros jogadores. Diga oi!\""
       disconnecting-alert:
@@ -121,6 +144,9 @@ menu:
         label: "\"Microfone desativado.\""
       deafened-alert:
         label: "\"Som desativado.\""
+  invite-link:
+    title: "Link de convite"
+    description: "Ative ou desative se o nome do servidor do Discord aparece como um link de convite clicável nas mensagens do chat do Minecraft. O Skoice cria um convite permanente no canal de voz por proximidade que você configurou. Desative isto se não quiser nenhum."
   tooltips:
     title: "Dicas"
     description: "Ative ou desative mensagens interativas no seu servidor Minecraft. Você pode querer desativar esta configuração se o seu servidor estiver rodando na Edição Bedrock ou se as dicas estiverem desativadas nas configurações do Minecraft. Apenas operadores podem receber mensagens interativas."
@@ -136,7 +162,7 @@ menu:
     description: "Selecione a versão do Skoice que você deseja usar."
   language:
     title: "Idioma"
-    description: "Escolha o idioma usado para exibir mensagens. Seu idioma está faltando ou incompleto? [Traduza nosso plugin com o Crowdin]({crowdin-url})!"
+    description: "Escolha o idioma para as mensagens."
   skoice-proximity-voice-chat:
     title: "Skoice: chat de voz por proximidade"
   linking-process:
@@ -167,7 +193,7 @@ field:
     description: "O Skoice é um software gratuito. Se você gostar, pode nos ajudar [doando]({open-collective-url})."
   contributing:
     title: "Contribuição"
-    description: "Interessado em nos ajudar a moldar o futuro do Skoice? [Contribua em nossa página do GitHub]({github-url}) e [traduza nosso plugin com o Crowdin]({crowdin-url})!"
+    description: "Interessado em nos ajudar em moldar o futuro do Skoice? [Contribua em nossa página do GitHub]({github-url})!"
   long-range-mode:
     title: "Modo de longas distâncias"
     description: "Escolha este modo se planeja jogar em modos de jogo de mundo aberto."
@@ -197,6 +223,7 @@ field:
     description: "Sua conta do Discord não está vinculada ao Minecraft. Digite {link-discord-command} para vinculá-la e usar o chat de voz por proximidade."
   account-already-linked:
     title: "Conta já vinculada"
+    description: "Sua conta do Discord já está vinculada à conta do Minecraft `{minecraft-username}`. Digite {unlink-discord-command} para desvinculá-la."
   restricted-command:
     title: "Comando restrito"
     description: "Este comando deve ser executado em um servidor do Discord."
@@ -209,6 +236,9 @@ field:
   proximity-channel-deleted:
     title: "Canal de proximidade excluído"
     description: "Você excluiu um canal usado pelo chat de voz por proximidade. Estes canais são automaticamente excluídos quando não são mais necessários. Você não deveria fazer isso manualmente."
+  invite-link-revoked:
+    title: "Link de convite revogado"
+    description: "Você revogou um link de convite que o Skoice usava para permitir que jogadores do Minecraft entrassem no seu servidor do Discord. O Skoice criará um novo quando necessário. Para impedir isso, desative a configuração `Link de convite` em `Configuração › Mensagens no jogo` executando {configure-discord-command}."
   shared-bot:
     title: "Bot Compartilhado"
     description: "Parece que seu bot está executando vários programas. No entanto, ele deve ser dedicado ao Skoice para funcionar corretamente. Você pode criar um novo [seguindo estas instruções]({creation-guide-url}). Depois de obter o token, digite `{token-minecraft-command}` seguido do token no seu servidor de Minecraft. Se o seu bot não está executando vários programas, peça ajuda no nosso servidor do Discord pressionando o botão abaixo."

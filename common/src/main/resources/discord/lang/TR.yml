@@ -53,46 +53,41 @@ menu:
     description: "Skoice'in aktif olacağı dünyaları seçin."
     select-menu:
       placeholder: "Lütfen istenen dünyaları seçin."
-  included-players:
-    title: "Dahil Oyuncular"
-    description: "Proximity Chat'i kullanmasını istediğiniz oyuncu türlerini seçin."
-    select-menu:
-      placeholder: "Lütfen istenen oyuncu türlerini seçin."
-      players-on-death-screen-included:
-        label: "Ölüm Ekranındaki Oyuncular"
-      spectators-included:
-        label: "İzleyiciler"
   excluded-players:
     title: "Dahil Edilmeyen Oyuncular"
-    description: "Proximity chat'e dahil edilmeyen oyuncuların birbirleriyle iletişim kurup kuramayacağını seç."
-    select-menu:
-      in-range:
-        label: "Belirli Mesafede iken İletişim Kur"
-      same-world:
-        label: "Aynı Dünyada Her Zaman İletişim Kur"
-      disabled:
-        label: "Asla İletişim Kurma"
+    description: "Proximity chat'ten hariç tutulacak oyuncu türlerini ve bu oyuncuların birbirleriyle iletişim kurup kuramayacağını seç."
+    excluded-player-types:
+      select-menu:
+        placeholder: "Lütfen hariç tutulacak oyuncu türlerini seçin."
+        players-on-death-screen-excluded:
+          label: "Ölüm Ekranındaki Oyuncular"
+        spectators-excluded:
+          label: "İzleyiciler"
+    excluded-player-behavior:
+      select-menu:
+        same-world:
+          label: "Aynı Dünyada Her Zaman İletişim Kur"
+        in-range:
+          label: "Belirli Mesafede iken İletişim Kur"
+        disabled:
+          label: "Asla İletişim Kurma"
   teams:
     title: "Takımlar"
-    description: "Takımlara uygulanacak davranışları seç. Bu davranışlar, ister Minecraft'ın yerleşik takım sisteminden ister desteklenen bir eklentiden gelsin, seçili takım sağlayıcı tarafından belirlenen takımlara uygulanır."
-    select-menu:
-      placeholder: "Lütfen istenen davranışları seçin."
-      team-communication:
-        label: "Takım Üyelerinin Her Zaman İletişim Kurmasına İzin Ver"
-      separated-teams:
-        label: "Takımlar Arası İletişimi Engelle"
-  team-provider:
-    title: "Takım Sağlayıcı"
-    description: "Skoice'in hangi oyuncuların aynı takımda olduğunu belirlemek için kullanacağı sistemi seç. Bu takımlar daha sonra takım ayarları tarafından kullanılır. Skoice, Minecraft'ın yerleşik takımlarının yanı sıra [Parties](https://www.spigotmc.org/resources/parties-an-advanced-parties-manager.3709/) gibi üçüncü taraf eklentileri de destekler. Bir sağlayıcının çalışması için ilgili eklentinin kurulu olması gerekir, aksi takdirde takım özellikleri devre dışı kalır."
-    select-menu:
-      placeholder: "Lütfen bir takım sağlayıcı seçin."
-      select-option:
-        vanilla:
-          label: "Vanilla"
-          description: "Minecraft'ın /team komutuyla ya da bunları yöneten eklenti ve veri paketleriyle ayarlanan yerleşik takımları."
-        parties:
-          label: "AlessioDP'nin Parties eklentisi"
-          description: "Aynı partideki oyuncular takım arkadaşı sayılır."
+    description: "Skoice'in hangi oyuncuların aynı takımda olduğunu belirlemek için kullanacağı sistemi ve takımlara uygulanacak davranışları seç. Minecraft'ın yerleşik takım sistemi `/team` komutuyla ya da bunu yöneten eklenti ve veri paketleriyle kullanılabilir. Skoice ayrıca [Parties](https://www.spigotmc.org/resources/parties-an-advanced-parties-manager.3709/) gibi üçüncü taraf eklentileri de destekler. Bir sağlayıcının çalışması için ilgili eklentinin kurulu olması gerekir, aksi takdirde takım özellikleri devre dışı kalır."
+    team-provider:
+      select-menu:
+        select-option:
+          vanilla:
+            label: "Vanilla"
+          parties:
+            label: "Parties"
+    team-behaviors:
+      select-menu:
+        placeholder: "Lütfen istenen davranışları seçin."
+        team-communication:
+          label: "Takım Üyelerinin Her Zaman İletişim Kurmasına İzin Ver"
+        separated-teams:
+          label: "Takımlar Arası İletişimi Engelle"
   chaining:
     title: "Zincirleme"
     description: "Zincirlenen kişilerin arasındaki ekstra izin verilen mesafeyi ayarla. Birbirini duyamaması gereken iki kişi arasında başka biri olduğu zaman zincirleme yaşanır ve üç kişide birbirini duyabilir."
@@ -139,6 +134,8 @@ menu:
     description: "Minecraft sunucunda oyunculara proximity chat ile ilgili gönderilen uyarıları ayarla."
     select-menu:
       placeholder: "Lütfen istenen bildirimleri seçin."
+      linking-suggestion:
+        label: "\"Yakınındaki oyuncular Skoice kullanıyor. \"/skoice link\" yazarak katılabilirsin!\""
       connecting-alert:
         label: "\"Diğer oyunculara yakınsın. Merhaba de!\""
       disconnecting-alert:
@@ -147,8 +144,6 @@ menu:
         label: "\"Mikrofon kapalı.\""
       deafened-alert:
         label: "\"Ses kapalı.\""
-      linking-suggestion:
-        label: "\"Yakınındaki oyuncular Skoice kullanıyor. \"/skoice link\" yazarak katılabilirsin!\""
   invite-link:
     title: "Davet Bağlantısı"
     description: "Discord sunucunun adının Minecraft mesajlarında tıklanabilir bir davet bağlantısı olarak çıkıp çıkmayacağını ayarla. Skoice, ayarladığın proximity chat kanalı için kalıcı bir davet oluşturur. İstemiyorsan bunu kapat."
@@ -167,7 +162,7 @@ menu:
     description: "Skoice'in kullanmak istediğiniz sürümünü seçin."
   language:
     title: "Dil"
-    description: "Mesajları göstermek için kullanılacak dili seçin. Kendi diliniz tam değil veya eksikmi? [Crowdin'den kendiniz çevirin]({crowdin-url})!"
+    description: "Mesajları göstermek için kullanılacak dili seçin."
   skoice-proximity-voice-chat:
     title: "Skoice: Minecraft'ta Proximity Chat"
   linking-process:
@@ -198,7 +193,7 @@ field:
     description: "Skoice ücretsiz bir yazılımdır. Eğer beğenirseniz bize [bağış yaparak]({open-collective-url}) yardım edebilirsiniz."
   contributing:
     title: "Katkıda Bulunma"
-    description: "Skoice'in geleceğini şekillendirmemize yardım etmek ister misin? [GitHub sayfamızda katkıda bulun]({github-url}) ve [eklentimizi Crowdin ile çevir]({crowdin-url})!"
+    description: "Skoice'in geleceğini şekillendirmemize yardımcı olmak ister misin? [GitHub sayfamızda katkıda bulun]({github-url})!"
   long-range-mode:
     title: "Uzak-Mesafe Modu"
     description: "Açık dünya modlarında oynayacaksanız bu modu seçin."

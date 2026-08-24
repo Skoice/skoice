@@ -27,6 +27,7 @@ logger:
     missing-permission: "Discordサーバーでボットに「管理者」権限を付与していません。次のリンクを開いて追加してください：{bot-invite-url}。"
     invalid-bot: "ボットが正しく構成されていません。Minecraftサーバーに参加して新しいボットを作成してください。"
     shared-bot: "ボットが複数のプログラムを実行しているようです。ただし、正しく動作するにはSkoice専用である必要があります。このページの手順に従って新しいボットを作成できます：{creation-guide-url}。トークンを取得したら、「{token-minecraft-command}」に続けてトークンを入力してください。"
+    commands-not-registered: "アプリケーションのコマンド上限に達したため、SkoiceはDiscordコマンドを登録できませんでした。使用していないボットをDiscordサーバーから退出させてコマンドの空きを作り、Minecraftサーバーを再起動してください。"
 chat:
   configuration:
     discord-integration-interactive: " \n設定：{title-color}Discord連携\n \n{dark-color}• {default-color}SkoiceにはDiscordボットが必要です。簡単にセットアップするには、{open:creation-guide-url}の手順に従ってください。\n{dark-color}• {default-color}トークンを取得したら、{suggest:token-minecraft-command}に挿入してください。\n \nこのメッセージと対話できない場合は、「{tooltips-minecraft-command}」と入力してください。\n "
@@ -58,9 +59,10 @@ chat:
     no-code: "{error-color}コードが指定されていません{default-color}。Discordサーバー「{guild}」で「{link-discord-command}」と入力するとコードを受け取れます。"
     invalid-code: "{error-color}有効なコードが指定されていません{default-color}。Discordサーバー「{guild}」で「{link-discord-command}」と入力するとコードを受け取れます。"
     account-linked: "あなたの{success-color}MinecraftアカウントをDiscordとリンク{default-color}しました。"
-    account-unlinked: "あなたの{success-color}MinceaftアカウントをDisocrdからリンク解除{default-color}しました。"
+    account-unlinked: "あなたの{success-color}MinecraftアカウントをDiscordからリンク解除{default-color}しました。"
     account-not-linked: "あなたの{error-color}MinecraftアカウントはDiscordとリンクされていません{default-color}。Discordサーバー「{guild}」で「{link-discord-command}」と入力してリンクし、近接ボイスチャットを使用します。"
     account-not-linked-remind-once: "あなたの{error-color}MinecraftアカウントはDiscordとリンクされていません{default-color}。Discordサーバー「{guild}」で「{link-discord-command}」と入力してリンクし、近接ボイスチャットを使用してください。この通知は再度表示されません。"
+    account-already-linked: "あなたの{error-color}MinecraftアカウントはすでにDiscordアカウント「{discord-username}」にリンクされています{default-color}。「{unlink-minecraft-command}」と入力してリンクを解除してください。"
     connected: "近接ボイスチャットに{success-color}接続されました{default-color}。Discordの音を無効にして、より没入感のある体験を得るには、Discord設定で「配信モード」を有効にできます。"
     not-connected: "あなたは近接ボイスチャットに{error-color}接続していません{default-color}。使用するには、Discordサーバ「{guild}」のボイスチャンネル「{voice-channel}」に参加してください。"
     disconnected: "あなたは近接ボイスチャットから{error-color}切断されました{default-color}。"
@@ -70,6 +72,7 @@ chat:
     illegal-executor: "このコマンドはプレイヤー{error-color}のみが実行{default-color}できます。"
     missing-permission: "このコマンドは{error-color}オペレーターのみが実行{default-color}できます。"
 action-bar:
+  linking-suggestion: "{default-color}近くのプレイヤーが{success-color}Skoiceを使用しています{default-color}。「{link-minecraft-command}」と入力して参加しましょう！"
   connecting-alert: "{success-color}⚠ {default-color}あなたは{success-color}ほかのプレイヤーの近くにいます{default-color}。挨拶しましょう！"
   disconnecting-alert: "{error-color}⚠ {default-color}あなたは近くのプレイヤーから{error-color}離れています{default-color}。"
   muted-alert: "{error-color}⚠ {default-color}{error-color}マイクオフ{default-color}。"

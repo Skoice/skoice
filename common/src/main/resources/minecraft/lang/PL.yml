@@ -27,6 +27,7 @@ logger:
     missing-permission: "Twój bot nie ma nadanej permisji \"Administrator\" na twoim serwerze Discord. Otwórz ten link, żeby ją nadać: {bot-invite-url}."
     invalid-bot: "Twój bot nie jest poprawnie skonfigurowany. Dołącz do swojego serwera Minecraft, aby utworzyć nowy."
     shared-bot: "Wygląda na to, że twój bot uruchamia wiele programów. Jednak musi być dedykowany Skoice, aby działać prawidłowo. Możesz utworzyć nowy, postępując zgodnie z instrukcjami na tej stronie: {creation-guide-url}. Po pobraniu jego tokena wpisz \"{token-minecraft-command}\", a następnie token."
+    commands-not-registered: "Skoice nie mógł zarejestrować swoich komend Discord, ponieważ osiągnięto limit komend aplikacji. Usuń nieużywane boty ze swojego serwera Discord, aby zwolnić komendy, a następnie zrestartuj swój serwer Minecraft."
 chat:
   configuration:
     discord-integration-interactive: " \nKonfiguracja: {title-color}Integracja z Discord\n \n{dark-color}• {default-color}Skoice potrzebuje bota Discord do działania. Aby łatwo go skonfigurować, postępuj zgodnie z instrukcjami na {open:creation-guide-url}.\n{dark-color}• {default-color}Po pobraniu tokena, wstaw go {suggest:token-minecraft-command}.\n \nJeśli nie możesz wchodzić w interakcję z tą wiadomością, wpisz \"{tooltips-minecraft-command}\".\n "
@@ -61,6 +62,7 @@ chat:
     account-unlinked: "{success-color}Odłączyłeś swoje konto Minecraft {default-color}od discorda."
     account-not-linked: "Twoje konto Minecraft {error-color}nie jest połączone {default-color}z Discord. Wpisz \"{link-discord-command}\" na serwerze Discord \"{guild}\", aby je połączyć i korzystać ze zbliżeniowego czatu głosowego."
     account-not-linked-remind-once: "Twoje konto Minecraft {error-color}nie jest połączone {default-color}z Discord. Wpisz \"{link-discord-command}\" na serwerze Discord \"{guild}\", aby je połączyć i korzystać ze zbliżeniowego czatu głosowego. Nie otrzymasz ponownie tego powiadomienia."
+    account-already-linked: "{error-color}Już połączyłeś swoje konto Minecraft {default-color}z kontem Discord \"{discord-username}\". Wpisz \"{unlink-minecraft-command}\", aby je rozłączyć."
     connected: "Jesteś teraz {success-color}połączony {default-color}ze zbliżeniowym czatem głosowym. Aby wyłączyć dźwięki Discord i mieć bardziej immersyjne doświadczenie, możesz włączyć \"Tryb Streamera\" w ustawieniach Discord."
     not-connected: "{error-color}Nie jesteś połączony {default-color}do zbliżeniowego czatu głosowego. Dołącz do kanału głosowego \"{voice-channel}\" na serwerze Discord \"{guild}\", aby go użyć."
     disconnected: "Jesteś teraz {error-color}odłączony {default-color}od zbliżeniowego czatu głosowego."
@@ -70,6 +72,7 @@ chat:
     illegal-executor: "Ta komenda może {error-color}być tylko wykonana {default-color}przez graczy."
     missing-permission: "Ta komenda może {error-color}być tylko wykonana {default-color}przez operatorów."
 action-bar:
+  linking-suggestion: "{default-color}Gracze w pobliżu {success-color}używają Skoice{default-color}. Wpisz \"{link-minecraft-command}\", aby dołączyć!"
   connecting-alert: "{success-color}⚠ {default-color}Jesteś {success-color}w pobliżu innych graczy{default-color}. Przywitaj się!"
   disconnecting-alert: "{error-color}⚠ {default-color}{error-color}Oddalasz się {default-color}od pobliskich graczy."
   muted-alert: "{error-color}⚠ {default-color}{error-color}Mikrofon wyłączony{default-color}."

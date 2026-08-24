@@ -53,46 +53,41 @@ menu:
     description: "Choisissez les mondes où Skoice est actif."
     select-menu:
       placeholder: "Veuillez sélectionner les mondes souhaités."
-  included-players:
-    title: "Joueurs inclus"
-    description: "Choisissez les types de joueurs inclus dans le chat vocal de proximité."
-    select-menu:
-      placeholder: "Veuillez sélectionner les types de joueurs souhaités."
-      players-on-death-screen-included:
-        label: "Joueurs sur l'écran de mort"
-      spectators-included:
-        label: "Spectateurs"
   excluded-players:
     title: "Joueurs exclus"
-    description: "Choisissez si les joueurs exclus du chat vocal de proximité peuvent tout de même communiquer entre eux."
-    select-menu:
-      in-range:
-        label: "Communiquer à portée"
-      same-world:
-        label: "Toujours communiquer dans le même monde"
-      disabled:
-        label: "Ne jamais communiquer"
+    description: "Choisissez les types de joueurs exclus du chat vocal de proximité et s'ils peuvent tout de même communiquer entre eux."
+    excluded-player-types:
+      select-menu:
+        placeholder: "Veuillez sélectionner les types de joueurs exclus."
+        players-on-death-screen-excluded:
+          label: "Joueurs sur l'écran de mort"
+        spectators-excluded:
+          label: "Spectateurs"
+    excluded-player-behavior:
+      select-menu:
+        same-world:
+          label: "Toujours communiquer dans le même monde"
+        in-range:
+          label: "Communiquer à portée"
+        disabled:
+          label: "Ne jamais communiquer"
   teams:
     title: "Équipes"
-    description: "Sélectionnez les comportements à appliquer aux équipes. Ces comportements s'appliquent aux équipes définies par le fournisseur d'équipes sélectionné, qu'elles proviennent du système d'équipes intégré de Minecraft ou d'un plugin pris en charge."
-    select-menu:
-      placeholder: "Veuillez sélectionner les comportements souhaités."
-      team-communication:
-        label: "Toujours autoriser la communication entre membres d'équipe"
-      separated-teams:
-        label: "Empêcher la communication entre équipes"
-  team-provider:
-    title: "Fournisseur d'équipes"
-    description: "Sélectionnez le système que Skoice utilise pour déterminer quels joueurs appartiennent à la même équipe. Ces équipes sont ensuite utilisées par les paramètres d'équipe. En plus des équipes intégrées de Minecraft, Skoice prend en charge des plugins tiers tels que [Parties](https://www.spigotmc.org/resources/parties-an-advanced-parties-manager.3709/). Le plugin correspondant doit être installé pour qu'un fournisseur fonctionne, sinon les fonctionnalités d'équipe sont désactivées."
-    select-menu:
-      placeholder: "Veuillez sélectionner un fournisseur d'équipes."
-      select-option:
-        vanilla:
-          label: "Vanilla"
-          description: "Les équipes intégrées de Minecraft, définies avec /team ou par des plugins et des datapacks qui les gèrent."
-        parties:
-          label: "Parties par AlessioDP"
-          description: "Les joueurs d'un même groupe sont considérés comme des coéquipiers."
+    description: "Sélectionnez le système que Skoice utilise pour déterminer quels joueurs appartiennent à la même équipe ainsi que les comportements qui s'appliquent aux équipes. Le système d'équipes intégré de Minecraft peut être utilisé avec `/team` ou avec des plugins et des datapacks qui le gèrent. Skoice prend également en charge des plugins tiers tels que [Parties](https://www.spigotmc.org/resources/parties-an-advanced-parties-manager.3709/). Le plugin correspondant doit être installé pour qu'un fournisseur fonctionne, sinon les fonctionnalités d'équipe sont désactivées."
+    team-provider:
+      select-menu:
+        select-option:
+          vanilla:
+            label: "Vanilla"
+          parties:
+            label: "Parties"
+    team-behaviors:
+      select-menu:
+        placeholder: "Veuillez sélectionner les comportements souhaités."
+        team-communication:
+          label: "Toujours autoriser la communication entre membres d'équipe"
+        separated-teams:
+          label: "Empêcher la communication entre équipes"
   chaining:
     title: "Chaînage"
     description: "Sélectionnez la distance supplémentaire autorisée lorsque les joueurs s'enchaînent. L'enchaînement se produit généralement lorsqu'un joueur se trouve entre deux autres joueurs qui ne devraient pas pouvoir communiquer. Dans ce cas, la portée est étendue pour permettre aux trois joueurs de s'entendre."
@@ -139,6 +134,8 @@ menu:
     description: "Activez ou désactivez les alertes envoyées aux joueurs de votre serveur Minecraft concernant le chat vocal de proximité."
     select-menu:
       placeholder: "Veuillez sélectionner les alertes souhaitées."
+      linking-suggestion:
+        label: "\"Des joueurs proches utilisent Skoice. Tapez \"/skoice link\" pour les rejoindre !\""
       connecting-alert:
         label: "\"Vous êtes proche d'autres joueurs. Dites bonjour !\""
       disconnecting-alert:
@@ -147,8 +144,6 @@ menu:
         label: "\"Micro coupé.\""
       deafened-alert:
         label: "\"Son coupé.\""
-      linking-suggestion:
-        label: "\"Des joueurs proches utilisent Skoice. Tapez \"/skoice link\" pour les rejoindre !\""
   invite-link:
     title: "Lien d'invitation"
     description: "Activez ou désactivez l'affichage du nom du serveur Discord en tant que lien d'invitation cliquable dans les messages du chat Minecraft. Skoice crée une invitation permanente sur le salon vocal de proximité que vous avez configuré. Désactivez cette option si vous n'en souhaitez pas."
@@ -167,7 +162,7 @@ menu:
     description: "Sélectionnez la version de Skoice que vous voulez utiliser."
   language:
     title: "Langue"
-    description: "Choisissez la langue utilisée pour afficher les messages. Votre langue est manquante ou incomplète ? [Traduisez notre plugin avec Crowdin]({crowdin-url}) !"
+    description: "Choisissez la langue utilisée pour afficher les messages."
   skoice-proximity-voice-chat:
     title: "Skoice : Chat vocal de proximité"
   linking-process:
@@ -198,7 +193,7 @@ field:
     description: "Skoice est un logiciel gratuit. Si vous l'appréciez, vous pouvez nous aider en [faisant un don]({open-collective-url})."
   contributing:
     title: "Contribuer"
-    description: "Vous souhaitez nous aider à façonner l'avenir de Skoice ? [Contribuez sur notre page GitHub]({github-url}) et [traduisez notre plugin avec Crowdin]({crowdin-url}) !"
+    description: "Envie de nous aider à façonner l'avenir de Skoice ? [Contribuez sur notre page GitHub]({github-url}) !"
   long-range-mode:
     title: "Mode longue portée"
     description: "Choisissez ce mode si vous prévoyez de jouer sur des modes de jeu en monde ouvert."
