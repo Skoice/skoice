@@ -39,6 +39,7 @@ import net.clementraynaud.skoice.common.storage.config.OutdatedConfig;
 import net.clementraynaud.skoice.common.system.ListenerManager;
 import net.clementraynaud.skoice.common.system.team.TeamProviderManager;
 import net.clementraynaud.skoice.common.tasks.UpdateNetworksTask;
+import net.clementraynaud.skoice.common.util.MapUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +49,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Collection;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -244,7 +246,11 @@ public abstract class Skoice {
     }
 
     public void log(Level level, String path) {
-        this.getLogger().log(level, this.getLang().getConsoleMessage(path));
+        this.log(level, path, MapUtil.of());
+    }
+
+    public void log(Level level, String path, Map<String, String> args) {
+        this.getLogger().log(level, this.getLang().getConsoleMessage(path, args));
     }
 
     public SkoiceLogger getLogger() {

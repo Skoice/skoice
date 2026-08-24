@@ -22,6 +22,7 @@ package net.clementraynaud.skoice.common;
 import com.bugsnag.Severity;
 import net.clementraynaud.skoice.common.menus.selectors.ReleaseChannelSelector;
 import net.clementraynaud.skoice.common.storage.config.ConfigField;
+import net.clementraynaud.skoice.common.util.MapUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -87,7 +88,9 @@ public class Updater {
     }
 
     private void logOutdatedVersion(String version) {
-        this.plugin.log(Level.WARNING, "logger.warning.outdated-version");
+        this.plugin.log(Level.WARNING, "logger.warning.outdated-version",
+                MapUtil.of("current-version", this.plugin.getVersion(),
+                        "latest-version", version));
     }
 
     private void updateReleaseChannel() {
