@@ -281,12 +281,12 @@ public abstract class Skoice {
         return this.listenerManager;
     }
 
-    public TeamProviderManager getTeamProviderManager() {
-        return this.teamProviderManager;
-    }
-
     public void setListenerManager(ListenerManager listenerManager) {
         this.listenerManager = listenerManager;
+    }
+
+    public TeamProviderManager getTeamProviderManager() {
+        return this.teamProviderManager;
     }
 
     public Bot getBot() {

@@ -107,7 +107,7 @@ public final class LinkedPlayer {
     public boolean communicatesWorldWide() {
         return this.isExcluded()
                 && ExcludedPlayerBehaviorSelector.SAME_WORLD.equals(
-                        this.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()));
+                this.plugin.getConfigYamlFile().getString(ConfigField.EXCLUDED_PLAYERS_COMMUNICATION.toString()));
     }
 
     public void addActionBarAlert(ActionBarAlert alert) {
