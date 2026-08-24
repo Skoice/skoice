@@ -162,7 +162,7 @@ menu:
     description: "Select the version of Skoice you want to use."
   language:
     title: "Language"
-    description: "Choose the language used to display messages. Your language is missing or incomplete? [Translate our plugin with Crowdin]({crowdin-url})!"
+    description: "Choose the language used to display messages."
   skoice-proximity-voice-chat:
     title: "Skoice: Proximity Voice Chat"
   linking-process:
@@ -193,7 +193,7 @@ field:
     description: "Skoice is a free software. If you like it, you can help us by [donating]({open-collective-url})."
   contributing:
     title: "Contributing"
-    description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page]({github-url}) and [translate our plugin with Crowdin]({crowdin-url})!"
+    description: "Interested in helping us shape the future of Skoice? [Contribute on our GitHub page]({github-url})!"
   long-range-mode:
     title: "Long-Range Mode"
     description: "Choose this mode if you plan to play open world game modes."
