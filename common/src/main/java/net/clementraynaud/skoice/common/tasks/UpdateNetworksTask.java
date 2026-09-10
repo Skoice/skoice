@@ -207,7 +207,7 @@ public class UpdateNetworksTask {
                         this.awaitingMoves.put(memberId, Pair.of(
                                 shouldBeInChannel.getId(),
                                 this.plugin.getBot().getGuild().moveVoiceMember(member, shouldBeInChannel)
-                                        .submit().whenCompleteAsync((v, t) -> {
+                                        .submit().whenComplete((v, t) -> {
                                             this.awaitingMoves.remove(memberId);
                                             if (sendConnectingAlert) {
                                                 linkedPlayer.addActionBarAlert(ActionBarAlert.CONNECTING);

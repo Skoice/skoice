@@ -55,7 +55,7 @@ public abstract class ListenerManager {
 
     protected ListenerManager(Skoice plugin) {
         this.plugin = plugin;
-        this.playerQuitHandler = new PlayerQuitHandler();
+        this.playerQuitHandler = new PlayerQuitHandler(plugin);
         this.playerJoinHandler = this.createPlayerJoinHandler(plugin);
         this.guildVoiceUpdateListener = this.createGuildVoiceUpdate(this.plugin);
         this.genericChannelListener = new GenericChannelListener(this.plugin);

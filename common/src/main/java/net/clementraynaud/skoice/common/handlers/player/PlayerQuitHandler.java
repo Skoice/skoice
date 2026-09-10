@@ -25,24 +25,29 @@ import net.clementraynaud.skoice.common.model.minecraft.BasePlayer;
 import net.clementraynaud.skoice.common.system.LinkedPlayer;
 import net.clementraynaud.skoice.common.system.Networks;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 
 public class PlayerQuitHandler {
 
-    public CompletionStage<Void> onPlayerQuit(BasePlayer player) {
+    private final Skoice plugin;
+
+    public PlayerQuitHandler(Skoice plugin) {
+        this.plugin = plugin;
+    }
+
+    public void onPlayerQuit(BasePlayer player) {
         if (Skoice.api().isLinked(player.getUniqueId()) && Skoice.api().isProximityConnected(player.getUniqueId())) {
             Skoice.eventBus().fireAsync(new PlayerProximityDisconnectEvent(player.getUniqueId().toString()));
         }
 
-        return CompletableFuture.runAsync(() -> {
-            LinkedPlayer.removeOnline(player);
-            Networks.getAll().stream()
-                    .filter(network -> network.contains(player))
-                    .forEach(network -> network.remove(player));
-        }).exceptionally(e -> {
-            e.printStackTrace();
-            return null;
+        this.plugin.getScheduler().runTaskAsynchronously(() -> {
+            try {
+                LinkedPlayer.removeOnline(player);
+                Networks.getAll().stream()
+                        .filter(network -> network.contains(player))
+                        .forEach(network -> network.remove(player));
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
         });
     }
 }
